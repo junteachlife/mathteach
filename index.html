@@ -99,17 +99,76 @@
     }
 
 
+    /*
+    ==================================================
+    整體寬度
+    ==================================================
+    */
+
+
     .page-container {
 
       width: 100%;
 
-      max-width: 1180px;
+      max-width: 1500px;
 
       margin:
         0 auto;
 
       padding:
         28px 26px 60px;
+
+    }
+
+
+    /*
+    ==================================================
+    ★ 新版首頁左右配置
+
+    左側：40% 資訊區
+    右側：60% 遊戲區
+    ==================================================
+    */
+
+
+    .home-layout {
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(330px, 40fr)
+        minmax(0, 60fr);
+
+      align-items: start;
+
+      gap: 26px;
+
+    }
+
+
+    .info-column,
+    .game-column {
+
+      min-width: 0;
+
+    }
+
+
+    /*
+    左側資訊欄固定在畫面上方附近。
+
+    電腦長頁面瀏覽遊戲時，
+    左側資訊不會一下就完全消失。
+    */
+
+
+    .info-column {
+
+      position: sticky;
+
+      top: 18px;
+
+      align-self: start;
 
     }
 
@@ -170,7 +229,23 @@
 
     /*
     ==================================================
-    首頁資訊區
+    左側資訊總卡
+    ==================================================
+    */
+
+
+    .info-stack {
+
+      display: grid;
+
+      gap: 18px;
+
+    }
+
+
+    /*
+    ==================================================
+    網站資訊
     ==================================================
     */
 
@@ -179,11 +254,9 @@
 
       display: grid;
 
-      grid-template-columns:
-        minmax(0, 1.05fr)
-        minmax(320px, .95fr);
+      grid-template-columns: 1fr;
 
-      gap: 18px;
+      gap: 16px;
 
       padding: 20px;
 
@@ -270,9 +343,9 @@
 
       font-size:
         clamp(
-          28px,
-          3vw,
-          38px
+          25px,
+          2.2vw,
+          34px
         );
 
       font-weight: 900;
@@ -285,14 +358,14 @@
     .dashboard-subtitle {
 
       margin:
-        0 0 14px 60px;
+        0 0 14px;
 
       color:
         #64748b;
 
-      font-size: 15px;
+      font-size: 14px;
 
-      line-height: 1.6;
+      line-height: 1.65;
 
     }
 
@@ -458,16 +531,10 @@
 
       display: grid;
 
-      grid-template-rows:
-        repeat(
-          2,
-          minmax(
-            0,
-            1fr
-          )
-        );
+      grid-template-columns:
+        1fr 1fr;
 
-      gap: 12px;
+      gap: 10px;
 
     }
 
@@ -477,16 +544,16 @@
       display: grid;
 
       grid-template-columns:
-        58px 1fr;
+        48px 1fr;
 
-      gap: 12px;
+      gap: 10px;
 
       align-items: center;
 
       min-height: 82px;
 
       padding:
-        14px 16px;
+        12px;
 
       border:
         1px solid
@@ -524,9 +591,9 @@
 
     .dashboard-link-icon {
 
-      width: 58px;
+      width: 48px;
 
-      height: 58px;
+      height: 48px;
 
       display: flex;
 
@@ -534,9 +601,9 @@
 
       justify-content: center;
 
-      border-radius: 16px;
+      border-radius: 14px;
 
-      font-size: 30px;
+      font-size: 25px;
 
     }
 
@@ -553,12 +620,12 @@
 
     .dashboard-link-title {
 
-      margin-bottom: 4px;
+      margin-bottom: 3px;
 
       color:
         #174f8f;
 
-      font-size: 19px;
+      font-size: 16px;
 
       font-weight: 900;
 
@@ -570,9 +637,9 @@
       color:
         #64748b;
 
-      font-size: 14px;
+      font-size: 12px;
 
-      line-height: 1.55;
+      line-height: 1.45;
 
     }
 
@@ -585,7 +652,11 @@
 
 
     .news-area {
-      margin-top: 22px;
+
+      display: grid;
+
+      gap: 18px;
+
     }
 
 
@@ -596,7 +667,7 @@
       overflow: hidden;
 
       padding:
-        22px 24px;
+        20px 20px;
 
       border:
         2px solid
@@ -651,7 +722,7 @@
 
       justify-content: space-between;
 
-      gap: 14px;
+      gap: 10px;
 
       margin-bottom: 12px;
 
@@ -665,7 +736,7 @@
       color:
         #92400e;
 
-      font-size: 23px;
+      font-size: 20px;
 
       font-weight: 900;
 
@@ -677,9 +748,11 @@
       color:
         #9a6b24;
 
-      font-size: 14px;
+      font-size: 12px;
 
       font-weight: 800;
+
+      white-space: nowrap;
 
     }
 
@@ -705,7 +778,7 @@
       color:
         #c2410c;
 
-      font-size: 13px;
+      font-size: 12px;
 
       font-weight: 900;
 
@@ -720,9 +793,11 @@
       color:
         #7c2d12;
 
-      font-size: 21px;
+      font-size: 18px;
 
       font-weight: 900;
+
+      line-height: 1.5;
 
     }
 
@@ -734,9 +809,9 @@
       color:
         #6b4f2b;
 
-      font-size: 16px;
+      font-size: 14px;
 
-      line-height: 1.8;
+      line-height: 1.7;
 
     }
 
@@ -750,9 +825,9 @@
 
     .latest-news-box {
 
-      margin-top: 18px;
+      margin-top: 0;
 
-      padding: 20px;
+      padding: 18px;
 
       border:
         1px solid
@@ -788,9 +863,9 @@
 
       align-items: center;
 
-      gap: 14px;
+      gap: 10px;
 
-      margin-bottom: 14px;
+      margin-bottom: 12px;
 
     }
 
@@ -802,7 +877,7 @@
       color:
         #174f8f;
 
-      font-size: 22px;
+      font-size: 19px;
 
       font-weight: 900;
 
@@ -814,7 +889,7 @@
       color:
         #64748b;
 
-      font-size: 13px;
+      font-size: 11px;
 
       font-weight: 700;
 
@@ -825,7 +900,7 @@
 
       display: grid;
 
-      gap: 10px;
+      gap: 9px;
 
     }
 
@@ -835,22 +910,21 @@
       display: grid;
 
       grid-template-columns:
-        42px
-        1fr
-        auto;
+        38px
+        1fr;
 
-      gap: 12px;
+      gap: 10px;
 
       align-items: center;
 
       padding:
-        13px 14px;
+        11px 12px;
 
       border:
         1px solid
         #e2e8f0;
 
-      border-radius: 15px;
+      border-radius: 14px;
 
       background: white;
 
@@ -859,9 +933,9 @@
 
     .news-icon {
 
-      width: 42px;
+      width: 38px;
 
-      height: 42px;
+      height: 38px;
 
       display: flex;
 
@@ -869,12 +943,12 @@
 
       justify-content: center;
 
-      border-radius: 12px;
+      border-radius: 11px;
 
       background:
         #f1f5f9;
 
-      font-size: 22px;
+      font-size: 20px;
 
     }
 
@@ -884,7 +958,7 @@
       color:
         #1f2937;
 
-      font-size: 16px;
+      font-size: 14px;
 
       font-weight: 900;
 
@@ -898,19 +972,21 @@
       color:
         #64748b;
 
-      font-size: 13px;
+      font-size: 12px;
 
-      line-height: 1.55;
+      line-height: 1.5;
 
     }
 
 
     .news-date {
 
+      grid-column: 2;
+
       color:
         #94a3b8;
 
-      font-size: 13px;
+      font-size: 11px;
 
       font-weight: 800;
 
@@ -924,13 +1000,13 @@
       display: inline-flex;
 
       padding:
-        4px 8px;
+        3px 7px;
 
       margin-bottom: 4px;
 
       border-radius: 999px;
 
-      font-size: 12px;
+      font-size: 11px;
 
       font-weight: 900;
 
@@ -997,13 +1073,15 @@
 
     /*
     ==================================================
-    選擇遊戲
+    右側：選擇遊戲
     ==================================================
     */
 
 
     .section {
-      margin-top: 36px;
+
+      margin-top: 0;
+
     }
 
 
@@ -1038,7 +1116,9 @@
       color:
         var(--muted);
 
-      font-size: 15px;
+      font-size: 14px;
+
+      text-align: right;
 
     }
 
@@ -1191,7 +1271,7 @@
           )
         );
 
-      gap: 24px;
+      gap: 20px;
 
     }
 
@@ -1200,7 +1280,7 @@
 
       position: relative;
 
-      min-height: 225px;
+      min-height: 220px;
 
       display: flex;
 
@@ -1211,7 +1291,7 @@
       justify-content: center;
 
       padding:
-        26px 22px 22px;
+        24px 18px 20px;
 
       overflow: hidden;
 
@@ -1272,9 +1352,9 @@
 
     .game-icon {
 
-      width: 58px;
+      width: 54px;
 
-      height: 58px;
+      height: 54px;
 
       display: flex;
 
@@ -1283,7 +1363,7 @@
       justify-content: center;
 
       flex:
-        0 0 58px;
+        0 0 54px;
 
       border:
         2px solid
@@ -1292,7 +1372,7 @@
           #dce7f5
         );
 
-      border-radius: 18px;
+      border-radius: 17px;
 
       background:
         var(
@@ -1306,7 +1386,7 @@
           #1976d2
         );
 
-      font-size: 29px;
+      font-size: 27px;
 
     }
 
@@ -1315,14 +1395,14 @@
 
       margin: 0;
 
-      font-size: 22px;
+      font-size: 20px;
 
     }
 
 
     .game-card p {
 
-      min-height: 48px;
+      min-height: 46px;
 
       margin:
         0 0 13px;
@@ -1330,7 +1410,7 @@
       color:
         var(--muted);
 
-      font-size: 16px;
+      font-size: 14px;
 
       line-height: 1.65;
 
@@ -1565,7 +1645,106 @@
 
     /*
     ==================================================
-    平板／手機
+    ★ 平板
+
+    平板開始恢復上下排列。
+    ==================================================
+    */
+
+
+    @media (
+      max-width: 1100px
+    ) {
+
+      .page-container {
+
+        max-width: 980px;
+
+      }
+
+
+      .home-layout {
+
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+
+      }
+
+
+      .info-column {
+
+        position: static;
+
+      }
+
+
+      /*
+      上方資訊區恢復較寬配置
+      */
+
+
+      .dashboard {
+
+        grid-template-columns:
+          minmax(0, 1.05fr)
+          minmax(300px, .95fr);
+
+        gap: 18px;
+
+      }
+
+
+      .dashboard-links {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .dashboard-subtitle {
+
+        margin-left: 60px;
+
+      }
+
+
+      .news-area {
+
+        grid-template-columns:
+          1fr 1fr;
+
+        align-items: start;
+
+      }
+
+
+      .latest-news-box {
+
+        height: 100%;
+
+      }
+
+
+      .games-grid {
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(
+              0,
+              1fr
+            )
+          );
+
+      }
+
+    }
+
+
+    /*
+    ==================================================
+    手機／窄平板
     ==================================================
     */
 
@@ -1578,6 +1757,20 @@
 
         padding:
           18px 12px 45px;
+
+      }
+
+
+      .home-layout {
+
+        display: block;
+
+      }
+
+
+      .game-column {
+
+        margin-top: 32px;
 
       }
 
@@ -1612,8 +1805,6 @@
         grid-template-columns:
           1fr 1fr;
 
-        grid-template-rows: none;
-
       }
 
 
@@ -1639,12 +1830,23 @@
 
 
       .dashboard-link-title {
+
         font-size: 16px;
+
       }
 
 
       .dashboard-link-text {
+
         font-size: 12px;
+
+      }
+
+
+      .news-area {
+
+        grid-template-columns: 1fr;
+
       }
 
 
@@ -1668,7 +1870,9 @@
 
 
       .news-date {
+
         grid-column: 2;
+
       }
 
 
@@ -1683,6 +1887,8 @@
 
         margin-top: 7px;
 
+        text-align: left;
+
       }
 
 
@@ -1696,7 +1902,9 @@
 
 
       .semester-control label {
+
         text-align: center;
+
       }
 
 
@@ -1710,7 +1918,9 @@
 
 
       .games-grid {
+
         grid-template-columns: 1fr;
+
       }
 
 
@@ -1725,7 +1935,9 @@
 
 
       .game-card p {
+
         min-height: auto;
+
       }
 
     }
@@ -1744,458 +1956,495 @@
 
     <!--
     ==================================================
-    網站資訊
+    ★ 首頁左右雙欄
     ==================================================
     -->
 
 
-    <section class="dashboard">
+    <div class="home-layout">
 
 
-      <div class="dashboard-brand">
+      <!--
+      ==================================================
+      左側 40%｜資訊區
+      ==================================================
+      -->
 
 
-        <div class="dashboard-title-row">
+      <aside class="info-column">
 
 
-          <div class="dashboard-logo">
+        <div class="info-stack">
 
-            <img
-              src="./favicon.png?v=20260825"
-              alt="生活有解．心中有數"
+
+          <!-- 網站／登入／排行榜／我的成績 -->
+
+
+          <section class="dashboard">
+
+
+            <div class="dashboard-brand">
+
+
+              <div class="dashboard-title-row">
+
+
+                <div class="dashboard-logo">
+
+                  <img
+                    src="./favicon.png?v=20260825"
+                    alt="生活有解．心中有數"
+                  >
+
+                </div>
+
+
+                <h1 class="dashboard-title">
+                  生活有解．心中有數
+                </h1>
+
+
+              </div>
+
+
+              <p class="dashboard-subtitle">
+                一步一題，累積實力；生活有解，心中有數。
+              </p>
+
+
+              <div
+                id="compactUserBox"
+                class="compact-user-box"
+              >
+
+                <div class="compact-user-text">
+
+                  <div class="compact-user-name">
+                    正在確認登入狀態……
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="compact-auth-actions">
+
+
+                <button
+                  id="compactLoginButton"
+                  class="compact-auth-button compact-login-button"
+                  type="button"
+                >
+                  Google 登入
+                </button>
+
+
+                <button
+                  id="compactLogoutButton"
+                  class="compact-auth-button compact-logout-button"
+                  type="button"
+                  hidden
+                >
+                  登出
+                </button>
+
+
+              </div>
+
+
+            </div>
+
+
+            <div class="dashboard-links">
+
+
+              <a
+                class="dashboard-link-card"
+                href="leaderboard.html"
+              >
+
+
+                <div class="dashboard-link-icon rank">
+                  🏆
+                </div>
+
+
+                <div>
+
+                  <div class="dashboard-link-title">
+                    排行榜
+                  </div>
+
+                  <div class="dashboard-link-text">
+                    查看各遊戲高手排行，挑戰更高名次。
+                  </div>
+
+                </div>
+
+
+              </a>
+
+
+              <a
+                id="myScoresLink"
+                class="dashboard-link-card"
+                href="my-scores.html"
+              >
+
+
+                <div class="dashboard-link-icon scores">
+                  📊
+                </div>
+
+
+                <div>
+
+                  <div class="dashboard-link-title">
+                    我的成績
+                  </div>
+
+                  <div class="dashboard-link-text">
+                    查看最高分、平均分數、答題紀錄與遊玩次數。
+                  </div>
+
+                </div>
+
+
+              </a>
+
+
+            </div>
+
+
+          </section>
+
+
+          <!-- 公告＋最新消息 -->
+
+
+          <section class="news-area">
+
+
+            <div
+              id="announcementBoard"
+              class="announcement-board"
             >
 
-          </div>
+
+              <div class="announcement-top">
 
 
-          <h1 class="dashboard-title">
-            生活有解．心中有數
-          </h1>
+                <h2 class="announcement-heading">
+                  📢 公告欄
+                </h2>
+
+
+                <div
+                  id="announcementDate"
+                  class="announcement-date"
+                >
+                </div>
+
+
+              </div>
+
+
+              <div
+                id="announcementBadge"
+                class="announcement-badge"
+              >
+                最新公告
+              </div>
+
+
+              <h3
+                id="announcementTitle"
+                class="announcement-title"
+              >
+                公告載入中……
+              </h3>
+
+
+              <p
+                id="announcementContent"
+                class="announcement-content"
+              >
+                請稍候。
+              </p>
+
+
+            </div>
+
+
+            <div class="latest-news-box">
+
+
+              <div class="latest-news-header">
+
+
+                <h2 class="latest-news-title">
+                  📰 最新消息
+                </h2>
+
+
+                <div class="latest-news-subtitle">
+                  顯示最近 4 則更新
+                </div>
+
+
+              </div>
+
+
+              <div
+                id="latestNewsList"
+                class="latest-news-list"
+              ></div>
+
+
+            </div>
+
+
+          </section>
 
 
         </div>
 
 
-        <p class="dashboard-subtitle">
-          一步一題，累積實力；生活有解，心中有數。
-        </p>
+      </aside>
 
 
-        <div
-          id="compactUserBox"
-          class="compact-user-box"
-        >
-
-          <div class="compact-user-text">
-
-            <div class="compact-user-name">
-              正在確認登入狀態……
-            </div>
-
-          </div>
-
-        </div>
+      <!--
+      ==================================================
+      右側 60%｜遊戲區
+      ==================================================
+      -->
 
 
-        <div class="compact-auth-actions">
+      <section class="game-column">
 
 
-          <button
-            id="compactLoginButton"
-            class="compact-auth-button compact-login-button"
-            type="button"
-          >
-            Google 登入
-          </button>
+        <section class="section">
 
 
-          <button
-            id="compactLogoutButton"
-            class="compact-auth-button compact-logout-button"
-            type="button"
-            hidden
-          >
-            登出
-          </button>
+          <div class="section-header">
 
 
-        </div>
+            <h2 class="section-title">
+              🎯 選擇一個遊戲
+            </h2>
 
 
-      </div>
+            <p class="section-description">
+              完成遊戲後，登入玩家的成績會自動儲存。
+            </p>
 
-
-      <div class="dashboard-links">
-
-
-        <a
-          class="dashboard-link-card"
-          href="leaderboard.html"
-        >
-
-
-          <div class="dashboard-link-icon rank">
-            🏆
-          </div>
-
-
-          <div>
-
-            <div class="dashboard-link-title">
-              排行榜
-            </div>
-
-            <div class="dashboard-link-text">
-              查看各遊戲高手排行，挑戰更高名次。
-            </div>
 
           </div>
 
 
-        </a>
+          <div class="semester-control">
 
 
-        <a
-          id="myScoresLink"
-          class="dashboard-link-card"
-          href="my-scores.html"
-        >
+            <label for="semesterSelect">
+              📚 請選擇學期
+            </label>
 
 
-          <div class="dashboard-link-icon scores">
-            📊
+            <select
+              id="semesterSelect"
+              class="semester-select"
+            >
+
+
+              <option value="grade7-first">
+                七年級上學期
+              </option>
+
+
+              <option value="grade7-second">
+                七年級下學期
+              </option>
+
+
+              <option value="grade8-first">
+                八年級上學期
+              </option>
+
+
+              <option value="grade8-second">
+                八年級下學期
+              </option>
+
+
+              <option value="grade9-first">
+                九年級上學期
+              </option>
+
+
+              <option value="grade9-second">
+                九年級下學期
+              </option>
+
+
+            </select>
+
+
           </div>
 
 
-          <div>
-
-            <div class="dashboard-link-title">
-              我的成績
-            </div>
-
-            <div class="dashboard-link-text">
-              查看最高分、平均分數、答題紀錄與遊玩次數。
-            </div>
-
-          </div>
-
-
-        </a>
-
-
-      </div>
-
-
-    </section>
-
-
-    <!--
-    ==================================================
-    公告
-    ==================================================
-    -->
-
-
-    <section class="news-area">
-
-
-      <div
-        id="announcementBoard"
-        class="announcement-board"
-      >
-
-
-        <div class="announcement-top">
-
-
-          <h2 class="announcement-heading">
-            📢 公告欄
-          </h2>
+          <!-- 七上 -->
 
 
           <div
-            id="announcementDate"
-            class="announcement-date"
+            id="grade7-first"
+            class="semester-panel active"
           >
+
+
+            <h3 class="semester-title">
+              七年級上學期
+            </h3>
+
+
+            <div
+              id="grade7FirstGames"
+              class="games-grid"
+            ></div>
+
+
           </div>
 
 
-        </div>
+          <!-- 七下 -->
 
 
-        <div
-          id="announcementBadge"
-          class="announcement-badge"
-        >
-          最新公告
-        </div>
+          <div
+            id="grade7-second"
+            class="semester-panel"
+          >
 
 
-        <h3
-          id="announcementTitle"
-          class="announcement-title"
-        >
-          公告載入中……
-        </h3>
+            <h3 class="semester-title">
+              七年級下學期
+            </h3>
 
 
-        <p
-          id="announcementContent"
-          class="announcement-content"
-        >
-          請稍候。
-        </p>
+            <div
+              id="grade7SecondGames"
+              class="games-grid"
+            ></div>
 
 
-      </div>
-
-
-      <div class="latest-news-box">
-
-
-        <div class="latest-news-header">
-
-
-          <h2 class="latest-news-title">
-            📰 最新消息
-          </h2>
-
-
-          <div class="latest-news-subtitle">
-            顯示最近 4 則更新
           </div>
 
 
-        </div>
+          <!-- 八上 -->
 
 
-        <div
-          id="latestNewsList"
-          class="latest-news-list"
-        ></div>
+          <div
+            id="grade8-first"
+            class="semester-panel"
+          >
 
 
-      </div>
+            <h3 class="semester-title">
+              八年級上學期
+            </h3>
 
 
-    </section>
+            <div
+              id="grade8FirstGames"
+              class="games-grid"
+            ></div>
+
+
+          </div>
+
+
+          <!-- 八下 -->
+
+
+          <div
+            id="grade8-second"
+            class="semester-panel"
+          >
+
+
+            <h3 class="semester-title">
+              八年級下學期
+            </h3>
+
+
+            <div
+              id="grade8SecondGames"
+              class="games-grid"
+            ></div>
+
+
+          </div>
+
+
+          <!-- 九上 -->
+
+
+          <div
+            id="grade9-first"
+            class="semester-panel"
+          >
+
+
+            <h3 class="semester-title">
+              九年級上學期
+            </h3>
+
+
+            <div
+              id="grade9FirstGames"
+              class="games-grid"
+            ></div>
+
+
+          </div>
+
+
+          <!-- 九下 -->
+
+
+          <div
+            id="grade9-second"
+            class="semester-panel"
+          >
+
+
+            <h3 class="semester-title">
+              九年級下學期
+            </h3>
+
+
+            <div
+              id="grade9SecondGames"
+              class="games-grid"
+            ></div>
+
+
+          </div>
+
+
+        </section>
+
+
+      </section>
+
+
+    </div>
 
 
     <!--
     ==================================================
-    遊戲區
+    Footer
     ==================================================
     -->
-
-
-    <section class="section">
-
-
-      <div class="section-header">
-
-
-        <h2 class="section-title">
-          🎯 選擇一個遊戲
-        </h2>
-
-
-        <p class="section-description">
-          完成遊戲後，登入玩家的成績會自動儲存。
-        </p>
-
-
-      </div>
-
-
-      <div class="semester-control">
-
-
-        <label for="semesterSelect">
-          📚 請選擇學期
-        </label>
-
-
-        <select
-          id="semesterSelect"
-          class="semester-select"
-        >
-
-
-          <option value="grade7-first">
-            七年級上學期
-          </option>
-
-
-          <option value="grade7-second">
-            七年級下學期
-          </option>
-
-
-          <option value="grade8-first">
-            八年級上學期
-          </option>
-
-
-          <option value="grade8-second">
-            八年級下學期
-          </option>
-
-
-          <option value="grade9-first">
-            九年級上學期
-          </option>
-
-
-          <option value="grade9-second">
-            九年級下學期
-          </option>
-
-
-        </select>
-
-
-      </div>
-
-
-      <!-- 七上 -->
-
-
-      <div
-        id="grade7-first"
-        class="semester-panel active"
-      >
-
-
-        <h3 class="semester-title">
-          七年級上學期
-        </h3>
-
-
-        <div
-          id="grade7FirstGames"
-          class="games-grid"
-        ></div>
-
-
-      </div>
-
-
-      <!-- 七下 -->
-
-
-      <div
-        id="grade7-second"
-        class="semester-panel"
-      >
-
-
-        <h3 class="semester-title">
-          七年級下學期
-        </h3>
-
-
-        <div
-          id="grade7SecondGames"
-          class="games-grid"
-        ></div>
-
-
-      </div>
-
-
-      <!-- 八上 -->
-
-
-      <div
-        id="grade8-first"
-        class="semester-panel"
-      >
-
-
-        <h3 class="semester-title">
-          八年級上學期
-        </h3>
-
-
-        <div
-          id="grade8FirstGames"
-          class="games-grid"
-        ></div>
-
-
-      </div>
-
-
-      <!-- 八下 -->
-
-
-      <div
-        id="grade8-second"
-        class="semester-panel"
-      >
-
-
-        <h3 class="semester-title">
-          八年級下學期
-        </h3>
-
-
-        <div
-          id="grade8SecondGames"
-          class="games-grid"
-        ></div>
-
-
-      </div>
-
-
-      <!-- 九上 -->
-
-
-      <div
-        id="grade9-first"
-        class="semester-panel"
-      >
-
-
-        <h3 class="semester-title">
-          九年級上學期
-        </h3>
-
-
-        <div
-          id="grade9FirstGames"
-          class="games-grid"
-        ></div>
-
-
-      </div>
-
-
-      <!-- 九下 -->
-
-
-      <div
-        id="grade9-second"
-        class="semester-panel"
-      >
-
-
-        <h3 class="semester-title">
-          九年級下學期
-        </h3>
-
-
-        <div
-          id="grade9SecondGames"
-          class="games-grid"
-        ></div>
-
-
-      </div>
-
-
-    </section>
 
 
     <footer class="page-footer">
@@ -2369,6 +2618,7 @@
       return (
         `${parts[0]} / ${parts[1]} / ${parts[2]}`
       );
+
     }
 
 
@@ -2446,6 +2696,7 @@
           throw new Error(
             "announcements.js 匯出格式不正確"
           );
+
         }
 
 
@@ -2491,7 +2742,6 @@
           board.hidden =
             true;
 
-
         }
 
 
@@ -2518,6 +2768,7 @@
 
 
           return;
+
         }
 
 
@@ -2617,9 +2868,7 @@
 
         `;
 
-
       }
-
 
     }
 
@@ -2629,7 +2878,7 @@
 
     /*
     ==================================================
-    主題快速建立工具
+    主題建立工具
     ==================================================
     */
 
@@ -3957,7 +4206,6 @@
           status
         );
 
-
       }
 
 
@@ -4081,7 +4329,6 @@
           recommended
         );
 
-
       }
 
 
@@ -4107,7 +4354,6 @@
         meta.appendChild(
           newBadge
         );
-
 
       }
 
@@ -4176,19 +4422,17 @@
           waiting
         );
 
-
       }
 
 
       return card;
-
 
     }
 
 
     /*
     ==================================================
-    依學期顯示卡牌
+    依學期取得卡牌
     ==================================================
     */
 
@@ -4252,11 +4496,16 @@
 
         return [];
 
-
       }
 
-
     }
+
+
+    /*
+    ==================================================
+    顯示單一學期
+    ==================================================
+    */
 
 
     function renderSemesterGames(
@@ -4311,7 +4560,6 @@
 
         return;
 
-
       }
 
 
@@ -4340,10 +4588,8 @@
               )
             );
 
-
           }
         );
-
 
     }
 
@@ -4393,7 +4639,6 @@
         grade9SecondGames
       );
 
-
     }
 
 
@@ -4428,10 +4673,8 @@
                   selected
                 );
 
-
               }
             );
-
 
         }
       );
@@ -4490,9 +4733,7 @@
             compactLoginButton.textContent =
               "Google 登入";
 
-
           }
-
 
         }
       );
@@ -4551,9 +4792,7 @@
             compactLogoutButton.textContent =
               "登出";
 
-
           }
-
 
         }
       );
@@ -4584,9 +4823,7 @@
               "請先登入 Google 帳號，才能查看自己的成績。"
             );
 
-
           }
-
 
         }
       );
@@ -4625,7 +4862,6 @@
 
       compactLogoutButton.hidden =
         true;
-
 
     }
 
@@ -4668,7 +4904,6 @@
         compactUserBox.appendChild(
           image
         );
-
 
       }
 
@@ -4731,7 +4966,6 @@
       compactLogoutButton.hidden =
         false;
 
-
     }
 
 
@@ -4757,7 +4991,6 @@
 
           return;
 
-
         }
 
 
@@ -4779,7 +5012,6 @@
               user
             );
 
-
           }
 
 
@@ -4792,7 +5024,6 @@
             "玩家資料同步失敗：",
             error
           );
-
 
         }
 
@@ -4808,7 +5039,6 @@
 
 
         renderLoggedOut();
-
 
       }
     );
