@@ -1,73 +1,154 @@
 /*
 ==================================================
-Math Game Park 共用計算紙樣式
+生活有解．心中有數｜共用計算紙
 檔案：css/scratchpad.css
 
-版本：2.1
-全裝置浮動＋拖曳＋八方向縮放版
+版本：4.0
+全螢幕半透明書寫層版
 ==================================================
 
-功能：
-1. 電腦、平板、手機皆為浮動計算紙。
-2. 深黃色標題列可以拖曳。
-3. 淺黃色工具列空白處可以拖曳。
-4. 工具按鈕維持自己的功能。
-5. Canvas 維持書寫功能。
-6. 電腦、平板、手機全部支援八方向縮放。
-7. 觸控裝置的縮放感應區較大，方便手指操作。
+設計原則：
+
+1. 電腦、平板、手機全部使用全螢幕計算紙。
+2. 開啟後鎖定後方網頁。
+3. 計算紙本身採半透明效果，
+   可以淡淡看到後方原本題目。
+4. 保留：
+   - 畫筆
+   - 橡皮擦
+   - 顏色
+   - 粗細
+   - 復原
+   - 重做
+   - 清除
+   - 下載
+5. 保留滑鼠、手指、觸控筆書寫。
+6. 關閉再開啟同一題，不清除計算內容。
+7. 只有遊戲進入下一題並呼叫
+   resetGameScratchpad()
+   才會清除。
 ==================================================
 */
 
+
 :root {
-  --scratchpad-panel-width: 430px;
-  --scratchpad-panel-height: 560px;
 
-  --scratchpad-panel-background: #fffdf5;
+  --scratchpad-header-background:
+    rgba(
+      245,
+      158,
+      11,
+      .92
+    );
 
-  --scratchpad-header-background: #f59e0b;
+  --scratchpad-toolbar-background:
+    rgba(
+      255,
+      247,
+      214,
+      .90
+    );
 
-  --scratchpad-border-color: #d97706;
+  --scratchpad-paper-background:
+    rgba(
+      255,
+      255,
+      255,
+      .72
+    );
 
-  --scratchpad-divider-color: #e5e7eb;
+  --scratchpad-border-color:
+    #d97706;
 
-  --scratchpad-text-color: #1f2937;
+  --scratchpad-divider-color:
+    rgba(
+      148,
+      163,
+      184,
+      .55
+    );
 
-  --scratchpad-muted-color: #6b7280;
+  --scratchpad-text-color:
+    #1f2937;
 
-  --scratchpad-button-background: #ffffff;
+  --scratchpad-muted-color:
+    #6b7280;
 
-  --scratchpad-button-hover: #fef3c7;
+  --scratchpad-button-background:
+    rgba(
+      255,
+      255,
+      255,
+      .92
+    );
 
-  --scratchpad-active-background: #fde68a;
+  --scratchpad-button-hover:
+    #fef3c7;
 
-  --scratchpad-active-border: #b45309;
+  --scratchpad-active-background:
+    #fde68a;
 
-  --scratchpad-disabled-background: #f3f4f6;
+  --scratchpad-active-border:
+    #b45309;
 
-  --scratchpad-disabled-text: #9ca3af;
+  --scratchpad-disabled-background:
+    rgba(
+      243,
+      244,
+      246,
+      .88
+    );
 
-  --scratchpad-panel-radius: 20px;
+  --scratchpad-disabled-text:
+    #9ca3af;
 
-  --scratchpad-button-radius: 12px;
-
-  --scratchpad-panel-shadow:
-    0 18px 45px
-    rgba(15, 23, 42, 0.28);
+  --scratchpad-button-radius:
+    11px;
 
   --scratchpad-focus-shadow:
     0 0 0 4px
-    rgba(245, 158, 11, 0.3);
+    rgba(
+      245,
+      158,
+      11,
+      .28
+    );
 }
 
 
 /*
 ==================================================
-基本設定
+基本
 ==================================================
 */
 
+
 * {
   box-sizing: border-box;
+}
+
+
+/*
+當計算紙開啟時，
+由 scratchpad.js 對 html/body 加上此 class。
+
+目的：
+1. 鎖住背景頁面。
+2. 防止 iPad / 手機背景跟著滑動。
+*/
+
+
+html.scratchpad-page-locked,
+body.scratchpad-page-locked {
+
+  overflow:
+    hidden !important;
+
+  overscroll-behavior:
+    none !important;
+
+  touch-action:
+    none;
 }
 
 
@@ -77,678 +158,41 @@ Math Game Park 共用計算紙樣式
 ==================================================
 */
 
+
 .scratchpad-open-button {
-  display: inline-flex;
 
-  align-items: center;
+  display:
+    inline-flex;
 
-  justify-content: center;
+  align-items:
+    center;
 
-  gap: 8px;
+  justify-content:
+    center;
 
-  min-height: 46px;
+  gap:
+    8px;
 
-  padding: 10px 18px;
+  min-height:
+    46px;
+
+  padding:
+    10px 18px;
 
   border:
     2px solid
-    var(--scratchpad-border-color);
+    var(
+      --scratchpad-border-color
+    );
 
-  border-radius: 999px;
+  border-radius:
+    999px;
 
   background:
     linear-gradient(
       180deg,
       #fff7d6 0%,
       #fde68a 100%
-    );
-
-  color: #78350f;
-
-  font: inherit;
-
-  font-size: 16px;
-
-  font-weight: 700;
-
-  line-height: 1;
-
-  cursor: pointer;
-
-  touch-action: manipulation;
-
-  user-select: none;
-
-  -webkit-user-select: none;
-
-  -webkit-touch-callout: none;
-
-  -webkit-tap-highlight-color:
-    transparent;
-
-  box-shadow:
-    0 5px 0 #b45309,
-    0 8px 16px
-    rgba(120, 53, 15, 0.18);
-
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
-    background-color 0.15s ease;
-}
-
-
-.scratchpad-open-button:hover {
-  transform:
-    translateY(-2px);
-
-  background:
-    linear-gradient(
-      180deg,
-      #fff9e5 0%,
-      #fcd34d 100%
-    );
-}
-
-
-.scratchpad-open-button:active {
-  transform:
-    translateY(3px);
-}
-
-
-.scratchpad-open-button:focus-visible {
-  outline: none;
-
-  box-shadow:
-    var(--scratchpad-focus-shadow),
-    0 5px 0 #b45309;
-}
-
-
-.scratchpad-open-button__icon {
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  font-size: 21px;
-
-  line-height: 1;
-}
-
-
-/*
-==================================================
-浮動計算紙面板
-==================================================
-*/
-
-.scratchpad-panel {
-  position: fixed;
-
-  left: 12px;
-
-  top: 12px;
-
-  right: auto;
-
-  bottom: auto;
-
-  width:
-    min(
-      var(--scratchpad-panel-width),
-      calc(100vw - 24px)
-    );
-
-  height:
-    min(
-      var(--scratchpad-panel-height),
-      calc(100vh - 24px)
-    );
-
-  min-width: 240px;
-
-  min-height: 300px;
-
-  max-width:
-    calc(
-      100vw - 16px
-    );
-
-  max-height:
-    calc(
-      100vh - 16px
-    );
-
-  display: flex;
-
-  flex-direction: column;
-
-  overflow: hidden;
-
-  border:
-    3px solid
-    var(--scratchpad-border-color);
-
-  border-radius:
-    var(--scratchpad-panel-radius);
-
-  background:
-    var(
-      --scratchpad-panel-background
-    );
-
-  color:
-    var(
-      --scratchpad-text-color
-    );
-
-  box-shadow:
-    var(
-      --scratchpad-panel-shadow
-    );
-
-  z-index: 9999;
-
-  opacity: 0;
-
-  transform:
-    translateY(10px)
-    scale(0.98);
-
-  pointer-events: none;
-
-  transition:
-    opacity 0.18s ease,
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
-
-  overscroll-behavior: contain;
-
-  -webkit-touch-callout: none;
-}
-
-
-/*
-隱藏狀態
-*/
-
-.scratchpad-panel[hidden] {
-  display: none !important;
-}
-
-
-/*
-開啟狀態
-*/
-
-.scratchpad-panel--open {
-  opacity: 1;
-
-  transform: none;
-
-  pointer-events: auto;
-}
-
-
-/*
-拖曳與縮放中
-不要使用 transition，
-避免手指操作產生延遲感。
-*/
-
-.scratchpad-panel--dragging,
-.scratchpad-panel--resizing {
-  transition:
-    none !important;
-
-  box-shadow:
-    0 24px 60px
-    rgba(
-      15,
-      23,
-      42,
-      0.36
-    );
-
-  user-select: none;
-
-  -webkit-user-select: none;
-
-  -webkit-touch-callout: none;
-}
-
-
-/*
-==================================================
-深黃色標題列
-可以拖曳
-==================================================
-*/
-
-.scratchpad-header {
-  display: flex;
-
-  align-items: center;
-
-  justify-content:
-    space-between;
-
-  gap: 12px;
-
-  flex: 0 0 auto;
-
-  min-height: 58px;
-
-  padding:
-    10px
-    12px
-    10px
-    18px;
-
-  border-bottom:
-    2px solid
-    var(
-      --scratchpad-border-color
-    );
-
-  background:
-    linear-gradient(
-      135deg,
-      #fbbf24 0%,
-      var(
-        --scratchpad-header-background
-      ) 100%
-    );
-
-  color: #451a03;
-
-  cursor: grab;
-
-  /*
-  非常重要：
-  手機／平板拖曳時，
-  禁止瀏覽器把動作當成頁面捲動。
-  */
-
-  touch-action: none;
-
-  overscroll-behavior: contain;
-
-  user-select: none;
-
-  -webkit-user-select: none;
-
-  -webkit-touch-callout: none;
-
-  -webkit-tap-highlight-color:
-    transparent;
-}
-
-
-.scratchpad-panel--dragging
-.scratchpad-header {
-  cursor: grabbing;
-}
-
-
-/*
-==================================================
-標題文字
-==================================================
-*/
-
-.scratchpad-header__title-area {
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  min-width: 0;
-
-  pointer-events: none;
-}
-
-
-.scratchpad-header__icon {
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  width: 34px;
-
-  height: 34px;
-
-  border:
-    2px solid
-    rgba(
-      120,
-      53,
-      15,
-      0.25
-    );
-
-  border-radius: 10px;
-
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      0.58
-    );
-
-  font-size: 21px;
-}
-
-
-.scratchpad-header__title {
-  margin: 0;
-
-  overflow: hidden;
-
-  font-size: 19px;
-
-  font-weight: 800;
-
-  line-height: 1.2;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
-}
-
-
-.scratchpad-header__subtitle {
-  margin:
-    2px 0 0;
-
-  overflow:
-    hidden;
-
-  color:
-    rgba(
-      69,
-      26,
-      3,
-      0.76
-    );
-
-  font-size:
-    12px;
-
-  font-weight:
-    600;
-
-  line-height:
-    1.2;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
-}
-
-
-/*
-==================================================
-關閉按鈕
-==================================================
-*/
-
-.scratchpad-close-button {
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  width: 38px;
-
-  height: 38px;
-
-  padding: 0;
-
-  border:
-    2px solid
-    rgba(
-      120,
-      53,
-      15,
-      0.35
-    );
-
-  border-radius: 50%;
-
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      0.68
-    );
-
-  color: #78350f;
-
-  font: inherit;
-
-  font-size: 22px;
-
-  font-weight: 800;
-
-  line-height: 1;
-
-  cursor: pointer;
-
-  /*
-  關閉按鈕只負責點擊，
-  不作為拖曳區。
-  */
-
-  touch-action:
-    manipulation;
-
-  user-select:
-    none;
-
-  -webkit-user-select:
-    none;
-
-  -webkit-touch-callout:
-    none;
-
-  -webkit-tap-highlight-color:
-    transparent;
-}
-
-
-.scratchpad-close-button:hover {
-  border-color:
-    #991b1b;
-
-  background:
-    #fee2e2;
-
-  color:
-    #991b1b;
-}
-
-
-/*
-==================================================
-內容主區域
-==================================================
-*/
-
-.scratchpad-content {
-  display: flex;
-
-  flex: 1;
-
-  flex-direction: column;
-
-  min-height: 0;
-
-  background:
-    var(
-      --scratchpad-panel-background
-    );
-}
-
-
-/*
-==================================================
-淺黃色工具列
-空白背景可以拖曳
-==================================================
-*/
-
-.scratchpad-toolbar {
-  display: flex;
-
-  align-items: center;
-
-  gap:
-    8px 10px;
-
-  flex-wrap: wrap;
-
-  flex: 0 0 auto;
-
-  padding:
-    10px 12px;
-
-  border-bottom:
-    1px solid
-    #f3d38b;
-
-  background:
-    #fff5cf;
-
-  cursor:
-    grab;
-
-  /*
-  手機、平板拖曳核心設定。
-  */
-
-  touch-action:
-    none;
-
-  overscroll-behavior:
-    contain;
-
-  user-select:
-    none;
-
-  -webkit-user-select:
-    none;
-
-  -webkit-touch-callout:
-    none;
-
-  -webkit-tap-highlight-color:
-    transparent;
-}
-
-
-.scratchpad-panel--dragging
-.scratchpad-toolbar {
-  cursor:
-    grabbing;
-}
-
-
-/*
-==================================================
-工具群組
-
-群組本身可以算淺黃色背景的一部分，
-真正的 button 會被 JS 排除。
-==================================================
-*/
-
-.scratchpad-tool-group {
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  gap:
-    6px;
-
-  min-height:
-    38px;
-}
-
-
-.scratchpad-tool-group__label {
-  color:
-    #92400e;
-
-  font-size:
-    12px;
-
-  font-weight:
-    800;
-
-  pointer-events:
-    none;
-}
-
-
-/*
-==================================================
-功能按鈕
-==================================================
-*/
-
-.scratchpad-tool-button,
-.scratchpad-color-button,
-.scratchpad-size-button {
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  gap:
-    5px;
-
-  min-height:
-    36px;
-
-  padding:
-    7px 10px;
-
-  border:
-    2px solid
-    #e7c56a;
-
-  border-radius:
-    var(
-      --scratchpad-button-radius
-    );
-
-  background:
-    var(
-      --scratchpad-button-background
     );
 
   color:
@@ -758,7 +202,7 @@ Math Game Park 共用計算紙樣式
     inherit;
 
   font-size:
-    13px;
+    16px;
 
   font-weight:
     800;
@@ -769,10 +213,6 @@ Math Game Park 共用計算紙樣式
   cursor:
     pointer;
 
-  /*
-  功能鍵維持一般點按。
-  */
-
   touch-action:
     manipulation;
 
@@ -785,17 +225,819 @@ Math Game Park 共用計算紙樣式
   -webkit-touch-callout:
     none;
 
-  -webkit-user-drag:
+  -webkit-tap-highlight-color:
+    transparent;
+
+  box-shadow:
+    0 5px 0
+    #b45309;
+
+  transition:
+    transform .12s ease,
+    box-shadow .12s ease,
+    filter .12s ease;
+}
+
+
+.scratchpad-open-button:hover {
+
+  filter:
+    brightness(
+      1.02
+    );
+}
+
+
+.scratchpad-open-button:active {
+
+  transform:
+    translateY(
+      4px
+    );
+
+  box-shadow:
+    0 1px 0
+    #b45309;
+}
+
+
+.scratchpad-open-button:focus-visible {
+
+  outline:
     none;
+
+  box-shadow:
+    var(
+      --scratchpad-focus-shadow
+    ),
+    0 5px 0
+    #b45309;
+}
+
+
+.scratchpad-open-button[hidden] {
+
+  display:
+    none !important;
+}
+
+
+/*
+==================================================
+全螢幕計算紙
+==================================================
+*/
+
+
+.scratchpad-panel {
+
+  /*
+  永遠覆蓋整個瀏覽器可視區。
+  */
+
+  position:
+    fixed !important;
+
+  inset:
+    0 !important;
+
+  left:
+    0 !important;
+
+  top:
+    0 !important;
+
+  right:
+    0 !important;
+
+  bottom:
+    0 !important;
+
+
+  width:
+    100vw !important;
+
+  width:
+    100dvw !important;
+
+
+  height:
+    100vh !important;
+
+  height:
+    100dvh !important;
+
+
+  min-width:
+    0 !important;
+
+  min-height:
+    0 !important;
+
+  max-width:
+    none !important;
+
+  max-height:
+    none !important;
+
+
+  /*
+  不再使用浮動小視窗，
+  所以沒有圓角與外框陰影。
+  */
+
+  margin:
+    0 !important;
+
+  padding:
+    0;
+
+  border:
+    none;
+
+  border-radius:
+    0 !important;
+
+  resize:
+    none !important;
+
+
+  /*
+  半透明書寫層。
+
+  rgba 透明背景讓後面的題目
+  可以淡淡看見。
+  */
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .38
+    );
+
+
+  /*
+  很輕微的模糊，
+  仍能辨認後方題目，
+  但不至於干擾筆跡。
+  */
+
+  -webkit-backdrop-filter:
+    blur(
+      1.5px
+    );
+
+  backdrop-filter:
+    blur(
+      1.5px
+    );
+
+
+  color:
+    var(
+      --scratchpad-text-color
+    );
+
+
+  z-index:
+    2147483000;
+
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+
+  overflow:
+    hidden;
+
+
+  /*
+  全螢幕計算紙本身接收操作，
+  因此後方網頁無法點擊。
+  */
+
+  pointer-events:
+    auto;
+
+
+  touch-action:
+    none;
+
+
+  user-select:
+    none;
+
+  -webkit-user-select:
+    none;
+
+  -webkit-touch-callout:
+    none;
+}
+
+
+.scratchpad-panel[hidden] {
+
+  display:
+    none !important;
+}
+
+
+/*
+開啟動畫。
+*/
+
+
+@keyframes scratchpadFullscreenFade {
+
+  from {
+
+    opacity:
+      0;
+  }
+
+  to {
+
+    opacity:
+      1;
+  }
+
+}
+
+
+.scratchpad-panel--open {
+
+  animation:
+    scratchpadFullscreenFade
+    .16s
+    ease;
+}
+
+
+/*
+==================================================
+標題列
+==================================================
+*/
+
+
+.scratchpad-header {
+
+  position:
+    relative;
+
+  z-index:
+    30;
+
+
+  flex:
+    0 0 auto;
+
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap:
+    14px;
+
+
+  min-height:
+    62px;
+
+
+  padding:
+
+    max(
+      10px,
+      env(
+        safe-area-inset-top
+      )
+    )
+
+    max(
+      16px,
+      env(
+        safe-area-inset-right
+      )
+    )
+
+    10px
+
+    max(
+      16px,
+      env(
+        safe-area-inset-left
+      )
+    );
+
+
+  border-bottom:
+    1px solid
+    rgba(
+      146,
+      64,
+      14,
+      .28
+    );
+
+
+  background:
+    var(
+      --scratchpad-header-background
+    );
+
+
+  color:
+    #78350f;
+
+
+  /*
+  滿版後標題列不再用來拖曳。
+  */
+
+  cursor:
+    default;
+
+
+  touch-action:
+    manipulation;
+}
+
+
+.scratchpad-header__title-area {
+
+  min-width:
+    0;
+
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    11px;
+}
+
+
+.scratchpad-header__icon {
+
+  flex:
+    0 0 auto;
+
+  font-size:
+    25px;
+}
+
+
+.scratchpad-header__title {
+
+  margin:
+    0;
+
+
+  color:
+    #78350f;
+
+
+  font-size:
+    19px;
+
+  font-weight:
+    900;
+
+  line-height:
+    1.3;
+}
+
+
+.scratchpad-header__subtitle {
+
+  margin:
+    2px 0 0;
+
+
+  color:
+    rgba(
+      120,
+      53,
+      15,
+      .78
+    );
+
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.4;
+}
+
+
+/*
+==================================================
+關閉按鈕
+==================================================
+*/
+
+
+.scratchpad-close-button {
+
+  width:
+    44px;
+
+  height:
+    44px;
+
+
+  flex:
+    0 0 44px;
+
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+
+  padding:
+    0;
+
+
+  border:
+    2px solid
+    rgba(
+      120,
+      53,
+      15,
+      .35
+    );
+
+  border-radius:
+    50%;
+
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .88
+    );
+
+
+  color:
+    #7c2d12;
+
+
+  font:
+    inherit;
+
+  font-size:
+    28px;
+
+  font-weight:
+    900;
+
+  line-height:
+    1;
+
+
+  cursor:
+    pointer;
+
+
+  touch-action:
+    manipulation;
+
 
   -webkit-tap-highlight-color:
     transparent;
 }
 
 
+.scratchpad-close-button:hover {
+
+  background:
+    #ffffff;
+}
+
+
+.scratchpad-close-button:focus-visible {
+
+  outline:
+    none;
+
+  box-shadow:
+    var(
+      --scratchpad-focus-shadow
+    );
+}
+
+
+/*
+==================================================
+主要內容
+==================================================
+*/
+
+
+.scratchpad-content {
+
+  min-height:
+    0;
+
+
+  flex:
+    1 1 auto;
+
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+
+  overflow:
+    hidden;
+}
+
+
+/*
+==================================================
+工具列
+==================================================
+*/
+
+
+.scratchpad-toolbar {
+
+  position:
+    relative;
+
+  z-index:
+    20;
+
+
+  flex:
+    0 0 auto;
+
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex-wrap:
+    wrap;
+
+
+  gap:
+    7px 10px;
+
+
+  padding:
+    9px 12px;
+
+
+  border-bottom:
+    1px solid
+    var(
+      --scratchpad-divider-color
+    );
+
+
+  background:
+    var(
+      --scratchpad-toolbar-background
+    );
+
+
+  /*
+  平板橫向時工具很多，
+  超出時可以捲動，
+  不把畫布擠掉。
+  */
+
+  max-height:
+    130px;
+
+  overflow-x:
+    hidden;
+
+  overflow-y:
+    auto;
+
+
+  overscroll-behavior:
+    contain;
+
+
+  /*
+  滿版後不再拿工具列空白處拖曳。
+  */
+
+  cursor:
+    default;
+
+
+  touch-action:
+    pan-y;
+}
+
+
+/*
+==================================================
+工具群組
+==================================================
+*/
+
+
+.scratchpad-tool-group {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    5px;
+
+
+  min-height:
+    38px;
+
+
+  padding:
+    3px 5px;
+
+
+  border-radius:
+    10px;
+
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .40
+    );
+}
+
+
+.scratchpad-tool-group__label {
+
+  margin-right:
+    2px;
+
+
+  color:
+    var(
+      --scratchpad-muted-color
+    );
+
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+
+  white-space:
+    nowrap;
+}
+
+
+/*
+==================================================
+一般工具按鈕
+==================================================
+*/
+
+
+.scratchpad-tool-button,
+.scratchpad-color-button,
+.scratchpad-size-button {
+
+  min-height:
+    36px;
+
+
+  border:
+    1px solid
+    #d1d5db;
+
+  border-radius:
+    var(
+      --scratchpad-button-radius
+    );
+
+
+  background:
+    var(
+      --scratchpad-button-background
+    );
+
+
+  color:
+    #374151;
+
+
+  font:
+    inherit;
+
+  font-size:
+    13px;
+
+  font-weight:
+    800;
+
+
+  cursor:
+    pointer;
+
+
+  touch-action:
+    manipulation;
+
+
+  user-select:
+    none;
+
+  -webkit-user-select:
+    none;
+
+  -webkit-touch-callout:
+    none;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+
+  transition:
+    border-color .12s ease,
+    background .12s ease,
+    transform .08s ease;
+}
+
+
+.scratchpad-tool-button {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+
+  gap:
+    5px;
+
+
+  padding:
+    7px 10px;
+}
+
+
 .scratchpad-tool-button:hover,
 .scratchpad-color-button:hover,
 .scratchpad-size-button:hover {
+
+  border-color:
+    #f59e0b;
+
   background:
     var(
       --scratchpad-button-hover
@@ -803,33 +1045,55 @@ Math Game Park 共用計算紙樣式
 }
 
 
-.scratchpad-tool-button--active,
-.scratchpad-color-button.scratchpad-tool-button--active,
-.scratchpad-size-button.scratchpad-tool-button--active {
+.scratchpad-tool-button:active,
+.scratchpad-color-button:active,
+.scratchpad-size-button:active {
+
+  transform:
+    scale(
+      .96
+    );
+}
+
+
+.scratchpad-tool-button:focus-visible,
+.scratchpad-color-button:focus-visible,
+.scratchpad-size-button:focus-visible {
+
+  outline:
+    none;
+
+  box-shadow:
+    var(
+      --scratchpad-focus-shadow
+    );
+}
+
+
+.scratchpad-tool-button--active {
+
   border-color:
     var(
       --scratchpad-active-border
-    );
+    ) !important;
 
   background:
     var(
       --scratchpad-active-background
-    );
+    ) !important;
 
-  box-shadow:
-    0 0 0 2px
-    rgba(
-      180,
-      83,
-      9,
-      0.12
-    );
+  color:
+    #78350f !important;
 }
 
 
 .scratchpad-tool-button:disabled,
 .scratchpad-color-button:disabled,
 .scratchpad-size-button:disabled {
+
+  border-color:
+    #e5e7eb;
+
   background:
     var(
       --scratchpad-disabled-background
@@ -840,47 +1104,51 @@ Math Game Park 共用計算紙樣式
       --scratchpad-disabled-text
     );
 
+
   cursor:
     not-allowed;
 
+
   opacity:
-    0.6;
+    .70;
+}
+
+
+.scratchpad-tool-button__icon {
+
+  line-height:
+    1;
+
+  font-size:
+    16px;
+}
+
+
+.scratchpad-tool-button__text {
+
+  white-space:
+    nowrap;
 }
 
 
 .scratchpad-tool-button--compact {
-  padding-inline:
-    8px;
+
+  padding:
+    7px 9px;
 }
 
 
-.scratchpad-tool-button--danger:not(:disabled) {
+.scratchpad-tool-button--danger {
+
   color:
     #b91c1c;
 }
 
 
-.scratchpad-tool-button__icon {
-  display:
-    inline-flex;
+.scratchpad-tool-button--download {
 
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  font-size:
-    16px;
-
-  pointer-events:
-    none;
-}
-
-
-.scratchpad-tool-button__text {
-  pointer-events:
-    none;
+  color:
+    #1d4ed8;
 }
 
 
@@ -890,75 +1158,70 @@ Math Game Park 共用計算紙樣式
 ==================================================
 */
 
+
 .scratchpad-color-button {
+
   width:
     34px;
 
   min-width:
     34px;
 
+  height:
+    34px;
+
+
   padding:
     0;
-}
 
 
-.scratchpad-color-button::after {
-  content:
-    "";
+  border-width:
+    3px;
 
-  display:
-    block;
-
-  width:
-    18px;
-
-  height:
-    18px;
 
   border-radius:
     50%;
-
-  border:
-    2px solid
-    rgba(
-      255,
-      255,
-      255,
-      .9
-    );
-
-  box-shadow:
-    0 0 0 1px
-    rgba(
-      15,
-      23,
-      42,
-      .18
-    );
 }
 
 
-.scratchpad-color-button--black::after {
+.scratchpad-color-button--black {
+
   background:
     #111827;
 }
 
 
-.scratchpad-color-button--blue::after {
+.scratchpad-color-button--blue {
+
   background:
     #2563eb;
 }
 
 
-.scratchpad-color-button--red::after {
+.scratchpad-color-button--red {
+
   background:
     #dc2626;
 }
 
 
-.scratchpad-color-button--green::after {
+.scratchpad-color-button--green {
+
   background:
     #16a34a;
+}
+
+
+.scratchpad-color-button.scratchpad-tool-button--active {
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      245,
+      158,
+      11,
+      .40
+    );
 }
 
 
@@ -968,12 +1231,28 @@ Math Game Park 共用計算紙樣式
 ==================================================
 */
 
+
 .scratchpad-size-button {
+
   width:
-    34px;
+    36px;
 
   min-width:
-    34px;
+    36px;
+
+  height:
+    36px;
+
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
 
   padding:
     0;
@@ -981,21 +1260,22 @@ Math Game Park 共用計算紙樣式
 
 
 .scratchpad-size-dot {
+
   display:
     block;
 
+
   border-radius:
-    50%;
+    999px;
+
 
   background:
-    #78350f;
-
-  pointer-events:
-    none;
+    #111827;
 }
 
 
 .scratchpad-size-dot--small {
+
   width:
     5px;
 
@@ -1005,6 +1285,7 @@ Math Game Park 共用計算紙樣式
 
 
 .scratchpad-size-dot--medium {
+
   width:
     9px;
 
@@ -1014,6 +1295,7 @@ Math Game Park 共用計算紙樣式
 
 
 .scratchpad-size-dot--large {
+
   width:
     14px;
 
@@ -1024,50 +1306,67 @@ Math Game Park 共用計算紙樣式
 
 /*
 ==================================================
-Canvas 容器
+Canvas 區
 ==================================================
 */
 
+
 .scratchpad-canvas-container {
+
   position:
     relative;
 
-  display:
-    flex;
-
-  flex:
-    1;
 
   min-height:
     0;
 
-  padding:
-    12px;
+
+  flex:
+    1 1 auto;
+
 
   overflow:
     hidden;
 
-  background:
-    #fffaf0;
+
+  padding:
+    10px
+
+    max(
+      10px,
+      env(
+        safe-area-inset-right
+      )
+    )
+
+    max(
+      10px,
+      env(
+        safe-area-inset-bottom
+      )
+    )
+
+    max(
+      10px,
+      env(
+        safe-area-inset-left
+      )
+    );
+
 
   /*
-  Canvas 完全保留給書寫。
+  這一層仍然透明，
+  因此可以從方格紙後方
+  淡淡看到原網頁。
   */
 
-  touch-action:
-    none;
-
-  overscroll-behavior:
-    contain;
-
-  user-select:
-    none;
-
-  -webkit-user-select:
-    none;
-
-  -webkit-touch-callout:
-    none;
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
 }
 
 
@@ -1077,9 +1376,12 @@ Canvas
 ==================================================
 */
 
+
 .scratchpad-canvas {
+
   display:
     block;
+
 
   width:
     100%;
@@ -1087,41 +1389,85 @@ Canvas
   height:
     100%;
 
+
   min-height:
-    0;
+    100%;
+
 
   border:
-    2px solid
-    #e5e7eb;
-
-  border-radius:
-    14px;
-
-  background-color:
-    #ffffff;
-
-  background-image:
-    linear-gradient(
-      #dbeafe 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      #dbeafe 1px,
-      transparent 1px
+    1px solid
+    rgba(
+      148,
+      163,
+      184,
+      .55
     );
 
-  background-size:
-    28px 28px;
+  border-radius:
+    12px;
 
-  cursor:
-    crosshair;
+
+  /*
+  關鍵：
+  不使用完全白色。
+
+  0.66 的透明度，
+  可以看到後面的原題，
+  但計算筆跡仍很清楚。
+  */
+
+  background-color:
+    rgba(
+      255,
+      255,
+      255,
+      .66
+    );
+
+
+  /*
+  半透明方格。
+  */
+
+  background-image:
+
+    linear-gradient(
+      rgba(
+        100,
+        116,
+        139,
+        .10
+      )
+      1px,
+      transparent
+      1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(
+        100,
+        116,
+        139,
+        .10
+      )
+      1px,
+      transparent
+      1px
+    );
+
+
+  background-size:
+    24px 24px;
+
 
   touch-action:
     none;
 
-  overscroll-behavior:
-    contain;
+
+  cursor:
+    crosshair;
+
 
   user-select:
     none;
@@ -1131,21 +1477,47 @@ Canvas
 
   -webkit-touch-callout:
     none;
+}
 
-  -webkit-tap-highlight-color:
-    transparent;
+
+.scratchpad-canvas:hover {
+
+  border-color:
+    rgba(
+      217,
+      119,
+      6,
+      .85
+    );
+}
+
+
+.scratchpad-canvas--drawing {
+
+  cursor:
+    crosshair;
+}
+
+
+.scratchpad-canvas--eraser {
+
+  cursor:
+    cell;
 }
 
 
 /*
 ==================================================
-Canvas 提示文字
+Canvas 提示
 ==================================================
 */
 
+
 .scratchpad-canvas-hint {
+
   position:
     absolute;
+
 
   left:
     50%;
@@ -1153,8 +1525,10 @@ Canvas 提示文字
   top:
     50%;
 
+
   z-index:
     2;
+
 
   transform:
     translate(
@@ -1162,17 +1536,38 @@ Canvas 提示文字
       -50%
     );
 
+
+  padding:
+    8px 12px;
+
+
+  border-radius:
+    999px;
+
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .76
+    );
+
+
   color:
     #94a3b8;
+
 
   font-size:
     15px;
 
   font-weight:
-    700;
+    800;
+
 
   pointer-events:
     none;
+
 
   white-space:
     nowrap;
@@ -1180,6 +1575,7 @@ Canvas 提示文字
 
 
 .scratchpad-canvas-hint[hidden] {
+
   display:
     none !important;
 }
@@ -1187,771 +1583,610 @@ Canvas 提示文字
 
 /*
 ==================================================
-八方向縮放
-電腦／平板／手機全部啟用
+舊版拖曳與縮放類別
+==================================================
+
+為了相容舊 JS 與舊遊戲，
+類別名稱仍保留。
+
+但滿版模式下不再顯示
+拖曳或縮放控制點。
 ==================================================
 */
+
 
 .scratchpad-resize-handle {
-  position:
-    absolute;
 
-  z-index:
-    300;
-
-  display:
-    block;
-
-  background:
-    transparent;
-
-  /*
-  手機、平板縮放時，
-  不允許瀏覽器進行頁面捲動。
-  */
-
-  touch-action:
-    none;
-
-  overscroll-behavior:
-    contain;
-
-  user-select:
-    none;
-
-  -webkit-user-select:
-    none;
-
-  -webkit-touch-callout:
-    none;
-
-  -webkit-tap-highlight-color:
-    transparent;
-}
-
-
-/*
-理論上新版 JS 不會再將它們隱藏，
-這條保留作為標準 hidden 行為。
-*/
-
-.scratchpad-resize-handle[hidden] {
   display:
     none !important;
 }
 
 
-/*
-==================================================
-上邊縮放
-==================================================
-*/
-
-.scratchpad-resize-handle[
-  data-resize-direction="top"
-] {
-  top:
-    -8px;
-
-  left:
-    24px;
-
-  right:
-    24px;
-
-  height:
-    18px;
+.scratchpad-panel--dragging,
+.scratchpad-panel--resizing {
 
   cursor:
-    ns-resize;
+    default !important;
 }
 
 
 /*
-==================================================
-下邊縮放
-==================================================
+不管舊 JS 是否加上 fullscreen，
+現在都是同一種全螢幕模式。
 */
 
-.scratchpad-resize-handle[
-  data-resize-direction="bottom"
-] {
-  bottom:
-    -8px;
 
-  left:
-    24px;
+.scratchpad-panel--fullscreen {
 
-  right:
-    24px;
+  position:
+    fixed !important;
 
-  height:
-    18px;
-
-  cursor:
-    ns-resize;
-}
-
-
-/*
-==================================================
-左邊縮放
-==================================================
-*/
-
-.scratchpad-resize-handle[
-  data-resize-direction="left"
-] {
-  left:
-    -8px;
-
-  top:
-    24px;
-
-  bottom:
-    24px;
+  inset:
+    0 !important;
 
   width:
-    18px;
-
-  cursor:
-    ew-resize;
-}
-
-
-/*
-==================================================
-右邊縮放
-==================================================
-*/
-
-.scratchpad-resize-handle[
-  data-resize-direction="right"
-] {
-  right:
-    -8px;
-
-  top:
-    24px;
-
-  bottom:
-    24px;
+    100vw !important;
 
   width:
-    18px;
-
-  cursor:
-    ew-resize;
-}
-
-
-/*
-==================================================
-左上角縮放
-==================================================
-*/
-
-.scratchpad-resize-handle[
-  data-resize-direction="top-left"
-] {
-  top:
-    -10px;
-
-  left:
-    -10px;
-
-  width:
-    30px;
+    100dvw !important;
 
   height:
-    30px;
-
-  cursor:
-    nwse-resize;
-}
-
-
-/*
-==================================================
-右上角縮放
-==================================================
-*/
-
-.scratchpad-resize-handle[
-  data-resize-direction="top-right"
-] {
-  top:
-    -10px;
-
-  right:
-    -10px;
-
-  width:
-    30px;
+    100vh !important;
 
   height:
-    30px;
-
-  cursor:
-    nesw-resize;
-}
-
-
-/*
-==================================================
-左下角縮放
-==================================================
-*/
-
-.scratchpad-resize-handle[
-  data-resize-direction="bottom-left"
-] {
-  bottom:
-    -10px;
-
-  left:
-    -10px;
-
-  width:
-    30px;
-
-  height:
-    30px;
-
-  cursor:
-    nesw-resize;
-}
-
-
-/*
-==================================================
-右下角縮放
-==================================================
-*/
-
-.scratchpad-resize-handle[
-  data-resize-direction="bottom-right"
-] {
-  bottom:
-    -10px;
-
-  right:
-    -10px;
-
-  width:
-    30px;
-
-  height:
-    30px;
-
-  cursor:
-    nwse-resize;
-}
-
-
-/*
-==================================================
-觸控裝置專用
-
-手指比滑鼠游標大，
-所以把八方向縮放的透明感應區放大。
-
-不影響畫面外觀。
-==================================================
-*/
-
-@media (pointer: coarse) {
-
-  /*
-  上
-  */
-
-  .scratchpad-resize-handle[
-    data-resize-direction="top"
-  ] {
-    top:
-      -11px;
-
-    left:
-      36px;
-
-    right:
-      36px;
-
-    height:
-      24px;
-  }
-
-
-  /*
-  下
-  */
-
-  .scratchpad-resize-handle[
-    data-resize-direction="bottom"
-  ] {
-    bottom:
-      -11px;
-
-    left:
-      36px;
-
-    right:
-      36px;
-
-    height:
-      24px;
-  }
-
-
-  /*
-  左
-  */
-
-  .scratchpad-resize-handle[
-    data-resize-direction="left"
-  ] {
-    left:
-      -11px;
-
-    top:
-      36px;
-
-    bottom:
-      36px;
-
-    width:
-      24px;
-  }
-
-
-  /*
-  右
-  */
-
-  .scratchpad-resize-handle[
-    data-resize-direction="right"
-  ] {
-    right:
-      -11px;
-
-    top:
-      36px;
-
-    bottom:
-      36px;
-
-    width:
-      24px;
-  }
-
-
-  /*
-  四個角
-  */
-
-  .scratchpad-resize-handle[
-    data-resize-direction="top-left"
-  ],
-  .scratchpad-resize-handle[
-    data-resize-direction="top-right"
-  ],
-  .scratchpad-resize-handle[
-    data-resize-direction="bottom-left"
-  ],
-  .scratchpad-resize-handle[
-    data-resize-direction="bottom-right"
-  ] {
-    width:
-      40px;
-
-    height:
-      40px;
-  }
-
-
-  /*
-  左上
-  */
-
-  .scratchpad-resize-handle[
-    data-resize-direction="top-left"
-  ] {
-    top:
-      -13px;
-
-    left:
-      -13px;
-  }
-
-
-  /*
-  右上
-  */
-
-  .scratchpad-resize-handle[
-    data-resize-direction="top-right"
-  ] {
-    top:
-      -13px;
-
-    right:
-      -13px;
-  }
-
-
-  /*
-  左下
-  */
-
-  .scratchpad-resize-handle[
-    data-resize-direction="bottom-left"
-  ] {
-    bottom:
-      -13px;
-
-    left:
-      -13px;
-  }
-
-
-  /*
-  右下
-  */
-
-  .scratchpad-resize-handle[
-    data-resize-direction="bottom-right"
-  ] {
-    bottom:
-      -13px;
-
-    right:
-      -13px;
-  }
+    100dvh !important;
 }
 
 
 /*
 ==================================================
 平板
-仍為浮動視窗＋八方向縮放
 ==================================================
 */
 
+
 @media (
-  min-width: 561px
-) and (
-  max-width: 980px
+  max-width:
+    1024px
 ) {
 
-  .scratchpad-panel {
-    width:
-      min(
-        72vw,
-        460px
-      );
-
-    height:
-      min(
-        72vh,
-        580px
-      );
-
-    /*
-    平板也允許縮小，
-    不再限制成過大的最低尺寸。
-    */
-
-    min-width:
-      300px;
+  .scratchpad-header {
 
     min-height:
-      340px;
+      58px;
 
-    max-width:
-      calc(
-        100vw - 16px
+
+    padding-top:
+      max(
+        8px,
+        env(
+          safe-area-inset-top
+        )
       );
 
-    max-height:
-      calc(
-        100vh - 16px
-      );
+
+    padding-bottom:
+      8px;
+  }
+
+
+  .scratchpad-header__title {
+
+    font-size:
+      17px;
+  }
+
+
+  .scratchpad-header__subtitle {
+
+    font-size:
+      11px;
   }
 
 
   .scratchpad-toolbar {
-    gap:
-      7px;
+
+    justify-content:
+      flex-start;
+
 
     padding:
-      8px 9px;
+      7px 8px;
+
+
+    gap:
+      5px 7px;
+
+
+    max-height:
+      118px;
   }
 
 
-  .scratchpad-tool-button,
-  .scratchpad-color-button,
-  .scratchpad-size-button {
+  .scratchpad-tool-group {
+
+    gap:
+      4px;
+
+
+    padding:
+      2px 4px;
+  }
+
+
+  .scratchpad-tool-button {
+
     min-height:
       34px;
+
+
+    padding:
+      6px 8px;
+
+
+    font-size:
+      12px;
   }
+
+
+  .scratchpad-color-button {
+
+    width:
+      32px;
+
+    min-width:
+      32px;
+
+    height:
+      32px;
+  }
+
+
+  .scratchpad-size-button {
+
+    width:
+      34px;
+
+    min-width:
+      34px;
+
+    height:
+      34px;
+  }
+
+
+  .scratchpad-canvas-container {
+
+    padding:
+      8px;
+  }
+
 }
 
 
 /*
 ==================================================
 手機
-仍然使用浮動視窗
-並保留八方向縮放
 ==================================================
 */
 
+
 @media (
-  max-width: 560px
+  max-width:
+    640px
 ) {
 
-  .scratchpad-panel {
-    /*
-    這只是「第一次開啟」的初始尺寸。
-
-    使用者仍然可以利用八個方向
-    自由縮放。
-    */
-
-    width:
-      86vw;
-
-    height:
-      70vh;
-
-    min-width:
-      240px;
+  .scratchpad-header {
 
     min-height:
-      300px;
+      54px;
 
-    max-width:
-      calc(
-        100vw - 16px
+
+    gap:
+      8px;
+
+
+    padding:
+
+      max(
+        7px,
+        env(
+          safe-area-inset-top
+        )
+      )
+
+      max(
+        8px,
+        env(
+          safe-area-inset-right
+        )
+      )
+
+      7px
+
+      max(
+        10px,
+        env(
+          safe-area-inset-left
+        )
       );
+  }
 
-    max-height:
-      calc(
-        100vh - 16px
-      );
 
-    border-radius:
+  .scratchpad-header__icon {
+
+    font-size:
+      21px;
+  }
+
+
+  .scratchpad-header__title {
+
+    font-size:
       16px;
   }
 
 
   /*
-  標題列
+  手機高度較少，
+  隱藏副標題，
+  多留一點空間給畫布。
   */
-
-  .scratchpad-header {
-    min-height:
-      52px;
-
-    padding:
-      8px
-      9px
-      8px
-      12px;
-  }
-
-
-  .scratchpad-header__icon {
-    width:
-      30px;
-
-    height:
-      30px;
-
-    font-size:
-      18px;
-  }
-
-
-  .scratchpad-header__title {
-    font-size:
-      16px;
-  }
 
 
   .scratchpad-header__subtitle {
+
     display:
       none;
   }
 
 
-  /*
-  關閉按鈕
-  */
-
   .scratchpad-close-button {
+
     width:
-      34px;
+      40px;
 
     height:
-      34px;
+      40px;
+
+
+    flex-basis:
+      40px;
+
 
     font-size:
-      20px;
+      25px;
   }
 
 
-  /*
-  工具列
-  */
-
   .scratchpad-toolbar {
+
+    justify-content:
+      flex-start;
+
+
     gap:
-      5px;
+      4px;
+
 
     padding:
-      7px;
+      6px;
+
 
     max-height:
-      132px;
-
-    /*
-    若工具列內容超出，
-    工具列本身可以上下捲動。
-
-    但空白處仍可由 JS 判斷拖曳。
-    */
-
-    overflow-y:
-      auto;
-
-    overscroll-behavior:
-      contain;
+      120px;
   }
 
 
   .scratchpad-tool-group {
-    gap:
-      4px;
 
     min-height:
       32px;
+
+
+    gap:
+      3px;
+
+
+    padding:
+      2px 3px;
   }
 
 
   .scratchpad-tool-group__label {
+
+    font-size:
+      10px;
+  }
+
+
+  .scratchpad-tool-button,
+  .scratchpad-color-button,
+  .scratchpad-size-button {
+
+    min-height:
+      31px;
+
+
     font-size:
       11px;
   }
 
 
-  /*
-  功能鍵
-  */
-
-  .scratchpad-tool-button,
-  .scratchpad-color-button,
-  .scratchpad-size-button {
-    min-height:
-      32px;
+  .scratchpad-tool-button {
 
     padding:
-      6px 7px;
-
-    font-size:
-      12px;
+      5px 6px;
   }
 
 
   /*
-  手機減少文字，
-  保留圖示，
-  增加計算紙可用空間。
+  手機保留所有功能，
+  但隱藏部分文字，
+  使用圖示節省空間。
   */
 
+
   .scratchpad-tool-button__text {
+
     display:
       none;
   }
 
 
-  .scratchpad-color-button,
+  .scratchpad-color-button {
+
+    width:
+      29px;
+
+    min-width:
+      29px;
+
+    height:
+      29px;
+  }
+
+
   .scratchpad-size-button {
+
     width:
       31px;
 
     min-width:
       31px;
+
+    height:
+      31px;
   }
 
 
-  /*
-  Canvas
-  */
-
   .scratchpad-canvas-container {
+
     padding:
+      6px
+
+      max(
+        6px,
+        env(
+          safe-area-inset-right
+        )
+      )
+
+      max(
+        6px,
+        env(
+          safe-area-inset-bottom
+        )
+      )
+
+      max(
+        6px,
+        env(
+          safe-area-inset-left
+        )
+      );
+  }
+
+
+  .scratchpad-canvas {
+
+    border-radius:
       8px;
+
+
+    background-size:
+      22px 22px;
   }
 
 
   .scratchpad-canvas-hint {
+
     font-size:
       13px;
+
+
+    padding:
+      6px 9px;
   }
+
 }
 
 
 /*
 ==================================================
-小尺寸手機
+超小手機
 ==================================================
 */
 
+
 @media (
-  max-width: 380px
+  max-width:
+    380px
 ) {
 
-  .scratchpad-panel {
-    width:
-      calc(
-        100vw - 16px
-      );
+  .scratchpad-tool-group__label {
 
-    height:
-      68vh;
-
-    min-width:
-      220px;
-
-    min-height:
-      280px;
+    display:
+      none;
   }
 
 
   .scratchpad-toolbar {
-    padding:
-      6px;
 
-    gap:
-      4px;
+    max-height:
+      112px;
+  }
+
+}
+
+
+/*
+==================================================
+橫向低高度裝置
+==================================================
+*/
+
+
+@media (
+  max-height:
+    560px
+) {
+
+  .scratchpad-header {
+
+    min-height:
+      46px;
+
+
+    padding-top:
+      5px;
+
+    padding-bottom:
+      5px;
+  }
+
+
+  .scratchpad-header__subtitle {
+
+    display:
+      none;
+  }
+
+
+  .scratchpad-toolbar {
+
+    max-height:
+      82px;
+
+
+    padding:
+      4px 6px;
+  }
+
+
+  .scratchpad-tool-group {
+
+    min-height:
+      29px;
   }
 
 
   .scratchpad-tool-button,
   .scratchpad-color-button,
   .scratchpad-size-button {
+
     min-height:
-      30px;
+      28px;
   }
 
 
-  .scratchpad-color-button,
+  .scratchpad-color-button {
+
+    width:
+      27px;
+
+    min-width:
+      27px;
+
+    height:
+      27px;
+  }
+
+
   .scratchpad-size-button {
+
     width:
       29px;
 
     min-width:
       29px;
+
+    height:
+      29px;
   }
+
+}
+
+
+/*
+==================================================
+深色模式
+
+計算紙仍維持亮色書寫，
+避免原網頁深色模式影響辨識。
+==================================================
+*/
+
+
+@media (
+  prefers-color-scheme:
+    dark
+) {
+
+  .scratchpad-panel {
+
+    color:
+      #1f2937;
+
+
+    background:
+      rgba(
+        15,
+        23,
+        42,
+        .24
+      );
+  }
+
+
+  .scratchpad-canvas {
+
+    background-color:
+      rgba(
+        255,
+        255,
+        255,
+        .70
+      );
+  }
+
+}
+
+
+/*
+==================================================
+列印
+==================================================
+*/
+
+
+@media print {
+
+  .scratchpad-open-button,
+  .scratchpad-panel {
+
+    display:
+      none !important;
+  }
+
 }
