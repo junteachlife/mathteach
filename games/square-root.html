@@ -2426,24 +2426,18 @@ function sqrtMath(
   content
 ) {
 
-  return `
+  return inlineMath(`
 
-    <span class="wide-radical">
+    <msqrt>
 
-      <span class="wide-radical-sign">
-        √
-      </span>
+      <mrow>
 
-      <span class="wide-radical-content">
+        ${content}
 
-        ${inlineMath(
-          content
-        )}
+      </mrow>
 
-      </span>
-
-    </span>
-  `;
+    </msqrt>
+  `);
 }
 
 
@@ -2631,20 +2625,9 @@ function naturalSqrtHTML(
   content
 ) {
 
-  return `
-
-    <span class="wide-radical">
-
-      <span class="wide-radical-sign">
-        √
-      </span>
-
-      <span class="wide-radical-content">
-        ${content}
-      </span>
-
-    </span>
-  `;
+  return sqrtDisplay(
+    content
+  );
 }
 
 
