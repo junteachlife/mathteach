@@ -631,16 +631,6 @@
       vertical-align: baseline;
     }
 
-    .negative-monomial {
-
-      display:
-        inline-flex;
-
-      align-items: center;
-
-      white-space: nowrap;
-    }
-
     /*
     ==================================================
     黑點乘號
@@ -1705,12 +1695,6 @@
       font-weight: 900;
     }
 
-    /*
-    ==================================================
-    乘法乘開
-    ==================================================
-    */
-
     .expansion-box {
 
       margin:
@@ -1746,34 +1730,9 @@
       line-height: 2;
     }
 
-    .mini-calculation {
-
-      margin:
-        8px 0;
-
-      padding:
-        8px 11px;
-
-      border-radius: 9px;
-
-      background:
-        #f8fafc;
-
-      color:
-        #0f172a;
-
-      font-family:
-        "Cambria Math",
-        "Times New Roman",
-        "Microsoft JhengHei",
-        serif;
-
-      font-weight: 900;
-    }
-
     /*
     ==================================================
-    ★ 緊湊多項式直式除法
+    直式除法
     ==================================================
     */
 
@@ -2022,20 +1981,11 @@
     }
 
     .ld-remainder-row {
-
-      width:
-        max-content;
+      width: max-content;
     }
 
     .ld-step-gap {
-
       height: 2px;
-    }
-
-    .ld-final-row {
-
-      width:
-        max-content;
     }
 
     /*
@@ -2159,12 +2109,6 @@
       text-align: center;
     }
 
-    /*
-    ==================================================
-    Mobile
-    ==================================================
-    */
-
     @media(
       max-width:
         760px
@@ -2219,7 +2163,6 @@
       }
 
       .division-answer-grid {
-
         grid-template-columns: 1fr;
       }
 
@@ -2257,13 +2200,11 @@
       }
 
       .ld-work {
-
         padding-left: 7px;
       }
 
       .ld-poly-grid,
       .ld-quotient-grid {
-
         font-size: 18px;
       }
 
@@ -2288,7 +2229,6 @@
       }
 
       .explanation {
-
         padding: 14px;
       }
 
@@ -2462,52 +2402,27 @@
 
         <div class="status-box">
           模式
-          <span
-            id="mode-name"
-            class="status-value"
-          >
-            —
-          </span>
+          <span id="mode-name" class="status-value">—</span>
         </div>
 
         <div class="status-box">
           進度
-          <span
-            id="question-number"
-            class="status-value"
-          >
-            1 / 10
-          </span>
+          <span id="question-number" class="status-value">1 / 10</span>
         </div>
 
         <div class="status-box">
           答對
-          <span
-            id="correct-count"
-            class="status-value"
-          >
-            0
-          </span>
+          <span id="correct-count" class="status-value">0</span>
         </div>
 
         <div class="status-box">
           最高連擊
-          <span
-            id="combo-count"
-            class="status-value"
-          >
-            0
-          </span>
+          <span id="combo-count" class="status-value">0</span>
         </div>
 
         <div class="status-box timer-box">
           測驗時間
-          <span
-            id="timer-display"
-            class="status-value"
-          >
-            00:00
-          </span>
+          <span id="timer-display" class="status-value">00:00</span>
         </div>
 
       </div>
@@ -2517,10 +2432,7 @@
       </div>
 
       <div class="progress-shell">
-        <div
-          id="progress-bar"
-          class="progress-bar"
-        ></div>
+        <div id="progress-bar" class="progress-bar"></div>
       </div>
 
       <div class="question-card">
@@ -2620,35 +2532,27 @@
         <div class="result-stat">
           答對
           <br>
-          <span id="final-correct">
-            0
-          </span>
+          <span id="final-correct">0</span>
           題
         </div>
 
         <div class="result-stat">
           答錯
           <br>
-          <span id="final-wrong">
-            0
-          </span>
+          <span id="final-wrong">0</span>
           題
         </div>
 
         <div class="result-stat">
           最高連擊
           <br>
-          <span id="final-combo">
-            0
-          </span>
+          <span id="final-combo">0</span>
         </div>
 
         <div class="result-stat">
           測驗時間
           <br>
-          <span id="final-time">
-            00:00
-          </span>
+          <span id="final-time">00:00</span>
         </div>
 
       </div>
@@ -2778,58 +2682,44 @@ const $ =
 let mode =
   "monomial";
 
-
 let questions =
   [];
-
 
 let index =
   0;
 
-
 let correct =
   0;
-
 
 let wrong =
   0;
 
-
 let combo =
   0;
-
 
 let maxCombo =
   0;
 
-
 let records =
   [];
-
 
 let answered =
   false;
 
-
 let answerInput =
   null;
-
 
 let divisionQuotientInput =
   null;
 
-
 let startTime =
   0;
-
 
 let elapsed =
   0;
 
-
 let timerId =
   null;
-
 
 let scoreSaved =
   false;
@@ -3280,16 +3170,10 @@ function fractionHTML(
 
 /*
 ==================================================
-★ 計算過程負數格式
+計算過程負數格式
 
-計算過程中的負數一定加括號：
-(-3)×5
-4÷(-2)
-(-3)+(-5)
-
-但等號右邊的結果不加括號：
-(-3)×5＝-15
-4÷(-2)＝-2
+計算過程中的負數一律加括號。
+等號右邊的最後計算結果不加括號。
 ==================================================
 */
 
@@ -3724,6 +3608,183 @@ function bracketPolynomial(
 ) {
 
   return `(${polynomialHTML(polynomial)})`;
+}
+
+
+/*
+==================================================
+補 0 顯示
+
+直式計算若缺項：
+x²＋5 會顯示成 x²＋0x＋5。
+==================================================
+*/
+
+function zeroTermHTML(
+  exponent
+) {
+
+  if (
+    exponent ===
+    0
+  ) {
+
+    return "0";
+  }
+
+
+  if (
+    exponent ===
+    1
+  ) {
+
+    return "0x";
+  }
+
+
+  return `0x<sup>${exponent}</sup>`;
+}
+
+
+function polynomialWithZerosHTML(
+  polynomial,
+  maxDegree =
+    null
+) {
+
+  const normalized =
+    normalizePolynomial(
+      polynomial
+    );
+
+
+  if (
+    !normalized.length
+  ) {
+
+    return "0";
+  }
+
+
+  const degree =
+
+    maxDegree ===
+    null
+
+      ? degreeOf(
+          normalized
+        )
+
+      : maxDegree;
+
+
+  let html =
+    "";
+
+
+  let first =
+    true;
+
+
+  for (
+    let exponent =
+      degree;
+
+    exponent >=
+    0;
+
+    exponent--
+  ) {
+
+    const term =
+      normalized.find(
+        item =>
+          item.exponent ===
+          exponent
+      );
+
+
+    if (
+      term
+    ) {
+
+      const coefficient =
+        F(
+          term.coefficient.numerator,
+          term.coefficient.denominator
+        );
+
+
+      const negative =
+        coefficient.numerator <
+        0;
+
+
+      const absolute =
+        F(
+          Math.abs(
+            coefficient.numerator
+          ),
+          coefficient.denominator
+        );
+
+
+      if (
+        first
+      ) {
+
+        html +=
+          monomialHTML(
+            coefficient,
+            exponent
+          );
+
+
+        first =
+          false;
+
+      } else {
+
+        html +=
+          negative
+            ? "－"
+            : "＋";
+
+
+        html +=
+          monomialHTML(
+            absolute,
+            exponent
+          );
+      }
+
+    } else {
+
+      if (
+        first
+      ) {
+
+        html +=
+          zeroTermHTML(
+            exponent
+          );
+
+
+        first =
+          false;
+
+      } else {
+
+        html +=
+          `＋${zeroTermHTML(
+            exponent
+          )}`;
+      }
+    }
+  }
+
+
+  return html;
 }
 
 
@@ -4232,6 +4293,15 @@ function divisionStepExplanationHTML(
     );
 
 
+  const dividendDegree =
+    Math.max(
+      0,
+      degreeOf(
+        dividend
+      )
+    );
+
+
   return result.steps
     .map(
       (
@@ -4252,6 +4322,31 @@ function divisionStepExplanationHTML(
             <strong>
               直式第 ${i + 1} 輪｜
             </strong>
+
+            ${
+              i ===
+              0
+
+                ? `
+                  先依降冪排列並檢查缺項：
+
+                  <span class="explanation-math">
+
+                    ${polynomialWithZerosHTML(
+                      step.current,
+                      dividendDegree
+                    )}
+
+                  </span>
+
+                  缺少的次方要用係數 0 補起來，
+                  例如缺一次項就寫成
+                  <strong>0x</strong>。
+                  <br><br>
+                `
+
+                : ""
+            }
 
             先用目前被除式的最高次項除以除式的最高次項：
 
@@ -4280,7 +4375,7 @@ function divisionStepExplanationHTML(
 
             </span>
 
-            因此商式這一輪得到
+            因此這一輪商式得到
 
             <strong>
 
@@ -4291,9 +4386,9 @@ function divisionStepExplanationHTML(
 
             </strong>。
 
-            <br>
+            <br><br>
 
-            接著把這一項乘回整個除式：
+            把這一項乘回整個除式：
 
             <span class="explanation-math">
 
@@ -4317,7 +4412,7 @@ function divisionStepExplanationHTML(
 
             </span>
 
-            再用目前的被除式減掉乘回去的結果，得到：
+            再用目前的被除式減掉乘回去的結果：
 
             <span class="explanation-math">
 
@@ -4436,9 +4531,20 @@ function gridTermHTML(
 }
 
 
+/*
+==================================================
+直式多項式格線
+
+fillMissing = true 時，
+缺項會顯示 0x、0x²……
+==================================================
+*/
+
 function polynomialGridHTML(
   polynomial,
-  maxDegree
+  maxDegree,
+  fillMissing =
+    false
 ) {
 
   const normalized =
@@ -4453,6 +4559,16 @@ function polynomialGridHTML(
 
   const cells =
     [];
+
+
+  const currentDegree =
+    normalized.length
+
+      ? degreeOf(
+          normalized
+        )
+
+      : 0;
 
 
   for (
@@ -4499,6 +4615,35 @@ function polynomialGridHTML(
 
       content =
         "0";
+
+
+      firstVisible =
+        false;
+
+    } else if (
+      fillMissing &&
+      exponent <=
+      currentDegree
+    ) {
+
+      content = `
+
+        ${
+          firstVisible
+
+            ? ""
+
+            : "＋"
+        }
+
+        ${zeroTermHTML(
+          exponent
+        )}
+      `;
+
+
+      firstVisible =
+        false;
     }
 
 
@@ -4719,7 +4864,8 @@ function longDivisionHTML(
 
             ${polynomialGridHTML(
               firstCurrent,
-              maxDegree
+              maxDegree,
+              true
             )}
 
             ${
@@ -4737,7 +4883,8 @@ function longDivisionHTML(
 
                         ${polynomialGridHTML(
                           step.product,
-                          maxDegree
+                          maxDegree,
+                          false
                         )}
 
                       </div>
@@ -4748,7 +4895,8 @@ function longDivisionHTML(
 
                       ${polynomialGridHTML(
                         step.remainder,
-                        maxDegree
+                        maxDegree,
+                        true
                       )}
 
                     </div>
@@ -5344,8 +5492,7 @@ function makeMonomialMultiply() {
     [
 
       `
-      先處理係數。單項式相乘時，
-      <strong>係數乘係數</strong>：
+      先處理係數：
 
       <span class="explanation-math">
 
@@ -5365,9 +5512,8 @@ function makeMonomialMultiply() {
       `,
 
       `
-      再處理字母部分。
-      同底數的 x 相乘，
-      <strong>底數不變、指數相加</strong>：
+      再處理 x。
+      同底數相乘，底數不變、指數相加：
 
       <span class="explanation-math">
 
@@ -5389,7 +5535,7 @@ function makeMonomialMultiply() {
       `,
 
       `
-      最後把係數與字母部分合在一起：
+      把係數與字母部分合在一起：
 
       <span class="explanation-math">
 
@@ -5417,10 +5563,10 @@ function makeMonomialMultiply() {
     {
 
       method:
-        "單項式乘法分成兩件事：先算係數，再算 x 的次方。正負號也屬於係數的一部分。",
+        "單項式乘法分成兩部分：係數乘係數，x 的指數相加。",
 
       pitfall:
-        "同底數相乘是「指數相加」，不是指數相乘；另外負數參與計算時要連同負號一起計算。",
+        "同底數相乘是指數相加，不是指數相乘；負數參與計算時要把負號一起算。",
 
       summary:
         `最後答案：${monomialHTML(
@@ -5549,8 +5695,7 @@ function makeMonomialDivide(
     [
 
       `
-      先處理係數。
-      <strong>被除數的係數 ÷ 除數的係數</strong>：
+      先處理係數：
 
       <span class="explanation-math">
 
@@ -5584,8 +5729,7 @@ function makeMonomialDivide(
 
       `
       再處理 x。
-      同底數相除時，
-      <strong>指數相減</strong>：
+      同底數相除，指數相減：
 
       <span class="explanation-math">
 
@@ -5607,7 +5751,7 @@ function makeMonomialDivide(
       `,
 
       `
-      最後把係數與 x 的部分合起來：
+      最後合併：
 
       <span class="explanation-math">
 
@@ -5635,10 +5779,10 @@ function makeMonomialDivide(
     {
 
       method:
-        "單項式除法和乘法一樣，分成「係數」與「字母」兩部分。係數做除法，x 的指數做減法。",
+        "單項式除法分成係數與字母兩部分：係數做除法，x 的指數做減法。",
 
       pitfall:
-        "同底數相除是「被除數的指數－除數的指數」。若係數是分數，最後一定要約成最簡分數。",
+        "同底數相除是被除數指數減除數指數；分數係數最後要約成最簡分數。",
 
       summary:
         `最後答案：${monomialHTML(
@@ -5768,7 +5912,7 @@ function makeMonomialTimesPolynomial() {
 
       `
       利用分配律：
-      <strong>括號外的單項式要乘到括號內每一項，不能漏掉任何一項。</strong>
+      <strong>括號外的單項式要乘到括號內每一項。</strong>
       `,
 
       `
@@ -5785,7 +5929,7 @@ function makeMonomialTimesPolynomial() {
       `,
 
       `
-      每一項都乘完後，直接依照次方由高到低排列：
+      每一項都乘完後，依次方由高到低排列：
 
       <div class="expansion-box">
 
@@ -5802,10 +5946,10 @@ function makeMonomialTimesPolynomial() {
     {
 
       method:
-        "看到「單項式 × 多項式」，先想到分配律：括號外的那一項要分別乘上括號內的每一項。",
+        "看到單項式乘多項式，就使用分配律：括號外的一項要分別乘括號內所有項。",
 
       pitfall:
-        "最常見的錯誤是只乘括號內第一項，或乘係數時忘記正負號。每一項的係數與 x 次方都要一起處理。",
+        "不能只乘第一項；每一項都要乘，而且係數的正負號與 x 的次方都要處理。",
 
       summary:
         `最後答案：${polynomialHTML(
@@ -5906,13 +6050,13 @@ function makeBinomialProduct() {
     [
 
       `
-      第一個括號有兩項，第二個括號也有兩項，
-      所以總共要做
-      <strong>2 × 2＝4 次乘法</strong>。
+      兩個括號各有兩項，
+      所以要做到
+      <strong>每一項乘每一項</strong>。
       `,
 
       `
-      依序把第一個括號的每一項，乘上第二個括號的每一項：
+      逐項計算：
 
       ${
         multiplicationProcessHTML(
@@ -5923,7 +6067,7 @@ function makeBinomialProduct() {
       `,
 
       `
-      把四個乘積寫在同一行：
+      把四個乘積寫在一起：
 
       <div class="expansion-box">
 
@@ -5933,7 +6077,7 @@ function makeBinomialProduct() {
       `,
 
       `
-      接著找同類項並合併：
+      合併同類項：
 
       <div class="expansion-box">
 
@@ -5954,10 +6098,10 @@ function makeBinomialProduct() {
     {
 
       method:
-        "兩個多項式相乘時，要做到「每一項乘每一項」。乘完後才合併同類項。",
+        "一般兩個多項式相乘時，要做到每一項乘每一項，完成後再合併同類項。",
 
       pitfall:
-        "不要只做首項乘首項、末項乘末項；中間的交叉乘積也一定要計算。負數參與乘法時要特別注意正負號。",
+        "不要漏掉交叉相乘的兩項；負數參與乘法時也要注意符號。",
 
       summary:
         `最後答案：${polynomialHTML(
@@ -5967,6 +6111,16 @@ function makeBinomialProduct() {
   );
 }
 
+
+/*
+==================================================
+完全平方
+
+★ 使用公式解後，
+後續全部沿用公式，
+不再切換成分配律。
+==================================================
+*/
 
 function makeSquareFormula() {
 
@@ -6019,27 +6173,106 @@ function makeSquareFormula() {
     );
 
 
-  const raw =
-    rawProductTermsHTML(
-      polynomial,
-      polynomial
-    );
-
-
   const absoluteB =
     Math.abs(
       b
     );
 
 
-  const formulaText =
+  const firstSquare =
+    a *
+    a;
 
+
+  const middle =
+    2 *
+    a *
+    absoluteB;
+
+
+  const lastSquare =
+    absoluteB *
+    absoluteB;
+
+
+  const isPlus =
     b >
-    0
+    0;
 
-      ? `(A＋B)²＝A²＋2AB＋B²`
 
-      : `(A－B)²＝A²－2AB＋B²`;
+  const formula =
+
+    isPlus
+
+      ? "(A＋B)²＝A²＋2AB＋B²"
+
+      : "(A－B)²＝A²－2AB＋B²";
+
+
+  const substituted =
+
+    isPlus
+
+      ? `
+        (${a === 1 ? "" : a}x＋${absoluteB})²
+
+        ＝
+
+        (${a === 1 ? "" : a}x)²
+
+        ＋
+
+        2‧(${a === 1 ? "" : a}x)‧${absoluteB}
+
+        ＋
+
+        ${absoluteB}²
+      `
+
+      : `
+        (${a === 1 ? "" : a}x－${absoluteB})²
+
+        ＝
+
+        (${a === 1 ? "" : a}x)²
+
+        －
+
+        2‧(${a === 1 ? "" : a}x)‧${absoluteB}
+
+        ＋
+
+        ${absoluteB}²
+      `;
+
+
+  const calculated =
+
+    isPlus
+
+      ? `
+        ${firstSquare === 1 ? "" : firstSquare}x²
+
+        ＋
+
+        ${middle}x
+
+        ＋
+
+        ${lastSquare}
+      `
+
+      : `
+        ${firstSquare === 1 ? "" : firstSquare}x²
+
+        －
+
+        ${middle}x
+
+        ＋
+
+        ${lastSquare}
+      `;
 
 
   return polynomialQuestion(
@@ -6059,58 +6292,65 @@ function makeSquareFormula() {
 
       <span class="explanation-math">
 
-        ${formulaText}
+        ${formula}
 
       </span>
       `,
 
       `
-      本題也可以把平方改寫成兩個相同括號相乘：
+      找出公式中的 A、B：
 
       <span class="explanation-math">
 
-        ${bracketPolynomial(
-          polynomial
-        )}<sup>2</sup>
+        A＝${a === 1 ? "x" : `${a}x`}
 
-        ＝
+        ，
 
-        ${bracketPolynomial(
-          polynomial
-        )}
-
-        ${bracketPolynomial(
-          polynomial
-        )}
+        B＝${absoluteB}
 
       </span>
       `,
 
       `
-      逐項乘開：
+      直接代入公式：
 
-      ${
-        multiplicationProcessHTML(
-          polynomial,
-          polynomial
-        )
-      }
+      <div class="expansion-box">
+
+        ${substituted}
+
+      </div>
       `,
 
       `
-      乘開後：
+      分別計算三個部分：
 
       <div class="expansion-box">
 
-        ${raw}
+        (${a === 1 ? "" : a}x)²
+        ＝
+        ${firstSquare === 1 ? "" : firstSquare}x²
+
+        <br>
+
+        2‧(${a === 1 ? "" : a}x)‧${absoluteB}
+        ＝
+        ${middle}x
+
+        <br>
+
+        ${absoluteB}²
+        ＝
+        ${lastSquare}
 
       </div>
+      `,
 
-      合併中間的同類項：
+      `
+      代回公式後：
 
       <div class="expansion-box">
 
-        ${raw}
+        ${calculated}
 
         ＝
 
@@ -6127,14 +6367,14 @@ function makeSquareFormula() {
     {
 
       method:
-        `看到兩個相同括號的平方，可以使用完全平方公式；也可以改寫成兩個相同括號相乘再逐項展開。`,
+        isPlus
+          ? "看到兩個相同項相加後的平方，直接使用和的平方公式，不需要再改用分配律逐項乘開。"
+          : "看到兩項相減後的平方，直接使用差的平方公式，不需要再改用分配律逐項乘開。",
 
       pitfall:
-        `完全平方不是「第一項平方＋第二項平方」而已，中間還有 ${
-          b > 0
-            ? "＋2AB"
-            : "－2AB"
-        }。`,
+        isPlus
+          ? "和的平方中間一定有 ＋2AB，不能只算 A²＋B²。"
+          : "差的平方中間是 −2AB，但最後的 B² 仍然是正的。",
 
       summary:
         `最後答案：${polynomialHTML(
@@ -6144,6 +6384,16 @@ function makeSquareFormula() {
   );
 }
 
+
+/*
+==================================================
+平方差
+
+★ 使用平方差公式後，
+後續全部使用公式，
+不再用分配律展開。
+==================================================
+*/
 
 function makeDifferenceSquares() {
 
@@ -6221,11 +6471,14 @@ function makeDifferenceSquares() {
     );
 
 
-  const raw =
-    rawProductTermsHTML(
-      first,
-      second
-    );
+  const firstSquare =
+    a *
+    a;
+
+
+  const secondSquare =
+    b *
+    b;
 
 
   return polynomialQuestion(
@@ -6240,45 +6493,82 @@ function makeDifferenceSquares() {
     [
 
       `
-      兩個括號只有中間符號不同，
+      兩個括號前後兩項相同，
+      只有中間一個是「＋」、一個是「－」，
       符合平方差公式：
 
       <span class="explanation-math">
 
         (A＋B)(A－B)
+
         ＝
+
         A²－B²
 
       </span>
       `,
 
       `
-      本題也可以直接逐項乘開確認：
+      本題：
 
-      ${
-        multiplicationProcessHTML(
-          first,
-          second
-        )
-      }
+      <span class="explanation-math">
+
+        A＝${a === 1 ? "x" : `${a}x`}
+
+        ，
+
+        B＝${b}
+
+      </span>
       `,
 
       `
-      乘開後：
+      直接代入平方差公式：
 
       <div class="expansion-box">
 
-        ${raw}
+        (${a === 1 ? "" : a}x＋${b})
+        (${a === 1 ? "" : a}x－${b})
+
+        ＝
+
+        (${a === 1 ? "" : a}x)²
+
+        －
+
+        ${b}²
 
       </div>
       `,
 
       `
-      中間兩個一次項互為相反數，因此相加等於 0：
+      分別平方：
 
       <div class="expansion-box">
 
-        ${raw}
+        (${a === 1 ? "" : a}x)²
+        ＝
+        ${firstSquare === 1 ? "" : firstSquare}x²
+
+        <br>
+
+        ${b}²
+        ＝
+        ${secondSquare}
+
+      </div>
+      `,
+
+      `
+      所以：
+
+      <div class="expansion-box">
+
+        ${firstSquare === 1 ? "" : firstSquare}x²
+
+        －
+
+        ${secondSquare}
 
         ＝
 
@@ -6295,10 +6585,10 @@ function makeDifferenceSquares() {
     {
 
       method:
-        "看到相同兩項、一個加一個減，就先檢查是否符合 (A＋B)(A－B)＝A²－B²。",
+        "看到 (A＋B)(A－B) 的結構，就直接使用平方差公式 A²－B²，不需要再改用分配律。",
 
       pitfall:
-        "平方差公式最後是 A²－B²，不是 A²＋B²；中間項會互相抵消。",
+        "平方差公式是 A²－B²，不是 A²＋B²，也沒有中間的一次項。",
 
       summary:
         `最後答案：${polynomialHTML(
@@ -6461,6 +6751,12 @@ function makeExactDivisionQuestion() {
     generateExactDivision();
 
 
+  const dividendDegree =
+    degreeOf(
+      data.dividend
+    );
+
+
   return polynomialQuestion(
 
     `
@@ -6480,38 +6776,51 @@ function makeExactDivisionQuestion() {
     [
 
       `
-      先確認被除式與除式都已依
-      <strong>降冪排列</strong>。
-      若有缺少某個次方，做直式時要保留那個位置。
-      `,
-
-      `
-      多項式直式除法每一輪都使用同一個流程：
+      先依降冪排列，並檢查有沒有缺項。
 
       <span class="explanation-math">
 
-        ① 首項相除
+        被除式＝
+        ${polynomialWithZerosHTML(
+          data.dividend,
+          dividendDegree
+        )}
+
+      </span>
+
+      若缺一次項，就要補成
+      <strong>0x</strong>；
+      缺二次項則補成
+      <strong>0x²</strong>。
+      `,
+
+      `
+      多項式直式除法每一輪都使用：
+
+      <span class="explanation-math">
+
+        首項相除
         →
-        ② 寫到商式
+        寫入商式
         →
-        ③ 乘回除式
+        乘回除式
         →
-        ④ 相減
+        相減
 
       </span>
       `,
 
       `
-      重複上述流程，直到餘式的次數低於除式的次數，
-      或餘式等於 0。
+      重複計算，
+      直到不能再除。
+      本題餘式為 0，因此可以整除。
       `,
 
       `
-      本題可以整除，所以：
+      商式：
 
       <span class="explanation-math">
 
-        商式＝
         ${polynomialHTML(
           data.quotient
         )}
@@ -6537,10 +6846,10 @@ function makeExactDivisionQuestion() {
         ),
 
       method:
-        "多項式除法不是一次完成，而是不斷重複「最高次項相除 → 乘回 → 相減」。",
+        "直式除法開始前，先降冪排列並把缺項補 0，再重複「首項相除、乘回、相減」。",
 
       pitfall:
-        "直式最常見錯誤是次方沒有對齊，或相減時符號算錯。x²、x、常數項都要垂直對齊。",
+        "缺項不能只空著不管，例如 x²＋5 做直式時應視為 x²＋0x＋5；另外同次方一定要上下對齊。",
 
       summary:
         `商式＝${polynomialHTML(
@@ -6654,6 +6963,12 @@ function makeDivisionWithRemainder(
     }
 
 
+    const dividendDegree =
+      degreeOf(
+        dividend
+      );
+
+
     return divisionQuestion(
 
       `
@@ -6679,33 +6994,50 @@ function makeDivisionWithRemainder(
       [
 
         `
-        先把被除式與除式依
-        <strong>降冪排列</strong>。
+        先依降冪排列並把缺項補 0：
+
+        <span class="explanation-math">
+
+          ${polynomialWithZerosHTML(
+            dividend,
+            dividendDegree
+          )}
+
+        </span>
         `,
 
         missingTerm
 
           ? `
-            本題被除式有缺項。
-            直式計算時不能把位置往左移，
-            必須把缺少的次方視為係數 0，
-            保留它原本的位置。
+            本題被除式缺少一次項，
+            所以在直式中必須明確寫成
+            <strong>0x</strong>，
+            不能直接把常數項移到 x 的位置。
           `
 
           : `
-            從被除式的最高次項開始，
-            用它除以除式的最高次項。
+            接著從最高次項開始做直式除法。
           `,
 
         `
-        每得到商的一項，都要乘回整個除式，
-        再與目前的被除式相減。
+        每一輪：
+
+        <span class="explanation-math">
+
+          首項相除
+          →
+          寫商
+          →
+          乘回
+          →
+          相減
+
+        </span>
         `,
 
         `
-        當最後餘下的多項式次數
-        <strong>低於除式的次數</strong>，
-        就不能再除，這就是餘式。
+        當最後餘下的次數低於除式的次數，
+        就不能再除，這一部分就是餘式。
         `,
 
         `
@@ -6730,12 +7062,12 @@ function makeDivisionWithRemainder(
       {
 
         method:
-          "先降冪排列，再重複「首項相除、乘回、相減」。最後不能再除的部分就是餘式。",
+          "先降冪排列並補齊缺項，再進行直式除法。缺一次項要寫 0x，不能只在心裡知道它是 0。",
 
         pitfall:
           missingTerm
-            ? "被除式缺項時，不能直接把後面的項往前移。直式的同次方必須保持上下對齊。"
-            : "每一輪乘回去後要做的是『相減』，因此特別容易在負號處出錯。",
+            ? "缺一次項時一定要補 0x，否則後面的常數項會對錯欄位。"
+            : "乘回後做的是相減，負號與同次方對齊是最容易出錯的地方。",
 
         summary:
           `商式＝${polynomialHTML(
@@ -6751,6 +7083,12 @@ function makeDivisionWithRemainder(
   );
 }
 
+
+/*
+==================================================
+模式三
+==================================================
+*/
 
 function makeMode3() {
 
@@ -6912,7 +7250,7 @@ function makeFindDividendQuestion() {
     <div class="explanation-step">
 
       <strong>
-        先把兩個多項式乘開｜
+        先計算除式 × 商式｜
       </strong>
 
       ${multiplicationProcessHTML(
@@ -7008,7 +7346,7 @@ function makeFindDividendQuestion() {
     [
 
       `
-      先回想多項式除法最重要的關係：
+      使用多項式除法關係：
 
       <span class="explanation-math">
 
@@ -7020,7 +7358,7 @@ function makeFindDividendQuestion() {
       `,
 
       `
-      把題目提供的除式、商式和餘式代入：
+      代入題目：
 
       <span class="explanation-math">
 
@@ -7042,12 +7380,12 @@ function makeFindDividendQuestion() {
       `,
 
       `
-      先算「除式 × 商式」，
-      每一項都要完整相乘。
+      先完成「除式 × 商式」，
+      再加入餘式並合併同類項。
       `,
 
       `
-      最後再加入餘式並合併同類項：
+      最後：
 
       <span class="explanation-math">
 
@@ -7069,10 +7407,10 @@ function makeFindDividendQuestion() {
       wrongDetail,
 
       method:
-        "這一題不是做直式除法，而是反過來利用『被除式＝除式×商式＋餘式』求回被除式。",
+        "這一題使用被除式＝除式×商式＋餘式，把已知資料代入後依序計算。",
 
       pitfall:
-        "不要忘記最後還要加上餘式。若餘式本身是負數，代入計算式時要寫成加上一個負數，例如 ＋(-3)。",
+        "若餘式是負數，代入運算式時應寫成加上一個負數，例如 ＋(-3)；負數是計算過程時要加括號。",
 
       summary:
         `被除式＝${polynomialHTML(
@@ -7082,6 +7420,15 @@ function makeFindDividendQuestion() {
   );
 }
 
+
+/*
+==================================================
+模式四
+
+直接共用模式一、二、三的新題型，
+所以公式詳解與補 0 會同步套用。
+==================================================
+*/
 
 function makeMode4() {
 
@@ -7916,7 +8263,7 @@ function updateDivisionPreview() {
   ) {
 
     preview.innerHTML =
-      "目前尚未完成答案.";
+      "目前尚未完成答案。";
 
 
     return;
@@ -8734,8 +9081,10 @@ function explanationHTML(
 
       ? `
 
-          <div class="explanation-heading"
-               style="margin-top:20px;">
+          <div
+            class="explanation-heading"
+            style="margin-top:20px;"
+          >
 
             🔎 完整偵錯過程
 
