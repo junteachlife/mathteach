@@ -2426,17 +2426,47 @@ function sqrtMath(
   content
 ) {
 
+  const source =
+    String(
+      content
+    );
+
+
+  /*
+  使用固定的 √ 符號，不再讓 msqrt 自動拉長橫線。
+  單一數字：√3
+  複合內容：√(2⁴)、√(3×5⁴×7²)
+  這樣題目、詳解與最後答案的根號外觀完全一致。
+  */
+
+  const needsGrouping =
+    /<msup>|<mo>\s*[×＋－+\-÷/]\s*<\/mo>|<mfrac>|<mrow>[\s\S]*<mo>/
+      .test(
+        source
+      );
+
+
   return inlineMath(`
 
-    <msqrt>
+    <mo>√</mo>
 
-      <mrow>
+    ${
+      needsGrouping
 
-        ${content}
+        ? `
+          <mo>(</mo>
+          <mrow>
+            ${source}
+          </mrow>
+          <mo>)</mo>
+        `
 
-      </mrow>
-
-    </msqrt>
+        : `
+          <mrow>
+            ${source}
+          </mrow>
+        `
+    }
   `);
 }
 
@@ -3301,10 +3331,10 @@ function makeRootSquareQuestion() {
     {
 
       method:
-        "看到 √(a²) 時，不要直接把平方和根號『消掉』就結束；正確性質是 √(a²)=|a|。",
+        `看到 ${sqrtDisplay(powerHTML("a", 2))} 時，不要直接把平方和根號「消掉」就結束；正確性質是 ${sqrtDisplay(powerHTML("a", 2))}＝|a|。`,
 
       pitfall:
-        "√(a²) 的結果一定是非負數，所以一般式必須寫成 |a|，不能一律寫成 a。",
+        `${sqrtDisplay(powerHTML("a", 2))} 的結果一定是非負數，所以一般式必須寫成 |a|，不能一律寫成 a。`,
 
       summary:
         `最後答案：${sqrtMath(
@@ -3705,7 +3735,7 @@ function makePrimeSimplifyQuestion() {
         "先把奇數次方拆成『最大的偶數次方 × 1 個同質因數』，再把每個偶數次方分別開根號；最後剩下的質因數乘在同一個根號內。",
 
       pitfall:
-        "例如 2⁵ 應拆成 2⁴×2；√(2⁴)=2²，而剩下的 2 要留在根號內，不能一起提出。",
+        `例如 ${powerHTML(2, 5)} 應拆成 ${powerHTML(2, 4)}×2；${sqrtDisplay(powerHTML(2, 4))}＝${powerHTML(2, 2)}，而剩下的 2 要留在根號內，不能一起提出。`,
 
       summary:
         `最後答案：${detailRadical(
@@ -4098,7 +4128,7 @@ function makeBetweenIntegersQuestion() {
     {
 
       method:
-        "不要直接猜 √n。先用熟悉的平方數把 n 夾住，再把平方數的底數拿來當 √n 的上下界。",
+        `不要直接猜 ${sqrtDisplay("n")}。先用熟悉的平方數把 n 夾住，再把平方數的底數拿來當 ${sqrtDisplay("n")} 的上下界。`,
 
       pitfall:
         "題目問的是『連續整數』，上下界必須相差 1，而且要滿足 lower²＜n＜upper²。",
@@ -4703,7 +4733,7 @@ function makeBothRootsQuestion() {
     {
 
       method:
-        "題目只寫『平方根』時，要找正、負兩個；若寫『正平方根』或根號 √n，才只取非負的那一個。",
+        `題目只寫「平方根」時，要找正、負兩個；若寫「正平方根」或根號 ${sqrtDisplay("n")}，才只取非負的那一個。`,
 
       pitfall:
         `平方根是 ±${root}，不是 ±${n}；也不能只寫 ${root}，因為 −${root} 平方後同樣是 ${n}。`,
@@ -4812,12 +4842,12 @@ function makeAbsoluteValueRootQuestion() {
     {
 
       method:
-        "√(a²)=|a| 是這一題的核心。即使括號裡是負數，開平方後的主平方根仍然不能是負數。",
+        `${sqrtDisplay(powerHTML("a", 2))}＝|a| 是這一題的核心。即使括號裡是負數，開平方後的主平方根仍然不能是負數。`,
 
       pitfall:
         a < 0
           ? `本題括號內是負數 ${a}，不能直接寫成 ${a}；一定要先變成 |${a}|。`
-          : "根號符號 √ 代表主平方根，所以結果必須是非負數。",
+          : `根號符號 ${sqrtDisplay("n")} 代表主平方根，所以結果必須是非負數。`,
 
       summary:
         `最後答案：${Math.abs(
