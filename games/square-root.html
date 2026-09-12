@@ -320,54 +320,100 @@
 
     /*
     ==================================================
-    自然根號（複雜根號題目顯示）
+    自然根號：固定大小，不使用 MathML 可伸展根號
     ==================================================
     */
 
-    .wide-radical {
+    .plain-sqrt {
 
       display: inline-flex;
 
-      align-items: flex-start;
+      align-items: baseline;
+
+      vertical-align: baseline;
+
+      white-space: nowrap;
 
       font-family:
-        "STIX Two Math",
         "Cambria Math",
+        "STIX Two Math",
         "Times New Roman",
         serif;
 
       line-height: 1;
-
-      vertical-align: middle;
     }
 
-    .wide-radical-sign {
-
-      flex: 0 0 auto;
-
-      font-size: 1.2em;
-
-      line-height: .92;
-
-      transform: translateY(.12em);
-    }
-
-    .wide-radical-content {
+    .plain-sqrt-symbol {
 
       display: inline-block;
 
-      min-width: .7em;
+      flex: 0 0 auto;
 
-      margin-left: -.08em;
+      margin-right: .03em;
 
-      padding:
-        .05em .12em 0 .08em;
+      font-size: 1em;
 
-      border-top:
-        .08em solid
-        currentColor;
+      line-height: 1;
 
-      line-height: 1.2;
+      font-family:
+        "Cambria Math",
+        "STIX Two Math",
+        "Times New Roman",
+        serif;
+
+      transform: translateY(.035em);
+    }
+
+    .plain-sqrt-paren {
+
+      display: inline-block;
+
+      flex: 0 0 auto;
+
+      font-size: 1em;
+
+      line-height: 1;
+
+      font-family:
+        "Cambria Math",
+        "STIX Two Math",
+        "Times New Roman",
+        serif;
+    }
+
+    .plain-sqrt-radicand {
+
+      display: inline-flex;
+
+      align-items: baseline;
+
+      vertical-align: baseline;
+
+      line-height: 1;
+    }
+
+    .plain-sqrt-radicand .mathml-inline {
+
+      display: inline-flex;
+
+      align-items: baseline;
+
+      vertical-align: baseline;
+
+      margin: 0;
+
+      font-size: 1em;
+
+      line-height: 1;
+    }
+
+    .root-sequence {
+
+      display: inline-flex;
+
+      align-items: baseline;
+
+      gap: .16em;
 
       white-space: nowrap;
     }
@@ -2433,41 +2479,52 @@ function sqrtMath(
 
 
   /*
-  使用固定的 √ 符號，不再讓 msqrt 自動拉長橫線。
-  單一數字：√3
-  複合內容：√(2⁴)、√(3×5⁴×7²)
-  這樣題目、詳解與最後答案的根號外觀完全一致。
+  重要：不要把 √ 放進 MathML <mo> 或 <msqrt>。
+  <mo> 會把 √、(、) 自動拉伸，造成題目中的根號位置過低、括號過高。
+
+  這裡固定使用一般字型的 √，
+  根號內的數學內容才交給 MathML 顯示。
+
+  單一內容：√3
+  次方內容：√(9²)
+  複合內容：√(2⁵×3⁴×7)
   */
 
   const needsGrouping =
-    /<msup>|<mo>\s*[×＋－+\-÷/]\s*<\/mo>|<mfrac>|<mrow>[\s\S]*<mo>/
+    /<msup>|<mfrac>|<mo>[\s\S]*?[×＋－+\-÷/][\s\S]*?<\/mo>/
       .test(
         source
       );
 
 
-  return inlineMath(`
+  return `
 
-    <mo>√</mo>
+    <span class="plain-sqrt">
 
-    ${
-      needsGrouping
+      <span class="plain-sqrt-symbol">√</span>
 
-        ? `
-          <mo>(</mo>
-          <mrow>
-            ${source}
-          </mrow>
-          <mo>)</mo>
-        `
+      ${
+        needsGrouping
 
-        : `
-          <mrow>
-            ${source}
-          </mrow>
-        `
-    }
-  `);
+          ? `
+              <span class="plain-sqrt-paren">(</span>
+
+              <span class="plain-sqrt-radicand">
+                ${inlineMath(source)}
+              </span>
+
+              <span class="plain-sqrt-paren">)</span>
+            `
+
+          : `
+              <span class="plain-sqrt-radicand">
+                ${inlineMath(source)}
+              </span>
+            `
+      }
+
+    </span>
+  `;
 }
 
 
@@ -3925,35 +3982,26 @@ function rangeMath(
   upper
 ) {
 
-  return inlineMath(
-    `
+  return `
 
-      <mn>
-        ${lower}
-      </mn>
+    <span class="root-sequence">
 
-      <mo>
-        &lt;
-      </mo>
+      <span>${lower}</span>
 
-      <msqrt>
+      <span>＜</span>
 
-        <mn>
-          ${n}
-        </mn>
+      ${sqrtMath(
+        `<mn>${n}</mn>`
+      )}
 
-      </msqrt>
+      <span>＜</span>
 
-      <mo>
-        &lt;
-      </mo>
+      <span>${upper}</span>
 
-      <mn>
-        ${upper}
-      </mn>
-    `
-  );
+    </span>
+  `;
 }
+
 
 
 function makeBetweenIntegersQuestion() {
