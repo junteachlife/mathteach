@@ -1116,7 +1116,7 @@
 
     /*
     ==================================================
-    詳解
+    詳解｜自學版
     ==================================================
     */
 
@@ -1126,10 +1126,14 @@
 
       padding: 18px;
 
-      border-radius: 14px;
+      border:
+        1px solid
+        #bae6fd;
+
+      border-radius: 16px;
 
       background:
-        #eaf7fd;
+        #f0f9ff;
 
       color:
         #334155;
@@ -1137,10 +1141,125 @@
       line-height: 1.95;
     }
 
+    .explanation-heading {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin:
+        0 0 14px;
+
+      color:
+        var(--primary-dark);
+
+      font-size: 21px;
+
+      font-weight: 900;
+    }
+
+    .explanation-question {
+
+      margin-bottom: 14px;
+
+      padding:
+        15px 14px;
+
+      border:
+        2px solid
+        var(--primary-border);
+
+      border-radius: 13px;
+
+      background: white;
+    }
+
+    .explanation-question-title {
+
+      margin-bottom: 10px;
+
+      color:
+        var(--primary-dark);
+
+      font-weight: 900;
+    }
+
+    .explanation-question-math {
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      overflow-x: auto;
+
+      padding:
+        8px 4px;
+
+      color:
+        #0f172a;
+
+      font-family:
+        "Cambria Math",
+        "STIX Two Math",
+        "Times New Roman",
+        serif;
+
+      font-size:
+        clamp(
+          21px,
+          3.2vw,
+          29px
+        );
+
+      font-weight: 900;
+
+      text-align: center;
+    }
+
+    .explanation-method {
+
+      margin-bottom: 14px;
+
+      padding:
+        13px 14px;
+
+      border:
+        1px solid
+        #fed7aa;
+
+      border-radius: 12px;
+
+      background:
+        #fff7ed;
+    }
+
+    .explanation-method strong {
+      color: #c2410c;
+    }
+
     .explanation-step {
 
       margin:
-        10px 0;
+        11px 0;
+
+      padding:
+        13px 14px;
+
+      border-left:
+        4px solid
+        var(--primary);
+
+      border-radius: 11px;
+
+      background: white;
+    }
+
+    .explanation-step strong {
+      color: var(--primary-dark);
     }
 
     .detail-math {
@@ -1161,6 +1280,88 @@
         serif;
 
       font-size: 1.08em;
+    }
+
+    .detail-block {
+
+      display: block;
+
+      margin-top: 8px;
+
+      padding:
+        10px 12px;
+
+      overflow-x: auto;
+
+      border:
+        1px solid
+        #bae6fd;
+
+      border-radius: 10px;
+
+      background:
+        #f8fdff;
+
+      color:
+        #0f172a;
+
+      font-family:
+        "Cambria Math",
+        "STIX Two Math",
+        "Times New Roman",
+        serif;
+
+      font-size: 1.06em;
+
+      font-weight: 900;
+
+      line-height: 2;
+    }
+
+    .explanation-tip {
+
+      margin-top: 14px;
+
+      padding:
+        13px 14px;
+
+      border:
+        1px solid
+        #fecdd3;
+
+      border-radius: 12px;
+
+      background:
+        #fff1f2;
+
+      color:
+        #9f1239;
+    }
+
+    .explanation-tip strong {
+      color: #be123c;
+    }
+
+    .explanation-summary {
+
+      margin-top: 14px;
+
+      padding:
+        13px 14px;
+
+      border:
+        1px solid
+        #bbf7d0;
+
+      border-radius: 12px;
+
+      background:
+        #ecfdf5;
+
+      color:
+        #166534;
+
+      font-weight: 900;
     }
 
     /*
@@ -2701,7 +2902,9 @@ function numberQuestion(
   html,
   answer,
   explanation,
-  label
+  label,
+  options =
+    {}
 ) {
 
   return {
@@ -2718,7 +2921,19 @@ function numberQuestion(
     label,
 
     reference:
-      ""
+      "",
+
+    method:
+      options.method ||
+      "",
+
+    pitfall:
+      options.pitfall ||
+      "",
+
+    summary:
+      options.summary ||
+      `最後答案：${answer}`
   };
 }
 
@@ -2729,7 +2944,9 @@ function decimalQuestion(
   explanation,
   label,
   reference =
-    ""
+    "",
+  options =
+    {}
 ) {
 
   return {
@@ -2745,7 +2962,19 @@ function decimalQuestion(
 
     label,
 
-    reference
+    reference,
+
+    method:
+      options.method ||
+      "",
+
+    pitfall:
+      options.pitfall ||
+      "",
+
+    summary:
+      options.summary ||
+      `最後答案：約為 ${answer}`
   };
 }
 
@@ -2755,7 +2984,9 @@ function radicalQuestion(
   coefficient,
   radicand,
   explanation,
-  label
+  label,
+  options =
+    {}
 ) {
 
   return {
@@ -2774,7 +3005,22 @@ function radicalQuestion(
     label,
 
     reference:
-      ""
+      "",
+
+    method:
+      options.method ||
+      "",
+
+    pitfall:
+      options.pitfall ||
+      "",
+
+    summary:
+      options.summary ||
+      `最後答案：${radicalDisplay(
+        coefficient,
+        radicand
+      )}`
   };
 }
 
@@ -2784,8 +3030,18 @@ function choiceQuestion(
   answer,
   choices,
   explanation,
-  label
+  label,
+  options =
+    {}
 ) {
+
+  const correctChoice =
+    choices.find(
+      item =>
+        item.value ===
+        answer
+    );
+
 
   return {
 
@@ -2803,7 +3059,22 @@ function choiceQuestion(
     label,
 
     reference:
-      ""
+      "",
+
+    method:
+      options.method ||
+      "",
+
+    pitfall:
+      options.pitfall ||
+      "",
+
+    summary:
+      options.summary ||
+      `最後答案：${
+        correctChoice?.text ||
+        answer
+      }`
   };
 }
 
@@ -2860,32 +3131,53 @@ function makeMode1() {
 
           [
 
-            `本題是 ${n} 的平方。`,
+            `平方表示「同一個數乘自己一次」，所以先把平方改寫成乘法。`,
 
-            `${detailPower(
+            `<span class="detail-block">
+              ${detailPower(
+                n,
+                2
+              )}
+              ＝
+              ${n} × ${n}
+            </span>`,
+
+            `完成乘法：
+            <span class="detail-block">
+              ${n} × ${n}
+              ＝
+              ${answer}
+            </span>`,
+
+            `因此
+            ${detailPower(
               n,
               2
             )}
-            ＝
-            ${n} × ${n}`,
-
-            `${n} × ${n}
-            ＝
-            ${answer}`
+            的值就是 ${answer}。`
           ],
 
-          "請寫出正確的平方數"
+          "請寫出正確的平方數",
+
+          {
+
+            method:
+              "先確認平方的意思：n² 不是 n×2，而是 n×n。熟悉常用平方數，之後判斷根號範圍會更快。",
+
+            pitfall:
+              `最常見錯誤是把 ${n}² 算成 ${n}×2。平方一定是「同一個數乘自己」。`,
+
+            summary:
+              `最後答案：${detailPower(
+                n,
+                2
+              )}＝${answer}`
+          }
         );
       }
     );
 }
 
-
-/*
-==================================================
-模式二
-==================================================
-*/
 
 function makeRootSquareQuestion() {
 
@@ -2909,20 +3201,34 @@ function makeRootSquareQuestion() {
 
     [
 
-      `平方根的重要性質：`,
+      `先使用平方根的重要性質：
+      <span class="detail-block">
+        ${sqrtMath(
+          powerMathML(
+            "a",
+            2
+          )
+        )}
+        ＝
+        |a|
+      </span>`,
 
-      `${sqrtMath(
-        powerMathML(
-          "a",
-          2
-        )
-      )}
-      ＝
-      |a|。`,
+      `本題把 a 換成 ${a}：
+      <span class="detail-block">
+        ${sqrtMath(
+          powerMathML(
+            a,
+            2
+          )
+        )}
+        ＝
+        |${a}|
+      </span>`,
 
-      `本題 a＝${a}，
-      而 ${a}＞0，
-      所以 |${a}|＝${a}。`,
+      `因為 ${a}＞0，所以它的絕對值就是本身：
+      <span class="detail-block">
+        |${a}|＝${a}
+      </span>`,
 
       `因此
       ${sqrtMath(
@@ -2931,11 +3237,27 @@ function makeRootSquareQuestion() {
           2
         )
       )}
-      ＝
-      ${a}。`
+      ＝${a}。`
     ],
 
-    "請求出根號的值"
+    "請求出根號的值",
+
+    {
+
+      method:
+        "看到 √(a²) 時，不要直接把平方和根號『消掉』就結束；正確性質是 √(a²)=|a|。",
+
+      pitfall:
+        "√(a²) 的結果一定是非負數，所以一般式必須寫成 |a|，不能一律寫成 a。",
+
+      summary:
+        `最後答案：${sqrtMath(
+          powerMathML(
+            a,
+            2
+          )
+        )}＝${a}`
+    }
   );
 }
 
@@ -3051,6 +3373,10 @@ function makePrimeSimplifyQuestion() {
     [];
 
 
+  const pairingLines =
+    [];
+
+
   factors.forEach(
     (
       [
@@ -3116,6 +3442,21 @@ function makePrimeSimplifyQuestion() {
           `
         );
       }
+
+
+      pairingLines.push(
+        `
+          <div>
+            ${prime}<sup>${exponent}</sup>
+            ：可以配成 ${outExponent} 對
+            ${
+              inExponent === 1
+                ? `，還剩 1 個 ${prime}`
+                : "，沒有剩下"
+            }
+          </div>
+        `
+      );
     }
   );
 
@@ -3135,40 +3476,48 @@ function makePrimeSimplifyQuestion() {
   const explanation =
     [
 
-      `先觀察根號內的標準分解式：
-      ${inlineMath(
-        standardMath
-      )}。`,
+      `先看根號內的標準分解式：
+      <span class="detail-block">
+        ${inlineMath(
+          standardMath
+        )}
+      </span>`,
 
-      `質因數已依照由小到大排列；指數為 1 時不另外寫出 1。`,
+      `平方根化簡的核心是「每兩個相同質因數，可以提出根號外一個」。逐一配對：
+      <span class="detail-block">
+        ${pairingLines.join("")}
+      </span>`,
 
-      `平方根化簡時，每兩個相同的質因數可以提出根號外一個。`,
+      `因此根號外可以提出：
+      <span class="detail-block">
+        ${
+          outsideParts.length
 
-      `根號外得到：
-      ${
-        outsideParts.length
-
-          ? inlineMath(
-              productMathML(
-                outsideParts
+            ? inlineMath(
+                productMathML(
+                  outsideParts
+                )
               )
-            )
 
-          : "1"
-      }。`,
+            : "1"
+        }
+        ＝${outside}
+      </span>`,
 
       inside ===
       1
 
-        ? `根號內的質因數全部成對提出，因此根號內不再留下質因數。`
+        ? `所有質因數都剛好成對，所以根號內沒有剩下任何因數。`
 
-        : `根號內剩下：
-           ${inlineMath(
-             productMathML(
-               insideParts
-             )
-           )}
-           ＝${inside}。`
+        : `沒有配成一對的質因數要留在根號內：
+           <span class="detail-block">
+             ${inlineMath(
+               productMathML(
+                 insideParts
+               )
+             )}
+             ＝${inside}
+           </span>`
     ];
 
 
@@ -3178,7 +3527,7 @@ function makePrimeSimplifyQuestion() {
   ) {
 
     explanation.push(
-      `因此答案＝${outside}。`
+      `所以根式完全化成整數，答案＝${outside}。`
     );
 
 
@@ -3190,18 +3539,32 @@ function makePrimeSimplifyQuestion() {
 
       explanation,
 
-      "請利用質因數標準分解式化成最簡形式"
+      "請利用質因數標準分解式化成最簡形式",
+
+      {
+
+        method:
+          "把每個質因數的指數看成『兩個一組』。每配成一組，就能從根號內提出一個相同的質因數。",
+
+        pitfall:
+          "提出根號外的是『每兩個提出一個』，不是把所有質因數全部提出；指數是奇數時會有 1 個留在根號內。",
+
+        summary:
+          `最後答案：${outside}`
+      }
     );
   }
 
 
   explanation.push(
 
-    `所以答案＝
-    ${detailRadical(
-      outside,
-      inside
-    )}。`
+    `把根號外與根號內重新組合：
+    <span class="detail-block">
+      ${detailRadical(
+        outside,
+        inside
+      )}
+    </span>`
   );
 
 
@@ -3215,7 +3578,22 @@ function makePrimeSimplifyQuestion() {
 
     explanation,
 
-    "請利用質因數標準分解式化成最簡根式"
+    "請利用質因數標準分解式化成最簡根式",
+
+    {
+
+      method:
+        "把質因數逐一兩兩配對：每一對提出根號外一個，沒有成對的留在根號內。",
+
+      pitfall:
+        "根號內最後不能再含有完全平方因數；若還能再提出，就還不是最簡根式。",
+
+      summary:
+        `最後答案：${detailRadical(
+          outside,
+          inside
+        )}`
+    }
   );
 }
 
@@ -3255,6 +3633,11 @@ function makeNormalSimplifyQuestion() {
     );
 
 
+  const squareFactor =
+    outside *
+    outside;
+
+
   const insideProduct =
     productMathML(
       [
@@ -3289,35 +3672,72 @@ function makeNormalSimplifyQuestion() {
 
     [
 
-      `找出 ${number} 中最大的完全平方因數。`,
+      `先找 ${number} 的完全平方因數。本題可拆成：
+      <span class="detail-block">
+        ${number}
+        ＝
+        ${squareFactor} × ${base}
+        ＝
+        ${inlineMath(
+          insideProduct
+        )}
+      </span>`,
 
-      `${number}
+      `利用
+      ${detailSqrt("ab")}
       ＝
-      ${inlineMath(
-        insideProduct
-      )}`,
+      ${detailSqrt("a")}${detailSqrt("b")}
+      的想法，把完全平方部分分開：
+      <span class="detail-block">
+        ${sqrtMath(
+          insideProduct
+        )}
+        ＝
+        ${sqrtMath(
+          powerMathML(
+            outside,
+            2
+          )
+        )}
+        ×
+        ${sqrtMath(
+          `<mn>${base}</mn>`
+        )}
+      </span>`,
 
-      `${sqrtMath(
-        insideProduct
-      )}
-      ＝
-      ${outside}
+      `因為 ${outside}＞0，
       ${sqrtMath(
-        `
-          <mn>
-            ${base}
-          </mn>
-        `
-      )}`,
+        powerMathML(
+          outside,
+          2
+        )
+      )}
+      ＝${outside}，所以：
+      <span class="detail-block">
+        ${outside}${sqrtMath(
+          `<mn>${base}</mn>`
+        )}
+      </span>`,
 
-      `所以答案＝
-      ${detailRadical(
-        outside,
-        base
-      )}。`
+      `檢查 ${base} 已經沒有大於 1 的完全平方因數，所以這就是最簡根式。`
     ],
 
-    "請化成最簡根式"
+    "請化成最簡根式",
+
+    {
+
+      method:
+        "先找根號內最大的完全平方因數，把它拆成「完全平方數 × 剩餘因數」，再把完全平方數提出根號外。",
+
+      pitfall:
+        "化簡後要再檢查根號內是否還有 4、9、16、25…等完全平方因數；若有，就還能繼續化簡。",
+
+      summary:
+        `最後答案：${detailRadical(
+          result.coefficient,
+          result.radicand
+        )}`
+    }
   );
 }
 
@@ -3422,6 +3842,16 @@ function makeBetweenIntegersQuestion() {
     1;
 
 
+  const lowerSquare =
+    lower *
+    lower;
+
+
+  const upperSquare =
+    upper *
+    upper;
+
+
   const choices =
     shuffle(
       [
@@ -3504,48 +3934,63 @@ function makeBetweenIntegersQuestion() {
 
     [
 
-      `${detailPower(
-        lower,
-        2
-      )}
-      ＝
-      ${
-        lower *
-        lower
-      }。`,
+      `先找最接近 ${n}、而且一前一後的兩個完全平方數。`,
 
-      `${detailPower(
-        upper,
-        2
-      )}
-      ＝
-      ${
-        upper *
-        upper
-      }。`,
+      `下界：
+      <span class="detail-block">
+        ${detailPower(
+          lower,
+          2
+        )}
+        ＝${lowerSquare}
+      </span>`,
+
+      `上界：
+      <span class="detail-block">
+        ${detailPower(
+          upper,
+          2
+        )}
+        ＝${upperSquare}
+      </span>`,
 
       `因為
-      ${
-        lower *
-        lower
-      }
-      ＜
-      ${n}
-      ＜
-      ${
-        upper *
-        upper
-      }，`,
+      <span class="detail-block">
+        ${lowerSquare}
+        ＜
+        ${n}
+        ＜
+        ${upperSquare}
+      </span>
+      對三個正數同時開平方，大小關係不變。`,
 
-      `所以
-      ${rangeMath(
-        lower,
-        n,
-        upper
-      )}。`
+      `所以：
+      <span class="detail-block">
+        ${rangeMath(
+          lower,
+          n,
+          upper
+        )}
+      </span>`
     ],
 
-    "請選出正確範圍"
+    "請選出正確範圍",
+
+    {
+
+      method:
+        "不要直接猜 √n。先用熟悉的平方數把 n 夾住，再把平方數的底數拿來當 √n 的上下界。",
+
+      pitfall:
+        "題目問的是『連續整數』，上下界必須相差 1，而且要滿足 lower²＜n＜upper²。",
+
+      summary:
+        `正確範圍：${rangeMath(
+          lower,
+          n,
+          upper
+        )}`
+    }
   );
 }
 
@@ -3595,11 +4040,17 @@ function makeApproximationQuestion() {
 
 
   const tenthAbove =
-    tenthBelow +
-    .1;
+    Number(
+      (
+        tenthBelow +
+        .1
+      ).toFixed(
+        1
+      )
+    );
 
 
-  const ref1 =
+  const midpoint =
     Number(
       (
         tenthBelow +
@@ -3610,35 +4061,47 @@ function makeApproximationQuestion() {
     );
 
 
-  const ref2 =
+  const midpointSquare =
     Number(
       (
-        tenthAbove +
-        .05
+        midpoint *
+        midpoint
       ).toFixed(
-        2
+        4
       )
     );
 
 
-  const square1 =
-    (
-      ref1 *
-      ref1
-    )
-      .toFixed(
+  const belowSquare =
+    Number(
+      (
+        tenthBelow *
+        tenthBelow
+      ).toFixed(
         4
-      );
+      )
+    );
 
 
-  const square2 =
-    (
-      ref2 *
-      ref2
-    )
-      .toFixed(
+  const aboveSquare =
+    Number(
+      (
+        tenthAbove *
+        tenthAbove
+      ).toFixed(
         4
-      );
+      )
+    );
+
+
+  const roundDirection =
+
+    n <
+    midpointSquare
+
+      ? "下"
+
+      : "上";
 
 
   const reference = `
@@ -3647,23 +4110,34 @@ function makeApproximationQuestion() {
 
     ${inlineMath(
       powerMathML(
-        ref1,
+        tenthBelow,
         2
       )
     )}
     ＝
-    ${square1}
+    ${belowSquare}
 
-    &nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;
 
     ${inlineMath(
       powerMathML(
-        ref2,
+        midpoint,
         2
       )
     )}
     ＝
-    ${square2}
+    ${midpointSquare}
+
+    &nbsp;&nbsp;
+
+    ${inlineMath(
+      powerMathML(
+        tenthAbove,
+        2
+      )
+    )}
+    ＝
+    ${aboveSquare}
   `;
 
 
@@ -3692,47 +4166,70 @@ function makeApproximationQuestion() {
 
     [
 
-      `本題要求利用十分逼近法，估算到小數第一位。`,
-
-      `先找出
+      `本題要把
       ${sqrtMath(
-        `
-          <mn>
-            ${n}
-          </mn>
-        `
+        `<mn>${n}</mn>`
       )}
-      介於哪兩個一位小數之間。`,
+      估算到小數第一位。先找到它落在哪兩個相鄰的一位小數之間。`,
 
-      `比較附近小數的平方與 ${n} 的大小。`,
+      `計算兩端的一位小數平方：
+      <span class="detail-block">
+        ${detailPower(
+          tenthBelow,
+          2
+        )}
+        ＝${belowSquare}
+        <br>
+        ${detailPower(
+          tenthAbove,
+          2
+        )}
+        ＝${aboveSquare}
+      </span>
+      因為 ${belowSquare}＜${n}＜${aboveSquare}，所以
+      ${tenthBelow}＜${sqrtMath(`<mn>${n}</mn>`)}＜${tenthAbove}。`,
 
-      `因為
-      ${detailPower(
-        ref1,
-        2
-      )}
-      ＝${square1}，
-      ${detailPower(
-        ref2,
-        2
-      )}
-      ＝${square2}，`,
+      `要四捨五入到小數第一位，就比較中點 ${midpoint}。先平方：
+      <span class="detail-block">
+        ${detailPower(
+          midpoint,
+          2
+        )}
+        ＝${midpointSquare}
+      </span>`,
 
-      `可判斷
-      ${sqrtMath(
-        `
-          <mn>
-            ${n}
-          </mn>
-        `
-      )}
-      約為
-      ${answer}。`
+      `比較 ${n} 與 ${midpointSquare}：
+      <span class="detail-block">
+        ${n}
+        ${
+          n < midpointSquare
+            ? "＜"
+            : "＞"
+        }
+        ${midpointSquare}
+      </span>
+      所以
+      ${sqrtMath(`<mn>${n}</mn>`)}
+      位在中點的${roundDirection}方，取到小數第一位為 ${answer}。`
     ],
 
     "利用十分逼近法，求到小數第一位",
 
-    reference
+    reference,
+
+    {
+
+      method:
+        "先用一位小數的平方夾住根號值，再用兩個候選一位小數的中點判斷四捨五入方向。",
+
+      pitfall:
+        "十分逼近到小數第一位不是只看落在哪兩個一位小數之間；還要判斷比較接近哪一個。",
+
+      summary:
+        `最後答案：${sqrtMath(
+          `<mn>${n}</mn>`
+        )}≈${answer}`
+    }
   );
 }
 
@@ -3798,6 +4295,16 @@ function makePositiveRootApplication() {
     x;
 
 
+  const squareValue =
+    root *
+    root;
+
+
+  const rightAfterMove =
+    squareValue -
+    constant;
+
+
   const constantText =
 
     constant >=
@@ -3806,6 +4313,18 @@ function makePositiveRootApplication() {
       ? `＋${constant}`
 
       : `－${Math.abs(
+          constant
+        )}`;
+
+
+  const moveText =
+
+    constant >=
+    0
+
+      ? `${squareValue}－${constant}`
+
+      : `${squareValue}＋${Math.abs(
           constant
         )}`;
 
@@ -3828,27 +4347,57 @@ function makePositiveRootApplication() {
 
     [
 
-      `「${root} 是
-      ${coefficient}x${constantText}
-      的正平方根」表示：`,
+      `「${root} 是 ${coefficient}x${constantText} 的正平方根」表示把 ${root} 平方後，就等於根號內的數：
+      <span class="detail-block">
+        ${detailPower(
+          root,
+          2
+        )}
+        ＝
+        ${coefficient}x${constantText}
+      </span>`,
 
-      `${detailPower(
-        root,
-        2
-      )}
-      ＝
-      ${coefficient}x
-      ${constantText}。`,
+      `先算平方：
+      <span class="detail-block">
+        ${squareValue}
+        ＝
+        ${coefficient}x${constantText}
+      </span>`,
 
-      `${root * root}
-      ＝
-      ${coefficient}x
-      ${constantText}。`,
+      `把常數項移到左邊：
+      <span class="detail-block">
+        ${moveText}
+        ＝
+        ${coefficient}x
+        <br>
+        ${rightAfterMove}
+        ＝
+        ${coefficient}x
+      </span>`,
 
-      `解這個一元一次方程式，可得 x＝${x}。`
+      `最後兩邊同除以 ${coefficient}：
+      <span class="detail-block">
+        x
+        ＝
+        ${rightAfterMove}÷${coefficient}
+        ＝
+        ${x}
+      </span>`
     ],
 
-    "請利用平方根的意義求 x"
+    "請利用平方根的意義求 x",
+
+    {
+
+      method:
+        "關鍵不是把題目加上根號，而是把『是正平方根』翻譯成：正平方根²＝原來的數，再解一元一次方程式。",
+
+      pitfall:
+        "『正平方根』代表給你的 root 是正值，但列式時要用 root²＝原來的數；不要列成 root＝原來的數。",
+
+      summary:
+        `最後答案：x＝${x}`
+    }
   );
 }
 
@@ -3866,13 +4415,18 @@ function makeNegativeRootApplication() {
     -root;
 
 
+  const n =
+    root *
+    root;
+
+
   return numberQuestion(
 
     `
 
       <span class="math-expression">
 
-        ${root * root}
+        ${n}
         的負平方根是多少？
 
       </span>
@@ -3882,23 +4436,47 @@ function makeNegativeRootApplication() {
 
     [
 
-      `${root * root}
-      ＝
+      `先找出哪個正數平方會得到 ${n}：
+      <span class="detail-block">
+        ${detailPower(
+          root,
+          2
+        )}
+        ＝${n}
+      </span>`,
+
+      `平方後得到 ${n} 的數有兩個：
+      <span class="detail-block">
+        ${root}
+        與
+        −${root}
+      </span>
+      因為
       ${detailPower(
-        root,
+        `−${root}`,
         2
-      )}。`,
+      )}
+      也等於 ${n}。`,
 
-      `${root * root}
-      的兩個平方根是
-      ${root}
-      與
-      −${root}。`,
-
-      `題目要求「負平方根」，所以答案＝−${root}。`
+      `題目指定的是「負平方根」，所以要選負的那一個：
+      <span class="detail-block">
+        −${root}
+      </span>`
     ],
 
-    "請寫出負平方根"
+    "請寫出負平方根",
+
+    {
+
+      method:
+        "先找兩個平方根，再依題目指定『正平方根』或『負平方根』選其中一個。",
+
+      pitfall:
+        `不要把負平方根誤認成「−${n}」。${n} 的負平方根是 −${root}，因為 (−${root})²＝${n}。`,
+
+      summary:
+        `最後答案：−${root}`
+    }
   );
 }
 
@@ -3973,29 +4551,47 @@ function makeBothRootsQuestion() {
 
     [
 
-      `因為
-      ${detailPower(
-        root,
-        2
-      )}
-      ＝${n}，`,
+      `「平方根」是指平方後會得到 ${n} 的所有數。`,
 
-      `而
-      ${detailPower(
-        `−${root}`,
-        2
-      )}
-      也等於 ${n}。`,
+      `正的：
+      <span class="detail-block">
+        ${detailPower(
+          root,
+          2
+        )}
+        ＝${n}
+      </span>`,
 
-      `所以 ${n} 的平方根有兩個：
-      ${root}
-      和
-      −${root}。`,
+      `負的也要檢查：
+      <span class="detail-block">
+        ${detailPower(
+          `−${root}`,
+          2
+        )}
+        ＝${n}
+      </span>`,
 
-      `可合寫為 ±${root}。`
+      `所以 ${n} 有兩個平方根：
+      <span class="detail-block">
+        ${root}、−${root}
+        <br>
+        合寫為 ±${root}
+      </span>`
     ],
 
-    "請選出正確答案"
+    "請選出正確答案",
+
+    {
+
+      method:
+        "題目只寫『平方根』時，要找正、負兩個；若寫『正平方根』或根號 √n，才只取非負的那一個。",
+
+      pitfall:
+        `平方根是 ±${root}，不是 ±${n}；也不能只寫 ${root}，因為 −${root} 平方後同樣是 ${n}。`,
+
+      summary:
+        `最後答案：±${root}`
+    }
   );
 }
 
@@ -4050,34 +4646,65 @@ function makeAbsoluteValueRootQuestion() {
 
     [
 
-      `平方根的重要性質是：`,
+      `先使用重要性質：
+      <span class="detail-block">
+        ${sqrtMath(
+          powerMathML(
+            "a",
+            2
+          )
+        )}
+        ＝|a|
+      </span>`,
 
-      `${sqrtMath(
-        powerMathML(
-          "a",
-          2
-        )
-      )}
-      ＝
-      |a|。`,
+      `本題 a＝${a}，代入後：
+      <span class="detail-block">
+        ${sqrtMath(
+          `
+            <msup>
+              <mrow>
+                <mo>(</mo>
+                <mn>${a}</mn>
+                <mo>)</mo>
+              </mrow>
+              <mn>2</mn>
+            </msup>
+          `
+        )}
+        ＝|${a}|
+      </span>`,
 
-      `本題
-      a＝${a}。`,
+      `絕對值表示到 0 的距離，因此：
+      <span class="detail-block">
+        |${a}|
+        ＝
+        ${Math.abs(
+          a
+        )}
+      </span>`,
 
-      `所以
-      |${a}|
-      ＝
-      ${Math.abs(
-        a
-      )}。`,
-
-      `因此答案＝
-      ${Math.abs(
+      `所以答案＝${Math.abs(
         a
       )}。`
     ],
 
-    "請求出根號的值"
+    "請求出根號的值",
+
+    {
+
+      method:
+        "√(a²)=|a| 是這一題的核心。即使括號裡是負數，開平方後的主平方根仍然不能是負數。",
+
+      pitfall:
+        a < 0
+          ? `本題括號內是負數 ${a}，不能直接寫成 ${a}；一定要先變成 |${a}|。`
+          : "根號符號 √ 代表主平方根，所以結果必須是非負數。",
+
+      summary:
+        `最後答案：${Math.abs(
+          a
+        )}`
+    }
   );
 }
 
@@ -5169,29 +5796,119 @@ function explanationHTML(
   question
 ) {
 
-  return question
-    .explanation
-    .map(
-      (
-        step,
-        i
-      ) => `
+  const questionBlock = `
 
-        <div class="explanation-step">
+    <div class="explanation-heading">
 
-          <strong>
+      📘 完整詳解
 
-            步驟 ${i + 1}｜
+    </div>
 
-          </strong>
+    <div class="explanation-question">
 
-          ${step}
+      <div class="explanation-question-title">
 
-        </div>
+        題目
 
-      `
-    )
-    .join("");
+      </div>
+
+      <div class="explanation-question-math">
+
+        ${question.html}
+
+      </div>
+
+    </div>
+  `;
+
+
+  const method =
+
+    question.method
+
+      ? `
+
+          <div class="explanation-method">
+
+            <strong>
+              先想一想｜
+            </strong>
+
+            ${question.method}
+
+          </div>
+        `
+
+      : "";
+
+
+  const steps =
+    question.explanation
+      .map(
+        (
+          step,
+          i
+        ) => `
+
+          <div class="explanation-step">
+
+            <strong>
+
+              步驟 ${i + 1}｜
+
+            </strong>
+
+            ${step}
+
+          </div>
+        `
+      )
+      .join("");
+
+
+  const pitfall =
+
+    question.pitfall
+
+      ? `
+
+          <div class="explanation-tip">
+
+            <strong>
+              ⚠️ 常見錯誤｜
+            </strong>
+
+            ${question.pitfall}
+
+          </div>
+        `
+
+      : "";
+
+
+  const summary =
+
+    question.summary
+
+      ? `
+
+          <div class="explanation-summary">
+
+            ✅ ${question.summary}
+
+          </div>
+        `
+
+      : "";
+
+
+  return (
+    questionBlock +
+    method +
+    steps +
+    pitfall +
+    summary
+  );
 }
 
 
