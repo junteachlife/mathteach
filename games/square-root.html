@@ -2428,27 +2428,24 @@ function sqrtMath(
 
   return `
 
-    <span class="mathml-inline">
+    <span class="wide-radical">
 
-      <math
-        xmlns="http://www.w3.org/1998/Math/MathML"
-      >
+      <span class="wide-radical-sign">
+        √
+      </span>
 
-        <msqrt>
+      <span class="wide-radical-content">
 
-          <mrow>
+        ${inlineMath(
+          content
+        )}
 
-            ${content}
-
-          </mrow>
-
-        </msqrt>
-
-      </math>
+      </span>
 
     </span>
   `;
 }
+
 
 
 /*
@@ -2673,7 +2670,7 @@ function radicalDisplay(
   }
 
 
-  let coefficientMath =
+  let coefficientHTML =
     "";
 
 
@@ -2682,18 +2679,20 @@ function radicalDisplay(
     -1
   ) {
 
-    coefficientMath =
-      `<mo>−</mo>`;
+    coefficientHTML =
+      "−";
 
   } else if (
     coefficient !==
     1
   ) {
 
-    coefficientMath =
-      `<mn>${Math.abs(
-        coefficient
-      )}</mn>`;
+    coefficientHTML =
+      String(
+        Math.abs(
+          coefficient
+        )
+      );
 
 
     if (
@@ -2701,27 +2700,26 @@ function radicalDisplay(
       0
     ) {
 
-      coefficientMath =
-        `<mo>−</mo>${coefficientMath}`;
+      coefficientHTML =
+        `−${coefficientHTML}`;
     }
   }
 
 
-  return inlineMath(
-    `
+  return `
 
-      ${coefficientMath}
+    <span class="math-expression">
 
-      <msqrt>
+      ${coefficientHTML}
 
-        <mn>
-          ${radicand}
-        </mn>
+      ${sqrtMath(
+        `<mn>${radicand}</mn>`
+      )}
 
-      </msqrt>
-    `
-  );
+    </span>
+  `;
 }
+
 
 
 function fractionDisplay(
@@ -3432,21 +3430,20 @@ function makePrimeSimplifyQuestion() {
     );
 
 
+  const evenFactors =
+    [];
+
+
+  const leftoverFactors =
+    [];
+
+
   let outside =
     1;
 
+
   let inside =
     1;
-
-
-  const squareFactorParts =
-    [];
-
-  const squareBaseParts =
-    [];
-
-  const insideParts =
-    [];
 
 
   factors.forEach(
@@ -3457,61 +3454,41 @@ function makePrimeSimplifyQuestion() {
       ]
     ) => {
 
-      const squareExponent =
+      const evenExponent =
         exponent -
         exponent %
         2;
 
-      const baseExponent =
-        Math.floor(
-          exponent /
-          2
-        );
-
-      const insideExponent =
-        exponent %
-        2;
-
 
       if (
-        squareExponent >
+        evenExponent >
         0
       ) {
 
-        squareFactorParts.push(
+        evenFactors.push(
           [
             prime,
-            squareExponent
-          ]
-        );
-      }
-
-
-      if (
-        baseExponent >
-        0
-      ) {
-
-        squareBaseParts.push(
-          [
-            prime,
-            baseExponent
+            evenExponent
           ]
         );
 
 
         outside *=
           prime **
-          baseExponent;
+          (
+            evenExponent /
+            2
+          );
       }
 
 
       if (
-        insideExponent ===
+        exponent %
+        2 ===
         1
       ) {
 
-        insideParts.push(
+        leftoverFactors.push(
           [
             prime,
             1
@@ -3526,92 +3503,181 @@ function makePrimeSimplifyQuestion() {
   );
 
 
-  const squareFactorValue =
-    outside *
-    outside;
-
-
-  const questionBodyHTML =
+  const originalHTML =
     factorHTML(
       factors
     );
 
 
-  const squareFactorHTMLText =
-    factorHTML(
-      squareFactorParts
+  const decomposedHTML =
+    [
+      ...evenFactors,
+      ...leftoverFactors
+    ]
+      .map(
+        ([prime, exponent]) =>
+          exponent ===
+          1
+
+            ? String(prime)
+
+            : powerHTML(
+                prime,
+                exponent
+              )
+      )
+      .join(
+        " × "
+      );
+
+
+  const sqrtPieces =
+    [];
+
+
+  evenFactors.forEach(
+    ([prime, exponent]) => {
+
+      sqrtPieces.push(
+        sqrtDisplay(
+          powerHTML(
+            prime,
+            exponent
+          )
+        )
+      );
+    }
+  );
+
+
+  if (
+    leftoverFactors.length
+  ) {
+
+    sqrtPieces.push(
+      sqrtDisplay(
+        leftoverFactors
+          .map(
+            ([prime]) =>
+              String(prime)
+          )
+          .join(
+            " × "
+          )
+      )
     );
+  }
 
 
-  const squareBaseHTMLText =
-    factorHTML(
-      squareBaseParts
-    );
+  const outsidePowerParts =
+    evenFactors
+      .map(
+        ([prime, exponent]) => {
+
+          const outExponent =
+            exponent /
+            2;
 
 
-  const insideFactorHTMLText =
-    insideParts.length
+          return outExponent ===
+            1
 
-      ? factorHTML(
-          insideParts
+            ? String(prime)
+
+            : powerHTML(
+                prime,
+                outExponent
+              );
+        }
+      );
+
+
+  const outsidePowerHTML =
+    outsidePowerParts.length
+
+      ? outsidePowerParts.join(
+          " × "
         )
 
       : "1";
 
 
   const questionHTML =
-    naturalSqrtHTML(
-      questionBodyHTML
+    sqrtDisplay(
+      originalHTML
     );
 
 
   const explanation =
-    [];
+    [
+
+      `先把每個奇數次方拆成「最大的偶數次方 × 剩下 1 個質因數」：
+      <span class="detail-block">
+        ${originalHTML}
+        ＝
+        ${decomposedHTML}
+      </span>`,
+
+      `把根號拆開。偶數次方各自開根號，沒有配成完全平方的質因數留在同一個根號內：
+      <span class="detail-block">
+        ${sqrtDisplay(
+          originalHTML
+        )}
+        ＝
+        ${sqrtPieces.join(
+          " × "
+        )}
+      </span>`,
+
+      `偶數次方開根號時，指數除以 2：
+      <span class="detail-block">
+        ${sqrtPieces.join(
+          " × "
+        )}
+        ＝
+        ${outsidePowerHTML}
+        ${
+          inside ===
+          1
+
+            ? ""
+
+            : ` × ${sqrtDisplay(
+                String(inside)
+              )}`
+        }
+      </span>`,
+
+      inside ===
+      1
+
+        ? `最後把根號外的數算完：
+           <span class="detail-block">
+             ${outsidePowerHTML}
+             ＝
+             ${outside}
+           </span>`
+
+        : `最後把根號外的數算完，根號內保留不能再開平方的部分：
+           <span class="detail-block">
+             ${outsidePowerHTML}
+             ×
+             ${sqrtDisplay(
+               String(inside)
+             )}
+             ＝
+             ${detailRadical(
+               outside,
+               inside
+             )}
+           </span>`
+    ];
 
 
   if (
     inside ===
     1
   ) {
-
-    explanation.push(
-      `先找根號內最大的完全平方因數。本題可拆成：
-      <span class="detail-block">
-        ${questionBodyHTML}
-        ＝
-        ${squareFactorHTMLText}
-        ＝
-        (${squareBaseHTMLText})<sup>2</sup>
-      </span>`
-    );
-
-
-    explanation.push(
-      `把完全平方數開根號：
-      <span class="detail-block">
-        ${naturalSqrtHTML(
-          `(${squareBaseHTMLText})<sup>2</sup>`
-        )}
-        ＝
-        ${squareBaseHTMLText}
-      </span>`
-    );
-
-
-    explanation.push(
-      `再把根號外算成整數：
-      <span class="detail-block">
-        ${squareBaseHTMLText}
-        ＝
-        ${outside}
-      </span>`
-    );
-
-
-    explanation.push(
-      `因此答案＝${outside}。`
-    );
-
 
     return numberQuestion(
 
@@ -3626,76 +3692,16 @@ function makePrimeSimplifyQuestion() {
       {
 
         method:
-          "先找出根號內最大的完全平方因數，再拆成『完全平方數 × 剩餘因數』。如果沒有剩餘因數，就會直接化成整數。",
+          "先把每個質因數的指數拆成最大的偶數次方；偶數次方可以直接開根號，指數除以 2。",
 
         pitfall:
-          "不要只看某一個質因數能不能提出；要一起檢查整個根號內，找出最大的完全平方因數。",
+          "奇數次方不能整個直接除以 2。要先拆成『偶數次方 × 1 個同質因數』，那 1 個要留在根號內。",
 
         summary:
           `最後答案：${outside}`
       }
     );
   }
-
-
-  explanation.push(
-    `先找根號內最大的完全平方因數。本題可拆成：
-    <span class="detail-block">
-      ${questionBodyHTML}
-      ＝
-      (${squareFactorHTMLText}) × (${insideFactorHTMLText})
-      ＝
-      (${squareBaseHTMLText})<sup>2</sup> × ${inside}
-    </span>`
-  );
-
-
-  explanation.push(
-    `把完全平方部分分開，準備提出根號外：
-    <span class="detail-block">
-      ${naturalSqrtHTML(
-        `(${squareBaseHTMLText})<sup>2</sup> × ${inside}`
-      )}
-      ＝
-      ${naturalSqrtHTML(
-        `(${squareBaseHTMLText})<sup>2</sup>`
-      )}
-      ×
-      ${naturalSqrtHTML(
-        String(inside)
-      )}
-    </span>`
-  );
-
-
-  explanation.push(
-    `把完全平方數開根號，就能提出根號外：
-    <span class="detail-block">
-      ${naturalSqrtHTML(
-        `(${squareBaseHTMLText})<sup>2</sup>`
-      )}
-      ＝
-      ${squareBaseHTMLText}
-      ＝
-      ${outside}
-    </span>`
-  );
-
-
-  explanation.push(
-    `把根號外與根號內重新組合：
-    <span class="detail-block">
-      ${detailRadical(
-        outside,
-        inside
-      )}
-    </span>`
-  );
-
-
-  explanation.push(
-    `檢查根號內的 ${inside} 已經沒有大於 1 的完全平方因數，所以這就是最簡根式。`
-  );
 
 
   return radicalQuestion(
@@ -3713,10 +3719,10 @@ function makePrimeSimplifyQuestion() {
     {
 
       method:
-        "先找出根號內最大的完全平方因數，再拆成『完全平方數 × 剩餘因數』，不要只用逐一配對卻看不出整體結構。",
+        "先把奇數次方拆成『最大的偶數次方 × 1 個同質因數』，再把每個偶數次方分別開根號；最後剩下的質因數乘在同一個根號內。",
 
       pitfall:
-        "最後還要再檢查根號內是否已經最簡；如果裡面還含有完全平方因數，就表示還能繼續提出。",
+        "例如 2⁵ 應拆成 2⁴×2；√(2⁴)=2²，而剩下的 2 要留在根號內，不能一起提出。",
 
       summary:
         `最後答案：${detailRadical(
