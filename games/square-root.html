@@ -17,7 +17,7 @@
   <link
     rel="icon"
     type="image/svg+xml"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230288d1'/%3E%3Cpath d='M11 34h8l6 15L35 17h19' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='51' cy='13' r='4' fill='%23fff59d'/%3E%3C/svg%3E"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23f57c00'/%3E%3Crect x='7' y='7' width='50' height='50' rx='12' fill='%23fff8e1' stroke='%23e65100' stroke-width='3'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='31' font-family='Microsoft JhengHei,Noto Sans TC,sans-serif' font-weight='900' fill='%23bf360c'%3E%E6%A0%B9%3C/text%3E%3C/svg%3E"
   >
 
   <link
@@ -326,151 +326,90 @@
 
     /*
     ==================================================
-    課本式自然根號
+    課本式自然根號｜SVG 根號勾＋同粗細延伸橫線
 
-    重點：
-    1. 使用數學字型的 √ 當根號勾。
-    2. 上方橫線由整個根號容器統一繪製，
-       不再由 √ 與 radicand 各畫一半。
-    3. 橫線從根號右上端直接延伸到根號內最後一個字，
-       避免勾與橫線中間出現斷點。
-    4. 題目、詳解、常見錯誤、正確答案與錯題回顧全部共用。
+    不再使用「字型 √ ＋另外畫橫線」。
+    根號左側勾由 SVG 自己畫出，右上端與 radicand 的
+    border-top 重疊銜接，因此勾、斜線、轉折與橫線會自然連成一體。
+    根號內不論是整數、次方或長算式，橫線都會完整覆蓋。
     ==================================================
     */
 
-    .plain-sqrt {
-
+    .textbook-sqrt {
       position: relative;
-
       display: inline-flex;
-
-      align-items: baseline;
-
-      vertical-align: -.08em;
-
+      align-items: flex-start;
+      vertical-align: -0.14em;
       white-space: nowrap;
-
-      margin: 0 .02em;
-
-      padding-top: .10em;
-
+      margin: 0 .03em;
+      color: currentColor;
       font-family:
         "Cambria Math",
         "STIX Two Math",
         "Times New Roman",
         serif;
-
-      font-weight: 400;
-
       line-height: 1;
     }
 
-    /*
-    橫線只畫一次，直接從 √ 的右上端延伸到根號內容最右側。
-    這樣不會再有兩段線條高度不同或中間斷開的問題。
-    */
+    .textbook-sqrt-hook {
+      position: relative;
+      z-index: 2;
+      flex: 0 0 auto;
+      width: .82em;
+      height: 1.34em;
+      margin: 0 -.105em 0 0;
+      overflow: visible;
+      transform: translateY(.012em);
+    }
 
-    .plain-sqrt::before {
+    .textbook-sqrt-hook path {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
 
+    .textbook-sqrt-radicand {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: baseline;
+      min-width: .48em;
+      margin-top: .105em;
+      margin-left: 0;
+      padding: .075em .085em 0 .05em;
+      border-top: .064em solid currentColor;
+      line-height: 1;
+    }
+
+    .textbook-sqrt-radicand::before {
       content: "";
-
       position: absolute;
-
-      z-index: 3;
-
-      left: .52em;
-
-      right: .025em;
-
-      top: .075em;
-
-      border-top:
-        .065em solid
-        currentColor;
-
+      left: -.12em;
+      top: -.064em;
+      width: .18em;
+      border-top: .064em solid currentColor;
       pointer-events: none;
     }
 
-    .plain-sqrt-symbol {
-
-      position: relative;
-
-      z-index: 2;
-
-      display: inline-block;
-
-      flex: 0 0 auto;
-
-      margin: 0 -.11em 0 0;
-
-      padding: 0;
-
-      font-family:
-        "Cambria Math",
-        "STIX Two Math",
-        "Times New Roman",
-        serif;
-
-      font-size: 1.20em;
-
-      font-weight: 400;
-
-      line-height: .96;
-
-      transform: translateY(.055em);
-    }
-
-    .plain-sqrt-radicand {
-
-      position: relative;
-
-      z-index: 1;
-
+    .textbook-sqrt-radicand .mathml-inline {
       display: inline-flex;
-
       align-items: baseline;
-
-      min-width: .48em;
-
-      margin: 0;
-
-      padding:
-        .10em .08em 0 .065em;
-
-      border: 0;
-
-      line-height: 1;
-    }
-
-    .plain-sqrt-radicand .mathml-inline {
-
-      display: inline-flex;
-
-      align-items: baseline;
-
       vertical-align: baseline;
-
       margin: 0;
-
       padding: 0;
-
       font-size: 1em;
-
       line-height: 1;
     }
 
-    .plain-sqrt-radicand .mathml-inline math {
-
+    .textbook-sqrt-radicand .mathml-inline math {
       display: inline-block;
-
       margin: 0;
-
       padding: 0;
-
       overflow: visible;
-
       font-size: 1em;
-
       line-height: 1;
     }
 
@@ -2541,30 +2480,39 @@ function sqrtMath(
 
   /*
   ==================================================
-  課本式根號
+  課本式自然根號
 
-  √ 本身使用固定數學字型；
-  根號內整段內容放在同一個 radicand 容器中，
-  再由 CSS 的 border-top 畫出完整橫線。
-  因此無論根號內是 142、9²、2⁵×3⁴×7，
-  橫線都會完整覆蓋所有內容。
+  左側根號勾用固定比例 SVG 畫出，
+  右側橫線由 radicand 容器延伸。
+  兩者刻意重疊，避免出現「勾和橫線斷開」的縫隙。
   ==================================================
   */
 
   return `
 
-    <span class="plain-sqrt final-answer-root">
+    <span class="textbook-sqrt final-answer-root">
 
-      <span class="plain-sqrt-symbol">√</span>
+      <svg
+        class="textbook-sqrt-hook"
+        viewBox="0 0 42 64"
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden="true"
+        focusable="false"
+      >
 
-      <span class="plain-sqrt-radicand">
+        <path
+          d="M 2 36 L 8 36 L 14 50 L 20 58 L 30 7 L 42 7"
+        ></path>
+
+      </svg>
+
+      <span class="textbook-sqrt-radicand">
         ${inlineMath(content)}
       </span>
 
     </span>
   `;
 }
-
 
 
 /*
