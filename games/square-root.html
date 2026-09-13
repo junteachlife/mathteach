@@ -326,92 +326,115 @@
 
     /*
     ==================================================
-    課本式自然根號｜SVG 根號勾＋同粗細延伸橫線
+    根號顯示｜完全沿用「根式運算大挑戰」的 SVG 根號邏輯
 
-    不再使用「字型 √ ＋另外畫橫線」。
-    根號左側勾由 SVG 自己畫出，右上端與 radicand 的
-    border-top 重疊銜接，因此勾、斜線、轉折與橫線會自然連成一體。
-    根號內不論是整數、次方或長算式，橫線都會完整覆蓋。
+    由同一個 SVG path 同時畫出根號勾、斜線、轉折與上方橫線，
+    不再使用「SVG 勾＋CSS border-top」兩段式拼接。
+    因此根號轉折與橫線會自然連成同一筆，內容再長也會一起延伸。
     ==================================================
     */
 
-    .textbook-sqrt {
+    .display-radical {
+
       position: relative;
-      display: inline-flex;
-      align-items: flex-start;
-      vertical-align: -0.14em;
-      white-space: nowrap;
-      margin: 0 .03em;
-      color: currentColor;
-      font-family:
-        "Cambria Math",
-        "STIX Two Math",
-        "Times New Roman",
-        serif;
-      line-height: 1;
+
+      display:
+        inline-flex;
+
+      align-items: center;
+
+      min-width: 1.15em;
+      min-height: 1.55em;
+
+      padding:
+        .15em .10em .02em .78em;
+
+      margin:
+        0 .04em;
+
+      vertical-align: middle;
     }
 
-    .textbook-sqrt-hook {
-      position: relative;
-      z-index: 2;
-      flex: 0 0 auto;
-      width: .82em;
-      height: 1.34em;
-      margin: 0 -.105em 0 0;
-      overflow: visible;
-      transform: translateY(.012em);
-    }
 
-    .textbook-sqrt-hook path {
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 3.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      vector-effect: non-scaling-stroke;
-    }
+    .display-radical-svg {
 
-    .textbook-sqrt-radicand {
-      position: relative;
-      z-index: 1;
-      display: inline-flex;
-      align-items: baseline;
-      min-width: .48em;
-      margin-top: .105em;
-      margin-left: 0;
-      padding: .075em .085em 0 .05em;
-      border-top: .064em solid currentColor;
-      line-height: 1;
-    }
-
-    .textbook-sqrt-radicand::before {
-      content: "";
       position: absolute;
-      left: -.12em;
-      top: -.064em;
-      width: .18em;
-      border-top: .064em solid currentColor;
+
+      inset: 0;
+
+      width: 100%;
+      height: 100%;
+
+      overflow: visible;
+
       pointer-events: none;
     }
 
-    .textbook-sqrt-radicand .mathml-inline {
+
+    .display-radical-path {
+
+      fill: none;
+
+      stroke:
+        currentColor;
+
+      stroke-width: 3.6;
+
+      stroke-linejoin: round;
+      stroke-linecap: round;
+
+      vector-effect:
+        non-scaling-stroke;
+    }
+
+
+    .display-radicand {
+
+      position: relative;
+
+      z-index: 2;
+
+      display:
+        inline-flex;
+
+      align-items: center;
+
+      white-space: nowrap;
+
+      padding:
+        0 .10em 0 .02em;
+    }
+
+
+    .display-radicand .mathml-inline {
+
       display: inline-flex;
-      align-items: baseline;
-      vertical-align: baseline;
+
+      align-items: center;
+
       margin: 0;
       padding: 0;
+
+      vertical-align: middle;
+
       font-size: 1em;
       line-height: 1;
     }
 
-    .textbook-sqrt-radicand .mathml-inline math {
+
+    .display-radicand .mathml-inline math {
+
       display: inline-block;
+
       margin: 0;
       padding: 0;
+
       overflow: visible;
+
       font-size: 1em;
       line-height: 1;
     }
+
 
     .root-sequence {
 
@@ -2480,33 +2503,42 @@ function sqrtMath(
 
   /*
   ==================================================
-  課本式自然根號
+  根號顯示｜完全沿用「根式運算大挑戰」
 
-  左側根號勾用固定比例 SVG 畫出，
-  右側橫線由 radicand 容器延伸。
-  兩者刻意重疊，避免出現「勾和橫線斷開」的縫隙。
+  整個根號由同一個 SVG path 畫成：
+  小勾 → 下沉斜線 → 上升長斜線 → 上方橫線。
+  SVG 寬度會跟著根號內內容自動延伸，因此橫線能自然
+  覆蓋整個 radicand，而且不會出現接縫。
   ==================================================
   */
 
   return `
 
-    <span class="textbook-sqrt final-answer-root">
+    <span class="display-radical final-answer-root">
 
       <svg
-        class="textbook-sqrt-hook"
-        viewBox="0 0 42 64"
-        preserveAspectRatio="xMidYMid meet"
+        class="display-radical-svg"
+        viewBox="0 0 100 62"
+        preserveAspectRatio="none"
         aria-hidden="true"
         focusable="false"
       >
 
         <path
-          d="M 2 36 L 8 36 L 14 50 L 20 58 L 30 7 L 42 7"
+          class="display-radical-path"
+          d="
+            M 1 37
+            L 7 37
+            L 13 51
+            L 18 58
+            L 29 8
+            L 98 8
+          "
         ></path>
 
       </svg>
 
-      <span class="textbook-sqrt-radicand">
+      <span class="display-radicand">
         ${inlineMath(content)}
       </span>
 
