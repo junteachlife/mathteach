@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    數學遊戲管理中心｜生活有解．心中有數
+  </title>
+
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='3' y='3' width='58' height='58' rx='14' fill='%231e3a8a'/%3E%3Cpath d='M32 10l6.5 13.2L53 25.3 42.5 35.5 45 50 32 43.2 19 50l2.5-14.5L11 25.3l14.5-2.1z' fill='%23facc15'/%3E%3Ccircle cx='32' cy='31' r='9' fill='%23fff'/%3E%3Ctext x='32' y='36' text-anchor='middle' font-size='14' font-family='Arial' font-weight='900' fill='%231e3a8a'%3EA%3C/text%3E%3C/svg%3E"
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      min-height: 100vh;
+
+      padding: 20px;
+
+      font-family:
+        "Microsoft JhengHei",
+        "Noto Sans TC",
+        sans-serif;
+
+      background:
+        linear-gradient(
+          135deg,
+          #dbeafe,
+          #fef3c7
+        );
+
+      color:
+        #1f2937;
+    }
+
+
+    .container {
+
+      width: 100%;
+
+      max-width: 1100px;
+
+      margin: 0 auto;
+    }
+
+
+    /*
+    ==================================================
+    載入畫面
+    ==================================================
+    */
+
+    .loading-screen {
+
+      min-height:
+        calc(
+          100vh - 40px
+        );
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+    }
+
+
+    .loading-card {
+
+      width: min(
+        520px,
+        100%
+      );
+
+      padding:
+        42px 24px;
+
+      border-radius:
+        26px;
+
+      background:
+        white;
+
+      text-align:
+        center;
+
+      box-shadow:
+        0 18px 50px
+        rgba(
+          0,
+          0,
+          0,
+          0.15
+        );
+    }
+
+
+    .loading-icon {
+
+      font-size:
+        52px;
+
+      margin-bottom:
+        16px;
+    }
+
+
+    .loading-title {
+
+      margin:
+        0 0 10px;
+
+      font-size:
+        25px;
+
+      color:
+        #1d4ed8;
+    }
+
+
+    .loading-text {
+
+      color:
+        #64748b;
+
+      line-height:
+        1.8;
+    }
+
+
+    /*
+    ==================================================
+    無權限
+    ==================================================
+    */
+
+    .access-denied {
+
+      display: none;
+
+      min-height:
+        calc(
+          100vh - 40px
+        );
+
+      align-items: center;
+
+      justify-content: center;
+    }
+
+
+    .denied-card {
+
+      width: min(
+        540px,
+        100%
+      );
+
+      padding:
+        42px 26px;
+
+      border-radius:
+        26px;
+
+      background:
+        white;
+
+      text-align:
+        center;
+
+      box-shadow:
+        0 18px 50px
+        rgba(
+          0,
+          0,
+          0,
+          0.15
+        );
+    }
+
+
+    .denied-icon {
+
+      font-size:
+        56px;
+
+      margin-bottom:
+        14px;
+    }
+
+
+    .denied-title {
+
+      margin:
+        0 0 12px;
+
+      color:
+        #b91c1c;
+
+      font-size:
+        28px;
+    }
+
+
+    .denied-message {
+
+      color:
+        #64748b;
+
+      line-height:
+        1.8;
+    }
+
+
+    /*
+    ==================================================
+    管理頁
+    ==================================================
+    */
+
+    .admin-app {
+
+      display: none;
+    }
+
+
+    .admin-header {
+
+      margin-bottom:
+        20px;
+
+      padding:
+        26px;
+
+      border-radius:
+        24px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #1e3a8a,
+          #2563eb
+        );
+
+      color:
+        white;
+
+      box-shadow:
+        0 15px 35px
+        rgba(
+          30,
+          58,
+          138,
+          0.25
+        );
+    }
+
+
+    .header-top {
+
+      display: flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+      gap:
+        16px;
+
+      flex-wrap:
+        wrap;
+    }
+
+
+    .title-box h1 {
+
+      margin:
+        0 0 8px;
+
+      font-size:
+        32px;
+    }
+
+
+    .title-box p {
+
+      margin: 0;
+
+      opacity:
+        0.9;
+
+      line-height:
+        1.6;
+    }
+
+
+    .admin-badge {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      padding:
+        10px 15px;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          0.18
+        );
+
+      font-weight:
+        bold;
+    }
+
+
+    /*
+    ==================================================
+    管理者資訊
+    ==================================================
+    */
+
+    .admin-info {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          1fr
+        );
+
+      gap:
+        14px;
+
+      margin-bottom:
+        20px;
+    }
+
+
+    .info-card {
+
+      padding:
+        20px;
+
+      border-radius:
+        20px;
+
+      background:
+        white;
+
+      box-shadow:
+        0 8px 24px
+        rgba(
+          0,
+          0,
+          0,
+          0.09
+        );
+    }
+
+
+    .info-label {
+
+      margin-bottom:
+        7px;
+
+      color:
+        #64748b;
+
+      font-size:
+        14px;
+    }
+
+
+    .info-value {
+
+      color:
+        #1e3a8a;
+
+      font-size:
+        18px;
+
+      font-weight:
+        bold;
+
+      word-break:
+        break-word;
+    }
+
+
+    /*
+    ==================================================
+    功能卡片
+    ==================================================
+    */
+
+    .section {
+
+      padding:
+        24px;
+
+      border-radius:
+        22px;
+
+      background:
+        white;
+
+      box-shadow:
+        0 10px 28px
+        rgba(
+          0,
+          0,
+          0,
+          0.10
+        );
+    }
+
+
+    .section-title {
+
+      margin:
+        0 0 18px;
+
+      color:
+        #1e3a8a;
+
+      font-size:
+        24px;
+    }
+
+
+    .feature-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          1fr
+        );
+
+      gap:
+        16px;
+    }
+
+
+    .feature-card {
+
+      padding:
+        22px 18px;
+
+      border:
+        2px solid
+        #e5e7eb;
+
+      border-radius:
+        18px;
+
+      background:
+        #f8fafc;
+    }
+
+
+    .feature-icon {
+
+      margin-bottom:
+        10px;
+
+      font-size:
+        32px;
+    }
+
+
+    .feature-title {
+
+      margin-bottom:
+        6px;
+
+      color:
+        #1e3a8a;
+
+      font-size:
+        18px;
+
+      font-weight:
+        bold;
+    }
+
+
+    .feature-description {
+
+      color:
+        #64748b;
+
+      font-size:
+        14px;
+
+      line-height:
+        1.7;
+    }
+
+
+    .coming-soon {
+
+      display:
+        inline-block;
+
+      margin-top:
+        11px;
+
+      padding:
+        5px 10px;
+
+      border-radius:
+        999px;
+
+      background:
+        #fef3c7;
+
+      color:
+        #92400e;
+
+      font-size:
+        12px;
+
+      font-weight:
+        bold;
+    }
+
+
+    /*
+    ==================================================
+    按鈕
+    ==================================================
+    */
+
+    .actions {
+
+      display: flex;
+
+      justify-content:
+        center;
+
+      gap:
+        12px;
+
+      margin-top:
+        22px;
+
+      flex-wrap:
+        wrap;
+    }
+
+
+    button,
+    .button-link {
+
+      min-height:
+        46px;
+
+      padding:
+        11px 20px;
+
+      border:
+        none;
+
+      border-radius:
+        13px;
+
+      font-family:
+        inherit;
+
+      font-size:
+        16px;
+
+      font-weight:
+        bold;
+
+      cursor:
+        pointer;
+
+      text-decoration:
+        none;
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+    }
+
+
+    .home-button {
+
+      background:
+        #2563eb;
+
+      color:
+        white;
+    }
+
+
+    .logout-button {
+
+      background:
+        #ef4444;
+
+      color:
+        white;
+    }
+
+
+    .secondary-button {
+
+      background:
+        #64748b;
+
+      color:
+        white;
+    }
+
+
+    button:hover,
+    .button-link:hover {
+
+      opacity:
+        0.9;
+    }
+
+
+    /*
+    ==================================================
+    手機
+    ==================================================
+    */
+
+    @media (
+      max-width: 760px
+    ) {
+
+      body {
+
+        padding:
+          12px;
+      }
+
+
+      .admin-header {
+
+        padding:
+          21px 17px;
+      }
+
+
+      .title-box h1 {
+
+        font-size:
+          27px;
+      }
+
+
+      .admin-info {
+
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .feature-grid {
+
+        grid-template-columns:
+          1fr;
+      }
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <main class="container">
+
+
+    <!--
+    ==================================================
+    權限確認中
+    ==================================================
+    -->
+
+    <section
+      id="loadingScreen"
+      class="loading-screen"
+    >
+
+      <div class="loading-card">
+
+        <div class="loading-icon">
+          🔐
+        </div>
+
+        <h1 class="loading-title">
+          正在確認管理員權限
+        </h1>
+
+        <div class="loading-text">
+          請稍候，系統正在確認 Firebase 登入狀態與最高管理員資格……
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!--
+    ==================================================
+    無權限
+    ==================================================
+    -->
+
+    <section
+      id="accessDenied"
+      class="access-denied"
+    >
+
+      <div class="denied-card">
+
+        <div class="denied-icon">
+          🔒
+        </div>
+
+        <h1 class="denied-title">
+          無管理權限
+        </h1>
+
+        <p
+          id="deniedMessage"
+          class="denied-message"
+        >
+          此頁面僅限最高管理員使用。
+        </p>
+
+        <div class="actions">
+
+          <a
+            class="button-link home-button"
+            href="index.html"
+          >
+            🏠 回到首頁
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!--
+    ==================================================
+    最高管理員後台
+    ==================================================
+    -->
+
+    <section
+      id="adminApp"
+      class="admin-app"
+    >
+
+
+      <header class="admin-header">
+
+        <div class="header-top">
+
+          <div class="title-box">
+
+            <h1>
+              👑 數學遊戲管理中心
+            </h1>
+
+            <p>
+              生活有解．心中有數｜最高管理員後台
+            </p>
+
+          </div>
+
+
+          <div class="admin-badge">
+            👑 Super Admin
+          </div>
+
+        </div>
+
+      </header>
+
+
+      <!-- 管理員資訊 -->
+
+      <section class="admin-info">
+
+        <article class="info-card">
+
+          <div class="info-label">
+            管理員
+          </div>
+
+          <div
+            id="adminName"
+            class="info-value"
+          >
+            —
+          </div>
+
+        </article>
+
+
+        <article class="info-card">
+
+          <div class="info-label">
+            登入帳號
+          </div>
+
+          <div
+            id="adminEmail"
+            class="info-value"
+          >
+            —
+          </div>
+
+        </article>
+
+
+        <article class="info-card">
+
+          <div class="info-label">
+            權限狀態
+          </div>
+
+          <div
+            id="adminStatus"
+            class="info-value"
+          >
+            —
+          </div>
+
+        </article>
+
+      </section>
+
+
+      <!-- 未來管理功能 -->
+
+      <section class="section">
+
+        <h2 class="section-title">
+          🛠️ 管理功能
+        </h2>
+
+
+        <div class="feature-grid">
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">
+              📊
+            </div>
+
+            <div class="feature-title">
+              每月成績管理
+            </div>
+
+            <div class="feature-description">
+              管理本月統計、排行榜，以及歷月資料。
+            </div>
+
+            <span class="coming-soon">
+              下一階段建置
+            </span>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">
+              👥
+            </div>
+
+            <div class="feature-title">
+              使用者與成績
+            </div>
+
+            <div class="feature-description">
+              查看學生帳號、遊戲次數、成績與學習紀錄。
+            </div>
+
+            <span class="coming-soon">
+              尚未開放
+            </span>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">
+              🏆
+            </div>
+
+            <div class="feature-title">
+              排行榜管理
+            </div>
+
+            <div class="feature-description">
+              查看本月排行榜與歷史排行榜。
+            </div>
+
+            <span class="coming-soon">
+              尚未開放
+            </span>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">
+              ⚔️
+            </div>
+
+            <div class="feature-title">
+              RPG 成長系統
+            </div>
+
+            <div class="feature-description">
+              未來管理 XP、等級、稱號、元寶與鑽石。
+            </div>
+
+            <span class="coming-soon">
+              規劃中
+            </span>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">
+              ⚙️
+            </div>
+
+            <div class="feature-title">
+              系統設定
+            </div>
+
+            <div class="feature-description">
+              管理月份制度、功能開關與平台設定。
+            </div>
+
+            <span class="coming-soon">
+              尚未開放
+            </span>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">
+              📜
+            </div>
+
+            <div class="feature-title">
+              管理操作紀錄
+            </div>
+
+            <div class="feature-description">
+              未來記錄管理員的重要操作與資料變更。
+            </div>
+
+            <span class="coming-soon">
+              尚未開放
+            </span>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <div class="actions">
+
+        <a
+          class="button-link home-button"
+          href="index.html"
+        >
+          🏠 回到首頁
+        </a>
+
+
+        <button
+          id="logoutButton"
+          class="logout-button"
+          type="button"
+        >
+          🚪 登出
+        </button>
+
+      </div>
+
+
+    </section>
+
+  </main>
+
+
+  <script type="module">
+
+    import {
+      requireSuperAdmin,
+      getAdminDisplayName,
+      logoutAdmin
+    } from "./js/admin-auth.js";
+
+
+    const loadingScreen =
+      document.getElementById(
+        "loadingScreen"
+      );
+
+
+    const accessDenied =
+      document.getElementById(
+        "accessDenied"
+      );
+
+
+    const adminApp =
+      document.getElementById(
+        "adminApp"
+      );
+
+
+    const deniedMessage =
+      document.getElementById(
+        "deniedMessage"
+      );
+
+
+    /*
+    ==================================================
+    顯示無權限
+    ==================================================
+    */
+
+    function showDenied(
+      message
+    ) {
+
+      loadingScreen.style.display =
+        "none";
+
+      adminApp.style.display =
+        "none";
+
+      accessDenied.style.display =
+        "flex";
+
+
+      deniedMessage.textContent =
+        message;
+    }
+
+
+    /*
+    ==================================================
+    顯示管理後台
+    ==================================================
+    */
+
+    function showAdmin(
+      result
+    ) {
+
+      loadingScreen.style.display =
+        "none";
+
+      accessDenied.style.display =
+        "none";
+
+      adminApp.style.display =
+        "block";
+
+
+      document
+        .getElementById(
+          "adminName"
+        )
+        .textContent =
+          getAdminDisplayName(
+            result
+          );
+
+
+      document
+        .getElementById(
+          "adminEmail"
+        )
+        .textContent =
+          result.user?.email ||
+          "未提供 Email";
+
+
+      document
+        .getElementById(
+          "adminStatus"
+        )
+        .textContent =
+          "最高管理員｜啟用中";
+    }
+
+
+    /*
+    ==================================================
+    權限初始化
+    ==================================================
+    */
+
+    async function initializeAdminPage() {
+
+      try {
+
+        const result =
+          await requireSuperAdmin();
+
+
+        /*
+        尚未登入
+        */
+
+        if (
+          result.reason ===
+          "not-logged-in"
+        ) {
+
+          showDenied(
+            "目前尚未登入。請先登入數學遊戲平台，再進入管理中心。"
+          );
+
+          return;
+        }
+
+
+        /*
+        管理員已停用
+        */
+
+        if (
+          result.reason ===
+          "admin-disabled"
+        ) {
+
+          showDenied(
+            "此管理員帳號目前已停用。"
+          );
+
+          return;
+        }
+
+
+        /*
+        不是管理員
+        */
+
+        if (
+          result.reason ===
+          "not-admin" ||
+          result.reason ===
+          "invalid-role"
+        ) {
+
+          showDenied(
+            "目前登入的帳號沒有最高管理員權限。"
+          );
+
+          return;
+        }
+
+
+        /*
+        Firebase 或 Firestore 發生錯誤
+        */
+
+        if (
+          !result.allowed
+        ) {
+
+          showDenied(
+            "目前無法確認管理員權限，請稍後重新整理頁面。"
+          );
+
+          return;
+        }
+
+
+        /*
+        通過
+        */
+
+        showAdmin(
+          result
+        );
+
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          "管理中心初始化失敗：",
+          error
+        );
+
+
+        showDenied(
+          "管理中心載入失敗，請稍後再試。"
+        );
+      }
+    }
+
+
+    /*
+    ==================================================
+    登出
+    ==================================================
+    */
+
+    document
+      .getElementById(
+        "logoutButton"
+      )
+      .addEventListener(
+        "click",
+
+        async () => {
+
+          const confirmed =
+            window.confirm(
+              "確定要登出數學遊戲平台嗎？"
+            );
+
+
+          if (
+            !confirmed
+          ) {
+
+            return;
+          }
+
+
+          const result =
+            await logoutAdmin();
+
+
+          if (
+            result.success
+          ) {
+
+            window.location.href =
+              "index.html";
+
+            return;
+          }
+
+
+          window.alert(
+            "登出失敗，請稍後再試。"
+          );
+        }
+      );
+
+
+    /*
+    ==================================================
+    啟動
+    ==================================================
+    */
+
+    initializeAdminPage();
+
+  </script>
+
+</body>
+
+</html>
