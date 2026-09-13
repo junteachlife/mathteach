@@ -244,107 +244,70 @@
       line-height: 1.7;
     }
 
-    .field {
+    .google-login-panel {
+      display: flex;
+      align-items: center;
+      gap: 14px;
       margin-bottom: 18px;
+      padding: 16px;
+      border: 1px solid #dbeafe;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
     }
 
-    .field label {
-      display: block;
-      margin-bottom: 8px;
-      color: #334155;
-      font-weight: 800;
-      font-size: 15px;
-    }
-
-    .input-wrap {
-      position: relative;
-    }
-
-    .input-wrap input {
-      width: 100%;
-      min-height: 52px;
-      padding: 12px 48px 12px 14px;
-      border: 2px solid var(--border);
+    .google-login-icon {
+      flex: 0 0 48px;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
       border-radius: 14px;
-      outline: none;
+      background: white;
+      color: #2563eb;
+      font-size: 24px;
+      font-weight: 900;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .08);
+      border: 1px solid #e2e8f0;
+    }
+
+    .google-login-copy {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+    }
+
+    .google-login-copy strong {
       color: #0f172a;
-      background: #fff;
-      transition: border-color .18s ease, box-shadow .18s ease;
+      font-size: 16px;
     }
 
-    .input-wrap input:focus {
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 4px rgba(96, 165, 250, .16);
-    }
-
-    .field-icon {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #94a3b8;
-      pointer-events: none;
-    }
-
-    .password-toggle {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      border: 0;
-      border-radius: 10px;
-      background: transparent;
-      cursor: pointer;
+    .google-login-copy span {
       color: #64748b;
-      font-size: 19px;
-    }
-
-    .password-toggle:hover {
-      background: #f1f5f9;
+      font-size: 13px;
+      line-height: 1.6;
     }
 
     .google-button {
       width: 100%;
-      min-height: 54px;
-      border: 2px solid var(--border);
+      min-height: 56px;
+      border: 0;
       border-radius: 15px;
-      background: white;
-      color: #1f2937;
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      color: white;
       font-weight: 900;
-      font-size: 16px;
+      font-size: 17px;
       cursor: pointer;
-      transition: transform .15s ease, background .15s ease;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, .24);
+      transition: transform .15s ease, opacity .15s ease;
     }
 
     .google-button:hover:not(:disabled) {
       transform: translateY(-1px);
-      background: #f8fafc;
     }
 
     .google-button:disabled {
       cursor: wait;
       opacity: .65;
-    }
-
-    .login-divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 18px 0;
-      color: #94a3b8;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .login-divider::before,
-    .login-divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: #e2e8f0;
     }
 
     .login-message {
@@ -365,29 +328,6 @@
 
     .login-message.info {
       color: var(--blue);
-    }
-
-    .login-button {
-      width: 100%;
-      min-height: 54px;
-      border: 0;
-      border-radius: 15px;
-      background: linear-gradient(135deg, #1d4ed8, #2563eb);
-      color: white;
-      font-weight: 900;
-      font-size: 17px;
-      cursor: pointer;
-      box-shadow: 0 10px 22px rgba(37, 99, 235, .22);
-      transition: transform .15s ease, opacity .15s ease;
-    }
-
-    .login-button:hover:not(:disabled) {
-      transform: translateY(-1px);
-    }
-
-    .login-button:disabled {
-      cursor: wait;
-      opacity: .65;
     }
 
     .login-links {
@@ -712,77 +652,37 @@
           <div class="login-heading">
             <h1>👑 最高管理員登入</h1>
             <p>
-              請使用已設定為 <strong>superAdmin</strong> 的 Firebase 帳號登入。
+              本管理中心僅使用 <strong>Google 帳號</strong>登入。
+              請選擇已登記在 <strong>systemAdmins</strong> 的最高管理員帳號。
             </p>
           </div>
+
+          <div class="google-login-panel">
+            <div class="google-login-icon" aria-hidden="true">
+              G
+            </div>
+
+            <div class="google-login-copy">
+              <strong>Google 最高管理員驗證</strong>
+              <span>
+                登入後仍會再次檢查 superAdmin 權限與啟用狀態。
+              </span>
+            </div>
+          </div>
+
+          <div
+            id="loginMessage"
+            class="login-message"
+            aria-live="polite"
+          ></div>
 
           <button
             id="googleLoginButton"
             class="google-button"
             type="button"
           >
-            🌐 使用 Google 帳號登入最高管理員
+            🌐 使用 Google 帳號登入管理中心
           </button>
-
-          <div class="login-divider">
-            或使用 Email／密碼
-          </div>
-
-          <form id="adminLoginForm" novalidate>
-            <div class="field">
-              <label for="adminEmail">Email</label>
-              <div class="input-wrap">
-                <input
-                  id="adminEmail"
-                  name="email"
-                  type="email"
-                  inputmode="email"
-                  autocomplete="username"
-                  placeholder="輸入最高管理員 Email"
-                  required
-                >
-                <span class="field-icon">✉️</span>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="adminPassword">密碼</label>
-              <div class="input-wrap">
-                <input
-                  id="adminPassword"
-                  name="password"
-                  type="password"
-                  autocomplete="current-password"
-                  placeholder="輸入密碼"
-                  required
-                >
-
-                <button
-                  id="passwordToggle"
-                  class="password-toggle"
-                  type="button"
-                  aria-label="顯示密碼"
-                  title="顯示／隱藏密碼"
-                >
-                  👁️
-                </button>
-              </div>
-            </div>
-
-            <div
-              id="loginMessage"
-              class="login-message"
-              aria-live="polite"
-            ></div>
-
-            <button
-              id="loginButton"
-              class="login-button"
-              type="submit"
-            >
-              👑 登入管理中心
-            </button>
-          </form>
 
           <div class="login-links">
             <a class="text-link" href="index.html">
@@ -791,7 +691,9 @@
           </div>
 
           <div class="security-note">
-            🔒 管理員密碼不會寫入本網頁，也不會儲存在 HTML 中；帳密驗證由 Firebase Authentication 處理。
+            🔒 本頁不提供 Email／密碼登入，也不儲存 Google 密碼。
+            身分驗證由 Firebase Authentication 處理，登入後再以
+            <strong>systemAdmins / UID</strong> 驗證最高管理員資格。
           </div>
         </section>
       </div>
@@ -933,7 +835,6 @@
   <script type="module">
     import {
       requireSuperAdmin,
-      loginSuperAdmin,
       loginSuperAdminWithGoogle,
       getAdminDisplayName,
       logoutAdmin
@@ -957,26 +858,11 @@
     const adminApp =
       $("adminApp");
 
-    const adminLoginForm =
-      $("adminLoginForm");
-
-    const adminEmail =
-      $("adminEmail");
-
-    const adminPassword =
-      $("adminPassword");
-
-    const loginButton =
-      $("loginButton");
-
     const googleLoginButton =
       $("googleLoginButton");
 
     const loginMessage =
       $("loginMessage");
-
-    const passwordToggle =
-      $("passwordToggle");
 
     const deniedMessage =
       $("deniedMessage");
@@ -1007,7 +893,7 @@
 
       window.setTimeout(
         () => {
-          adminEmail.focus();
+          googleLoginButton.focus();
         },
         50
       );
@@ -1065,25 +951,13 @@
       submitting =
         value;
 
-      loginButton.disabled =
-        value;
-
-      adminEmail.disabled =
-        value;
-
-      adminPassword.disabled =
-        value;
-
-      passwordToggle.disabled =
-        value;
-
       googleLoginButton.disabled =
         value;
 
-      loginButton.textContent =
+      googleLoginButton.textContent =
         value
-          ? "🔐 正在驗證最高管理員……"
-          : "👑 登入管理中心";
+          ? "🔐 正在驗證 Google 最高管理員……"
+          : "🌐 使用 Google 帳號登入管理中心";
     }
 
     /* ===============================
@@ -1184,9 +1058,6 @@
             result.success &&
             result.allowed
           ) {
-            adminPassword.value =
-              "";
-
             showAdmin(
               result
             );
@@ -1222,149 +1093,6 @@
     );
 
     /* ===============================
-       Email / 密碼最高管理員登入
-       =============================== */
-
-    adminLoginForm.addEventListener(
-      "submit",
-
-      async (event) => {
-        event.preventDefault();
-
-        if (
-          submitting
-        ) {
-          return;
-        }
-
-        const email =
-          adminEmail.value.trim();
-
-        const password =
-          adminPassword.value;
-
-        if (
-          !email
-        ) {
-          setLoginMessage(
-            "請輸入最高管理員 Email。",
-            "error"
-          );
-          adminEmail.focus();
-          return;
-        }
-
-        if (
-          !password
-        ) {
-          setLoginMessage(
-            "請輸入密碼。",
-            "error"
-          );
-          adminPassword.focus();
-          return;
-        }
-
-        setSubmitting(
-          true
-        );
-
-        setLoginMessage(
-          "正在驗證 Firebase 帳號與最高管理員權限……",
-          "info"
-        );
-
-        try {
-          const result =
-            await loginSuperAdmin({
-              email,
-              password
-            });
-
-          if (
-            result.success &&
-            result.allowed
-          ) {
-            adminPassword.value =
-              "";
-
-            setLoginMessage(
-              "登入成功。",
-              "success"
-            );
-
-            showAdmin(
-              result
-            );
-
-            return;
-          }
-
-          setLoginMessage(
-            result.message ||
-            "登入失敗，請確認帳號與密碼。",
-            "error"
-          );
-
-          adminPassword.value =
-            "";
-
-          adminPassword.focus();
-
-        } catch (
-          error
-        ) {
-          console.error(
-            "最高管理員登入流程失敗：",
-            error
-          );
-
-          setLoginMessage(
-            "登入失敗，請稍後再試。",
-            "error"
-          );
-
-        } finally {
-          setSubmitting(
-            false
-          );
-        }
-      }
-    );
-
-    /* ===============================
-       密碼顯示／隱藏
-       =============================== */
-
-    passwordToggle.addEventListener(
-      "click",
-      () => {
-        const isPassword =
-          adminPassword.type ===
-          "password";
-
-        adminPassword.type =
-          isPassword
-            ? "text"
-            : "password";
-
-        passwordToggle.textContent =
-          isPassword
-            ? "🙈"
-            : "👁️";
-
-        passwordToggle.setAttribute(
-          "aria-label",
-          isPassword
-            ? "隱藏密碼"
-            : "顯示密碼"
-        );
-
-        adminPassword.focus();
-      }
-    );
-
-    /* ===============================
        切換最高管理員帳號
        =============================== */
 
@@ -1386,14 +1114,8 @@
             return;
           }
 
-          adminEmail.value =
-            "";
-
-          adminPassword.value =
-            "";
-
           showLogin(
-            "請輸入最高管理員帳號。",
+            "請使用已設定為最高管理員的 Google 帳號登入。",
             "info"
           );
         }
@@ -1434,14 +1156,8 @@
             return;
           }
 
-          adminEmail.value =
-            "";
-
-          adminPassword.value =
-            "";
-
           showLogin(
-            "已安全登出最高管理員。",
+            "已安全登出最高管理員，可重新使用 Google 帳號登入。",
             "success"
           );
         }
