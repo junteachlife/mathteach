@@ -3,19 +3,19 @@
 數學遊戲樂園：最高管理員權限共用模組
 檔案位置：js/admin-auth.js
 
-版本：1.1
+版本：1.2
 ==================================================
 
 功能：
 
 1. 等待 Firebase Authentication 完成登入狀態同步
-2. 使用 Email / 密碼登入 Firebase Authentication
+2. 使用 Google 帳號登入 Firebase Authentication
 3. 查詢 systemAdmins/{UID}
 4. 判斷是否為最高管理員
 5. 檢查 active 是否為 true
 6. 提供所有管理頁共用的權限驗證
 7. 提供登出功能
-8. 將 Firebase 登入錯誤轉為較友善的中文訊息
+8. 將 Google 登入錯誤轉為友善中文訊息
 
 ==================================================
 */
@@ -33,7 +33,6 @@ import {
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
-  signInWithEmailAndPassword,
   signInWithPopup,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -363,162 +362,6 @@ export async function requireSuperAdmin() {
 
 /*
 ==================================================
-最高管理員登入
-==================================================
-
-只負責：
-1. Firebase Email / 密碼登入
-2. 驗證 systemAdmins/{UID}
-
-不會把 Email、密碼或 UID 寫死在程式碼中。
-==================================================
-*/
-
-export async function loginSuperAdmin({
-  email,
-  password
-} = {}) {
-
-  const safeEmail =
-    String(
-      email ||
-      ""
-    ).trim();
-
-
-  const safePassword =
-    String(
-      password ||
-      ""
-    );
-
-
-  if (
-    !safeEmail
-  ) {
-
-    return {
-      success: false,
-      reason: "missing-email",
-      message: "請輸入最高管理員 Email。"
-    };
-  }
-
-
-  if (
-    !safePassword
-  ) {
-
-    return {
-      success: false,
-      reason: "missing-password",
-      message: "請輸入密碼。"
-    };
-  }
-
-
-  try {
-
-    const credential =
-      await signInWithEmailAndPassword(
-        auth,
-        safeEmail,
-        safePassword
-      );
-
-
-    const adminResult =
-      await checkSuperAdmin(
-        credential.user
-      );
-
-
-    if (
-      !adminResult.isSuperAdmin
-    ) {
-
-      /*
-      管理中心不接受一般帳號登入。
-      驗證不是最高管理員後立即登出，
-      避免意外改變網站目前登入身分。
-      */
-
-      try {
-
-        await signOut(
-          auth
-        );
-
-      } catch (
-        signOutError
-      ) {
-
-        console.error(
-          "非管理員帳號登出失敗：",
-          signOutError
-        );
-      }
-
-
-      if (
-        adminResult.reason ===
-        "admin-disabled"
-      ) {
-
-        return {
-          ...adminResult,
-          success: false,
-          reason: "admin-disabled",
-          message: "此最高管理員帳號目前已停用。"
-        };
-      }
-
-
-      return {
-        ...adminResult,
-        success: false,
-        reason: "not-super-admin",
-        message: "此帳號沒有最高管理員權限。"
-      };
-    }
-
-
-    return {
-      ...adminResult,
-      success: true,
-      allowed: true,
-      message: "最高管理員登入成功。"
-    };
-
-
-  } catch (
-    error
-  ) {
-
-    console.error(
-      "最高管理員登入失敗：",
-      error
-    );
-
-
-    return {
-      success: false,
-      allowed: false,
-      reason: "auth-error",
-      message:
-        getFriendlyAuthErrorMessage(
-          error
-        ),
-      error
-    };
-  }
-}
-
-
-
-
-/*
-==================================================
 使用 Google 登入最高管理員
 ==================================================
 
@@ -670,54 +513,6 @@ export async function loginSuperAdminWithGoogle() {
 
 /*
 ==================================================
-Firebase Authentication 錯誤中文化
-==================================================
-*/
-
-export function getFriendlyAuthErrorMessage(
-  error
-) {
-
-  const code =
-    error?.code ||
-    "";
-
-
-  switch (
-    code
-  ) {
-
-    case "auth/invalid-email":
-      return "Email 格式不正確。";
-
-    case "auth/missing-password":
-      return "請輸入密碼。";
-
-    case "auth/invalid-credential":
-    case "auth/user-not-found":
-    case "auth/wrong-password":
-      return "帳號或密碼不正確。";
-
-    case "auth/user-disabled":
-      return "此 Firebase 登入帳號目前已停用。";
-
-    case "auth/too-many-requests":
-      return "登入失敗次數過多，請稍後再試。";
-
-    case "auth/network-request-failed":
-      return "目前無法連線到 Firebase，請檢查網路後再試。";
-
-    case "auth/operation-not-allowed":
-      return "Firebase 尚未啟用 Email／密碼登入方式。";
-
-    default:
-      return "登入失敗，請確認帳號、密碼與網路狀態。";
-  }
-}
-
-
-/*
-==================================================
 管理員顯示名稱
 ==================================================
 */
@@ -793,5 +588,5 @@ export async function logoutAdmin() {
 
 
 console.log(
-  "admin-auth.js v1.1 已成功載入"
+  "admin-auth.js v1.2（Google Only）已成功載入"
 );
