@@ -14,6 +14,12 @@
   畢氏定理大挑戰｜數學遊戲樂園
 </title>
 
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='3' y='3' width='58' height='58' rx='14' fill='%2317324D'/%3E%3Cpath d='M15 49V15L49 49Z' fill='%23149B92' stroke='%23FFFFFF' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M15 38H26V49' fill='none' stroke='%23F59E0B' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='48' cy='16' r='6' fill='%23FDE68A'/%3E%3C/svg%3E"
+  >
+
 <link
   rel="stylesheet"
   href="../css/scratchpad.css"
@@ -296,6 +302,131 @@ math {
 
   vertical-align: middle;
 }
+
+
+  /* ==================================================
+  最新統一根號顯示
+  與「根式運算大挑戰」目前確認版本相同
+  ================================================== */
+
+  .display-radical {
+
+    position: relative;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    min-width: 1.15em;
+    min-height: 1.55em;
+
+    padding:
+      .15em .10em .02em .78em;
+
+    margin:
+      0 .04em;
+
+    vertical-align: middle;
+  }
+
+
+  .display-radical-svg {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: visible;
+
+    pointer-events: none;
+  }
+
+
+  .display-radical-path {
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 3.6;
+
+    stroke-linejoin: round;
+    stroke-linecap: round;
+
+    vector-effect: non-scaling-stroke;
+  }
+
+
+  .display-radicand {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: inline-flex;
+
+    align-items: baseline;
+
+    white-space: nowrap;
+
+    padding:
+      .035em .12em .02em .12em;
+
+    transform:
+      translateY(.02em);
+  }
+
+
+  .display-radicand.display-radicand-complex {
+
+    padding-left: .34em;
+    padding-top: .07em;
+
+    transform:
+      translateY(.045em);
+  }
+
+
+  .display-fraction {
+
+    display: inline-flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: stretch;
+
+    min-width: 1.8em;
+
+    margin:
+      0 .12em;
+
+    vertical-align: middle;
+  }
+
+
+  .display-fraction-top,
+  .display-fraction-bottom {
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding:
+      .08em .18em;
+  }
+
+
+  .display-fraction-top {
+
+    border-bottom:
+      2.5px solid
+      currentColor;
+  }
 
 
 /*
@@ -1137,7 +1268,7 @@ input:last-child {
   stroke:
     #172033;
 
-  stroke-width: 3;
+  stroke-width: 3.6;
 
   stroke-linejoin: round;
 
@@ -1551,6 +1682,10 @@ Feedback
 
   padding: 18px;
 
+  border:
+    1px solid
+    #cde5e4;
+
   border-radius: 16px;
 
   background:
@@ -1562,10 +1697,212 @@ Feedback
   line-height: 2;
 }
 
+.explanation-heading {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin:
+    0 0 14px;
+
+  color:
+    var(--navy);
+
+  font-size: 21px;
+
+  font-weight: 900;
+}
+
+.explanation-question {
+
+  margin-bottom: 14px;
+
+  padding: 14px;
+
+  border:
+    1.5px solid
+    #b9dddd;
+
+  border-radius: 13px;
+
+  background: white;
+}
+
+.explanation-question-title {
+
+  margin-bottom: 8px;
+
+  color:
+    var(--teal-dark);
+
+  font-weight: 900;
+}
+
+.explanation-question-math {
+
+  color:
+    var(--navy-dark);
+
+  font-size: 19px;
+
+  font-weight: 900;
+
+  text-align: center;
+
+  line-height: 1.9;
+}
+
+.explanation-method {
+
+  margin-bottom: 14px;
+
+  padding:
+    12px 14px;
+
+  border:
+    1px solid
+    #fed7aa;
+
+  border-radius: 12px;
+
+  background:
+    #fff7ed;
+}
+
+.explanation-method strong {
+  color: #c2410c;
+}
+
 .explanation-step {
 
   margin:
-    9px 0;
+    10px 0;
+
+  padding:
+    13px 14px;
+
+  border-left:
+    4px solid
+    var(--teal);
+
+  border-radius: 11px;
+
+  background: white;
+}
+
+.explanation-step strong {
+  color: var(--teal-dark);
+}
+
+.explanation-math-line {
+
+  display: block;
+
+  margin-top: 7px;
+
+  overflow-x: auto;
+
+  color:
+    #0f172a;
+
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    serif;
+
+  font-size: 1.09em;
+
+  font-weight: 900;
+
+  line-height: 2;
+}
+
+.explanation-tip {
+
+  margin-top: 14px;
+
+  padding:
+    13px 14px;
+
+  border:
+    1px solid
+    #fecdd3;
+
+  border-radius: 12px;
+
+  background:
+    #fff1f2;
+
+  color:
+    #9f1239;
+}
+
+.explanation-tip strong {
+  color: #be123c;
+}
+
+.explanation-summary {
+
+  margin-top: 14px;
+
+  padding:
+    13px 14px;
+
+  border:
+    1px solid
+    #bbf7d0;
+
+  border-radius: 12px;
+
+  background:
+    #ecfdf5;
+
+  color:
+    #166534;
+
+  font-weight: 900;
+}
+
+.answer-compare {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+
+  margin-bottom: 14px;
+}
+
+.answer-compare-box {
+
+  padding:
+    11px 12px;
+
+  border-radius: 11px;
+
+  background: white;
+
+  text-align: center;
+}
+
+.answer-compare-box.wrong {
+  border: 1px solid #fecaca;
+}
+
+.answer-compare-box.correct {
+  border: 1px solid #bbf7d0;
+}
+
+@media(max-width: 620px) {
+  .answer-compare {
+    grid-template-columns: 1fr;
+  }
 }
 
 
@@ -2728,15 +3065,97 @@ function segmentABHTML() {
 }
 
 
+function sqrtDisplay(
+  content
+) {
+
+  const source =
+    String(
+      content ??
+      ""
+    );
+
+
+  const plainText =
+    source
+      .replace(
+        /<[^>]*>/g,
+        ""
+      )
+      .replace(
+        /\s+/g,
+        ""
+      );
+
+
+  const isComplex =
+
+    /<sup\b|<span\b|<math\b|<mfrac\b/i
+      .test(
+        source
+      ) ||
+
+    /[×÷＋－+−·]/
+      .test(
+        plainText
+      ) ||
+
+    plainText.length >=
+      5;
+
+
+  const radicandClass =
+
+    isComplex
+
+      ? "display-radicand display-radicand-complex"
+
+      : "display-radicand";
+
+
+  return `
+
+    <span class="display-radical">
+
+      <svg
+        class="display-radical-svg"
+        viewBox="0 0 100 62"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+
+        <path
+          class="display-radical-path"
+          d="
+            M 1 37
+            L 7 37
+            L 13 51
+            L 18 58
+            L 29 8
+            L 98 8
+          "
+        />
+
+      </svg>
+
+      <span class="${radicandClass}">
+
+        ${content}
+
+      </span>
+
+    </span>
+  `;
+}
+
+
 function rootHTML(
   n
 ) {
 
-  return mathHTML(
-    msqrt(
-      mn(
-        n
-      )
+  return sqrtDisplay(
+    String(
+      n
     )
   );
 }
@@ -2746,6 +3165,12 @@ function radicalHTML(
   coefficient,
   radicand
 ) {
+
+  coefficient =
+    Number(
+      coefficient
+    );
+
 
   if (
     radicand ===
@@ -2758,49 +3183,43 @@ function radicalHTML(
   }
 
 
-  const sign =
-    coefficient <
-    0
-
-      ? mo(
-          "−"
-        )
-
-      : "";
+  let prefix =
+    "";
 
 
-  const absolute =
-    Math.abs(
-      coefficient
-    );
+  if (
+    coefficient ===
+    -1
+  ) {
 
+    prefix =
+      "−";
 
-  const coefficientHTML =
-
-    absolute ===
+  } else if (
+    coefficient !==
     1
+  ) {
 
-      ? ""
-
-      : mn(
-          absolute
+    prefix =
+      String(
+        coefficient
+      )
+        .replace(
+          "-",
+          "−"
         );
+  }
 
 
-  return mathHTML(
-
-    `
-      ${sign}
-
-      ${coefficientHTML}
-
-      ${msqrt(
-        mn(
+  return `
+    <span class="math-inline">
+      ${prefix}${sqrtDisplay(
+        String(
           radicand
         )
       )}
-    `
-  );
+    </span>
+  `;
 }
 
 
@@ -2829,36 +3248,57 @@ function radicalFractionHTML(
   denominator
 ) {
 
-  return mathHTML(
+  const sign =
+    coefficient <
+    0
 
-    mfrac(
+      ? "−"
 
-      `
+      : "";
 
-        ${
-          coefficient ===
-          1
 
-            ? ""
+  const absolute =
+    Math.abs(
+      coefficient
+    );
 
-            : mn(
-                coefficient
-              )
-        }
 
-        ${msqrt(
-          mn(
+  const coefficientText =
+
+    absolute ===
+    1
+
+      ? ""
+
+      : String(
+          absolute
+        );
+
+
+  return `
+
+    <span class="display-fraction">
+
+      <span class="display-fraction-top">
+
+        ${sign}${coefficientText}${sqrtDisplay(
+          String(
             radicand
           )
         )}
-      `,
 
-      mn(
-        denominator
-      )
-    )
-  );
+      </span>
+
+      <span class="display-fraction-bottom">
+
+        ${denominator}
+
+      </span>
+
+    </span>
+  `;
 }
+
 
 
 /*
@@ -2979,8 +3419,8 @@ function distanceFormulaHTML() {
 
     ＝
 
-    ${mathHTML(
-      msqrt(
+    ${sqrtDisplay(
+      mathHTML(
         inside
       )
     )}
@@ -3114,6 +3554,150 @@ function isSimplestRadicand(
 
   return true;
 }
+
+function calculationNumberHTML(
+  value
+) {
+
+  const number =
+    Number(
+      value
+    );
+
+
+  return number <
+    0
+
+      ? `(−${Math.abs(
+          number
+        )})`
+
+      : String(
+          number
+        );
+}
+
+
+function squareHTML(
+  value
+) {
+
+  return `${calculationNumberHTML(
+    value
+  )}<sup>2</sup>`;
+}
+
+
+function rootSimplificationHTML(
+  value
+) {
+
+  const result =
+    simplifyRoot(
+      value
+    );
+
+
+  if (
+    result.type ===
+    "number"
+  ) {
+
+    return `
+
+      <span class="explanation-math-line">
+
+        ${rootHTML(
+          value
+        )}
+
+        ＝
+
+        ${result.value}
+
+      </span>
+
+      因為 ${value}＝${result.value}<sup>2</sup>，
+      而長度取正值，所以平方根取 ${result.value}。
+    `;
+  }
+
+
+  if (
+    result.coefficient ===
+    1
+  ) {
+
+    return `
+
+      <span class="explanation-math-line">
+
+        ${rootHTML(
+          value
+        )}
+
+      </span>
+
+      ${value} 已沒有大於 1 的完全平方因數，
+      所以這已經是最簡根式。
+    `;
+  }
+
+
+  const squareFactor =
+    result.coefficient *
+    result.coefficient;
+
+
+  return `
+
+    先找出 ${value} 中最大的完全平方因數：
+
+    <span class="explanation-math-line">
+
+      ${value}
+      ＝
+      ${squareFactor}
+      ×
+      ${result.radicand}
+      ＝
+      ${result.coefficient}<sup>2</sup>
+      ×
+      ${result.radicand}
+
+    </span>
+
+    再把完全平方因數提出根號外：
+
+    <span class="explanation-math-line">
+
+      ${rootHTML(
+        value
+      )}
+      ＝
+      ${sqrtDisplay(
+        `${result.coefficient}<sup>2</sup> × ${result.radicand}`
+      )}
+      ＝
+      ${radicalHTML(
+        result.coefficient,
+        result.radicand
+      )}
+
+    </span>
+  `;
+}
+
+
+function finalAnswerForQuestion(
+  q
+) {
+
+  return correctAnswerText(
+    q
+  );
+}
+
 
 
 /* ==================================================
@@ -3467,6 +4051,73 @@ function ladderSVG(
 斜邊上的高
 ================================================== */
 
+function svgSideLabel(
+  value,
+  x,
+  y,
+  color
+) {
+
+  const rootMatch =
+    String(
+      value
+    )
+      .match(
+        /^√(\d+)$/
+      );
+
+
+  if (
+    !rootMatch
+  ) {
+
+    return `
+      <text
+        x="${x}"
+        y="${y}"
+        font-size="25"
+        font-weight="900"
+        fill="${color}"
+      >
+        ${value}
+      </text>
+    `;
+  }
+
+
+  const radicand =
+    rootMatch[
+      1
+    ];
+
+
+  return `
+    <g
+      transform="translate(${x - 4} ${y - 27})"
+      fill="none"
+      stroke="${color}"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path
+        d="M 0 17 L 5 17 L 10 28 L 15 32 L 23 4 L 62 4"
+        stroke-width="3.6"
+      />
+      <text
+        x="27"
+        y="25"
+        fill="${color}"
+        stroke="none"
+        font-size="25"
+        font-weight="900"
+      >
+        ${radicand}
+      </text>
+    </g>
+  `;
+}
+
+
 function altitudeSVG(
   a,
   b,
@@ -3688,26 +4339,20 @@ function altitudeSVG(
       />
 
 
-      <text
-        x="103"
-        y="108"
-        font-size="25"
-        font-weight="900"
-        fill="#17324d"
-      >
-        ${a}
-      </text>
+      ${svgSideLabel(
+        a,
+        103,
+        108,
+        "#17324d"
+      )}
 
 
-      <text
-        x="250"
-        y="125"
-        font-size="25"
-        font-weight="900"
-        fill="#17324d"
-      >
-        ${b}
-      </text>
+      ${svgSideLabel(
+        b,
+        250,
+        125,
+        "#17324d"
+      )}
 
 
       <text
@@ -4047,6 +4692,15 @@ function question(
     explanation:
       [],
 
+    method:
+      "",
+
+    pitfall:
+      "",
+
+    summary:
+      "",
+
     ...data
   };
 }
@@ -4085,6 +4739,21 @@ function makeHypotenuseQuestion() {
     );
 
 
+  const answerHTML =
+
+    result.type ===
+    "number"
+
+      ? String(
+          result.value
+        )
+
+      : radicalHTML(
+          result.coefficient,
+          result.radicand
+        );
+
+
   return question({
 
     typeLabel:
@@ -4119,23 +4788,43 @@ function makeHypotenuseQuestion() {
     radicand:
       result.radicand,
 
+    method:
+      "先確認 c 是直角三角形的斜邊。斜邊的平方等於兩股平方和，所以使用 c²＝a²＋b²。",
+
     explanation:
       [
 
-        `由畢氏定理：c²＝${a}²＋${b}²。`,
+        `先把兩股代入畢氏定理：
+        <span class="explanation-math-line">
+          c²＝${a}²＋${b}²
+        </span>`,
 
-        `c²＝${total}。`,
+        `分別計算兩個平方：
+        <span class="explanation-math-line">
+          ${a}²＝${a * a}，${b}²＝${b * b}
+        </span>`,
 
-        result.type ===
-        "number"
+        `再把兩個平方數相加：
+        <span class="explanation-math-line">
+          c²＝${a * a}＋${b * b}＝${total}
+        </span>`,
 
-          ? `因為 c＞0，所以 c＝${result.value}。`
+        `因為 c 代表邊長，所以 c＞0，只取正平方根：
+        ${rootSimplificationHTML(
+          total
+        )}`,
 
-          : `因為 c＞0，所以 c＝${radicalHTML(
-              result.coefficient,
-              result.radicand
-            )}。`
-      ]
+        `因此斜邊：
+        <span class="explanation-math-line">
+          c＝${answerHTML}
+        </span>`
+      ],
+
+    pitfall:
+      "畢氏定理中的 c 必須是斜邊；開平方求邊長時，雖然方程式有正負平方根，但幾何長度只取正值。",
+
+    summary:
+      `最後答案：c＝${answerHTML}`
   });
 }
 
@@ -4143,11 +4832,8 @@ function makeHypotenuseQuestion() {
 function makeLegQuestion() {
 
   let known;
-
   let hypotenuse;
-
   let difference;
-
   let result;
 
 
@@ -4187,6 +4873,21 @@ function makeLegQuestion() {
   );
 
 
+  const answerHTML =
+
+    result.type ===
+    "number"
+
+      ? String(
+          result.value
+        )
+
+      : radicalHTML(
+          result.coefficient,
+          result.radicand
+        );
+
+
   return question({
 
     typeLabel:
@@ -4219,23 +4920,43 @@ function makeLegQuestion() {
     radicand:
       result.radicand,
 
+    method:
+      "已知斜邊與一股時，先寫畢氏定理，再把已知股平方移到右邊；也就是用「斜邊平方－已知股平方」。",
+
     explanation:
       [
 
-        `由畢氏定理：x²＋${known}²＝${hypotenuse}²。`,
+        `先寫出畢氏定理：
+        <span class="explanation-math-line">
+          x²＋${known}²＝${hypotenuse}²
+        </span>`,
 
-        `所以 x²＝${difference}。`,
+        `把已知股的平方移到右邊：
+        <span class="explanation-math-line">
+          x²＝${hypotenuse}²－${known}²
+        </span>`,
 
-        result.type ===
-        "number"
+        `分別平方後再相減：
+        <span class="explanation-math-line">
+          x²＝${hypotenuse * hypotenuse}－${known * known}＝${difference}
+        </span>`,
 
-          ? `x＝${result.value}。`
+        `因為 x 是邊長，所以 x＞0，只取正平方根：
+        ${rootSimplificationHTML(
+          difference
+        )}`,
 
-          : `x＝${radicalHTML(
-              result.coefficient,
-              result.radicand
-            )}。`
-      ]
+        `因此：
+        <span class="explanation-math-line">
+          x＝${answerHTML}
+        </span>`
+      ],
+
+    pitfall:
+      "求另一股時是「斜邊平方－另一股平方」，不能把順序顛倒；斜邊一定是直角對面的最長邊。",
+
+    summary:
+      `最後答案：x＝${answerHTML}`
   });
 }
 
@@ -4282,6 +5003,18 @@ function makeJudgeQuestion() {
     sides;
 
 
+  const shortSum =
+    a *
+    a +
+    b *
+    b;
+
+
+  const longSquare =
+    c *
+    c;
+
+
   return question({
 
     typeLabel:
@@ -4320,7 +5053,6 @@ function makeJudgeQuestion() {
         {
           value:
             "yes",
-
           text:
             "⭕ 是直角三角形"
         },
@@ -4328,35 +5060,51 @@ function makeJudgeQuestion() {
         {
           value:
             "no",
-
           text:
             "❌ 不是直角三角形"
         }
       ],
 
+    method:
+      "判斷三邊是否為直角三角形時，先找最長邊，把它當作可能的斜邊，再檢查「兩短邊平方和＝最長邊平方」是否成立。",
+
     explanation:
       [
 
-        `先找最長邊 ${c}。`,
+        `三邊中最長的是 ${c}，所以若它是直角三角形，${c} 應該是斜邊。`,
 
-        `兩短邊平方和：${a}²＋${b}²＝${
-          a *
-          a +
-          b *
-          b
-        }。`,
+        `先算兩條較短邊的平方和：
+        <span class="explanation-math-line">
+          ${a}²＋${b}²＝${a * a}＋${b * b}＝${shortSum}
+        </span>`,
 
-        `最長邊平方：${c}²＝${
-          c *
-          c
-        }。`,
+        `再算最長邊的平方：
+        <span class="explanation-math-line">
+          ${c}²＝${longSquare}
+        </span>`,
 
         valid
 
-          ? `兩者相等，所以是直角三角形。`
+          ? `因為
+            <span class="explanation-math-line">
+              ${shortSum}＝${longSquare}
+            </span>
+            符合畢氏定理的逆敘述，所以這三邊可以構成直角三角形。`
 
-          : `兩者不相等，所以不是直角三角形。`
-      ]
+          : `因為
+            <span class="explanation-math-line">
+              ${shortSum}≠${longSquare}
+            </span>
+            不符合畢氏定理的逆敘述，所以這三邊不能構成直角三角形。`
+      ],
+
+    pitfall:
+      "判斷題一定要先找最長邊。不能隨便挑一邊當 c，也不能只看三個數「很像」常見的畢氏數。",
+
+    summary:
+      valid
+        ? "最後答案：是直角三角形"
+        : "最後答案：不是直角三角形"
   });
 }
 
@@ -4416,6 +5164,21 @@ function makeRectangleQuestion() {
     );
 
 
+  const answerHTML =
+
+    result.type ===
+    "number"
+
+      ? String(
+          result.value
+        )
+
+      : radicalHTML(
+          result.coefficient,
+          result.radicand
+        );
+
+
   return question({
 
     typeLabel:
@@ -4448,23 +5211,40 @@ function makeRectangleQuestion() {
     radicand:
       result.radicand,
 
+    method:
+      "長方形的一條對角線會把長方形分成兩個直角三角形；長與寬是兩股，對角線就是斜邊。",
+
     explanation:
       [
 
-        `長、寬及對角線形成直角三角形。`,
+        `先辨認直角三角形：兩股分別是 ${width}、${height}，斜邊是對角線 d。`,
 
-        `d²＝${width}²＋${height}²＝${total}。`,
+        `套用畢氏定理：
+        <span class="explanation-math-line">
+          d²＝${width}²＋${height}²
+        </span>`,
 
-        result.type ===
-        "number"
+        `分別平方並相加：
+        <span class="explanation-math-line">
+          d²＝${width * width}＋${height * height}＝${total}
+        </span>`,
 
-          ? `d＝${result.value}。`
+        `d 是長度，所以只取正平方根：
+        ${rootSimplificationHTML(
+          total
+        )}`,
 
-          : `d＝${radicalHTML(
-              result.coefficient,
-              result.radicand
-            )}。`
-      ]
+        `因此：
+        <span class="explanation-math-line">
+          d＝${answerHTML}
+        </span>`
+      ],
+
+    pitfall:
+      "長方形的對角線是斜邊，不是其中一股；求得平方根後若可以化簡，必須寫成最簡根式。",
+
+    summary:
+      `最後答案：d＝${answerHTML}`
   });
 }
 
@@ -4527,20 +5307,40 @@ function makeLadderQuestion() {
     answer:
       height,
 
+    method:
+      "牆面與地面互相垂直，因此牆高與地面距離是兩股，而梯子跨在兩者之間，是斜邊。",
+
     explanation:
       [
 
-        `梯子、牆面及地面形成直角三角形。`,
+        `先辨認三邊：地面距離是 ${ground}，牆上高度是 h，梯子長 ${ladder} 是斜邊。`,
 
-        `h²＋${ground}²＝${ladder}²。`,
+        `套用畢氏定理：
+        <span class="explanation-math-line">
+          h²＋${ground}²＝${ladder}²
+        </span>`,
 
-        `h²＝${
-          height *
-          height
-        }。`,
+        `把 ${ground}² 移到右邊：
+        <span class="explanation-math-line">
+          h²＝${ladder}²－${ground}²
+        </span>`,
 
-        `h＝${height} 公尺。`
-      ]
+        `計算平方與差：
+        <span class="explanation-math-line">
+          h²＝${ladder * ladder}－${ground * ground}＝${height * height}
+        </span>`,
+
+        `高度為正，所以：
+        <span class="explanation-math-line">
+          h＝${height} 公尺
+        </span>`
+      ],
+
+    pitfall:
+      "梯子題最常見錯誤是把梯腳到牆的距離當成斜邊。斜邊一定是直角對面，而且通常就是題目中的梯子。",
+
+    summary:
+      `最後答案：h＝${height} 公尺`
   });
 }
 
@@ -4573,6 +5373,26 @@ function makeAltitudeQuestion() {
       b,
       c
     );
+
+
+  const rawNumerator =
+    a *
+    b;
+
+
+  const answerHTML =
+
+    reduced.denominator ===
+    1
+
+      ? String(
+          reduced.numerator
+        )
+
+      : fractionHTML(
+          reduced.numerator,
+          reduced.denominator
+        );
 
 
   return question({
@@ -4620,32 +5440,78 @@ function makeAltitudeQuestion() {
     denominator:
       reduced.denominator,
 
+    method:
+      "斜邊上的高不是直接套畢氏定理求出；要把同一個直角三角形的面積，用「兩股」和「斜邊×高」各表示一次。",
+
     explanation:
       [
 
-        `同一個三角形面積可分別用兩股或斜邊與高表示。`,
+        `用兩股當底、高，三角形面積為：
+        <span class="explanation-math-line">
+          面積＝½×${a}×${b}
+        </span>`,
 
-        `½×${a}×${b}＝½×${c}×h。`,
+        `改用斜邊 ${c} 當底、斜邊上的高 h 當高：
+        <span class="explanation-math-line">
+          面積＝½×${c}×h
+        </span>`,
 
-        `${a}×${b}＝${c}h。`,
+        `因為是同一個三角形，所以兩個面積相等：
+        <span class="explanation-math-line">
+          ½×${a}×${b}＝½×${c}×h
+        </span>`,
 
-        `h＝${a * b}/${c}。`,
+        `兩邊同除以 ½，可得：
+        <span class="explanation-math-line">
+          ${a}×${b}＝${c}h
+        </span>`,
+
+        `解出 h：
+        <span class="explanation-math-line">
+          h＝${rawNumerator}/${c}
+        </span>`,
 
         reduced.denominator ===
         1
 
-          ? `所以 h＝${reduced.numerator}。`
+          ? `計算後：
+            <span class="explanation-math-line">
+              h＝${reduced.numerator}
+            </span>`
 
-          : `約分後 h＝${fractionHTML(
-              reduced.numerator,
-              reduced.denominator
-            )}。`
-      ]
+          : `把分數約成最簡分數：
+            <span class="explanation-math-line">
+              h＝${fractionHTML(
+                reduced.numerator,
+                reduced.denominator
+              )}
+            </span>`
+      ],
+
+    pitfall:
+      "斜邊上的高 h 不是兩股中的任何一股。這一題的核心是「同一個三角形面積不變」，最後分數要約成最簡分數。",
+
+    summary:
+      `最後答案：h＝${answerHTML}`
   });
 }
 
 
 function makeRadicalAltitudeQuestion() {
+
+  const root11 =
+    rootHTML(
+      11
+    );
+
+
+  const answerHTML =
+    radicalFractionHTML(
+      5,
+      11,
+      6
+    );
+
 
   return question({
 
@@ -4656,9 +5522,7 @@ function makeRadicalAltitudeQuestion() {
       "先求斜邊，再求斜邊上的高",
 
     html:
-      `兩股長為 5 與 ${rootHTML(
-        11
-      )}，求斜邊上的高 h。`,
+      `兩股長為 5 與 ${root11}，求斜邊上的高 h。`,
 
     hint:
       "💡 先求斜邊，再使用 h＝兩股乘積÷斜邊",
@@ -4682,23 +5546,48 @@ function makeRadicalAltitudeQuestion() {
     denominator:
       6,
 
+    method:
+      "這題要分成兩段：先用畢氏定理求斜邊 c，再用三角形面積關係求斜邊上的高 h。",
+
     explanation:
       [
 
-        `先求斜邊 c。`,
+        `先求斜邊 c。兩股為 5 與 ${root11}：
+        <span class="explanation-math-line">
+          c²＝5²＋(${root11})²
+        </span>`,
 
-        `c²＝5²＋(√11)²＝25＋11＝36。`,
+        `因為 (${root11})²＝11，所以：
+        <span class="explanation-math-line">
+          c²＝25＋11＝36
+        </span>`,
 
-        `所以 c＝6。`,
+        `c 是長度，只取正值：
+        <span class="explanation-math-line">
+          c＝6
+        </span>`,
 
-        `再利用三角形面積：½×5×√11＝½×6×h。`,
+        `再用面積表示同一個三角形：
+        <span class="explanation-math-line">
+          ½×5×${root11}＝½×6×h
+        </span>`,
 
-        `因此 h＝${radicalFractionHTML(
-          5,
-          11,
-          6
-        )}。`
-      ]
+        `兩邊同乘 2：
+        <span class="explanation-math-line">
+          5${root11}＝6h
+        </span>`,
+
+        `兩邊再同除以 6：
+        <span class="explanation-math-line">
+          h＝${answerHTML}
+        </span>`
+      ],
+
+    pitfall:
+      `注意 (${root11})²＝11，不是 121；求出斜邊後，還要再用面積關係求 h，不能把斜邊直接當成高。`,
+
+    summary:
+      `最後答案：h＝${answerHTML}`
   });
 }
 
@@ -4763,10 +5652,14 @@ function makeAxisDistanceQuestion() {
       );
 
 
+    const difference =
+      x2 -
+      x1;
+
+
     const answer =
       Math.abs(
-        x2 -
-        x1
+        difference
       );
 
 
@@ -4797,15 +5690,41 @@ function makeAxisDistanceQuestion() {
 
       answer,
 
+      method:
+        "兩點的 y 坐標完全相同，所以線段 AB 是水平的；距離只看兩個 x 坐標相差多少。",
+
       explanation:
         [
 
-          `A、B 的 y 坐標相同。`,
+          `A、B 的 y 坐標都是 ${y}，因此兩點在同一條水平線上。`,
 
-          `所以兩點在同一條水平線上。`,
+          `用兩個 x 坐標相減並取絕對值：
+          <span class="explanation-math-line">
+            ${segmentABHTML()}＝|${calculationNumberHTML(
+              x2
+            )}－${calculationNumberHTML(
+              x1
+            )}|
+          </span>`,
 
-          `${segmentABHTML()}＝|${x2}－(${x1})|＝${answer}。`
-        ]
+          `先算括號內的差：
+          <span class="explanation-math-line">
+            ${x2}－${calculationNumberHTML(
+              x1
+            )}＝${difference}
+          </span>`,
+
+          `距離不能是負數，所以取絕對值：
+          <span class="explanation-math-line">
+            ${segmentABHTML()}＝|${difference}|＝${answer}
+          </span>`
+        ],
+
+      pitfall:
+        "距離一定是非負數。若坐標有負數，進行減法時負數要連同符號一起看，最安全的做法是把負數加括號。",
+
+      summary:
+        `最後答案：${segmentABHTML()}＝${answer}`
     });
   }
 
@@ -4832,10 +5751,14 @@ function makeAxisDistanceQuestion() {
     );
 
 
+  const difference =
+    y2 -
+    y1;
+
+
   const answer =
     Math.abs(
-      y2 -
-      y1
+      difference
     );
 
 
@@ -4866,15 +5789,41 @@ function makeAxisDistanceQuestion() {
 
     answer,
 
+    method:
+      "兩點的 x 坐標完全相同，所以線段 AB 是鉛直的；距離只看兩個 y 坐標相差多少。",
+
     explanation:
       [
 
-        `A、B 的 x 坐標相同。`,
+        `A、B 的 x 坐標都是 ${x}，因此兩點在同一條鉛直線上。`,
 
-        `所以兩點在同一條鉛直線上。`,
+        `用兩個 y 坐標相減並取絕對值：
+        <span class="explanation-math-line">
+          ${segmentABHTML()}＝|${calculationNumberHTML(
+            y2
+          )}－${calculationNumberHTML(
+            y1
+          )}|
+        </span>`,
 
-        `${segmentABHTML()}＝|${y2}－(${y1})|＝${answer}。`
-      ]
+        `先算括號內的差：
+        <span class="explanation-math-line">
+          ${y2}－${calculationNumberHTML(
+            y1
+          )}＝${difference}
+        </span>`,
+
+        `距離不能是負數，所以取絕對值：
+        <span class="explanation-math-line">
+          ${segmentABHTML()}＝|${difference}|＝${answer}
+        </span>`
+      ],
+
+    pitfall:
+      "鉛直線看 y 坐標差，水平線看 x 坐標差；有負數時要注意「減負數」會變成加法。",
+
+    summary:
+      `最後答案：${segmentABHTML()}＝${answer}`
   });
 }
 
@@ -4882,11 +5831,8 @@ function makeAxisDistanceQuestion() {
 function makeGeneralDistanceQuestion() {
 
   let x1;
-
   let y1;
-
   let x2;
-
   let y2;
 
 
@@ -4939,17 +5885,40 @@ function makeGeneralDistanceQuestion() {
     y1;
 
 
-  const total =
+  const dxSquare =
     dx *
-    dx +
+    dx;
+
+
+  const dySquare =
     dy *
     dy;
+
+
+  const total =
+    dxSquare +
+    dySquare;
 
 
   const result =
     simplifyRoot(
       total
     );
+
+
+  const answerHTML =
+
+    result.type ===
+    "number"
+
+      ? String(
+          result.value
+        )
+
+      : radicalHTML(
+          result.coefficient,
+          result.radicand
+        );
 
 
   return question({
@@ -4986,25 +5955,60 @@ function makeGeneralDistanceQuestion() {
     radicand:
       result.radicand,
 
+    method:
+      "一般兩點距離可以看成一個直角三角形：水平距離是 x 坐標差，鉛直距離是 y 坐標差，AB 是斜邊。",
+
     explanation:
       [
 
-        `x 坐標差：${x2}－(${x1})＝${dx}。`,
+        `先算水平距離的差：
+        <span class="explanation-math-line">
+          Δx＝${calculationNumberHTML(
+            x2
+          )}－${calculationNumberHTML(
+            x1
+          )}＝${dx}
+        </span>`,
 
-        `y 坐標差：${y2}－(${y1})＝${dy}。`,
+        `再算鉛直距離的差：
+        <span class="explanation-math-line">
+          Δy＝${calculationNumberHTML(
+            y2
+          )}－${calculationNumberHTML(
+            y1
+          )}＝${dy}
+        </span>`,
 
-        `${segmentABHTML()}²＝${dx}²＋${dy}²＝${total}。`,
+        `利用畢氏定理／兩點距離公式：
+        <span class="explanation-math-line">
+          ${segmentABHTML()}²＝${squareHTML(
+            dx
+          )}＋${squareHTML(
+            dy
+          )}
+        </span>`,
 
-        result.type ===
-        "number"
+        `把平方算出來：
+        <span class="explanation-math-line">
+          ${segmentABHTML()}²＝${dxSquare}＋${dySquare}＝${total}
+        </span>`,
 
-          ? `所以 ${segmentABHTML()}＝${result.value}。`
+        `因為距離為正，所以取正平方根：
+        ${rootSimplificationHTML(
+          total
+        )}`,
 
-          : `所以 ${segmentABHTML()}＝${radicalHTML(
-              result.coefficient,
-              result.radicand
-            )}。`
-      ]
+        `因此：
+        <span class="explanation-math-line">
+          ${segmentABHTML()}＝${answerHTML}
+        </span>`
+      ],
+
+    pitfall:
+      "坐標相減時最容易漏掉負號。負數參與計算時請加括號，例如 3－(−2)；平方前也要保留整個差值的正負號。",
+
+    summary:
+      `最後答案：${segmentABHTML()}＝${answerHTML}`
   });
 }
 
@@ -5071,18 +6075,19 @@ function rootEditorHTML(
     <div class="root-svg-editor">
 
       <svg
-        viewBox="0 0 235 68"
+        viewBox="0 0 100 62"
         preserveAspectRatio="none"
         aria-hidden="true"
       >
 
         <path
           d="
-            M 2 39
-            L 13 39
-            L 25 59
-            L 40 8
-            L 230 8
+            M 1 37
+            L 7 37
+            L 13 51
+            L 18 58
+            L 29 8
+            L 98 8
           "
         />
 
@@ -6092,7 +7097,7 @@ function readAnswer(
           false,
 
         message:
-          `√${radicand} 還可以化簡，請自行化成最簡根式。`
+          `根號內的 ${radicand} 還可以化簡，請自行化成最簡根式。`
       };
     }
 
@@ -6112,7 +7117,11 @@ function readAnswer(
       },
 
       display:
-        `${sign * coefficient}√${radicand}`
+        radicalHTML(
+          sign *
+          coefficient,
+          radicand
+        )
     };
   }
 
@@ -6191,7 +7200,7 @@ function readAnswer(
           false,
 
         message:
-          `√${radicand} 還可以化簡。`
+          `根號內的 ${radicand} 還可以化簡。`
       };
     }
 
@@ -6232,7 +7241,12 @@ function readAnswer(
       },
 
       display:
-        `${sign * coefficient}√${radicand}/${denominator}`
+        radicalFractionHTML(
+          sign *
+          coefficient,
+          radicand,
+          denominator
+        )
     };
   }
 
@@ -6424,29 +7438,143 @@ function correctAnswerText(
 ================================================== */
 
 function explanationHTML(
-  q
+  q,
+  userAnswer =
+    "",
+  isCorrect =
+    true
 ) {
 
-  return q.explanation
-    .map(
-      (
-        step,
-        i
-      ) => `
+  const questionBlock = `
 
-        <div class="explanation-step">
+    <div class="explanation-heading">
+      📘 完整詳解
+    </div>
 
-          <strong>
-            步驟 ${i + 1}｜
-          </strong>
+    <div class="explanation-question">
 
-          ${step}
+      <div class="explanation-question-title">
+        題目
+      </div>
 
-        </div>
-      `
-    )
-    .join("");
+      <div class="explanation-question-math">
+        ${q.html}
+      </div>
+
+    </div>
+  `;
+
+
+  const compareBlock =
+
+    !isCorrect &&
+    userAnswer
+
+      ? `
+
+          <div class="answer-compare">
+
+            <div class="answer-compare-box wrong">
+              <strong>你的答案</strong><br>
+              ${userAnswer}
+            </div>
+
+            <div class="answer-compare-box correct">
+              <strong>正確答案</strong><br>
+              ${correctAnswerText(
+                q
+              )}
+            </div>
+
+          </div>
+        `
+
+      : "";
+
+
+  const methodBlock =
+
+    q.method
+
+      ? `
+
+          <div class="explanation-method">
+            <strong>先想一想｜</strong>
+            ${q.method}
+          </div>
+        `
+
+      : "";
+
+
+  const steps =
+    q.explanation
+      .map(
+        (
+          step,
+          i
+        ) => `
+
+          <div class="explanation-step">
+
+            <strong>
+              步驟 ${i + 1}｜
+            </strong>
+
+            ${step}
+
+          </div>
+        `
+      )
+      .join("");
+
+
+  const pitfallBlock =
+
+    q.pitfall
+
+      ? `
+
+          <div class="explanation-tip">
+            <strong>⚠️ 常見錯誤｜</strong>
+            ${q.pitfall}
+          </div>
+        `
+
+      : "";
+
+
+  const summaryBlock =
+
+    q.summary
+
+      ? `
+
+          <div class="explanation-summary">
+            ✅ ${q.summary}
+          </div>
+        `
+
+      : `
+
+          <div class="explanation-summary">
+            ✅ 最後答案：${finalAnswerForQuestion(
+              q
+            )}
+          </div>
+        `;
+
+
+  return (
+    questionBlock +
+    compareBlock +
+    methodBlock +
+    steps +
+    pitfallBlock +
+    summaryBlock
+  );
 }
+
 
 
 /* ==================================================
@@ -6597,7 +7725,9 @@ function submitAnswer() {
   $("explanation")
     .innerHTML =
       explanationHTML(
-        q
+        q,
+        answer.display,
+        isCorrect
       );
 
 
@@ -7269,7 +8399,9 @@ function showReview() {
                   <div class="explanation">
 
                     ${explanationHTML(
-                      record.question
+                      record.question,
+                      record.userAnswer,
+                      false
                     )}
 
                   </div>
