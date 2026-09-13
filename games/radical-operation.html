@@ -304,12 +304,34 @@
       display:
         inline-flex;
 
-      align-items: center;
+      align-items: baseline;
 
       white-space: nowrap;
 
+      /*
+      根號 SVG 本身完全不動。
+      只替根號內文字保留安全空間，避免第一個數字、次方
+      或乘號靠得太近而被根號斜線遮住。
+      */
       padding:
-        0 .10em 0 .02em;
+        .035em .12em .02em .12em;
+
+      transform:
+        translateY(.02em);
+    }
+
+
+    .display-radicand.display-radicand-complex {
+
+      /*
+      含次方、乘除或較長式子的根號內容再多留一些左側安全區。
+      只移動內容，不修改根號勾、斜線、轉折或上方橫線。
+      */
+      padding-left: .34em;
+      padding-top: .07em;
+
+      transform:
+        translateY(.045em);
     }
 
 
@@ -3002,6 +3024,56 @@ function sqrtDisplay(
   content
 ) {
 
+  /*
+  根號 SVG 設計完全保留。
+  這裡只判斷根號內是否為較複雜內容，
+  讓文字與次方有足夠的安全距離。
+  */
+
+  const source =
+    String(
+      content ??
+      ""
+    );
+
+
+  const plainText =
+    source
+      .replace(
+        /<[^>]*>/g,
+        ""
+      )
+      .replace(
+        /\s+/g,
+        ""
+      );
+
+
+  const isComplex =
+
+    /<sup\b|<span\b|<math\b|<mfrac\b/i
+      .test(
+        source
+      ) ||
+
+    /[×÷＋－+−·]/
+      .test(
+        plainText
+      ) ||
+
+    plainText.length >=
+      5;
+
+
+  const radicandClass =
+
+    isComplex
+
+      ? "display-radicand display-radicand-complex"
+
+      : "display-radicand";
+
+
   return `
 
     <span class="display-radical">
@@ -3028,7 +3100,7 @@ function sqrtDisplay(
       </svg>
 
 
-      <span class="display-radicand">
+      <span class="${radicandClass}">
 
         ${content}
 
