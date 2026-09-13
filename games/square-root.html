@@ -320,7 +320,13 @@
 
     /*
     ==================================================
-    自然根號：固定大小，不使用 MathML 可伸展根號
+    課本式根號
+
+    目標：
+    1. 根號上方橫線一定存在。
+    2. 橫線完整覆蓋根號內所有內容。
+    3. √ 的勾與橫線自然銜接。
+    4. 題目、詳解、常見錯誤、最後答案全部共用同一套。
     ==================================================
     */
 
@@ -328,9 +334,9 @@
 
       display: inline-flex;
 
-      align-items: baseline;
+      align-items: flex-start;
 
-      vertical-align: baseline;
+      vertical-align: middle;
 
       white-space: nowrap;
 
@@ -349,7 +355,7 @@
 
       flex: 0 0 auto;
 
-      margin: 0 .03em 0 0;
+      margin: 0 -.07em 0 0;
 
       padding: 0;
 
@@ -359,15 +365,15 @@
         "Times New Roman",
         serif;
 
-      font-size: 1em;
+      font-size: 1.28em;
 
-      font-weight: inherit;
+      font-weight: 400;
 
-      line-height: 1;
+      line-height: .90;
 
-      vertical-align: baseline;
+      vertical-align: top;
 
-      transform: none;
+      transform: translateY(.08em);
     }
 
     .plain-sqrt-radicand {
@@ -376,11 +382,15 @@
 
       align-items: baseline;
 
-      vertical-align: baseline;
+      vertical-align: top;
 
-      margin: 0;
+      min-width: .55em;
 
-      padding: 0;
+      margin: .015em 0 0 0;
+
+      padding: .055em .10em 0 .10em;
+
+      border-top: .065em solid currentColor;
 
       line-height: 1;
     }
@@ -396,6 +406,21 @@
       margin: 0;
 
       padding: 0;
+
+      font-size: 1em;
+
+      line-height: 1;
+    }
+
+    .plain-sqrt-radicand .mathml-inline math {
+
+      display: inline-block;
+
+      margin: 0;
+
+      padding: 0;
+
+      overflow: visible;
 
       font-size: 1em;
 
@@ -2469,13 +2494,13 @@ function sqrtMath(
 
   /*
   ==================================================
-  統一根號樣式
+  課本式根號
 
-  所有根號都改成與「最後答案 175√3」完全相同的根號：
-  使用固定大小的文字 √，不使用 MathML <msqrt>，
-  也不讓瀏覽器自動拉高或延伸根號。
-
-  根號內仍使用原本 MathML 顯示數字、次方與乘法。
+  √ 本身使用固定數學字型；
+  根號內整段內容放在同一個 radicand 容器中，
+  再由 CSS 的 border-top 畫出完整橫線。
+  因此無論根號內是 142、9²、2⁵×3⁴×7，
+  橫線都會完整覆蓋所有內容。
   ==================================================
   */
 
