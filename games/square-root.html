@@ -397,12 +397,34 @@
       display:
         inline-flex;
 
-      align-items: center;
+      align-items: baseline;
 
       white-space: nowrap;
 
+      /*
+      根號 SVG 本身完全不動。
+      只替根號內文字保留安全空間，避免第一個數字、次方
+      或乘號靠得太近而被根號斜線遮住。
+      */
       padding:
-        0 .10em 0 .02em;
+        .035em .12em .02em .12em;
+
+      transform:
+        translateY(.02em);
+    }
+
+
+    .display-radicand.display-radicand-complex {
+
+      /*
+      含次方、乘除或較長式子的根號內容再多留一些左側安全區。
+      只移動內容，不修改根號勾、斜線、轉折或上方橫線。
+      */
+      padding-left: .34em;
+      padding-top: .07em;
+
+      transform:
+        translateY(.045em);
     }
 
 
@@ -2505,12 +2527,55 @@ function sqrtMath(
   ==================================================
   根號顯示｜完全沿用「根式運算大挑戰」
 
-  整個根號由同一個 SVG path 畫成：
-  小勾 → 下沉斜線 → 上升長斜線 → 上方橫線。
-  SVG 寬度會跟著根號內內容自動延伸，因此橫線能自然
-  覆蓋整個 radicand，而且不會出現接縫。
+  注意：這裡不改 SVG 根號設計。
+  只依根號內是否含次方、乘除等較複雜內容，
+  替「內容」加上安全距離，避免被根號斜線遮住。
   ==================================================
   */
+
+  const source =
+    String(
+      content ??
+      ""
+    );
+
+
+  const plainText =
+    source
+      .replace(
+        /<[^>]*>/g,
+        ""
+      )
+      .replace(
+        /\s+/g,
+        ""
+      );
+
+
+  const isComplex =
+
+    /<msup\b|<mfrac\b|<msub\b|<munderover\b/i
+      .test(
+        source
+      ) ||
+
+    /[×÷＋－+−·]/
+      .test(
+        plainText
+      ) ||
+
+    plainText.length >=
+      5;
+
+
+  const radicandClass =
+
+    isComplex
+
+      ? "display-radicand display-radicand-complex"
+
+      : "display-radicand";
+
 
   return `
 
@@ -2538,7 +2603,7 @@ function sqrtMath(
 
       </svg>
 
-      <span class="display-radicand">
+      <span class="${radicandClass}">
         ${inlineMath(content)}
       </span>
 
