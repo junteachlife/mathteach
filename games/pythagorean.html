@@ -1282,11 +1282,11 @@ input:last-child {
 
   position: absolute;
 
-  left: 48px;
+  left: 31%;
 
   top: 11px;
 
-  width: 178px;
+  width: 58%;
 
   height: 54px;
 
@@ -5468,7 +5468,10 @@ function makeAltitudeQuestion() {
 
         `解出 h：
         <span class="explanation-math-line">
-          h＝${rawNumerator}/${c}
+          h＝${fractionHTML(
+            rawNumerator,
+            c
+          )}
         </span>`,
 
         reduced.denominator ===
@@ -7030,7 +7033,10 @@ function readAnswer(
       },
 
       display:
-        `${n}/${d}`
+        fractionHTML(
+          n,
+          d
+        )
     };
   }
 
