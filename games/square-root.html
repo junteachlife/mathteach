@@ -15,6 +15,12 @@
   </title>
 
   <link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230288d1'/%3E%3Cpath d='M11 34h8l6 15L35 17h19' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='51' cy='13' r='4' fill='%23fff59d'/%3E%3C/svg%3E"
+  >
+
+  <link
     rel="stylesheet"
     href="../css/scratchpad.css"
   >
@@ -320,25 +326,33 @@
 
     /*
     ==================================================
-    課本式根號
+    課本式自然根號
 
-    目標：
-    1. 根號上方橫線一定存在。
-    2. 橫線完整覆蓋根號內所有內容。
-    3. √ 的勾與橫線自然銜接。
-    4. 題目、詳解、常見錯誤、最後答案全部共用同一套。
+    重點：
+    1. 使用數學字型的 √ 當根號勾。
+    2. 上方橫線由整個根號容器統一繪製，
+       不再由 √ 與 radicand 各畫一半。
+    3. 橫線從根號右上端直接延伸到根號內最後一個字，
+       避免勾與橫線中間出現斷點。
+    4. 題目、詳解、常見錯誤、正確答案與錯題回顧全部共用。
     ==================================================
     */
 
     .plain-sqrt {
 
+      position: relative;
+
       display: inline-flex;
 
-      align-items: flex-start;
+      align-items: baseline;
 
-      vertical-align: middle;
+      vertical-align: -.08em;
 
       white-space: nowrap;
+
+      margin: 0 .02em;
+
+      padding-top: .10em;
 
       font-family:
         "Cambria Math",
@@ -346,16 +360,48 @@
         "Times New Roman",
         serif;
 
+      font-weight: 400;
+
       line-height: 1;
     }
 
+    /*
+    橫線只畫一次，直接從 √ 的右上端延伸到根號內容最右側。
+    這樣不會再有兩段線條高度不同或中間斷開的問題。
+    */
+
+    .plain-sqrt::before {
+
+      content: "";
+
+      position: absolute;
+
+      z-index: 3;
+
+      left: .52em;
+
+      right: .025em;
+
+      top: .075em;
+
+      border-top:
+        .065em solid
+        currentColor;
+
+      pointer-events: none;
+    }
+
     .plain-sqrt-symbol {
+
+      position: relative;
+
+      z-index: 2;
 
       display: inline-block;
 
       flex: 0 0 auto;
 
-      margin: 0 -.07em 0 0;
+      margin: 0 -.11em 0 0;
 
       padding: 0;
 
@@ -365,32 +411,33 @@
         "Times New Roman",
         serif;
 
-      font-size: 1.28em;
+      font-size: 1.20em;
 
       font-weight: 400;
 
-      line-height: .90;
+      line-height: .96;
 
-      vertical-align: top;
-
-      transform: translateY(.08em);
+      transform: translateY(.055em);
     }
 
     .plain-sqrt-radicand {
+
+      position: relative;
+
+      z-index: 1;
 
       display: inline-flex;
 
       align-items: baseline;
 
-      vertical-align: top;
+      min-width: .48em;
 
-      min-width: .55em;
+      margin: 0;
 
-      margin: .015em 0 0 0;
+      padding:
+        .10em .08em 0 .065em;
 
-      padding: .055em .10em 0 .10em;
-
-      border-top: .065em solid currentColor;
+      border: 0;
 
       line-height: 1;
     }
