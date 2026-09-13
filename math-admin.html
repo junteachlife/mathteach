@@ -1,1213 +1,1128 @@
 <!DOCTYPE html>
-
 <html lang="zh-TW">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>數學遊戲管理中心｜生活有解．心中有數</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>
-    數學遊戲管理中心｜生活有解．心中有數
-  </title>
-
+  <!--
+  瀏覽器專屬小圖示：
+  深藍盾牌底＋金色皇冠＋青藍 π
+  與學生遊戲的小圖示做出明顯區隔。
+  -->
   <link
     rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='3' y='3' width='58' height='58' rx='14' fill='%231e3a8a'/%3E%3Cpath d='M32 10l6.5 13.2L53 25.3 42.5 35.5 45 50 32 43.2 19 50l2.5-14.5L11 25.3l14.5-2.1z' fill='%23facc15'/%3E%3Ccircle cx='32' cy='31' r='9' fill='%23fff'/%3E%3Ctext x='32' y='36' text-anchor='middle' font-size='14' font-family='Arial' font-weight='900' fill='%231e3a8a'%3EA%3C/text%3E%3C/svg%3E"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='3' y='3' width='58' height='58' rx='14' fill='%230f172a'/%3E%3Cpath d='M32 8 51 15v15c0 12.5-7.6 21.7-19 27-11.4-5.3-19-14.5-19-27V15z' fill='%231d4ed8'/%3E%3Cpath d='M18 22 23 14l9 8 9-8 5 8-4 7H22z' fill='%23facc15' stroke='%23fef3c7' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M23 34h18M27 34v14M38 34v14M25 41h15' fill='none' stroke='%2367e8f9' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
   >
 
   <style>
-
     * {
       box-sizing: border-box;
     }
 
+    :root {
+      --navy: #0f172a;
+      --blue: #1d4ed8;
+      --blue-2: #2563eb;
+      --cyan: #22d3ee;
+      --gold: #facc15;
+      --slate: #64748b;
+      --border: #e2e8f0;
+      --danger: #b91c1c;
+      --success: #15803d;
+      --warning: #b45309;
+    }
 
     body {
-
       margin: 0;
-
       min-height: 100vh;
-
       padding: 20px;
-
       font-family:
         "Microsoft JhengHei",
         "Noto Sans TC",
         sans-serif;
-
+      color: #1f2937;
       background:
-        linear-gradient(
-          135deg,
-          #dbeafe,
-          #fef3c7
-        );
-
-      color:
-        #1f2937;
+        radial-gradient(circle at top left, rgba(34, 211, 238, .16), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(250, 204, 21, .18), transparent 32%),
+        linear-gradient(135deg, #dbeafe, #f8fafc 48%, #fef3c7);
     }
 
+    button,
+    input {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
 
     .container {
-
       width: 100%;
-
-      max-width: 1100px;
-
+      max-width: 1120px;
       margin: 0 auto;
     }
 
+    .hidden {
+      display: none !important;
+    }
 
-    /*
-    ==================================================
-    載入畫面
-    ==================================================
-    */
+    /* ===============================
+       載入畫面
+       =============================== */
 
-    .loading-screen {
-
-      min-height:
-        calc(
-          100vh - 40px
-        );
-
+    .center-screen {
+      min-height: calc(100vh - 40px);
       display: flex;
-
       align-items: center;
-
       justify-content: center;
     }
 
+    .status-card {
+      width: min(560px, 100%);
+      padding: 40px 26px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, .96);
+      text-align: center;
+      box-shadow: 0 18px 55px rgba(15, 23, 42, .16);
+      border: 1px solid rgba(255, 255, 255, .75);
+    }
 
-    .loading-card {
+    .status-icon {
+      margin-bottom: 14px;
+      font-size: 54px;
+    }
 
-      width: min(
-        520px,
-        100%
-      );
+    .status-title {
+      margin: 0 0 10px;
+      color: var(--blue);
+      font-size: 27px;
+    }
 
-      padding:
-        42px 24px;
+    .status-text {
+      margin: 0;
+      color: var(--slate);
+      line-height: 1.8;
+    }
 
-      border-radius:
-        26px;
+    /* ===============================
+       登入頁
+       =============================== */
 
+    .login-layout {
+      min-height: calc(100vh - 40px);
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(390px, 1.05fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .login-brand,
+    .login-card {
+      border-radius: 30px;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, .15);
+      overflow: hidden;
+    }
+
+    .login-brand {
+      position: relative;
+      min-height: 640px;
+      padding: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
       background:
-        white;
-
-      text-align:
-        center;
-
-      box-shadow:
-        0 18px 50px
-        rgba(
-          0,
-          0,
-          0,
-          0.15
-        );
+        linear-gradient(145deg, rgba(15, 23, 42, .98), rgba(29, 78, 216, .94));
     }
 
-
-    .loading-icon {
-
-      font-size:
-        52px;
-
-      margin-bottom:
-        16px;
+    .login-brand::before,
+    .login-brand::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
     }
 
-
-    .loading-title {
-
-      margin:
-        0 0 10px;
-
-      font-size:
-        25px;
-
-      color:
-        #1d4ed8;
+    .login-brand::before {
+      width: 260px;
+      height: 260px;
+      right: -90px;
+      top: -80px;
+      background: rgba(34, 211, 238, .18);
     }
 
-
-    .loading-text {
-
-      color:
-        #64748b;
-
-      line-height:
-        1.8;
+    .login-brand::after {
+      width: 230px;
+      height: 230px;
+      left: -100px;
+      bottom: -85px;
+      background: rgba(250, 204, 21, .14);
     }
 
+    .brand-mark {
+      position: relative;
+      z-index: 1;
+      width: 92px;
+      height: 92px;
+      display: grid;
+      place-items: center;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .18);
+      font-size: 49px;
+      box-shadow: inset 0 0 24px rgba(255, 255, 255, .08);
+    }
 
-    /*
-    ==================================================
-    無權限
-    ==================================================
-    */
+    .brand-content {
+      position: relative;
+      z-index: 1;
+    }
 
-    .access-denied {
-
-      display: none;
-
-      min-height:
-        calc(
-          100vh - 40px
-        );
-
+    .brand-kicker {
+      display: inline-flex;
       align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .12);
+      color: #fef3c7;
+      font-weight: 700;
+      font-size: 14px;
+    }
 
+    .brand-title {
+      margin: 0;
+      font-size: clamp(33px, 4vw, 48px);
+      line-height: 1.25;
+      letter-spacing: .02em;
+    }
+
+    .brand-subtitle {
+      margin: 18px 0 0;
+      color: #dbeafe;
+      font-size: 17px;
+      line-height: 1.9;
+    }
+
+    .brand-note {
+      position: relative;
+      z-index: 1;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, .16);
+      color: #cbd5e1;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    .login-card {
+      min-height: 640px;
+      padding: 42px 38px;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
+      background: rgba(255, 255, 255, .97);
+      border: 1px solid rgba(255, 255, 255, .78);
     }
 
-
-    .denied-card {
-
-      width: min(
-        540px,
-        100%
-      );
-
-      padding:
-        42px 26px;
-
-      border-radius:
-        26px;
-
-      background:
-        white;
-
-      text-align:
-        center;
-
-      box-shadow:
-        0 18px 50px
-        rgba(
-          0,
-          0,
-          0,
-          0.15
-        );
+    .login-heading {
+      margin-bottom: 28px;
     }
 
-
-    .denied-icon {
-
-      font-size:
-        56px;
-
-      margin-bottom:
-        14px;
+    .login-heading h1 {
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-size: 31px;
     }
 
+    .login-heading p {
+      margin: 0;
+      color: var(--slate);
+      line-height: 1.7;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      color: #334155;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      min-height: 52px;
+      padding: 12px 48px 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      outline: none;
+      color: #0f172a;
+      background: #fff;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .input-wrap input:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 4px rgba(96, 165, 250, .16);
+    }
+
+    .field-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      cursor: pointer;
+      color: #64748b;
+      font-size: 19px;
+    }
+
+    .password-toggle:hover {
+      background: #f1f5f9;
+    }
+
+    .google-button {
+      width: 100%;
+      min-height: 54px;
+      border: 2px solid var(--border);
+      border-radius: 15px;
+      background: white;
+      color: #1f2937;
+      font-weight: 900;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+
+    .google-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      background: #f8fafc;
+    }
+
+    .google-button:disabled {
+      cursor: wait;
+      opacity: .65;
+    }
+
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 18px 0;
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .login-divider::before,
+    .login-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
+
+    .login-message {
+      min-height: 24px;
+      margin: 2px 0 14px;
+      padding: 0 2px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .login-message.error {
+      color: var(--danger);
+    }
+
+    .login-message.success {
+      color: var(--success);
+    }
+
+    .login-message.info {
+      color: var(--blue);
+    }
+
+    .login-button {
+      width: 100%;
+      min-height: 54px;
+      border: 0;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      color: white;
+      font-weight: 900;
+      font-size: 17px;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, .22);
+      transition: transform .15s ease, opacity .15s ease;
+    }
+
+    .login-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .login-button:disabled {
+      cursor: wait;
+      opacity: .65;
+    }
+
+    .login-links {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .text-link {
+      color: var(--slate);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .text-link:hover {
+      color: var(--blue);
+    }
+
+    .security-note {
+      margin-top: 24px;
+      padding: 15px 16px;
+      border-radius: 14px;
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.7;
+      border: 1px solid var(--border);
+    }
+
+    /* ===============================
+       無權限
+       =============================== */
 
     .denied-title {
-
-      margin:
-        0 0 12px;
-
-      color:
-        #b91c1c;
-
-      font-size:
-        28px;
+      color: var(--danger);
     }
 
-
-    .denied-message {
-
-      color:
-        #64748b;
-
-      line-height:
-        1.8;
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
     }
 
-
-    /*
-    ==================================================
-    管理頁
-    ==================================================
-    */
-
-    .admin-app {
-
-      display: none;
+    .button,
+    .button-link {
+      min-height: 46px;
+      padding: 11px 20px;
+      border: 0;
+      border-radius: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      color: white;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
     }
 
+    .button.primary,
+    .button-link.primary {
+      background: var(--blue-2);
+    }
+
+    .button.secondary,
+    .button-link.secondary {
+      background: var(--slate);
+    }
+
+    .button.danger {
+      background: #ef4444;
+    }
+
+    /* ===============================
+       管理後台
+       =============================== */
 
     .admin-header {
-
-      margin-bottom:
-        20px;
-
-      padding:
-        26px;
-
-      border-radius:
-        24px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #1e3a8a,
-          #2563eb
-        );
-
-      color:
-        white;
-
-      box-shadow:
-        0 15px 35px
-        rgba(
-          30,
-          58,
-          138,
-          0.25
-        );
+      margin-bottom: 20px;
+      padding: 26px;
+      border-radius: 25px;
+      color: white;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a 55%, #2563eb);
+      box-shadow: 0 15px 38px rgba(15, 23, 42, .25);
     }
-
 
     .header-top {
-
       display: flex;
-
-      justify-content:
-        space-between;
-
-      align-items:
-        center;
-
-      gap:
-        16px;
-
-      flex-wrap:
-        wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
     }
-
 
     .title-box h1 {
-
-      margin:
-        0 0 8px;
-
-      font-size:
-        32px;
+      margin: 0 0 8px;
+      font-size: 32px;
     }
-
 
     .title-box p {
-
       margin: 0;
-
-      opacity:
-        0.9;
-
-      line-height:
-        1.6;
+      color: #dbeafe;
+      line-height: 1.6;
     }
-
 
     .admin-badge {
-
-      display:
-        inline-flex;
-
-      align-items:
-        center;
-
-      gap:
-        8px;
-
-      padding:
-        10px 15px;
-
-      border-radius:
-        999px;
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.18
-        );
-
-      font-weight:
-        bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .13);
+      border: 1px solid rgba(255, 255, 255, .18);
+      color: #fef3c7;
+      font-weight: 900;
     }
-
-
-    /*
-    ==================================================
-    管理者資訊
-    ==================================================
-    */
 
     .admin-info {
-
       display: grid;
-
-      grid-template-columns:
-        repeat(
-          3,
-          1fr
-        );
-
-      gap:
-        14px;
-
-      margin-bottom:
-        20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
     }
 
+    .info-card,
+    .section {
+      background: rgba(255, 255, 255, .97);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, .10);
+      border: 1px solid rgba(255, 255, 255, .78);
+    }
 
     .info-card {
-
-      padding:
-        20px;
-
-      border-radius:
-        20px;
-
-      background:
-        white;
-
-      box-shadow:
-        0 8px 24px
-        rgba(
-          0,
-          0,
-          0,
-          0.09
-        );
+      padding: 20px;
+      border-radius: 20px;
     }
-
 
     .info-label {
-
-      margin-bottom:
-        7px;
-
-      color:
-        #64748b;
-
-      font-size:
-        14px;
+      margin-bottom: 7px;
+      color: var(--slate);
+      font-size: 14px;
     }
-
 
     .info-value {
-
-      color:
-        #1e3a8a;
-
-      font-size:
-        18px;
-
-      font-weight:
-        bold;
-
-      word-break:
-        break-word;
+      color: #1e3a8a;
+      font-size: 18px;
+      font-weight: 900;
+      word-break: break-word;
     }
-
-
-    /*
-    ==================================================
-    功能卡片
-    ==================================================
-    */
 
     .section {
-
-      padding:
-        24px;
-
-      border-radius:
-        22px;
-
-      background:
-        white;
-
-      box-shadow:
-        0 10px 28px
-        rgba(
-          0,
-          0,
-          0,
-          0.10
-        );
+      padding: 24px;
+      border-radius: 23px;
     }
-
 
     .section-title {
-
-      margin:
-        0 0 18px;
-
-      color:
-        #1e3a8a;
-
-      font-size:
-        24px;
+      margin: 0 0 18px;
+      color: #1e3a8a;
+      font-size: 24px;
     }
-
 
     .feature-grid {
-
       display: grid;
-
-      grid-template-columns:
-        repeat(
-          3,
-          1fr
-        );
-
-      gap:
-        16px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
-
 
     .feature-card {
-
-      padding:
-        22px 18px;
-
-      border:
-        2px solid
-        #e5e7eb;
-
-      border-radius:
-        18px;
-
-      background:
-        #f8fafc;
+      padding: 22px 18px;
+      border: 2px solid #e5e7eb;
+      border-radius: 18px;
+      background: #f8fafc;
     }
-
 
     .feature-icon {
-
-      margin-bottom:
-        10px;
-
-      font-size:
-        32px;
+      margin-bottom: 10px;
+      font-size: 32px;
     }
-
 
     .feature-title {
-
-      margin-bottom:
-        6px;
-
-      color:
-        #1e3a8a;
-
-      font-size:
-        18px;
-
-      font-weight:
-        bold;
+      margin-bottom: 6px;
+      color: #1e3a8a;
+      font-size: 18px;
+      font-weight: 900;
     }
-
 
     .feature-description {
-
-      color:
-        #64748b;
-
-      font-size:
-        14px;
-
-      line-height:
-        1.7;
+      color: var(--slate);
+      font-size: 14px;
+      line-height: 1.7;
     }
-
 
     .coming-soon {
-
-      display:
-        inline-block;
-
-      margin-top:
-        11px;
-
-      padding:
-        5px 10px;
-
-      border-radius:
-        999px;
-
-      background:
-        #fef3c7;
-
-      color:
-        #92400e;
-
-      font-size:
-        12px;
-
-      font-weight:
-        bold;
+      display: inline-block;
+      margin-top: 11px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 12px;
+      font-weight: 900;
     }
 
-
-    /*
-    ==================================================
-    按鈕
-    ==================================================
-    */
-
-    .actions {
-
+    .admin-actions {
       display: flex;
-
-      justify-content:
-        center;
-
-      gap:
-        12px;
-
-      margin-top:
-        22px;
-
-      flex-wrap:
-        wrap;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
     }
 
-
-    button,
-    .button-link {
-
-      min-height:
-        46px;
-
-      padding:
-        11px 20px;
-
-      border:
-        none;
-
-      border-radius:
-        13px;
-
-      font-family:
-        inherit;
-
-      font-size:
-        16px;
-
-      font-weight:
-        bold;
-
-      cursor:
-        pointer;
-
-      text-decoration:
-        none;
-
-      display:
-        inline-flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-    }
-
-
-    .home-button {
-
-      background:
-        #2563eb;
-
-      color:
-        white;
-    }
-
-
-    .logout-button {
-
-      background:
-        #ef4444;
-
-      color:
-        white;
-    }
-
-
-    .secondary-button {
-
-      background:
-        #64748b;
-
-      color:
-        white;
-    }
-
-
-    button:hover,
-    .button-link:hover {
-
-      opacity:
-        0.9;
-    }
-
-
-    /*
-    ==================================================
-    手機
-    ==================================================
-    */
-
-    @media (
-      max-width: 760px
-    ) {
-
+    @media (max-width: 850px) {
       body {
-
-        padding:
-          12px;
+        padding: 12px;
       }
 
-
-      .admin-header {
-
-        padding:
-          21px 17px;
+      .login-layout {
+        grid-template-columns: 1fr;
+        min-height: auto;
       }
 
-
-      .title-box h1 {
-
-        font-size:
-          27px;
+      .login-brand {
+        min-height: 330px;
+        padding: 28px;
       }
 
+      .login-card {
+        min-height: auto;
+        padding: 32px 24px;
+      }
 
       .admin-info {
-
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
       }
 
-
       .feature-grid {
-
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr 1fr;
       }
     }
 
-  </style>
+    @media (max-width: 560px) {
+      .login-brand {
+        min-height: 300px;
+        padding: 24px 20px;
+        border-radius: 22px;
+      }
 
+      .login-card {
+        padding: 28px 18px;
+        border-radius: 22px;
+      }
+
+      .brand-mark {
+        width: 72px;
+        height: 72px;
+        border-radius: 20px;
+        font-size: 39px;
+      }
+
+      .login-heading h1 {
+        font-size: 27px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-header {
+        padding: 21px 17px;
+      }
+
+      .title-box h1 {
+        font-size: 27px;
+      }
+
+      .button,
+      .button-link {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
 </head>
 
-
 <body>
-
   <main class="container">
 
-
-    <!--
-    ==================================================
-    權限確認中
-    ==================================================
-    -->
-
-    <section
-      id="loadingScreen"
-      class="loading-screen"
-    >
-
-      <div class="loading-card">
-
-        <div class="loading-icon">
-          🔐
-        </div>
-
-        <h1 class="loading-title">
-          正在確認管理員權限
-        </h1>
-
-        <div class="loading-text">
-          請稍候，系統正在確認 Firebase 登入狀態與最高管理員資格……
-        </div>
-
+    <!-- 權限確認中 -->
+    <section id="loadingScreen" class="center-screen">
+      <div class="status-card">
+        <div class="status-icon">🔐</div>
+        <h1 class="status-title">正在確認管理員權限</h1>
+        <p class="status-text">
+          系統正在確認 Firebase 登入狀態與最高管理員資格……
+        </p>
       </div>
-
     </section>
 
+    <!-- 最高管理員登入 -->
+    <section id="loginScreen" class="hidden">
+      <div class="login-layout">
 
-    <!--
-    ==================================================
-    無權限
-    ==================================================
-    -->
+        <aside class="login-brand">
+          <div class="brand-mark" aria-hidden="true">👑</div>
 
-    <section
-      id="accessDenied"
-      class="access-denied"
-    >
+          <div class="brand-content">
+            <div class="brand-kicker">🛡️ Super Admin Portal</div>
+            <h1 class="brand-title">數學遊戲<br>管理中心</h1>
+            <p class="brand-subtitle">
+              生活有解．心中有數<br>
+              最高管理員專屬入口
+            </p>
+          </div>
 
-      <div class="denied-card">
+          <div class="brand-note">
+            此頁面使用 Firebase Authentication 驗證登入，並以
+            <strong>systemAdmins / UID</strong> 再次確認最高管理員資格。
+          </div>
+        </aside>
 
-        <div class="denied-icon">
-          🔒
-        </div>
+        <section class="login-card">
+          <div class="login-heading">
+            <h1>👑 最高管理員登入</h1>
+            <p>
+              請使用已設定為 <strong>superAdmin</strong> 的 Firebase 帳號登入。
+            </p>
+          </div>
 
-        <h1 class="denied-title">
-          無管理權限
-        </h1>
+          <button
+            id="googleLoginButton"
+            class="google-button"
+            type="button"
+          >
+            🌐 使用 Google 帳號登入最高管理員
+          </button>
 
-        <p
-          id="deniedMessage"
-          class="denied-message"
-        >
+          <div class="login-divider">
+            或使用 Email／密碼
+          </div>
+
+          <form id="adminLoginForm" novalidate>
+            <div class="field">
+              <label for="adminEmail">Email</label>
+              <div class="input-wrap">
+                <input
+                  id="adminEmail"
+                  name="email"
+                  type="email"
+                  inputmode="email"
+                  autocomplete="username"
+                  placeholder="輸入最高管理員 Email"
+                  required
+                >
+                <span class="field-icon">✉️</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="adminPassword">密碼</label>
+              <div class="input-wrap">
+                <input
+                  id="adminPassword"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="輸入密碼"
+                  required
+                >
+
+                <button
+                  id="passwordToggle"
+                  class="password-toggle"
+                  type="button"
+                  aria-label="顯示密碼"
+                  title="顯示／隱藏密碼"
+                >
+                  👁️
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="loginMessage"
+              class="login-message"
+              aria-live="polite"
+            ></div>
+
+            <button
+              id="loginButton"
+              class="login-button"
+              type="submit"
+            >
+              👑 登入管理中心
+            </button>
+          </form>
+
+          <div class="login-links">
+            <a class="text-link" href="index.html">
+              ← 回到數學遊戲首頁
+            </a>
+          </div>
+
+          <div class="security-note">
+            🔒 管理員密碼不會寫入本網頁，也不會儲存在 HTML 中；帳密驗證由 Firebase Authentication 處理。
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- 無權限 -->
+    <section id="accessDenied" class="center-screen hidden">
+      <div class="status-card">
+        <div class="status-icon">🔒</div>
+        <h1 class="status-title denied-title">無管理權限</h1>
+        <p id="deniedMessage" class="status-text">
           此頁面僅限最高管理員使用。
         </p>
 
-        <div class="actions">
-
-          <a
-            class="button-link home-button"
-            href="index.html"
+        <div class="button-row">
+          <button
+            id="switchAccountButton"
+            class="button primary"
+            type="button"
           >
+            👑 切換最高管理員帳號
+          </button>
+
+          <a class="button-link secondary" href="index.html">
             🏠 回到首頁
           </a>
-
         </div>
-
       </div>
-
     </section>
 
-
-    <!--
-    ==================================================
-    最高管理員後台
-    ==================================================
-    -->
-
-    <section
-      id="adminApp"
-      class="admin-app"
-    >
-
-
+    <!-- 最高管理員後台 -->
+    <section id="adminApp" class="hidden">
       <header class="admin-header">
-
         <div class="header-top">
-
           <div class="title-box">
-
-            <h1>
-              👑 數學遊戲管理中心
-            </h1>
-
-            <p>
-              生活有解．心中有數｜最高管理員後台
-            </p>
-
+            <h1>👑 數學遊戲管理中心</h1>
+            <p>生活有解．心中有數｜最高管理員後台</p>
           </div>
-
 
           <div class="admin-badge">
-            👑 Super Admin
+            🛡️ Super Admin
           </div>
-
         </div>
-
       </header>
 
-
-      <!-- 管理員資訊 -->
-
       <section class="admin-info">
-
         <article class="info-card">
-
-          <div class="info-label">
-            管理員
-          </div>
-
-          <div
-            id="adminName"
-            class="info-value"
-          >
-            —
-          </div>
-
+          <div class="info-label">管理員</div>
+          <div id="adminNameValue" class="info-value">—</div>
         </article>
 
-
         <article class="info-card">
-
-          <div class="info-label">
-            登入帳號
-          </div>
-
-          <div
-            id="adminEmail"
-            class="info-value"
-          >
-            —
-          </div>
-
+          <div class="info-label">登入帳號</div>
+          <div id="adminEmailValue" class="info-value">—</div>
         </article>
 
-
         <article class="info-card">
-
-          <div class="info-label">
-            權限狀態
-          </div>
-
-          <div
-            id="adminStatus"
-            class="info-value"
-          >
-            —
-          </div>
-
+          <div class="info-label">權限狀態</div>
+          <div id="adminStatusValue" class="info-value">—</div>
         </article>
-
       </section>
 
-
-      <!-- 未來管理功能 -->
-
       <section class="section">
-
-        <h2 class="section-title">
-          🛠️ 管理功能
-        </h2>
-
+        <h2 class="section-title">🛠️ 管理功能</h2>
 
         <div class="feature-grid">
-
-
           <article class="feature-card">
-
-            <div class="feature-icon">
-              📊
-            </div>
-
-            <div class="feature-title">
-              每月成績管理
-            </div>
-
+            <div class="feature-icon">📊</div>
+            <div class="feature-title">每月成績管理</div>
             <div class="feature-description">
               管理本月統計、排行榜，以及歷月資料。
             </div>
-
-            <span class="coming-soon">
-              下一階段建置
-            </span>
-
+            <span class="coming-soon">下一階段建置</span>
           </article>
 
-
           <article class="feature-card">
-
-            <div class="feature-icon">
-              👥
-            </div>
-
-            <div class="feature-title">
-              使用者與成績
-            </div>
-
+            <div class="feature-icon">👥</div>
+            <div class="feature-title">使用者與成績</div>
             <div class="feature-description">
               查看學生帳號、遊戲次數、成績與學習紀錄。
             </div>
-
-            <span class="coming-soon">
-              尚未開放
-            </span>
-
+            <span class="coming-soon">尚未開放</span>
           </article>
 
-
           <article class="feature-card">
-
-            <div class="feature-icon">
-              🏆
-            </div>
-
-            <div class="feature-title">
-              排行榜管理
-            </div>
-
+            <div class="feature-icon">🏆</div>
+            <div class="feature-title">排行榜管理</div>
             <div class="feature-description">
               查看本月排行榜與歷史排行榜。
             </div>
-
-            <span class="coming-soon">
-              尚未開放
-            </span>
-
+            <span class="coming-soon">尚未開放</span>
           </article>
 
-
           <article class="feature-card">
-
-            <div class="feature-icon">
-              ⚔️
-            </div>
-
-            <div class="feature-title">
-              RPG 成長系統
-            </div>
-
+            <div class="feature-icon">⚔️</div>
+            <div class="feature-title">RPG 成長系統</div>
             <div class="feature-description">
               未來管理 XP、等級、稱號、元寶與鑽石。
             </div>
-
-            <span class="coming-soon">
-              規劃中
-            </span>
-
+            <span class="coming-soon">規劃中</span>
           </article>
 
-
           <article class="feature-card">
-
-            <div class="feature-icon">
-              ⚙️
-            </div>
-
-            <div class="feature-title">
-              系統設定
-            </div>
-
+            <div class="feature-icon">⚙️</div>
+            <div class="feature-title">系統設定</div>
             <div class="feature-description">
               管理月份制度、功能開關與平台設定。
             </div>
-
-            <span class="coming-soon">
-              尚未開放
-            </span>
-
+            <span class="coming-soon">尚未開放</span>
           </article>
 
-
           <article class="feature-card">
-
-            <div class="feature-icon">
-              📜
-            </div>
-
-            <div class="feature-title">
-              管理操作紀錄
-            </div>
-
+            <div class="feature-icon">📜</div>
+            <div class="feature-title">管理操作紀錄</div>
             <div class="feature-description">
               未來記錄管理員的重要操作與資料變更。
             </div>
-
-            <span class="coming-soon">
-              尚未開放
-            </span>
-
+            <span class="coming-soon">尚未開放</span>
           </article>
-
         </div>
-
       </section>
 
-
-      <div class="actions">
-
-        <a
-          class="button-link home-button"
-          href="index.html"
-        >
+      <div class="admin-actions">
+        <a class="button-link primary" href="index.html">
           🏠 回到首頁
         </a>
 
-
         <button
           id="logoutButton"
-          class="logout-button"
+          class="button danger"
           type="button"
         >
-          🚪 登出
+          🚪 登出最高管理員
         </button>
-
       </div>
-
-
     </section>
-
   </main>
 
-
   <script type="module">
-
     import {
       requireSuperAdmin,
+      loginSuperAdmin,
+      loginSuperAdminWithGoogle,
       getAdminDisplayName,
       logoutAdmin
     } from "./js/admin-auth.js";
 
+    const $ =
+      (id) =>
+        document.getElementById(
+          id
+        );
 
     const loadingScreen =
-      document.getElementById(
-        "loadingScreen"
-      );
+      $("loadingScreen");
 
+    const loginScreen =
+      $("loginScreen");
 
     const accessDenied =
-      document.getElementById(
-        "accessDenied"
-      );
-
+      $("accessDenied");
 
     const adminApp =
-      document.getElementById(
-        "adminApp"
-      );
+      $("adminApp");
 
+    const adminLoginForm =
+      $("adminLoginForm");
+
+    const adminEmail =
+      $("adminEmail");
+
+    const adminPassword =
+      $("adminPassword");
+
+    const loginButton =
+      $("loginButton");
+
+    const googleLoginButton =
+      $("googleLoginButton");
+
+    const loginMessage =
+      $("loginMessage");
+
+    const passwordToggle =
+      $("passwordToggle");
 
     const deniedMessage =
-      document.getElementById(
-        "deniedMessage"
+      $("deniedMessage");
+
+    let submitting =
+      false;
+
+    /* ===============================
+       畫面切換
+       =============================== */
+
+    function hideAllScreens() {
+      loadingScreen.classList.add("hidden");
+      loginScreen.classList.add("hidden");
+      accessDenied.classList.add("hidden");
+      adminApp.classList.add("hidden");
+    }
+
+    function showLoading() {
+      hideAllScreens();
+      loadingScreen.classList.remove("hidden");
+    }
+
+    function showLogin(message = "", type = "") {
+      hideAllScreens();
+      loginScreen.classList.remove("hidden");
+      setLoginMessage(message, type);
+
+      window.setTimeout(
+        () => {
+          adminEmail.focus();
+        },
+        50
       );
+    }
 
-
-    /*
-    ==================================================
-    顯示無權限
-    ==================================================
-    */
-
-    function showDenied(
-      message
-    ) {
-
-      loadingScreen.style.display =
-        "none";
-
-      adminApp.style.display =
-        "none";
-
-      accessDenied.style.display =
-        "flex";
-
-
+    function showDenied(message) {
+      hideAllScreens();
+      accessDenied.classList.remove("hidden");
       deniedMessage.textContent =
         message;
     }
 
+    function showAdmin(result) {
+      hideAllScreens();
+      adminApp.classList.remove("hidden");
 
-    /*
-    ==================================================
-    顯示管理後台
-    ==================================================
-    */
+      $("adminNameValue").textContent =
+        getAdminDisplayName(
+          result
+        );
 
-    function showAdmin(
-      result
-    ) {
+      $("adminEmailValue").textContent =
+        result.user?.email ||
+        "未提供 Email";
 
-      loadingScreen.style.display =
-        "none";
-
-      accessDenied.style.display =
-        "none";
-
-      adminApp.style.display =
-        "block";
-
-
-      document
-        .getElementById(
-          "adminName"
-        )
-        .textContent =
-          getAdminDisplayName(
-            result
-          );
-
-
-      document
-        .getElementById(
-          "adminEmail"
-        )
-        .textContent =
-          result.user?.email ||
-          "未提供 Email";
-
-
-      document
-        .getElementById(
-          "adminStatus"
-        )
-        .textContent =
-          "最高管理員｜啟用中";
+      $("adminStatusValue").textContent =
+        "最高管理員｜啟用中";
     }
 
+    /* ===============================
+       登入訊息
+       =============================== */
 
-    /*
-    ==================================================
-    權限初始化
-    ==================================================
-    */
+    function setLoginMessage(
+      message,
+      type = ""
+    ) {
+      loginMessage.textContent =
+        message ||
+        "";
+
+      loginMessage.className =
+        "login-message";
+
+      if (
+        type
+      ) {
+        loginMessage.classList.add(
+          type
+        );
+      }
+    }
+
+    function setSubmitting(value) {
+      submitting =
+        value;
+
+      loginButton.disabled =
+        value;
+
+      adminEmail.disabled =
+        value;
+
+      adminPassword.disabled =
+        value;
+
+      passwordToggle.disabled =
+        value;
+
+      googleLoginButton.disabled =
+        value;
+
+      loginButton.textContent =
+        value
+          ? "🔐 正在驗證最高管理員……"
+          : "👑 登入管理中心";
+    }
+
+    /* ===============================
+       初始權限確認
+       =============================== */
 
     async function initializeAdminPage() {
+      showLoading();
 
       try {
-
         const result =
           await requireSuperAdmin();
 
-
-        /*
-        尚未登入
-        */
+        if (
+          result.allowed
+        ) {
+          showAdmin(
+            result
+          );
+          return;
+        }
 
         if (
           result.reason ===
           "not-logged-in"
         ) {
-
-          showDenied(
-            "目前尚未登入。請先登入數學遊戲平台，再進入管理中心。"
-          );
-
+          showLogin();
           return;
         }
-
-
-        /*
-        管理員已停用
-        */
 
         if (
           result.reason ===
           "admin-disabled"
         ) {
-
           showDenied(
-            "此管理員帳號目前已停用。"
+            "此最高管理員帳號目前已停用。"
           );
-
           return;
         }
-
-
-        /*
-        不是管理員
-        */
 
         if (
           result.reason ===
@@ -1215,49 +1130,23 @@
           result.reason ===
           "invalid-role"
         ) {
-
           showDenied(
-            "目前登入的帳號沒有最高管理員權限。"
+            "目前瀏覽器已登入其他帳號，但這個帳號沒有最高管理員權限。"
           );
-
           return;
         }
 
-
-        /*
-        Firebase 或 Firestore 發生錯誤
-        */
-
-        if (
-          !result.allowed
-        ) {
-
-          showDenied(
-            "目前無法確認管理員權限，請稍後重新整理頁面。"
-          );
-
-          return;
-        }
-
-
-        /*
-        通過
-        */
-
-        showAdmin(
-          result
+        showDenied(
+          "目前無法確認最高管理員權限，請稍後重新整理頁面。"
         );
-
 
       } catch (
         error
       ) {
-
         console.error(
           "管理中心初始化失敗：",
           error
         );
-
 
         showDenied(
           "管理中心載入失敗，請稍後再試。"
@@ -1265,68 +1154,304 @@
       }
     }
 
+    /* ===============================
+       Google 最高管理員登入
+       =============================== */
 
-    /*
-    ==================================================
-    登出
-    ==================================================
-    */
+    googleLoginButton.addEventListener(
+      "click",
+      async () => {
+        if (
+          submitting
+        ) {
+          return;
+        }
 
-    document
-      .getElementById(
-        "logoutButton"
-      )
-      .addEventListener(
-        "click",
+        setSubmitting(
+          true
+        );
 
-        async () => {
+        setLoginMessage(
+          "正在開啟 Google 登入並驗證最高管理員權限……",
+          "info"
+        );
 
-          const confirmed =
-            window.confirm(
-              "確定要登出數學遊戲平台嗎？"
-            );
-
+        try {
+          const result =
+            await loginSuperAdminWithGoogle();
 
           if (
-            !confirmed
+            result.success &&
+            result.allowed
           ) {
+            adminPassword.value =
+              "";
+
+            showAdmin(
+              result
+            );
 
             return;
           }
 
+          setLoginMessage(
+            result.message ||
+            "Google 登入失敗。",
+            "error"
+          );
+
+        } catch (
+          error
+        ) {
+          console.error(
+            "Google 最高管理員登入流程失敗：",
+            error
+          );
+
+          setLoginMessage(
+            "Google 登入失敗，請稍後再試。",
+            "error"
+          );
+
+        } finally {
+          setSubmitting(
+            false
+          );
+        }
+      }
+    );
+
+    /* ===============================
+       Email / 密碼最高管理員登入
+       =============================== */
+
+    adminLoginForm.addEventListener(
+      "submit",
+
+      async (event) => {
+        event.preventDefault();
+
+        if (
+          submitting
+        ) {
+          return;
+        }
+
+        const email =
+          adminEmail.value.trim();
+
+        const password =
+          adminPassword.value;
+
+        if (
+          !email
+        ) {
+          setLoginMessage(
+            "請輸入最高管理員 Email。",
+            "error"
+          );
+          adminEmail.focus();
+          return;
+        }
+
+        if (
+          !password
+        ) {
+          setLoginMessage(
+            "請輸入密碼。",
+            "error"
+          );
+          adminPassword.focus();
+          return;
+        }
+
+        setSubmitting(
+          true
+        );
+
+        setLoginMessage(
+          "正在驗證 Firebase 帳號與最高管理員權限……",
+          "info"
+        );
+
+        try {
+          const result =
+            await loginSuperAdmin({
+              email,
+              password
+            });
+
+          if (
+            result.success &&
+            result.allowed
+          ) {
+            adminPassword.value =
+              "";
+
+            setLoginMessage(
+              "登入成功。",
+              "success"
+            );
+
+            showAdmin(
+              result
+            );
+
+            return;
+          }
+
+          setLoginMessage(
+            result.message ||
+            "登入失敗，請確認帳號與密碼。",
+            "error"
+          );
+
+          adminPassword.value =
+            "";
+
+          adminPassword.focus();
+
+        } catch (
+          error
+        ) {
+          console.error(
+            "最高管理員登入流程失敗：",
+            error
+          );
+
+          setLoginMessage(
+            "登入失敗，請稍後再試。",
+            "error"
+          );
+
+        } finally {
+          setSubmitting(
+            false
+          );
+        }
+      }
+    );
+
+    /* ===============================
+       密碼顯示／隱藏
+       =============================== */
+
+    passwordToggle.addEventListener(
+      "click",
+      () => {
+        const isPassword =
+          adminPassword.type ===
+          "password";
+
+        adminPassword.type =
+          isPassword
+            ? "text"
+            : "password";
+
+        passwordToggle.textContent =
+          isPassword
+            ? "🙈"
+            : "👁️";
+
+        passwordToggle.setAttribute(
+          "aria-label",
+          isPassword
+            ? "隱藏密碼"
+            : "顯示密碼"
+        );
+
+        adminPassword.focus();
+      }
+    );
+
+    /* ===============================
+       切換最高管理員帳號
+       =============================== */
+
+    $("switchAccountButton")
+      .addEventListener(
+        "click",
+        async () => {
+          showLoading();
 
           const result =
             await logoutAdmin();
 
-
           if (
-            result.success
+            !result.success
           ) {
-
-            window.location.href =
-              "index.html";
-
+            showDenied(
+              "切換帳號失敗，請稍後再試。"
+            );
             return;
           }
 
+          adminEmail.value =
+            "";
 
-          window.alert(
-            "登出失敗，請稍後再試。"
+          adminPassword.value =
+            "";
+
+          showLogin(
+            "請輸入最高管理員帳號。",
+            "info"
           );
         }
       );
 
+    /* ===============================
+       登出最高管理員
+       =============================== */
 
-    /*
-    ==================================================
-    啟動
-    ==================================================
-    */
+    $("logoutButton")
+      .addEventListener(
+        "click",
+        async () => {
+          const confirmed =
+            window.confirm(
+              "確定要登出最高管理員嗎？"
+            );
+
+          if (
+            !confirmed
+          ) {
+            return;
+          }
+
+          showLoading();
+
+          const result =
+            await logoutAdmin();
+
+          if (
+            !result.success
+          ) {
+            window.alert(
+              "登出失敗，請稍後再試。"
+            );
+
+            initializeAdminPage();
+            return;
+          }
+
+          adminEmail.value =
+            "";
+
+          adminPassword.value =
+            "";
+
+          showLogin(
+            "已安全登出最高管理員。",
+            "success"
+          );
+        }
+      );
+
+    /* ===============================
+       啟動
+       =============================== */
 
     initializeAdminPage();
-
   </script>
-
 </body>
-
 </html>
