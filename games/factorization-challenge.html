@@ -21,7 +21,7 @@
 
   <link
     rel="stylesheet"
-    href="../css/expression-input.css?v=5"
+    href="../css/expression-input.css?v=6"
   >
 
   <style>
@@ -965,6 +965,25 @@
       display:
         none !important;
     }
+
+    /*
+    ==================================================
+    橫向線性雙因式輸入
+    ==================================================
+    */
+
+    .factor-answer-shell--linear {
+
+      padding: 12px;
+    }
+
+
+    .factor-answer-shell--linear
+    .answer-preview {
+
+      margin-top: 12px;
+    }
+
 
     /*
     ==================================================
@@ -1998,7 +2017,7 @@
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
-<script src="../js/expression-input.js?v=5"></script>
+<script src="../js/expression-input.js?v=6"></script>
 
 <script type="module">
 
@@ -2085,6 +2104,10 @@ let factorInput1 =
 
 
 let factorInput2 =
+  null;
+
+
+let factorPairInput =
   null;
 
 
@@ -5272,48 +5295,14 @@ function renderFactorAnswer(
 
         請將最後答案寫成兩個因式相乘。<br>
 
-        兩個因式的前後順序可以交換；
-        完全平方請輸入兩個相同因式。
+        先點選要編輯的因式，再使用下方同一套工具列輸入；
+        兩個因式的前後順序可以交換，完全平方請輸入兩個相同因式。
 
       </p>
 
-      <div class="factor-answer-shell">
+      <div class="factor-answer-shell factor-answer-shell--linear">
 
-        <div class="factor-answer-grid">
-
-          <div class="factor-box">
-
-            <div class="factor-title">
-              因式一
-            </div>
-
-            <div class="polynomial-answer-shell">
-
-              <div id="factor-one-mount"></div>
-
-            </div>
-
-          </div>
-
-          <div class="factor-times">
-            ×
-          </div>
-
-          <div class="factor-box">
-
-            <div class="factor-title">
-              因式二
-            </div>
-
-            <div class="polynomial-answer-shell">
-
-              <div id="factor-two-mount"></div>
-
-            </div>
-
-          </div>
-
-        </div>
+        <div id="factor-pair-mount"></div>
 
         <div
           id="factor-preview"
@@ -5326,78 +5315,65 @@ function renderFactorAnswer(
     `;
 
 
+  factorPairInput =
+    new window.FactorPairInput({
+
+      mountId:
+        "factor-pair-mount",
+
+      factorLabels:
+        [
+          "因式一",
+          "因式二"
+        ],
+
+      theme: {
+
+        primary:
+          "#00897b",
+
+        light:
+          "#e0f2f1",
+
+        border:
+          "#80cbc4"
+      },
+
+      factorOptions:
+        expressionOptions(
+          "",
+          ""
+        ),
+
+      onChange:
+        () => {
+
+          window.setTimeout(
+            updateFactorPreview,
+            0
+          );
+        }
+    });
+
+
   factorInput1 =
-    new window.ExpressionInput(
-      expressionOptions(
-        "factor-one-mount",
-        "請輸入第一個因式"
-      )
-    );
+    factorPairInput
+      .getInput(0);
 
 
   factorInput2 =
-    new window.ExpressionInput(
-      expressionOptions(
-        "factor-two-mount",
-        "請輸入第二個因式"
-      )
-    );
-
-
-  const mount1 =
-    $("factor-one-mount");
-
-
-  const mount2 =
-    $("factor-two-mount");
-
-
-  cleanFractionFieldLabels(
-    mount1
-  );
-
-
-  cleanFractionFieldLabels(
-    mount2
-  );
-
-
-  [
-    mount1,
-    mount2
-  ]
-    .forEach(
-      mount => {
-
-        [
-          "input",
-          "change",
-          "click"
-        ]
-          .forEach(
-            eventName => {
-
-              mount
-                ?.addEventListener(
-                  eventName,
-                  () => {
-
-                    setTimeout(
-                      updateFactorPreview,
-                      0
-                    );
-                  }
-                );
-            }
-          );
-      }
-    );
+    factorPairInput
+      .getInput(1);
 
 
   setTimeout(
-    () =>
-      factorInput1
-        ?.focus(),
+    () => {
+
+      updateFactorPreview();
+
+      factorPairInput
+        ?.focus();
+    },
     0
   );
 }
@@ -5900,6 +5876,13 @@ function submitAnswer() {
     );
 
 
+  factorPairInput
+    ?.setDisabled
+    ?.(
+      true
+    );
+
+
   const isCorrect =
     checkCorrect(
       question,
@@ -6361,6 +6344,10 @@ function startGame(
 
 
   factorInput2 =
+    null;
+
+
+  factorPairInput =
     null;
 
 
