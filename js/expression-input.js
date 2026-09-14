@@ -5242,6 +5242,20 @@ validate() 會回傳提醒，
         "factor-pair-input__factor-row";
 
 
+      /*
+      先把 row 掛到實際 DOM。
+
+      ExpressionInput 建構時會使用
+      document.getElementById(mountId)
+      尋找掛載節點；如果 childMount 還在
+      尚未插入文件的 detached row 裡，
+      就會找不到節點而中止初始化。
+      */
+      this.root.appendChild(
+        row
+      );
+
+
       for (
         let index = 0;
         index < 2;
@@ -5422,10 +5436,6 @@ validate() 會回傳提醒，
         );
       }
 
-
-      this.root.appendChild(
-        row
-      );
 
       this.factorShells =
         [
