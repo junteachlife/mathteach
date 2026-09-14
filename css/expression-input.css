@@ -2,7 +2,7 @@
 ==================================================
 數學遊戲樂園：ExpressionInput
 檔案位置：css/expression-input.css
-版本：3.0
+版本：4.0
 ==================================================
 */
 
@@ -935,5 +935,424 @@ Disabled
 
   .expression-input__fraction-field input {
     width: 100%;
+  }
+}
+
+
+/*
+==================================================
+ExpressionInput 4.0
+橫向線性雙因式輸入器
+==================================================
+*/
+
+.expression-input--compact-polynomial {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.expression-input--compact-polynomial
+.expression-input__mode-switch,
+.expression-input--compact-polynomial
+.expression-input__label,
+.expression-input--compact-polynomial
+.expression-input__control-group,
+.expression-input--compact-polynomial
+.expression-input__message,
+.expression-input--compact-polynomial
+.expression-input__preview {
+  display: none !important;
+}
+
+.expression-input--compact-polynomial
+.expression-input__panel {
+  display: none;
+}
+
+.expression-input--compact-polynomial
+.expression-input__panel.active {
+  display: block;
+}
+
+.expression-input--compact-polynomial
+.expression-input__polynomial-display {
+  min-height: 66px;
+  width: 100%;
+  gap: 6px;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  overflow-x: auto;
+}
+
+.expression-input--compact-polynomial
+.expression-input__polynomial-term {
+  min-width: 58px;
+  min-height: 48px;
+  padding: 7px 10px;
+  border-width: 2px;
+  border-radius: 10px;
+  font-size: 24px;
+}
+
+.expression-input--compact-polynomial
+.expression-input__polynomial-operator {
+  font-size: 25px;
+}
+
+
+/*
+==================================================
+FactorPairInput
+==================================================
+*/
+
+.factor-pair-input {
+  width: 100%;
+  margin: 0 auto;
+  color: #1f2937;
+}
+
+.factor-pair-input * {
+  box-sizing: border-box;
+}
+
+.factor-pair-input button,
+.factor-pair-input input {
+  font-family:
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif;
+}
+
+.factor-pair-input__factor-row {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.factor-pair-input__factor {
+  min-width: 0;
+  padding: 10px 12px 12px;
+  border: 2px solid
+    var(--expression-border, #90caf9);
+  border-radius: 15px;
+  background: white;
+  cursor: pointer;
+  transition:
+    border-color .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
+}
+
+.factor-pair-input__factor.active {
+  border-color:
+    var(--expression-primary, #1565c0);
+  background:
+    var(--expression-light, #eef7ff);
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      0,
+      137,
+      123,
+      .12
+    );
+}
+
+.factor-pair-input__factor-label {
+  margin-bottom: 4px;
+  color: #64748b;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.factor-pair-input__math-line {
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(0, 1fr)
+    auto;
+  align-items: center;
+}
+
+.factor-pair-input__paren {
+  color: #0f172a;
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    serif;
+  font-size: 46px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.factor-pair-input__child-mount {
+  min-width: 0;
+}
+
+.factor-pair-input__times {
+  color: #334155;
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    serif;
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.factor-pair-input__toolbar {
+  margin-top: 12px;
+  padding: 11px 12px;
+  border: 1px solid
+    var(--expression-border, #90caf9);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      180deg,
+      var(--expression-light, #eef7ff),
+      #ffffff
+    );
+}
+
+.factor-pair-input__toolbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 9px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #dbe7e5;
+}
+
+.factor-pair-input__active-label {
+  color:
+    var(--expression-primary, #1565c0);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.factor-pair-input__factor-switcher {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.factor-pair-input__toolbar-main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.factor-pair-input__tool-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.factor-pair-input__tool-title {
+  color: #64748b;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.factor-pair-input__tool-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.factor-pair-input__tool-key {
+  min-width: 42px;
+  min-height: 38px;
+  padding: 6px 10px;
+  border: 2px solid
+    var(--expression-border, #90caf9);
+  border-radius: 10px;
+  background: white;
+  color:
+    var(--expression-primary, #1565c0);
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.factor-pair-input__tool-key:hover,
+.factor-pair-input__tool-key.active {
+  background:
+    var(--expression-light, #eef7ff);
+}
+
+.factor-pair-input__tool-key.factor-switch.active {
+  border-color:
+    var(--expression-primary, #1565c0);
+  background:
+    var(--expression-primary, #1565c0);
+  color: white;
+}
+
+.factor-pair-input__tool-key.sign {
+  min-width: 44px;
+  font-size: 21px;
+}
+
+.factor-pair-input__tool-key.number {
+  min-width: 34px;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+.factor-pair-input__tool-key.action {
+  min-width: 92px;
+}
+
+.factor-pair-input__tool-key.danger {
+  border-color: #fecaca;
+  background: #fff7f7;
+  color: #b91c1c;
+}
+
+.factor-pair-input__fraction-editor {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 68px;
+  min-height: 66px;
+  overflow: hidden;
+  border: 2px solid
+    var(--expression-border, #90caf9);
+  border-radius: 10px;
+  background: white;
+}
+
+.factor-pair-input__fraction-editor input {
+  width: 100%;
+  min-width: 0;
+  height: 31px;
+  padding: 2px 4px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #111827;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.factor-pair-input__fraction-line {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 50%;
+  border-top: 2px solid #334155;
+  pointer-events: none;
+}
+
+.factor-pair-input__quick-numbers {
+  display: grid;
+  grid-template-columns:
+    repeat(3, 34px);
+  gap: 4px;
+}
+
+.factor-pair-input.disabled {
+  opacity: .72;
+}
+
+.factor-pair-input button:disabled,
+.factor-pair-input input:disabled {
+  cursor: not-allowed;
+}
+
+
+/*
+==================================================
+FactorPairInput｜平板與手機
+==================================================
+*/
+
+@media (
+  max-width: 760px
+) {
+
+  .factor-pair-input__factor-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .factor-pair-input__times {
+    line-height: 1;
+    text-align: center;
+  }
+
+  .factor-pair-input__factor {
+    padding: 8px 9px 10px;
+  }
+
+  .factor-pair-input__paren {
+    font-size: 40px;
+  }
+
+  .factor-pair-input__toolbar-top {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .factor-pair-input__active-label {
+    text-align: center;
+  }
+
+  .factor-pair-input__factor-switcher {
+    justify-content: center;
+  }
+
+  .factor-pair-input__toolbar-main {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .factor-pair-input__tool-group {
+    width: 100%;
+  }
+
+  .factor-pair-input__tool-body {
+    width: 100%;
+  }
+}
+
+@media (
+  max-width: 480px
+) {
+
+  .factor-pair-input__toolbar {
+    padding: 9px 7px;
+  }
+
+  .factor-pair-input__tool-key {
+    min-height: 40px;
+  }
+
+  .factor-pair-input__quick-numbers {
+    grid-template-columns:
+      repeat(5, 34px);
+  }
+
+  .expression-input--compact-polynomial
+  .expression-input__polynomial-term {
+    min-width: 54px;
+    font-size: 22px;
   }
 }
