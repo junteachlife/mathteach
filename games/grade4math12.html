@@ -1,0 +1,5226 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+>
+
+<title>四年級數學無限挑戰｜第一、二單元</title>
+
+<link rel="stylesheet" href="../css/scratchpad.css">
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+:root{
+  --green:#2fa447;
+  --green-dark:#16823a;
+  --blue:#328ce5;
+  --purple:#8b58d5;
+  --red:#e64b45;
+  --text:#263238;
+  --muted:#7d8983;
+  --bg:#f3f8f3;
+  --border:#dce6df;
+  --shadow:0 8px 28px rgba(34,70,45,.08);
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+  font-family:
+    "Noto Sans TC",
+    "PingFang TC",
+    "Microsoft JhengHei",
+    Arial,
+    sans-serif;
+  color:var(--text);
+  background:#f3f8f3;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+/* =========================================================
+   頂端
+   ========================================================= */
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  color:white;
+  background:linear-gradient(135deg,#279843,#13843b);
+  box-shadow:0 3px 14px rgba(20,80,35,.17);
+}
+
+.top-inner{
+  width:100%;
+  max-width:1180px;
+  min-height:70px;
+  margin:auto;
+  padding:9px 22px;
+
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.logo{
+  flex:none;
+  font-size:27px;
+}
+
+.title-area{
+  flex:1;
+  min-width:0;
+}
+
+.main-title{
+  font-size:23px;
+  font-weight:900;
+  line-height:1.2;
+}
+
+.main-subtitle{
+  margin-top:4px;
+  font-size:13px;
+  opacity:.85;
+}
+
+.header-stats{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.header-stat{
+  min-width:97px;
+  padding:8px 12px;
+
+  text-align:center;
+
+  color:#29362e;
+  background:white;
+
+  border-radius:15px;
+
+  box-shadow:0 3px 10px rgba(0,0,0,.10);
+}
+
+.header-stat-number{
+  font-size:21px;
+  font-weight:900;
+  line-height:1;
+}
+
+.header-stat-label{
+  margin-top:4px;
+  color:#6e7972;
+  font-size:11px;
+}
+
+
+/* =========================================================
+   主畫面
+   ========================================================= */
+
+.main{
+  width:100%;
+  max-width:1180px;
+  margin:auto;
+  padding:16px 18px 22px;
+}
+
+/*
+  共用計算紙改為彈出式元件後，
+  主畫面改成單欄置中，讓題目、選項與詳解有更完整的寬度。
+*/
+.layout{
+  display:block;
+}
+
+.left-panel{
+  width:100%;
+  min-width:0;
+  margin:0 auto;
+}
+
+.control-card,
+.question-card{
+  background:white;
+  border:1px solid rgba(219,229,222,.85);
+  border-radius:21px;
+  box-shadow:var(--shadow);
+}
+
+
+/* =========================================================
+   控制區
+   ========================================================= */
+
+.control-card{
+  margin-bottom:14px;
+  padding:15px 17px;
+}
+
+.control-line{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:11px;
+}
+
+.control-line:last-child{
+  margin-bottom:0;
+}
+
+.control-label{
+  width:90px;
+  flex:none;
+  color:#3f4d45;
+  font-size:15px;
+  font-weight:900;
+}
+
+.unit-buttons{
+  flex:1;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+
+.unit-btn{
+  min-height:57px;
+  padding:6px;
+
+  border:2px solid #d8e2db;
+  border-radius:14px;
+
+  color:#536159;
+  background:white;
+
+  font-size:14px;
+  font-weight:900;
+  line-height:1.25;
+
+  transition:.15s;
+}
+
+.unit-btn:hover{
+  transform:translateY(-1px);
+}
+
+.unit-btn.active[data-unit="1"]{
+  color:white;
+  border-color:#37a94d;
+  background:linear-gradient(135deg,#47b75a,#2f9d46);
+}
+
+.unit-btn.active[data-unit="2"]{
+  color:#2778c6;
+  border-color:#70b0ed;
+  background:#eef7ff;
+}
+
+.unit-btn.active[data-unit="mix"]{
+  color:#7b46bd;
+  border-color:#aa7be4;
+  background:#f7efff;
+}
+
+#typeSelect{
+  flex:1;
+  min-width:0;
+  min-height:42px;
+
+  padding:8px 35px 8px 12px;
+
+  border:1.5px solid #cdd9d1;
+  border-radius:11px;
+
+  outline:none;
+  background:white;
+}
+
+#typeSelect:focus{
+  border-color:#63b66c;
+  box-shadow:0 0 0 3px rgba(70,177,85,.10);
+}
+
+
+/* =========================================================
+   進度
+   ========================================================= */
+
+.progress-area{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:10px;
+}
+
+.streak-text{
+  flex:none;
+  color:#85662d;
+  font-size:12px;
+  font-weight:900;
+}
+
+.progress-wrap{
+  flex:1;
+  height:7px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#e7ede9;
+}
+
+.progress-bar{
+  width:0;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#59b760,#3c91dd);
+  transition:.25s;
+}
+
+
+/* =========================================================
+   題目
+   ========================================================= */
+
+.question-card{
+  min-height:520px;
+  padding:24px 26px 26px;
+}
+
+.question-top{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+}
+
+.question-number{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:5px 11px;
+  border-radius:9px;
+
+  color:white;
+  background:#43a955;
+
+  font-size:14px;
+  font-weight:900;
+}
+
+.type-name{
+  color:#328944;
+  font-size:16px;
+  font-weight:900;
+}
+
+.chapter-label{
+  margin-left:auto;
+  padding:5px 11px;
+
+  border-radius:999px;
+
+  font-size:12px;
+  font-weight:900;
+}
+
+.chapter-label.u1{
+  color:#28823b;
+  background:#eaf8eb;
+}
+
+.chapter-label.u2{
+  color:#2876bd;
+  background:#eaf4ff;
+}
+
+.question-text{
+  margin:22px 0 24px;
+
+  font-size:clamp(28px,3.1vw,42px);
+  line-height:1.5;
+  font-weight:900;
+
+  word-break:break-word;
+}
+
+.question-text.small{
+  font-size:clamp(21px,2vw,29px);
+}
+
+.number-highlight{
+  color:#2177c6;
+}
+
+
+/* =========================================================
+   答案區
+   ========================================================= */
+
+.answer-area{
+  margin-top:10px;
+}
+
+.answer-row{
+  display:flex;
+  gap:10px;
+}
+
+.answer-input{
+  flex:1;
+  min-width:0;
+  min-height:62px;
+
+  padding:12px 16px;
+
+  border:2px solid #d7e1da;
+  border-radius:15px;
+
+  outline:none;
+  background:#fcfefd;
+
+  font-size:23px;
+  font-weight:800;
+}
+
+.answer-input:focus{
+  border-color:#57ae63;
+  box-shadow:0 0 0 4px rgba(74,170,86,.10);
+}
+
+.submit-btn{
+  flex:none;
+  min-width:145px;
+
+  padding:10px 19px;
+
+  border:none;
+  border-radius:15px;
+
+  color:white;
+  background:linear-gradient(135deg,#48b75a,#2d9b44);
+
+  box-shadow:0 5px 13px rgba(44,149,64,.18);
+
+  font-size:17px;
+  font-weight:900;
+}
+
+.answer-tip{
+  margin-top:7px;
+  color:#909b95;
+  font-size:12px;
+}
+
+.choice-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+
+.choice-btn{
+  min-height:68px;
+  padding:10px 12px;
+
+  border:2px solid #dce5df;
+  border-radius:14px;
+
+  color:#334239;
+  background:#fcfefd;
+
+  line-height:1.45;
+  font-size:16px;
+  font-weight:800;
+}
+
+.choice-btn:hover{
+  border-color:#74be7d;
+  background:#f2faf3;
+}
+
+.symbol-grid{
+  display:flex;
+  gap:12px;
+}
+
+.symbol-btn{
+  flex:1;
+  max-width:180px;
+  min-height:70px;
+
+  border:2px solid #d8e2dc;
+  border-radius:15px;
+
+  background:white;
+
+  font-size:34px;
+  font-weight:900;
+}
+
+
+/* =========================================================
+   回饋
+   ========================================================= */
+
+.feedback{
+  display:none;
+  margin-top:19px;
+  overflow:hidden;
+
+  border:1px solid #dfe7e2;
+  border-radius:16px;
+}
+
+.feedback.show{
+  display:block;
+}
+
+.feedback-head{
+  padding:13px 16px;
+  font-size:19px;
+  font-weight:900;
+}
+
+.feedback.correct{
+  border-color:#c7e8cc;
+}
+
+.feedback.correct .feedback-head{
+  color:#298438;
+  background:#e9f8eb;
+}
+
+.feedback.wrong{
+  border-color:#f2cbc8;
+}
+
+.feedback.wrong .feedback-head{
+  color:#d8423d;
+  background:#fff0ee;
+}
+
+.feedback-body{
+  padding:16px;
+  background:#fff;
+  line-height:1.7;
+}
+
+.user-answer-line,
+.correct-answer-line{
+  margin-bottom:9px;
+  font-size:17px;
+}
+
+.correct-answer{
+  color:#e44943;
+  font-size:19px;
+  font-weight:900;
+}
+
+
+/* =========================================================
+   詳解
+   ========================================================= */
+
+.explanation-title{
+  margin:12px 0 8px;
+  font-size:18px;
+  font-weight:900;
+}
+
+.explanation-intro{
+  margin-bottom:10px;
+}
+
+.explain-step-card{
+  margin:8px 0;
+  padding:10px 12px;
+
+  border:1px solid #dce5df;
+  border-radius:12px;
+
+  background:#fbfdfc;
+}
+
+.explain-step-title{
+  margin-bottom:4px;
+  color:#315d8e;
+  font-size:15px;
+  font-weight:900;
+}
+
+.math-box{
+  margin:8px 0;
+  padding:10px 13px;
+
+  overflow:auto;
+
+  border-radius:12px;
+
+  background:#f2f7f3;
+
+  font-size:18px;
+  font-weight:900;
+}
+
+.vertical{
+  display:inline-block;
+  min-width:170px;
+  margin:8px 0;
+  padding:12px 18px;
+
+  border:1px solid #d9e1dc;
+  border-radius:12px;
+
+  background:#f8faf9;
+
+  font-family:"Courier New",monospace;
+  font-size:19px;
+  line-height:1.3;
+  text-align:right;
+  white-space:pre;
+}
+
+.vertical-sum{
+  display:inline-block;
+  margin:8px 0;
+  padding:12px 23px;
+
+  border:1px solid #efd98c;
+  border-radius:12px;
+
+  background:#fffaf0;
+
+  font-family:"Courier New",monospace;
+  font-size:19px;
+  line-height:1.38;
+  text-align:right;
+  white-space:pre;
+}
+
+.answer-highlight{
+  color:#d9433d;
+  font-weight:900;
+}
+
+.key-point{
+  margin-top:10px;
+  padding:10px 12px;
+
+  border-left:5px solid #58ad63;
+  border-radius:8px;
+
+  color:#3e5945;
+  background:#f3faf4;
+}
+
+
+/* =========================================================
+   下一題
+   ========================================================= */
+
+.next-row{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:16px;
+}
+
+.next-btn{
+  display:none;
+  min-width:135px;
+
+  padding:11px 18px;
+
+  border:none;
+  border-radius:13px;
+
+  color:white;
+  background:linear-gradient(135deg,#3895ed,#277ed3);
+
+  font-size:17px;
+  font-weight:900;
+}
+
+.next-btn.show{
+  display:block;
+}
+
+
+/* =========================================================
+   共用計算紙入口
+   ========================================================= */
+
+.scratchpad-row{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:48px;
+  margin:0 0 14px;
+}
+
+#scratchpad-mobile-button{
+  display:flex;
+  justify-content:center;
+  width:100%;
+}
+
+#scratchpad-mobile-button #scratchpadOpenButton,
+#scratchpad-mobile-button .scratchpad-open-button{
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  margin:0 !important;
+}
+
+/* =========================================================
+   iPad / 小型平板
+   ========================================================= */
+
+@media(max-width:1100px){
+
+  .main{
+    padding:12px;
+  }
+
+  .control-card{
+    padding:13px;
+  }
+
+  .control-label{
+    width:78px;
+    font-size:13px;
+  }
+
+  .unit-btn{
+    min-height:52px;
+    font-size:12px;
+  }
+
+  .question-card{
+    min-height:480px;
+    padding:20px;
+  }
+
+  .question-text{
+    font-size:25px;
+  }
+
+  .answer-row{
+    display:block;
+  }
+
+  .submit-btn{
+    width:100%;
+    min-height:51px;
+    margin-top:8px;
+  }
+
+}
+
+
+/* =========================================================
+   手機版
+   ========================================================= */
+
+@media(max-width:760px){
+
+  .main-title{
+    font-size:16px;
+  }
+
+  .main-subtitle{
+    display:none;
+  }
+
+  .header-stats{
+    gap:4px;
+  }
+
+  .header-stat{
+    min-width:50px;
+    padding:5px;
+  }
+
+  .header-stat-number{
+    font-size:14px;
+  }
+
+  .header-stat-label{
+    font-size:8px;
+  }
+
+  .control-line{
+    display:block;
+  }
+
+  .control-label{
+    width:auto;
+    margin-bottom:7px;
+  }
+
+  .unit-buttons{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+  }
+
+  .unit-btn{
+    min-height:62px;
+    padding:6px 4px;
+    font-size:11px;
+  }
+
+  .question-card{
+    min-height:0;
+    padding:16px 13px 20px;
+  }
+
+  .question-text{
+    margin:18px 0 20px;
+    font-size:clamp(24px,7vw,32px);
+  }
+
+  .scratchpad-row{
+    margin-bottom:10px;
+  }
+
+  .choice-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<header class="topbar">
+
+  <div class="top-inner">
+
+    <div class="logo">
+      📖
+    </div>
+
+    <div class="title-area">
+
+      <div class="main-title">
+        四年級數學無限挑戰
+      </div>
+
+      <div class="main-subtitle">
+        第一單元：一億以內的數　｜　第二單元：乘法
+      </div>
+
+    </div>
+
+
+    <div class="header-stats">
+
+      <div class="header-stat">
+        <div
+          id="totalStat"
+          class="header-stat-number">
+          0
+        </div>
+        <div class="header-stat-label">
+          作答
+        </div>
+      </div>
+
+
+      <div class="header-stat">
+        <div
+          id="correctStat"
+          class="header-stat-number">
+          0
+        </div>
+        <div class="header-stat-label">
+          答對
+        </div>
+      </div>
+
+
+      <div class="header-stat">
+        <div
+          id="accuracyStat"
+          class="header-stat-number">
+          0%
+        </div>
+        <div class="header-stat-label">
+          正確率
+        </div>
+      </div>
+
+
+      <div class="header-stat">
+        <div
+          id="streakStat"
+          class="header-stat-number">
+          0
+        </div>
+        <div class="header-stat-label">
+          🔥連續
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+
+<main class="main">
+
+<div class="layout">
+
+
+<!-- =====================================================
+     左側
+     ===================================================== -->
+
+<div class="left-panel">
+
+
+<section class="control-card">
+
+  <div class="control-line">
+
+    <div class="control-label">
+      選擇單元：
+    </div>
+
+    <div class="unit-buttons">
+
+      <button
+        class="unit-btn active"
+        data-unit="1">
+
+        第一單元
+        <br>
+        一億以內的數
+
+      </button>
+
+
+      <button
+        class="unit-btn"
+        data-unit="2">
+
+        第二單元
+        <br>
+        乘法
+
+      </button>
+
+
+      <button
+        class="unit-btn"
+        data-unit="mix">
+
+        綜合練習
+        <br>
+        第一＋二單元
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="control-line">
+
+    <div class="control-label">
+      練習模式：
+    </div>
+
+    <select id="typeSelect"></select>
+
+  </div>
+
+
+  <div class="progress-area">
+
+    <div class="streak-text">
+
+      🔥 連續答對
+
+      <span id="streakText">
+        0
+      </span>
+
+      題
+
+    </div>
+
+    <div class="progress-wrap">
+
+      <div
+        id="progressBar"
+        class="progress-bar">
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<div class="scratchpad-row">
+  <div id="scratchpad-mobile-button"></div>
+</div>
+
+<section class="question-card">
+
+  <div class="question-top">
+
+    <div
+      id="questionNo"
+      class="question-number">
+      第 1 題
+    </div>
+
+    <div
+      id="typeName"
+      class="type-name">
+    </div>
+
+    <div
+      id="chapterLabel"
+      class="chapter-label u1">
+      第一單元
+    </div>
+
+  </div>
+
+
+  <div
+    id="questionText"
+    class="question-text">
+  </div>
+
+
+  <div
+    id="answerArea"
+    class="answer-area">
+  </div>
+
+
+  <div
+    id="feedback"
+    class="feedback">
+
+    <div
+      id="feedbackHead"
+      class="feedback-head">
+    </div>
+
+    <div
+      id="feedbackBody"
+      class="feedback-body">
+    </div>
+
+  </div>
+
+
+  <div class="next-row">
+
+    <button
+      id="nextBtn"
+      class="next-btn">
+
+      下一題 ➜
+
+    </button>
+
+  </div>
+
+</section>
+
+</div>
+
+
+
+
+</div>
+
+</main>
+
+
+
+<script src="../js/scratchpad.js"></script>
+<script src="../js/scratchpad-template.js"></script>
+
+<script>
+"use strict";
+
+
+/* =========================================================
+   基本工具
+   ========================================================= */
+
+function randInt(min,max){
+
+  return Math.floor(
+    Math.random()*
+    (max-min+1)
+  )+min;
+
+}
+
+
+function pick(arr){
+
+  return arr[
+    randInt(
+      0,
+      arr.length-1
+    )
+  ];
+
+}
+
+
+function shuffle(arr){
+
+  const a=[...arr];
+
+  for(
+    let i=a.length-1;
+    i>0;
+    i--
+  ){
+
+    const j=
+      Math.floor(
+        Math.random()*
+        (i+1)
+      );
+
+    [
+      a[i],
+      a[j]
+    ]=[
+      a[j],
+      a[i]
+    ];
+
+  }
+
+  return a;
+
+}
+
+
+function formatNum(n){
+
+  return Number(n)
+    .toLocaleString(
+      "en-US"
+    );
+
+}
+
+
+function clamp(n,min,max){
+
+  return Math.max(
+    min,
+    Math.min(
+      max,
+      n
+    )
+  );
+
+}
+
+
+function uniqueArray(arr){
+
+  return [
+    ...new Set(arr)
+  ];
+
+}
+
+
+function trailingZeros(n){
+
+  const s=
+    String(
+      Math.abs(n)
+    );
+
+  const match=
+    s.match(/0+$/);
+
+  return match
+    ? match[0].length
+    : 0;
+
+}
+
+
+function escapeHTML(str){
+
+  return String(str)
+
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   中文數字
+   ========================================================= */
+
+const CN_DIGITS=[
+  "零","一","二","三","四",
+  "五","六","七","八","九"
+];
+
+
+function sectionToChinese(num){
+
+  if(num===0){
+    return "";
+  }
+
+  const units=[
+    "",
+    "十",
+    "百",
+    "千"
+  ];
+
+  let result="";
+  let zeroPending=false;
+
+
+  for(
+    let pos=3;
+    pos>=0;
+    pos--
+  ){
+
+    const base=
+      Math.pow(
+        10,
+        pos
+      );
+
+    const digit=
+      Math.floor(
+        num/base
+      )%10;
+
+
+    if(digit===0){
+
+      if(
+        result &&
+        num%base!==0
+      ){
+
+        zeroPending=true;
+
+      }
+
+    }
+
+    else{
+
+      if(zeroPending){
+
+        result+="零";
+        zeroPending=false;
+
+      }
+
+
+      if(
+        !(
+          digit===1 &&
+          pos===1 &&
+          result===""
+        )
+      ){
+
+        result+=
+          CN_DIGITS[digit];
+
+      }
+
+      result+=
+        units[pos];
+
+    }
+
+  }
+
+  return result;
+
+}
+
+
+function numberToChinese(n){
+
+  n=
+    Math.floor(
+      Number(n)
+    );
+
+
+  if(n===0){
+    return "零";
+  }
+
+
+  const wan=
+    Math.floor(
+      n/10000
+    );
+
+  const low=
+    n%10000;
+
+
+  if(wan===0){
+
+    return sectionToChinese(
+      low
+    );
+
+  }
+
+
+  let result=
+    sectionToChinese(
+      wan
+    )+
+    "萬";
+
+
+  if(low===0){
+
+    return result;
+
+  }
+
+
+  if(low<1000){
+
+    result+="零";
+
+  }
+
+
+  result+=
+    sectionToChinese(
+      low
+    );
+
+
+  return result;
+
+}
+
+
+/* =========================================================
+   DOM
+   ========================================================= */
+
+const typeSelect=
+  document.getElementById(
+    "typeSelect"
+  );
+
+const questionText=
+  document.getElementById(
+    "questionText"
+  );
+
+const typeName=
+  document.getElementById(
+    "typeName"
+  );
+
+const answerArea=
+  document.getElementById(
+    "answerArea"
+  );
+
+const feedback=
+  document.getElementById(
+    "feedback"
+  );
+
+const feedbackHead=
+  document.getElementById(
+    "feedbackHead"
+  );
+
+const feedbackBody=
+  document.getElementById(
+    "feedbackBody"
+  );
+
+const nextBtn=
+  document.getElementById(
+    "nextBtn"
+  );
+
+const chapterLabel=
+  document.getElementById(
+    "chapterLabel"
+  );
+
+const questionNo=
+  document.getElementById(
+    "questionNo"
+  );
+
+const totalStat=
+  document.getElementById(
+    "totalStat"
+  );
+
+const correctStat=
+  document.getElementById(
+    "correctStat"
+  );
+
+const accuracyStat=
+  document.getElementById(
+    "accuracyStat"
+  );
+
+const streakText=
+  document.getElementById(
+    "streakText"
+  );
+
+const streakStat=
+  document.getElementById(
+    "streakStat"
+  );
+
+const progressBar=
+  document.getElementById(
+    "progressBar"
+  );
+
+
+/* =========================================================
+   狀態
+   ========================================================= */
+
+let currentUnit="1";
+
+let currentQuestion=null;
+
+let questionCount=0;
+
+let answered=false;
+
+
+let stats={
+
+  total:0,
+
+  correct:0,
+
+  streak:0
+
+};
+
+
+/* =========================================================
+   題型
+   ========================================================= */
+
+const UNIT1_TYPES=[
+
+  ["all","全部題型"],
+
+  ["u1_place","位值與數字代表多少"],
+
+  ["u1_compose","大數化聚"],
+
+  ["u1_sequence","數詞序列"],
+
+  ["u1_read","大數讀法"],
+
+  ["u1_write","中文數字寫成數字"],
+
+  ["u1_family","萬的家族與一的家族"],
+
+  ["u1_compare","大數大小比較"],
+
+  ["u1_addsub","大數加減"],
+
+  ["u1_wanAddSub","以萬為單位加減"],
+
+  ["u1_app","生活應用題"]
+
+];
+
+
+const UNIT2_TYPES=[
+
+  ["all","全部題型"],
+
+  ["u2_4x1","四位數 × 一位數"],
+
+  ["u2_x2","乘以二位數"],
+
+  ["u2_x3","乘以三位數"],
+
+  ["u2_tens","乘以整十／整百"],
+
+  ["u2_zero","乘法中 0 的規律"],
+
+  ["u2_relation","乘法關係推理"],
+
+  ["u2_method","判斷正確算法"],
+
+  ["u2_app","乘法生活應用題"]
+
+];
+
+
+const MIX_TYPES=[
+
+  ["all","第一、二單元全部混合"],
+
+  ["unit1","只抽第一單元"],
+
+  ["unit2","只抽第二單元"]
+
+];
+
+
+/* =========================================================
+   單元切換
+   ========================================================= */
+
+document
+.querySelectorAll(".unit-btn")
+.forEach(btn=>{
+
+  btn.addEventListener(
+    "click",
+    ()=>{
+
+      document
+      .querySelectorAll(
+        ".unit-btn"
+      )
+      .forEach(b=>{
+
+        b.classList
+        .remove(
+          "active"
+        );
+
+      });
+
+
+      btn.classList
+      .add(
+        "active"
+      );
+
+
+      currentUnit=
+        btn.dataset.unit;
+
+
+      buildTypeSelect();
+
+      newQuestion();
+
+    }
+  );
+
+});
+
+
+typeSelect
+.addEventListener(
+  "change",
+  newQuestion
+);
+
+
+function buildTypeSelect(){
+
+  let data;
+
+
+  if(currentUnit==="1"){
+
+    data=
+      UNIT1_TYPES;
+
+  }
+
+  else if(
+    currentUnit==="2"
+  ){
+
+    data=
+      UNIT2_TYPES;
+
+  }
+
+  else{
+
+    data=
+      MIX_TYPES;
+
+  }
+
+
+  typeSelect.innerHTML="";
+
+
+  data.forEach(
+    ([value,label])=>{
+
+      const option=
+        document
+        .createElement(
+          "option"
+        );
+
+      option.value=
+        value;
+
+      option.textContent=
+        label;
+
+      typeSelect
+      .appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   第一單元：位值
+   ========================================================= */
+
+function genU1Place(){
+
+  const n=
+    randInt(
+      10000,
+      99999999
+    );
+
+
+  const positions=[
+
+    "個位",
+    "十位",
+    "百位",
+    "千位",
+
+    "萬位",
+    "十萬位",
+    "百萬位",
+    "千萬位"
+
+  ];
+
+
+  const valid=[];
+
+
+  for(
+    let p=0;
+    p<String(n).length;
+    p++
+  ){
+
+    const digit=
+      Math.floor(
+        n/
+        Math.pow(10,p)
+      )%10;
+
+
+    if(digit!==0){
+
+      valid.push({
+
+        p,
+
+        digit,
+
+        value:
+          digit*
+          Math.pow(
+            10,
+            p
+          )
+
+      });
+
+    }
+
+  }
+
+
+  const x=
+    pick(valid);
+
+
+  const placeValue=
+    Math.pow(
+      10,
+      x.p
+    );
+
+
+  return{
+
+    unit:1,
+
+    type:
+      "位值與數字代表多少",
+
+    answerType:
+      "number",
+
+    question:
+
+      `「<span class="number-highlight">${formatNum(n)}</span>」中，`
+      +
+      `${positions[x.p]}的數字是 ${x.digit}，`
+      +
+      `它表示多少？`,
+
+    answer:
+      x.value,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explanation-intro">
+        先找出這個數字所在的位值。
+      </div>
+
+      <div class="explain-step-card">
+
+        <div class="explain-step-title">
+          ① 找位值
+        </div>
+
+        ${x.digit}
+        在
+        <b>${positions[x.p]}</b>，
+
+        每 1 個表示
+
+        ${formatNum(placeValue)}。
+
+      </div>
+
+      <div class="explain-step-card">
+
+        <div class="explain-step-title">
+          ② 算出表示的數量
+        </div>
+
+        ${x.digit}
+
+        ×
+
+        ${formatNum(placeValue)}
+
+        ＝
+
+        <b>
+          ${formatNum(x.value)}
+        </b>
+
+      </div>
+
+      <div class="key-point">
+
+        所以答案是
+
+        <span class="answer-highlight">
+          ${formatNum(x.value)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   第一單元：化聚
+   ========================================================= */
+
+function genU1Compose(){
+
+  const digits=[
+
+    randInt(0,8),
+    randInt(0,9),
+    randInt(0,9),
+    randInt(0,9),
+
+    randInt(0,9),
+    randInt(0,9),
+    randInt(0,9),
+    randInt(0,9)
+
+  ];
+
+
+  const values=[
+
+    10000000,
+    1000000,
+    100000,
+    10000,
+
+    1000,
+    100,
+    10,
+    1
+
+  ];
+
+
+  const names=[
+
+    "千萬",
+    "百萬",
+    "十萬",
+    "萬",
+
+    "千",
+    "百",
+    "十",
+    "一"
+
+  ];
+
+
+  let answer=0;
+
+  const parts=[];
+
+
+  digits.forEach(
+    (digit,i)=>{
+
+      answer+=
+        digit*
+        values[i];
+
+
+      if(digit!==0){
+
+        parts.push(
+          `${digit}個${names[i]}`
+        );
+
+      }
+
+    }
+  );
+
+
+  if(answer<10000){
+
+    return genU1Compose();
+
+  }
+
+
+  return{
+
+    unit:1,
+
+    type:
+      "大數化聚",
+
+    answerType:
+      "number",
+
+    question:
+
+      `${parts.join("、")}合起來是多少？`,
+
+    answer,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explanation-intro">
+        把每個數字放到正確的位值。
+      </div>
+
+      <div class="math-box">
+
+        千萬｜百萬｜十萬｜萬｜千｜百｜十｜個
+
+        <br>
+
+        ${String(answer)
+          .padStart(8,"0")
+          .split("")
+          .join("　")}
+
+      </div>
+
+      <div class="key-point">
+
+        所以合起來是
+
+        <span class="answer-highlight">
+          ${formatNum(answer)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   第一單元：數詞序列
+   ========================================================= */
+
+function genU1Sequence(){
+
+  const step=
+    pick([
+      1,
+      10,
+      100,
+      1000,
+      10000
+    ]);
+
+
+  let start=
+    randInt(
+      10000,
+      90000000
+    );
+
+
+  start=
+    Math.floor(
+      start/step
+    )*step;
+
+
+  const direction=
+    Math.random()<.7
+    ? 1
+    : -1;
+
+
+  if(
+    direction<0 &&
+    start-step*3<0
+  ){
+
+    return genU1Sequence();
+
+  }
+
+
+  const a=
+    start;
+
+  const b=
+    a+
+    direction*step;
+
+  const c=
+    b+
+    direction*step;
+
+  const d=
+    c+
+    direction*step;
+
+
+  return{
+
+    unit:1,
+
+    type:
+      "數詞序列",
+
+    answerType:
+      "number",
+
+    question:
+
+      `${formatNum(a)}`
+      +
+      ` → `
+      +
+      `${formatNum(b)}`
+      +
+      ` → `
+      +
+      `${formatNum(c)}`
+      +
+      ` → □`,
+
+    answer:d,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explain-step-card">
+
+        <div class="explain-step-title">
+          ① 找規律
+        </div>
+
+        每次
+
+        <b>
+          ${
+            direction>0
+            ? "增加"
+            : "減少"
+          }
+
+          ${formatNum(step)}
+        </b>。
+
+      </div>
+
+      <div class="math-box">
+
+        ${formatNum(c)}
+
+        ${
+          direction>0
+          ? "＋"
+          : "－"
+        }
+
+        ${formatNum(step)}
+
+        ＝
+
+        ${formatNum(d)}
+
+      </div>
+
+      <div class="key-point">
+
+        所以答案是
+
+        <span class="answer-highlight">
+          ${formatNum(d)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   大數讀法
+   ========================================================= */
+
+function makeReadDistractors(n){
+
+  const correct=
+    numberToChinese(n);
+
+
+  const arr=[
+    correct
+  ];
+
+
+  if(
+    correct.includes(
+      "零"
+    )
+  ){
+
+    arr.push(
+      correct.replace(
+        /零/g,
+        "零零"
+      )
+    );
+
+    arr.push(
+      correct.replace(
+        /零/g,
+        ""
+      )
+    );
+
+  }
+
+
+  [
+    n+10000,
+    n-10000,
+    n+1000,
+    n-1000
+  ]
+  .forEach(x=>{
+
+    if(
+      x>=10000 &&
+      x<100000000
+    ){
+
+      arr.push(
+        numberToChinese(x)
+      );
+
+    }
+
+  });
+
+
+  return uniqueArray(
+    arr
+  );
+
+}
+
+
+function genU1Read(){
+
+  const wan=
+    randInt(
+      10,
+      9999
+    );
+
+
+  const low=
+    pick([
+
+      randInt(1,99),
+
+      randInt(100,999),
+
+      randInt(1000,9999),
+
+      randInt(1,9)*1000
+
+    ]);
+
+
+  const n=
+    wan*10000+
+    low;
+
+
+  const correct=
+    numberToChinese(
+      n
+    );
+
+
+  let choices=
+    makeReadDistractors(
+      n
+    );
+
+
+  while(
+    choices.length<4
+  ){
+
+    const fake=
+      numberToChinese(
+
+        clamp(
+
+          n+
+          pick([
+            -100000,
+            100000,
+            -1000,
+            1000
+          ]),
+
+          10000,
+          99999999
+
+        )
+
+      );
+
+
+    if(
+      !choices.includes(
+        fake
+      )
+    ){
+
+      choices.push(
+        fake
+      );
+
+    }
+
+  }
+
+
+  choices=
+    shuffle(
+      choices.slice(
+        0,
+        4
+      )
+    );
+
+
+  return{
+
+    unit:1,
+
+    type:
+      "大數讀法",
+
+    answerType:
+      "choice",
+
+    question:
+
+      `「<span class="number-highlight">${formatNum(n)}</span>」`
+      +
+      `正確的讀法是哪一個？`,
+
+    choices,
+
+    answer:
+      correct,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explanation-intro">
+
+        大數可以由右往左，
+        每 4 位分成一組。
+
+      </div>
+
+      <div class="math-box">
+
+        ${Math.floor(n/10000)}
+
+        ｜
+
+        ${String(n%10000).padStart(4,"0")}
+
+        <br>
+
+        萬的家族
+        ｜
+        一的家族
+
+      </div>
+
+      <div class="explain-step-card">
+
+        先讀萬的家族，
+        再讀一的家族。
+
+        <br>
+
+        中間連續的 0，
+        不需要一個一個念。
+
+      </div>
+
+      <div class="key-point">
+
+        正確讀作：
+
+        <span class="answer-highlight">
+          ${correct}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   中文寫數字
+   ========================================================= */
+
+function genU1Write(){
+
+  const wan=
+    randInt(
+      10,
+      9999
+    );
+
+
+  const low=
+    pick([
+
+      randInt(1,99),
+
+      randInt(100,999),
+
+      randInt(1000,9999)
+
+    ]);
+
+
+  const n=
+    wan*10000+
+    low;
+
+
+  return{
+
+    unit:1,
+
+    type:
+      "中文數字寫成數字",
+
+    answerType:
+      "number",
+
+    question:
+
+      `「<span class="number-highlight">${numberToChinese(n)}</span>」`
+      +
+      `記作多少？`,
+
+    answer:n,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="math-box">
+
+        ${wan}
+        個萬
+
+        ＋
+
+        ${low}
+        個一
+
+      </div>
+
+      <div class="math-box">
+
+        ${wan}
+        ×
+        10000
+
+        ＋
+
+        ${low}
+
+        ＝
+
+        ${formatNum(n)}
+
+      </div>
+
+      <div class="key-point">
+
+        所以記作
+
+        <span class="answer-highlight">
+          ${formatNum(n)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   萬的家族與一的家族
+   ========================================================= */
+
+function genU1Family(){
+
+  const wan=
+    randInt(
+      1,
+      9999
+    );
+
+  const one=
+    randInt(
+      0,
+      9999
+    );
+
+  const n=
+    wan*10000+
+    one;
+
+
+  return{
+
+    unit:1,
+
+    type:
+      "萬的家族與一的家族",
+
+    answerType:
+      "number",
+
+    question:
+
+      `${wan} 個萬和 ${one} 個一合起來是多少？`,
+
+    answer:n,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="math-box">
+
+        ${wan}
+        ×
+        10000
+
+        ＋
+
+        ${one}
+
+        ＝
+
+        ${formatNum(n)}
+
+      </div>
+
+      <div class="key-point">
+
+        所以答案是
+
+        <span class="answer-highlight">
+          ${formatNum(n)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   比較大小
+   ========================================================= */
+
+function genU1Compare(){
+
+  let a=
+    randInt(
+      10000,
+      99999999
+    );
+
+  let b=
+    randInt(
+      10000,
+      99999999
+    );
+
+
+  if(
+    Math.random()<.08
+  ){
+
+    b=a;
+
+  }
+
+
+  const answer=
+    a>b
+    ? ">"
+    :
+    a<b
+    ? "<"
+    :
+    "=";
+
+
+  return{
+
+    unit:1,
+
+    type:
+      "大數大小比較",
+
+    answerType:
+      "symbol",
+
+    question:
+
+      `<span class="number-highlight">${formatNum(a)}</span>`
+      +
+      `　□　`
+      +
+      `<span class="number-highlight">${formatNum(b)}</span>`,
+
+    answer,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explain-step-card">
+
+        先比較位數。
+
+        <br>
+
+        位數相同時，
+        從最高位開始依序比較。
+
+      </div>
+
+      <div class="math-box">
+
+        ${formatNum(a)}
+
+        ${answer}
+
+        ${formatNum(b)}
+
+      </div>
+
+      <div class="key-point">
+
+        所以應填
+
+        <span class="answer-highlight">
+          ${escapeHTML(answer)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   大數加減
+   ========================================================= */
+
+function verticalAddSub(
+  a,
+  b,
+  op,
+  answer
+){
+
+  const width=
+    Math.max(
+      String(a).length,
+      String(b).length+1,
+      String(answer).length
+    );
+
+
+  return`
+
+<pre class="vertical">${String(a).padStart(width," ")}
+${op}${String(b).padStart(width-1," ")}
+${"─".repeat(width)}
+${String(answer).padStart(width," ")}</pre>
+
+`;
+
+}
+
+
+function genU1AddSub(){
+
+  const op=
+    Math.random()<.5
+    ? "+"
+    : "-";
+
+
+  let a;
+  let b;
+  let answer;
+
+
+  if(op==="+"){
+
+    a=
+      randInt(
+        10000,
+        60000000
+      );
+
+    b=
+      randInt(
+        10000,
+        99999999-a
+      );
+
+    answer=
+      a+b;
+
+  }
+
+  else{
+
+    a=
+      randInt(
+        20000,
+        99999999
+      );
+
+    b=
+      randInt(
+        10000,
+        a
+      );
+
+    answer=
+      a-b;
+
+  }
+
+
+  return{
+
+    unit:1,
+
+    type:
+      "大數加減",
+
+    answerType:
+      "number",
+
+    question:
+
+      `${formatNum(a)}`
+      +
+      ` ${op==="+" ? "＋" : "－"} `
+      +
+      `${formatNum(b)}`
+      +
+      ` ＝ □`,
+
+    answer,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explanation-intro">
+
+        相同位值要上下對齊，
+        再依序計算。
+
+      </div>
+
+      ${
+        verticalAddSub(
+          a,
+          b,
+          op==="+" ? "+" : "-",
+          answer
+        )
+      }
+
+      <div class="key-point">
+
+        所以答案是
+
+        <span class="answer-highlight">
+          ${formatNum(answer)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   以萬為單位
+   ========================================================= */
+
+function genU1WanAddSub(){
+
+  const op=
+    Math.random()<.5
+    ? "+"
+    : "-";
+
+
+  let aWan;
+  let bWan;
+
+
+  if(op==="+"){
+
+    aWan=
+      randInt(
+        100,
+        5000
+      );
+
+    bWan=
+      randInt(
+        10,
+        4000
+      );
+
+  }
+
+  else{
+
+    aWan=
+      randInt(
+        500,
+        9000
+      );
+
+    bWan=
+      randInt(
+        10,
+        aWan
+      );
+
+  }
+
+
+  const answerWan=
+    op==="+"
+    ? aWan+bWan
+    : aWan-bWan;
+
+
+  const a=
+    aWan*10000;
+
+  const b=
+    bWan*10000;
+
+  const answer=
+    answerWan*10000;
+
+
+  return{
+
+    unit:1,
+
+    type:
+      "以萬為單位加減",
+
+    answerType:
+      "number",
+
+    question:
+
+      `${formatNum(a)}`
+      +
+      ` ${op==="+" ? "＋" : "－"} `
+      +
+      `${formatNum(b)}`
+      +
+      ` ＝ □`,
+
+    answer,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explanation-intro">
+
+        兩個數都是整萬，
+        可以先看成幾個萬。
+
+      </div>
+
+      <div class="math-box">
+
+        ${aWan}
+        萬
+
+        ${
+          op==="+"
+          ? "＋"
+          : "－"
+        }
+
+        ${bWan}
+        萬
+
+        ＝
+
+        ${answerWan}
+        萬
+
+      </div>
+
+      <div class="math-box">
+
+        ${answerWan}
+        萬
+
+        ＝
+
+        ${formatNum(answer)}
+
+      </div>
+
+      <div class="key-point">
+
+        答案是
+
+        <span class="answer-highlight">
+          ${formatNum(answer)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   第一單元生活題
+   ========================================================= */
+
+function genU1App(){
+
+  const isAdd=
+    Math.random()<.5;
+
+
+  if(isAdd){
+
+    const a=
+      randInt(
+        200000,
+        8000000
+      );
+
+    const b=
+      randInt(
+        100000,
+        5000000
+      );
+
+
+    return{
+
+      unit:1,
+
+      type:
+        "生活應用題",
+
+      answerType:
+        "number",
+
+      question:
+
+        `某城市原有 ${formatNum(a)} 人，`
+        +
+        `今年增加 ${formatNum(b)} 人，`
+        +
+        `現在共有多少人？`,
+
+      answer:
+        a+b,
+
+      explanation:`
+
+        <div class="explanation-title">
+          📘 詳解
+        </div>
+
+        <div class="explain-step-card">
+
+          求合起來共有多少，
+          所以使用加法。
+
+        </div>
+
+        <div class="math-box">
+
+          ${formatNum(a)}
+
+          ＋
+
+          ${formatNum(b)}
+
+          ＝
+
+          ${formatNum(a+b)}
+
+        </div>
+
+        <div class="key-point">
+
+          答：
+
+          <span class="answer-highlight">
+            ${formatNum(a+b)} 人
+          </span>
+
+        </div>
+      `
+
+    };
+
+  }
+
+
+  const a=
+    randInt(
+      2000000,
+      90000000
+    );
+
+  const b=
+    randInt(
+      100000,
+      a-1
+    );
+
+
+  return{
+
+    unit:1,
+
+    type:
+      "生活應用題",
+
+    answerType:
+      "number",
+
+    question:
+
+      `甲地人口有 ${formatNum(a)} 人，`
+      +
+      `乙地人口有 ${formatNum(b)} 人，`
+      +
+      `甲地比乙地多多少人？`,
+
+    answer:
+      a-b,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explain-step-card">
+
+        求兩個數相差多少，
+        所以使用減法。
+
+      </div>
+
+      <div class="math-box">
+
+        ${formatNum(a)}
+
+        －
+
+        ${formatNum(b)}
+
+        ＝
+
+        ${formatNum(a-b)}
+
+      </div>
+
+      <div class="key-point">
+
+        答：
+
+        <span class="answer-highlight">
+          ${formatNum(a-b)} 人
+        </span>
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   第二單元共用
+   ========================================================= */
+
+function getMultiplicationParts(
+  a,
+  b
+){
+
+  const digits=
+    String(b)
+    .split("")
+    .reverse()
+    .map(Number);
+
+
+  const placeNames=[
+    "個位",
+    "十位",
+    "百位",
+    "千位"
+  ];
+
+
+  return digits.map(
+    (digit,index)=>{
+
+      const place=
+        Math.pow(
+          10,
+          index
+        );
+
+
+      return{
+
+        index,
+
+        digit,
+
+        place,
+
+        placeName:
+          placeNames[index]
+          ||
+          "高位",
+
+        multiplier:
+          digit*
+          place,
+
+        rawProduct:
+          a*
+          digit,
+
+        result:
+          a*
+          digit*
+          place
+
+      };
+
+    }
+  );
+
+}
+
+
+function buildPartialSumVertical(
+  parts,
+  answer
+){
+
+  const values=
+    parts.map(
+      p=>p.result
+    );
+
+
+  const texts=
+    values.map(
+      n=>formatNum(n)
+    );
+
+
+  const width=
+    Math.max(
+      8,
+      ...texts.map(
+        x=>x.length
+      ),
+      formatNum(answer).length
+    );
+
+
+  const lines=[];
+
+
+  texts.forEach(
+    (text,index)=>{
+
+      if(
+        index===
+        texts.length-1
+      ){
+
+        lines.push(
+          "+"+
+          text.padStart(
+            width-1,
+            " "
+          )
+        );
+
+      }
+
+      else{
+
+        lines.push(
+          text.padStart(
+            width,
+            " "
+          )
+        );
+
+      }
+
+    }
+  );
+
+
+  lines.push(
+    "─".repeat(
+      width
+    )
+  );
+
+
+  lines.push(
+    formatNum(answer)
+    .padStart(
+      width,
+      " "
+    )
+  );
+
+
+  return`
+
+<pre class="vertical-sum">${lines.join("\n")}</pre>
+
+`;
+
+}
+
+
+/* =========================================================
+   課本概念多位數乘法詳解
+   ========================================================= */
+
+function textbookMultiplicationExplanation(
+  a,
+  b,
+  answer
+){
+
+  const parts=
+    getMultiplicationParts(
+      a,
+      b
+    );
+
+
+  let steps="";
+
+
+  parts.forEach(
+    (p,index)=>{
+
+      let unitWord="一";
+
+
+      if(
+        p.index===1
+      ){
+
+        unitWord="十";
+
+      }
+
+      else if(
+        p.index===2
+      ){
+
+        unitWord="百";
+
+      }
+
+
+      let detail="";
+
+
+      if(
+        p.digit===0
+      ){
+
+        detail=`
+
+          ${p.placeName}
+          的數字是 0，
+
+          表示有
+
+          <b>
+            0 個${unitWord}
+          </b>。
+
+          <br>
+
+          所以這一部分的積是 0。
+
+          ${
+            p.index>0
+            ?
+            `
+            <br>
+            直式中這一層可以省略，
+            但下一個高位仍然要從正確位值開始記錄。
+            `
+            :
+            ""
+          }
+
+        `;
+
+      }
+
+      else if(
+        p.index===0
+      ){
+
+        detail=`
+
+          ${a}
+
+          ×
+
+          ${p.digit}
+
+          ＝
+
+          <b>
+            ${formatNum(p.rawProduct)}
+          </b>
+
+          ，是
+
+          ${formatNum(p.rawProduct)}
+
+          個一。
+
+        `;
+
+      }
+
+      else{
+
+        detail=`
+
+          ${p.digit}
+
+          在
+
+          ${p.placeName}，
+
+          表示
+
+          <b>
+            ${p.digit}
+            個${unitWord}
+          </b>。
+
+          <br>
+
+          ${a}
+
+          ×
+
+          ${p.digit}
+
+          ＝
+
+          ${formatNum(p.rawProduct)}
+
+          ，是
+
+          ${formatNum(p.rawProduct)}
+
+          個${unitWord}，
+
+          也就是
+
+          <b>
+            ${formatNum(p.result)}
+          </b>。
+
+        `;
+
+      }
+
+
+      steps+=`
+
+        <div class="explain-step-card">
+
+          <div class="explain-step-title">
+
+            ${index+1}．
+            ${p.placeName}
+            ${p.digit}
+            的部分
+
+          </div>
+
+          ${detail}
+
+        </div>
+
+      `;
+
+    }
+  );
+
+
+  const activeParts=
+    parts.filter(
+      p=>p.result!==0
+    );
+
+
+  return`
+
+    <div class="explanation-title">
+      📘 詳解
+    </div>
+
+    <div class="explanation-intro">
+
+      依照乘數的
+      個位、十位、百位
+      分別計算。
+
+    </div>
+
+    ${steps}
+
+    <div class="explain-step-card">
+
+      <div class="explain-step-title">
+
+        ${parts.length+1}．
+        把各部分合起來
+
+      </div>
+
+      ${
+        buildPartialSumVertical(
+          activeParts,
+          answer
+        )
+      }
+
+    </div>
+
+    <div class="key-point">
+
+      所以
+
+      ${formatNum(a)}
+
+      ×
+
+      ${formatNum(b)}
+
+      ＝
+
+      <span class="answer-highlight">
+
+        ${formatNum(answer)}
+
+      </span>。
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   四位數 × 一位數
+   ========================================================= */
+
+function genU24x1(){
+
+  const a=
+    randInt(
+      1000,
+      9999
+    );
+
+  const b=
+    randInt(
+      2,
+      9
+    );
+
+  const answer=
+    a*b;
+
+
+  return{
+
+    unit:2,
+
+    type:
+      "四位數 × 一位數",
+
+    answerType:
+      "number",
+
+    question:
+
+      `${formatNum(a)} × ${b} ＝ □`,
+
+    answer,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explanation-intro">
+
+        由個位開始乘，
+        再依序計算十位、百位、千位。
+
+      </div>
+
+      <div class="math-box">
+
+        ${formatNum(a)}
+
+        ×
+
+        ${b}
+
+        ＝
+
+        ${formatNum(answer)}
+
+      </div>
+
+      <div class="key-point">
+
+        答案是
+
+        <span class="answer-highlight">
+          ${formatNum(answer)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   乘以二位數
+   ========================================================= */
+
+function genU2x2(){
+
+  const a=
+    randInt(
+      11,
+      999
+    );
+
+  const b=
+    randInt(
+      11,
+      99
+    );
+
+  const answer=
+    a*b;
+
+
+  return{
+
+    unit:2,
+
+    type:
+      "乘以二位數",
+
+    answerType:
+      "number",
+
+    question:
+
+      `${formatNum(a)} × ${b} ＝ □`,
+
+    answer,
+
+    explanation:
+
+      textbookMultiplicationExplanation(
+        a,
+        b,
+        answer
+      )
+
+  };
+
+}
+
+
+/* =========================================================
+   乘以三位數
+   ========================================================= */
+
+function genU2x3(){
+
+  const a=
+    randInt(
+      11,
+      999
+    );
+
+
+  let b;
+
+
+  if(
+    Math.random()<.3
+  ){
+
+    b=
+      randInt(1,9)*
+      100
+      +
+      randInt(1,9);
+
+  }
+
+  else{
+
+    b=
+      randInt(
+        101,
+        999
+      );
+
+  }
+
+
+  const answer=
+    a*b;
+
+
+  return{
+
+    unit:2,
+
+    type:
+      "乘以三位數",
+
+    answerType:
+      "number",
+
+    question:
+
+      `${formatNum(a)} × ${b} ＝ □`,
+
+    answer,
+
+    explanation:
+
+      textbookMultiplicationExplanation(
+        a,
+        b,
+        answer
+      )
+
+  };
+
+}
+
+
+/* =========================================================
+   整十整百
+   ========================================================= */
+
+function genU2Tens(){
+
+  const a=
+    randInt(
+      2,
+      99
+    );
+
+
+  const factor=
+    pick([
+
+      randInt(1,9)*10,
+
+      randInt(1,9)*100
+
+    ]);
+
+
+  const answer=
+    a*factor;
+
+
+  const zeroCount=
+    trailingZeros(
+      factor
+    );
+
+
+  const base=
+    factor/
+    Math.pow(
+      10,
+      zeroCount
+    );
+
+
+  const unitName=
+    zeroCount===1
+    ? "十"
+    : "百";
+
+
+  return{
+
+    unit:2,
+
+    type:
+      "乘以整十／整百",
+
+    answerType:
+      "number",
+
+    question:
+
+      `${a} × ${factor} ＝ □`,
+
+    answer,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explain-step-card">
+
+        ${factor}
+
+        是
+
+        ${base}
+
+        個${unitName}。
+
+      </div>
+
+      <div class="math-box">
+
+        先算
+
+        ${a}
+
+        ×
+
+        ${base}
+
+        ＝
+
+        ${a*base}
+
+      </div>
+
+      <div class="math-box">
+
+        ${a*base}
+
+        個${unitName}
+
+        ＝
+
+        ${formatNum(answer)}
+
+      </div>
+
+      <div class="key-point">
+
+        答案是
+
+        <span class="answer-highlight">
+          ${formatNum(answer)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   0 的規律
+   ========================================================= */
+
+function genU2Zero(){
+
+  const aBase=
+    randInt(
+      2,
+      9
+    );
+
+  const bBase=
+    randInt(
+      2,
+      9
+    );
+
+  const za=
+    randInt(
+      1,
+      3
+    );
+
+  const zb=
+    randInt(
+      1,
+      3
+    );
+
+
+  const a=
+    aBase*
+    Math.pow(
+      10,
+      za
+    );
+
+  const b=
+    bBase*
+    Math.pow(
+      10,
+      zb
+    );
+
+  const answer=
+    a*b;
+
+
+  return{
+
+    unit:2,
+
+    type:
+      "乘法中 0 的規律",
+
+    answerType:
+      "number",
+
+    question:
+
+      `${formatNum(a)} × ${formatNum(b)} ＝ □`,
+
+    answer,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explain-step-card">
+
+        先算不是 0 的部分：
+
+        <br>
+
+        ${aBase}
+
+        ×
+
+        ${bBase}
+
+        ＝
+
+        <b>
+          ${aBase*bBase}
+        </b>
+
+      </div>
+
+      <div class="explain-step-card">
+
+        再依照原本的位值，
+        把 0 放回去。
+
+      </div>
+
+      <div class="math-box">
+
+        ${formatNum(a)}
+
+        ×
+
+        ${formatNum(b)}
+
+        ＝
+
+        ${formatNum(answer)}
+
+      </div>
+
+      <div class="key-point">
+
+        答案是
+
+        <span class="answer-highlight">
+
+          ${formatNum(answer)}
+
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   乘法關係
+   ========================================================= */
+
+function genU2Relation(){
+
+  const a=
+    randInt(
+      12,
+      99
+    );
+
+  const center=
+    pick([
+      50,
+      60,
+      70,
+      100,
+      200,
+      300
+    ]);
+
+  const delta=
+    pick([
+      -1,
+      1
+    ]);
+
+  const target=
+    center+
+    delta;
+
+  const known=
+    a*
+    center;
+
+  const answer=
+    a*
+    target;
+
+
+  return{
+
+    unit:2,
+
+    type:
+      "乘法關係推理",
+
+    answerType:
+      "number",
+
+    question:
+
+      `已知 ${a} × ${center} ＝ ${formatNum(known)}，`
+      +
+      `<br>`
+      +
+      `${a} × ${target} ＝ □`,
+
+    answer,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="explain-step-card">
+
+        ${target}
+
+        比
+
+        ${center}
+
+        ${
+          delta>0
+          ? "多 1"
+          : "少 1"
+        }。
+
+      </div>
+
+      <div class="math-box">
+
+        ${formatNum(known)}
+
+        ${
+          delta>0
+          ? "＋"
+          : "－"
+        }
+
+        ${a}
+
+        ＝
+
+        ${formatNum(answer)}
+
+      </div>
+
+      <div class="key-point">
+
+        答案是
+
+        <span class="answer-highlight">
+          ${formatNum(answer)}
+        </span>。
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   判斷算法
+   ========================================================= */
+
+function genU2Method(){
+
+  const a=
+    randInt(
+      101,
+      499
+    );
+
+  const b=
+    randInt(
+      21,
+      79
+    );
+
+
+  const tensDigit=
+    Math.floor(
+      b/10
+    );
+
+  const ones=
+    b%10;
+
+  const tens=
+    tensDigit*
+    10;
+
+  const answer=
+    a*b;
+
+
+  const correct=
+
+    `${a}×${ones}＝${formatNum(a*ones)}；`
+    +
+    `${a}×${tens}＝${formatNum(a*tens)}；`
+    +
+    `兩個積相加＝${formatNum(answer)}`;
+
+
+  const wrong1=
+
+    `${a}×${ones}＝${formatNum(a*ones)}；`
+    +
+    `${a}×${tensDigit}＝${formatNum(a*tensDigit)}；`
+    +
+    `直接相加`;
+
+
+  const wrong2=
+
+    `只計算 ${a}×${ones}`;
+
+
+  const wrong3=
+
+    `把 ${b} 看成 ${tens*10}＋${ones}`;
+
+
+  return{
+
+    unit:2,
+
+    type:
+      "判斷正確算法",
+
+    answerType:
+      "choice",
+
+    question:
+
+      `計算 ${a} × ${b}，哪一個想法正確？`,
+
+    choices:
+
+      shuffle([
+        correct,
+        wrong1,
+        wrong2,
+        wrong3
+      ]),
+
+    answer:
+      correct,
+
+    explanation:`
+
+      <div class="explanation-title">
+        📘 詳解
+      </div>
+
+      <div class="math-box">
+
+        ${b}
+
+        ＝
+
+        ${tens}
+
+        ＋
+
+        ${ones}
+
+      </div>
+
+      <div class="explain-step-card">
+
+        個位：
+
+        ${a}
+
+        ×
+
+        ${ones}
+
+        ＝
+
+        ${formatNum(a*ones)}
+
+      </div>
+
+      <div class="explain-step-card">
+
+        十位的
+
+        ${tensDigit}
+
+        代表的是
+
+        ${tens}。
+
+        <br>
+
+        ${a}
+
+        ×
+
+        ${tens}
+
+        ＝
+
+        ${formatNum(a*tens)}
+
+      </div>
+
+      <div class="key-point">
+
+        所以正確想法是：
+
+        <br>
+
+        <span class="answer-highlight">
+
+          ${correct}
+
+        </span>
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   第二單元生活題
+   ========================================================= */
+
+function genU2App(){
+
+  const a=
+    randInt(
+      100,
+      999
+    );
+
+  const b=
+    randInt(
+      11,
+      99
+    );
+
+  const answer=
+    a*b;
+
+
+  return{
+
+    unit:2,
+
+    type:
+      "乘法生活應用題",
+
+    answerType:
+      "number",
+
+    question:
+
+      `一盒有 ${a} 顆積木，`
+      +
+      `${b} 盒共有多少顆積木？`,
+
+    answer,
+
+    explanation:`
+
+      <div class="explain-step-card">
+
+        每盒有 ${a} 顆，
+        有 ${b} 盒，
+
+        所以列式：
+
+        <b>
+          ${a} × ${b}
+        </b>
+
+      </div>
+
+      ${
+        textbookMultiplicationExplanation(
+          a,
+          b,
+          answer
+        )
+      }
+
+      <div class="key-point">
+
+        答：
+
+        <span class="answer-highlight">
+
+          ${formatNum(answer)}
+          顆
+
+        </span>
+
+      </div>
+    `
+
+  };
+
+}
+
+
+/* =========================================================
+   生成器
+   ========================================================= */
+
+const generators={
+
+  u1_place:
+    genU1Place,
+
+  u1_compose:
+    genU1Compose,
+
+  u1_sequence:
+    genU1Sequence,
+
+  u1_read:
+    genU1Read,
+
+  u1_write:
+    genU1Write,
+
+  u1_family:
+    genU1Family,
+
+  u1_compare:
+    genU1Compare,
+
+  u1_addsub:
+    genU1AddSub,
+
+  u1_wanAddSub:
+    genU1WanAddSub,
+
+  u1_app:
+    genU1App,
+
+
+  u2_4x1:
+    genU24x1,
+
+  u2_x2:
+    genU2x2,
+
+  u2_x3:
+    genU2x3,
+
+  u2_tens:
+    genU2Tens,
+
+  u2_zero:
+    genU2Zero,
+
+  u2_relation:
+    genU2Relation,
+
+  u2_method:
+    genU2Method,
+
+  u2_app:
+    genU2App
+
+};
+
+
+const U1_KEYS=
+  UNIT1_TYPES
+  .filter(
+    x=>x[0]!=="all"
+  )
+  .map(
+    x=>x[0]
+  );
+
+
+const U2_KEYS=
+  UNIT2_TYPES
+  .filter(
+    x=>x[0]!=="all"
+  )
+  .map(
+    x=>x[0]
+  );
+
+
+/* =========================================================
+   選擇生成器
+   ========================================================= */
+
+function chooseGenerator(){
+
+  const selected=
+    typeSelect.value;
+
+
+  if(
+    currentUnit==="1"
+  ){
+
+    if(
+      selected==="all"
+    ){
+
+      return generators[
+        pick(U1_KEYS)
+      ];
+
+    }
+
+    return generators[
+      selected
+    ];
+
+  }
+
+
+  if(
+    currentUnit==="2"
+  ){
+
+    if(
+      selected==="all"
+    ){
+
+      return generators[
+        pick(U2_KEYS)
+      ];
+
+    }
+
+    return generators[
+      selected
+    ];
+
+  }
+
+
+  if(
+    selected==="unit1"
+  ){
+
+    return generators[
+      pick(U1_KEYS)
+    ];
+
+  }
+
+
+  if(
+    selected==="unit2"
+  ){
+
+    return generators[
+      pick(U2_KEYS)
+    ];
+
+  }
+
+
+  return generators[
+
+    pick([
+      ...U1_KEYS,
+      ...U2_KEYS
+    ])
+
+  ];
+
+}
+
+
+/* =========================================================
+   新題
+   ========================================================= */
+
+function newQuestion(){
+
+  answered=false;
+
+  questionCount++;
+
+
+  /*
+    每一題自動清空共用計算紙
+  */
+  window
+  .resetGameScratchpad
+  ?.();
+
+
+  feedback.className=
+    "feedback";
+
+  feedbackHead.innerHTML="";
+
+  feedbackBody.innerHTML="";
+
+
+  nextBtn
+  .classList
+  .remove(
+    "show"
+  );
+
+
+  const generator=
+    chooseGenerator();
+
+
+  currentQuestion=
+    generator();
+
+
+  questionNo.textContent=
+    `第 ${questionCount} 題`;
+
+
+  typeName.textContent=
+    currentQuestion.type;
+
+
+  questionText.innerHTML=
+    currentQuestion.question;
+
+
+  if(
+    currentQuestion
+    .question
+    .replace(
+      /<[^>]*>/g,
+      ""
+    )
+    .length>90
+  ){
+
+    questionText
+    .classList
+    .add(
+      "small"
+    );
+
+  }
+
+  else{
+
+    questionText
+    .classList
+    .remove(
+      "small"
+    );
+
+  }
+
+
+  if(
+    currentQuestion.unit===1
+  ){
+
+    chapterLabel.className=
+      "chapter-label u1";
+
+    chapterLabel.textContent=
+      "第一單元";
+
+  }
+
+  else{
+
+    chapterLabel.className=
+      "chapter-label u2";
+
+    chapterLabel.textContent=
+      "第二單元";
+
+  }
+
+
+  renderAnswerArea();
+
+}
+
+
+/* =========================================================
+   作答區
+   ========================================================= */
+
+function renderAnswerArea(){
+
+  answerArea.innerHTML="";
+
+
+  if(
+    currentQuestion
+    .answerType===
+    "number"
+  ){
+
+    answerArea.innerHTML=`
+
+      <div class="answer-row">
+
+        <input
+          id="answerInput"
+          class="answer-input"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="請輸入答案"
+        >
+
+        <button
+          id="submitAnswerBtn"
+          class="submit-btn">
+
+          送出答案
+
+        </button>
+
+      </div>
+
+      <div class="answer-tip">
+
+        可按 Enter 送出答案，
+        輸入逗號也可以。
+
+      </div>
+
+    `;
+
+
+    const input=
+      document.getElementById(
+        "answerInput"
+      );
+
+
+    document
+    .getElementById(
+      "submitAnswerBtn"
+    )
+    .addEventListener(
+      "click",
+      submitNumberAnswer
+    );
+
+
+    input.addEventListener(
+      "keydown",
+      e=>{
+
+        if(
+          e.key==="Enter"
+        ){
+
+          submitNumberAnswer();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  else if(
+    currentQuestion
+    .answerType===
+    "choice"
+  ){
+
+    const grid=
+      document
+      .createElement(
+        "div"
+      );
+
+    grid.className=
+      "choice-grid";
+
+
+    currentQuestion
+    .choices
+    .forEach(choice=>{
+
+      const button=
+        document
+        .createElement(
+          "button"
+        );
+
+      button.className=
+        "choice-btn";
+
+      button.textContent=
+        choice;
+
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          if(answered){
+            return;
+          }
+
+          checkAnswer(
+            choice
+          );
+
+        }
+      );
+
+
+      grid.appendChild(
+        button
+      );
+
+    });
+
+
+    answerArea
+    .appendChild(
+      grid
+    );
+
+  }
+
+
+  else{
+
+    const grid=
+      document
+      .createElement(
+        "div"
+      );
+
+    grid.className=
+      "symbol-grid";
+
+
+    [
+      "<",
+      "=",
+      ">"
+    ]
+    .forEach(symbol=>{
+
+      const button=
+        document
+        .createElement(
+          "button"
+        );
+
+      button.className=
+        "symbol-btn";
+
+      button.textContent=
+        symbol;
+
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          if(answered){
+            return;
+          }
+
+          checkAnswer(
+            symbol
+          );
+
+        }
+      );
+
+
+      grid.appendChild(
+        button
+      );
+
+    });
+
+
+    answerArea
+    .appendChild(
+      grid
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   輸入答案
+   ========================================================= */
+
+function submitNumberAnswer(){
+
+  if(answered){
+    return;
+  }
+
+
+  const input=
+    document.getElementById(
+      "answerInput"
+    );
+
+
+  if(!input){
+    return;
+  }
+
+
+  const raw=
+    input.value
+    .trim()
+
+    .replace(
+      /,/g,
+      ""
+    )
+
+    .replace(
+      /，/g,
+      ""
+    );
+
+
+  if(raw===""){
+
+    input.focus();
+
+    return;
+
+  }
+
+
+  const value=
+    Number(raw);
+
+
+  if(
+    Number.isNaN(value)
+  ){
+
+    input.value="";
+
+    input.focus();
+
+    return;
+
+  }
+
+
+  checkAnswer(
+    value
+  );
+
+}
+
+
+/* =========================================================
+   判定
+   ========================================================= */
+
+function checkAnswer(
+  userAnswer
+){
+
+  if(answered){
+    return;
+  }
+
+
+  answered=true;
+
+
+  let correct;
+
+
+  if(
+    currentQuestion
+    .answerType===
+    "number"
+  ){
+
+    correct=
+
+      Number(userAnswer)
+      ===
+      Number(
+        currentQuestion.answer
+      );
+
+  }
+
+  else{
+
+    correct=
+
+      String(userAnswer)
+      ===
+      String(
+        currentQuestion.answer
+      );
+
+  }
+
+
+  stats.total++;
+
+
+  if(correct){
+
+    stats.correct++;
+
+    stats.streak++;
+
+
+    feedback.className=
+      "feedback correct show";
+
+
+    feedbackHead.innerHTML=
+      "✅ 答對了！太棒了！";
+
+
+    feedbackBody.innerHTML=`
+
+      <div class="correct-answer-line">
+
+        正確答案：
+
+        <span class="correct-answer">
+
+          ${
+            displayAnswer(
+              currentQuestion
+            )
+          }
+
+        </span>
+
+      </div>
+
+      <div class="key-point">
+
+        🌟 做得很好！
+        繼續挑戰下一題吧！
+
+      </div>
+
+    `;
+
+  }
+
+  else{
+
+    stats.streak=0;
+
+
+    feedback.className=
+      "feedback wrong show";
+
+
+    feedbackHead.innerHTML=
+      "❌ 答錯了，看看詳解吧！";
+
+
+    feedbackBody.innerHTML=`
+
+      <div class="user-answer-line">
+
+        你的答案：
+
+        <b>
+          ${escapeHTML(userAnswer)}
+        </b>
+
+      </div>
+
+      <div class="correct-answer-line">
+
+        正確答案：
+
+        <span class="correct-answer">
+
+          ${
+            displayAnswer(
+              currentQuestion
+            )
+          }
+
+        </span>
+
+      </div>
+
+      ${
+        currentQuestion
+        .explanation
+      }
+
+    `;
+
+  }
+
+
+  answerArea
+  .querySelectorAll(
+    "button,input"
+  )
+  .forEach(el=>{
+
+    el.disabled=true;
+
+  });
+
+
+  updateStats();
+
+
+  nextBtn
+  .classList
+  .add(
+    "show"
+  );
+
+}
+
+
+/* =========================================================
+   顯示答案
+   ========================================================= */
+
+function displayAnswer(q){
+
+  if(
+    q.answerType===
+    "number"
+  ){
+
+    return formatNum(
+      q.answer
+    );
+
+  }
+
+
+  return escapeHTML(
+    q.answer
+  );
+
+}
+
+
+/* =========================================================
+   下一題
+   ========================================================= */
+
+nextBtn
+.addEventListener(
+  "click",
+  newQuestion
+);
+
+
+/* =========================================================
+   統計
+   ========================================================= */
+
+function updateStats(){
+
+  totalStat.textContent=
+    stats.total;
+
+  correctStat.textContent=
+    stats.correct;
+
+
+  const accuracy=
+
+    stats.total===0
+    ?
+    0
+    :
+    Math.round(
+      stats.correct/
+      stats.total*
+      100
+    );
+
+
+  accuracyStat.textContent=
+    accuracy+"%";
+
+
+  streakText.textContent=
+    stats.streak;
+
+
+  streakStat.textContent=
+    stats.streak;
+
+
+  progressBar.style.width=
+    accuracy+"%";
+
+
+  try{
+
+    localStorage
+    .setItem(
+
+      "grade4_math_u1u2_stats",
+
+      JSON.stringify(
+        stats
+      )
+
+    );
+
+  }
+
+  catch(e){}
+
+}
+
+
+function loadStats(){
+
+  try{
+
+    const saved=
+      localStorage
+      .getItem(
+        "grade4_math_u1u2_stats"
+      );
+
+
+    if(saved){
+
+      const obj=
+        JSON.parse(
+          saved
+        );
+
+
+      stats={
+
+        total:
+          Number(obj.total)||0,
+
+        correct:
+          Number(obj.correct)||0,
+
+        streak:
+          Number(obj.streak)||0
+
+      };
+
+    }
+
+  }
+
+  catch(e){}
+
+
+  updateStats();
+
+}
+
+
+/* =========================================================
+   共用計算紙
+   ========================================================= */
+
+function moveScratchpadButtonToTop(){
+
+  const mount=
+    document.getElementById(
+      "scratchpad-mobile-button"
+    );
+
+  const button=
+    document.getElementById(
+      "scratchpadOpenButton"
+    );
+
+  if(
+    mount &&
+    button &&
+    !mount.contains(
+      button
+    )
+  ){
+
+    mount.appendChild(
+      button
+    );
+
+  }
+
+}
+
+
+function prepareSharedScratchpad(){
+
+  moveScratchpadButtonToTop();
+
+  window
+  .showGameScratchpadButton
+  ?.();
+
+}
+
+
+/* =========================================================
+   初始化
+   ========================================================= */
+
+buildTypeSelect();
+
+loadStats();
+
+
+setTimeout(
+  ()=>{
+
+    prepareSharedScratchpad();
+
+    newQuestion();
+
+  },
+  80
+);
+
+
+setTimeout(
+  prepareSharedScratchpad,
+  220
+);
+
+</script>
+
+</body>
+</html>
