@@ -1,7 +1,7 @@
 /*
 ==================================================
 數學遊戲樂園｜ExpressionInput 共用輸入元件
-版本：5.0
+版本：5.1
 ==================================================
 
 支援：
@@ -172,6 +172,18 @@ validate() 會回傳提醒，
 
     omitPolynomialCoefficientOne:
       true,
+
+
+    /*
+    UI
+
+    compactPolynomialUI:
+    供需要「橫向線性輸入」的頁面使用。
+    預設 false，確保既有遊戲外觀不受影響。
+    */
+
+    compactPolynomialUI:
+      false,
 
 
     /*
@@ -1696,6 +1708,16 @@ validate() 會回傳提醒，
 
       this.root.className =
         "expression-input";
+
+
+      if (
+        this.options.compactPolynomialUI
+      ) {
+
+        this.root.classList.add(
+          "expression-input--compact-polynomial"
+        );
+      }
 
 
       this.root.style.setProperty(
@@ -5073,12 +5095,1015 @@ validate() 會回傳提醒，
 
   /*
   ==================================================
+  FactorPairInput｜雙因式橫向線性輸入器
+  ==================================================
+
+  目的：
+  - 保留 ExpressionInput 原本的 polynomial 資料結構與驗證。
+  - 將兩個因式改成橫向、線性顯示。
+  - 兩個因式共用同一套工具列，避免畫面上下過長。
+  - 不影響舊遊戲；只有主動使用 FactorPairInput 的頁面才套用。
+  ==================================================
+  */
+
+  class FactorPairInput {
+
+    constructor(
+      options = {}
+    ) {
+
+      this.options = {
+
+        mountId:
+          "",
+
+        factorLabels:
+          [
+            "因式一",
+            "因式二"
+          ],
+
+        factorOptions:
+          {},
+
+        theme: {
+          primary:
+            "#00897b",
+          light:
+            "#e0f2f1",
+          border:
+            "#80cbc4"
+        },
+
+        onChange:
+          null,
+
+        ...options,
+
+        theme: {
+          primary:
+            "#00897b",
+          light:
+            "#e0f2f1",
+          border:
+            "#80cbc4",
+          ...(options.theme || {})
+        }
+      };
+
+
+      this.mount =
+        document.getElementById(
+          this.options.mountId
+        );
+
+
+      if (
+        !this.mount
+      ) {
+
+        throw new Error(
+          `FactorPairInput 找不到掛載位置：${this.options.mountId}`
+        );
+      }
+
+
+      this.activeFactorIndex =
+        0;
+
+      this.inputs =
+        [];
+
+      this.disabled =
+        false;
+
+      this.isBuilding =
+        true;
+
+      this.render();
+
+      this.isBuilding =
+        false;
+
+      this.syncToolbar();
+
+      this.emitChange();
+    }
+
+
+    render() {
+
+      this.mount.innerHTML =
+        "";
+
+
+      this.root =
+        document.createElement(
+          "section"
+        );
+
+      this.root.className =
+        "factor-pair-input";
+
+      this.root.style.setProperty(
+        "--expression-primary",
+        this.options.theme.primary
+      );
+
+      this.root.style.setProperty(
+        "--expression-light",
+        this.options.theme.light
+      );
+
+      this.root.style.setProperty(
+        "--expression-border",
+        this.options.theme.border
+      );
+
+      this.mount.appendChild(
+        this.root
+      );
+
+
+      this.renderFactorRow();
+
+      this.renderSharedToolbar();
+    }
+
+
+    renderFactorRow() {
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+      row.className =
+        "factor-pair-input__factor-row";
+
+
+      for (
+        let index = 0;
+        index < 2;
+        index++
+      ) {
+
+        if (
+          index === 1
+        ) {
+
+          const times =
+            document.createElement(
+              "span"
+            );
+
+          times.className =
+            "factor-pair-input__times";
+
+          times.textContent =
+            "×";
+
+          row.appendChild(
+            times
+          );
+        }
+
+
+        const shell =
+          document.createElement(
+            "div"
+          );
+
+        shell.className =
+          "factor-pair-input__factor";
+
+        shell.dataset.factorIndex =
+          String(index);
+
+
+        const label =
+          document.createElement(
+            "div"
+          );
+
+        label.className =
+          "factor-pair-input__factor-label";
+
+        label.textContent =
+          this.options.factorLabels?.[index] ||
+          `因式 ${index + 1}`;
+
+
+        const mathLine =
+          document.createElement(
+            "div"
+          );
+
+        mathLine.className =
+          "factor-pair-input__math-line";
+
+
+        const leftParen =
+          document.createElement(
+            "span"
+          );
+
+        leftParen.className =
+          "factor-pair-input__paren";
+
+        leftParen.textContent =
+          "(";
+
+
+        const childMount =
+          document.createElement(
+            "div"
+          );
+
+        childMount.className =
+          "factor-pair-input__child-mount";
+
+        childMount.id =
+          `${this.options.mountId}-factor-${index + 1}`;
+
+
+        const rightParen =
+          document.createElement(
+            "span"
+          );
+
+        rightParen.className =
+          "factor-pair-input__paren";
+
+        rightParen.textContent =
+          ")";
+
+
+        mathLine.append(
+          leftParen,
+          childMount,
+          rightParen
+        );
+
+        shell.append(
+          label,
+          mathLine
+        );
+
+        row.appendChild(
+          shell
+        );
+
+
+        shell.addEventListener(
+          "click",
+          () => {
+
+            this.setActiveFactor(
+              index
+            );
+
+            window.setTimeout(
+              () =>
+                this.syncToolbar(),
+              0
+            );
+          }
+        );
+
+
+        const childOptions = {
+
+          ...this.options.factorOptions,
+
+          mountId:
+            childMount.id,
+
+          allowNumber:
+            false,
+
+          allowExpression:
+            false,
+
+          allowPolynomial:
+            true,
+
+          defaultMode:
+            "polynomial",
+
+          compactPolynomialUI:
+            true,
+
+          theme:
+            this.options.theme,
+
+          onChange:
+            () => {
+
+              if (
+                !this.isBuilding
+              ) {
+
+                this.syncToolbar();
+
+                this.emitChange();
+              }
+            }
+        };
+
+
+        const input =
+          new ExpressionInput(
+            childOptions
+          );
+
+        this.inputs.push(
+          input
+        );
+      }
+
+
+      this.root.appendChild(
+        row
+      );
+
+      this.factorShells =
+        [
+          ...row.querySelectorAll(
+            ".factor-pair-input__factor"
+          )
+        ];
+
+      this.updateActiveFactorUI();
+    }
+
+
+    renderSharedToolbar() {
+
+      this.toolbar =
+        document.createElement(
+          "div"
+        );
+
+      this.toolbar.className =
+        "factor-pair-input__toolbar";
+
+
+      const top =
+        document.createElement(
+          "div"
+        );
+
+      top.className =
+        "factor-pair-input__toolbar-top";
+
+
+      const activeLabel =
+        document.createElement(
+          "div"
+        );
+
+      activeLabel.className =
+        "factor-pair-input__active-label";
+
+      this.activeLabel =
+        activeLabel;
+
+
+      const switcher =
+        document.createElement(
+          "div"
+        );
+
+      switcher.className =
+        "factor-pair-input__factor-switcher";
+
+
+      this.factorSwitchButtons =
+        [0, 1].map(
+          index => {
+
+            const button =
+              this.createToolbarButton(
+                index === 0
+                  ? "編輯因式一"
+                  : "編輯因式二",
+                () =>
+                  this.setActiveFactor(
+                    index
+                  ),
+                "factor-switch"
+              );
+
+            switcher.appendChild(
+              button
+            );
+
+            return button;
+          }
+        );
+
+
+      top.append(
+        activeLabel,
+        switcher
+      );
+
+      this.toolbar.appendChild(
+        top
+      );
+
+
+      const main =
+        document.createElement(
+          "div"
+        );
+
+      main.className =
+        "factor-pair-input__toolbar-main";
+
+
+      const signGroup =
+        this.createToolbarGroup(
+          "正負號"
+        );
+
+      signGroup.body.append(
+        this.createToolbarButton(
+          "＋",
+          () => {
+            this.activeInput()
+              ?.setPolynomialSign(1);
+            this.syncToolbar();
+          },
+          "sign"
+        ),
+        this.createToolbarButton(
+          "－",
+          () => {
+            this.activeInput()
+              ?.setPolynomialSign(-1);
+            this.syncToolbar();
+          },
+          "sign"
+        )
+      );
+
+      main.appendChild(
+        signGroup.group
+      );
+
+
+      const coefficientGroup =
+        this.createToolbarGroup(
+          "係數"
+        );
+
+      const fractionBox =
+        document.createElement(
+          "div"
+        );
+
+      fractionBox.className =
+        "factor-pair-input__fraction-editor";
+
+
+      this.numeratorInput =
+        document.createElement(
+          "input"
+        );
+
+      this.numeratorInput.type =
+        "text";
+
+      this.numeratorInput.inputMode =
+        "numeric";
+
+      this.numeratorInput.autocomplete =
+        "off";
+
+      this.numeratorInput.placeholder =
+        "係數";
+
+
+      const fractionLine =
+        document.createElement(
+          "span"
+        );
+
+      fractionLine.className =
+        "factor-pair-input__fraction-line";
+
+
+      this.denominatorInput =
+        document.createElement(
+          "input"
+        );
+
+      this.denominatorInput.type =
+        "text";
+
+      this.denominatorInput.inputMode =
+        "numeric";
+
+      this.denominatorInput.autocomplete =
+        "off";
+
+      this.denominatorInput.placeholder =
+        "分母";
+
+      this.denominatorInput.value =
+        "1";
+
+
+      const readCoefficient =
+        () => {
+
+          const input =
+            this.activeInput();
+
+          if (
+            !input
+          ) {
+            return;
+          }
+
+          if (
+            input.options.allowFractionPolynomialCoefficient
+          ) {
+
+            if (
+              input.polynomialNumeratorInput
+            ) {
+              input.polynomialNumeratorInput.value =
+                this.numeratorInput.value;
+            }
+
+            if (
+              input.polynomialDenominatorInput
+            ) {
+              input.polynomialDenominatorInput.value =
+                this.denominatorInput.value;
+            }
+
+            input.readPolynomialFractionRaw();
+
+          } else {
+
+            if (
+              input.polynomialCoefficientInput
+            ) {
+              input.polynomialCoefficientInput.value =
+                this.numeratorInput.value;
+            }
+
+            input.readPolynomialInteger();
+          }
+        };
+
+
+      this.numeratorInput.addEventListener(
+        "input",
+        readCoefficient
+      );
+
+      this.denominatorInput.addEventListener(
+        "input",
+        readCoefficient
+      );
+
+
+      fractionBox.append(
+        this.numeratorInput,
+        fractionLine,
+        this.denominatorInput
+      );
+
+      coefficientGroup.body.appendChild(
+        fractionBox
+      );
+
+
+      const quickNumbers =
+        document.createElement(
+          "div"
+        );
+
+      quickNumbers.className =
+        "factor-pair-input__quick-numbers";
+
+      for (
+        let value = 1;
+        value <= 9;
+        value++
+      ) {
+
+        quickNumbers.appendChild(
+          this.createToolbarButton(
+            String(value),
+            () => {
+
+              this.activeInput()
+                ?.setPolynomialCoefficient(
+                  value
+                );
+
+              this.syncToolbar();
+            },
+            "number"
+          )
+        );
+      }
+
+      coefficientGroup.body.appendChild(
+        quickNumbers
+      );
+
+      main.appendChild(
+        coefficientGroup.group
+      );
+
+
+      const exponentGroup =
+        this.createToolbarGroup(
+          "項次"
+        );
+
+      const exponentOptions =
+        this.options.factorOptions
+          .polynomialExponentOptions ||
+        [3, 2, 1, 0];
+
+      exponentOptions.forEach(
+        exponent => {
+
+          const variable =
+            this.options.factorOptions
+              .polynomialVariable ||
+            "x";
+
+          const label =
+            exponent === 0
+              ? "常數"
+              : exponent === 1
+                ? variable
+                : variable +
+                  toSuperscript(
+                    exponent
+                  );
+
+          exponentGroup.body.appendChild(
+            this.createToolbarButton(
+              label,
+              () => {
+                this.activeInput()
+                  ?.setPolynomialExponent(
+                    exponent
+                  );
+                this.syncToolbar();
+              },
+              "exponent"
+            )
+          );
+        }
+      );
+
+      main.appendChild(
+        exponentGroup.group
+      );
+
+
+      const actionGroup =
+        this.createToolbarGroup(
+          "編輯"
+        );
+
+      actionGroup.body.append(
+        this.createToolbarButton(
+          "＋ 新增一項",
+          () => {
+            this.activeInput()
+              ?.addPolynomialTerm();
+            this.syncToolbar();
+          },
+          "action"
+        ),
+        this.createToolbarButton(
+          "⌫ 刪除",
+          () => {
+            this.activeInput()
+              ?.deleteActivePolynomialTerm();
+            this.syncToolbar();
+          },
+          "action"
+        ),
+        this.createToolbarButton(
+          "清除",
+          () => {
+            this.activeInput()
+              ?.resetPolynomial();
+            this.syncToolbar();
+          },
+          "danger"
+        )
+      );
+
+      main.appendChild(
+        actionGroup.group
+      );
+
+
+      this.toolbar.appendChild(
+        main
+      );
+
+      this.root.appendChild(
+        this.toolbar
+      );
+    }
+
+
+    createToolbarGroup(
+      title
+    ) {
+
+      const group =
+        document.createElement(
+          "div"
+        );
+
+      group.className =
+        "factor-pair-input__tool-group";
+
+
+      const heading =
+        document.createElement(
+          "div"
+        );
+
+      heading.className =
+        "factor-pair-input__tool-title";
+
+      heading.textContent =
+        title;
+
+
+      const body =
+        document.createElement(
+          "div"
+        );
+
+      body.className =
+        "factor-pair-input__tool-body";
+
+      group.append(
+        heading,
+        body
+      );
+
+      return {
+        group,
+        body
+      };
+    }
+
+
+    createToolbarButton(
+      label,
+      callback,
+      extraClass = ""
+    ) {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+      button.type =
+        "button";
+
+      button.className =
+        `factor-pair-input__tool-key ${extraClass}`.trim();
+
+      button.textContent =
+        label;
+
+      button.addEventListener(
+        "click",
+        callback
+      );
+
+      return button;
+    }
+
+
+    activeInput() {
+
+      return this.inputs[
+        this.activeFactorIndex
+      ] || null;
+    }
+
+
+    getInput(
+      index
+    ) {
+
+      return this.inputs[
+        Number(index)
+      ] || null;
+    }
+
+
+    setActiveFactor(
+      index
+    ) {
+
+      index =
+        Number(index);
+
+      if (
+        index !== 0 &&
+        index !== 1
+      ) {
+        return;
+      }
+
+      this.activeFactorIndex =
+        index;
+
+      this.updateActiveFactorUI();
+
+      this.syncToolbar();
+    }
+
+
+    updateActiveFactorUI() {
+
+      this.factorShells
+        ?.forEach(
+          (shell, index) => {
+
+            shell.classList.toggle(
+              "active",
+              index ===
+                this.activeFactorIndex
+            );
+          }
+        );
+
+      this.factorSwitchButtons
+        ?.forEach(
+          (button, index) => {
+
+            button.classList.toggle(
+              "active",
+              index ===
+                this.activeFactorIndex
+            );
+          }
+        );
+
+      if (
+        this.activeLabel
+      ) {
+
+        this.activeLabel.textContent =
+          `目前編輯：${
+            this.activeFactorIndex === 0
+              ? "因式一"
+              : "因式二"
+          }`;
+      }
+    }
+
+
+    syncToolbar() {
+
+      const input =
+        this.activeInput();
+
+      if (
+        !input
+      ) {
+        return;
+      }
+
+      const term =
+        input.polynomialTerms?.[
+          input.activePolynomialTermIndex
+        ];
+
+      if (
+        !term
+      ) {
+        return;
+      }
+
+      const coefficient =
+        term.coefficient || {};
+
+      if (
+        this.numeratorInput
+      ) {
+
+        this.numeratorInput.value =
+          coefficient.rawNumerator ??
+          coefficient.numerator ??
+          "";
+      }
+
+      if (
+        this.denominatorInput
+      ) {
+
+        this.denominatorInput.value =
+          coefficient.rawDenominator ??
+          coefficient.denominator ??
+          "1";
+
+        this.denominatorInput.disabled =
+          this.disabled ||
+          !input.options
+            .allowFractionPolynomialCoefficient;
+      }
+
+      this.updateActiveFactorUI();
+    }
+
+
+    setDisabled(
+      disabled
+    ) {
+
+      this.disabled =
+        Boolean(disabled);
+
+      this.inputs.forEach(
+        input =>
+          input.setDisabled(
+            this.disabled
+          )
+      );
+
+      this.toolbar
+        ?.querySelectorAll(
+          "button,input"
+        )
+        .forEach(
+          element => {
+            element.disabled =
+              this.disabled;
+          }
+        );
+
+      this.root.classList.toggle(
+        "disabled",
+        this.disabled
+      );
+    }
+
+
+    focus() {
+
+      this.setActiveFactor(0);
+
+      window.setTimeout(
+        () =>
+          this.numeratorInput
+            ?.focus(),
+        0
+      );
+    }
+
+
+    emitChange() {
+
+      if (
+        typeof this.options.onChange ===
+        "function"
+      ) {
+
+        this.options.onChange(
+          this,
+          this.inputs
+        );
+      }
+    }
+  }
+
+
+  /*
+  ==================================================
   對外
   ==================================================
   */
 
   window.ExpressionInput =
     ExpressionInput;
+
+  window.FactorPairInput =
+    FactorPairInput;
 
 
   window.ExpressionInputUtils = {
