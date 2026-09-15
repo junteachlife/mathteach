@@ -1422,6 +1422,225 @@
 
       margin:
         11px 0;
+
+      padding:
+        12px 14px;
+
+      border-left:
+        4px solid
+        var(--primary-border);
+
+      border-radius:
+        10px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          .76
+        );
+    }
+
+    .explanation-answer-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap:
+        12px;
+
+      margin:
+        14px 0;
+    }
+
+    .explanation-answer-card {
+
+      min-width:
+        0;
+
+      padding:
+        14px;
+
+      border:
+        2px solid
+        #f8bbd0;
+
+      border-radius:
+        13px;
+
+      background:
+        white;
+    }
+
+    .explanation-answer-label {
+
+      margin-bottom:
+        8px;
+
+      color:
+        #64748b;
+
+      font-size:
+        13px;
+
+      font-weight:
+        900;
+    }
+
+    .explanation-answer-value {
+
+      overflow-x:
+        auto;
+
+      color:
+        #0f172a;
+
+      font-family:
+        "Cambria Math",
+        "Times New Roman",
+        serif;
+
+      font-size:
+        22px;
+
+      font-weight:
+        900;
+
+      text-align:
+        center;
+    }
+
+    .explanation-think,
+    .explanation-pitfall,
+    .explanation-check,
+    .explanation-final {
+
+      width:
+        min(
+          100%,
+          680px
+        );
+
+      margin:
+        16px auto;
+
+      padding:
+        14px 16px;
+
+      border-radius:
+        13px;
+
+      background:
+        white;
+
+      line-height:
+        1.85;
+    }
+
+    .explanation-think {
+
+      border:
+        2px solid
+        #f9a8d4;
+
+      background:
+        #fff7fb;
+    }
+
+    .explanation-pitfall {
+
+      border:
+        2px solid
+        #fdba74;
+
+      background:
+        #fff7ed;
+    }
+
+    .explanation-check {
+
+      border:
+        2px solid
+        #93c5fd;
+
+      background:
+        #eff6ff;
+    }
+
+    .explanation-final {
+
+      border:
+        2px solid
+        #86efac;
+
+      background:
+        #f0fdf4;
+
+      text-align:
+        center;
+    }
+
+    .explanation-final-math {
+
+      margin-top:
+        9px;
+
+      overflow-x:
+        auto;
+
+      color:
+        var(--primary-dark);
+
+      font-family:
+        "Cambria Math",
+        "Times New Roman",
+        serif;
+
+      font-size:
+        27px;
+
+      font-weight:
+        900;
+    }
+
+    @media(
+      max-width:
+        640px
+    ) {
+
+      .explanation-answer-grid {
+
+        grid-template-columns:
+          1fr;
+      }
+
+      .explanation-step {
+
+        padding:
+          11px 10px;
+      }
+
+      .explanation-answer-value {
+
+        font-size:
+          20px;
+      }
+
+      .explanation-final-math {
+
+        font-size:
+          24px;
+      }
     }
 
     /*
@@ -5991,8 +6210,193 @@ function correctAnswerHTML(
 ==================================================
 */
 
-function explanationHTML(
+function explanationThinkPrompt(
   question
+) {
+
+  switch (
+    question.subtype
+  ) {
+
+    case "leadingOne":
+
+      return `
+        先不要急著猜答案。先看常數項，找兩個數「相乘等於常數項」；
+        再檢查這兩個數「相加是否等於一次項係數」。
+        這兩個條件要同時成立，才是正確的兩個常數。
+      `;
+
+
+    case "general":
+
+      return `
+        先把二次項係數與常數項各自分解成兩個因數，
+        再利用十字交乘檢查兩個交叉乘積的和，
+        是否剛好等於一次項係數。
+        十字交乘真正要核對的是「中間項」。
+      `;
+
+
+    case "commonFactor":
+
+      return `
+        先問自己：三項是否還有共同因數？
+        如果有，必須先提出最大公因數，
+        再對括號內已簡化的二次三項式做十字交乘。
+        不先提出公因數，十字交乘會變得更複雜，也容易漏掉因數。
+      `;
+
+
+    case "squareFormula":
+
+      return `
+        先檢查首項、末項是不是完全平方，
+        再確認中間項是否真的等於 ±2AB。
+        只有三個條件全部符合，才能判定為完全平方公式。
+      `;
+
+
+    case "differenceSquares":
+
+      return `
+        看到「兩個平方相減」，先想到平方差公式。
+        這一型沒有一次項，重點不是做十字交乘，
+        而是把兩個平方的底數找出來。
+      `;
+
+
+    case "fraction":
+
+      return `
+        分數型題目先處理整體分數係數。
+        把共同的分數提出後，盡量讓括號內變成整數係數的二次三項式，
+        再使用熟悉的十字交乘法。
+      `;
+
+
+    default:
+
+      return `
+        先判斷這題屬於哪一類因式分解：
+        提公因式、十字交乘、完全平方，還是平方差；
+        選對方法後再開始計算。
+      `;
+  }
+}
+
+
+function explanationPitfall(
+  question
+) {
+
+  switch (
+    question.subtype
+  ) {
+
+    case "leadingOne":
+
+      return `
+        只檢查「乘積等於常數項」還不夠。
+        例如常數項有好幾組因數時，必須再檢查兩數相加是否等於一次項係數。
+        正負號尤其容易選錯。
+      `;
+
+
+    case "general":
+
+      return `
+        十字交乘時最常見的錯誤，是只看左右直乘：
+        左邊乘積要對應二次項、右邊乘積要對應常數項，
+        兩條斜線的交叉乘積相加才必須等於中間一次項。
+      `;
+
+
+    case "commonFactor":
+
+      return `
+        提出公因數後，要記得最後答案前方仍要保留它。
+        如果提出的是負數，括號內每一項都必須同時改變符號。
+      `;
+
+
+    case "squareFormula":
+
+      return `
+        不能只因為首項與末項都是平方，就直接寫成完全平方。
+        一定要核對中間項是不是 2AB；
+        中間項的正負號也決定最後括號是「＋」還是「－」。
+      `;
+
+
+    case "differenceSquares":
+
+      return `
+        平方差公式只適用於 A²－B²。
+        A²＋B² 不能用同一公式；
+        而且兩個括號必須是一加一減。
+      `;
+
+
+    case "fraction":
+
+      return `
+        分數係數要保持最簡分數。
+        提出整體分數後，別忘了檢查乘回去是否能完全還原原式；
+        不要只看其中一個係數正確就停下來。
+      `;
+
+
+    default:
+
+      return `
+        因式分解完成後，最可靠的檢查方式是把答案乘回去。
+        如果不能完全還原原式，就代表某個係數或符號仍有錯誤。
+      `;
+  }
+}
+
+
+function explanationCheckText(
+  question
+) {
+
+  if (
+    question.subtype ===
+    "differenceSquares"
+  ) {
+
+    return `
+      檢查方式：把兩個共軛因式乘回去，
+      中間兩項會互相抵消，應該只留下原本的兩個平方項。
+    `;
+  }
+
+
+  if (
+    question.subtype ===
+    "squareFormula"
+  ) {
+
+    return `
+      檢查方式：把相同的兩個一次因式相乘，
+      展開後首項、末項與中間的 2AB 都要與原式完全一致。
+    `;
+  }
+
+
+  return `
+    檢查方式：把最後兩個一次因式（以及前面的公因數）乘回去。
+    展開後的二次項、一次項、常數項三個係數，都必須與題目完全相同。
+  `;
+}
+
+
+function explanationHTML(
+  question,
+  userAnswer =
+    "",
+  isCorrect =
+    null
 ) {
 
   const crossDetail =
@@ -6002,6 +6406,70 @@ function explanationHTML(
       ? question.crossDetail
 
       : "";
+
+
+  const answerComparison =
+
+    userAnswer
+
+      ? `
+
+        <div class="explanation-answer-grid">
+
+          <div class="explanation-answer-card">
+
+            <div class="explanation-answer-label">
+
+              你的答案
+
+            </div>
+
+            <div class="explanation-answer-value">
+
+              ${userAnswer}
+
+            </div>
+
+          </div>
+
+          <div class="explanation-answer-card">
+
+            <div class="explanation-answer-label">
+
+              正確答案
+
+            </div>
+
+            <div class="explanation-answer-value">
+
+              ${correctAnswerHTML(
+                question
+              )}
+
+            </div>
+
+          </div>
+
+        </div>
+      `
+
+      : "";
+
+
+  const resultMessage =
+
+    isCorrect ===
+    true
+
+      ? `
+        你的答案乘回去可以還原原式，表示這個因式分解是等價且正確的。
+      `
+
+      : `
+        如果你的答案和標準寫法不同，先不要只比外表；
+        請把答案乘回去檢查。若展開後不能完全還原原式，
+        就回到十字交乘的中間項或正負號重新檢查。
+      `;
 
 
   return `
@@ -6019,6 +6487,22 @@ function explanationHTML(
         ${question.html}
 
       </div>
+
+    </div>
+
+    ${answerComparison}
+
+    <div class="explanation-think">
+
+      <strong>
+
+        💡 先想一想｜
+
+      </strong>
+
+      ${explanationThinkPrompt(
+        question
+      )}
 
     </div>
 
@@ -6048,31 +6532,54 @@ function explanationHTML(
 
     ${crossDetail}
 
-    <div
-      style="
-        width:min(100%,650px);
-        margin:18px auto 0;
-        padding:16px;
-        border:2px solid #f8bbd0;
-        border-radius:14px;
-        background:white;
-        text-align:center;
-      "
-    >
+    <div class="explanation-pitfall">
 
       <strong>
-        一種標準答案：
+
+        ⚠️ 常見錯誤｜
+
       </strong>
+
+      ${explanationPitfall(
+        question
+      )}
+
+    </div>
+
+    <div class="explanation-check">
+
+      <strong>
+
+        🔎 自我檢查｜
+
+      </strong>
+
+      ${explanationCheckText(
+        question
+      )}
 
       <div
         style="
-          margin-top:10px;
-          color:#d81b60;
-          font-family:'Cambria Math','Times New Roman',serif;
-          font-size:27px;
-          font-weight:900;
+          margin-top:8px;
+          color:#475569;
         "
       >
+
+        ${resultMessage}
+
+      </div>
+
+    </div>
+
+    <div class="explanation-final">
+
+      <strong>
+
+        ✅ 最後答案｜
+
+      </strong>
+
+      <div class="explanation-final-math">
 
         ${correctAnswerHTML(
           question
@@ -6089,16 +6596,15 @@ function explanationHTML(
         "
       >
 
-        因式前後順序可交換；
-        正負號或公因數也可放在其他因式中。
-        系統會將答案乘回原式判定是否等價。
+        因式前後順序可以交換；
+        正負號或公因數也可能有其他等價擺法。
+        判斷的核心是：乘回去能否完全還原原式。
 
       </div>
 
     </div>
   `;
 }
-
 
 /*
 ==================================================
@@ -6367,7 +6873,9 @@ function submitAnswer() {
   $("explanation")
     .innerHTML =
       explanationHTML(
-        question
+        question,
+        answer.display,
+        isCorrect
       );
 
 
@@ -7107,7 +7615,9 @@ function showReview() {
                   <div class="explanation">
 
                     ${explanationHTML(
-                      record.question
+                      record.question,
+                      record.userAnswer,
+                      false
                     )}
 
                   </div>
