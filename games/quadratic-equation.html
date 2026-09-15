@@ -1862,6 +1862,150 @@
         11px 0;
     }
 
+    .explanation-answer-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap: 12px;
+
+      margin-bottom: 16px;
+    }
+
+    .explanation-answer-card {
+
+      padding: 13px 14px;
+
+      border: 2px solid #bfdbfe;
+
+      border-radius: 12px;
+
+      background: #fff;
+    }
+
+    .explanation-answer-label {
+
+      margin-bottom: 7px;
+
+      color: #64748b;
+
+      font-size: 13px;
+
+      font-weight: 900;
+    }
+
+    .explanation-answer-value {
+
+      overflow-x: auto;
+
+      color: #0f172a;
+
+      font-family:
+        "Cambria Math",
+        "Times New Roman",
+        "Microsoft JhengHei",
+        serif;
+
+      font-size: 20px;
+
+      font-weight: 900;
+
+      line-height: 1.7;
+    }
+
+    .explanation-learning-box {
+
+      margin: 13px 0;
+
+      padding: 13px 15px;
+
+      border-radius: 12px;
+
+      line-height: 1.85;
+    }
+
+    .explanation-learning-box strong {
+      font-weight: 900;
+    }
+
+    .explanation-think {
+
+      border: 2px solid #93c5fd;
+
+      background: #eff6ff;
+
+      color: #1e3a8a;
+    }
+
+    .explanation-pitfall {
+
+      border: 2px solid #fed7aa;
+
+      background: #fff7ed;
+
+      color: #9a3412;
+    }
+
+    .explanation-check {
+
+      border: 2px solid #a7f3d0;
+
+      background: #ecfdf5;
+
+      color: #065f46;
+    }
+
+    .explanation-final {
+
+      margin-top: 16px;
+
+      padding: 15px;
+
+      border: 2px solid #60a5fa;
+
+      border-radius: 13px;
+
+      background: #fff;
+
+      text-align: center;
+    }
+
+    .explanation-final-label {
+
+      margin-bottom: 8px;
+
+      color: var(--primary-dark);
+
+      font-weight: 900;
+    }
+
+    .explanation-final-value {
+
+      overflow-x: auto;
+
+      color: var(--primary-dark);
+
+      font-family:
+        "Cambria Math",
+        "Times New Roman",
+        "Microsoft JhengHei",
+        serif;
+
+      font-size: 25px;
+
+      font-weight: 900;
+
+      line-height: 1.7;
+    }
+
     .calculation-box {
 
       margin:
@@ -2243,6 +2387,10 @@
 
         padding:
           15px 8px;
+      }
+
+      .explanation-answer-grid {
+        grid-template-columns: 1fr;
       }
 
       .question-note {
@@ -11276,9 +11424,276 @@ function correctAnswerHTML(
 ==================================================
 */
 
-function explanationHTML(
+function learningGuideForQuestion(
   question
 ) {
+
+  const method =
+    String(
+      question.method ??
+      ""
+    );
+
+
+  if (
+    method.includes(
+      "根的定義"
+    )
+  ) {
+
+    return {
+
+      think:
+        "看到「某數是不是方程式的根」或「已知某數是根」，先記住：根的意思就是代入 x 後，等式必須成立。",
+
+      pitfall:
+        "負數代入平方時一定要加括號，例如 x＝−3 時，x² 要寫成 (−3)²；不要誤寫成 −3²。",
+
+      check:
+        "把求出的數代回原方程式；左式最後等於 0，才真正符合根的定義。"
+    };
+  }
+
+
+  if (
+    method.includes(
+      "零乘積性質"
+    ) ||
+    method ===
+    "因式分解法"
+  ) {
+
+    return {
+
+      think:
+        "看到「兩個因式的乘積＝0」，就可以使用零乘積性質：至少有一個因式必須等於 0。",
+
+      pitfall:
+        "不要把兩個因式直接各取常數當答案；每一個因式都要先令它等於 0，再解出 x。",
+
+      check:
+        "把每一個解代回原方程式，或代回因式分解後的式子；只要其中一個因式變成 0，乘積就會是 0。"
+    };
+  }
+
+
+  if (
+    method.includes(
+      "十字交乘"
+    )
+  ) {
+
+    return {
+
+      think:
+        "先確認三項係數是否有共同因數；若有，先約成最簡整數係數。接著同時考慮二次項係數與常數項的拆法，最後用交叉乘積檢查中間項。",
+
+      pitfall:
+        "十字交乘不是只看「乘積對不對」；兩條交叉乘積相加還必須剛好等於一次項係數，正負號尤其容易出錯。",
+
+      check:
+        "把得到的兩個一次因式乘回去，確認二次項、一次項、常數項三項都與原式完全相同。"
+    };
+  }
+
+
+  if (
+    method.includes(
+      "平方差公式"
+    )
+  ) {
+
+    return {
+
+      think:
+        "先看能不能辨認成 A²－B²。只有「兩個平方相減」才能直接套平方差公式。",
+
+      pitfall:
+        "A²＋B² 不能套平方差；而且分解後兩個括號必須是一加一減。",
+
+      check:
+        "把 (A＋B)(A－B) 乘回去，中間項會互相抵消，只剩 A²－B²。"
+    };
+  }
+
+
+  if (
+    method.includes(
+      "和的平方公式"
+    ) ||
+    method.includes(
+      "差的平方公式"
+    ) ||
+    method ===
+    "完全平方公式"
+  ) {
+
+    return {
+
+      think:
+        "先確認首項、末項都是完全平方，再檢查中間項是不是 ±2AB；三個條件都符合才是完全平方式。",
+
+      pitfall:
+        "只看到首末兩項能開平方還不夠；中間項若不是 ±2AB，就不能直接寫成 (A±B)²。",
+
+      check:
+        "把整理出的 (A±B)² 展開，確認中間項的正負號與係數都和原式一致。"
+    };
+  }
+
+
+  if (
+    method.includes(
+      "平方根解法"
+    )
+  ) {
+
+    return {
+
+      think:
+        "先把方程式整理成「某個式子的平方＝一個數」。開平方時一定同時考慮正、負兩種可能。",
+
+      pitfall:
+        "最常見錯誤是漏掉 ±。若 A²＝k 且 k＞0，應該得到 A＝±√k，而不是只有 A＝√k。",
+
+      check:
+        "將兩個根分別代回平方形式；平方後都應該得到右邊同一個數。"
+    };
+  }
+
+
+  if (
+    method.includes(
+      "配方法"
+    )
+  ) {
+
+    return {
+
+      think:
+        "配方法的核心是把 x²＋bx 補成完全平方式：先取一次項係數的一半，再平方；若二次項係數不是 1，要先把它化成 1。",
+
+      pitfall:
+        "等式左邊補了多少，右邊也必須補一樣多；另外不要直接拿一次項係數平方，必須先除以 2。",
+
+      check:
+        "把配好的完全平方式展開，確認 x²、一次項與補上的常數都正確；最後求出的根也可代回原方程式驗算。"
+    };
+  }
+
+
+  if (
+    method.includes(
+      "辨認公式中的"
+    ) ||
+    method.includes(
+      "整理標準式"
+    )
+  ) {
+
+    return {
+
+      think:
+        "先把方程式整理成 ax²＋bx＋c＝0，再逐項對照 a、b、c；缺少某一項時，那一項的係數就是 0。",
+
+      pitfall:
+        "係數前面的負號是係數的一部分；如果還沒把等號右邊的項移到左邊，就很容易判錯 b 或 c。",
+
+      check:
+        "把找到的 a、b、c 重新代回 ax²＋bx＋c＝0，應能完整還原整理後的方程式。"
+    };
+  }
+
+
+  if (
+    method ===
+    "判別式"
+  ) {
+
+    return {
+
+      think:
+        "先正確找出 a、b、c，再計算 D＝b²－4ac。根的情形只看 D 的正、零、負，不必先完整求根。",
+
+      pitfall:
+        "b 若是負數，平方時要寫成 (b)²；計算 −4ac 時也要把 a、c 的負號一起代入。",
+
+      check:
+        "D＞0 有兩個相異實根；D＝0 有重根；D＜0 無實數解。用這三種情形回頭核對判斷。"
+    };
+  }
+
+
+  if (
+    method.includes(
+      "一元二次方程式公式"
+    )
+  ) {
+
+    return {
+
+      think:
+        "公式解的順序是：先整理標準式 → 找 a、b、c → 算判別式 → 代入公式 → 約分與化簡根式。",
+
+      pitfall:
+        "公式最容易錯在 −b、b² 與分母 2a。若 b 或 a 是負數，代入時最好先加括號再計算。",
+
+      check:
+        "若有兩個解，兩個都應符合原方程式；若根式可以化簡或分數可以約分，最後答案要整理成最簡形式。"
+    };
+  }
+
+
+  if (
+    method.includes(
+      "應用問題"
+    ) ||
+    method.includes(
+      "依題意列方程式"
+    ) ||
+    method.includes(
+      "檢驗解是否符合題意"
+    )
+  ) {
+
+    return {
+
+      think:
+        "先明確寫出 x 代表什麼，再把題目中的數量關係翻成代數式；解出方程式後，還要回到情境檢查答案是否合理。",
+
+      pitfall:
+        "方程式的數學解不一定都是題目的答案。長度、數量、價格等通常不能取負值，題目若指定較小或非負解也要照條件篩選。",
+
+      check:
+        "把最後選定的答案代回原情境，例如重新計算面積、乘積或營業額，確認真的符合題目給的條件。"
+    };
+  }
+
+
+  return {
+
+    think:
+      "先辨認題目屬於哪一種一元二次方程式型態，再選最直接的方法，不要一看到二次方程式就固定套同一種解法。",
+
+    pitfall:
+      "運算時要特別注意移項變號、負數平方、±、分數約分與根式化簡。",
+
+    check:
+      "最後把得到的答案代回原方程式或原題情境，確認等式成立且符合題意。"
+  };
+}
+
+
+function explanationHTML(
+  question,
+  userAnswer = ""
+) {
+
+  const guide =
+    learningGuideForQuestion(
+      question
+    );
+
 
   const method =
 
@@ -11286,18 +11701,38 @@ function explanationHTML(
 
       ? `
 
-        <div class="explanation-step">
+        <div class="explanation-learning-box explanation-think">
 
           <strong>
-            建議解法｜
+            💡 先想一想｜
           </strong>
 
-          ${question.method}
+          ${guide.think}
+
+          <div
+            style="
+              margin-top:7px;
+              font-weight:900;
+            "
+          >
+            建議解法：${question.method}
+          </div>
 
         </div>
       `
 
-      : "";
+      : `
+
+        <div class="explanation-learning-box explanation-think">
+
+          <strong>
+            💡 先想一想｜
+          </strong>
+
+          ${guide.think}
+
+        </div>
+      `;
 
 
   return `
@@ -11313,6 +11748,36 @@ function explanationHTML(
       <div class="explanation-question-math">
 
         ${question.html}
+
+      </div>
+
+    </div>
+
+    <div class="explanation-answer-grid">
+
+      <div class="explanation-answer-card">
+
+        <div class="explanation-answer-label">
+          你的答案
+        </div>
+
+        <div class="explanation-answer-value">
+          ${userAnswer || "—"}
+        </div>
+
+      </div>
+
+      <div class="explanation-answer-card">
+
+        <div class="explanation-answer-label">
+          正確答案
+        </div>
+
+        <div class="explanation-answer-value">
+          ${correctAnswerHTML(
+            question
+          )}
+        </div>
 
       </div>
 
@@ -11351,6 +11816,40 @@ function explanationHTML(
         )
         .join("")
     }
+
+    <div class="explanation-learning-box explanation-pitfall">
+
+      <strong>
+        ⚠️ 常見錯誤｜
+      </strong>
+
+      ${guide.pitfall}
+
+    </div>
+
+    <div class="explanation-learning-box explanation-check">
+
+      <strong>
+        🔎 自我檢查｜
+      </strong>
+
+      ${guide.check}
+
+    </div>
+
+    <div class="explanation-final">
+
+      <div class="explanation-final-label">
+        ✅ 最後答案
+      </div>
+
+      <div class="explanation-final-value">
+        ${correctAnswerHTML(
+          question
+        )}
+      </div>
+
+    </div>
   `;
 }
 
@@ -11616,7 +12115,8 @@ function submitAnswer() {
   $("explanation")
     .innerHTML =
       explanationHTML(
-        question
+        question,
+        answer.display
       );
 
 
@@ -12364,7 +12864,8 @@ function showReview() {
                   <div class="explanation">
 
                     ${explanationHTML(
-                      record.question
+                      record.question,
+                      record.userAnswer
                     )}
 
                   </div>
