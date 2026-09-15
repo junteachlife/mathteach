@@ -1,0 +1,3027 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    RPG 成長系統測試中心
+  </title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+
+      --primary: #7c3aed;
+      --primary-dark: #5b21b6;
+      --primary-light: #f3e8ff;
+
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+
+      --green: #15803d;
+      --green-light: #f0fdf4;
+
+      --orange: #c2410c;
+      --orange-light: #fff7ed;
+
+      --red: #b91c1c;
+      --red-light: #fef2f2;
+
+      --text: #1e293b;
+      --muted: #64748b;
+
+      --border: #e2e8f0;
+
+    }
+
+
+    body {
+
+      margin: 0;
+
+      min-height: 100vh;
+
+      padding: 20px;
+
+      font-family:
+        "Microsoft JhengHei",
+        "Noto Sans TC",
+        sans-serif;
+
+      color:
+        var(--text);
+
+      background:
+        linear-gradient(
+          135deg,
+          #f5f3ff,
+          #eff6ff,
+          #f0fdf4
+        );
+
+    }
+
+
+    button,
+    input,
+    select {
+
+      font-family:
+        inherit;
+
+    }
+
+
+    .page {
+
+      width:
+        min(
+          100%,
+          1080px
+        );
+
+      margin:
+        0 auto;
+
+    }
+
+
+    /*
+    ==================================================
+    Header
+    ==================================================
+    */
+
+    .header {
+
+      padding:
+        28px 20px;
+
+      border-radius:
+        24px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6d28d9,
+          #2563eb
+        );
+
+      color:
+        white;
+
+      text-align:
+        center;
+
+      box-shadow:
+        0 14px 32px
+        rgba(
+          15,
+          23,
+          42,
+          .15
+        );
+
+    }
+
+
+    .header h1 {
+
+      margin:
+        0;
+
+      font-size:
+        clamp(
+          28px,
+          5vw,
+          42px
+        );
+
+    }
+
+
+    .header p {
+
+      margin:
+        10px 0 0;
+
+      line-height:
+        1.8;
+
+      opacity:
+        .94;
+
+    }
+
+
+    .test-badge {
+
+      display:
+        inline-block;
+
+      margin-top:
+        14px;
+
+      padding:
+        7px 14px;
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          .55
+        );
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          .15
+        );
+
+      font-weight:
+        900;
+
+    }
+
+
+    /*
+    ==================================================
+    Card
+    ==================================================
+    */
+
+    .card {
+
+      margin-top:
+        18px;
+
+      padding:
+        22px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        20px;
+
+      background:
+        white;
+
+      box-shadow:
+        0 10px 28px
+        rgba(
+          15,
+          23,
+          42,
+          .08
+        );
+
+    }
+
+
+    .card-title {
+
+      margin:
+        0 0 16px;
+
+      color:
+        var(--primary-dark);
+
+      font-size:
+        22px;
+
+      font-weight:
+        900;
+
+    }
+
+
+    /*
+    ==================================================
+    Safety
+    ==================================================
+    */
+
+    .safety-box {
+
+      padding:
+        15px;
+
+      border:
+        2px solid
+        #86efac;
+
+      border-radius:
+        14px;
+
+      background:
+        var(--green-light);
+
+      color:
+        #166534;
+
+      line-height:
+        1.8;
+
+      font-weight:
+        800;
+
+    }
+
+
+    /*
+    ==================================================
+    Config
+    ==================================================
+    */
+
+    .config-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap:
+        12px;
+
+    }
+
+
+    .config-item {
+
+      padding:
+        13px;
+
+      border-radius:
+        13px;
+
+      background:
+        #f8fafc;
+
+      text-align:
+        center;
+
+    }
+
+
+    .config-label {
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .config-value {
+
+      margin-top:
+        6px;
+
+      color:
+        var(--primary-dark);
+
+      font-size:
+        18px;
+
+      font-weight:
+        900;
+
+      word-break:
+        break-word;
+
+    }
+
+
+    /*
+    ==================================================
+    Form
+    ==================================================
+    */
+
+    .form-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap:
+        15px;
+
+    }
+
+
+    .field {
+
+      min-width:
+        0;
+
+    }
+
+
+    .field.full {
+
+      grid-column:
+        1 / -1;
+
+    }
+
+
+    .field label {
+
+      display:
+        block;
+
+      margin-bottom:
+        7px;
+
+      color:
+        #334155;
+
+      font-weight:
+        900;
+
+    }
+
+
+    .field select,
+    .field input {
+
+      width:
+        100%;
+
+      min-height:
+        52px;
+
+      padding:
+        10px 12px;
+
+      border:
+        2px solid
+        #cbd5e1;
+
+      border-radius:
+        11px;
+
+      background:
+        white;
+
+      color:
+        #111827;
+
+      font-size:
+        17px;
+
+      font-weight:
+        800;
+
+      outline:
+        none;
+
+    }
+
+
+    .field select:focus,
+    .field input:focus {
+
+      border-color:
+        var(--primary);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(
+          124,
+          58,
+          237,
+          .11
+        );
+
+    }
+
+
+    .mode-info {
+
+      margin-top:
+        12px;
+
+      padding:
+        13px 15px;
+
+      border-radius:
+        13px;
+
+      background:
+        var(--primary-light);
+
+      color:
+        var(--primary-dark);
+
+      line-height:
+        1.75;
+
+      font-weight:
+        900;
+
+    }
+
+
+    /*
+    ==================================================
+    Checkboxes
+    ==================================================
+    */
+
+    .bonus-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap:
+        10px;
+
+    }
+
+
+    .bonus-option {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        9px;
+
+      min-height:
+        58px;
+
+      padding:
+        11px 13px;
+
+      border:
+        2px solid
+        #ddd6fe;
+
+      border-radius:
+        12px;
+
+      background:
+        #faf5ff;
+
+      cursor:
+        pointer;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .bonus-option input {
+
+      width:
+        21px;
+
+      height:
+        21px;
+
+      flex:
+        0 0 auto;
+
+    }
+
+
+    /*
+    ==================================================
+    Repeat
+    ==================================================
+    */
+
+    .repeat-box {
+
+      margin-top:
+        14px;
+
+      padding:
+        15px;
+
+      border:
+        2px dashed
+        #fdba74;
+
+      border-radius:
+        14px;
+
+      background:
+        var(--orange-light);
+
+    }
+
+
+    .repeat-heading {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        9px;
+
+      font-weight:
+        900;
+
+      color:
+        #9a3412;
+
+    }
+
+
+    .repeat-heading input {
+
+      width:
+        21px;
+
+      height:
+        21px;
+
+    }
+
+
+    .repeat-settings {
+
+      margin-top:
+        12px;
+
+    }
+
+
+    /*
+    ==================================================
+    Button
+    ==================================================
+    */
+
+    .button-row {
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      gap:
+        10px;
+
+      margin-top:
+        20px;
+
+      flex-wrap:
+        wrap;
+
+    }
+
+
+    .main-button {
+
+      min-width:
+        180px;
+
+      padding:
+        13px 22px;
+
+      border:
+        0;
+
+      border-radius:
+        12px;
+
+      background:
+        var(--primary);
+
+      color:
+        white;
+
+      font-size:
+        17px;
+
+      font-weight:
+        900;
+
+      cursor:
+        pointer;
+
+      box-shadow:
+        0 5px 0
+        var(--primary-dark);
+
+    }
+
+
+    .main-button:active {
+
+      transform:
+        translateY(
+          3px
+        );
+
+      box-shadow:
+        0 2px 0
+        var(--primary-dark);
+
+    }
+
+
+    /*
+    ==================================================
+    Result
+    ==================================================
+    */
+
+    .result-card {
+
+      display:
+        none;
+
+    }
+
+
+    .result-card.show {
+
+      display:
+        block;
+
+    }
+
+
+    .xp-total {
+
+      margin:
+        8px 0 20px;
+
+      text-align:
+        center;
+
+    }
+
+
+    .xp-number {
+
+      color:
+        var(--primary);
+
+      font-size:
+        clamp(
+          48px,
+          9vw,
+          76px
+        );
+
+      font-weight:
+        900;
+
+    }
+
+
+    .xp-label {
+
+      color:
+        var(--muted);
+
+      font-size:
+        17px;
+
+      font-weight:
+        900;
+
+    }
+
+
+    .breakdown {
+
+      width:
+        min(
+          100%,
+          700px
+        );
+
+      margin:
+        0 auto;
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+    }
+
+
+    .breakdown-row {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        minmax(
+          0,
+          1fr
+        )
+        auto;
+
+      gap:
+        14px;
+
+      padding:
+        12px 15px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      align-items:
+        center;
+
+    }
+
+
+    .breakdown-row:last-child {
+
+      border-bottom:
+        0;
+
+    }
+
+
+    .breakdown-row.highlight {
+
+      background:
+        var(--primary-light);
+
+      color:
+        var(--primary-dark);
+
+      font-weight:
+        900;
+
+    }
+
+
+    .breakdown-row.final {
+
+      background:
+        var(--green-light);
+
+      color:
+        var(--green);
+
+      font-size:
+        19px;
+
+      font-weight:
+        900;
+
+    }
+
+
+    .breakdown-name {
+
+      line-height:
+        1.6;
+
+    }
+
+
+    .breakdown-value {
+
+      white-space:
+        nowrap;
+
+      font-weight:
+        900;
+
+    }
+
+
+    .formula-preview {
+
+      width:
+        min(
+          100%,
+          700px
+        );
+
+      margin:
+        16px auto 0;
+
+      padding:
+        14px;
+
+      border-radius:
+        13px;
+
+      background:
+        #f8fafc;
+
+      color:
+        #475569;
+
+      text-align:
+        center;
+
+      line-height:
+        1.8;
+
+      font-weight:
+        800;
+
+    }
+
+
+    /*
+    ==================================================
+    Warning
+    ==================================================
+    */
+
+    .warning {
+
+      display:
+        none;
+
+      margin-top:
+        13px;
+
+      padding:
+        12px 14px;
+
+      border:
+        1px solid
+        #fde68a;
+
+      border-radius:
+        12px;
+
+      background:
+        #fffbeb;
+
+      color:
+        #92400e;
+
+      line-height:
+        1.7;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .warning.show {
+
+      display:
+        block;
+
+    }
+
+
+    /*
+    ==================================================
+    Rule
+    ==================================================
+    */
+
+    .rule-table {
+
+      width:
+        100%;
+
+      border-collapse:
+        collapse;
+
+    }
+
+
+    .rule-table th,
+    .rule-table td {
+
+      padding:
+        10px 12px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      text-align:
+        left;
+
+    }
+
+
+    .rule-table th {
+
+      background:
+        #f8fafc;
+
+      color:
+        #475569;
+
+    }
+
+
+    /*
+    ==================================================
+    Mobile
+    ==================================================
+    */
+
+    @media(
+      max-width: 760px
+    ) {
+
+      body {
+
+        padding:
+          9px;
+
+      }
+
+
+      .card {
+
+        padding:
+          16px 11px;
+
+      }
+
+
+      .config-grid {
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(
+              0,
+              1fr
+            )
+          );
+
+      }
+
+
+      .form-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .field.full {
+
+        grid-column:
+          auto;
+
+      }
+
+
+      .bonus-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+  <!--
+  ==================================================
+  Header
+  ==================================================
+  -->
+
+  <header class="header">
+
+    <h1>
+      🎮 RPG 成長系統測試中心
+    </h1>
+
+    <p>
+      用來測試不同數學遊戲、不同模式與不同表現，
+      最後應獲得多少 XP。
+    </p>
+
+    <div class="test-badge">
+      🧪 TEST ONLY｜不寫入 Firebase
+    </div>
+
+  </header>
+
+
+  <!--
+  ==================================================
+  Safety
+  ==================================================
+  -->
+
+  <section class="card">
+
+    <h2 class="card-title">
+      🔒 目前安全狀態
+    </h2>
+
+    <div class="safety-box">
+
+      這個頁面目前只做瀏覽器中的模擬計算。<br>
+
+      ✅ 不修改正式遊戲<br>
+
+      ✅ 不呼叫 scores.js<br>
+
+      ✅ 不寫入 Firestore<br>
+
+      ✅ 不增加學生 XP<br>
+
+      ✅ 關閉頁面後，本次模擬結果就消失
+
+    </div>
+
+  </section>
+
+
+  <!--
+  ==================================================
+  Config
+  ==================================================
+  -->
+
+  <section class="card">
+
+    <h2 class="card-title">
+      ⚙️ RPG 開發環境
+    </h2>
+
+    <div class="config-grid">
+
+      <div class="config-item">
+
+        <div class="config-label">
+          RPG Version
+        </div>
+
+        <div
+          id="config-version"
+          class="config-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="config-item">
+
+        <div class="config-label">
+          Environment
+        </div>
+
+        <div
+          id="config-environment"
+          class="config-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="config-item">
+
+        <div class="config-label">
+          正式 RPG
+        </div>
+
+        <div
+          id="config-enabled"
+          class="config-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="config-item">
+
+        <div class="config-label">
+          已登錄遊戲
+        </div>
+
+        <div
+          id="config-game-count"
+          class="config-value"
+        >
+          —
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!--
+  ==================================================
+  Simulator
+  ==================================================
+  -->
+
+  <section class="card">
+
+    <h2 class="card-title">
+      🧮 XP 模擬器
+    </h2>
+
+
+    <div class="form-grid">
+
+
+      <div class="field">
+
+        <label for="game-select">
+          數學遊戲
+        </label>
+
+        <select id="game-select"></select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="mode-select">
+          遊戲模式
+        </label>
+
+        <select id="mode-select"></select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="score-input">
+          本次分數
+        </label>
+
+        <input
+          id="score-input"
+          type="number"
+          min="0"
+          max="100"
+          step="1"
+          value="80"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="correct-input">
+          答對題數
+        </label>
+
+        <input
+          id="correct-input"
+          type="number"
+          min="0"
+          step="1"
+          value="8"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="total-input">
+          總題數
+        </label>
+
+        <input
+          id="total-input"
+          type="number"
+          min="1"
+          step="1"
+          value="10"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="combo-input">
+          最高連擊
+        </label>
+
+        <input
+          id="combo-input"
+          type="number"
+          min="0"
+          step="1"
+          value="5"
+        >
+
+      </div>
+
+
+    </div>
+
+
+    <div
+      id="mode-info"
+      class="mode-info"
+    >
+      —
+    </div>
+
+
+    <div
+      id="score-warning"
+      class="warning"
+    ></div>
+
+
+    <!--
+    ==================================================
+    First Bonuses
+    ==================================================
+    -->
+
+    <h3>
+      🎁 首次里程碑模擬
+    </h3>
+
+    <div class="bonus-grid">
+
+      <label class="bonus-option">
+
+        <input
+          id="first-completion"
+          type="checkbox"
+        >
+
+        <span>
+          首次完成此模式
+          （+20 XP）
+        </span>
+
+      </label>
+
+
+      <label class="bonus-option">
+
+        <input
+          id="first-80"
+          type="checkbox"
+        >
+
+        <span>
+          首次達到 80 分
+          （+20 XP）
+        </span>
+
+      </label>
+
+
+      <label class="bonus-option">
+
+        <input
+          id="first-100"
+          type="checkbox"
+        >
+
+        <span>
+          首次滿分
+          （+30 XP）
+        </span>
+
+      </label>
+
+    </div>
+
+
+    <!--
+    ==================================================
+    Repeat Practice
+    ==================================================
+    -->
+
+    <div class="repeat-box">
+
+      <label class="repeat-heading">
+
+        <input
+          id="repeat-enabled"
+          type="checkbox"
+        >
+
+        <span>
+          🧪 測試「同模式重複練習 XP 遞減」
+        </span>
+
+      </label>
+
+
+      <div class="repeat-settings">
+
+        <div class="field">
+
+          <label for="attempt-input">
+            今天這是同一模式第幾次完成？
+          </label>
+
+          <input
+            id="attempt-input"
+            type="number"
+            min="1"
+            step="1"
+            value="1"
+            disabled
+          >
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="button-row">
+
+      <button
+        id="calculate-button"
+        class="main-button"
+        type="button"
+      >
+        ⚔️ 模擬 RPG 結算
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!--
+  ==================================================
+  Result
+  ==================================================
+  -->
+
+  <section
+    id="result-card"
+    class="card result-card"
+  >
+
+    <h2 class="card-title">
+      🏆 模擬結算結果
+    </h2>
+
+
+    <div class="xp-total">
+
+      <div
+        id="final-xp"
+        class="xp-number"
+      >
+        0
+      </div>
+
+      <div class="xp-label">
+        本局獲得 XP
+      </div>
+
+    </div>
+
+
+    <div
+      id="breakdown"
+      class="breakdown"
+    ></div>
+
+
+    <div
+      id="formula-preview"
+      class="formula-preview"
+    ></div>
+
+  </section>
+
+
+  <!--
+  ==================================================
+  Current Rules
+  ==================================================
+  -->
+
+  <section class="card">
+
+    <h2 class="card-title">
+      📋 目前測試中的 XP 規則
+    </h2>
+
+
+    <table class="rule-table">
+
+      <thead>
+
+        <tr>
+
+          <th>
+            條件
+          </th>
+
+          <th>
+            XP
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <tr>
+          <td>
+            完成一局
+          </td>
+          <td>
+            +10
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            60～79 分
+          </td>
+          <td>
+            +5
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            80～89 分
+          </td>
+          <td>
+            +10
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            90～99 分
+          </td>
+          <td>
+            +15
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            100 分
+          </td>
+          <td>
+            +25
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            最高連擊 5～9
+          </td>
+          <td>
+            +5
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            最高連擊 ≥ 10
+          </td>
+          <td>
+            +10
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            首次完成模式
+          </td>
+          <td>
+            +20
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            首次達 80 分
+          </td>
+          <td>
+            +20
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            首次滿分
+          </td>
+          <td>
+            +30
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+
+    <p
+      style="
+        margin:14px 0 0;
+        color:#64748b;
+        line-height:1.8;
+        font-weight:800;
+      "
+    >
+      目前這些都只是測試規則。
+      我們可以用這個頁面反覆模擬後，
+      再決定哪些規則正式採用。
+    </p>
+
+  </section>
+
+
+</div>
+
+
+<script type="module">
+
+  /*
+  ==================================================
+  Imports
+  ==================================================
+  */
+
+  import {
+
+    RPG_CONFIG
+
+  } from "./js/rpg/rpg-config.js";
+
+
+  import {
+
+    GAME_REGISTRY,
+
+    getActiveGames,
+
+    getActiveModes,
+
+    getModeConfig,
+
+    getModeXpWeight,
+
+    getDifficultyLabel
+
+  } from "./js/rpg/game-registry.js";
+
+
+  "use strict";
+
+
+  /*
+  ==================================================
+  DOM
+  ==================================================
+  */
+
+  const $ =
+    id =>
+      document.getElementById(
+        id
+      );
+
+
+  /*
+  ==================================================
+  XP 測試規則
+  ==================================================
+
+  注意：
+  這份規則目前只存在於測試中心。
+
+  還不是正式 progress-system.js。
+  ==================================================
+  */
+
+  const TEST_XP_RULES =
+    Object.freeze({
+
+      completion:
+        10,
+
+
+      scoreBonus:
+        Object.freeze({
+
+          below60:
+            0,
+
+          score60:
+            5,
+
+          score80:
+            10,
+
+          score90:
+            15,
+
+          score100:
+            25
+
+        }),
+
+
+      comboBonus:
+        Object.freeze({
+
+          combo5:
+            5,
+
+          combo10:
+            10
+
+        }),
+
+
+      milestoneBonus:
+        Object.freeze({
+
+          firstCompletion:
+            20,
+
+          first80:
+            20,
+
+          first100:
+            30
+
+        })
+
+    });
+
+
+  /*
+  ==================================================
+  Score Bonus
+  ==================================================
+  */
+
+  function getScoreBonus(
+    score
+  ) {
+
+    if (
+      score >=
+      100
+    ) {
+
+      return (
+        TEST_XP_RULES
+          .scoreBonus
+          .score100
+      );
+
+    }
+
+
+    if (
+      score >=
+      90
+    ) {
+
+      return (
+        TEST_XP_RULES
+          .scoreBonus
+          .score90
+      );
+
+    }
+
+
+    if (
+      score >=
+      80
+    ) {
+
+      return (
+        TEST_XP_RULES
+          .scoreBonus
+          .score80
+      );
+
+    }
+
+
+    if (
+      score >=
+      60
+    ) {
+
+      return (
+        TEST_XP_RULES
+          .scoreBonus
+          .score60
+      );
+
+    }
+
+
+    return (
+      TEST_XP_RULES
+        .scoreBonus
+        .below60
+    );
+
+  }
+
+
+  /*
+  ==================================================
+  Combo Bonus
+  ==================================================
+  */
+
+  function getComboBonus(
+    combo
+  ) {
+
+    if (
+      combo >=
+      10
+    ) {
+
+      return (
+        TEST_XP_RULES
+          .comboBonus
+          .combo10
+      );
+
+    }
+
+
+    if (
+      combo >=
+      5
+    ) {
+
+      return (
+        TEST_XP_RULES
+          .comboBonus
+          .combo5
+      );
+
+    }
+
+
+    return 0;
+
+  }
+
+
+  /*
+  ==================================================
+  Repeat Practice Multiplier
+  ==================================================
+
+  目前只是測試候選規則。
+
+  第 1～3 次：
+  100%
+
+  第 4～6 次：
+  70%
+
+  第 7 次以上：
+  40%
+  ==================================================
+  */
+
+  function getRepeatMultiplier(
+    attemptNumber
+  ) {
+
+    if (
+      attemptNumber <=
+      3
+    ) {
+
+      return 1;
+
+    }
+
+
+    if (
+      attemptNumber <=
+      6
+    ) {
+
+      return .7;
+
+    }
+
+
+    return .4;
+
+  }
+
+
+  /*
+  ==================================================
+  Populate Games
+  ==================================================
+  */
+
+  function populateGames() {
+
+    const games =
+      getActiveGames();
+
+
+    $("game-select")
+      .innerHTML =
+        games
+          .map(
+            game => `
+
+              <option
+                value="${game.gameId}"
+              >
+
+                ${game.name}
+
+              </option>
+
+            `
+          )
+          .join("");
+
+
+    populateModes();
+
+  }
+
+
+  /*
+  ==================================================
+  Populate Modes
+  ==================================================
+  */
+
+  function populateModes() {
+
+    const gameId =
+      $("game-select")
+        .value;
+
+
+    const modes =
+      getActiveModes(
+        gameId
+      );
+
+
+    $("mode-select")
+      .innerHTML =
+        modes
+          .map(
+            mode => `
+
+              <option
+                value="${mode.modeId}"
+              >
+
+                ${mode.name}
+
+              </option>
+
+            `
+          )
+          .join("");
+
+
+    updateModeInfo();
+
+  }
+
+
+  /*
+  ==================================================
+  Mode Info
+  ==================================================
+  */
+
+  function updateModeInfo() {
+
+    const gameId =
+      $("game-select")
+        .value;
+
+
+    const modeId =
+      $("mode-select")
+        .value;
+
+
+    const mode =
+      getModeConfig(
+        gameId,
+        modeId
+      );
+
+
+    if (
+      !mode
+    ) {
+
+      $("mode-info")
+        .textContent =
+          "找不到模式設定。";
+
+
+      return;
+    }
+
+
+    const weight =
+      getModeXpWeight(
+        gameId,
+        modeId
+      );
+
+
+    const difficulty =
+      getDifficultyLabel(
+        gameId,
+        modeId
+      );
+
+
+    $("mode-info")
+      .innerHTML = `
+
+        🎯
+        <strong>
+          ${mode.name}
+        </strong>
+
+        ｜難度：
+        ${difficulty}
+
+        ｜XP 權重：
+        ×${weight.toFixed(2)}
+
+        ｜類型：
+        ${mode.modeType}
+
+        ｜核心完成：
+        ${
+          mode.countsForCompletion
+
+            ? "是"
+
+            : "否"
+        }
+
+      `;
+
+  }
+
+
+  /*
+  ==================================================
+  Validate
+  ==================================================
+  */
+
+  function readInputs() {
+
+    const gameId =
+      $("game-select")
+        .value;
+
+
+    const modeId =
+      $("mode-select")
+        .value;
+
+
+    const score =
+      Number(
+        $("score-input")
+          .value
+      );
+
+
+    const correct =
+      Number(
+        $("correct-input")
+          .value
+      );
+
+
+    const total =
+      Number(
+        $("total-input")
+          .value
+      );
+
+
+    const combo =
+      Number(
+        $("combo-input")
+          .value
+      );
+
+
+    const attempt =
+      Number(
+        $("attempt-input")
+          .value
+      );
+
+
+    if (
+      !gameId ||
+      !modeId
+    ) {
+
+      alert(
+        "請選擇遊戲與模式。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      !Number.isFinite(score) ||
+      score <
+      0 ||
+      score >
+      100
+    ) {
+
+      alert(
+        "分數請輸入 0～100。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      !Number.isInteger(correct) ||
+      correct <
+      0
+    ) {
+
+      alert(
+        "答對題數必須是 0 以上的整數。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      !Number.isInteger(total) ||
+      total <
+      1
+    ) {
+
+      alert(
+        "總題數至少要 1 題。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      correct >
+      total
+    ) {
+
+      alert(
+        "答對題數不能超過總題數。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      !Number.isInteger(combo) ||
+      combo <
+      0
+    ) {
+
+      alert(
+        "最高連擊必須是 0 以上的整數。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      combo >
+      total
+    ) {
+
+      alert(
+        "最高連擊不能超過總題數。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      !Number.isInteger(attempt) ||
+      attempt <
+      1
+    ) {
+
+      alert(
+        "完成次數至少為 1。"
+      );
+
+
+      return null;
+
+    }
+
+
+    return {
+
+      gameId,
+
+      modeId,
+
+      score,
+
+      correct,
+
+      total,
+
+      combo,
+
+      attempt
+
+    };
+
+  }
+
+
+  /*
+  ==================================================
+  Warning
+  ==================================================
+  */
+
+  function updateScoreWarning() {
+
+    const score =
+      Number(
+        $("score-input")
+          .value
+      );
+
+
+    const correct =
+      Number(
+        $("correct-input")
+          .value
+      );
+
+
+    const total =
+      Number(
+        $("total-input")
+          .value
+      );
+
+
+    const box =
+      $("score-warning");
+
+
+    if (
+      !Number.isFinite(score) ||
+      !Number.isFinite(correct) ||
+      !Number.isFinite(total) ||
+      total <=
+      0
+    ) {
+
+      box.classList.remove(
+        "show"
+      );
+
+
+      return;
+
+    }
+
+
+    const accuracyScore =
+      Math.round(
+        correct /
+        total *
+        100
+      );
+
+
+    if (
+      Math.abs(
+        accuracyScore -
+        score
+      ) >=
+      10
+    ) {
+
+      box.innerHTML = `
+
+        ⚠️ 提醒：
+        目前「分數」是 ${score} 分，
+        但依答對 ${correct}/${total} 題計算，
+        正確率約為 ${accuracyScore}%。
+
+        <br>
+
+        有些遊戲的計分方式未必等於單純正確率，
+        因此測試中心不會自動修改你的分數。
+
+      `;
+
+
+      box.classList.add(
+        "show"
+      );
+
+    } else {
+
+      box.classList.remove(
+        "show"
+      );
+
+    }
+
+  }
+
+
+  /*
+  ==================================================
+  Calculate
+  ==================================================
+  */
+
+  function calculateXP() {
+
+    const input =
+      readInputs();
+
+
+    if (
+      !input
+    ) {
+
+      return;
+
+    }
+
+
+    const modeWeight =
+      getModeXpWeight(
+        input.gameId,
+        input.modeId
+      );
+
+
+    /*
+    一般表現 XP
+    */
+
+    const completionXP =
+      TEST_XP_RULES
+        .completion;
+
+
+    const scoreXP =
+      getScoreBonus(
+        input.score
+      );
+
+
+    const comboXP =
+      getComboBonus(
+        input.combo
+      );
+
+
+    const performanceSubtotal =
+      completionXP +
+      scoreXP +
+      comboXP;
+
+
+    /*
+    模式難度倍率
+    */
+
+    const weightedPerformanceXP =
+      Math.round(
+        performanceSubtotal *
+        modeWeight
+      );
+
+
+    /*
+    首次里程碑
+    */
+
+    let milestoneXP =
+      0;
+
+
+    const milestoneRows =
+      [];
+
+
+    if (
+      $("first-completion")
+        .checked
+    ) {
+
+      milestoneXP +=
+        TEST_XP_RULES
+          .milestoneBonus
+          .firstCompletion;
+
+
+      milestoneRows.push({
+
+        name:
+          "首次完成此模式",
+
+        value:
+          TEST_XP_RULES
+            .milestoneBonus
+            .firstCompletion
+
+      });
+
+    }
+
+
+    if (
+      $("first-80")
+        .checked &&
+      input.score >=
+      80
+    ) {
+
+      milestoneXP +=
+        TEST_XP_RULES
+          .milestoneBonus
+          .first80;
+
+
+      milestoneRows.push({
+
+        name:
+          "首次達到 80 分",
+
+        value:
+          TEST_XP_RULES
+            .milestoneBonus
+            .first80
+
+      });
+
+    }
+
+
+    if (
+      $("first-100")
+        .checked &&
+      input.score >=
+      100
+    ) {
+
+      milestoneXP +=
+        TEST_XP_RULES
+          .milestoneBonus
+          .first100;
+
+
+      milestoneRows.push({
+
+        name:
+          "首次滿分",
+
+        value:
+          TEST_XP_RULES
+            .milestoneBonus
+            .first100
+
+      });
+
+    }
+
+
+    /*
+    初步 XP
+    */
+
+    const beforeRepeat =
+      weightedPerformanceXP +
+      milestoneXP;
+
+
+    /*
+    重複練習遞減
+    */
+
+    const repeatEnabled =
+      $("repeat-enabled")
+        .checked;
+
+
+    const repeatMultiplier =
+
+      repeatEnabled
+
+        ? getRepeatMultiplier(
+            input.attempt
+          )
+
+        : 1;
+
+
+    /*
+    目前先讓重複遞減只作用在一般表現 XP，
+    不扣掉第一次里程碑獎勵。
+
+    避免首次成就也被打折。
+    */
+
+    const repeatedPerformanceXP =
+      Math.round(
+        weightedPerformanceXP *
+        repeatMultiplier
+      );
+
+
+    const finalXP =
+      repeatedPerformanceXP +
+      milestoneXP;
+
+
+    renderResult({
+
+      ...input,
+
+      modeWeight,
+
+      completionXP,
+
+      scoreXP,
+
+      comboXP,
+
+      performanceSubtotal,
+
+      weightedPerformanceXP,
+
+      milestoneXP,
+
+      milestoneRows,
+
+      beforeRepeat,
+
+      repeatEnabled,
+
+      repeatMultiplier,
+
+      repeatedPerformanceXP,
+
+      finalXP
+
+    });
+
+  }
+
+
+  /*
+  ==================================================
+  Result
+  ==================================================
+  */
+
+  function renderResult(
+    data
+  ) {
+
+    const game =
+      GAME_REGISTRY[
+        data.gameId
+      ];
+
+
+    const mode =
+      getModeConfig(
+        data.gameId,
+        data.modeId
+      );
+
+
+    const rows =
+      [
+
+        {
+
+          name:
+            "完成一局",
+
+          value:
+            `+${data.completionXP} XP`
+
+        },
+
+        {
+
+          name:
+            `成績獎勵（${data.score} 分）`,
+
+          value:
+            `+${data.scoreXP} XP`
+
+        },
+
+        {
+
+          name:
+            `連擊獎勵（最高 ${data.combo}）`,
+
+          value:
+            `+${data.comboXP} XP`
+
+        },
+
+        {
+
+          name:
+            "一般表現 XP 小計",
+
+          value:
+            `${data.performanceSubtotal} XP`,
+
+          className:
+            "highlight"
+
+        },
+
+        {
+
+          name:
+            `模式難度權重（${mode.name}）`,
+
+          value:
+            `×${data.modeWeight.toFixed(2)}`
+
+        },
+
+        {
+
+          name:
+            "套用模式權重後",
+
+          value:
+            `${data.weightedPerformanceXP} XP`,
+
+          className:
+            "highlight"
+
+        }
+
+      ];
+
+
+    data.milestoneRows
+      .forEach(
+        milestone => {
+
+          rows.push({
+
+            name:
+              `🎁 ${milestone.name}`,
+
+            value:
+              `+${milestone.value} XP`
+
+          });
+
+        }
+      );
+
+
+    if (
+      data.repeatEnabled
+    ) {
+
+      rows.push({
+
+        name:
+          `同模式今日第 ${data.attempt} 次完成`,
+
+        value:
+          `×${data.repeatMultiplier.toFixed(2)}`
+
+      });
+
+
+      rows.push({
+
+        name:
+          "重複練習調整後的一般 XP",
+
+        value:
+          `${data.repeatedPerformanceXP} XP`,
+
+        className:
+          "highlight"
+
+      });
+
+    }
+
+
+    rows.push({
+
+      name:
+        "本局最終獲得",
+
+      value:
+        `${data.finalXP} XP`,
+
+      className:
+        "final"
+
+    });
+
+
+    $("breakdown")
+      .innerHTML =
+        rows
+          .map(
+            row => `
+
+              <div
+                class="
+                  breakdown-row
+                  ${row.className || ""}
+                "
+              >
+
+                <div class="breakdown-name">
+                  ${row.name}
+                </div>
+
+                <div class="breakdown-value">
+                  ${row.value}
+                </div>
+
+              </div>
+
+            `
+          )
+          .join("");
+
+
+    $("final-xp")
+      .textContent =
+        `+${data.finalXP}`;
+
+
+    $("formula-preview")
+      .innerHTML = `
+
+        <strong>
+          ${game.name}
+        </strong>
+
+        ／
+
+        <strong>
+          ${mode.name}
+        </strong>
+
+        <br>
+
+        （完成 ${data.completionXP}
+        ＋ 成績 ${data.scoreXP}
+        ＋ 連擊 ${data.comboXP}）
+
+        × ${data.modeWeight.toFixed(2)}
+
+        ${
+          data.repeatEnabled
+
+            ? `× ${data.repeatMultiplier.toFixed(2)}`
+
+            : ""
+        }
+
+        ＋ 首次里程碑 ${data.milestoneXP}
+
+        ＝
+
+        <strong>
+          ${data.finalXP} XP
+        </strong>
+
+      `;
+
+
+    $("result-card")
+      .classList
+      .add(
+        "show"
+      );
+
+
+    $("result-card")
+      .scrollIntoView({
+
+        behavior:
+          "smooth",
+
+        block:
+          "start"
+
+      });
+
+  }
+
+
+  /*
+  ==================================================
+  Environment
+  ==================================================
+  */
+
+  function renderEnvironment() {
+
+    $("config-version")
+      .textContent =
+        RPG_CONFIG.version;
+
+
+    $("config-environment")
+      .textContent =
+        RPG_CONFIG.environment
+          .toUpperCase();
+
+
+    $("config-enabled")
+      .textContent =
+
+        RPG_CONFIG.enabled
+
+          ? "已啟用"
+
+          : "未啟用";
+
+
+    $("config-game-count")
+      .textContent =
+        Object.keys(
+          GAME_REGISTRY
+        ).length;
+
+  }
+
+
+  /*
+  ==================================================
+  Events
+  ==================================================
+  */
+
+  $("game-select")
+    .addEventListener(
+      "change",
+      populateModes
+    );
+
+
+  $("mode-select")
+    .addEventListener(
+      "change",
+      updateModeInfo
+    );
+
+
+  [
+    "score-input",
+    "correct-input",
+    "total-input"
+  ]
+    .forEach(
+      id => {
+
+        $(id)
+          .addEventListener(
+            "input",
+            updateScoreWarning
+          );
+
+      }
+    );
+
+
+  $("repeat-enabled")
+    .addEventListener(
+      "change",
+      () => {
+
+        $("attempt-input")
+          .disabled =
+            !$("repeat-enabled")
+              .checked;
+
+      }
+    );
+
+
+  $("calculate-button")
+    .addEventListener(
+      "click",
+      calculateXP
+    );
+
+
+  /*
+  ==================================================
+  Init
+  ==================================================
+  */
+
+  renderEnvironment();
+
+  populateGames();
+
+  updateScoreWarning();
+
+</script>
+
+</body>
+
+</html>
