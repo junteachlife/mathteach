@@ -1332,6 +1332,199 @@
 
     /*
     ==================================================
+    詳解｜自學強化區塊
+    ==================================================
+    */
+
+    .explanation-answer-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap: 10px;
+
+      margin:
+        0 0 14px;
+    }
+
+    .explanation-answer-card {
+
+      padding:
+        12px 13px;
+
+      border:
+        1px solid
+        #cbd5e1;
+
+      border-radius:
+        12px;
+
+      background:
+        white;
+    }
+
+    .explanation-answer-card--correct {
+
+      border-color:
+        #86efac;
+
+      background:
+        #f0fdf4;
+    }
+
+    .explanation-answer-label {
+
+      margin-bottom:
+        6px;
+
+      color:
+        #64748b;
+
+      font-size:
+        13px;
+
+      font-weight:
+        900;
+    }
+
+    .explanation-answer-value {
+
+      overflow-x:
+        auto;
+
+      color:
+        #0f172a;
+
+      font-family:
+        "Cambria Math",
+        "Times New Roman",
+        "Microsoft JhengHei",
+        serif;
+
+      font-size:
+        20px;
+
+      font-weight:
+        900;
+
+      line-height:
+        1.8;
+    }
+
+    .explanation-method,
+    .explanation-pitfall,
+    .explanation-final {
+
+      margin:
+        13px 0;
+
+      padding:
+        13px 15px;
+
+      border-radius:
+        12px;
+
+      line-height:
+        1.9;
+    }
+
+    .explanation-method {
+
+      border:
+        1px solid
+        #93c5fd;
+
+      background:
+        #eff6ff;
+    }
+
+    .explanation-method strong {
+
+      color:
+        #1d4ed8;
+    }
+
+    .explanation-pitfall {
+
+      border:
+        1px solid
+        #fdba74;
+
+      background:
+        #fff7ed;
+    }
+
+    .explanation-pitfall strong {
+
+      color:
+        #c2410c;
+    }
+
+    .explanation-final {
+
+      border:
+        2px solid
+        #86efac;
+
+      background:
+        #f0fdf4;
+
+      text-align:
+        center;
+    }
+
+    .explanation-final strong {
+
+      color:
+        #15803d;
+    }
+
+    .explanation-final-answer {
+
+      display:
+        inline-block;
+
+      margin-left:
+        6px;
+
+      color:
+        #14532d;
+
+      font-family:
+        "Cambria Math",
+        "Times New Roman",
+        "Microsoft JhengHei",
+        serif;
+
+      font-size:
+        1.18em;
+
+      font-weight:
+        900;
+    }
+
+    @media(
+      max-width:
+        640px
+    ) {
+
+      .explanation-answer-grid {
+
+        grid-template-columns:
+          1fr;
+      }
+    }
+
+    /*
+    ==================================================
     結果
     ==================================================
     */
@@ -5652,9 +5845,130 @@ function correctAnswerHTML(
 ==================================================
 */
 
-function explanationHTML(
+function explanationGuide(
   question
 ) {
+
+  const guides = {
+
+    "simple-monomial": {
+      method:
+        "先分成兩件事檢查：係數找最大公因數，文字 x 找所有項共同具有的最低次方。兩者合起來，就是要提出的最大單項公因式。",
+      pitfall:
+        "不要只提出一部分公因式。例如各項都還能同時再除以同一個數或 x，就代表還沒有提出最大公因式。提出後也要確認括號內已無共同因式。"
+    },
+
+    "higher-power": {
+      method:
+        "係數先找最大公因數；x 的部分則取各項共同出現的最低次方。例如 x³ 與 x² 共同最多只能提出 x²。",
+      pitfall:
+        "共同的 x 次方要取『較小的次方』，不是較大的次方。若提出太多 x，括號內就會出現負次方，表示做錯了。"
+    },
+
+    "bracket-plus": {
+      method:
+        "先不要急著把括號展開。先看每一大項外面是否都有相同的單項因式；本類題通常先提出 x，再整理括號內。",
+      pitfall:
+        "提出 x 之後，原本 x(x＋常數) 除以 x 會留下整個 (x＋常數)，不能漏掉括號中的任何一項。"
+    },
+
+    "bracket-minus": {
+      method:
+        "先把共同的 x 提出，再處理括號裡的減法。外面的負號進入第二個括號時，第二個括號內每一項都要變號。",
+      pitfall:
+        "最常見錯誤是只改第二個括號第一項的符號。記住：減去一個括號，就是括號內每一項都要變號。"
+    },
+
+    "common-binomial": {
+      method:
+        "把重複出現的整個括號當成一個『共同物件』。就像 ab＋cb＝b(a＋c)，只是這裡的 b 換成一整個二項式。",
+      pitfall:
+        "不要把共同括號拆開後才找公因式；那會把簡單題變複雜。先把完全相同的整個括號提出來。"
+    },
+
+    "hidden-one": {
+      method:
+        "單獨出現的共同括號，其實前面藏著係數 1。先把它看成 1×(共同括號)，兩項的共同因式就會很明顯。",
+      pitfall:
+        "提出共同括號後，第二項一定要留下 1。若把這個 1 漏掉，乘回去就少了一整項。"
+    },
+
+    "two-products": {
+      method:
+        "乘法前後順序可以交換。先把兩項都改寫成『共同括號 × 另一個括號』，再把共同括號提出。",
+      pitfall:
+        "提出公因式後，括號內仍可能要去括號、合併同類項。不要看到提出共同括號就立刻停下來。"
+    },
+
+    "sign-change": {
+      method:
+        "先檢查兩個括號是不是互為相反式。若 B＝−A，就先把其中一個改寫成 −A，再把原本的加法一起整理成減法，最後提出 A。",
+      pitfall:
+        "把相反式改寫時，括號前的負號也會影響原式的運算。只改括號內符號、卻忘記外面的正負號，是這類題最常見的錯誤。"
+    },
+
+    "square-common": {
+      method:
+        "看到 A² 時先想成 A×A。若另一項也含有 A，就能把 A 當作共同因式提出。",
+      pitfall:
+        "A² 提出一個 A 後，括號裡還要留下另一個 A；不能把 A² 整個拿掉。"
+    },
+
+    "difference-basic": {
+      method:
+        "先確認兩項都能寫成平方，而且中間是減號。辨認成 A²－B² 後，就固定使用 (A＋B)(A－B)。",
+      pitfall:
+        "平方差一定是『兩個平方相減』。A²＋B² 不能套平方差公式；另外兩個因式必須是一加一減。"
+    },
+
+    "difference-application": {
+      method:
+        "把整個括號視為 A，不必先展開。只要題目是 (某個式子)²－常數平方，就可以直接套 A²－B²。",
+      pitfall:
+        "不要先把括號平方展開，否則步驟會變長也更容易算錯。套完公式後，最後才整理兩個括號中的常數。"
+    },
+
+    "perfect-plus": {
+      method:
+        "判斷完全平方要檢查三件事：首項是 A²、末項是 B²，而且中間項必須剛好是 ＋2AB。三個條件都符合才可寫成 (A＋B)²。",
+      pitfall:
+        "只看到首末兩項是平方還不夠；中間項一定要核對 2AB。若中間係數不對，就不是完全平方。"
+    },
+
+    "perfect-minus": {
+      method:
+        "判斷差的平方形式要檢查：首項 A²、末項 B²，中間項剛好是 −2AB。符合後才能寫成 (A－B)²。",
+      pitfall:
+        "末項仍然是正的 B²；負號是在中間項 −2AB。不要誤寫成 A²－2AB－B²。"
+    }
+  };
+
+
+  return (
+    guides[
+      question.subtype
+    ] ||
+    {
+      method:
+        "先辨認題目結構，再選擇提公因式、變號整理或乘法公式。",
+      pitfall:
+        "完成因式分解後，可以把答案乘回去檢查是否得到原式。"
+    }
+  );
+}
+
+
+function explanationHTML(
+  question,
+  userAnswer = "",
+  isCorrect = null
+) {
+
+  const guide =
+    explanationGuide(
+      question
+    );
+
 
   const questionBlock = `
 
@@ -5671,6 +5985,57 @@ function explanationHTML(
         ${question.html}
 
       </div>
+
+    </div>
+  `;
+
+
+  const answerBlock =
+    userAnswer
+
+      ? `
+
+          <div class="explanation-answer-grid">
+
+            <div class="explanation-answer-card">
+
+              <div class="explanation-answer-label">
+                你的答案
+              </div>
+
+              <div class="explanation-answer-value">
+                ${userAnswer}
+              </div>
+
+            </div>
+
+            <div class="explanation-answer-card explanation-answer-card--correct">
+
+              <div class="explanation-answer-label">
+                正確答案
+              </div>
+
+              <div class="explanation-answer-value">
+                ${correctAnswerHTML(question)}
+              </div>
+
+            </div>
+
+          </div>
+        `
+
+      : "";
+
+
+  const methodBlock = `
+
+    <div class="explanation-method">
+
+      <strong>
+        先想一想｜
+      </strong>
+
+      ${guide.method}
 
     </div>
   `;
@@ -5700,9 +6065,49 @@ function explanationHTML(
       .join("");
 
 
+  const pitfallBlock = `
+
+    <div class="explanation-pitfall">
+
+      <strong>
+        常見錯誤｜
+      </strong>
+
+      ${guide.pitfall}
+
+    </div>
+  `;
+
+
+  const finalBlock = `
+
+    <div class="explanation-final">
+
+      <strong>
+        最後答案｜
+      </strong>
+
+      <span class="explanation-final-answer">
+        ${correctAnswerHTML(question)}
+      </span>
+
+      ${
+        isCorrect === false
+          ? "<br><small>把答案乘回去檢查一次，可以確認是否還原成原式。</small>"
+          : ""
+      }
+
+    </div>
+  `;
+
+
   return (
     questionBlock +
-    steps
+    answerBlock +
+    methodBlock +
+    steps +
+    pitfallBlock +
+    finalBlock
   );
 }
 
@@ -5984,7 +6389,9 @@ function submitAnswer() {
   $("explanation")
     .innerHTML =
       explanationHTML(
-        question
+        question,
+        answer.display,
+        isCorrect
       );
 
 
@@ -6736,7 +7143,9 @@ function showReview() {
                   <div class="explanation">
 
                     ${explanationHTML(
-                      record.question
+                      record.question,
+                      record.userAnswer,
+                      false
                     )}
 
                   </div>
