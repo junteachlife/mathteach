@@ -3,8 +3,8 @@
 生活有解．心中有數｜共用計算紙
 檔案：js/scratchpad.js
 
-版本：4.1
-全螢幕半透明書寫層版
+版本：4.2
+手機／平板書寫平滑化版
 ==================================================
 
 本版修正：
@@ -16,10 +16,12 @@
 5. 畫筆、橡皮擦、顏色、粗細不變。
 6. Undo / Redo 不變。
 7. 清除不變。
-8. 下載功能修正：
-   PNG 改為白底＋淡方格＋筆跡，
-   避免透明 PNG 在深色圖片檢視器中
-   顯示成黑色／暗色。
+8. 下載功能維持白底＋淡方格＋筆跡。
+9. 手機／平板書寫平滑化：
+   - 支援 getCoalescedEvents() 高密度觸控取樣。
+   - 使用二次貝茲曲線平滑筆跡。
+   - 手指、觸控筆、滑鼠採不同平滑強度。
+   - 保留既有工具、Undo / Redo、清除、下載等功能。
 ==================================================
 */
 
@@ -271,6 +273,30 @@
 
       this.lastY =
         0;
+
+
+      /*
+      ==================================================
+      書寫平滑化
+      ==================================================
+
+      lastMidX / lastMidY：
+      保存上一段曲線的中點，
+      讓下一段可以用 quadraticCurveTo()
+      平滑銜接。
+      */
+
+
+      this.lastMidX =
+        0;
+
+
+      this.lastMidY =
+        0;
+
+
+      this.activePointerType =
+        "mouse";
 
 
       /*
@@ -1184,120 +1210,126 @@
 
     /*
     ==================================================
-    開始畫
+    取得高密度 Pointer 取樣
+    ==================================================
+
+    Android Chrome、部分觸控筆瀏覽器
+    會把同一幀中間遺漏的觸控點放在
+    getCoalescedEvents() 裡。
+
+    有支援時全部取出；
+    沒支援時仍使用原本 event，
+    因此桌機與舊瀏覽器不受影響。
     ==================================================
     */
 
 
-    startDrawing(
+    getPointerSamples(
       event
     ) {
 
 
       if (
-        !this.isOpen
+        event &&
+        typeof event.getCoalescedEvents ===
+          "function"
       ) {
 
-        return;
+
+        try {
+
+
+          const samples =
+            event.getCoalescedEvents();
+
+
+          if (
+            Array.isArray(
+              samples
+            ) &&
+            samples.length
+          ) {
+
+            return samples;
+
+          }
+
+        } catch (_) {}
+
       }
 
 
-      if (
-        event.pointerType ===
-          "mouse" &&
-        event.button !==
-          0
-      ) {
-
-        return;
-      }
-
-
-      event.preventDefault();
-
-
-      event.stopPropagation();
-
-
-      this.isDrawing =
-        true;
-
-
-      this.drawingPointerId =
-        event.pointerId;
-
-
-      this.hasDrawnInCurrentStroke =
-        false;
-
-
-      try {
-
-        this.canvas
-          .setPointerCapture(
-            event.pointerId
-          );
-
-      } catch (_) {}
-
-
-      const point =
-        this.getPointerPosition(
-          event
-        );
-
-
-      this.lastX =
-        point.x;
-
-
-      this.lastY =
-        point.y;
-
-
-      this.canvas.classList.add(
-        "scratchpad-canvas--drawing"
-      );
+      return event
+        ? [event]
+        : [];
 
     }
 
 
     /*
     ==================================================
-    畫
+    不同輸入裝置的平滑強度
+    ==================================================
+
+    touch：
+    手指取樣較容易抖動，平滑較明顯。
+
+    pen：
+    保留觸控筆細節，只做輕微平滑。
+
+    mouse：
+    幾乎完全依原始座標。
     ==================================================
     */
 
 
-    draw(
-      event
+    getPointerSmoothing(
+      pointerType
     ) {
 
 
       if (
-        !this.isDrawing ||
-        event.pointerId !==
-          this.drawingPointerId ||
+        pointerType ===
+        "touch"
+      ) {
+
+        return 0.64;
+
+      }
+
+
+      if (
+        pointerType ===
+        "pen"
+      ) {
+
+        return 0.82;
+
+      }
+
+
+      return 1;
+
+    }
+
+
+    /*
+    ==================================================
+    設定本次筆畫樣式
+    ==================================================
+    */
+
+
+    applyDrawingStyle() {
+
+
+      if (
         !this.ctx
       ) {
 
         return;
+
       }
-
-
-      event.preventDefault();
-
-
-      event.stopPropagation();
-
-
-      const point =
-        this.getPointerPosition(
-          event
-        );
-
-
-      this.ctx.beginPath();
 
 
       this.ctx.lineCap =
@@ -1346,20 +1378,150 @@
 
       }
 
+    }
+
+
+    /*
+    ==================================================
+    繪製一個平滑取樣點
+    ==================================================
+
+    核心：
+
+    上一個曲線中點
+          ↓
+    quadraticCurveTo(
+      上一個實際點,
+      新的中點
+    )
+
+    不再使用一段一段的 lineTo()，
+    因此手機快速書寫時不會出現
+    明顯折角。
+    ==================================================
+    */
+
+
+    drawSmoothPoint(
+      rawPoint,
+      pointerType =
+        this.activePointerType
+    ) {
+
+
+      if (
+        !this.ctx ||
+        !rawPoint
+      ) {
+
+        return;
+
+      }
+
+
+      const smoothing =
+        this.getPointerSmoothing(
+          pointerType
+        );
+
+
+      const point = {
+
+        x:
+          this.lastX +
+          (
+            rawPoint.x -
+            this.lastX
+          ) *
+          smoothing,
+
+        y:
+          this.lastY +
+          (
+            rawPoint.y -
+            this.lastY
+          ) *
+          smoothing
+
+      };
+
+
+      const dx =
+        point.x -
+        this.lastX;
+
+
+      const dy =
+        point.y -
+        this.lastY;
+
+
+      const distanceSquared =
+        dx * dx +
+        dy * dy;
+
+
+      /*
+      極小抖動不畫，
+      避免手指停留時產生毛邊。
+      */
+
+
+      if (
+        distanceSquared <
+        0.015
+      ) {
+
+        return;
+
+      }
+
+
+      const midX =
+        (
+          this.lastX +
+          point.x
+        ) /
+        2;
+
+
+      const midY =
+        (
+          this.lastY +
+          point.y
+        ) /
+        2;
+
+
+      this.applyDrawingStyle();
+
+
+      this.ctx.beginPath();
+
 
       this.ctx.moveTo(
-        this.lastX,
-        this.lastY
+        this.lastMidX,
+        this.lastMidY
       );
 
 
-      this.ctx.lineTo(
-        point.x,
-        point.y
+      this.ctx.quadraticCurveTo(
+        this.lastX,
+        this.lastY,
+        midX,
+        midY
       );
 
 
       this.ctx.stroke();
+
+
+      this.lastMidX =
+        midX;
+
+
+      this.lastMidY =
+        midY;
 
 
       this.lastX =
@@ -1372,6 +1534,247 @@
 
       this.hasDrawnInCurrentStroke =
         true;
+
+    }
+
+
+    /*
+    ==================================================
+    開始畫
+    ==================================================
+    */
+
+
+    startDrawing(
+      event
+    ) {
+
+
+      if (
+        !this.isOpen
+      ) {
+
+        return;
+      }
+
+
+      if (
+        event.pointerType ===
+          "mouse" &&
+        event.button !==
+          0
+      ) {
+
+        return;
+      }
+
+
+      event.preventDefault();
+
+
+      event.stopPropagation();
+
+
+      this.isDrawing =
+        true;
+
+
+      this.drawingPointerId =
+        event.pointerId;
+
+
+      this.hasDrawnInCurrentStroke =
+        false;
+
+
+      this.activePointerType =
+        event.pointerType ||
+        "mouse";
+
+
+      try {
+
+        this.canvas
+          .setPointerCapture(
+            event.pointerId
+          );
+
+      } catch (_) {}
+
+
+      const point =
+        this.getPointerPosition(
+          event
+        );
+
+
+      this.lastX =
+        point.x;
+
+
+      this.lastY =
+        point.y;
+
+
+      this.lastMidX =
+        point.x;
+
+
+      this.lastMidY =
+        point.y;
+
+
+      this.canvas.classList.add(
+        "scratchpad-canvas--drawing"
+      );
+
+    }
+
+
+    /*
+    ==================================================
+    畫
+    ==================================================
+    */
+
+
+    draw(
+      event
+    ) {
+
+
+      if (
+        !this.isDrawing ||
+        event.pointerId !==
+          this.drawingPointerId ||
+        !this.ctx
+      ) {
+
+        return;
+      }
+
+
+      event.preventDefault();
+
+
+      event.stopPropagation();
+
+
+      const samples =
+        this.getPointerSamples(
+          event
+        );
+
+
+      samples.forEach(
+        sample => {
+
+
+          if (
+            sample.pointerId !==
+              undefined &&
+            sample.pointerId !==
+              this.drawingPointerId
+          ) {
+
+            return;
+          }
+
+
+          const point =
+            this.getPointerPosition(
+              sample
+            );
+
+
+          this.drawSmoothPoint(
+            point,
+            sample.pointerType ||
+              event.pointerType ||
+              this.activePointerType
+          );
+
+        }
+      );
+
+    }
+
+
+    /*
+    ==================================================
+    補上筆畫尾端
+    ==================================================
+    */
+
+
+    finishSmoothStroke(
+      event
+    ) {
+
+
+      if (
+        !this.ctx
+      ) {
+
+        return;
+      }
+
+
+      if (
+        event &&
+        Number.isFinite(
+          event.clientX
+        ) &&
+        Number.isFinite(
+          event.clientY
+        )
+      ) {
+
+
+        const point =
+          this.getPointerPosition(
+            event
+          );
+
+
+        this.drawSmoothPoint(
+          point,
+          event.pointerType ||
+            this.activePointerType
+        );
+
+      }
+
+
+      if (
+        !this.hasDrawnInCurrentStroke
+      ) {
+
+        return;
+      }
+
+
+      this.applyDrawingStyle();
+
+
+      this.ctx.beginPath();
+
+
+      this.ctx.moveTo(
+        this.lastMidX,
+        this.lastMidY
+      );
+
+
+      this.ctx.quadraticCurveTo(
+        this.lastX,
+        this.lastY,
+        this.lastX,
+        this.lastY
+      );
+
+
+      this.ctx.stroke();
 
     }
 
@@ -1406,6 +1809,17 @@
 
         return;
       }
+
+
+      /*
+      在解除 drawing 狀態前先補齊最後一段，
+      避免快速抬手時筆畫尾端被截斷。
+      */
+
+
+      this.finishSmoothStroke(
+        event
+      );
 
 
       this.isDrawing =
@@ -1470,6 +1884,10 @@
 
       this.hasDrawnInCurrentStroke =
         false;
+
+
+      this.activePointerType =
+        "mouse";
 
 
       this.updateToolbarState();
@@ -3628,7 +4046,7 @@
       return {
 
         version:
-          "4.1",
+          "4.2",
 
         createdAt:
           new Date()
