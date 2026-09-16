@@ -1,27 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>
-    RPG 成長系統測試中心
-  </title>
+  <title>RPG 成長系統測試中心</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
 
     :root {
-
       --primary: #7c3aed;
       --primary-dark: #5b21b6;
       --primary-light: #f3e8ff;
@@ -36,22 +26,15 @@
       --orange-light: #fff7ed;
 
       --red: #b91c1c;
-      --red-light: #fef2f2;
 
       --text: #1e293b;
       --muted: #64748b;
-
       --border: #e2e8f0;
-
     }
 
-
     body {
-
       margin: 0;
-
       min-height: 100vh;
-
       padding: 20px;
 
       font-family:
@@ -59,8 +42,7 @@
         "Noto Sans TC",
         sans-serif;
 
-      color:
-        var(--text);
+      color: var(--text);
 
       background:
         linear-gradient(
@@ -69,47 +51,22 @@
           #eff6ff,
           #f0fdf4
         );
-
     }
-
 
     button,
     input,
     select {
-
-      font-family:
-        inherit;
-
+      font-family: inherit;
     }
-
 
     .page {
-
-      width:
-        min(
-          100%,
-          1080px
-        );
-
-      margin:
-        0 auto;
-
+      width: min(100%, 1080px);
+      margin: 0 auto;
     }
 
-
-    /*
-    ==================================================
-    Header
-    ==================================================
-    */
-
     .header {
-
-      padding:
-        28px 20px;
-
-      border-radius:
-        24px;
+      padding: 28px 20px;
+      border-radius: 24px;
 
       background:
         linear-gradient(
@@ -118,377 +75,180 @@
           #2563eb
         );
 
-      color:
-        white;
-
-      text-align:
-        center;
+      color: white;
+      text-align: center;
 
       box-shadow:
         0 14px 32px
-        rgba(
-          15,
-          23,
-          42,
-          .15
-        );
-
+        rgba(15, 23, 42, .15);
     }
-
 
     .header h1 {
-
-      margin:
-        0;
-
-      font-size:
-        clamp(
-          28px,
-          5vw,
-          42px
-        );
-
+      margin: 0;
+      font-size: clamp(28px, 5vw, 42px);
     }
-
 
     .header p {
-
-      margin:
-        10px 0 0;
-
-      line-height:
-        1.8;
-
-      opacity:
-        .94;
-
+      margin: 10px 0 0;
+      line-height: 1.8;
+      opacity: .94;
     }
-
 
     .test-badge {
-
-      display:
-        inline-block;
-
-      margin-top:
-        14px;
-
-      padding:
-        7px 14px;
+      display: inline-block;
+      margin-top: 14px;
+      padding: 7px 14px;
 
       border:
         1px solid
-        rgba(
-          255,
-          255,
-          255,
-          .55
-        );
+        rgba(255, 255, 255, .55);
 
-      border-radius:
-        999px;
+      border-radius: 999px;
 
       background:
-        rgba(
-          255,
-          255,
-          255,
-          .15
-        );
+        rgba(255, 255, 255, .15);
 
-      font-weight:
-        900;
-
+      font-weight: 900;
     }
 
-
-    /*
-    ==================================================
-    Card
-    ==================================================
-    */
-
     .card {
-
-      margin-top:
-        18px;
-
-      padding:
-        22px;
+      margin-top: 18px;
+      padding: 22px;
 
       border:
-        1px solid
-        var(--border);
+        1px solid var(--border);
 
-      border-radius:
-        20px;
+      border-radius: 20px;
 
-      background:
-        white;
+      background: white;
 
       box-shadow:
         0 10px 28px
-        rgba(
-          15,
-          23,
-          42,
-          .08
-        );
-
+        rgba(15, 23, 42, .08);
     }
-
 
     .card-title {
+      margin: 0 0 16px;
 
-      margin:
-        0 0 16px;
+      color: var(--primary-dark);
 
-      color:
-        var(--primary-dark);
-
-      font-size:
-        22px;
-
-      font-weight:
-        900;
-
+      font-size: 22px;
+      font-weight: 900;
     }
 
-
-    /*
-    ==================================================
-    Safety
-    ==================================================
-    */
-
     .safety-box {
-
-      padding:
-        15px;
+      padding: 15px;
 
       border:
-        2px solid
-        #86efac;
+        2px solid #86efac;
 
-      border-radius:
-        14px;
+      border-radius: 14px;
 
       background:
         var(--green-light);
 
-      color:
-        #166534;
+      color: #166534;
 
-      line-height:
-        1.8;
-
-      font-weight:
-        800;
-
+      line-height: 1.8;
+      font-weight: 800;
     }
-
-
-    /*
-    ==================================================
-    Config
-    ==================================================
-    */
 
     .config-grid {
-
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
-        repeat(
-          4,
-          minmax(
-            0,
-            1fr
-          )
-        );
+        repeat(4, minmax(0, 1fr));
 
-      gap:
-        12px;
-
+      gap: 12px;
     }
-
 
     .config-item {
+      padding: 13px;
+      border-radius: 13px;
 
-      padding:
-        13px;
+      background: #f8fafc;
 
-      border-radius:
-        13px;
-
-      background:
-        #f8fafc;
-
-      text-align:
-        center;
-
+      text-align: center;
     }
-
 
     .config-label {
-
-      color:
-        var(--muted);
-
-      font-size:
-        13px;
-
-      font-weight:
-        800;
-
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
     }
-
 
     .config-value {
+      margin-top: 6px;
 
-      margin-top:
-        6px;
+      color: var(--primary-dark);
 
-      color:
-        var(--primary-dark);
+      font-size: 18px;
+      font-weight: 900;
 
-      font-size:
-        18px;
-
-      font-weight:
-        900;
-
-      word-break:
-        break-word;
-
+      word-break: break-word;
     }
-
-
-    /*
-    ==================================================
-    Form
-    ==================================================
-    */
 
     .form-grid {
-
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
-        repeat(
-          2,
-          minmax(
-            0,
-            1fr
-          )
-        );
+        repeat(2, minmax(0, 1fr));
 
-      gap:
-        15px;
-
+      gap: 15px;
     }
-
 
     .field {
-
-      min-width:
-        0;
-
+      min-width: 0;
     }
-
 
     .field.full {
-
-      grid-column:
-        1 / -1;
-
+      grid-column: 1 / -1;
     }
-
 
     .field label {
+      display: block;
+      margin-bottom: 7px;
 
-      display:
-        block;
+      color: #334155;
 
-      margin-bottom:
-        7px;
-
-      color:
-        #334155;
-
-      font-weight:
-        900;
-
+      font-weight: 900;
     }
-
 
     .field select,
     .field input {
+      width: 100%;
+      min-height: 52px;
 
-      width:
-        100%;
-
-      min-height:
-        52px;
-
-      padding:
-        10px 12px;
+      padding: 10px 12px;
 
       border:
-        2px solid
-        #cbd5e1;
+        2px solid #cbd5e1;
 
-      border-radius:
-        11px;
+      border-radius: 11px;
 
-      background:
-        white;
+      background: white;
+      color: #111827;
 
-      color:
-        #111827;
+      font-size: 17px;
+      font-weight: 800;
 
-      font-size:
-        17px;
-
-      font-weight:
-        800;
-
-      outline:
-        none;
-
+      outline: none;
     }
-
 
     .field select:focus,
     .field input:focus {
-
-      border-color:
-        var(--primary);
+      border-color: var(--primary);
 
       box-shadow:
         0 0 0 3px
-        rgba(
-          124,
-          58,
-          237,
-          .11
-        );
-
+        rgba(124, 58, 237, .11);
     }
 
-
     .mode-info {
+      margin-top: 12px;
+      padding: 13px 15px;
 
-      margin-top:
-        12px;
-
-      padding:
-        13px 15px;
-
-      border-radius:
-        13px;
+      border-radius: 13px;
 
       background:
         var(--primary-light);
@@ -496,614 +256,454 @@
       color:
         var(--primary-dark);
 
-      line-height:
-        1.75;
-
-      font-weight:
-        900;
-
+      line-height: 1.75;
+      font-weight: 900;
     }
-
-
-    /*
-    ==================================================
-    Checkboxes
-    ==================================================
-    */
 
     .bonus-grid {
-
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
-        repeat(
-          3,
-          minmax(
-            0,
-            1fr
-          )
-        );
+        repeat(3, minmax(0, 1fr));
 
-      gap:
-        10px;
-
+      gap: 10px;
     }
-
 
     .bonus-option {
+      display: flex;
+      align-items: center;
 
-      display:
-        flex;
+      gap: 9px;
 
-      align-items:
-        center;
-
-      gap:
-        9px;
-
-      min-height:
-        58px;
-
-      padding:
-        11px 13px;
+      min-height: 58px;
+      padding: 11px 13px;
 
       border:
-        2px solid
-        #ddd6fe;
+        2px solid #ddd6fe;
 
-      border-radius:
-        12px;
+      border-radius: 12px;
 
-      background:
-        #faf5ff;
+      background: #faf5ff;
 
-      cursor:
-        pointer;
-
-      font-weight:
-        800;
-
+      cursor: pointer;
+      font-weight: 800;
     }
-
 
     .bonus-option input {
+      width: 21px;
+      height: 21px;
 
-      width:
-        21px;
-
-      height:
-        21px;
-
-      flex:
-        0 0 auto;
-
+      flex: 0 0 auto;
     }
 
-
-    /*
-    ==================================================
-    Repeat
-    ==================================================
-    */
-
     .repeat-box {
-
-      margin-top:
-        14px;
-
-      padding:
-        15px;
+      margin-top: 14px;
+      padding: 15px;
 
       border:
-        2px dashed
-        #fdba74;
+        2px dashed #fdba74;
 
-      border-radius:
-        14px;
+      border-radius: 14px;
 
       background:
         var(--orange-light);
-
     }
-
 
     .repeat-heading {
+      display: flex;
+      align-items: center;
 
-      display:
-        flex;
+      gap: 9px;
 
-      align-items:
-        center;
-
-      gap:
-        9px;
-
-      font-weight:
-        900;
-
-      color:
-        #9a3412;
-
+      color: #9a3412;
+      font-weight: 900;
     }
-
 
     .repeat-heading input {
-
-      width:
-        21px;
-
-      height:
-        21px;
-
+      width: 21px;
+      height: 21px;
     }
-
 
     .repeat-settings {
-
-      margin-top:
-        12px;
-
+      margin-top: 12px;
     }
 
-
-    /*
-    ==================================================
-    Button
-    ==================================================
-    */
-
-    .button-row {
-
-      display:
-        flex;
-
-      justify-content:
-        center;
-
-      gap:
-        10px;
-
-      margin-top:
-        20px;
-
-      flex-wrap:
-        wrap;
-
-    }
-
-
-    .main-button {
-
-      min-width:
-        180px;
-
-      padding:
-        13px 22px;
+    .level-test-box {
+      margin-top: 18px;
+      padding: 18px;
 
       border:
-        0;
+        2px solid #bfdbfe;
 
-      border-radius:
-        12px;
+      border-radius: 16px;
 
       background:
-        var(--primary);
+        var(--blue-light);
+    }
 
-      color:
-        white;
+    .level-test-title {
+      margin: 0 0 13px;
 
-      font-size:
-        17px;
+      color: #1d4ed8;
 
-      font-weight:
-        900;
+      font-size: 19px;
+      font-weight: 900;
+    }
 
-      cursor:
-        pointer;
+    .level-hint {
+      margin-top: 10px;
+
+      color: #475569;
+
+      line-height: 1.7;
+      font-weight: 800;
+    }
+
+    .button-row {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      margin-top: 20px;
+
+      flex-wrap: wrap;
+    }
+
+    .main-button {
+      min-width: 190px;
+
+      padding: 13px 22px;
+
+      border: 0;
+      border-radius: 12px;
+
+      background: var(--primary);
+      color: white;
+
+      font-size: 17px;
+      font-weight: 900;
+
+      cursor: pointer;
 
       box-shadow:
         0 5px 0
         var(--primary-dark);
-
     }
 
-
     .main-button:active {
-
       transform:
-        translateY(
-          3px
-        );
+        translateY(3px);
 
       box-shadow:
         0 2px 0
         var(--primary-dark);
-
     }
-
-
-    /*
-    ==================================================
-    Result
-    ==================================================
-    */
 
     .result-card {
-
-      display:
-        none;
-
+      display: none;
     }
-
 
     .result-card.show {
-
-      display:
-        block;
-
+      display: block;
     }
-
 
     .xp-total {
-
-      margin:
-        8px 0 20px;
-
-      text-align:
-        center;
-
+      margin: 8px 0 20px;
+      text-align: center;
     }
-
 
     .xp-number {
-
-      color:
-        var(--primary);
+      color: var(--primary);
 
       font-size:
-        clamp(
-          48px,
-          9vw,
-          76px
-        );
+        clamp(48px, 9vw, 76px);
 
-      font-weight:
-        900;
-
+      font-weight: 900;
     }
-
 
     .xp-label {
+      color: var(--muted);
 
-      color:
-        var(--muted);
-
-      font-size:
-        17px;
-
-      font-weight:
-        900;
-
+      font-size: 17px;
+      font-weight: 900;
     }
-
 
     .breakdown {
+      width: min(100%, 700px);
+      margin: 0 auto;
 
-      width:
-        min(
-          100%,
-          700px
-        );
-
-      margin:
-        0 auto;
-
-      overflow:
-        hidden;
+      overflow: hidden;
 
       border:
-        1px solid
-        var(--border);
+        1px solid var(--border);
 
-      border-radius:
-        15px;
-
+      border-radius: 15px;
     }
-
 
     .breakdown-row {
-
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
-        minmax(
-          0,
-          1fr
-        )
+        minmax(0, 1fr)
         auto;
 
-      gap:
-        14px;
+      gap: 14px;
 
-      padding:
-        12px 15px;
+      padding: 12px 15px;
 
       border-bottom:
-        1px solid
-        var(--border);
+        1px solid var(--border);
 
-      align-items:
-        center;
-
+      align-items: center;
     }
-
 
     .breakdown-row:last-child {
-
-      border-bottom:
-        0;
-
+      border-bottom: 0;
     }
 
-
     .breakdown-row.highlight {
-
       background:
         var(--primary-light);
 
       color:
         var(--primary-dark);
 
-      font-weight:
-        900;
-
+      font-weight: 900;
     }
 
-
     .breakdown-row.final {
-
       background:
         var(--green-light);
 
       color:
         var(--green);
 
-      font-size:
-        19px;
-
-      font-weight:
-        900;
-
+      font-size: 19px;
+      font-weight: 900;
     }
-
 
     .breakdown-name {
-
-      line-height:
-        1.6;
-
+      line-height: 1.6;
     }
-
 
     .breakdown-value {
-
-      white-space:
-        nowrap;
-
-      font-weight:
-        900;
-
+      white-space: nowrap;
+      font-weight: 900;
     }
-
 
     .formula-preview {
+      width: min(100%, 700px);
 
-      width:
-        min(
-          100%,
-          700px
-        );
+      margin: 16px auto 0;
 
-      margin:
-        16px auto 0;
+      padding: 14px;
 
-      padding:
-        14px;
+      border-radius: 13px;
 
-      border-radius:
-        13px;
+      background: #f8fafc;
 
-      background:
-        #f8fafc;
+      color: #475569;
 
-      color:
-        #475569;
+      text-align: center;
 
-      text-align:
-        center;
-
-      line-height:
-        1.8;
-
-      font-weight:
-        800;
-
+      line-height: 1.8;
+      font-weight: 800;
     }
 
+    .level-result {
+      width: min(100%, 700px);
 
-    /*
-    ==================================================
-    Warning
-    ==================================================
-    */
+      margin: 18px auto 0;
 
-    .warning {
-
-      display:
-        none;
-
-      margin-top:
-        13px;
-
-      padding:
-        12px 14px;
+      padding: 18px;
 
       border:
-        1px solid
-        #fde68a;
+        2px solid #93c5fd;
 
-      border-radius:
-        12px;
+      border-radius: 16px;
 
       background:
-        #fffbeb;
-
-      color:
-        #92400e;
-
-      line-height:
-        1.7;
-
-      font-weight:
-        800;
-
+        #eff6ff;
     }
 
+    .level-result-title {
+      margin-bottom: 13px;
+
+      color: #1d4ed8;
+
+      text-align: center;
+
+      font-size: 21px;
+      font-weight: 900;
+    }
+
+    .level-change {
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      gap: 14px;
+
+      flex-wrap: wrap;
+
+      margin-bottom: 15px;
+    }
+
+    .level-number {
+      padding: 11px 16px;
+
+      border-radius: 13px;
+
+      background: white;
+
+      color: var(--primary-dark);
+
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .level-arrow {
+      color: #64748b;
+
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .level-up-message {
+      margin-bottom: 13px;
+
+      color: #166534;
+
+      text-align: center;
+
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .progress-shell {
+      height: 24px;
+
+      overflow: hidden;
+
+      border-radius: 999px;
+
+      background: #dbeafe;
+    }
+
+    .progress-bar {
+      height: 100%;
+
+      width: 0%;
+
+      border-radius: inherit;
+
+      background:
+        linear-gradient(
+          90deg,
+          #7c3aed,
+          #2563eb
+        );
+
+      transition:
+        width .35s ease;
+    }
+
+    .progress-text {
+      margin-top: 8px;
+
+      color: #334155;
+
+      text-align: center;
+
+      line-height: 1.6;
+      font-weight: 900;
+    }
+
+    .warning {
+      display: none;
+
+      margin-top: 13px;
+      padding: 12px 14px;
+
+      border:
+        1px solid #fde68a;
+
+      border-radius: 12px;
+
+      background: #fffbeb;
+
+      color: #92400e;
+
+      line-height: 1.7;
+      font-weight: 800;
+    }
 
     .warning.show {
-
-      display:
-        block;
-
+      display: block;
     }
 
-
-    /*
-    ==================================================
-    Rule
-    ==================================================
-    */
+    .rule-table-wrap {
+      overflow-x: auto;
+    }
 
     .rule-table {
+      width: 100%;
 
-      width:
-        100%;
+      border-collapse: collapse;
 
-      border-collapse:
-        collapse;
-
+      white-space: nowrap;
     }
-
 
     .rule-table th,
     .rule-table td {
-
-      padding:
-        10px 12px;
+      padding: 10px 12px;
 
       border-bottom:
-        1px solid
-        var(--border);
+        1px solid var(--border);
 
-      text-align:
-        left;
-
+      text-align: left;
     }
-
 
     .rule-table th {
-
-      background:
-        #f8fafc;
-
-      color:
-        #475569;
-
+      background: #f8fafc;
+      color: #475569;
     }
 
-
-    /*
-    ==================================================
-    Mobile
-    ==================================================
-    */
-
-    @media(
-      max-width: 760px
-    ) {
-
+    @media (max-width: 760px) {
       body {
-
-        padding:
-          9px;
-
+        padding: 9px;
       }
-
 
       .card {
-
-        padding:
-          16px 11px;
-
+        padding: 16px 11px;
       }
-
 
       .config-grid {
-
         grid-template-columns:
-          repeat(
-            2,
-            minmax(
-              0,
-              1fr
-            )
-          );
-
+          repeat(2, minmax(0, 1fr));
       }
-
 
       .form-grid {
-
-        grid-template-columns:
-          1fr;
-
+        grid-template-columns: 1fr;
       }
-
 
       .field.full {
-
-        grid-column:
-          auto;
-
+        grid-column: auto;
       }
-
 
       .bonus-grid {
-
-        grid-template-columns:
-          1fr;
-
+        grid-template-columns: 1fr;
       }
-
     }
-
   </style>
-
 </head>
-
 
 <body>
 
 <div class="page">
-
-
-  <!--
-  ==================================================
-  Header
-  ==================================================
-  -->
 
   <header class="header">
 
@@ -1112,8 +712,8 @@
     </h1>
 
     <p>
-      用來測試不同數學遊戲、不同模式與不同表現，
-      最後應獲得多少 XP。
+      測試數學遊戲 XP、難度倍率、重複練習，
+      以及玩家升級速度。
     </p>
 
     <div class="test-badge">
@@ -1123,12 +723,6 @@
   </header>
 
 
-  <!--
-  ==================================================
-  Safety
-  ==================================================
-  -->
-
   <section class="card">
 
     <h2 class="card-title">
@@ -1136,29 +730,15 @@
     </h2>
 
     <div class="safety-box">
-
-      這個頁面目前只做瀏覽器中的模擬計算。<br>
-
       ✅ 不修改正式遊戲<br>
-
       ✅ 不呼叫 scores.js<br>
-
       ✅ 不寫入 Firestore<br>
-
-      ✅ 不增加學生 XP<br>
-
-      ✅ 關閉頁面後，本次模擬結果就消失
-
+      ✅ 不增加正式學生 XP<br>
+      ✅ 所有資料只存在本次頁面模擬
     </div>
 
   </section>
 
-
-  <!--
-  ==================================================
-  Config
-  ==================================================
-  -->
 
   <section class="card">
 
@@ -1169,66 +749,51 @@
     <div class="config-grid">
 
       <div class="config-item">
-
         <div class="config-label">
           RPG Version
         </div>
-
         <div
           id="config-version"
           class="config-value"
         >
           —
         </div>
-
       </div>
 
-
       <div class="config-item">
-
         <div class="config-label">
           Environment
         </div>
-
         <div
           id="config-environment"
           class="config-value"
         >
           —
         </div>
-
       </div>
 
-
       <div class="config-item">
-
         <div class="config-label">
           正式 RPG
         </div>
-
         <div
           id="config-enabled"
           class="config-value"
         >
           —
         </div>
-
       </div>
 
-
       <div class="config-item">
-
         <div class="config-label">
           已登錄遊戲
         </div>
-
         <div
           id="config-game-count"
           class="config-value"
         >
           —
         </div>
-
       </div>
 
     </div>
@@ -1236,46 +801,33 @@
   </section>
 
 
-  <!--
-  ==================================================
-  Simulator
-  ==================================================
-  -->
-
   <section class="card">
 
     <h2 class="card-title">
       🧮 XP 模擬器
     </h2>
 
-
     <div class="form-grid">
 
-
       <div class="field">
-
         <label for="game-select">
           數學遊戲
         </label>
 
         <select id="game-select"></select>
-
       </div>
 
 
       <div class="field">
-
         <label for="mode-select">
           遊戲模式
         </label>
 
         <select id="mode-select"></select>
-
       </div>
 
 
       <div class="field">
-
         <label for="score-input">
           本次分數
         </label>
@@ -1288,12 +840,10 @@
           step="1"
           value="80"
         >
-
       </div>
 
 
       <div class="field">
-
         <label for="correct-input">
           答對題數
         </label>
@@ -1305,12 +855,10 @@
           step="1"
           value="8"
         >
-
       </div>
 
 
       <div class="field">
-
         <label for="total-input">
           總題數
         </label>
@@ -1322,12 +870,10 @@
           step="1"
           value="10"
         >
-
       </div>
 
 
       <div class="field">
-
         <label for="combo-input">
           最高連擊
         </label>
@@ -1339,9 +885,7 @@
           step="1"
           value="5"
         >
-
       </div>
-
 
     </div>
 
@@ -1360,14 +904,8 @@
     ></div>
 
 
-    <!--
-    ==================================================
-    First Bonuses
-    ==================================================
-    -->
-
     <h3>
-      🎁 首次里程碑模擬
+      🎁 首次里程碑
     </h3>
 
     <div class="bonus-grid">
@@ -1419,12 +957,6 @@
     </div>
 
 
-    <!--
-    ==================================================
-    Repeat Practice
-    ==================================================
-    -->
-
     <div class="repeat-box">
 
       <label class="repeat-heading">
@@ -1435,7 +967,7 @@
         >
 
         <span>
-          🧪 測試「同模式重複練習 XP 遞減」
+          🧪 同模式重複練習 XP 遞減
         </span>
 
       </label>
@@ -1465,6 +997,38 @@
     </div>
 
 
+    <div class="level-test-box">
+
+      <h3 class="level-test-title">
+        ⭐ 玩家目前 RPG 狀態
+      </h3>
+
+      <div class="field">
+
+        <label for="total-xp-input">
+          玩家目前「永久總 XP」
+        </label>
+
+        <input
+          id="total-xp-input"
+          type="number"
+          min="0"
+          step="1"
+          value="0"
+        >
+
+      </div>
+
+      <div
+        id="current-level-preview"
+        class="level-hint"
+      >
+        —
+      </div>
+
+    </div>
+
+
     <div class="button-row">
 
       <button
@@ -1479,12 +1043,6 @@
 
   </section>
 
-
-  <!--
-  ==================================================
-  Result
-  ==================================================
-  -->
 
   <section
     id="result-card"
@@ -1523,214 +1081,213 @@
       class="formula-preview"
     ></div>
 
+
+    <div class="level-result">
+
+      <div class="level-result-title">
+        ⭐ 等級成長
+      </div>
+
+
+      <div class="level-change">
+
+        <div
+          id="old-level"
+          class="level-number"
+        >
+          Lv.1
+        </div>
+
+        <div class="level-arrow">
+          ➜
+        </div>
+
+        <div
+          id="new-level"
+          class="level-number"
+        >
+          Lv.1
+        </div>
+
+      </div>
+
+
+      <div
+        id="level-up-message"
+        class="level-up-message"
+      ></div>
+
+
+      <div class="progress-shell">
+
+        <div
+          id="level-progress-bar"
+          class="progress-bar"
+        ></div>
+
+      </div>
+
+
+      <div
+        id="level-progress-text"
+        class="progress-text"
+      ></div>
+
+    </div>
+
   </section>
 
-
-  <!--
-  ==================================================
-  Current Rules
-  ==================================================
-  -->
 
   <section class="card">
 
     <h2 class="card-title">
-      📋 目前測試中的 XP 規則
+      📈 等級成長規則
     </h2>
 
+    <div class="rule-table-wrap">
 
-    <table class="rule-table">
+      <table class="rule-table">
 
-      <thead>
+        <thead>
+          <tr>
+            <th>目前等級</th>
+            <th>升下一級所需 XP</th>
+            <th>升級累積總 XP</th>
+          </tr>
+        </thead>
 
-        <tr>
+        <tbody id="level-table-body"></tbody>
 
-          <th>
-            條件
-          </th>
+      </table>
 
-          <th>
-            XP
-          </th>
-
-        </tr>
-
-      </thead>
-
-
-      <tbody>
-
-        <tr>
-          <td>
-            完成一局
-          </td>
-          <td>
-            +10
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            60～79 分
-          </td>
-          <td>
-            +5
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            80～89 分
-          </td>
-          <td>
-            +10
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            90～99 分
-          </td>
-          <td>
-            +15
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            100 分
-          </td>
-          <td>
-            +25
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            最高連擊 5～9
-          </td>
-          <td>
-            +5
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            最高連擊 ≥ 10
-          </td>
-          <td>
-            +10
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            首次完成模式
-          </td>
-          <td>
-            +20
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            首次達 80 分
-          </td>
-          <td>
-            +20
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            首次滿分
-          </td>
-          <td>
-            +30
-          </td>
-        </tr>
-
-      </tbody>
-
-    </table>
-
-
-    <p
-      style="
-        margin:14px 0 0;
-        color:#64748b;
-        line-height:1.8;
-        font-weight:800;
-      "
-    >
-      目前這些都只是測試規則。
-      我們可以用這個頁面反覆模擬後，
-      再決定哪些規則正式採用。
-    </p>
+    </div>
 
   </section>
 
+
+  <section class="card">
+
+    <h2 class="card-title">
+      📋 XP 規則
+    </h2>
+
+    <div class="rule-table-wrap">
+
+      <table class="rule-table">
+
+        <thead>
+          <tr>
+            <th>條件</th>
+            <th>XP</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr>
+            <td>完成一局</td>
+            <td>+10</td>
+          </tr>
+
+          <tr>
+            <td>60～79 分</td>
+            <td>+5</td>
+          </tr>
+
+          <tr>
+            <td>80～89 分</td>
+            <td>+10</td>
+          </tr>
+
+          <tr>
+            <td>90～99 分</td>
+            <td>+15</td>
+          </tr>
+
+          <tr>
+            <td>100 分</td>
+            <td>+25</td>
+          </tr>
+
+          <tr>
+            <td>最高連擊 5～9</td>
+            <td>+5</td>
+          </tr>
+
+          <tr>
+            <td>最高連擊 ≥10</td>
+            <td>+10</td>
+          </tr>
+
+          <tr>
+            <td>首次完成模式</td>
+            <td>+5</td>
+          </tr>
+
+          <tr>
+            <td>首次達到 80 分</td>
+            <td>+20</td>
+          </tr>
+
+          <tr>
+            <td>首次滿分</td>
+            <td>+30</td>
+          </tr>
+
+          <tr>
+            <td>同模式每日第 1～3 次</td>
+            <td>×1.00</td>
+          </tr>
+
+          <tr>
+            <td>同模式每日第 4～6 次</td>
+            <td>×0.70</td>
+          </tr>
+
+          <tr>
+            <td>同模式每日第 7 次以上</td>
+            <td>×0.40</td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
 
 </div>
 
 
 <script type="module">
 
-  /*
-  ==================================================
-  Imports
-  ==================================================
-  */
-
   import {
-
     RPG_CONFIG
-
   } from "./js/rpg/rpg-config.js";
 
 
   import {
-
     GAME_REGISTRY,
-
     getActiveGames,
-
     getActiveModes,
-
     getModeConfig,
-
     getModeXpWeight,
-
     getDifficultyLabel
-
   } from "./js/rpg/game-registry.js";
 
 
   "use strict";
 
 
-  /*
-  ==================================================
-  DOM
-  ==================================================
-  */
-
   const $ =
     id =>
-      document.getElementById(
-        id
-      );
+      document.getElementById(id);
 
 
   /*
   ==================================================
-  XP 測試規則
-  ==================================================
-
-  注意：
-  這份規則目前只存在於測試中心。
-
-  還不是正式 progress-system.js。
+  XP 規則
   ==================================================
   */
 
@@ -1739,7 +1296,6 @@
 
       completion:
         10,
-
 
       scoreBonus:
         Object.freeze({
@@ -1761,7 +1317,6 @@
 
         }),
 
-
       comboBonus:
         Object.freeze({
 
@@ -1772,7 +1327,6 @@
             10
 
         }),
-
 
       milestoneBonus:
         Object.freeze({
@@ -1793,7 +1347,149 @@
 
   /*
   ==================================================
-  Score Bonus
+  等級規則
+  ==================================================
+
+  Lv.1 → Lv.2：150 XP
+
+  每升一級，
+  下一級門檻 +20 XP
+  ==================================================
+  */
+
+  const LEVEL_RULES =
+    Object.freeze({
+
+      firstLevelRequirement:
+        150,
+
+      incrementPerLevel:
+        20
+
+    });
+
+
+  /*
+  ==================================================
+  升下一級所需 XP
+  ==================================================
+  */
+
+  function getXpNeededForNextLevel(
+    level
+  ) {
+
+    return (
+      LEVEL_RULES.firstLevelRequirement +
+      (level - 1) *
+      LEVEL_RULES.incrementPerLevel
+    );
+
+  }
+
+
+  /*
+  ==================================================
+  根據總 XP 計算玩家等級
+  ==================================================
+  */
+
+  function getLevelProgressFromTotalXp(
+    totalXp
+  ) {
+
+    let level =
+      1;
+
+    let remainingXp =
+      Math.max(
+        0,
+        Math.floor(totalXp)
+      );
+
+    let consumedXp =
+      0;
+
+
+    while (
+      remainingXp >=
+      getXpNeededForNextLevel(level)
+    ) {
+
+      const required =
+        getXpNeededForNextLevel(level);
+
+
+      remainingXp -=
+        required;
+
+
+      consumedXp +=
+        required;
+
+
+      level +=
+        1;
+
+
+      /*
+      安全保護
+      */
+      if (
+        level >
+        10000
+      ) {
+
+        break;
+      }
+
+    }
+
+
+    const nextRequirement =
+      getXpNeededForNextLevel(level);
+
+
+    return {
+
+      level,
+
+      totalXp:
+        Math.max(
+          0,
+          Math.floor(totalXp)
+        ),
+
+      levelXp:
+        remainingXp,
+
+      nextRequirement,
+
+      xpToNextLevel:
+        Math.max(
+          0,
+          nextRequirement -
+          remainingXp
+        ),
+
+      consumedXp,
+
+      progressPercent:
+        Math.min(
+          100,
+          remainingXp /
+          nextRequirement *
+          100
+        )
+
+    };
+
+  }
+
+
+  /*
+  ==================================================
+  分數 XP
   ==================================================
   */
 
@@ -1868,7 +1564,7 @@
 
   /*
   ==================================================
-  Combo Bonus
+  連擊 XP
   ==================================================
   */
 
@@ -1911,19 +1607,7 @@
 
   /*
   ==================================================
-  Repeat Practice Multiplier
-  ==================================================
-
-  目前只是測試候選規則。
-
-  第 1～3 次：
-  100%
-
-  第 4～6 次：
-  70%
-
-  第 7 次以上：
-  40%
+  重複練習倍率
   ==================================================
   */
 
@@ -1958,7 +1642,7 @@
 
   /*
   ==================================================
-  Populate Games
+  遊戲下拉選單
   ==================================================
   */
 
@@ -1977,9 +1661,7 @@
               <option
                 value="${game.gameId}"
               >
-
                 ${game.name}
-
               </option>
 
             `
@@ -1994,7 +1676,7 @@
 
   /*
   ==================================================
-  Populate Modes
+  模式下拉選單
   ==================================================
   */
 
@@ -2020,9 +1702,7 @@
               <option
                 value="${mode.modeId}"
               >
-
                 ${mode.name}
-
               </option>
 
             `
@@ -2037,7 +1717,7 @@
 
   /*
   ==================================================
-  Mode Info
+  模式資訊
   ==================================================
   */
 
@@ -2068,8 +1748,8 @@
         .textContent =
           "找不到模式設定。";
 
-
       return;
+
     }
 
 
@@ -2107,9 +1787,7 @@
         ｜核心完成：
         ${
           mode.countsForCompletion
-
             ? "是"
-
             : "否"
         }
 
@@ -2120,7 +1798,55 @@
 
   /*
   ==================================================
-  Validate
+  目前等級預覽
+  ==================================================
+  */
+
+  function updateCurrentLevelPreview() {
+
+    const totalXp =
+      Math.max(
+        0,
+        Number(
+          $("total-xp-input")
+            .value
+        ) || 0
+      );
+
+
+    const progress =
+      getLevelProgressFromTotalXp(
+        totalXp
+      );
+
+
+    $("current-level-preview")
+      .innerHTML = `
+
+        目前為
+        <strong>
+          Lv.${progress.level}
+        </strong>
+
+        ｜本級：
+        ${progress.levelXp}
+        /
+        ${progress.nextRequirement} XP
+
+        ｜距離 Lv.${progress.level + 1}
+        還差
+        <strong>
+          ${progress.xpToNextLevel} XP
+        </strong>
+
+      `;
+
+  }
+
+
+  /*
+  ==================================================
+  輸入檢查
   ==================================================
   */
 
@@ -2171,6 +1897,13 @@
       );
 
 
+    const currentTotalXp =
+      Number(
+        $("total-xp-input")
+          .value
+      );
+
+
     if (
       !gameId ||
       !modeId
@@ -2180,7 +1913,6 @@
         "請選擇遊戲與模式。"
       );
 
-
       return null;
 
     }
@@ -2188,16 +1920,13 @@
 
     if (
       !Number.isFinite(score) ||
-      score <
-      0 ||
-      score >
-      100
+      score < 0 ||
+      score > 100
     ) {
 
       alert(
         "分數請輸入 0～100。"
       );
-
 
       return null;
 
@@ -2206,14 +1935,12 @@
 
     if (
       !Number.isInteger(correct) ||
-      correct <
-      0
+      correct < 0
     ) {
 
       alert(
         "答對題數必須是 0 以上的整數。"
       );
-
 
       return null;
 
@@ -2222,14 +1949,12 @@
 
     if (
       !Number.isInteger(total) ||
-      total <
-      1
+      total < 1
     ) {
 
       alert(
         "總題數至少要 1 題。"
       );
-
 
       return null;
 
@@ -2245,7 +1970,6 @@
         "答對題數不能超過總題數。"
       );
 
-
       return null;
 
     }
@@ -2253,14 +1977,12 @@
 
     if (
       !Number.isInteger(combo) ||
-      combo <
-      0
+      combo < 0
     ) {
 
       alert(
-        "最高連擊必須是 0 以上的整數。"
+        "最高連擊必須是 0 以上整數。"
       );
-
 
       return null;
 
@@ -2276,7 +1998,6 @@
         "最高連擊不能超過總題數。"
       );
 
-
       return null;
 
     }
@@ -2284,14 +2005,26 @@
 
     if (
       !Number.isInteger(attempt) ||
-      attempt <
-      1
+      attempt < 1
     ) {
 
       alert(
         "完成次數至少為 1。"
       );
 
+      return null;
+
+    }
+
+
+    if (
+      !Number.isFinite(currentTotalXp) ||
+      currentTotalXp < 0
+    ) {
+
+      alert(
+        "目前總 XP 必須是 0 以上。"
+      );
 
       return null;
 
@@ -2301,18 +2034,17 @@
     return {
 
       gameId,
-
       modeId,
-
       score,
-
       correct,
-
       total,
-
       combo,
+      attempt,
 
-      attempt
+      currentTotalXp:
+        Math.floor(
+          currentTotalXp
+        )
 
     };
 
@@ -2321,7 +2053,7 @@
 
   /*
   ==================================================
-  Warning
+  分數提醒
   ==================================================
   */
 
@@ -2356,14 +2088,12 @@
       !Number.isFinite(score) ||
       !Number.isFinite(correct) ||
       !Number.isFinite(total) ||
-      total <=
-      0
+      total <= 0
     ) {
 
       box.classList.remove(
         "show"
       );
-
 
       return;
 
@@ -2382,21 +2112,20 @@
       Math.abs(
         accuracyScore -
         score
-      ) >=
-      10
+      ) >= 10
     ) {
 
       box.innerHTML = `
 
         ⚠️ 提醒：
-        目前「分數」是 ${score} 分，
-        但依答對 ${correct}/${total} 題計算，
+        目前分數為 ${score} 分，
+        但依 ${correct}/${total} 題計算，
         正確率約為 ${accuracyScore}%。
 
         <br>
 
-        有些遊戲的計分方式未必等於單純正確率，
-        因此測試中心不會自動修改你的分數。
+        不同遊戲可能有不同計分方式，
+        所以系統不會自動修改分數。
 
       `;
 
@@ -2418,7 +2147,7 @@
 
   /*
   ==================================================
-  Calculate
+  XP 計算
   ==================================================
   */
 
@@ -2444,10 +2173,6 @@
       );
 
 
-    /*
-    一般表現 XP
-    */
-
     const completionXP =
       TEST_XP_RULES
         .completion;
@@ -2471,20 +2196,12 @@
       comboXP;
 
 
-    /*
-    模式難度倍率
-    */
-
     const weightedPerformanceXP =
       Math.round(
         performanceSubtotal *
         modeWeight
       );
 
-
-    /*
-    首次里程碑
-    */
 
     let milestoneXP =
       0;
@@ -2576,19 +2293,6 @@
     }
 
 
-    /*
-    初步 XP
-    */
-
-    const beforeRepeat =
-      weightedPerformanceXP +
-      milestoneXP;
-
-
-    /*
-    重複練習遞減
-    */
-
     const repeatEnabled =
       $("repeat-enabled")
         .checked;
@@ -2605,13 +2309,6 @@
         : 1;
 
 
-    /*
-    目前先讓重複遞減只作用在一般表現 XP，
-    不扣掉第一次里程碑獎勵。
-
-    避免首次成就也被打折。
-    */
-
     const repeatedPerformanceXP =
       Math.round(
         weightedPerformanceXP *
@@ -2622,6 +2319,23 @@
     const finalXP =
       repeatedPerformanceXP +
       milestoneXP;
+
+
+    const newTotalXp =
+      input.currentTotalXp +
+      finalXP;
+
+
+    const beforeLevel =
+      getLevelProgressFromTotalXp(
+        input.currentTotalXp
+      );
+
+
+    const afterLevel =
+      getLevelProgressFromTotalXp(
+        newTotalXp
+      );
 
 
     renderResult({
@@ -2644,15 +2358,19 @@
 
       milestoneRows,
 
-      beforeRepeat,
-
       repeatEnabled,
 
       repeatMultiplier,
 
       repeatedPerformanceXP,
 
-      finalXP
+      finalXP,
+
+      newTotalXp,
+
+      beforeLevel,
+
+      afterLevel
 
     });
 
@@ -2661,7 +2379,7 @@
 
   /*
   ==================================================
-  Result
+  顯示結果
   ==================================================
   */
 
@@ -2686,37 +2404,30 @@
       [
 
         {
-
           name:
             "完成一局",
 
           value:
             `+${data.completionXP} XP`
-
         },
 
         {
-
           name:
             `成績獎勵（${data.score} 分）`,
 
           value:
             `+${data.scoreXP} XP`
-
         },
 
         {
-
           name:
             `連擊獎勵（最高 ${data.combo}）`,
 
           value:
             `+${data.comboXP} XP`
-
         },
 
         {
-
           name:
             "一般表現 XP 小計",
 
@@ -2725,21 +2436,17 @@
 
           className:
             "highlight"
-
         },
 
         {
-
           name:
             `模式難度權重（${mode.name}）`,
 
           value:
             `×${data.modeWeight.toFixed(2)}`
-
         },
 
         {
-
           name:
             "套用模式權重後",
 
@@ -2748,7 +2455,6 @@
 
           className:
             "highlight"
-
         }
 
       ];
@@ -2873,9 +2579,7 @@
 
         ${
           data.repeatEnabled
-
             ? `× ${data.repeatMultiplier.toFixed(2)}`
-
             : ""
         }
 
@@ -2888,6 +2592,11 @@
         </strong>
 
       `;
+
+
+    renderLevelResult(
+      data
+    );
 
 
     $("result-card")
@@ -2913,7 +2622,178 @@
 
   /*
   ==================================================
-  Environment
+  顯示等級變化
+  ==================================================
+  */
+
+  function renderLevelResult(
+    data
+  ) {
+
+    const before =
+      data.beforeLevel;
+
+
+    const after =
+      data.afterLevel;
+
+
+    $("old-level")
+      .textContent =
+        `Lv.${before.level}`;
+
+
+    $("new-level")
+      .textContent =
+        `Lv.${after.level}`;
+
+
+    const levelDifference =
+      after.level -
+      before.level;
+
+
+    if (
+      levelDifference >
+      0
+    ) {
+
+      $("level-up-message")
+        .innerHTML = `
+
+          🎉 LEVEL UP！
+
+          ${
+            levelDifference === 1
+              ? `升到 Lv.${after.level}`
+              : `連升 ${levelDifference} 級，升到 Lv.${after.level}`
+          }
+
+        `;
+
+    } else {
+
+      $("level-up-message")
+        .innerHTML = `
+
+          本局獲得 ${data.finalXP} XP，
+          繼續累積就能升級！
+
+        `;
+
+    }
+
+
+    $("level-progress-bar")
+      .style.width =
+        `${after.progressPercent}%`;
+
+
+    $("level-progress-text")
+      .innerHTML = `
+
+        永久總 XP：
+        <strong>
+          ${data.currentTotalXp}
+        </strong>
+
+        →
+
+        <strong>
+          ${data.newTotalXp}
+        </strong>
+
+        <br>
+
+        Lv.${after.level}
+        本級進度：
+
+        ${after.levelXp}
+        /
+        ${after.nextRequirement} XP
+
+        <br>
+
+        距離
+        Lv.${after.level + 1}
+
+        還差
+
+        <strong>
+          ${after.xpToNextLevel} XP
+        </strong>
+
+      `;
+
+  }
+
+
+  /*
+  ==================================================
+  顯示等級表
+  ==================================================
+  */
+
+  function renderLevelTable() {
+
+    let cumulative =
+      0;
+
+
+    const rows =
+      [];
+
+
+    for (
+      let level = 1;
+      level <= 20;
+      level++
+    ) {
+
+      const required =
+        getXpNeededForNextLevel(
+          level
+        );
+
+
+      cumulative +=
+        required;
+
+
+      rows.push(`
+
+        <tr>
+
+          <td>
+            Lv.${level}
+            → Lv.${level + 1}
+          </td>
+
+          <td>
+            ${required} XP
+          </td>
+
+          <td>
+            ${cumulative} XP
+          </td>
+
+        </tr>
+
+      `);
+
+    }
+
+
+    $("level-table-body")
+      .innerHTML =
+        rows.join("");
+
+  }
+
+
+  /*
+  ==================================================
+  環境資訊
   ==================================================
   */
 
@@ -3001,6 +2881,13 @@
     );
 
 
+  $("total-xp-input")
+    .addEventListener(
+      "input",
+      updateCurrentLevelPreview
+    );
+
+
   $("calculate-button")
     .addEventListener(
       "click",
@@ -3018,10 +2905,13 @@
 
   populateGames();
 
+  renderLevelTable();
+
   updateScoreWarning();
+
+  updateCurrentLevelPreview();
 
 </script>
 
 </body>
-
 </html>
