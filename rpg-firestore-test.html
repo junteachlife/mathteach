@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>RPG Firestore TEST</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --purple: #7c3aed;
+      --purple-dark: #5b21b6;
+      --purple-light: #f5f3ff;
+
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+
+      --green: #15803d;
+      --green-light: #f0fdf4;
+
+      --orange: #c2410c;
+      --orange-light: #fff7ed;
+
+      --red: #b91c1c;
+      --red-light: #fef2f2;
+
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 18px;
+
+      font-family:
+        "Microsoft JhengHei",
+        "Noto Sans TC",
+        sans-serif;
+
+      color: var(--text);
+
+      background:
+        linear-gradient(
+          135deg,
+          #f5f3ff,
+          #eff6ff,
+          #f0fdf4
+        );
+    }
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+    }
+
+    .page {
+      width: min(100%, 980px);
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 28px 18px;
+
+      border-radius: 24px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6d28d9,
+          #2563eb
+        );
+
+      color: white;
+      text-align: center;
+
+      box-shadow:
+        0 14px 30px
+        rgba(15, 23, 42, .14);
+    }
+
+    .hero h1 {
+      margin: 0;
+
+      font-size:
+        clamp(
+          27px,
+          6vw,
+          42px
+        );
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+
+      margin-top: 14px;
+
+      padding: 7px 13px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.5);
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,.15);
+
+      font-weight: 900;
+    }
+
+    .card {
+      margin-top: 18px;
+      padding: 20px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 18px;
+
+      background: white;
+
+      box-shadow:
+        0 9px 25px
+        rgba(15,23,42,.07);
+    }
+
+    .card-title {
+      margin:
+        0 0 15px;
+
+      color:
+        var(--purple-dark);
+
+      font-size: 21px;
+      font-weight: 900;
+    }
+
+    .notice {
+      padding: 14px;
+
+      border-radius: 13px;
+
+      line-height: 1.8;
+      font-weight: 800;
+    }
+
+    .notice.safe {
+      border:
+        2px solid #86efac;
+
+      background:
+        var(--green-light);
+
+      color: #166534;
+    }
+
+    .notice.warning {
+      border:
+        2px solid #fdba74;
+
+      background:
+        var(--orange-light);
+
+      color: #9a3412;
+    }
+
+    .auth-box {
+      padding: 15px;
+
+      border:
+        2px solid #bfdbfe;
+
+      border-radius: 14px;
+
+      background:
+        var(--blue-light);
+
+      line-height: 1.8;
+    }
+
+    .auth-box.logged-in {
+      border-color: #86efac;
+      background: var(--green-light);
+    }
+
+    .auth-box.logged-out {
+      border-color: #fca5a5;
+      background: var(--red-light);
+    }
+
+    .auth-main {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .auth-detail {
+      margin-top: 7px;
+
+      color: #475569;
+
+      font-size: 14px;
+
+      word-break: break-all;
+    }
+
+    .grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0, 1fr)
+        );
+
+      gap: 14px;
+    }
+
+    .field label {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #334155;
+
+      font-weight: 900;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 50px;
+
+      padding:
+        9px 11px;
+
+      border:
+        2px solid #cbd5e1;
+
+      border-radius: 10px;
+
+      background: white;
+
+      color: #111827;
+
+      font-size: 16px;
+      font-weight: 800;
+
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color:
+        var(--purple);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(124,58,237,.1);
+    }
+
+    .mode-info {
+      margin-top: 14px;
+
+      padding: 13px;
+
+      border-radius: 12px;
+
+      background:
+        var(--purple-light);
+
+      color:
+        var(--purple-dark);
+
+      line-height: 1.7;
+      font-weight: 900;
+    }
+
+    .button-row {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 11px;
+
+      flex-wrap: wrap;
+
+      margin-top: 19px;
+    }
+
+    button {
+      min-height: 48px;
+
+      padding:
+        11px 18px;
+
+      border: 0;
+      border-radius: 11px;
+
+      color: white;
+
+      font-size: 16px;
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .primary {
+      background:
+        var(--purple);
+    }
+
+    .secondary {
+      background:
+        #475569;
+    }
+
+    .refresh {
+      background:
+        var(--blue);
+
+      margin-top: 10px;
+    }
+
+    .result {
+      display: none;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .status {
+      padding: 16px;
+
+      border-radius: 14px;
+
+      text-align: center;
+
+      line-height: 1.8;
+
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .status.success {
+      border:
+        2px solid #86efac;
+
+      background:
+        var(--green-light);
+
+      color:
+        #166534;
+    }
+
+    .status.duplicate {
+      border:
+        2px solid #fca5a5;
+
+      background:
+        var(--red-light);
+
+      color:
+        var(--red);
+    }
+
+    .status.error {
+      border:
+        2px solid #fdba74;
+
+      background:
+        var(--orange-light);
+
+      color:
+        #9a3412;
+    }
+
+    .big-xp {
+      margin:
+        20px 0;
+
+      text-align: center;
+    }
+
+    .big-xp-number {
+      color:
+        var(--purple);
+
+      font-size:
+        clamp(
+          48px,
+          10vw,
+          75px
+        );
+
+      font-weight: 900;
+    }
+
+    .big-xp-label {
+      color:
+        var(--muted);
+
+      font-weight: 900;
+    }
+
+    .info-table {
+      margin-top: 16px;
+
+      overflow: hidden;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 13px;
+    }
+
+    .info-row {
+      display: grid;
+
+      grid-template-columns:
+        190px
+        minmax(0,1fr);
+
+      gap: 12px;
+
+      padding:
+        11px 13px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    .info-row:last-child {
+      border-bottom: 0;
+    }
+
+    .info-label {
+      color:
+        var(--muted);
+
+      font-weight: 900;
+    }
+
+    .info-value {
+      min-width: 0;
+
+      font-weight: 900;
+
+      word-break: break-all;
+    }
+
+    .highlight {
+      background:
+        var(--purple-light);
+    }
+
+    .mono {
+      font-family:
+        Consolas,
+        monospace;
+
+      font-size: 13px;
+    }
+
+    .milestone {
+      display: inline-block;
+
+      margin:
+        3px;
+
+      padding:
+        5px 9px;
+
+      border-radius: 999px;
+
+      background:
+        #ede9fe;
+
+      color:
+        #5b21b6;
+
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    @media(
+      max-width: 700px
+    ) {
+
+      body {
+        padding: 8px;
+      }
+
+      .card {
+        padding:
+          16px 11px;
+      }
+
+      .grid {
+        grid-template-columns:
+          1fr;
+      }
+
+      .info-row {
+        grid-template-columns:
+          1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+  <header class="hero">
+
+    <h1>
+      🔥 RPG Firestore TEST
+    </h1>
+
+    <p>
+      第一次測試真正的 Firebase RPG 資料寫入
+    </p>
+
+    <div class="badge">
+      TEST COLLECTION ONLY
+    </div>
+
+  </header>
+
+
+  <section class="card">
+
+    <h2 class="card-title">
+      🔒 安全狀態
+    </h2>
+
+    <div class="notice safe">
+
+      ✅ 不修改正式遊戲<br>
+
+      ✅ 不修改 scores 成績資料<br>
+
+      ✅ 不發放正式 RPG XP<br>
+
+      ✅ 只寫入 rpgTest... Collection<br>
+
+      ✅ 正式學生目前不會觸發這個頁面
+
+    </div>
+
+  </section>
+
+
+  <section class="card">
+
+    <h2 class="card-title">
+      👤 Firebase 登入狀態
+    </h2>
+
+    <div
+      id="auth-box"
+      class="auth-box"
+    >
+
+      <div
+        id="auth-main"
+        class="auth-main"
+      >
+        正在確認登入狀態……
+      </div>
+
+      <div
+        id="auth-detail"
+        class="auth-detail"
+      ></div>
+
+    </div>
+
+
+    <button
+      id="refresh-auth-button"
+      class="refresh"
+      type="button"
+    >
+      🔄 重新檢查登入狀態
+    </button>
+
+  </section>
+
+
+  <section class="card">
+
+    <h2 class="card-title">
+      🎮 建立 Firestore 測試局
+    </h2>
+
+
+    <div class="grid">
+
+
+      <div class="field">
+
+        <label for="game-select">
+          遊戲
+        </label>
+
+        <select id="game-select"></select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="mode-select">
+          模式
+        </label>
+
+        <select id="mode-select"></select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="score-input">
+          分數
+        </label>
+
+        <input
+          id="score-input"
+          type="number"
+          min="0"
+          max="100"
+          value="90"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="correct-input">
+          答對題數
+        </label>
+
+        <input
+          id="correct-input"
+          type="number"
+          min="0"
+          value="9"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="total-input">
+          總題數
+        </label>
+
+        <input
+          id="total-input"
+          type="number"
+          min="1"
+          value="10"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="combo-input">
+          最高連擊
+        </label>
+
+        <input
+          id="combo-input"
+          type="number"
+          min="0"
+          value="6"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="playtime-input">
+          遊戲時間（秒）
+        </label>
+
+        <input
+          id="playtime-input"
+          type="number"
+          min="0"
+          value="180"
+        >
+
+      </div>
+
+
+    </div>
+
+
+    <div
+      id="mode-info"
+      class="mode-info"
+    >
+      —
+    </div>
+
+
+    <div
+      class="notice warning"
+      style="margin-top:14px;"
+    >
+
+      ⚠️ Firestore TEST 不使用手動里程碑與手動
+      「今日第幾次」。
+
+      <br>
+
+      系統會直接讀取 Firestore 歷史資料，
+      自動判斷首次完成、首次 80 分、首次滿分，
+      以及今天這是第幾次練習。
+
+    </div>
+
+
+    <div class="button-row">
+
+      <button
+        id="new-attempt-button"
+        class="primary"
+        type="button"
+        disabled
+      >
+        🔥 建立新 Attempt 並寫入 Firestore
+      </button>
+
+
+      <button
+        id="resend-button"
+        class="secondary"
+        type="button"
+        disabled
+      >
+        🛡️ 重送同一個 Attempt
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <section
+    id="result-card"
+    class="card result"
+  >
+
+    <h2 class="card-title">
+      📊 Firestore TEST 結果
+    </h2>
+
+
+    <div
+      id="status-box"
+      class="status success"
+    >
+      —
+    </div>
+
+
+    <div class="big-xp">
+
+      <div
+        id="xp-number"
+        class="big-xp-number"
+      >
+        +0
+      </div>
+
+      <div class="big-xp-label">
+        本次 Firestore 結算 XP
+      </div>
+
+    </div>
+
+
+    <div class="info-table">
+
+
+      <div class="info-row">
+
+        <div class="info-label">
+          Attempt ID
+        </div>
+
+        <div
+          id="result-attempt-id"
+          class="info-value mono"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="info-row">
+
+        <div class="info-label">
+          今日同模式第幾次
+        </div>
+
+        <div
+          id="result-attempt-number"
+          class="info-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="info-row">
+
+        <div class="info-label">
+          難度倍率
+        </div>
+
+        <div
+          id="result-difficulty"
+          class="info-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="info-row">
+
+        <div class="info-label">
+          重複練習倍率
+        </div>
+
+        <div
+          id="result-repeat"
+          class="info-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="info-row">
+
+        <div class="info-label">
+          首次里程碑
+        </div>
+
+        <div
+          id="result-milestones"
+          class="info-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="info-row highlight">
+
+        <div class="info-label">
+          永久總 XP
+        </div>
+
+        <div
+          id="result-total-xp"
+          class="info-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="info-row highlight">
+
+        <div class="info-label">
+          RPG 等級
+        </div>
+
+        <div
+          id="result-level"
+          class="info-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="info-row">
+
+        <div class="info-label">
+          距離下一級
+        </div>
+
+        <div
+          id="result-next-level"
+          class="info-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+</div>
+
+
+<script type="module">
+
+
+  /*
+  ==================================================
+  Registry
+  ==================================================
+  */
+
+  import {
+
+    GAME_REGISTRY,
+
+    getActiveGames,
+
+    getActiveModes,
+
+    getModeConfig,
+
+    getModeXpWeight,
+
+    getDifficultyLabel
+
+  } from "./js/rpg/game-registry.js";
+
+
+  /*
+  ==================================================
+  Attempt
+  ==================================================
+  */
+
+  import {
+
+    createGameAttempt
+
+  } from "./js/rpg/attempt-system.js";
+
+
+  /*
+  ==================================================
+  Firestore TEST
+  ==================================================
+  */
+
+  import {
+
+    getTestRpgAuthState,
+
+    settleTestAttempt
+
+  } from "./js/rpg/rpg-firestore-test.js";
+
+
+  "use strict";
+
+
+  const $ =
+    id =>
+      document.getElementById(
+        id
+      );
+
+
+  let authState =
+    null;
+
+
+  let lastFirestoreAttempt =
+    null;
+
+
+  /*
+  ==================================================
+  登入狀態
+  ==================================================
+  */
+
+  async function refreshAuthState() {
+
+    const box =
+      $("auth-box");
+
+
+    const main =
+      $("auth-main");
+
+
+    const detail =
+      $("auth-detail");
+
+
+    main.textContent =
+      "正在確認 Firebase 登入狀態……";
+
+
+    detail.textContent =
+      "";
+
+
+    $("new-attempt-button")
+      .disabled =
+        true;
+
+
+    try {
+
+      authState =
+        await getTestRpgAuthState();
+
+
+      if (
+        authState.loggedIn
+      ) {
+
+        box.className =
+          "auth-box logged-in";
+
+
+        main.textContent =
+          "✅ 已登入 Firebase，可以進行 Firestore TEST";
+
+
+        detail.innerHTML = `
+
+          ${
+            authState.displayName
+              ? `名稱：${authState.displayName}<br>`
+              : ""
+          }
+
+          ${
+            authState.email
+              ? `Email：${authState.email}<br>`
+              : ""
+          }
+
+          UID：
+          ${authState.uid}
+
+        `;
+
+
+        $("new-attempt-button")
+          .disabled =
+            false;
+
+      } else {
+
+        box.className =
+          "auth-box logged-out";
+
+
+        main.textContent =
+          "❌ 尚未登入 Firebase";
+
+
+        detail.innerHTML = `
+
+          請先使用你原本數學網站的登入功能登入，
+
+          再回到這個測試頁重新檢查登入狀態。
+
+        `;
+
+      }
+
+    } catch (
+      error
+    ) {
+
+      box.className =
+        "auth-box logged-out";
+
+
+      main.textContent =
+        "⚠️ 無法確認登入狀態";
+
+
+      detail.textContent =
+        error?.message
+        ||
+        String(
+          error
+        );
+
+    }
+
+  }
+
+
+  /*
+  ==================================================
+  遊戲清單
+  ==================================================
+  */
+
+  function populateGames() {
+
+    const games =
+      getActiveGames();
+
+
+    $("game-select")
+      .innerHTML =
+        games
+          .map(
+            game => `
+
+              <option
+                value="${game.gameId}"
+              >
+
+                ${game.name}
+
+              </option>
+
+            `
+          )
+          .join("");
+
+
+    /*
+    測試時若有一元二次，
+    預設直接選它。
+    */
+
+    if (
+      GAME_REGISTRY
+        .quadraticEquation
+    ) {
+
+      $("game-select")
+        .value =
+          "quadraticEquation";
+
+    }
+
+
+    populateModes();
+
+  }
+
+
+  /*
+  ==================================================
+  模式清單
+  ==================================================
+  */
+
+  function populateModes() {
+
+    const gameId =
+      $("game-select")
+        .value;
+
+
+    const modes =
+      getActiveModes(
+        gameId
+      );
+
+
+    $("mode-select")
+      .innerHTML =
+        modes
+          .map(
+            mode => `
+
+              <option
+                value="${mode.modeId}"
+              >
+
+                ${mode.name}
+
+              </option>
+
+            `
+          )
+          .join("");
+
+
+    /*
+    一元二次預設測公式解模式。
+    */
+
+    if (
+      gameId ===
+        "quadraticEquation"
+
+      &&
+
+      getModeConfig(
+        gameId,
+        "formula"
+      )
+    ) {
+
+      $("mode-select")
+        .value =
+          "formula";
+
+    }
+
+
+    updateModeInfo();
+
+  }
+
+
+  /*
+  ==================================================
+  模式資訊
+  ==================================================
+  */
+
+  function updateModeInfo() {
+
+    const gameId =
+      $("game-select")
+        .value;
+
+
+    const modeId =
+      $("mode-select")
+        .value;
+
+
+    const mode =
+      getModeConfig(
+        gameId,
+        modeId
+      );
+
+
+    if (
+      !mode
+    ) {
+
+      $("mode-info")
+        .textContent =
+          "找不到模式設定。";
+
+
+      return;
+
+    }
+
+
+    const difficulty =
+      getDifficultyLabel(
+        gameId,
+        modeId
+      );
+
+
+    const weight =
+      getModeXpWeight(
+        gameId,
+        modeId
+      );
+
+
+    $("mode-info")
+      .innerHTML = `
+
+        🎯
+
+        <strong>
+          ${mode.name}
+        </strong>
+
+        ｜難度：
+        ${difficulty}
+
+        ｜XP：
+        ×${weight.toFixed(2)}
+
+        ｜類型：
+        ${mode.modeType}
+
+      `;
+
+  }
+
+
+  /*
+  ==================================================
+  讀取輸入
+  ==================================================
+  */
+
+  function readForm() {
+
+    const score =
+      Number(
+        $("score-input")
+          .value
+      );
+
+
+    const correct =
+      Number(
+        $("correct-input")
+          .value
+      );
+
+
+    const total =
+      Number(
+        $("total-input")
+          .value
+      );
+
+
+    const combo =
+      Number(
+        $("combo-input")
+          .value
+      );
+
+
+    const playTime =
+      Number(
+        $("playtime-input")
+          .value
+      );
+
+
+    if (
+      !Number.isFinite(
+        score
+      )
+      ||
+      score < 0
+      ||
+      score > 100
+    ) {
+
+      alert(
+        "分數必須介於 0～100。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      !Number.isInteger(
+        correct
+      )
+      ||
+      correct < 0
+    ) {
+
+      alert(
+        "答對題數必須是 0 以上整數。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      !Number.isInteger(
+        total
+      )
+      ||
+      total < 1
+    ) {
+
+      alert(
+        "總題數至少要 1 題。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      correct >
+      total
+    ) {
+
+      alert(
+        "答對題數不能超過總題數。"
+      );
+
+
+      return null;
+
+    }
+
+
+    if (
+      !Number.isInteger(
+        combo
+      )
+      ||
+      combo < 0
+      ||
+      combo > total
+    ) {
+
+      alert(
+        "最高連擊資料不正確。"
+      );
+
+
+      return null;
+
+    }
+
+
+    return {
+
+      gameId:
+        $("game-select")
+          .value,
+
+      modeId:
+        $("mode-select")
+          .value,
+
+      score,
+
+      correctCount:
+        correct,
+
+      totalQuestions:
+        total,
+
+      maxCombo:
+        combo,
+
+      playTime:
+        Math.max(
+          0,
+          Math.floor(
+            playTime || 0
+          )
+        )
+
+    };
+
+  }
+
+
+  /*
+  ==================================================
+  建立新 Firestore Attempt
+  ==================================================
+  */
+
+  async function createAndSettleNewAttempt() {
+
+    if (
+      !authState?.loggedIn
+    ) {
+
+      alert(
+        "請先登入 Firebase。"
+      );
+
+
+      return;
+
+    }
+
+
+    const form =
+      readForm();
+
+
+    if (
+      !form
+    ) {
+
+      return;
+
+    }
+
+
+    $("new-attempt-button")
+      .disabled =
+        true;
+
+
+    $("resend-button")
+      .disabled =
+        true;
+
+
+    try {
+
+      const attempt =
+        createGameAttempt({
+
+          ...form,
+
+          metadata: {
+
+            source:
+              "rpg-firestore-test"
+
+          }
+
+        });
+
+
+      lastFirestoreAttempt =
+        attempt;
+
+
+      await processFirestoreAttempt(
+        attempt
+      );
+
+
+      $("resend-button")
+        .disabled =
+          false;
+
+    } catch (
+      error
+    ) {
+
+      renderError(
+        error?.message
+        ||
+        String(
+          error
+        )
+      );
+
+    } finally {
+
+      $("new-attempt-button")
+        .disabled =
+          false;
+
+    }
+
+  }
+
+
+  /*
+  ==================================================
+  Firestore 結算
+  ==================================================
+  */
+
+  async function processFirestoreAttempt(
+    attempt
+  ) {
+
+    showLoading(
+      attempt
+    );
+
+
+    const result =
+      await settleTestAttempt({
+
+        attempt
+
+      });
+
+
+    if (
+      result.success
+    ) {
+
+      renderSuccess(
+        attempt,
+        result
+      );
+
+
+      return;
+
+    }
+
+
+    if (
+      result.duplicate
+      ||
+      result.reason ===
+        "duplicate-attempt"
+    ) {
+
+      renderDuplicate(
+        attempt,
+        result
+      );
+
+
+      return;
+
+    }
+
+
+    if (
+      result.reason ===
+        "not-logged-in"
+    ) {
+
+      renderError(
+        "Firebase 登入狀態已失效，請重新登入。"
+      );
+
+
+      await refreshAuthState();
+
+
+      return;
+
+    }
+
+
+    renderError(
+
+      result.message
+      ||
+      result.reason
+      ||
+      "Firestore RPG TEST 結算失敗。"
+
+    );
+
+  }
+
+
+  /*
+  ==================================================
+  重送同一個 Attempt
+  ==================================================
+  */
+
+  async function resendSameAttempt() {
+
+    if (
+      !lastFirestoreAttempt
+    ) {
+
+      return;
+
+    }
+
+
+    $("resend-button")
+      .disabled =
+        true;
+
+
+    $("new-attempt-button")
+      .disabled =
+        true;
+
+
+    try {
+
+      await processFirestoreAttempt(
+        lastFirestoreAttempt
+      );
+
+    } finally {
+
+      $("resend-button")
+        .disabled =
+          false;
+
+
+      $("new-attempt-button")
+        .disabled =
+          false;
+
+    }
+
+  }
+
+
+  /*
+  ==================================================
+  Loading
+  ==================================================
+  */
+
+  function showLoading(
+    attempt
+  ) {
+
+    $("result-card")
+      .classList
+      .add(
+        "show"
+      );
+
+
+    const box =
+      $("status-box");
+
+
+    box.className =
+      "status";
+
+
+    box.textContent =
+      "☁️ 正在執行 Firestore Transaction……";
+
+
+    $("xp-number")
+      .textContent =
+        "…";
+
+
+    $("result-attempt-id")
+      .textContent =
+        attempt.attemptId;
+
+
+    $("result-card")
+      .scrollIntoView({
+
+        behavior:
+          "smooth",
+
+        block:
+          "start"
+
+      });
+
+  }
+
+
+  /*
+  ==================================================
+  成功
+  ==================================================
+  */
+
+  function renderSuccess(
+    attempt,
+    result
+  ) {
+
+    const box =
+      $("status-box");
+
+
+    box.className =
+      "status success";
+
+
+    box.innerHTML = `
+
+      ✅ Firestore TEST 結算成功
+
+      <br>
+
+      Attempt、XP Transaction、
+      Player Progress 與 Mode Stats
+      已完成 Transaction 寫入。
+
+    `;
+
+
+    $("xp-number")
+      .textContent =
+        `+${result.gainedXp}`;
+
+
+    $("result-attempt-id")
+      .textContent =
+        attempt.attemptId;
+
+
+    $("result-attempt-number")
+      .textContent =
+        `第 ${result.attemptNumberToday} 次`;
+
+
+    $("result-difficulty")
+      .textContent =
+        `×${result.xp.difficultyMultiplier.toFixed(2)}`;
+
+
+    $("result-repeat")
+      .textContent =
+        `×${result.xp.repeatMultiplier.toFixed(2)}`;
+
+
+    renderMilestones(
+      result.milestones
+    );
+
+
+    $("result-total-xp")
+      .textContent =
+        `${result.totalXpBefore} → ${result.totalXpAfter} XP`;
+
+
+    $("result-level")
+      .textContent =
+        `Lv.${result.oldLevel} → Lv.${result.newLevel}`;
+
+
+    $("result-next-level")
+      .textContent =
+        `Lv.${result.level.after.level}：
+         ${result.level.after.levelXp}
+         /
+         ${result.level.after.nextRequirement} XP，
+         還差 ${result.level.after.xpToNextLevel} XP`;
+
+  }
+
+
+  /*
+  ==================================================
+  里程碑
+  ==================================================
+  */
+
+  function renderMilestones(
+    milestones
+  ) {
+
+    const items =
+      [];
+
+
+    if (
+      milestones.firstCompletion
+    ) {
+
+      items.push(
+        "首次完成 +5"
+      );
+
+    }
+
+
+    if (
+      milestones.first80
+    ) {
+
+      items.push(
+        "首次達80 +20"
+      );
+
+    }
+
+
+    if (
+      milestones.first100
+    ) {
+
+      items.push(
+        "首次滿分 +30"
+      );
+
+    }
+
+
+    $("result-milestones")
+      .innerHTML =
+
+        items.length
+
+          ? items
+              .map(
+                item => `
+
+                  <span class="milestone">
+                    ${item}
+                  </span>
+
+                `
+              )
+              .join("")
+
+          : "無新的首次里程碑";
+
+  }
+
+
+  /*
+  ==================================================
+  Duplicate
+  ==================================================
+  */
+
+  function renderDuplicate(
+    attempt,
+    result
+  ) {
+
+    const box =
+      $("status-box");
+
+
+    box.className =
+      "status duplicate";
+
+
+    box.innerHTML = `
+
+      ⛔ 同一個 Attempt 已經處理過
+
+      <br>
+
+      Firestore 拒絕再次發放 XP。
+
+    `;
+
+
+    $("xp-number")
+      .textContent =
+        "+0";
+
+
+    $("result-attempt-id")
+      .textContent =
+        attempt.attemptId;
+
+
+    $("result-attempt-number")
+      .textContent =
+        "不增加";
+
+
+    $("result-difficulty")
+      .textContent =
+        "—";
+
+
+    $("result-repeat")
+      .textContent =
+        "—";
+
+
+    $("result-milestones")
+      .textContent =
+        "不重複領取";
+
+
+    $("result-total-xp")
+      .textContent =
+
+        Number.isFinite(
+          result.totalXpAfter
+        )
+
+          ? `${result.totalXpAfter} XP（不變）`
+
+          : "不變";
+
+
+    $("result-level")
+      .textContent =
+        "不變";
+
+
+    $("result-next-level")
+      .textContent =
+        "不變";
+
+  }
+
+
+  /*
+  ==================================================
+  Error
+  ==================================================
+  */
+
+  function renderError(
+    message
+  ) {
+
+    $("result-card")
+      .classList
+      .add(
+        "show"
+      );
+
+
+    const box =
+      $("status-box");
+
+
+    box.className =
+      "status error";
+
+
+    box.innerHTML = `
+
+      ⚠️ Firestore TEST 失敗
+
+      <br>
+
+      ${message}
+
+    `;
+
+
+    $("xp-number")
+      .textContent =
+        "+0";
+
+  }
+
+
+  /*
+  ==================================================
+  Events
+  ==================================================
+  */
+
+  $("refresh-auth-button")
+    .addEventListener(
+      "click",
+      refreshAuthState
+    );
+
+
+  $("game-select")
+    .addEventListener(
+      "change",
+      populateModes
+    );
+
+
+  $("mode-select")
+    .addEventListener(
+      "change",
+      updateModeInfo
+    );
+
+
+  $("new-attempt-button")
+    .addEventListener(
+      "click",
+      createAndSettleNewAttempt
+    );
+
+
+  $("resend-button")
+    .addEventListener(
+      "click",
+      resendSameAttempt
+    );
+
+
+  /*
+  ==================================================
+  Init
+  ==================================================
+  */
+
+  populateGames();
+
+  await refreshAuthState();
+
+
+</script>
+
+
+</body>
+
+</html>
