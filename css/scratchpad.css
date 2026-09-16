@@ -3,8 +3,8 @@
 生活有解．心中有數｜共用計算紙
 檔案：css/scratchpad.css
 
-版本：4.1
-全螢幕半透明書寫層版
+版本：4.2
+全螢幕半透明＋縮放安全關閉版
 ==================================================
 
 本版調整：
@@ -12,8 +12,12 @@
 1. 全螢幕計算紙維持原設計。
 2. 計算紙透明度再降低，
    讓後方題目看得更清楚。
-3. 所有原有工具與功能不變。
-4. PNG 下載白底處理由 scratchpad.js 負責。
+3. 新增 Visual Viewport 安全關閉樣式：
+   - 平板／手機放大後，關閉鍵可由 JS 移到目前可視區右上角。
+   - 不增加底部關閉按鈕。
+   - 不禁止使用者縮放。
+4. 所有原有工具與功能不變。
+5. PNG 下載白底處理由 scratchpad.js 負責。
 ==================================================
 */
 
@@ -100,24 +104,15 @@
       11,
       .28
     );
+
+  --scratchpad-viewport-safe-margin:
+    12px;
 }
-
-
-/*
-==================================================
-基本
-==================================================
-*/
 
 
 * {
   box-sizing: border-box;
 }
-
-
-/*
-計算紙開啟時鎖定背景頁面。
-*/
 
 
 html.scratchpad-page-locked,
@@ -132,13 +127,6 @@ body.scratchpad-page-locked {
   touch-action:
     none;
 }
-
-
-/*
-==================================================
-開啟計算紙按鈕
-==================================================
-*/
 
 
 .scratchpad-open-button {
@@ -264,13 +252,6 @@ body.scratchpad-page-locked {
 }
 
 
-/*
-==================================================
-全螢幕計算紙
-==================================================
-*/
-
-
 .scratchpad-panel {
 
   position:
@@ -291,20 +272,17 @@ body.scratchpad-page-locked {
   bottom:
     0 !important;
 
-
   width:
     100vw !important;
 
   width:
     100dvw !important;
 
-
   height:
     100vh !important;
 
   height:
     100dvh !important;
-
 
   min-width:
     0 !important;
@@ -318,13 +296,11 @@ body.scratchpad-page-locked {
   max-height:
     none !important;
 
-
   margin:
     0 !important;
 
   padding:
     0;
-
 
   border:
     none;
@@ -335,17 +311,6 @@ body.scratchpad-page-locked {
   resize:
     none !important;
 
-
-  /*
-  ★ 4.1 調淡
-
-  舊版約 .38，
-  現在降為 .18。
-
-  後方題目會明顯清楚很多。
-  */
-
-
   background:
     rgba(
       255,
@@ -353,13 +318,6 @@ body.scratchpad-page-locked {
       255,
       .18
     );
-
-
-  /*
-  舊版 blur 約 1.5px。
-  現在只保留非常輕微的模糊。
-  */
-
 
   -webkit-backdrop-filter:
     blur(
@@ -371,16 +329,13 @@ body.scratchpad-page-locked {
       .35px
     );
 
-
   color:
     var(
       --scratchpad-text-color
     );
 
-
   z-index:
     2147483000;
-
 
   display:
     flex;
@@ -388,18 +343,14 @@ body.scratchpad-page-locked {
   flex-direction:
     column;
 
-
   overflow:
     hidden;
-
 
   pointer-events:
     auto;
 
-
   touch-action:
     none;
-
 
   user-select:
     none;
@@ -417,13 +368,6 @@ body.scratchpad-page-locked {
   display:
     none !important;
 }
-
-
-/*
-==================================================
-開啟動畫
-==================================================
-*/
 
 
 @keyframes scratchpadFullscreenFade {
@@ -452,13 +396,6 @@ body.scratchpad-page-locked {
 }
 
 
-/*
-==================================================
-標題列
-==================================================
-*/
-
-
 .scratchpad-header {
 
   position:
@@ -467,10 +404,8 @@ body.scratchpad-page-locked {
   z-index:
     30;
 
-
   flex:
     0 0 auto;
-
 
   display:
     flex;
@@ -484,10 +419,8 @@ body.scratchpad-page-locked {
   gap:
     14px;
 
-
   min-height:
     62px;
-
 
   padding:
 
@@ -514,7 +447,6 @@ body.scratchpad-page-locked {
       )
     );
 
-
   border-bottom:
     1px solid
     rgba(
@@ -524,20 +456,16 @@ body.scratchpad-page-locked {
       .25
     );
 
-
   background:
     var(
       --scratchpad-header-background
     );
 
-
   color:
     #78350f;
 
-
   cursor:
     default;
-
 
   touch-action:
     manipulation;
@@ -548,7 +476,6 @@ body.scratchpad-page-locked {
 
   min-width:
     0;
-
 
   display:
     flex;
@@ -576,10 +503,8 @@ body.scratchpad-page-locked {
   margin:
     0;
 
-
   color:
     #78350f;
-
 
   font-size:
     19px;
@@ -597,7 +522,6 @@ body.scratchpad-page-locked {
   margin:
     2px 0 0;
 
-
   color:
     rgba(
       120,
@@ -605,7 +529,6 @@ body.scratchpad-page-locked {
       15,
       .78
     );
-
 
   font-size:
     12px;
@@ -618,13 +541,6 @@ body.scratchpad-page-locked {
 }
 
 
-/*
-==================================================
-關閉按鈕
-==================================================
-*/
-
-
 .scratchpad-close-button {
 
   width:
@@ -633,10 +549,8 @@ body.scratchpad-page-locked {
   height:
     44px;
 
-
   flex:
     0 0 44px;
-
 
   display:
     inline-flex;
@@ -647,10 +561,8 @@ body.scratchpad-page-locked {
   justify-content:
     center;
 
-
   padding:
     0;
-
 
   border:
     2px solid
@@ -664,7 +576,6 @@ body.scratchpad-page-locked {
   border-radius:
     50%;
 
-
   background:
     rgba(
       255,
@@ -673,10 +584,8 @@ body.scratchpad-page-locked {
       .88
     );
 
-
   color:
     #7c2d12;
-
 
   font:
     inherit;
@@ -690,14 +599,11 @@ body.scratchpad-page-locked {
   line-height:
     1;
 
-
   cursor:
     pointer;
 
-
   touch-action:
     manipulation;
-
 
   -webkit-tap-highlight-color:
     transparent;
@@ -723,11 +629,38 @@ body.scratchpad-page-locked {
 }
 
 
-/*
-==================================================
-主要內容
-==================================================
-*/
+.scratchpad-close-button--viewport-safe {
+
+  position:
+    absolute !important;
+
+  right:
+    auto !important;
+
+  bottom:
+    auto !important;
+
+  margin:
+    0 !important;
+
+  z-index:
+    2147483646 !important;
+
+  pointer-events:
+    auto !important;
+
+  touch-action:
+    manipulation !important;
+
+  box-shadow:
+    0 4px 14px
+    rgba(
+      15,
+      23,
+      42,
+      .20
+    );
+}
 
 
 .scratchpad-content {
@@ -735,10 +668,8 @@ body.scratchpad-page-locked {
   min-height:
     0;
 
-
   flex:
     1 1 auto;
-
 
   display:
     flex;
@@ -746,17 +677,9 @@ body.scratchpad-page-locked {
   flex-direction:
     column;
 
-
   overflow:
     hidden;
 }
-
-
-/*
-==================================================
-工具列
-==================================================
-*/
 
 
 .scratchpad-toolbar {
@@ -767,10 +690,8 @@ body.scratchpad-page-locked {
   z-index:
     20;
 
-
   flex:
     0 0 auto;
-
 
   display:
     flex;
@@ -784,14 +705,11 @@ body.scratchpad-page-locked {
   flex-wrap:
     wrap;
 
-
   gap:
     7px 10px;
 
-
   padding:
     9px 12px;
-
 
   border-bottom:
     1px solid
@@ -799,18 +717,10 @@ body.scratchpad-page-locked {
       --scratchpad-divider-color
     );
 
-
-  /*
-  ★ 稍微透明一點，
-  但仍維持工具辨識度。
-  */
-
-
   background:
     var(
       --scratchpad-toolbar-background
     );
-
 
   max-height:
     130px;
@@ -821,25 +731,15 @@ body.scratchpad-page-locked {
   overflow-y:
     auto;
 
-
   overscroll-behavior:
     contain;
-
 
   cursor:
     default;
 
-
   touch-action:
     pan-y;
 }
-
-
-/*
-==================================================
-工具群組
-==================================================
-*/
 
 
 .scratchpad-tool-group {
@@ -856,18 +756,14 @@ body.scratchpad-page-locked {
   gap:
     5px;
 
-
   min-height:
     38px;
-
 
   padding:
     3px 5px;
 
-
   border-radius:
     10px;
-
 
   background:
     rgba(
@@ -884,12 +780,10 @@ body.scratchpad-page-locked {
   margin-right:
     2px;
 
-
   color:
     var(
       --scratchpad-muted-color
     );
-
 
   font-size:
     12px;
@@ -897,17 +791,9 @@ body.scratchpad-page-locked {
   font-weight:
     800;
 
-
   white-space:
     nowrap;
 }
-
-
-/*
-==================================================
-一般工具按鈕
-==================================================
-*/
 
 
 .scratchpad-tool-button,
@@ -916,7 +802,6 @@ body.scratchpad-page-locked {
 
   min-height:
     36px;
-
 
   border:
     1px solid
@@ -927,16 +812,13 @@ body.scratchpad-page-locked {
       --scratchpad-button-radius
     );
 
-
   background:
     var(
       --scratchpad-button-background
     );
 
-
   color:
     #374151;
-
 
   font:
     inherit;
@@ -947,14 +829,11 @@ body.scratchpad-page-locked {
   font-weight:
     800;
 
-
   cursor:
     pointer;
 
-
   touch-action:
     manipulation;
-
 
   user-select:
     none;
@@ -967,7 +846,6 @@ body.scratchpad-page-locked {
 
   -webkit-tap-highlight-color:
     transparent;
-
 
   transition:
     border-color .12s ease,
@@ -987,10 +865,8 @@ body.scratchpad-page-locked {
   justify-content:
     center;
 
-
   gap:
     5px;
-
 
   padding:
     7px 10px;
@@ -1070,10 +946,8 @@ body.scratchpad-page-locked {
       --scratchpad-disabled-text
     );
 
-
   cursor:
     not-allowed;
-
 
   opacity:
     .70;
@@ -1118,13 +992,6 @@ body.scratchpad-page-locked {
 }
 
 
-/*
-==================================================
-顏色按鈕
-==================================================
-*/
-
-
 .scratchpad-color-button {
 
   width:
@@ -1136,14 +1003,11 @@ body.scratchpad-page-locked {
   height:
     34px;
 
-
   padding:
     0;
 
-
   border-width:
     3px;
-
 
   border-radius:
     50%;
@@ -1191,13 +1055,6 @@ body.scratchpad-page-locked {
 }
 
 
-/*
-==================================================
-筆粗細
-==================================================
-*/
-
-
 .scratchpad-size-button {
 
   width:
@@ -1209,7 +1066,6 @@ body.scratchpad-page-locked {
   height:
     36px;
 
-
   display:
     inline-flex;
 
@@ -1218,7 +1074,6 @@ body.scratchpad-page-locked {
 
   justify-content:
     center;
-
 
   padding:
     0;
@@ -1230,10 +1085,8 @@ body.scratchpad-page-locked {
   display:
     block;
 
-
   border-radius:
     999px;
-
 
   background:
     #111827;
@@ -1270,30 +1123,19 @@ body.scratchpad-page-locked {
 }
 
 
-/*
-==================================================
-Canvas 區
-==================================================
-*/
-
-
 .scratchpad-canvas-container {
 
   position:
     relative;
 
-
   min-height:
     0;
-
 
   flex:
     1 1 auto;
 
-
   overflow:
     hidden;
-
 
   padding:
     10px
@@ -1319,7 +1161,6 @@ Canvas 區
       )
     );
 
-
   background:
     rgba(
       255,
@@ -1330,18 +1171,10 @@ Canvas 區
 }
 
 
-/*
-==================================================
-Canvas
-==================================================
-*/
-
-
 .scratchpad-canvas {
 
   display:
     block;
-
 
   width:
     100%;
@@ -1349,10 +1182,8 @@ Canvas
   height:
     100%;
 
-
   min-height:
     100%;
-
 
   border:
     1px solid
@@ -1366,17 +1197,6 @@ Canvas
   border-radius:
     12px;
 
-
-  /*
-  ★ 4.1 關鍵修改
-
-  舊版約 .66。
-  現在改為 .44。
-
-  因此後方題目會比現在清楚。
-  */
-
-
   background-color:
     rgba(
       255,
@@ -1384,12 +1204,6 @@ Canvas
       255,
       .44
     );
-
-
-  /*
-  方格也稍微變淡。
-  */
-
 
   background-image:
 
@@ -1418,18 +1232,14 @@ Canvas
       1px
     );
 
-
   background-size:
     24px 24px;
-
 
   touch-action:
     none;
 
-
   cursor:
     crosshair;
-
 
   user-select:
     none;
@@ -1468,18 +1278,10 @@ Canvas
 }
 
 
-/*
-==================================================
-Canvas 提示
-==================================================
-*/
-
-
 .scratchpad-canvas-hint {
 
   position:
     absolute;
-
 
   left:
     50%;
@@ -1487,10 +1289,8 @@ Canvas 提示
   top:
     50%;
 
-
   z-index:
     2;
-
 
   transform:
     translate(
@@ -1498,14 +1298,11 @@ Canvas 提示
       -50%
     );
 
-
   padding:
     8px 12px;
 
-
   border-radius:
     999px;
-
 
   background:
     rgba(
@@ -1515,10 +1312,8 @@ Canvas 提示
       .68
     );
 
-
   color:
     #94a3b8;
-
 
   font-size:
     15px;
@@ -1526,10 +1321,8 @@ Canvas 提示
   font-weight:
     800;
 
-
   pointer-events:
     none;
-
 
   white-space:
     nowrap;
@@ -1541,13 +1334,6 @@ Canvas 提示
   display:
     none !important;
 }
-
-
-/*
-==================================================
-舊拖曳與縮放相容
-==================================================
-*/
 
 
 .scratchpad-resize-handle {
@@ -1587,13 +1373,6 @@ Canvas 提示
 }
 
 
-/*
-==================================================
-平板
-==================================================
-*/
-
-
 @media (
   max-width:
     1024px
@@ -1604,7 +1383,6 @@ Canvas 提示
     min-height:
       58px;
 
-
     padding-top:
       max(
         8px,
@@ -1612,7 +1390,6 @@ Canvas 提示
           safe-area-inset-top
         )
       );
-
 
     padding-bottom:
       8px;
@@ -1638,14 +1415,11 @@ Canvas 提示
     justify-content:
       flex-start;
 
-
     padding:
       7px 8px;
 
-
     gap:
       5px 7px;
-
 
     max-height:
       118px;
@@ -1657,7 +1431,6 @@ Canvas 提示
     gap:
       4px;
 
-
     padding:
       2px 4px;
   }
@@ -1668,10 +1441,8 @@ Canvas 提示
     min-height:
       34px;
 
-
     padding:
       6px 8px;
-
 
     font-size:
       12px;
@@ -1713,13 +1484,6 @@ Canvas 提示
 }
 
 
-/*
-==================================================
-手機
-==================================================
-*/
-
-
 @media (
   max-width:
     640px
@@ -1730,10 +1494,8 @@ Canvas 提示
     min-height:
       54px;
 
-
     gap:
       8px;
-
 
     padding:
 
@@ -1791,10 +1553,8 @@ Canvas 提示
     height:
       40px;
 
-
     flex-basis:
       40px;
-
 
     font-size:
       25px;
@@ -1806,14 +1566,11 @@ Canvas 提示
     justify-content:
       flex-start;
 
-
     gap:
       4px;
 
-
     padding:
       6px;
-
 
     max-height:
       120px;
@@ -1825,10 +1582,8 @@ Canvas 提示
     min-height:
       32px;
 
-
     gap:
       3px;
-
 
     padding:
       2px 3px;
@@ -1848,7 +1603,6 @@ Canvas 提示
 
     min-height:
       31px;
-
 
     font-size:
       11px;
@@ -1928,7 +1682,6 @@ Canvas 提示
     border-radius:
       8px;
 
-
     background-size:
       22px 22px;
   }
@@ -1939,19 +1692,11 @@ Canvas 提示
     font-size:
       13px;
 
-
     padding:
       6px 9px;
   }
 
 }
-
-
-/*
-==================================================
-超小手機
-==================================================
-*/
 
 
 @media (
@@ -1975,13 +1720,6 @@ Canvas 提示
 }
 
 
-/*
-==================================================
-橫向低高度裝置
-==================================================
-*/
-
-
 @media (
   max-height:
     560px
@@ -1991,7 +1729,6 @@ Canvas 提示
 
     min-height:
       46px;
-
 
     padding-top:
       5px;
@@ -2012,7 +1749,6 @@ Canvas 提示
 
     max-height:
       82px;
-
 
     padding:
       4px 6px;
@@ -2063,32 +1799,15 @@ Canvas 提示
 }
 
 
-/*
-==================================================
-深色模式
-==================================================
-*/
-
-
 @media (
   prefers-color-scheme:
     dark
 ) {
 
-  /*
-  ★ 不再把計算紙背景改成深色。
-
-  即使裝置設定深色模式，
-  計算紙仍維持淡白半透明，
-  避免影響書寫辨識。
-  */
-
-
   .scratchpad-panel {
 
     color:
       #1f2937;
-
 
     background:
       rgba(
@@ -2112,13 +1831,6 @@ Canvas 提示
   }
 
 }
-
-
-/*
-==================================================
-列印
-==================================================
-*/
 
 
 @media print {
