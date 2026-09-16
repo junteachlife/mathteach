@@ -15,21 +15,13 @@
   </title>
 
 
-  <!--
-  ==================================================
-  瀏覽器小圖示
-  主題：正負數 ± ＋ 數線
-  ==================================================
-  -->
-
+  <!-- 瀏覽器小圖示：正負數 ± ＋ 數線 -->
   <link
     rel="icon"
     type="image/svg+xml"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f766e'/%3E%3Cpath d='M8 41h48' stroke='%2399f6e4' stroke-width='3'/%3E%3Cpath d='M14 36v10M32 36v10M50 36v10' stroke='white' stroke-width='2'/%3E%3Ccircle cx='32' cy='41' r='4' fill='%23fde68a'/%3E%3Ctext x='32' y='28' text-anchor='middle' font-family='Arial,sans-serif' font-size='25' font-weight='700' fill='white'%3E%C2%B1%3C/text%3E%3C/svg%3E"
   >
 
-
-  <!-- 共用計算紙 -->
 
   <link
     rel="stylesheet"
@@ -39,105 +31,64 @@
 
   <style>
 
-    /*
-    ==================================================
-    基本設定
-    ==================================================
-    */
-
     * {
-
-      box-sizing:
-        border-box;
+      box-sizing: border-box;
     }
 
 
     :root {
 
-      --primary:
-        #0f766e;
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --primary-light: #ccfbf1;
+      --primary-border: #5eead4;
 
-      --primary-dark:
-        #115e59;
+      --secondary: #2563eb;
+      --secondary-dark: #1d4ed8;
 
-      --primary-light:
-        #ccfbf1;
+      --orange: #ea580c;
+      --purple: #5b5bdc;
 
-      --primary-border:
-        #5eead4;
+      --text: #1e293b;
+      --muted: #64748b;
 
-      --secondary:
-        #2563eb;
+      --success: #15803d;
+      --danger: #dc2626;
+      --warning: #b45309;
 
-      --secondary-dark:
-        #1d4ed8;
-
-      --orange:
-        #ea580c;
-
-      --purple:
-        #7c3aed;
-
-      --text:
-        #1e293b;
-
-      --muted:
-        #64748b;
-
-      --success:
-        #15803d;
-
-      --danger:
-        #dc2626;
-
-      --warning:
-        #b45309;
-
-      --surface:
-        #ffffff;
+      --surface: #ffffff;
     }
 
 
     html {
-
-      scroll-behavior:
-        smooth;
+      scroll-behavior: smooth;
     }
 
 
     body {
 
-      margin:
-        0;
-
-      min-height:
-        100vh;
-
-      padding:
-        16px;
+      margin: 0;
+      min-height: 100vh;
+      padding: 16px;
 
       font-family:
         "Microsoft JhengHei",
         "Noto Sans TC",
         sans-serif;
 
-      color:
-        var(--text);
+      color: var(--text);
 
       background:
-
         radial-gradient(
           circle at 10% 10%,
           rgba(45, 212, 191, .22),
           transparent 30%
         ),
-
         radial-gradient(
           circle at 90% 5%,
           rgba(96, 165, 250, .20),
           transparent 30%
         ),
-
         linear-gradient(
           135deg,
           #ecfeff,
@@ -150,43 +101,33 @@
     button,
     input,
     select {
-
-      font-family:
-        inherit;
+      font-family: inherit;
     }
 
 
     button {
-
-      touch-action:
-        manipulation;
+      touch-action: manipulation;
     }
 
 
     .hidden {
-
-      display:
-        none !important;
+      display: none !important;
     }
 
 
     .page-shell {
 
-      width:
-        min(
-          100%,
-          1040px
-        );
+      width: min(
+        100%,
+        1040px
+      );
 
-      margin:
-        0 auto;
+      margin: 0 auto;
     }
 
 
     #commonHeaderMount {
-
-      margin-bottom:
-        14px;
+      margin-bottom: 14px;
     }
 
 
@@ -198,8 +139,7 @@
 
     .game-card {
 
-      overflow:
-        hidden;
+      overflow: hidden;
 
       border:
         1px solid
@@ -209,11 +149,9 @@
         8px solid
         var(--primary);
 
-      border-radius:
-        26px;
+      border-radius: 26px;
 
-      background:
-        var(--surface);
+      background: var(--surface);
 
       box-shadow:
         0 16px 42px
@@ -228,7 +166,7 @@
 
     /*
     ==================================================
-    標題區
+    標題
     ==================================================
     */
 
@@ -239,11 +177,9 @@
         20px
         22px;
 
-      text-align:
-        center;
+      text-align: center;
 
       background:
-
         linear-gradient(
           180deg,
           var(--primary-light),
@@ -254,30 +190,20 @@
 
     .title-row {
 
-      display:
-        flex;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
 
-      justify-content:
-        center;
-
-      align-items:
-        center;
-
-      flex-wrap:
-        wrap;
-
-      gap:
-        10px;
+      gap: 10px;
     }
 
 
     .game-title {
 
-      margin:
-        0;
+      margin: 0;
 
-      color:
-        var(--primary-dark);
+      color: var(--primary-dark);
 
       font-size:
         clamp(
@@ -286,91 +212,64 @@
           44px
         );
 
-      line-height:
-        1.2;
+      line-height: 1.2;
     }
 
 
     .new-badge {
 
-      display:
-        inline-flex;
+      display: inline-flex;
+      align-items: center;
 
-      align-items:
-        center;
+      min-height: 30px;
 
-      min-height:
-        30px;
+      padding: 5px 11px;
 
-      padding:
-        5px 11px;
+      border-radius: 999px;
 
-      border-radius:
-        999px;
+      background: #fef3c7;
 
-      background:
-        #fef3c7;
+      color: #92400e;
 
-      color:
-        #92400e;
-
-      font-size:
-        13px;
-
-      font-weight:
-        900;
+      font-size: 13px;
+      font-weight: 900;
     }
 
 
     .game-subtitle {
 
-      margin:
-        12px auto 0;
+      margin: 12px auto 0;
 
-      max-width:
-        800px;
+      max-width: 800px;
 
-      color:
-        var(--muted);
+      color: var(--muted);
 
-      line-height:
-        1.8;
-
-      font-weight:
-        700;
+      line-height: 1.8;
+      font-weight: 700;
     }
 
 
     .concept-strip {
 
-      display:
-        flex;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
 
-      justify-content:
-        center;
+      gap: 8px;
 
-      flex-wrap:
-        wrap;
-
-      gap:
-        8px;
-
-      margin-top:
-        16px;
+      margin-top: 16px;
     }
 
 
     .concept-chip {
 
-      padding:
-        7px 12px;
+      padding: 7px 12px;
 
       border:
         1px solid
         var(--primary-border);
 
-      border-radius:
-        999px;
+      border-radius: 999px;
 
       background:
         rgba(
@@ -380,34 +279,27 @@
           .92
         );
 
-      color:
-        var(--primary-dark);
+      color: var(--primary-dark);
 
-      font-size:
-        14px;
-
-      font-weight:
-        900;
+      font-size: 14px;
+      font-weight: 900;
     }
 
 
     .screen {
-
-      padding:
-        22px;
+      padding: 22px;
     }
 
 
     /*
     ==================================================
-    模式選擇
+    模式
     ==================================================
     */
 
     .mode-grid {
 
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
         repeat(
@@ -418,34 +310,26 @@
           )
         );
 
-      gap:
-        16px;
+      gap: 16px;
     }
 
 
     .mode-card {
 
-      display:
-        flex;
+      display: flex;
+      flex-direction: column;
 
-      flex-direction:
-        column;
+      min-height: 238px;
 
-      min-height:
-        238px;
-
-      padding:
-        21px;
+      padding: 21px;
 
       border:
         2px solid
         #cbd5e1;
 
-      border-radius:
-        20px;
+      border-radius: 20px;
 
-      background:
-        #ffffff;
+      background: #ffffff;
 
       box-shadow:
         0 8px 22px
@@ -466,9 +350,7 @@
     .mode-card:hover {
 
       transform:
-        translateY(
-          -2px
-        );
+        translateY(-2px);
 
       border-color:
         var(--primary-border);
@@ -486,11 +368,9 @@
 
     .mode-card.mixed {
 
-      border-color:
-        #f59e0b;
+      border-color: #f59e0b;
 
       background:
-
         linear-gradient(
           180deg,
           #fffbeb,
@@ -500,87 +380,61 @@
 
 
     .mode-icon {
-
-      font-size:
-        34px;
+      font-size: 34px;
     }
 
 
     .mode-title {
 
-      margin:
-        9px 0 6px;
+      margin: 9px 0 6px;
 
-      color:
-        var(--primary-dark);
+      color: var(--primary-dark);
 
-      font-size:
-        21px;
-
-      font-weight:
-        900;
+      font-size: 21px;
+      font-weight: 900;
     }
 
 
     .mode-card.mixed
     .mode-title {
-
-      color:
-        #92400e;
+      color: #92400e;
     }
 
 
     .mode-meta {
 
-      display:
-        flex;
+      display: flex;
+      flex-wrap: wrap;
 
-      flex-wrap:
-        wrap;
+      gap: 7px;
 
-      gap:
-        7px;
-
-      margin-bottom:
-        10px;
+      margin-bottom: 10px;
     }
 
 
     .mode-tag {
 
-      padding:
-        4px 8px;
+      padding: 4px 8px;
 
-      border-radius:
-        999px;
+      border-radius: 999px;
 
-      background:
-        #f1f5f9;
+      background: #f1f5f9;
+      color: #475569;
 
-      color:
-        #475569;
-
-      font-size:
-        12px;
-
-      font-weight:
-        900;
+      font-size: 12px;
+      font-weight: 900;
     }
 
 
     .mode-description {
 
-      flex:
-        1 1 auto;
+      flex: 1 1 auto;
 
-      margin:
-        0 0 16px;
+      margin: 0 0 16px;
 
-      color:
-        var(--muted);
+      color: var(--muted);
 
-      line-height:
-        1.7;
+      line-height: 1.7;
     }
 
 
@@ -593,29 +447,19 @@
     .mode-button,
     .game-button {
 
-      border:
-        none;
+      border: none;
+      border-radius: 14px;
 
-      border-radius:
-        14px;
+      min-height: 48px;
 
-      min-height:
-        48px;
+      padding: 11px 18px;
 
-      padding:
-        11px 18px;
+      color: #ffffff;
 
-      color:
-        #ffffff;
+      font-size: 16px;
+      font-weight: 900;
 
-      font-size:
-        16px;
-
-      font-weight:
-        900;
-
-      cursor:
-        pointer;
+      cursor: pointer;
 
       transition:
         transform .1s ease,
@@ -624,140 +468,101 @@
 
 
     .mode-button {
-
-      background:
-        var(--primary);
+      background: var(--primary);
     }
 
 
     .mode-card.mixed
     .mode-button {
-
-      background:
-        #d97706;
+      background: #d97706;
     }
 
 
     .mode-button:hover,
     .game-button:hover {
-
-      filter:
-        brightness(
-          1.04
-        );
+      filter: brightness(1.04);
     }
 
 
     .mode-button:active,
     .game-button:active {
-
-      transform:
-        translateY(
-          2px
-        );
+      transform: translateY(2px);
     }
 
 
     .game-button.primary {
-
-      background:
-        var(--primary);
+      background: var(--primary);
     }
 
 
     .game-button.secondary {
-
-      background:
-        #475569;
+      background: #475569;
     }
 
 
     .game-button.orange {
-
-      background:
-        var(--orange);
+      background: var(--orange);
     }
 
 
     .game-button.blue {
-
-      background:
-        var(--secondary);
+      background: var(--secondary);
     }
 
 
     .game-button.restart {
-
-      background:
-        var(--purple);
+      background: #7c3aed;
     }
 
 
     .game-button:disabled {
-
-      opacity:
-        .48;
-
-      cursor:
-        not-allowed;
+      opacity: .48;
+      cursor: not-allowed;
     }
 
 
     /*
     ==================================================
-    測驗上方資訊
+    上方資訊
     ==================================================
     */
 
     .quiz-top {
 
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
         1fr auto;
 
-      gap:
-        14px;
+      gap: 14px;
 
-      align-items:
-        start;
+      align-items: start;
     }
 
 
     .mode-name {
 
-      color:
-        var(--primary-dark);
+      color: var(--primary-dark);
 
-      font-size:
-        20px;
-
-      font-weight:
-        900;
+      font-size: 20px;
+      font-weight: 900;
     }
 
 
     .question-number {
 
-      margin-top:
-        4px;
+      margin-top: 4px;
 
-      color:
-        var(--muted);
+      color: var(--muted);
 
-      font-size:
-        14px;
-
-      font-weight:
-        800;
+      font-size: 14px;
+      font-weight: 800;
     }
 
 
     .quiz-stats {
 
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
         repeat(
@@ -765,91 +570,67 @@
           auto
         );
 
-      gap:
-        8px;
+      gap: 8px;
     }
 
 
     .stat-pill {
 
-      min-width:
-        92px;
+      min-width: 92px;
 
-      padding:
-        9px 11px;
+      padding: 9px 11px;
 
-      border-radius:
-        12px;
+      border-radius: 12px;
 
-      background:
-        #f8fafc;
+      background: #f8fafc;
 
       border:
         1px solid
         #e2e8f0;
 
-      text-align:
-        center;
+      text-align: center;
 
-      font-size:
-        13px;
+      font-size: 13px;
+      font-weight: 800;
 
-      font-weight:
-        800;
-
-      color:
-        #475569;
+      color: #475569;
     }
 
 
     .stat-pill strong {
 
-      display:
-        block;
+      display: block;
 
-      margin-top:
-        2px;
+      margin-top: 2px;
 
-      color:
-        #0f172a;
+      color: #0f172a;
 
-      font-size:
-        18px;
+      font-size: 18px;
     }
 
 
     .progress-track {
 
-      height:
-        10px;
+      height: 10px;
 
-      margin:
-        16px 0 20px;
+      margin: 16px 0 20px;
 
-      overflow:
-        hidden;
+      overflow: hidden;
 
-      border-radius:
-        999px;
+      border-radius: 999px;
 
-      background:
-        #e2e8f0;
+      background: #e2e8f0;
     }
 
 
     .progress-bar {
 
-      width:
-        0;
+      width: 0;
+      height: 100%;
 
-      height:
-        100%;
-
-      border-radius:
-        inherit;
+      border-radius: inherit;
 
       background:
-
         linear-gradient(
           90deg,
           #14b8a6,
@@ -869,14 +650,10 @@
 
     .scratchpad-row {
 
-      display:
-        flex;
+      display: flex;
+      justify-content: flex-end;
 
-      justify-content:
-        flex-end;
-
-      margin-bottom:
-        10px;
+      margin-bottom: 10px;
     }
 
 
@@ -885,20 +662,15 @@
     #scratchpad-mobile-button
     .scratchpad-open-button {
 
-      position:
-        static !important;
+      position: static !important;
 
-      inset:
-        auto !important;
+      inset: auto !important;
 
-      transform:
-        none !important;
+      transform: none !important;
 
-      margin:
-        0 !important;
+      margin: 0 !important;
 
-      z-index:
-        auto !important;
+      z-index: auto !important;
     }
 
 
@@ -910,18 +682,15 @@
 
     .question-card {
 
-      padding:
-        24px;
+      padding: 24px;
 
       border:
         2px solid
         #dbeafe;
 
-      border-radius:
-        20px;
+      border-radius: 20px;
 
       background:
-
         linear-gradient(
           180deg,
           #f8fafc,
@@ -932,42 +701,29 @@
 
     .question-label {
 
-      margin-bottom:
-        9px;
+      margin-bottom: 9px;
 
-      color:
-        var(--secondary-dark);
+      color: var(--secondary-dark);
 
-      font-size:
-        14px;
+      font-size: 14px;
+      font-weight: 900;
 
-      font-weight:
-        900;
-
-      letter-spacing:
-        .03em;
+      letter-spacing: .03em;
     }
 
 
     .question-content {
 
-      min-height:
-        84px;
+      min-height: 84px;
 
-      display:
-        flex;
+      display: flex;
 
-      align-items:
-        center;
+      align-items: center;
+      justify-content: center;
 
-      justify-content:
-        center;
+      text-align: center;
 
-      text-align:
-        center;
-
-      color:
-        #0f172a;
+      color: #0f172a;
 
       font-size:
         clamp(
@@ -976,11 +732,9 @@
           32px
         );
 
-      font-weight:
-        900;
+      font-weight: 900;
 
-      line-height:
-        1.55;
+      line-height: 1.55;
     }
 
 
@@ -994,44 +748,92 @@
           26px
         );
 
-      line-height:
-        1.8;
+      line-height: 1.8;
 
-      font-weight:
-        800;
+      font-weight: 800;
     }
 
 
     .question-content
     .small-note {
 
-      display:
-        block;
+      display: block;
 
-      margin-top:
-        8px;
+      margin-top: 8px;
 
-      color:
-        var(--muted);
+      color: var(--muted);
 
-      font-size:
-        14px;
-
-      font-weight:
-        700;
+      font-size: 14px;
+      font-weight: 700;
     }
 
 
     /*
     ==================================================
-    答案區
+    ★ 正式數學分數顯示
+    分子在上、分母在下
+    ==================================================
+    */
+
+    .math-fraction {
+
+      display: inline-flex;
+
+      flex-direction: column;
+
+      align-items: stretch;
+      justify-content: center;
+
+      min-width: 1.4em;
+
+      margin: 0 .10em;
+
+      vertical-align: middle;
+
+      line-height: 1.02;
+    }
+
+
+    .math-fraction-top {
+
+      padding:
+        0 .15em .07em;
+
+      border-bottom:
+        2px solid
+        currentColor;
+
+      text-align: center;
+    }
+
+
+    .math-fraction-bottom {
+
+      padding:
+        .07em .15em 0;
+
+      text-align: center;
+    }
+
+
+    .fraction-with-sign {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      vertical-align: middle;
+    }
+
+
+    /*
+    ==================================================
+    答案輸入
     ==================================================
     */
 
     .answer-area {
-
-      margin-top:
-        20px;
+      margin-top: 20px;
     }
 
 
@@ -1043,46 +845,33 @@
           320px
         );
 
-      display:
-        block;
+      display: block;
 
-      margin:
-        0 auto;
+      margin: 0 auto;
 
-      padding:
-        14px 16px;
+      padding: 14px 16px;
 
       border:
         2px solid
         #94a3b8;
 
-      border-radius:
-        14px;
+      border-radius: 14px;
 
-      background:
-        #ffffff;
+      background: #ffffff;
+      color: #0f172a;
 
-      color:
-        #0f172a;
+      text-align: center;
 
-      text-align:
-        center;
+      font-size: 24px;
+      font-weight: 900;
 
-      font-size:
-        24px;
-
-      font-weight:
-        900;
-
-      outline:
-        none;
+      outline: none;
     }
 
 
     .number-answer:focus {
 
-      border-color:
-        var(--primary);
+      border-color: var(--primary);
 
       box-shadow:
         0 0 0 4px
@@ -1095,65 +884,44 @@
     }
 
 
-    /*
-    平板／手機輸入負號輔助
-    */
-
     .sign-helper {
 
-      display:
-        flex;
+      display: flex;
 
-      justify-content:
-        center;
+      justify-content: center;
+      flex-wrap: wrap;
 
-      flex-wrap:
-        wrap;
+      gap: 8px;
 
-      gap:
-        8px;
-
-      margin-top:
-        9px;
+      margin-top: 9px;
     }
 
 
     .sign-helper-button {
 
-      min-height:
-        39px;
+      min-height: 39px;
 
-      padding:
-        7px 15px;
+      padding: 7px 15px;
 
       border:
         1px solid
         #cbd5e1;
 
-      border-radius:
-        11px;
+      border-radius: 11px;
 
-      background:
-        #ffffff;
+      background: #ffffff;
+      color: #334155;
 
-      color:
-        #334155;
+      font-size: 15px;
+      font-weight: 900;
 
-      font-size:
-        15px;
-
-      font-weight:
-        900;
-
-      cursor:
-        pointer;
+      cursor: pointer;
     }
 
 
     .choice-grid {
 
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
         repeat(
@@ -1164,69 +932,187 @@
           )
         );
 
-      gap:
-        10px;
+      gap: 10px;
     }
 
 
     .choice-button,
-    .compare-button,
     .sort-chip {
 
-      min-height:
-        50px;
+      min-height: 50px;
 
-      padding:
-        10px 14px;
+      padding: 10px 14px;
 
       border:
         2px solid
         #cbd5e1;
 
-      border-radius:
-        14px;
+      border-radius: 14px;
 
-      background:
-        #ffffff;
+      background: #ffffff;
+      color: #1e293b;
 
-      color:
-        #1e293b;
+      font-size: 17px;
+      font-weight: 900;
 
-      font-size:
-        17px;
+      cursor: pointer;
 
-      font-weight:
-        900;
-
-      cursor:
-        pointer;
-
-      transition:
-        .12s ease;
+      transition: .12s ease;
     }
 
 
     .choice-button:hover,
-    .compare-button:hover,
     .sort-chip:hover {
-
-      border-color:
-        var(--primary);
+      border-color: var(--primary);
     }
 
 
     .choice-button.selected,
-    .compare-button.selected,
     .sort-chip.selected {
 
-      border-color:
-        var(--primary);
+      border-color: var(--primary);
 
-      background:
-        var(--primary-light);
+      background: var(--primary-light);
 
-      color:
-        var(--primary-dark);
+      color: var(--primary-dark);
+    }
+
+
+    /*
+    ==================================================
+    ★ 比較大小：沿用舊版比較王風格
+    ==================================================
+    */
+
+    .compare-question-stage {
+
+      width: 100%;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      gap: 12px;
+    }
+
+
+    .compare-intro {
+
+      width: 100%;
+
+      margin-bottom: 4px;
+
+      color: #475569;
+
+      font-size:
+        clamp(
+          16px,
+          2.5vw,
+          20px
+        );
+
+      line-height: 1.7;
+
+      font-weight: 800;
+    }
+
+
+    .compare-number-row {
+
+      width:
+        min(
+          100%,
+          640px
+        );
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(
+          0,
+          1fr
+        )
+        70px
+        minmax(
+          0,
+          1fr
+        );
+
+      align-items: center;
+
+      gap: 14px;
+
+      margin:
+        4px auto;
+    }
+
+
+    .compare-number-card {
+
+      min-height: 112px;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      padding: 16px;
+
+      border-radius: 18px;
+
+      background: #ffffff;
+
+      box-shadow:
+        0 8px 24px
+        rgba(
+          15,
+          23,
+          42,
+          .08
+        );
+
+      color: #1e293b;
+
+      font-family:
+        "Cambria Math",
+        "Times New Roman",
+        "Microsoft JhengHei",
+        sans-serif;
+
+      font-size:
+        clamp(
+          34px,
+          6vw,
+          48px
+        );
+
+      font-weight: 900;
+    }
+
+
+    .compare-question-mark {
+
+      color: #f97316;
+
+      font-size:
+        clamp(
+          38px,
+          6vw,
+          56px
+        );
+
+      font-weight: 900;
+    }
+
+
+    .compare-question-note {
+
+      color: #64748b;
+
+      font-size: 14px;
+      font-weight: 800;
     }
 
 
@@ -1235,14 +1121,13 @@
       width:
         min(
           100%,
-          440px
+          640px
         );
 
       margin:
         0 auto;
 
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
         repeat(
@@ -1250,15 +1135,159 @@
           1fr
         );
 
-      gap:
-        10px;
+      gap: 14px;
     }
 
 
     .compare-button {
 
-      font-size:
-        28px;
+      min-height: 76px;
+
+      padding: 10px;
+
+      border:
+        2px solid
+        #5555ce;
+
+      border-bottom:
+        7px solid
+        #4141aa;
+
+      border-radius: 16px;
+
+      background: #5b5bdc;
+
+      color: #ffffff;
+
+      font-size: 34px;
+      font-weight: 900;
+
+      cursor: pointer;
+
+      transition:
+        transform .1s ease,
+        background .12s ease,
+        border-color .12s ease;
+    }
+
+
+    .compare-button:hover {
+
+      background: #5252d3;
+    }
+
+
+    .compare-button:active {
+
+      transform: translateY(3px);
+
+      border-bottom-width: 4px;
+    }
+
+
+    .compare-button.selected {
+
+      border-color: #0f766e;
+
+      border-bottom-color: #0f5f59;
+
+      background: #ccfbf1;
+
+      color: #115e59;
+    }
+
+
+    /*
+    ==================================================
+    ★ 絕對值整數範圍多選題
+    ==================================================
+    */
+
+    .multi-choice-help {
+
+      margin-bottom: 12px;
+
+      text-align: center;
+
+      color: #64748b;
+
+      font-weight: 800;
+    }
+
+
+    .multi-choice-grid {
+
+      width:
+        min(
+          100%,
+          760px
+        );
+
+      margin:
+        0 auto;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(
+            68px,
+            1fr
+          )
+        );
+
+      gap: 9px;
+    }
+
+
+    .multi-choice-button {
+
+      min-height: 55px;
+
+      padding: 8px;
+
+      border:
+        2px solid
+        #cbd5e1;
+
+      border-radius: 13px;
+
+      background: #ffffff;
+
+      color: #1e293b;
+
+      font-size: 19px;
+      font-weight: 900;
+
+      cursor: pointer;
+
+      transition: .12s ease;
+    }
+
+
+    .multi-choice-button:hover {
+      border-color: var(--primary);
+    }
+
+
+    .multi-choice-button.selected {
+
+      border-color: var(--primary);
+
+      background: var(--primary-light);
+
+      color: var(--primary-dark);
+
+      box-shadow:
+        inset
+        0 0 0 2px
+        rgba(
+          15,
+          118,
+          110,
+          .12
+        );
     }
 
 
@@ -1270,17 +1299,14 @@
 
     .numberline-wrap {
 
-      width:
-        100%;
+      width: 100%;
 
-      overflow-x:
-        auto;
+      overflow-x: auto;
 
       -webkit-overflow-scrolling:
         touch;
 
-      padding:
-        4px 0 8px;
+      padding: 4px 0 8px;
     }
 
 
@@ -1292,36 +1318,28 @@
           760px
         );
 
-      min-width:
-        560px;
+      min-width: 560px;
 
-      display:
-        block;
+      display: block;
 
-      margin:
-        0 auto;
+      margin: 0 auto;
     }
 
 
     .line-hit {
-
-      cursor:
-        pointer;
+      cursor: pointer;
     }
 
 
     .line-hit:hover
     .line-hover {
-
-      opacity:
-        1;
+      opacity: 1;
     }
 
 
     .line-hover {
 
-      opacity:
-        0;
+      opacity: 0;
 
       transition:
         opacity .12s ease;
@@ -1330,17 +1348,13 @@
 
     .line-selected-message {
 
-      margin-top:
-        8px;
+      margin-top: 8px;
 
-      text-align:
-        center;
+      text-align: center;
 
-      color:
-        var(--primary-dark);
+      color: var(--primary-dark);
 
-      font-weight:
-        900;
+      font-weight: 900;
     }
 
 
@@ -1352,124 +1366,92 @@
 
     .sort-prompt {
 
-      margin-bottom:
-        12px;
+      margin-bottom: 12px;
 
-      text-align:
-        center;
+      text-align: center;
 
-      color:
-        var(--muted);
+      color: var(--muted);
 
-      font-weight:
-        800;
+      font-weight: 800;
     }
 
 
     .sort-pool,
     .sort-result {
 
-      display:
-        flex;
+      display: flex;
 
-      justify-content:
-        center;
+      justify-content: center;
+      flex-wrap: wrap;
 
-      flex-wrap:
-        wrap;
-
-      gap:
-        9px;
+      gap: 9px;
     }
 
 
     .sort-result {
 
-      min-height:
-        58px;
+      min-height: 58px;
 
-      margin-bottom:
-        12px;
+      margin-bottom: 12px;
 
-      padding:
-        10px;
+      padding: 10px;
 
       border:
         2px dashed
         #99f6e4;
 
-      border-radius:
-        14px;
+      border-radius: 14px;
 
-      background:
-        #f0fdfa;
+      background: #f0fdfa;
     }
 
 
     .sort-result-item {
 
-      display:
-        inline-flex;
+      display: inline-flex;
 
-      align-items:
-        center;
+      align-items: center;
 
-      gap:
-        8px;
+      gap: 8px;
 
-      color:
-        var(--primary-dark);
+      color: var(--primary-dark);
 
-      font-size:
-        18px;
-
-      font-weight:
-        900;
+      font-size: 18px;
+      font-weight: 900;
     }
 
 
     .sort-actions {
 
-      display:
-        flex;
+      display: flex;
 
-      justify-content:
-        center;
+      justify-content: center;
 
-      gap:
-        8px;
+      gap: 8px;
 
-      margin-top:
-        12px;
+      margin-top: 12px;
     }
 
 
     .mini-button {
 
-      min-height:
-        38px;
+      min-height: 38px;
 
-      padding:
-        7px 12px;
+      padding: 7px 12px;
 
       border:
         1px solid
         #cbd5e1;
 
-      border-radius:
-        10px;
+      border-radius: 10px;
 
-      background:
-        #ffffff;
+      background: #ffffff;
 
-      color:
-        #334155;
+      color: #334155;
 
-      font-weight:
-        900;
+      font-weight: 900;
 
-      cursor:
-        pointer;
+      cursor: pointer;
     }
 
 
@@ -1481,57 +1463,41 @@
 
     .feedback {
 
-      margin-top:
-        16px;
+      margin-top: 16px;
 
-      padding:
-        12px 14px;
+      padding: 12px 14px;
 
-      border-radius:
-        13px;
+      border-radius: 13px;
 
-      font-weight:
-        900;
+      font-weight: 900;
 
-      line-height:
-        1.6;
+      line-height: 1.6;
     }
 
 
     .feedback:empty {
-
-      display:
-        none;
+      display: none;
     }
 
 
     .feedback.correct {
 
-      background:
-        #dcfce7;
-
-      color:
-        #166534;
+      background: #dcfce7;
+      color: #166534;
     }
 
 
     .feedback.wrong {
 
-      background:
-        #fee2e2;
-
-      color:
-        #991b1b;
+      background: #fee2e2;
+      color: #991b1b;
     }
 
 
     .feedback.warning {
 
-      background:
-        #fef3c7;
-
-      color:
-        #92400e;
+      background: #fef3c7;
+      color: #92400e;
     }
 
 
@@ -1543,53 +1509,40 @@
 
     .explanation {
 
-      margin-top:
-        16px;
+      margin-top: 16px;
 
-      padding:
-        18px;
+      padding: 18px;
 
       border:
         2px solid
         #bfdbfe;
 
-      border-radius:
-        18px;
+      border-radius: 18px;
 
-      background:
-        #eff6ff;
+      background: #eff6ff;
 
-      line-height:
-        1.75;
+      line-height: 1.75;
     }
 
 
     .explanation-title {
 
-      margin-bottom:
-        12px;
+      margin-bottom: 12px;
 
-      color:
-        #1e3a8a;
+      color: #1e3a8a;
 
-      font-size:
-        19px;
-
-      font-weight:
-        900;
+      font-size: 19px;
+      font-weight: 900;
     }
 
 
     .explanation-block {
 
-      margin-top:
-        9px;
+      margin-top: 9px;
 
-      padding:
-        10px 12px;
+      padding: 10px 12px;
 
-      border-radius:
-        12px;
+      border-radius: 12px;
 
       background:
         rgba(
@@ -1602,19 +1555,15 @@
 
 
     .explanation-block strong {
-
-      color:
-        #1e40af;
+      color: #1e40af;
     }
 
 
     .explanation-step {
 
-      margin:
-        7px 0;
+      margin: 7px 0;
 
-      padding-left:
-        8px;
+      padding-left: 8px;
 
       border-left:
         3px solid
@@ -1624,45 +1573,34 @@
 
     .explanation-tip {
 
-      margin-top:
-        10px;
+      margin-top: 10px;
 
-      padding:
-        10px 12px;
+      padding: 10px 12px;
 
-      border-radius:
-        12px;
+      border-radius: 12px;
 
-      background:
-        #fff7ed;
+      background: #fff7ed;
 
-      color:
-        #9a3412;
+      color: #9a3412;
     }
 
 
     /*
     ==================================================
-    共用按鈕列
+    按鈕列
     ==================================================
     */
 
     .button-row {
 
-      display:
-        flex;
+      display: flex;
 
-      justify-content:
-        center;
+      justify-content: center;
+      flex-wrap: wrap;
 
-      flex-wrap:
-        wrap;
+      gap: 10px;
 
-      gap:
-        10px;
-
-      margin-top:
-        18px;
+      margin-top: 18px;
     }
 
 
@@ -1673,39 +1611,29 @@
     */
 
     .result-panel {
-
-      text-align:
-        center;
+      text-align: center;
     }
 
 
     .result-score {
 
-      margin:
-        16px 0 6px;
+      margin: 16px 0 6px;
 
-      color:
-        var(--orange);
+      color: var(--orange);
 
-      font-size:
-        56px;
-
-      font-weight:
-        900;
+      font-size: 56px;
+      font-weight: 900;
     }
 
 
     .result-stars {
-
-      font-size:
-        31px;
+      font-size: 31px;
     }
 
 
     .result-grid {
 
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
         repeat(
@@ -1713,101 +1641,80 @@
           1fr
         );
 
-      gap:
-        10px;
+      gap: 10px;
 
-      margin:
-        20px auto;
+      margin: 20px auto;
     }
 
 
     .result-stat {
 
-      padding:
-        15px 8px;
+      padding: 15px 8px;
 
       border:
         1px solid
         #e2e8f0;
 
-      border-radius:
-        15px;
+      border-radius: 15px;
 
-      background:
-        #f8fafc;
+      background: #f8fafc;
 
-      color:
-        #64748b;
+      color: #64748b;
 
-      font-weight:
-        800;
+      font-weight: 800;
     }
 
 
     .result-stat span {
 
-      color:
-        #0f172a;
+      color: #0f172a;
 
-      font-size:
-        24px;
-
-      font-weight:
-        900;
+      font-size: 24px;
+      font-weight: 900;
     }
 
 
     .save-status {
 
-      min-height:
-        25px;
+      min-height: 25px;
 
-      margin:
-        10px 0;
+      margin: 10px 0;
 
-      font-weight:
-        800;
+      font-weight: 800;
     }
 
 
     /*
     ==================================================
-    詳解回顧
+    回顧
     ==================================================
     */
 
     .review-list {
 
-      display:
-        grid;
+      display: grid;
 
-      gap:
-        14px;
+      gap: 14px;
 
-      margin-top:
-        14px;
+      margin-top: 14px;
     }
 
 
     .review-card {
 
-      padding:
-        16px;
+      padding: 16px;
 
       border:
         1px solid
         #dbeafe;
 
-      border-radius:
-        16px;
+      border-radius: 16px;
 
-      background:
-        #ffffff;
+      background: #ffffff;
     }
 
 
     .review-card.correct-review {
-
       border-left:
         6px solid
         #22c55e;
@@ -1815,7 +1722,6 @@
 
 
     .review-card.wrong-review {
-
       border-left:
         6px solid
         #ef4444;
@@ -1824,99 +1730,74 @@
 
     .review-title {
 
-      margin-bottom:
-        8px;
+      margin-bottom: 8px;
 
-      font-size:
-        17px;
-
-      font-weight:
-        900;
+      font-size: 17px;
+      font-weight: 900;
     }
 
 
     .review-question {
 
-      margin:
-        8px 0 12px;
+      margin: 8px 0 12px;
 
-      color:
-        #0f172a;
+      color: #0f172a;
 
-      font-size:
-        18px;
+      font-size: 18px;
+      font-weight: 800;
 
-      font-weight:
-        800;
-
-      line-height:
-        1.6;
+      line-height: 1.6;
     }
 
 
     .review-answer-line {
 
-      margin:
-        5px 0;
+      margin: 5px 0;
 
-      color:
-        #475569;
+      color: #475569;
 
-      line-height:
-        1.6;
+      line-height: 1.6;
     }
 
 
     /*
     ==================================================
-    平板／手機
+    手機
     ==================================================
     */
 
     @media (
-      max-width:
-        760px
+      max-width: 760px
     ) {
 
       body {
-
-        padding:
-          8px;
+        padding: 8px;
       }
 
 
       .screen {
-
-        padding:
-          14px;
+        padding: 14px;
       }
 
 
       .game-header {
-
         padding:
           22px 13px 17px;
       }
 
 
       .mode-grid {
-
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
       }
 
 
       .mode-card {
-
-        min-height:
-          0;
+        min-height: 0;
       }
 
 
       .quiz-top {
-
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
       }
 
 
@@ -1931,23 +1812,17 @@
 
 
       .stat-pill {
-
-        min-width:
-          0;
+        min-width: 0;
       }
 
 
       .question-card {
-
-        padding:
-          16px 12px;
+        padding: 16px 12px;
       }
 
 
       .choice-grid {
-
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
       }
 
 
@@ -1962,47 +1837,81 @@
 
 
       .game-button {
+        flex: 1 1 180px;
+      }
 
-        flex:
-          1 1 180px;
+
+      .compare-number-row {
+
+        grid-template-columns:
+          minmax(
+            0,
+            1fr
+          )
+          46px
+          minmax(
+            0,
+            1fr
+          );
+
+        gap: 8px;
+      }
+
+
+      .compare-number-card {
+
+        min-height: 92px;
+
+        padding: 10px;
+      }
+
+
+      .compare-grid {
+        gap: 8px;
+      }
+
+
+      .compare-button {
+        min-height: 68px;
       }
 
     }
 
 
     @media (
-      max-width:
-        430px
+      max-width: 430px
     ) {
 
       .quiz-stats {
-
-        gap:
-          5px;
+        gap: 5px;
       }
 
 
       .stat-pill {
 
-        padding:
-          7px 5px;
+        padding: 7px 5px;
 
-        font-size:
-          11px;
+        font-size: 11px;
       }
 
 
       .stat-pill strong {
+        font-size: 16px;
+      }
 
-        font-size:
-          16px;
+
+      .compare-number-card {
+        font-size: 30px;
+      }
+
+
+      .compare-question-mark {
+        font-size: 36px;
       }
 
 
       .compare-button {
-
-        font-size:
-          23px;
+        font-size: 28px;
       }
 
     }
@@ -2017,19 +1926,11 @@
   <div class="page-shell">
 
 
-    <!-- 共用頁首 -->
-
     <div id="commonHeaderMount"></div>
 
 
     <main class="game-card">
 
-
-      <!--
-      ==================================================
-      遊戲標題
-      ==================================================
-      -->
 
       <header class="game-header">
 
@@ -2082,11 +1983,7 @@
       </header>
 
 
-      <!--
-      ==================================================
-      模式選擇
-      ==================================================
-      -->
+      <!-- 模式選擇 -->
 
       <section
         id="start-screen"
@@ -2100,8 +1997,6 @@
 
         <div class="mode-grid">
 
-
-          <!-- 模式一 -->
 
           <article class="mode-card">
 
@@ -2143,8 +2038,6 @@
           </article>
 
 
-          <!-- 模式二 -->
-
           <article class="mode-card">
 
             <div class="mode-icon">
@@ -2184,8 +2077,6 @@
 
           </article>
 
-
-          <!-- 模式三 -->
 
           <article class="mode-card">
 
@@ -2227,8 +2118,6 @@
           </article>
 
 
-          <!-- 模式四 -->
-
           <article class="mode-card">
 
             <div class="mode-icon">
@@ -2269,8 +2158,6 @@
           </article>
 
 
-          <!-- 模式五 -->
-
           <article class="mode-card">
 
             <div class="mode-icon">
@@ -2310,8 +2197,6 @@
 
           </article>
 
-
-          <!-- 模式六 -->
 
           <article class="mode-card mixed">
 
@@ -2359,11 +2244,7 @@
       </section>
 
 
-      <!--
-      ==================================================
-      作答畫面
-      ==================================================
-      -->
+      <!-- 作答 -->
 
       <section
         id="quiz-screen"
@@ -2372,7 +2253,6 @@
 
 
         <div class="quiz-top">
-
 
           <div>
 
@@ -2430,8 +2310,6 @@
         </div>
 
 
-        <!-- 進度 -->
-
         <div class="progress-track">
 
           <div
@@ -2442,8 +2320,6 @@
         </div>
 
 
-        <!-- 計算紙 -->
-
         <div class="scratchpad-row">
 
           <div
@@ -2452,8 +2328,6 @@
 
         </div>
 
-
-        <!-- 題目 -->
 
         <div class="question-card">
 
@@ -2526,17 +2400,12 @@
       </section>
 
 
-      <!--
-      ==================================================
-      結果
-      ==================================================
-      -->
+      <!-- 結果 -->
 
       <section
         id="result-screen"
         class="screen hidden result-panel"
       >
-
 
         <h2>
           🎉 挑戰完成
@@ -2658,15 +2527,10 @@
 
         </div>
 
-
       </section>
 
 
-      <!--
-      ==================================================
-      詳解回顧
-      ==================================================
-      -->
+      <!-- 詳解回顧 -->
 
       <section
         id="review-screen"
@@ -2727,12 +2591,6 @@
   </div>
 
 
-  <!--
-  ==================================================
-  共用元件
-  ==================================================
-  -->
-
   <script src="../js/common-header.js"></script>
 
   <script src="../js/scratchpad.js"></script>
@@ -2755,7 +2613,7 @@
 
     /*
     ==================================================
-    遊戲基本設定
+    基本設定
     ==================================================
     */
 
@@ -2838,7 +2696,7 @@
 
     /*
     ==================================================
-    遊戲狀態
+    狀態
     ==================================================
     */
 
@@ -2891,6 +2749,10 @@
       null;
 
 
+    let selectedMultiChoices =
+      new Set();
+
+
     let sortSelected =
       [];
 
@@ -2913,7 +2775,7 @@
 
     /*
     ==================================================
-    工具函式
+    工具
     ==================================================
     */
 
@@ -3093,33 +2955,220 @@
     }
 
 
-    function fractionText(
+    /*
+    ==================================================
+    正式分數顯示
+    ==================================================
+    */
+
+
+    function fractionPlainText(
       numerator,
       denominator
     ) {
 
-      const sign =
-        numerator <
-        0
+      const negative =
+        numerator *
+        denominator <
+        0;
 
-          ? "−"
 
-          : "";
+      const n =
+        Math.abs(
+          numerator
+        );
+
+
+      const d =
+        Math.abs(
+          denominator
+        );
 
 
       return (
-        `${sign}` +
-        `${Math.abs(
+        `${negative ? "−" : ""}` +
+        `${n}/${d}`
+      );
+    }
+
+
+    function fractionHTML(
+      numerator,
+      denominator
+    ) {
+
+      const negative =
+        numerator *
+        denominator <
+        0;
+
+
+      const n =
+        Math.abs(
           numerator
-        )}/` +
-        `${denominator}`
+        );
+
+
+      const d =
+        Math.abs(
+          denominator
+        );
+
+
+      if (
+        d ===
+        1
+      ) {
+
+        return (
+          `${negative ? "−" : ""}` +
+          `${n}`
+        );
+      }
+
+
+      return `
+
+        <span class="fraction-with-sign">
+
+          ${
+            negative
+
+              ? "−"
+
+              : ""
+          }
+
+          <span class="math-fraction">
+
+            <span class="math-fraction-top">
+              ${n}
+            </span>
+
+            <span class="math-fraction-bottom">
+              ${d}
+            </span>
+
+          </span>
+
+        </span>
+      `;
+    }
+
+
+    /*
+    詳解內若需要正式數學排版，
+    使用 richHTML 包裝。
+    */
+
+
+    function richHTML(
+      html
+    ) {
+
+      return {
+        __html:
+          html
+      };
+    }
+
+
+    function explanationValueHTML(
+      value
+    ) {
+
+      if (
+        value &&
+        typeof value ===
+          "object" &&
+        Object.prototype
+          .hasOwnProperty
+          .call(
+            value,
+            "__html"
+          )
+      ) {
+
+        return value.__html;
+      }
+
+
+      return escapeHTML(
+        value ?? ""
       );
     }
 
 
     /*
     ==================================================
-    詳解資料
+    比較題視覺
+    ==================================================
+    */
+
+
+    function compareStageHTML(
+      leftHTML,
+      rightHTML,
+      note =
+        "",
+      intro =
+        ""
+    ) {
+
+      return `
+
+        <div class="compare-question-stage">
+
+          ${
+            intro
+
+              ? `
+                  <div class="compare-intro">
+                    ${intro}
+                  </div>
+                `
+
+              : ""
+          }
+
+
+          <div class="compare-number-row">
+
+            <div class="compare-number-card">
+              ${leftHTML}
+            </div>
+
+            <div class="compare-question-mark">
+              ?
+            </div>
+
+            <div class="compare-number-card">
+              ${rightHTML}
+            </div>
+
+          </div>
+
+
+          ${
+            note
+
+              ? `
+                  <div class="compare-question-note">
+                    ${note}
+                  </div>
+                `
+
+              : ""
+          }
+
+        </div>
+      `;
+    }
+
+
+    /*
+    ==================================================
+    詳解
     ==================================================
     */
 
@@ -3149,7 +3198,7 @@
 
     /*
     ==================================================
-    題目資料
+    題目物件
     ==================================================
     */
 
@@ -3205,6 +3254,28 @@
             shuffle(
               choices
             ),
+
+          answer
+        }
+      );
+    }
+
+
+    function multiChoiceQuestion(
+      base,
+      choices,
+      answer
+    ) {
+
+      return makeQuestion(
+        {
+
+          ...base,
+
+          type:
+            "multiChoice",
+
+          choices,
 
           answer
         }
@@ -3286,8 +3357,7 @@
 
     /*
     ==================================================
-    模式一
-    正負數情境判讀
+    模式一：正負數情境
     ==================================================
     */
 
@@ -4062,7 +4132,7 @@
 
     /*
     ==================================================
-    數線工具
+    數線
     ==================================================
     */
 
@@ -4090,8 +4160,7 @@
 
     /*
     ==================================================
-    模式二
-    數線定位
+    模式二：數線定位
     ==================================================
     */
 
@@ -4607,6 +4676,20 @@
         );
 
 
+      const fractionDisplay =
+        fractionHTML(
+          f.n,
+          f.d
+        );
+
+
+      const quarterDisplay =
+        fractionHTML(
+          1,
+          4
+        );
+
+
       return makeQuestion(
         {
 
@@ -4627,14 +4710,14 @@
 
           html:
             `<div class="context-text">` +
-              `請在數線上找出 <strong>${fractionText(
-                f.n,
-                f.d
-              )}</strong> 的位置。` +
+              `請在數線上找出 <strong>${fractionDisplay}</strong> 的位置。` +
             `</div>`,
 
           answer:
             f.v,
+
+          answerDisplayHTML:
+            fractionDisplay,
 
           line:
             makeLineConfig(
@@ -4657,38 +4740,35 @@
               {
 
                 answer:
-                  fractionText(
-                    f.n,
-                    f.d
+                  richHTML(
+                    fractionDisplay
                   ),
 
                 observe:
-                  "這條數線每 1 個單位被分成 4 小格，所以每小格是 1/4。",
+                  richHTML(
+                    `這條數線每 1 個單位被分成 4 小格，所以每小格是 ${quarterDisplay}。`
+                  ),
 
                 think:
-                  `把 ${fractionText(
-                    f.n,
-                    f.d
-                  )} 看成以 1/4 為單位的位置。`,
+                  richHTML(
+                    `把 ${fractionDisplay} 看成以 ${quarterDisplay} 為單位的位置。`
+                  ),
 
                 steps:
                   [
 
                     "先找到 0。",
 
-                    `${
-                      f.n <
-                      0
+                    f.n <
+                    0
 
-                        ? "負號表示往左"
+                      ? "負號表示往左。"
 
-                        : "正數表示往右"
-                    }。`,
+                      : "正數表示往右。",
 
-                    `每小格是 1/4，數到 ${fractionText(
-                      f.n,
-                      f.d
-                    )} 的位置。`
+                    richHTML(
+                      `每小格是 ${quarterDisplay}，數到 ${fractionDisplay} 的位置。`
+                    )
                   ],
 
                 why:
@@ -5024,8 +5104,7 @@
 
     /*
     ==================================================
-    模式三
-    大小比較
+    模式三：大小比較
     ==================================================
     */
 
@@ -5082,16 +5161,15 @@
             "整數比較",
 
           html:
-            `<div>` +
-              `${formatNumber(
+            compareStageHTML(
+              formatNumber(
                 a
-              )}　○　${formatNumber(
+              ),
+
+              formatNumber(
                 b
-              )}` +
-            `</div>` +
-            `<span class="small-note">` +
-              `請選擇 ＞、＝ 或 ＜` +
-            `</span>`,
+              )
+            ),
 
           explanation:
             makeExplanation(
@@ -5190,16 +5268,17 @@
             "小變化｜負數陷阱",
 
           html:
-            `<div>` +
-              `${formatNumber(
+            compareStageHTML(
+              formatNumber(
                 a
-              )}　○　${formatNumber(
+              ),
+
+              formatNumber(
                 b
-              )}` +
-            `</div>` +
-            `<span class="small-note">` +
-              `兩個都是負數，請特別注意位置。` +
-            `</span>`,
+              ),
+
+              "兩個都是負數，請特別注意在數線上的位置。"
+            ),
 
           explanation:
             makeExplanation(
@@ -5235,7 +5314,7 @@
                   ],
 
                 why:
-                  "負數的絕對大小較大時，位置反而更靠左，因此數值更小。",
+                  "在原點左邊，距離原點愈遠，位置反而愈靠左，因此數值愈小。",
 
                 mistake:
                   `不要因為 ${largeAbs} ＞ ${smallAbs} 就寫成 ${formatNumber(
@@ -5330,13 +5409,15 @@
             "小數比較",
 
           html:
-            `<div>` +
-              `${formatNumber(
+            compareStageHTML(
+              formatNumber(
                 a
-              )}　○　${formatNumber(
+              ),
+
+              formatNumber(
                 b
-              )}` +
-            `</div>`,
+              )
+            ),
 
           explanation:
             makeExplanation(
@@ -5382,11 +5463,23 @@
 
           {
 
-            left:
+            leftHTML:
               "−1.5",
 
-            right:
-              "−3/2",
+            leftText:
+              "−1.5",
+
+            rightHTML:
+              fractionHTML(
+                -3,
+                2
+              ),
+
+            rightText:
+              fractionPlainText(
+                -3,
+                2
+              ),
 
             answer:
               "="
@@ -5394,11 +5487,23 @@
 
           {
 
-            left:
+            leftHTML:
               "−0.5",
 
-            right:
-              "−1/4",
+            leftText:
+              "−0.5",
+
+            rightHTML:
+              fractionHTML(
+                -1,
+                4
+              ),
+
+            rightText:
+              fractionPlainText(
+                -1,
+                4
+              ),
 
             answer:
               "<"
@@ -5406,10 +5511,22 @@
 
           {
 
-            left:
-              "3/4",
+            leftHTML:
+              fractionHTML(
+                3,
+                4
+              ),
 
-            right:
+            leftText:
+              fractionPlainText(
+                3,
+                4
+              ),
+
+            rightHTML:
+              "0.7",
+
+            rightText:
               "0.7",
 
             answer:
@@ -5418,10 +5535,22 @@
 
           {
 
-            left:
-              "−5/4",
+            leftHTML:
+              fractionHTML(
+                -5,
+                4
+              ),
 
-            right:
+            leftText:
+              fractionPlainText(
+                -5,
+                4
+              ),
+
+            rightHTML:
+              "−1",
+
+            rightText:
               "−1",
 
             answer:
@@ -5453,9 +5582,10 @@
             "小變化｜不同表示法",
 
           html:
-            `<div>` +
-              `${q.left}　○　${q.right}` +
-            `</div>`,
+            compareStageHTML(
+              q.leftHTML,
+              q.rightHTML
+            ),
 
           explanation:
             makeExplanation(
@@ -5465,24 +5595,30 @@
                   q.answer,
 
                 observe:
-                  "兩個數用不同形式表示，先轉成容易比較的形式。",
+                  richHTML(
+                    `兩個數用不同形式表示：${q.leftHTML} 與 ${q.rightHTML}。`
+                  ),
 
                 think:
-                  "把簡單分數化成小數，或利用已知分數值。",
+                  "把簡單分數化成小數，或利用已知分數值，再進行比較。",
 
                 steps:
                   [
 
-                    "先換成相同表示方式。",
+                    "先換成相同或容易判斷的表示方式。",
 
-                    `因此 ${q.left} ${q.answer} ${q.right}。`
+                    richHTML(
+                      `因此 ${q.leftHTML} ${escapeHTML(
+                        q.answer
+                      )} ${q.rightHTML}。`
+                    )
                   ],
 
                 why:
                   "同一個數可以有分數、小數等不同寫法，真正要比較的是它們代表的數值。",
 
                 mistake:
-                  "不要只看表面符號或位數，要先確認實際值。"
+                  "不要只看表面的位數或分子、分母，要先確認實際數值。"
               }
             )
 
@@ -5657,7 +5793,7 @@
                   "由小到大就是沿著數線從左往右排列。",
 
                 mistake:
-                  "負數部分最容易排反；負得越多通常越靠左。"
+                  "負數部分最容易排反；愈靠左的負數愈小。"
               }
             )
 
@@ -5685,10 +5821,12 @@
             "數線位置關係",
 
           html:
-            `<div class="context-text">` +
-              `數線上 A 點在 B 點的左邊。<br>` +
-              `請比較 A 與 B 所代表數的大小：A ○ B` +
-            `</div>`,
+            compareStageHTML(
+              "A",
+              "B",
+              "",
+              "數線上 A 點在 B 點的左邊，請比較兩點所代表數的大小。"
+            ),
 
           explanation:
             makeExplanation(
@@ -5843,8 +5981,7 @@
 
     /*
     ==================================================
-    模式四
-    相反數
+    模式四：相反數
     ==================================================
     */
 
@@ -6309,8 +6446,7 @@
 
     /*
     ==================================================
-    模式五
-    絕對值
+    模式五：絕對值
     ==================================================
     */
 
@@ -6864,6 +7000,13 @@
     }
 
 
+    /*
+    ★ 修正：
+    原本用「整組選項」容易產生語意誤解。
+    現在改成逐個整數複選。
+    */
+
+
     function generateIntegerRange() {
 
 
@@ -6894,7 +7037,7 @@
         );
 
 
-      const includeEnds =
+      const choices =
         Array.from(
           {
             length:
@@ -6905,9 +7048,23 @@
           (
             _,
             i
-          ) =>
-            i -
-            n
+          ) => {
+
+            const value =
+              i -
+              n;
+
+
+            return {
+
+              value,
+
+              text:
+                formatNumber(
+                  value
+                )
+            };
+          }
         );
 
 
@@ -6921,7 +7078,7 @@
           );
 
 
-      return choiceQuestion(
+      return multiChoiceQuestion(
         {
 
           modeId:
@@ -6938,7 +7095,8 @@
 
           html:
             `<div class="context-text">` +
-              `哪些整數與原點的距離小於 ${n} 個單位？` +
+              `請選出<strong>所有</strong>與原點的距離小於 ${n} 個單位的整數。` +
+              `<span class="small-note">本題可以選擇多個答案。</span>` +
             `</div>`,
 
           explanation:
@@ -6949,119 +7107,36 @@
                   correctText,
 
                 observe:
-                  `距離小於 ${n}，表示不能到達 ±${n}，只能在它們之間。`,
+                  `「距離小於 ${n}」表示距離可以是 0、1、2……一直到 ${n - 1}，但不能等於 ${n}。`,
 
                 think:
-                  "從原點向左右各找距離少於 n 的整數點。",
+                  "除了 0 之外，相同距離通常在原點左右各有一個整數。",
 
                 steps:
                   [
 
-                    `左邊最遠到 −${n - 1}，右邊最遠到 ${n - 1}。`,
+                    `距離 0 的整數是 0。`,
 
-                    "0 也符合，因為它與原點距離是 0。",
+                    `距離 1 到 ${n - 1} 時，原點左右兩側都要算，所以同時有正數與負數。`,
 
-                    `所以整數為 ${correctText}。`
+                    `距離剛好等於 ${n} 的 −${n} 與 ${n} 不符合「小於 ${n}」。`,
+
+                    `所以答案是 ${correctText}。`
                   ],
 
                 why:
-                  "距離用絕對值理解，但這裡用文字描述，不需要解絕對值不等式。",
+                  "整數在原點左右對稱，因此同一個正距離通常會對應一個正數與一個負數。",
 
                 mistake:
-                  `「小於 ${n}」不包含距離剛好等於 ${n} 的 ±${n}。`
+                  `不要只選 0 到 ${n - 1}；−1、−2……−${n - 1} 與原點的距離也都小於 ${n}。`
               }
             )
 
         },
 
-        [
+        choices,
 
-          {
-            value:
-              "correct",
-
-            text:
-              correctText
-          },
-
-          {
-            value:
-              "includeEnds",
-
-            text:
-              includeEnds
-                .map(
-                  formatNumber
-                )
-                .join(
-                  "、"
-                )
-          },
-
-          {
-            value:
-              "positiveOnly",
-
-            text:
-              [
-                0,
-                ...Array.from(
-                  {
-                    length:
-                      n -
-                      1
-                  },
-                  (
-                    _,
-                    i
-                  ) =>
-                    i +
-                    1
-                )
-              ]
-                .map(
-                  formatNumber
-                )
-                .join(
-                  "、"
-                )
-          },
-
-          {
-            value:
-              "negativeOnly",
-
-            text:
-              [
-                ...Array.from(
-                  {
-                    length:
-                      n -
-                      1
-                  },
-                  (
-                    _,
-                    i
-                  ) =>
-                    -(
-                      n -
-                      1 -
-                      i
-                    )
-                ),
-                0
-              ]
-                .map(
-                  formatNumber
-                )
-                .join(
-                  "、"
-                )
-          }
-
-        ],
-
-        "correct"
+        correctArray
       );
     }
 
@@ -7371,13 +7446,14 @@
             "綜合｜距離＋大小",
 
           html:
-            `<div class="context-text">` +
-              `甲距離原點 ${aDist} 個單位且在原點左側；` +
-              `乙的坐標是 ${formatNumber(
+            compareStageHTML(
+              "甲",
+              "乙",
+              "",
+              `甲距離原點 ${aDist} 個單位且在原點左側；乙的坐標是 ${formatNumber(
                 b
-              )}。<br>` +
-              `甲 ○ 乙` +
-            `</div>`,
+              )}。請比較甲、乙所代表數的大小。`
+            ),
 
           explanation:
             makeExplanation(
@@ -8044,6 +8120,13 @@
     }
 
 
+    /*
+    ★ 修正：
+    學生選點後只顯示選取標記，
+    不再公布該點的實際數值。
+    */
+
+
     function updateLineMarker(
       line,
       value
@@ -8125,16 +8208,14 @@
       ) {
 
         message.textContent =
-          `已選擇：${formatNumber(
-            value
-          )}`;
+          "已選擇位置，請確認答案。";
       }
     }
 
 
     /*
     ==================================================
-    手機／平板正負號輸入輔助
+    正負號輸入
     ==================================================
     */
 
@@ -8257,7 +8338,7 @@
 
     /*
     ==================================================
-    排序作答
+    排序
     ==================================================
     */
 
@@ -8535,7 +8616,7 @@
 
     /*
     ==================================================
-    作答區
+    作答介面
     ==================================================
     */
 
@@ -8557,6 +8638,10 @@
         null;
 
 
+      selectedMultiChoices =
+        new Set();
+
+
       sortSelected =
         [];
 
@@ -8568,7 +8653,7 @@
 
 
       /*
-      一般數值輸入
+      數字
       */
 
 
@@ -8612,7 +8697,7 @@
 
 
       /*
-      選擇題
+      單選
       */
 
 
@@ -8707,7 +8792,122 @@
 
 
       /*
-      ＞＝＜
+      ★ 多選
+      */
+
+
+      if (
+        question.type ===
+        "multiChoice"
+      ) {
+
+        area.innerHTML = `
+
+          <div class="multi-choice-help">
+            可複選：請把所有符合條件的答案都選起來。
+          </div>
+
+          <div class="multi-choice-grid">
+
+            ${
+              question.choices
+                .map(
+                  choice => `
+
+                    <button
+                      class="multi-choice-button"
+                      type="button"
+                      data-multi-choice="${choice.value}"
+                    >
+                      ${escapeHTML(
+                        choice.text
+                      )}
+                    </button>
+                  `
+                )
+                .join(
+                  ""
+                )
+            }
+
+          </div>
+        `;
+
+
+        area
+          .querySelectorAll(
+            "[data-multi-choice]"
+          )
+          .forEach(
+            button => {
+
+
+              button.addEventListener(
+                "click",
+                () => {
+
+
+                  if (
+                    answered
+                  ) {
+
+                    return;
+                  }
+
+
+                  const value =
+                    Number(
+                      button.dataset
+                        .multiChoice
+                    );
+
+
+                  if (
+                    selectedMultiChoices
+                      .has(
+                        value
+                      )
+                  ) {
+
+                    selectedMultiChoices
+                      .delete(
+                        value
+                      );
+
+
+                    button.classList
+                      .remove(
+                        "selected"
+                      );
+
+
+                  } else {
+
+
+                    selectedMultiChoices
+                      .add(
+                        value
+                      );
+
+
+                    button.classList
+                      .add(
+                        "selected"
+                      );
+                  }
+                }
+              );
+
+            }
+          );
+
+
+        return;
+      }
+
+
+      /*
+      比較
       */
 
 
@@ -8722,10 +8922,10 @@
 
             <button
               class="compare-button"
-              data-compare=">"
+              data-compare="<"
               type="button"
             >
-              ＞
+              ＜
             </button>
 
             <button
@@ -8738,10 +8938,10 @@
 
             <button
               class="compare-button"
-              data-compare="<"
+              data-compare=">"
               type="button"
             >
-              ＜
+              ＞
             </button>
 
           </div>
@@ -9016,7 +9216,7 @@
 
     /*
     ==================================================
-    讀取答案
+    讀答案
     ==================================================
     */
 
@@ -9130,6 +9330,63 @@
 
       if (
         question.type ===
+        "multiChoice"
+      ) {
+
+
+        if (
+          selectedMultiChoices
+            .size ===
+          0
+        ) {
+
+          return {
+
+            valid:
+              false,
+
+            message:
+              "請至少選擇一個答案。"
+          };
+        }
+
+
+        const values =
+          [
+            ...selectedMultiChoices
+          ]
+            .sort(
+              (
+                a,
+                b
+              ) =>
+                a -
+                b
+            );
+
+
+        return {
+
+          valid:
+            true,
+
+          value:
+            values,
+
+          display:
+            values
+              .map(
+                formatNumber
+              )
+              .join(
+                "、"
+              )
+        };
+      }
+
+
+      if (
+        question.type ===
         "compare"
       ) {
 
@@ -9144,7 +9401,7 @@
               false,
 
             message:
-              "請先選擇 ＞、＝ 或 ＜。"
+              "請先選擇 ＜、＝ 或 ＞。"
           };
         }
 
@@ -9158,7 +9415,19 @@
             selectedCompare,
 
           display:
-            selectedCompare
+            selectedCompare ===
+            "<"
+
+              ? "＜"
+
+              : (
+                  selectedCompare ===
+                  ">"
+
+                    ? "＞"
+
+                    : "＝"
+                )
         };
       }
 
@@ -9318,6 +9587,58 @@
 
       if (
         question.type ===
+        "multiChoice"
+      ) {
+
+
+        const user =
+          [
+            ...answer.value
+          ]
+            .sort(
+              (
+                a,
+                b
+              ) =>
+                a -
+                b
+            );
+
+
+        const correctValues =
+          [
+            ...question.answer
+          ]
+            .sort(
+              (
+                a,
+                b
+              ) =>
+                a -
+                b
+            );
+
+
+        return (
+          user.length ===
+            correctValues.length &&
+
+          user.every(
+            (
+              value,
+              i
+            ) =>
+              value ===
+              correctValues[
+                i
+              ]
+          )
+        );
+      }
+
+
+      if (
+        question.type ===
         "numberlinePick"
       ) {
 
@@ -9364,21 +9685,31 @@
 
     /*
     ==================================================
-    正確答案顯示
+    正確答案
     ==================================================
     */
 
 
-    function correctAnswerText(
+    function correctAnswerHTML(
       question
     ) {
+
+
+      if (
+        question.answerDisplayHTML
+      ) {
+
+        return question.answerDisplayHTML;
+      }
 
 
       if (
         question.answerDisplay
       ) {
 
-        return question.answerDisplay;
+        return escapeHTML(
+          question.answerDisplay
+        );
       }
 
 
@@ -9387,7 +9718,7 @@
         "choice"
       ) {
 
-        return (
+        const choice =
           question.choices
             .find(
               x =>
@@ -9397,12 +9728,28 @@
                 String(
                   question.answer
                 )
-            )
-            ?.text ||
-          String(
-            question.answer
-          )
+            );
+
+
+        return escapeHTML(
+          choice?.text ||
+          question.answer
         );
+      }
+
+
+      if (
+        question.type ===
+        "multiChoice"
+      ) {
+
+        return question.answer
+          .map(
+            formatNumber
+          )
+          .join(
+            "、"
+          );
       }
 
 
@@ -9411,12 +9758,28 @@
         "compare"
       ) {
 
-        return question.answer;
+        return (
+          question.answer ===
+          "<"
+
+            ? "＜"
+
+            : (
+                question.answer ===
+                ">"
+
+                  ? "＞"
+
+                  : "＝"
+              )
+        );
       }
 
 
-      return formatNumber(
-        question.answer
+      return escapeHTML(
+        formatNumber(
+          question.answer
+        )
       );
     }
 
@@ -9450,7 +9813,7 @@
             🎯 正確答案｜
           </strong>
 
-          ${escapeHTML(
+          ${explanationValueHTML(
             e.answer
           )}
 
@@ -9463,7 +9826,7 @@
             👀 看到什麼｜
           </strong>
 
-          ${escapeHTML(
+          ${explanationValueHTML(
             e.observe
           )}
 
@@ -9476,7 +9839,7 @@
             💡 先想什麼｜
           </strong>
 
-          ${escapeHTML(
+          ${explanationValueHTML(
             e.think
           )}
 
@@ -9501,7 +9864,7 @@
                   <div class="explanation-step">
 
                     ${i + 1}.
-                    ${escapeHTML(
+                    ${explanationValueHTML(
                       step
                     )}
 
@@ -9522,7 +9885,7 @@
             📘 為什麼｜
           </strong>
 
-          ${escapeHTML(
+          ${explanationValueHTML(
             e.why
           )}
 
@@ -9535,7 +9898,7 @@
             ⚠️ 易錯提醒｜
           </strong>
 
-          ${escapeHTML(
+          ${explanationValueHTML(
             e.mistake
           )}
 
@@ -9565,7 +9928,7 @@
 
     /*
     ==================================================
-    提交答案
+    提交
     ==================================================
     */
 
@@ -9693,10 +10056,8 @@
 
             <strong>
 
-              ${escapeHTML(
-                correctAnswerText(
-                  question
-                )
+              ${correctAnswerHTML(
+                question
               )}
 
             </strong>
@@ -9835,7 +10196,7 @@
 
     /*
     ==================================================
-    計算時間
+    時間
     ==================================================
     */
 
@@ -10007,7 +10368,7 @@
 
     /*
     ==================================================
-    畫面切換
+    畫面
     ==================================================
     */
 
@@ -10067,7 +10428,7 @@
 
     /*
     ==================================================
-    開始遊戲
+    開始
     ==================================================
     */
 
@@ -10159,7 +10520,7 @@
 
     /*
     ==================================================
-    成績評語
+    評價
     ==================================================
     */
 
@@ -10239,17 +10600,6 @@
 
 
       stopTimer();
-
-
-      /*
-      10 題：
-      1題10分
-
-      綜合8題：
-      1題12.5分
-
-      保留一位小數
-      */
 
 
       const score =
@@ -10349,7 +10699,7 @@
 
     /*
     ==================================================
-    Firestore 成績
+    Firestore
     ==================================================
     */
 
@@ -10482,7 +10832,7 @@
 
     /*
     ==================================================
-    本次詳解
+    詳解回顧
     ==================================================
     */
 
@@ -10551,10 +10901,8 @@
 
                   <strong>
 
-                    ${escapeHTML(
-                      correctAnswerText(
-                        record.question
-                      )
+                    ${correctAnswerHTML(
+                      record.question
                     )}
 
                   </strong>
@@ -10585,8 +10933,7 @@
 
       window.scrollTo(
         {
-          top:
-            0,
+          top: 0,
 
           behavior:
             "smooth"
@@ -10732,7 +11079,7 @@
 
 
     /*
-    Enter 快捷鍵
+    Enter
     */
 
 
@@ -10790,11 +11137,6 @@
         );
       }
     );
-
-
-    /*
-    一開始不要顯示計算紙按鈕
-    */
 
 
     setTimeout(
