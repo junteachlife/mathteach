@@ -36,6 +36,7 @@
       --orange-light: #fff7ed;
 
       --red: #b91c1c;
+      --red-light: #fef2f2;
 
       --text: #1e293b;
       --muted: #64748b;
@@ -73,9 +74,7 @@
     button,
     input,
     select {
-
       font-family: inherit;
-
     }
 
 
@@ -87,12 +86,6 @@
 
     }
 
-
-    /*
-    ==================================================
-    Header
-    ==================================================
-    */
 
     .header {
 
@@ -165,12 +158,6 @@
     }
 
 
-    /*
-    ==================================================
-    Card
-    ==================================================
-    */
-
     .card {
 
       margin-top: 18px;
@@ -204,12 +191,6 @@
     }
 
 
-    /*
-    ==================================================
-    Safety
-    ==================================================
-    */
-
     .safety-box {
 
       padding: 15px;
@@ -230,12 +211,6 @@
 
     }
 
-
-    /*
-    ==================================================
-    Config
-    ==================================================
-    */
 
     .config-grid {
 
@@ -291,12 +266,6 @@
     }
 
 
-    /*
-    ==================================================
-    Form
-    ==================================================
-    */
-
     .form-grid {
 
       display: grid;
@@ -315,14 +284,6 @@
     .field {
 
       min-width: 0;
-
-    }
-
-
-    .field.full {
-
-      grid-column:
-        1 / -1;
 
     }
 
@@ -379,12 +340,6 @@
     }
 
 
-    /*
-    ==================================================
-    Mode Info
-    ==================================================
-    */
-
     .mode-info {
 
       margin-top: 12px;
@@ -405,12 +360,6 @@
 
     }
 
-
-    /*
-    ==================================================
-    Bonus
-    ==================================================
-    */
 
     .bonus-grid {
 
@@ -459,16 +408,11 @@
 
       height: 21px;
 
-      flex: 0 0 auto;
+      flex:
+        0 0 auto;
 
     }
 
-
-    /*
-    ==================================================
-    Repeat
-    ==================================================
-    */
 
     .repeat-box {
 
@@ -518,12 +462,6 @@
     }
 
 
-    /*
-    ==================================================
-    Level Test
-    ==================================================
-    */
-
     .level-test-box {
 
       margin-top: 18px;
@@ -567,19 +505,13 @@
     }
 
 
-    /*
-    ==================================================
-    Buttons
-    ==================================================
-    */
-
     .button-row {
 
       display: flex;
 
       justify-content: center;
 
-      gap: 10px;
+      gap: 12px;
 
       margin-top: 20px;
 
@@ -588,7 +520,8 @@
     }
 
 
-    .main-button {
+    .main-button,
+    .secondary-button {
 
       min-width: 190px;
 
@@ -598,8 +531,6 @@
 
       border-radius: 12px;
 
-      background: var(--primary);
-
       color: white;
 
       font-size: 17px;
@@ -607,6 +538,13 @@
       font-weight: 900;
 
       cursor: pointer;
+
+    }
+
+
+    .main-button {
+
+      background: var(--primary);
 
       box-shadow:
         0 5px 0
@@ -627,11 +565,27 @@
     }
 
 
-    /*
-    ==================================================
-    Result
-    ==================================================
-    */
+    .secondary-button {
+
+      background: #475569;
+
+      box-shadow:
+        0 5px 0
+        #1e293b;
+
+    }
+
+
+    .secondary-button:disabled {
+
+      opacity: .45;
+
+      cursor: not-allowed;
+
+      box-shadow: none;
+
+    }
+
 
     .result-card {
 
@@ -679,6 +633,149 @@
       font-size: 17px;
 
       font-weight: 900;
+
+    }
+
+
+    .attempt-panel {
+
+      width:
+        min(
+          100%,
+          760px
+        );
+
+      margin:
+        0 auto 18px;
+
+      padding: 16px;
+
+      border:
+        2px solid #c4b5fd;
+
+      border-radius: 15px;
+
+      background: #faf5ff;
+
+    }
+
+
+    .attempt-title {
+
+      margin-bottom: 12px;
+
+      color:
+        var(--primary-dark);
+
+      font-size: 18px;
+
+      font-weight: 900;
+
+    }
+
+
+    .attempt-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        150px minmax(0, 1fr);
+
+      gap: 8px 12px;
+
+      align-items: start;
+
+    }
+
+
+    .attempt-label {
+
+      color: #64748b;
+
+      font-weight: 900;
+
+    }
+
+
+    .attempt-value {
+
+      min-width: 0;
+
+      color: #1e293b;
+
+      font-weight: 800;
+
+      word-break: break-all;
+
+    }
+
+
+    .attempt-id {
+
+      padding: 10px;
+
+      border-radius: 9px;
+
+      background: white;
+
+      font-family:
+        Consolas,
+        monospace;
+
+      font-size: 13px;
+
+      line-height: 1.6;
+
+      word-break: break-all;
+
+    }
+
+
+    .duplicate-status {
+
+      width:
+        min(
+          100%,
+          760px
+        );
+
+      margin:
+        12px auto 18px;
+
+      padding: 14px;
+
+      border-radius: 13px;
+
+      line-height: 1.7;
+
+      font-weight: 900;
+
+    }
+
+
+    .duplicate-status.success {
+
+      border:
+        2px solid #86efac;
+
+      background:
+        var(--green-light);
+
+      color: #166534;
+
+    }
+
+
+    .duplicate-status.blocked {
+
+      border:
+        2px solid #fca5a5;
+
+      background:
+        var(--red-light);
+
+      color:
+        var(--red);
 
     }
 
@@ -802,12 +899,6 @@
 
     }
 
-
-    /*
-    ==================================================
-    Level Result
-    ==================================================
-    */
 
     .level-result {
 
@@ -958,12 +1049,6 @@
     }
 
 
-    /*
-    ==================================================
-    Warning
-    ==================================================
-    */
-
     .warning {
 
       display: none;
@@ -994,12 +1079,6 @@
 
     }
 
-
-    /*
-    ==================================================
-    Tables
-    ==================================================
-    */
 
     .rule-table-wrap {
 
@@ -1040,12 +1119,6 @@
 
     }
 
-
-    /*
-    ==================================================
-    Mobile
-    ==================================================
-    */
 
     @media(
       max-width: 760px
@@ -1091,6 +1164,14 @@
 
       }
 
+
+      .attempt-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
     }
 
   </style>
@@ -1104,12 +1185,6 @@
 <div class="page">
 
 
-  <!--
-  ==================================================
-  Header
-  ==================================================
-  -->
-
   <header class="header">
 
     <h1>
@@ -1117,21 +1192,15 @@
     </h1>
 
     <p>
-      XP、模式難度、重複練習與玩家等級模擬
+      XP、等級、Attempt 唯一識別與防重複結算測試
     </p>
 
     <div class="test-badge">
-      🧪 TEST ONLY｜核心模組測試
+      🧪 TEST ONLY｜不寫入 Firebase
     </div>
 
   </header>
 
-
-  <!--
-  ==================================================
-  Safety
-  ==================================================
-  -->
 
   <section class="card">
 
@@ -1149,18 +1218,12 @@
 
       ✅ 不增加正式學生 XP<br>
 
-      ✅ XP 與等級現在由 progress-system.js 統一計算
+      ✅ 防重複機制目前只存在本頁瀏覽器記憶體
 
     </div>
 
   </section>
 
-
-  <!--
-  ==================================================
-  Environment
-  ==================================================
-  -->
 
   <section class="card">
 
@@ -1169,7 +1232,6 @@
     </h2>
 
     <div class="config-grid">
-
 
       <div class="config-item">
 
@@ -1234,27 +1296,19 @@
 
       </div>
 
-
     </div>
 
   </section>
 
 
-  <!--
-  ==================================================
-  Simulator
-  ==================================================
-  -->
-
   <section class="card">
 
     <h2 class="card-title">
-      🧮 XP 模擬器
+      🧮 RPG 結算模擬器
     </h2>
 
 
     <div class="form-grid">
-
 
       <div class="field">
 
@@ -1347,6 +1401,22 @@
       </div>
 
 
+      <div class="field">
+
+        <label for="play-time-input">
+          遊戲時間（秒）
+        </label>
+
+        <input
+          id="play-time-input"
+          type="number"
+          min="0"
+          step="1"
+          value="180"
+        >
+
+      </div>
+
     </div>
 
 
@@ -1364,19 +1434,12 @@
     ></div>
 
 
-    <!--
-    ==================================================
-    Milestones
-    ==================================================
-    -->
-
     <h3>
       🎁 首次里程碑
     </h3>
 
 
     <div class="bonus-grid">
-
 
       <label class="bonus-option">
 
@@ -1419,15 +1482,8 @@
 
       </label>
 
-
     </div>
 
-
-    <!--
-    ==================================================
-    Repeat
-    ==================================================
-    -->
 
     <div class="repeat-box">
 
@@ -1449,12 +1505,12 @@
 
         <div class="field">
 
-          <label for="attempt-input">
+          <label for="attempt-number-input">
             今天這是同一模式第幾次完成？
           </label>
 
           <input
-            id="attempt-input"
+            id="attempt-number-input"
             type="number"
             min="1"
             step="1"
@@ -1469,12 +1525,6 @@
     </div>
 
 
-    <!--
-    ==================================================
-    Current Player
-    ==================================================
-    -->
-
     <div class="level-test-box">
 
       <h3 class="level-test-title">
@@ -1485,7 +1535,7 @@
       <div class="field">
 
         <label for="total-xp-input">
-          玩家目前「永久總 XP」
+          玩家目前永久總 XP
         </label>
 
         <input
@@ -1516,20 +1566,23 @@
         class="main-button"
         type="button"
       >
-        ⚔️ 模擬 RPG 結算
+        ⚔️ 建立新局並結算
+      </button>
+
+
+      <button
+        id="resend-button"
+        class="secondary-button"
+        type="button"
+        disabled
+      >
+        🛡️ 重送同一局
       </button>
 
     </div>
 
-
   </section>
 
-
-  <!--
-  ==================================================
-  Result
-  ==================================================
-  -->
 
   <section
     id="result-card"
@@ -1537,8 +1590,135 @@
   >
 
     <h2 class="card-title">
-      🏆 模擬結算結果
+      🏆 RPG 結算結果
     </h2>
+
+
+    <div
+      id="duplicate-status"
+      class="duplicate-status success"
+    ></div>
+
+
+    <div class="attempt-panel">
+
+      <div class="attempt-title">
+        🎟️ 本局 Attempt 資訊
+      </div>
+
+
+      <div class="attempt-grid">
+
+        <div class="attempt-label">
+          Attempt ID
+        </div>
+
+        <div
+          id="attempt-id"
+          class="attempt-value attempt-id"
+        >
+          —
+        </div>
+
+
+        <div class="attempt-label">
+          遊戲
+        </div>
+
+        <div
+          id="attempt-game"
+          class="attempt-value"
+        >
+          —
+        </div>
+
+
+        <div class="attempt-label">
+          模式
+        </div>
+
+        <div
+          id="attempt-mode"
+          class="attempt-value"
+        >
+          —
+        </div>
+
+
+        <div class="attempt-label">
+          分數
+        </div>
+
+        <div
+          id="attempt-score"
+          class="attempt-value"
+        >
+          —
+        </div>
+
+
+        <div class="attempt-label">
+          題目
+        </div>
+
+        <div
+          id="attempt-questions"
+          class="attempt-value"
+        >
+          —
+        </div>
+
+
+        <div class="attempt-label">
+          正確率
+        </div>
+
+        <div
+          id="attempt-accuracy"
+          class="attempt-value"
+        >
+          —
+        </div>
+
+
+        <div class="attempt-label">
+          最高連擊
+        </div>
+
+        <div
+          id="attempt-combo"
+          class="attempt-value"
+        >
+          —
+        </div>
+
+
+        <div class="attempt-label">
+          遊戲時間
+        </div>
+
+        <div
+          id="attempt-playtime"
+          class="attempt-value"
+        >
+          —
+        </div>
+
+
+        <div class="attempt-label">
+          完成時間
+        </div>
+
+        <div
+          id="attempt-time"
+          class="attempt-value"
+        >
+          —
+        </div>
+
+      </div>
+
+    </div>
 
 
     <div class="xp-total">
@@ -1568,12 +1748,6 @@
       class="formula-preview"
     ></div>
 
-
-    <!--
-    ==================================================
-    Level
-    ==================================================
-    -->
 
     <div class="level-result">
 
@@ -1630,15 +1804,8 @@
 
     </div>
 
-
   </section>
 
-
-  <!--
-  ==================================================
-  Level Rules
-  ==================================================
-  -->
 
   <section class="card">
 
@@ -1708,16 +1875,10 @@
   </section>
 
 
-  <!--
-  ==================================================
-  XP Rules
-  ==================================================
-  -->
-
   <section class="card">
 
     <h2 class="card-title">
-      📋 目前核心 XP 規則
+      📋 核心 XP 規則
     </h2>
 
 
@@ -1747,23 +1908,6 @@
       </table>
 
     </div>
-
-
-    <p
-      style="
-        margin:14px 0 0;
-        color:#64748b;
-        line-height:1.8;
-        font-weight:800;
-      "
-    >
-
-      這張表現在不是另外手動寫死，
-      而是直接讀取
-      <strong>progress-system.js</strong>
-      的核心規則。
-
-    </p>
 
   </section>
 
@@ -1812,7 +1956,7 @@
 
   /*
   ==================================================
-  Progress Core
+  Progress
   ==================================================
   */
 
@@ -1831,6 +1975,21 @@
   } from "./js/rpg/progress-system.js";
 
 
+  /*
+  ==================================================
+  Attempt
+  ==================================================
+  */
+
+  import {
+
+    createGameAttempt,
+
+    attemptToGameResult
+
+  } from "./js/rpg/attempt-system.js";
+
+
   "use strict";
 
 
@@ -1843,7 +2002,40 @@
 
   /*
   ==================================================
-  Environment
+  本頁防重複暫存
+  ==================================================
+
+  未來會換成 Firestore Transaction。
+
+  現在只存在瀏覽器記憶體。
+
+  重新整理網頁後會消失。
+  ==================================================
+  */
+
+  const processedAttemptIds =
+    new Set();
+
+
+  /*
+  最後一次建立的 Attempt。
+  */
+
+  let lastAttempt =
+    null;
+
+
+  /*
+  最後一次使用的 RPG 結算條件。
+  */
+
+  let lastSettlementContext =
+    null;
+
+
+  /*
+  ==================================================
+  環境
   ==================================================
   */
 
@@ -1881,7 +2073,7 @@
 
   /*
   ==================================================
-  Games
+  遊戲
   ==================================================
   */
 
@@ -1915,7 +2107,7 @@
 
   /*
   ==================================================
-  Modes
+  模式
   ==================================================
   */
 
@@ -1956,7 +2148,7 @@
 
   /*
   ==================================================
-  Mode Info
+  模式資訊
   ==================================================
   */
 
@@ -2028,9 +2220,7 @@
         ｜核心完成：
         ${
           mode.countsForCompletion
-
             ? "是"
-
             : "否"
         }
 
@@ -2041,7 +2231,7 @@
 
   /*
   ==================================================
-  Current Player Level
+  等級預覽
   ==================================================
   */
 
@@ -2096,7 +2286,7 @@
 
   /*
   ==================================================
-  Score Warning
+  分數提醒
   ==================================================
   */
 
@@ -2147,8 +2337,7 @@
 
       ||
 
-      total <=
-        0
+      total <= 0
 
     ) {
 
@@ -2174,28 +2363,23 @@
       Math.abs(
         score -
         accuracy
-      ) >=
-      10
+      ) >= 10
     ) {
 
       box.innerHTML = `
 
         ⚠️
 
-        目前分數為
-        ${score} 分，
+        目前分數為 ${score} 分，
 
-        但依
-        ${correct}/${total}
-        題計算，
+        但依 ${correct}/${total} 題計算，
 
-        正確率約為
-        ${accuracy}%。
+        正確率約為 ${accuracy}%。
 
         <br>
 
         不同遊戲可能有不同計分方式，
-        所以這裡只提醒，不會自動修改分數。
+        所以只提醒，不自動修改分數。
 
       `;
 
@@ -2217,56 +2401,11 @@
 
   /*
   ==================================================
-  Read Input
+  讀取畫面資料
   ==================================================
   */
 
-  function readInput() {
-
-    const gameId =
-      $("game-select")
-        .value;
-
-
-    const modeId =
-      $("mode-select")
-        .value;
-
-
-    const score =
-      Number(
-        $("score-input")
-          .value
-      );
-
-
-    const correctCount =
-      Number(
-        $("correct-input")
-          .value
-      );
-
-
-    const totalQuestions =
-      Number(
-        $("total-input")
-          .value
-      );
-
-
-    const maxCombo =
-      Number(
-        $("combo-input")
-          .value
-      );
-
-
-    const attemptNumberToday =
-      Number(
-        $("attempt-input")
-          .value
-      );
-
+  function readFormData() {
 
     const currentTotalXp =
       Number(
@@ -2280,12 +2419,45 @@
         currentTotalXp
       )
       ||
-      currentTotalXp <
-      0
+      currentTotalXp < 0
     ) {
 
       alert(
         "永久總 XP 必須為 0 以上。"
+      );
+
+
+      return null;
+
+    }
+
+
+    const attemptNumberToday =
+      Number(
+        $("attempt-number-input")
+          .value
+      );
+
+
+    if (
+
+      $("repeat-enabled")
+        .checked
+
+      &&
+
+      (
+        !Number.isInteger(
+          attemptNumberToday
+        )
+        ||
+        attemptNumberToday < 1
+      )
+
+    ) {
+
+      alert(
+        "同模式完成次數至少為 1。"
       );
 
 
@@ -2302,53 +2474,79 @@
         ),
 
 
-      gameResult: {
-
-        gameId,
-
-        modeId,
-
-        score,
-
-        correctCount,
-
-        totalQuestions,
-
-        maxCombo,
+      gameId:
+        $("game-select")
+          .value,
 
 
-        attemptNumberToday:
+      modeId:
+        $("mode-select")
+          .value,
 
 
-          $("repeat-enabled")
-            .checked
+      score:
+        Number(
+          $("score-input")
+            .value
+        ),
 
-            ? attemptNumberToday
 
-            : 1,
+      correctCount:
+        Number(
+          $("correct-input")
+            .value
+        ),
 
 
-        applyRepeatPenalty:
+      totalQuestions:
+        Number(
+          $("total-input")
+            .value
+        ),
 
-          $("repeat-enabled")
+
+      maxCombo:
+        Number(
+          $("combo-input")
+            .value
+        ),
+
+
+      playTime:
+        Number(
+          $("play-time-input")
+            .value
+        ),
+
+
+      applyRepeatPenalty:
+        $("repeat-enabled")
+          .checked,
+
+
+      attemptNumberToday:
+
+        $("repeat-enabled")
+          .checked
+
+          ? attemptNumberToday
+
+          : 1,
+
+
+      milestones: {
+
+        firstCompletion:
+          $("first-completion")
             .checked,
 
+        first80:
+          $("first-80")
+            .checked,
 
-        milestones: {
-
-          firstCompletion:
-            $("first-completion")
-              .checked,
-
-          first80:
-            $("first-80")
-              .checked,
-
-          first100:
-            $("first-100")
-              .checked
-
-        }
+        first100:
+          $("first-100")
+            .checked
 
       }
 
@@ -2359,18 +2557,18 @@
 
   /*
   ==================================================
-  Calculate
+  建立新 Attempt
   ==================================================
   */
 
-  function calculate() {
+  function createNewAttempt() {
 
-    const input =
-      readInput();
+    const data =
+      readFormData();
 
 
     if (
-      !input
+      !data
     ) {
 
       return;
@@ -2378,18 +2576,187 @@
     }
 
 
+    let attempt;
+
+
+    try {
+
+      attempt =
+        createGameAttempt({
+
+          gameId:
+            data.gameId,
+
+          modeId:
+            data.modeId,
+
+          score:
+            data.score,
+
+          correctCount:
+            data.correctCount,
+
+          totalQuestions:
+            data.totalQuestions,
+
+          maxCombo:
+            data.maxCombo,
+
+          playTime:
+            data.playTime,
+
+          metadata: {
+
+            source:
+              "rpg-test-center"
+
+          }
+
+        });
+
+    } catch (
+      error
+    ) {
+
+      alert(
+        error.message
+      );
+
+
+      return;
+
+    }
+
+
+    lastAttempt =
+      attempt;
+
+
+    lastSettlementContext = {
+
+      currentTotalXp:
+        data.currentTotalXp,
+
+      applyRepeatPenalty:
+        data.applyRepeatPenalty,
+
+      attemptNumberToday:
+        data.attemptNumberToday,
+
+      milestones:
+        data.milestones
+
+    };
+
+
+    /*
+    第一次正式送進模擬結算。
+    */
+
+    processAttempt(
+      attempt,
+      lastSettlementContext
+    );
+
+
+    $("resend-button")
+      .disabled =
+        false;
+
+  }
+
+
+  /*
+  ==================================================
+  Attempt 防重複結算
+  ==================================================
+  */
+
+  function processAttempt(
+    attempt,
+    context
+  ) {
+
     /*
     ----------------------------------------------
-    這裡不再自行計算 XP。
+    同一 attemptId 已經處理過。
+    ----------------------------------------------
+    */
 
-    全部交給 progress-system.js。
+    if (
+      processedAttemptIds.has(
+        attempt.attemptId
+      )
+    ) {
+
+      renderAttempt(
+        attempt
+      );
+
+
+      renderDuplicateBlocked(
+        attempt
+      );
+
+
+      return {
+
+        success:
+          false,
+
+        duplicate:
+          true,
+
+        attemptId:
+          attempt.attemptId,
+
+        gainedXp:
+          0
+
+      };
+
+    }
+
+
+    /*
+    ----------------------------------------------
+    把 Attempt 轉成 Progress 可以使用的格式。
+    ----------------------------------------------
+    */
+
+    const gameResult =
+      attemptToGameResult(
+        attempt
+      );
+
+
+    gameResult.attemptNumberToday =
+      context.attemptNumberToday;
+
+
+    gameResult.applyRepeatPenalty =
+      context.applyRepeatPenalty;
+
+
+    gameResult.milestones =
+      context.milestones;
+
+
+    /*
+    ----------------------------------------------
+    XP / 等級計算
     ----------------------------------------------
     */
 
     const result =
-      simulateGameProgress(
-        input
-      );
+      simulateGameProgress({
+
+        currentTotalXp:
+          context.currentTotalXp,
+
+        gameResult
+
+      });
 
 
     if (
@@ -2404,13 +2771,89 @@
       );
 
 
+      return result;
+
+    }
+
+
+    /*
+    ----------------------------------------------
+    只有計算成功後才標記 attemptId 已處理。
+    ----------------------------------------------
+    */
+
+    processedAttemptIds.add(
+      attempt.attemptId
+    );
+
+
+    renderAttempt(
+      attempt
+    );
+
+
+    renderDuplicateSuccess(
+      attempt,
+      result
+    );
+
+
+    renderResult(
+      result
+    );
+
+
+    return {
+
+      success:
+        true,
+
+      duplicate:
+        false,
+
+      attemptId:
+        attempt.attemptId,
+
+      gainedXp:
+        result.xp.finalXP,
+
+      result
+
+    };
+
+  }
+
+
+  /*
+  ==================================================
+  重送同一局
+  ==================================================
+  */
+
+  function resendLastAttempt() {
+
+    if (
+      !lastAttempt
+      ||
+      !lastSettlementContext
+    ) {
+
       return;
 
     }
 
 
-    renderResult(
-      result
+    /*
+    注意：
+
+    這裡刻意使用完全一樣的 lastAttempt。
+
+    所以 attemptId 完全相同。
+    */
+
+    processAttempt(
+      lastAttempt,
+      lastSettlementContext
     );
 
   }
@@ -2418,7 +2861,225 @@
 
   /*
   ==================================================
-  Result
+  Attempt 畫面
+  ==================================================
+  */
+
+  function renderAttempt(
+    attempt
+  ) {
+
+    const game =
+      GAME_REGISTRY[
+        attempt.gameId
+      ];
+
+
+    const mode =
+      getModeConfig(
+        attempt.gameId,
+        attempt.modeId
+      );
+
+
+    $("attempt-id")
+      .textContent =
+        attempt.attemptId;
+
+
+    $("attempt-game")
+      .textContent =
+        game?.name
+        ||
+        attempt.gameId;
+
+
+    $("attempt-mode")
+      .textContent =
+        mode?.name
+        ||
+        attempt.modeId;
+
+
+    $("attempt-score")
+      .textContent =
+        `${attempt.score} 分`;
+
+
+    $("attempt-questions")
+      .textContent =
+        `答對 ${attempt.correctCount} / ${attempt.totalQuestions} 題，錯 ${attempt.wrongCount} 題`;
+
+
+    $("attempt-accuracy")
+      .textContent =
+        `${attempt.accuracy}%`;
+
+
+    $("attempt-combo")
+      .textContent =
+        attempt.maxCombo;
+
+
+    $("attempt-playtime")
+      .textContent =
+        `${attempt.playTime} 秒`;
+
+
+    $("attempt-time")
+      .textContent =
+        new Date(
+          attempt.completedAt
+        )
+          .toLocaleString(
+            "zh-TW"
+          );
+
+
+    $("result-card")
+      .classList
+      .add(
+        "show"
+      );
+
+  }
+
+
+  /*
+  ==================================================
+  第一次成功
+  ==================================================
+  */
+
+  function renderDuplicateSuccess(
+    attempt,
+    result
+  ) {
+
+    const box =
+      $("duplicate-status");
+
+
+    box.className =
+      "duplicate-status success";
+
+
+    box.innerHTML = `
+
+      ✅ <strong>第一次結算成功</strong>
+
+      <br>
+
+      Attempt ID 已標記為「已處理」。
+
+      本局正常獲得
+
+      <strong>
+        ${result.xp.finalXP} XP
+      </strong>。
+
+      <br>
+
+      現在可以按
+      「🛡️ 重送同一局」
+      測試防重複機制。
+
+    `;
+
+  }
+
+
+  /*
+  ==================================================
+  重複被拒絕
+  ==================================================
+  */
+
+  function renderDuplicateBlocked(
+    attempt
+  ) {
+
+    const box =
+      $("duplicate-status");
+
+
+    box.className =
+      "duplicate-status blocked";
+
+
+    box.innerHTML = `
+
+      ⛔ <strong>拒絕重複發放 XP</strong>
+
+      <br>
+
+      這個 Attempt ID：
+
+      <br>
+
+      <span
+        style="
+          font-family:Consolas,monospace;
+          font-size:13px;
+          word-break:break-all;
+        "
+      >
+        ${attempt.attemptId}
+      </span>
+
+      <br><br>
+
+      已經完成過 RPG 結算，
+
+      因此這一次：
+
+      <strong>
+        +0 XP
+      </strong>
+
+      。
+
+    `;
+
+
+    /*
+    第二次重送時，
+    XP 大字改成 +0，
+    讓測試結果很清楚。
+    */
+
+    $("final-xp")
+      .textContent =
+        "+0";
+
+
+    $("level-up-message")
+      .innerHTML = `
+
+        🛡️ 同一局已領取過獎勵，
+
+        玩家 XP 與等級不再變動。
+
+      `;
+
+
+    $("result-card")
+      .scrollIntoView({
+
+        behavior:
+          "smooth",
+
+        block:
+          "start"
+
+      });
+
+  }
+
+
+  /*
+  ==================================================
+  正常 RPG 結算畫面
   ==================================================
   */
 
@@ -2451,12 +3112,6 @@
       [];
 
 
-    /*
-    ----------------------------------------------
-    Completion
-    ----------------------------------------------
-    */
-
     rows.push({
 
       name:
@@ -2467,12 +3122,6 @@
 
     });
 
-
-    /*
-    ----------------------------------------------
-    Score
-    ----------------------------------------------
-    */
 
     rows.push({
 
@@ -2485,12 +3134,6 @@
     });
 
 
-    /*
-    ----------------------------------------------
-    Combo
-    ----------------------------------------------
-    */
-
     rows.push({
 
       name:
@@ -2501,12 +3144,6 @@
 
     });
 
-
-    /*
-    ----------------------------------------------
-    Performance subtotal
-    ----------------------------------------------
-    */
 
     rows.push({
 
@@ -2521,12 +3158,6 @@
 
     });
 
-
-    /*
-    ----------------------------------------------
-    Difficulty
-    ----------------------------------------------
-    */
 
     rows.push({
 
@@ -2552,12 +3183,6 @@
 
     });
 
-
-    /*
-    ----------------------------------------------
-    Repeat
-    ----------------------------------------------
-    */
 
     if (
       xp.repeatMultiplier !==
@@ -2591,12 +3216,6 @@
     }
 
 
-    /*
-    ----------------------------------------------
-    Milestones
-    ----------------------------------------------
-    */
-
     xp.milestoneRewards
       .forEach(
         reward => {
@@ -2614,12 +3233,6 @@
         }
       );
 
-
-    /*
-    ----------------------------------------------
-    Final
-    ----------------------------------------------
-    */
 
     rows.push({
 
@@ -2668,12 +3281,6 @@
         `+${xp.finalXP}`;
 
 
-    /*
-    ----------------------------------------------
-    Formula
-    ----------------------------------------------
-    */
-
     $("formula-preview")
       .innerHTML = `
 
@@ -2689,14 +3296,11 @@
 
         <br>
 
-        （完成
-        ${xp.completionXP}
+        （完成 ${xp.completionXP}
 
-        ＋ 成績
-        ${xp.scoreXP}
+        ＋ 成績 ${xp.scoreXP}
 
-        ＋ 連擊
-        ${xp.comboXP}）
+        ＋ 連擊 ${xp.comboXP}）
 
         ×
 
@@ -2710,8 +3314,7 @@
             : ""
         }
 
-        ＋ 里程碑
-        ${xp.milestoneXP}
+        ＋ 里程碑 ${xp.milestoneXP}
 
         ＝
 
@@ -2750,7 +3353,7 @@
 
   /*
   ==================================================
-  Level Result
+  等級
   ==================================================
   */
 
@@ -2772,37 +3375,20 @@
       level.leveledUp
     ) {
 
-      if (
-        level.levelsGained ===
-        1
-      ) {
+      $("level-up-message")
+        .innerHTML = `
 
-        $("level-up-message")
-          .innerHTML = `
+          🎉 LEVEL UP！
 
-            🎉 LEVEL UP！
-            升到
-            Lv.${level.newLevel}
+          ${
+            level.levelsGained === 1
 
-          `;
+              ? `升到 Lv.${level.newLevel}`
 
-      } else {
+              : `一次升 ${level.levelsGained} 級，目前 Lv.${level.newLevel}`
+          }
 
-        $("level-up-message")
-          .innerHTML = `
-
-            🎉 LEVEL UP！
-
-            一次升了
-            ${level.levelsGained}
-            級，
-
-            目前為
-            Lv.${level.newLevel}
-
-          `;
-
-      }
+        `;
 
     } else {
 
@@ -2870,7 +3456,7 @@
 
   /*
   ==================================================
-  Level Table
+  等級表
   ==================================================
   */
 
@@ -2945,7 +3531,7 @@
 
   /*
   ==================================================
-  XP Rules
+  XP 規則表
   ==================================================
   */
 
@@ -3008,7 +3594,7 @@
         ],
 
         [
-          "最高連擊 ≥ 10",
+          "最高連擊 ≥10",
           `+${rules.comboBonus.combo10}`
         ],
 
@@ -3113,7 +3699,7 @@
       "change",
       () => {
 
-        $("attempt-input")
+        $("attempt-number-input")
           .disabled =
             !$("repeat-enabled")
               .checked;
@@ -3132,7 +3718,14 @@
   $("calculate-button")
     .addEventListener(
       "click",
-      calculate
+      createNewAttempt
+    );
+
+
+  $("resend-button")
+    .addEventListener(
+      "click",
+      resendLastAttempt
     );
 
 
