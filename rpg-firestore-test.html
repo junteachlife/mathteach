@@ -12,13 +12,16 @@
 
   <title>RPG Firestore TEST</title>
 
+
   <style>
 
     * {
       box-sizing: border-box;
     }
 
+
     :root {
+
       --purple: #7c3aed;
       --purple-dark: #5b21b6;
       --purple-light: #f5f3ff;
@@ -38,11 +41,16 @@
       --text: #1e293b;
       --muted: #64748b;
       --border: #e2e8f0;
+
     }
 
+
     body {
+
       margin: 0;
+
       min-height: 100vh;
+
       padding: 18px;
 
       font-family:
@@ -59,20 +67,36 @@
           #eff6ff,
           #f0fdf4
         );
+
     }
+
 
     button,
     input,
     select {
+
       font-family: inherit;
+
     }
+
 
     .page {
+
       width: min(100%, 980px);
+
       margin: 0 auto;
+
     }
 
+
+    /*
+    ==================================================
+    Hero
+    ==================================================
+    */
+
     .hero {
+
       padding: 28px 18px;
 
       border-radius: 24px;
@@ -85,14 +109,18 @@
         );
 
       color: white;
+
       text-align: center;
 
       box-shadow:
         0 14px 30px
         rgba(15, 23, 42, .14);
+
     }
 
+
     .hero h1 {
+
       margin: 0;
 
       font-size:
@@ -101,14 +129,21 @@
           6vw,
           42px
         );
+
     }
+
 
     .hero p {
+
       margin: 10px 0 0;
+
       line-height: 1.8;
+
     }
 
+
     .badge {
+
       display: inline-block;
 
       margin-top: 14px;
@@ -125,10 +160,20 @@
         rgba(255,255,255,.15);
 
       font-weight: 900;
+
     }
 
+
+    /*
+    ==================================================
+    Card
+    ==================================================
+    */
+
     .card {
+
       margin-top: 18px;
+
       padding: 20px;
 
       border:
@@ -141,9 +186,12 @@
       box-shadow:
         0 9px 25px
         rgba(15,23,42,.07);
+
     }
 
+
     .card-title {
+
       margin:
         0 0 15px;
 
@@ -151,19 +199,33 @@
         var(--purple-dark);
 
       font-size: 21px;
+
       font-weight: 900;
+
     }
 
+
+    /*
+    ==================================================
+    Notice
+    ==================================================
+    */
+
     .notice {
+
       padding: 14px;
 
       border-radius: 13px;
 
       line-height: 1.8;
+
       font-weight: 800;
+
     }
 
+
     .notice.safe {
+
       border:
         2px solid #86efac;
 
@@ -171,9 +233,12 @@
         var(--green-light);
 
       color: #166534;
+
     }
 
+
     .notice.warning {
+
       border:
         2px solid #fdba74;
 
@@ -181,9 +246,18 @@
         var(--orange-light);
 
       color: #9a3412;
+
     }
 
+
+    /*
+    ==================================================
+    Auth
+    ==================================================
+    */
+
     .auth-box {
+
       padding: 15px;
 
       border:
@@ -195,24 +269,41 @@
         var(--blue-light);
 
       line-height: 1.8;
+
     }
+
 
     .auth-box.logged-in {
+
       border-color: #86efac;
-      background: var(--green-light);
+
+      background:
+        var(--green-light);
+
     }
+
 
     .auth-box.logged-out {
+
       border-color: #fca5a5;
-      background: var(--red-light);
+
+      background:
+        var(--red-light);
+
     }
+
 
     .auth-main {
+
       font-size: 18px;
+
       font-weight: 900;
+
     }
 
+
     .auth-detail {
+
       margin-top: 7px;
 
       color: #475569;
@@ -220,9 +311,18 @@
       font-size: 14px;
 
       word-break: break-all;
+
     }
 
+
+    /*
+    ==================================================
+    Form
+    ==================================================
+    */
+
     .grid {
+
       display: grid;
 
       grid-template-columns:
@@ -232,9 +332,12 @@
         );
 
       gap: 14px;
+
     }
 
+
     .field label {
+
       display: block;
 
       margin-bottom: 6px;
@@ -242,11 +345,15 @@
       color: #334155;
 
       font-weight: 900;
+
     }
+
 
     .field input,
     .field select {
+
       width: 100%;
+
       min-height: 50px;
 
       padding:
@@ -262,22 +369,29 @@
       color: #111827;
 
       font-size: 16px;
+
       font-weight: 800;
 
       outline: none;
+
     }
+
 
     .field input:focus,
     .field select:focus {
+
       border-color:
         var(--purple);
 
       box-shadow:
         0 0 0 3px
         rgba(124,58,237,.1);
+
     }
 
+
     .mode-info {
+
       margin-top: 14px;
 
       padding: 13px;
@@ -291,10 +405,20 @@
         var(--purple-dark);
 
       line-height: 1.7;
+
       font-weight: 900;
+
     }
 
+
+    /*
+    ==================================================
+    Buttons
+    ==================================================
+    */
+
     .button-row {
+
       display: flex;
 
       justify-content: center;
@@ -304,56 +428,89 @@
       flex-wrap: wrap;
 
       margin-top: 19px;
+
     }
 
+
     button {
+
       min-height: 48px;
 
       padding:
         11px 18px;
 
       border: 0;
+
       border-radius: 11px;
 
       color: white;
 
       font-size: 16px;
+
       font-weight: 900;
 
       cursor: pointer;
+
     }
+
 
     button:disabled {
+
       opacity: .45;
+
       cursor: not-allowed;
+
     }
+
 
     .primary {
+
       background:
         var(--purple);
+
     }
+
 
     .secondary {
+
       background:
         #475569;
+
     }
 
+
     .refresh {
+
+      margin-top: 10px;
+
       background:
         var(--blue);
 
-      margin-top: 10px;
     }
+
+
+    /*
+    ==================================================
+    Result
+    ==================================================
+    */
 
     .result {
+
       display: none;
+
     }
+
 
     .result.show {
+
       display: block;
+
     }
 
+
     .status {
+
       padding: 16px;
 
       border-radius: 14px;
@@ -363,10 +520,14 @@
       line-height: 1.8;
 
       font-size: 18px;
+
       font-weight: 900;
+
     }
 
+
     .status.success {
+
       border:
         2px solid #86efac;
 
@@ -375,9 +536,12 @@
 
       color:
         #166534;
+
     }
 
+
     .status.duplicate {
+
       border:
         2px solid #fca5a5;
 
@@ -386,9 +550,12 @@
 
       color:
         var(--red);
+
     }
 
+
     .status.error {
+
       border:
         2px solid #fdba74;
 
@@ -397,16 +564,28 @@
 
       color:
         #9a3412;
+
     }
 
+
+    /*
+    ==================================================
+    XP
+    ==================================================
+    */
+
     .big-xp {
+
       margin:
         20px 0;
 
       text-align: center;
+
     }
 
+
     .big-xp-number {
+
       color:
         var(--purple);
 
@@ -418,16 +597,28 @@
         );
 
       font-weight: 900;
+
     }
 
+
     .big-xp-label {
+
       color:
         var(--muted);
 
       font-weight: 900;
+
     }
 
+
+    /*
+    ==================================================
+    Info
+    ==================================================
+    */
+
     .info-table {
+
       margin-top: 16px;
 
       overflow: hidden;
@@ -436,9 +627,12 @@
         1px solid var(--border);
 
       border-radius: 13px;
+
     }
 
+
     .info-row {
+
       display: grid;
 
       grid-template-columns:
@@ -452,41 +646,59 @@
 
       border-bottom:
         1px solid var(--border);
+
     }
+
 
     .info-row:last-child {
+
       border-bottom: 0;
+
     }
 
+
     .info-label {
+
       color:
         var(--muted);
 
       font-weight: 900;
+
     }
 
+
     .info-value {
+
       min-width: 0;
 
       font-weight: 900;
 
       word-break: break-all;
+
     }
+
 
     .highlight {
+
       background:
         var(--purple-light);
+
     }
 
+
     .mono {
+
       font-family:
         Consolas,
         monospace;
 
       font-size: 13px;
+
     }
 
+
     .milestone {
+
       display: inline-block;
 
       margin:
@@ -504,30 +716,208 @@
         #5b21b6;
 
       font-size: 13px;
+
       font-weight: 900;
+
     }
+
+
+    /*
+    ==================================================
+    RPG 稱號
+    ==================================================
+    */
+
+    .title-panel {
+
+      margin-top: 18px;
+
+      padding: 18px;
+
+      border:
+        2px solid #ddd6fe;
+
+      border-radius: 16px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #faf5ff,
+          #eff6ff
+        );
+
+    }
+
+
+    .title-panel-heading {
+
+      margin-bottom: 14px;
+
+      color: #5b21b6;
+
+      font-size: 20px;
+
+      font-weight: 900;
+
+    }
+
+
+    .title-current {
+
+      padding: 14px;
+
+      border-radius: 13px;
+
+      background: white;
+
+      text-align: center;
+
+    }
+
+
+    .title-current-icon {
+
+      font-size: 38px;
+
+    }
+
+
+    .title-current-name {
+
+      margin-top: 4px;
+
+      color: #5b21b6;
+
+      font-size: 25px;
+
+      font-weight: 900;
+
+    }
+
+
+    .title-current-level {
+
+      margin-top: 5px;
+
+      color: #64748b;
+
+      font-weight: 800;
+
+    }
+
+
+    .title-description {
+
+      margin-top: 12px;
+
+      color: #475569;
+
+      text-align: center;
+
+      line-height: 1.8;
+
+      font-weight: 800;
+
+    }
+
+
+    .next-title-box {
+
+      margin-top: 14px;
+
+      padding: 13px;
+
+      border-radius: 12px;
+
+      background: white;
+
+      color: #334155;
+
+      text-align: center;
+
+      line-height: 1.8;
+
+      font-weight: 900;
+
+    }
+
+
+    .title-unlock {
+
+      margin-top: 15px;
+
+      padding: 16px;
+
+      border:
+        2px solid #fde68a;
+
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #fffbeb,
+          #fef3c7
+        );
+
+      color: #92400e;
+
+      text-align: center;
+
+      font-size: 18px;
+
+      font-weight: 900;
+
+      line-height: 1.8;
+
+    }
+
+
+    .title-unlock.hidden {
+
+      display: none;
+
+    }
+
+
+    /*
+    ==================================================
+    Mobile
+    ==================================================
+    */
 
     @media(
       max-width: 700px
     ) {
 
       body {
+
         padding: 8px;
+
       }
+
 
       .card {
+
         padding:
           16px 11px;
+
       }
+
 
       .grid {
+
         grid-template-columns:
           1fr;
+
       }
 
+
       .info-row {
+
         grid-template-columns:
           1fr;
+
       }
 
     }
@@ -543,6 +933,12 @@
 <div class="page">
 
 
+  <!--
+  ==================================================
+  Hero
+  ==================================================
+  -->
+
   <header class="hero">
 
     <h1>
@@ -550,7 +946,7 @@
     </h1>
 
     <p>
-      第一次測試真正的 Firebase RPG 資料寫入
+      Firebase RPG 資料、XP、等級與永久稱號測試
     </p>
 
     <div class="badge">
@@ -559,6 +955,12 @@
 
   </header>
 
+
+  <!--
+  ==================================================
+  Safety
+  ==================================================
+  -->
 
   <section class="card">
 
@@ -576,6 +978,8 @@
 
       ✅ 只寫入 rpgTest... Collection<br>
 
+      ✅ 稱號由永久等級即時計算，不另外寫入 Firestore<br>
+
       ✅ 正式學生目前不會觸發這個頁面
 
     </div>
@@ -583,11 +987,18 @@
   </section>
 
 
+  <!--
+  ==================================================
+  Auth
+  ==================================================
+  -->
+
   <section class="card">
 
     <h2 class="card-title">
       👤 Firebase 登入狀態
     </h2>
+
 
     <div
       id="auth-box"
@@ -600,6 +1011,7 @@
       >
         正在確認登入狀態……
       </div>
+
 
       <div
         id="auth-detail"
@@ -619,6 +1031,12 @@
 
   </section>
 
+
+  <!--
+  ==================================================
+  Test Form
+  ==================================================
+  -->
 
   <section class="card">
 
@@ -732,7 +1150,6 @@
 
       </div>
 
-
     </div>
 
 
@@ -786,6 +1203,12 @@
 
   </section>
 
+
+  <!--
+  ==================================================
+  Result
+  ==================================================
+  -->
 
   <section
     id="result-card"
@@ -951,8 +1374,73 @@
 
       </div>
 
+    </div>
+
+
+    <!--
+    ==================================================
+    RPG Title
+    ==================================================
+    -->
+
+    <div class="title-panel">
+
+      <div class="title-panel-heading">
+        🏅 RPG 永久稱號
+      </div>
+
+
+      <div class="title-current">
+
+        <div
+          id="current-title-icon"
+          class="title-current-icon"
+        >
+          🌱
+        </div>
+
+
+        <div
+          id="current-title-name"
+          class="title-current-name"
+        >
+          —
+        </div>
+
+
+        <div
+          id="current-title-level"
+          class="title-current-level"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div
+        id="current-title-description"
+        class="title-description"
+      >
+        —
+      </div>
+
+
+      <div
+        id="next-title-box"
+        class="next-title-box"
+      >
+        —
+      </div>
 
     </div>
+
+
+    <div
+      id="title-unlock-box"
+      class="title-unlock hidden"
+    ></div>
+
 
   </section>
 
@@ -1012,6 +1500,23 @@
     settleTestAttempt
 
   } from "./js/rpg/rpg-firestore-test.js";
+
+
+  /*
+  ==================================================
+  Title System
+  ==================================================
+  */
+
+  import {
+
+    getTitleForLevel,
+
+    getTitleProgress,
+
+    getUnlockedTitlesBetweenLevels
+
+  } from "./js/rpg/title-system.js";
 
 
   "use strict";
@@ -1480,6 +1985,24 @@
     }
 
 
+    if (
+      !Number.isFinite(
+        playTime
+      )
+      ||
+      playTime < 0
+    ) {
+
+      alert(
+        "遊戲時間必須是 0 以上。"
+      );
+
+
+      return null;
+
+    }
+
+
     return {
 
       gameId:
@@ -1505,7 +2028,7 @@
         Math.max(
           0,
           Math.floor(
-            playTime || 0
+            playTime
           )
         )
 
@@ -1787,6 +2310,13 @@
         attempt.attemptId;
 
 
+    $("title-unlock-box")
+      .classList
+      .add(
+        "hidden"
+      );
+
+
     $("result-card")
       .scrollIntoView({
 
@@ -1881,12 +2411,208 @@
          ${result.level.after.nextRequirement} XP，
          還差 ${result.level.after.xpToNextLevel} XP`;
 
+
+    /*
+    ----------------------------------------------
+    RPG 稱號
+    ----------------------------------------------
+    */
+
+    renderTitleInfo(
+      result
+    );
+
   }
 
 
   /*
   ==================================================
-  里程碑
+  RPG 稱號顯示
+  ==================================================
+  */
+
+  function renderTitleInfo(
+    result
+  ) {
+
+    const level =
+      result.newLevel;
+
+
+    const title =
+      getTitleForLevel(
+        level
+      );
+
+
+    const titleProgress =
+      getTitleProgress(
+        level
+      );
+
+
+    /*
+    ----------------------------------------------
+    目前稱號
+    ----------------------------------------------
+    */
+
+    $("current-title-icon")
+      .textContent =
+        title.icon;
+
+
+    $("current-title-name")
+      .textContent =
+        title.name;
+
+
+    $("current-title-level")
+      .textContent =
+        `目前 Lv.${level}`;
+
+
+    $("current-title-description")
+      .textContent =
+        title.description;
+
+
+    /*
+    ----------------------------------------------
+    下一稱號
+    ----------------------------------------------
+    */
+
+    if (
+      titleProgress.nextTitle
+    ) {
+
+      const next =
+        titleProgress.nextTitle;
+
+
+      $("next-title-box")
+        .innerHTML = `
+
+          下一個稱號：
+
+          <strong>
+            ${next.icon}
+            ${next.name}
+          </strong>
+
+          <br>
+
+          Lv.${next.minLevel}
+          解鎖，
+
+          還差
+
+          <strong>
+            ${titleProgress.levelsToNextTitle}
+            級
+          </strong>
+
+        `;
+
+    } else {
+
+      $("next-title-box")
+        .innerHTML = `
+
+          🌟 已進入目前最高稱號階段
+
+          <br>
+
+          <strong>
+            ${title.icon}
+            ${title.name}
+          </strong>
+
+          <br>
+
+          等級仍然可以繼續提升。
+
+        `;
+
+    }
+
+
+    /*
+    ----------------------------------------------
+    本局是否跨越新的稱號門檻
+    ----------------------------------------------
+    */
+
+    const unlockedTitles =
+      getUnlockedTitlesBetweenLevels(
+
+        result.oldLevel,
+
+        result.newLevel
+
+      );
+
+
+    const unlockBox =
+      $("title-unlock-box");
+
+
+    if (
+      unlockedTitles.length >
+      0
+    ) {
+
+      unlockBox.classList
+        .remove(
+          "hidden"
+        );
+
+
+      unlockBox.innerHTML = `
+
+        🎉
+        <strong>
+          解鎖新稱號！
+        </strong>
+
+        <br>
+
+        ${unlockedTitles
+          .map(
+            unlocked => `
+
+              ${unlocked.icon}
+
+              <strong>
+                ${unlocked.name}
+              </strong>
+
+            `
+          )
+          .join("<br>")}
+
+      `;
+
+    } else {
+
+      unlockBox.classList
+        .add(
+          "hidden"
+        );
+
+
+      unlockBox.innerHTML =
+        "";
+
+    }
+
+  }
+
+
+  /*
+  ==================================================
+  首次里程碑
   ==================================================
   */
 
@@ -2034,6 +2760,23 @@
       .textContent =
         "不變";
 
+
+    /*
+    重複送出不能再次顯示
+    「解鎖新稱號」。
+    */
+
+    $("title-unlock-box")
+      .classList
+      .add(
+        "hidden"
+      );
+
+
+    $("title-unlock-box")
+      .innerHTML =
+        "";
+
   }
 
 
@@ -2076,6 +2819,18 @@
     $("xp-number")
       .textContent =
         "+0";
+
+
+    $("title-unlock-box")
+      .classList
+      .add(
+        "hidden"
+      );
+
+
+    $("title-unlock-box")
+      .innerHTML =
+        "";
 
   }
 
@@ -2128,6 +2883,7 @@
   */
 
   populateGames();
+
 
   await refreshAuthState();
 
