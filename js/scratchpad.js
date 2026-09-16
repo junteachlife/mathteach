@@ -3,8 +3,8 @@
 生活有解．心中有數｜共用計算紙
 檔案：js/scratchpad.js
 
-版本：4.2
-手機／平板書寫平滑化版
+版本：4.3
+手機／平板縮放安全關閉＋書寫平滑化版
 ==================================================
 
 本版修正：
@@ -21,7 +21,12 @@
    - 支援 getCoalescedEvents() 高密度觸控取樣。
    - 使用二次貝茲曲線平滑筆跡。
    - 手指、觸控筆、滑鼠採不同平滑強度。
-   - 保留既有工具、Undo / Redo、清除、下載等功能。
+10. 平板／手機放大畫面安全關閉：
+   - 使用 Visual Viewport 追蹤目前真正可視範圍。
+   - 放大、縮小、拖動畫面後，關閉鍵仍保持在可視區右上角。
+   - 不禁止瀏覽器縮放，不增加底部關閉鍵。
+   - 不支援 Visual Viewport 的瀏覽器自動沿用原本標題列位置。
+11. 保留既有工具、Undo / Redo、清除、下載等功能。
 ==================================================
 */
 
@@ -2825,6 +2830,394 @@
     */
 
 
+    /*
+    ==================================================
+    Visual Viewport 安全關閉
+    ==================================================
+
+    手機／平板使用雙指放大後，
+    使用者真正看得到的是 Visual Viewport，
+    它可能只佔 Layout Viewport 的一部分。
+
+    因此不能只把關閉鈕固定在版面右上角，
+    而要依 visualViewport 的：
+
+    offsetLeft / offsetTop / width / height
+
+    重新計算目前「真正可視區」的右上角。
+    ==================================================
+    */
+
+
+    getVisualViewportSafeMargin() {
+
+
+      let margin =
+        12;
+
+
+      try {
+
+
+        const source =
+          this.panel ||
+          document.documentElement;
+
+
+        const value =
+          parseFloat(
+            getComputedStyle(
+              source
+            )
+              .getPropertyValue(
+                "--scratchpad-viewport-safe-margin"
+              )
+          );
+
+
+        if (
+          Number.isFinite(
+            value
+          )
+        ) {
+
+          margin =
+            value;
+
+        }
+
+      } catch (_) {}
+
+
+      return Math.max(
+        6,
+        margin
+      );
+
+    }
+
+
+    resetCloseButtonViewportPosition() {
+
+
+      if (
+        !this.closeButton
+      ) {
+
+        return;
+
+      }
+
+
+      this.closeButton
+        .classList.remove(
+          "scratchpad-close-button--viewport-safe"
+        );
+
+
+      this.closeButton.style.left =
+        "";
+
+
+      this.closeButton.style.top =
+        "";
+
+
+      this.closeButton.style.right =
+        "";
+
+
+      this.closeButton.style.bottom =
+        "";
+
+    }
+
+
+    updateCloseButtonViewportPosition() {
+
+
+      if (
+        !this.closeButton ||
+        !this.panel ||
+        !this.isOpen
+      ) {
+
+        this.resetCloseButtonViewportPosition();
+
+        return;
+
+      }
+
+
+      const viewport =
+        window.visualViewport;
+
+
+      /*
+      舊瀏覽器沒有 Visual Viewport 時，
+      完全沿用原本標題列右上角位置。
+      */
+
+
+      if (
+        !viewport
+      ) {
+
+        this.resetCloseButtonViewportPosition();
+
+        return;
+
+      }
+
+
+      /*
+      正常 100% 比例時完全保留原本標題列排版。
+      只有真的發生 pinch zoom 或 Visual Viewport 位移時，
+      才啟用安全浮動位置。
+      */
+
+
+      const viewportScale =
+        Number(
+          viewport.scale
+        ) ||
+        1;
+
+
+      const viewportOffsetLeft =
+        Number(
+          viewport.offsetLeft
+        ) ||
+        0;
+
+
+      const viewportOffsetTop =
+        Number(
+          viewport.offsetTop
+        ) ||
+        0;
+
+
+      const needsViewportSafety =
+        viewportScale >
+          1.01 ||
+        Math.abs(
+          viewportOffsetLeft
+        ) >
+          0.5 ||
+        Math.abs(
+          viewportOffsetTop
+        ) >
+          0.5;
+
+
+      if (
+        !needsViewportSafety
+      ) {
+
+        this.resetCloseButtonViewportPosition();
+
+        return;
+
+      }
+
+
+      const margin =
+        this.getVisualViewportSafeMargin();
+
+
+      const buttonWidth =
+        this.closeButton.offsetWidth ||
+        44;
+
+
+      const buttonHeight =
+        this.closeButton.offsetHeight ||
+        44;
+
+
+      const panelWidth =
+        this.panel.clientWidth ||
+        document.documentElement.clientWidth ||
+        window.innerWidth ||
+        viewport.width;
+
+
+      const panelHeight =
+        this.panel.clientHeight ||
+        document.documentElement.clientHeight ||
+        window.innerHeight ||
+        viewport.height;
+
+
+      const visualLeft =
+        Math.max(
+          0,
+          viewportOffsetLeft
+        );
+
+
+      const visualTop =
+        Math.max(
+          0,
+          viewportOffsetTop
+        );
+
+
+      const visualWidth =
+        Math.max(
+          1,
+          Number(
+            viewport.width
+          ) ||
+          panelWidth
+        );
+
+
+      const visualHeight =
+        Math.max(
+          1,
+          Number(
+            viewport.height
+          ) ||
+          panelHeight
+        );
+
+
+      let left =
+        visualLeft +
+        visualWidth -
+        buttonWidth -
+        margin;
+
+
+      let top =
+        visualTop +
+        margin;
+
+
+      /*
+      極端縮放／瀏覽器回報誤差時，
+      再限制在計算紙面板範圍內。
+      */
+
+
+      const minimumLeft =
+        Math.max(
+          0,
+          visualLeft
+        );
+
+
+      const maximumLeft =
+        Math.max(
+          minimumLeft,
+          panelWidth -
+          buttonWidth -
+          margin
+        );
+
+
+      const minimumTop =
+        Math.max(
+          0,
+          visualTop
+        );
+
+
+      const maximumTop =
+        Math.max(
+          minimumTop,
+          panelHeight -
+          buttonHeight -
+          margin
+        );
+
+
+      left =
+        Math.min(
+          Math.max(
+            left,
+            minimumLeft
+          ),
+          maximumLeft
+        );
+
+
+      top =
+        Math.min(
+          Math.max(
+            top,
+            minimumTop
+          ),
+          maximumTop
+        );
+
+
+      /*
+      visualHeight 雖然不直接決定 top，
+      仍做最後保護，避免按鈕因極端 viewport
+      回報值而落在可視區下方。
+      */
+
+
+      const visualMaximumTop =
+        visualTop +
+        visualHeight -
+        buttonHeight -
+        margin;
+
+
+      if (
+        Number.isFinite(
+          visualMaximumTop
+        )
+      ) {
+
+        top =
+          Math.min(
+            top,
+            Math.max(
+              minimumTop,
+              visualMaximumTop
+            )
+          );
+
+      }
+
+
+      this.closeButton
+        .classList.add(
+          "scratchpad-close-button--viewport-safe"
+        );
+
+
+      this.closeButton.style.left =
+        `${Math.round(
+          left *
+          100
+        ) /
+        100}px`;
+
+
+      this.closeButton.style.top =
+        `${Math.round(
+          top *
+          100
+        ) /
+        100}px`;
+
+
+      this.closeButton.style.right =
+        "auto";
+
+
+      this.closeButton.style.bottom =
+        "auto";
+
+    }
+
+
     initializeWindow() {
 
 
@@ -2845,6 +3238,9 @@
 
 
       this.applyResponsivePanelSize();
+
+
+      this.updateCloseButtonViewportPosition();
 
     }
 
@@ -2995,6 +3391,15 @@
       );
 
 
+      /*
+      計算紙顯示後立刻依目前 Visual Viewport
+      把關閉鍵放回學生真正看得到的右上角。
+      */
+
+
+      this.updateCloseButtonViewportPosition();
+
+
       this.panel.setAttribute(
         "aria-modal",
         "true"
@@ -3019,6 +3424,9 @@
 
           requestAnimationFrame(
             async () => {
+
+
+              this.updateCloseButtonViewportPosition();
 
 
               try {
@@ -3157,6 +3565,9 @@
         "scratchpad-panel--open",
         "scratchpad-panel--fullscreen"
       );
+
+
+      this.resetCloseButtonViewportPosition();
 
 
       this.panel.hidden =
@@ -3311,8 +3722,17 @@
     initializeResizeListener() {
 
 
-      const handler =
+      const resizeHandler =
         () => {
+
+
+          /*
+          先更新關閉鍵位置，
+          不必等 Canvas resize debounce 完成。
+          */
+
+
+          this.updateCloseButtonViewportPosition();
 
 
           clearTimeout(
@@ -3343,6 +3763,15 @@
                     .resizeCanvasPreserveContent();
 
 
+                  /*
+                  Canvas 尺寸重新建立後，
+                  再確認一次關閉鍵位置。
+                  */
+
+
+                  this.updateCloseButtonViewportPosition();
+
+
                 } catch (
                   error
                 ) {
@@ -3362,17 +3791,45 @@
         };
 
 
+      const visualViewportScrollHandler =
+        () => {
+
+
+          if (
+            !this.isOpen
+          ) {
+
+            return;
+
+          }
+
+
+          /*
+          pinch zoom 後拖動畫面時，
+          visualViewport 會發生 scroll，
+          但 layout viewport 本身不一定 scroll。
+
+          這裡只重定位關閉鍵，
+          不重建 Canvas，避免拖動畫面時反覆保存圖片。
+          */
+
+
+          this.updateCloseButtonViewportPosition();
+
+        };
+
+
       this.addEvent(
         window,
         "resize",
-        handler
+        resizeHandler
       );
 
 
       this.addEvent(
         window,
         "orientationchange",
-        handler
+        resizeHandler
       );
 
 
@@ -3384,7 +3841,18 @@
         this.addEvent(
           window.visualViewport,
           "resize",
-          handler
+          resizeHandler
+        );
+
+
+        this.addEvent(
+          window.visualViewport,
+          "scroll",
+          visualViewportScrollHandler,
+          {
+            passive:
+              true
+          }
         );
 
       }
@@ -4046,7 +4514,7 @@
       return {
 
         version:
-          "4.2",
+          "4.3",
 
         createdAt:
           new Date()
