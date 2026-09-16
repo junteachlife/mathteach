@@ -959,8 +959,21 @@ export const GAME_CONFIG = {
 
     },
 
-    modes:
-      {},
+    modes: {
+
+      numberBasic:
+        "數字乘法公式",
+
+      numberMixed:
+        "數字變化計算",
+
+      polynomial:
+        "多項式與公式判讀",
+
+      mixed:
+        "乘法公式綜合挑戰"
+
+    },
 
     theme: {
 
@@ -1198,8 +1211,21 @@ export const GAME_CONFIG = {
 
     },
 
-    modes:
-      {},
+    modes: {
+
+      squarePractice:
+        "平方數熟練場",
+
+      simplify:
+        "根式化簡訓練",
+
+      approximation:
+        "根號值與十分逼近",
+
+      meaning:
+        "平方根觀念應用"
+
+    },
 
     theme: {
 
@@ -1269,8 +1295,21 @@ export const GAME_CONFIG = {
 
     },
 
-    modes:
-      {},
+    modes: {
+
+      multiply:
+        "根式乘法",
+
+      divide:
+        "除法與有理化",
+
+      addSubtract:
+        "根式加減",
+
+      mixed:
+        "根式四則綜合"
+
+    },
 
     theme: {
 
