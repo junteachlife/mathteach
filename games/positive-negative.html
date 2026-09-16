@@ -1,0 +1,10817 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    正數與負數大挑戰｜數學遊戲樂園
+  </title>
+
+
+  <!--
+  ==================================================
+  瀏覽器小圖示
+  主題：正負數 ± ＋ 數線
+  ==================================================
+  -->
+
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f766e'/%3E%3Cpath d='M8 41h48' stroke='%2399f6e4' stroke-width='3'/%3E%3Cpath d='M14 36v10M32 36v10M50 36v10' stroke='white' stroke-width='2'/%3E%3Ccircle cx='32' cy='41' r='4' fill='%23fde68a'/%3E%3Ctext x='32' y='28' text-anchor='middle' font-family='Arial,sans-serif' font-size='25' font-weight='700' fill='white'%3E%C2%B1%3C/text%3E%3C/svg%3E"
+  >
+
+
+  <!-- 共用計算紙 -->
+
+  <link
+    rel="stylesheet"
+    href="../css/scratchpad.css"
+  >
+
+
+  <style>
+
+    /*
+    ==================================================
+    基本設定
+    ==================================================
+    */
+
+    * {
+
+      box-sizing:
+        border-box;
+    }
+
+
+    :root {
+
+      --primary:
+        #0f766e;
+
+      --primary-dark:
+        #115e59;
+
+      --primary-light:
+        #ccfbf1;
+
+      --primary-border:
+        #5eead4;
+
+      --secondary:
+        #2563eb;
+
+      --secondary-dark:
+        #1d4ed8;
+
+      --orange:
+        #ea580c;
+
+      --purple:
+        #7c3aed;
+
+      --text:
+        #1e293b;
+
+      --muted:
+        #64748b;
+
+      --success:
+        #15803d;
+
+      --danger:
+        #dc2626;
+
+      --warning:
+        #b45309;
+
+      --surface:
+        #ffffff;
+    }
+
+
+    html {
+
+      scroll-behavior:
+        smooth;
+    }
+
+
+    body {
+
+      margin:
+        0;
+
+      min-height:
+        100vh;
+
+      padding:
+        16px;
+
+      font-family:
+        "Microsoft JhengHei",
+        "Noto Sans TC",
+        sans-serif;
+
+      color:
+        var(--text);
+
+      background:
+
+        radial-gradient(
+          circle at 10% 10%,
+          rgba(45, 212, 191, .22),
+          transparent 30%
+        ),
+
+        radial-gradient(
+          circle at 90% 5%,
+          rgba(96, 165, 250, .20),
+          transparent 30%
+        ),
+
+        linear-gradient(
+          135deg,
+          #ecfeff,
+          #eff6ff 55%,
+          #fff7ed
+        );
+    }
+
+
+    button,
+    input,
+    select {
+
+      font-family:
+        inherit;
+    }
+
+
+    button {
+
+      touch-action:
+        manipulation;
+    }
+
+
+    .hidden {
+
+      display:
+        none !important;
+    }
+
+
+    .page-shell {
+
+      width:
+        min(
+          100%,
+          1040px
+        );
+
+      margin:
+        0 auto;
+    }
+
+
+    #commonHeaderMount {
+
+      margin-bottom:
+        14px;
+    }
+
+
+    /*
+    ==================================================
+    主卡片
+    ==================================================
+    */
+
+    .game-card {
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        #cbd5e1;
+
+      border-top:
+        8px solid
+        var(--primary);
+
+      border-radius:
+        26px;
+
+      background:
+        var(--surface);
+
+      box-shadow:
+        0 16px 42px
+        rgba(
+          15,
+          23,
+          42,
+          .14
+        );
+    }
+
+
+    /*
+    ==================================================
+    標題區
+    ==================================================
+    */
+
+    .game-header {
+
+      padding:
+        28px
+        20px
+        22px;
+
+      text-align:
+        center;
+
+      background:
+
+        linear-gradient(
+          180deg,
+          var(--primary-light),
+          #ffffff
+        );
+    }
+
+
+    .title-row {
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      align-items:
+        center;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        10px;
+    }
+
+
+    .game-title {
+
+      margin:
+        0;
+
+      color:
+        var(--primary-dark);
+
+      font-size:
+        clamp(
+          30px,
+          5vw,
+          44px
+        );
+
+      line-height:
+        1.2;
+    }
+
+
+    .new-badge {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      min-height:
+        30px;
+
+      padding:
+        5px 11px;
+
+      border-radius:
+        999px;
+
+      background:
+        #fef3c7;
+
+      color:
+        #92400e;
+
+      font-size:
+        13px;
+
+      font-weight:
+        900;
+    }
+
+
+    .game-subtitle {
+
+      margin:
+        12px auto 0;
+
+      max-width:
+        800px;
+
+      color:
+        var(--muted);
+
+      line-height:
+        1.8;
+
+      font-weight:
+        700;
+    }
+
+
+    .concept-strip {
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        8px;
+
+      margin-top:
+        16px;
+    }
+
+
+    .concept-chip {
+
+      padding:
+        7px 12px;
+
+      border:
+        1px solid
+        var(--primary-border);
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          .92
+        );
+
+      color:
+        var(--primary-dark);
+
+      font-size:
+        14px;
+
+      font-weight:
+        900;
+    }
+
+
+    .screen {
+
+      padding:
+        22px;
+    }
+
+
+    /*
+    ==================================================
+    模式選擇
+    ==================================================
+    */
+
+    .mode-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap:
+        16px;
+    }
+
+
+    .mode-card {
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      min-height:
+        238px;
+
+      padding:
+        21px;
+
+      border:
+        2px solid
+        #cbd5e1;
+
+      border-radius:
+        20px;
+
+      background:
+        #ffffff;
+
+      box-shadow:
+        0 8px 22px
+        rgba(
+          15,
+          23,
+          42,
+          .07
+        );
+
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        border-color .15s ease;
+    }
+
+
+    .mode-card:hover {
+
+      transform:
+        translateY(
+          -2px
+        );
+
+      border-color:
+        var(--primary-border);
+
+      box-shadow:
+        0 12px 28px
+        rgba(
+          15,
+          23,
+          42,
+          .11
+        );
+    }
+
+
+    .mode-card.mixed {
+
+      border-color:
+        #f59e0b;
+
+      background:
+
+        linear-gradient(
+          180deg,
+          #fffbeb,
+          #ffffff
+        );
+    }
+
+
+    .mode-icon {
+
+      font-size:
+        34px;
+    }
+
+
+    .mode-title {
+
+      margin:
+        9px 0 6px;
+
+      color:
+        var(--primary-dark);
+
+      font-size:
+        21px;
+
+      font-weight:
+        900;
+    }
+
+
+    .mode-card.mixed
+    .mode-title {
+
+      color:
+        #92400e;
+    }
+
+
+    .mode-meta {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        7px;
+
+      margin-bottom:
+        10px;
+    }
+
+
+    .mode-tag {
+
+      padding:
+        4px 8px;
+
+      border-radius:
+        999px;
+
+      background:
+        #f1f5f9;
+
+      color:
+        #475569;
+
+      font-size:
+        12px;
+
+      font-weight:
+        900;
+    }
+
+
+    .mode-description {
+
+      flex:
+        1 1 auto;
+
+      margin:
+        0 0 16px;
+
+      color:
+        var(--muted);
+
+      line-height:
+        1.7;
+    }
+
+
+    /*
+    ==================================================
+    按鈕
+    ==================================================
+    */
+
+    .mode-button,
+    .game-button {
+
+      border:
+        none;
+
+      border-radius:
+        14px;
+
+      min-height:
+        48px;
+
+      padding:
+        11px 18px;
+
+      color:
+        #ffffff;
+
+      font-size:
+        16px;
+
+      font-weight:
+        900;
+
+      cursor:
+        pointer;
+
+      transition:
+        transform .1s ease,
+        filter .12s ease;
+    }
+
+
+    .mode-button {
+
+      background:
+        var(--primary);
+    }
+
+
+    .mode-card.mixed
+    .mode-button {
+
+      background:
+        #d97706;
+    }
+
+
+    .mode-button:hover,
+    .game-button:hover {
+
+      filter:
+        brightness(
+          1.04
+        );
+    }
+
+
+    .mode-button:active,
+    .game-button:active {
+
+      transform:
+        translateY(
+          2px
+        );
+    }
+
+
+    .game-button.primary {
+
+      background:
+        var(--primary);
+    }
+
+
+    .game-button.secondary {
+
+      background:
+        #475569;
+    }
+
+
+    .game-button.orange {
+
+      background:
+        var(--orange);
+    }
+
+
+    .game-button.blue {
+
+      background:
+        var(--secondary);
+    }
+
+
+    .game-button.restart {
+
+      background:
+        var(--purple);
+    }
+
+
+    .game-button:disabled {
+
+      opacity:
+        .48;
+
+      cursor:
+        not-allowed;
+    }
+
+
+    /*
+    ==================================================
+    測驗上方資訊
+    ==================================================
+    */
+
+    .quiz-top {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr auto;
+
+      gap:
+        14px;
+
+      align-items:
+        start;
+    }
+
+
+    .mode-name {
+
+      color:
+        var(--primary-dark);
+
+      font-size:
+        20px;
+
+      font-weight:
+        900;
+    }
+
+
+    .question-number {
+
+      margin-top:
+        4px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        14px;
+
+      font-weight:
+        800;
+    }
+
+
+    .quiz-stats {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          auto
+        );
+
+      gap:
+        8px;
+    }
+
+
+    .stat-pill {
+
+      min-width:
+        92px;
+
+      padding:
+        9px 11px;
+
+      border-radius:
+        12px;
+
+      background:
+        #f8fafc;
+
+      border:
+        1px solid
+        #e2e8f0;
+
+      text-align:
+        center;
+
+      font-size:
+        13px;
+
+      font-weight:
+        800;
+
+      color:
+        #475569;
+    }
+
+
+    .stat-pill strong {
+
+      display:
+        block;
+
+      margin-top:
+        2px;
+
+      color:
+        #0f172a;
+
+      font-size:
+        18px;
+    }
+
+
+    .progress-track {
+
+      height:
+        10px;
+
+      margin:
+        16px 0 20px;
+
+      overflow:
+        hidden;
+
+      border-radius:
+        999px;
+
+      background:
+        #e2e8f0;
+    }
+
+
+    .progress-bar {
+
+      width:
+        0;
+
+      height:
+        100%;
+
+      border-radius:
+        inherit;
+
+      background:
+
+        linear-gradient(
+          90deg,
+          #14b8a6,
+          #3b82f6
+        );
+
+      transition:
+        width .2s ease;
+    }
+
+
+    /*
+    ==================================================
+    計算紙
+    ==================================================
+    */
+
+    .scratchpad-row {
+
+      display:
+        flex;
+
+      justify-content:
+        flex-end;
+
+      margin-bottom:
+        10px;
+    }
+
+
+    #scratchpad-mobile-button
+    #scratchpadOpenButton,
+    #scratchpad-mobile-button
+    .scratchpad-open-button {
+
+      position:
+        static !important;
+
+      inset:
+        auto !important;
+
+      transform:
+        none !important;
+
+      margin:
+        0 !important;
+
+      z-index:
+        auto !important;
+    }
+
+
+    /*
+    ==================================================
+    題目
+    ==================================================
+    */
+
+    .question-card {
+
+      padding:
+        24px;
+
+      border:
+        2px solid
+        #dbeafe;
+
+      border-radius:
+        20px;
+
+      background:
+
+        linear-gradient(
+          180deg,
+          #f8fafc,
+          #ffffff
+        );
+    }
+
+
+    .question-label {
+
+      margin-bottom:
+        9px;
+
+      color:
+        var(--secondary-dark);
+
+      font-size:
+        14px;
+
+      font-weight:
+        900;
+
+      letter-spacing:
+        .03em;
+    }
+
+
+    .question-content {
+
+      min-height:
+        84px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      text-align:
+        center;
+
+      color:
+        #0f172a;
+
+      font-size:
+        clamp(
+          23px,
+          4vw,
+          32px
+        );
+
+      font-weight:
+        900;
+
+      line-height:
+        1.55;
+    }
+
+
+    .question-content
+    .context-text {
+
+      font-size:
+        clamp(
+          19px,
+          3.2vw,
+          26px
+        );
+
+      line-height:
+        1.8;
+
+      font-weight:
+        800;
+    }
+
+
+    .question-content
+    .small-note {
+
+      display:
+        block;
+
+      margin-top:
+        8px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        14px;
+
+      font-weight:
+        700;
+    }
+
+
+    /*
+    ==================================================
+    答案區
+    ==================================================
+    */
+
+    .answer-area {
+
+      margin-top:
+        20px;
+    }
+
+
+    .number-answer {
+
+      width:
+        min(
+          100%,
+          320px
+        );
+
+      display:
+        block;
+
+      margin:
+        0 auto;
+
+      padding:
+        14px 16px;
+
+      border:
+        2px solid
+        #94a3b8;
+
+      border-radius:
+        14px;
+
+      background:
+        #ffffff;
+
+      color:
+        #0f172a;
+
+      text-align:
+        center;
+
+      font-size:
+        24px;
+
+      font-weight:
+        900;
+
+      outline:
+        none;
+    }
+
+
+    .number-answer:focus {
+
+      border-color:
+        var(--primary);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(
+          20,
+          184,
+          166,
+          .14
+        );
+    }
+
+
+    /*
+    平板／手機輸入負號輔助
+    */
+
+    .sign-helper {
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        8px;
+
+      margin-top:
+        9px;
+    }
+
+
+    .sign-helper-button {
+
+      min-height:
+        39px;
+
+      padding:
+        7px 15px;
+
+      border:
+        1px solid
+        #cbd5e1;
+
+      border-radius:
+        11px;
+
+      background:
+        #ffffff;
+
+      color:
+        #334155;
+
+      font-size:
+        15px;
+
+      font-weight:
+        900;
+
+      cursor:
+        pointer;
+    }
+
+
+    .choice-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap:
+        10px;
+    }
+
+
+    .choice-button,
+    .compare-button,
+    .sort-chip {
+
+      min-height:
+        50px;
+
+      padding:
+        10px 14px;
+
+      border:
+        2px solid
+        #cbd5e1;
+
+      border-radius:
+        14px;
+
+      background:
+        #ffffff;
+
+      color:
+        #1e293b;
+
+      font-size:
+        17px;
+
+      font-weight:
+        900;
+
+      cursor:
+        pointer;
+
+      transition:
+        .12s ease;
+    }
+
+
+    .choice-button:hover,
+    .compare-button:hover,
+    .sort-chip:hover {
+
+      border-color:
+        var(--primary);
+    }
+
+
+    .choice-button.selected,
+    .compare-button.selected,
+    .sort-chip.selected {
+
+      border-color:
+        var(--primary);
+
+      background:
+        var(--primary-light);
+
+      color:
+        var(--primary-dark);
+    }
+
+
+    .compare-grid {
+
+      width:
+        min(
+          100%,
+          440px
+        );
+
+      margin:
+        0 auto;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          1fr
+        );
+
+      gap:
+        10px;
+    }
+
+
+    .compare-button {
+
+      font-size:
+        28px;
+    }
+
+
+    /*
+    ==================================================
+    數線
+    ==================================================
+    */
+
+    .numberline-wrap {
+
+      width:
+        100%;
+
+      overflow-x:
+        auto;
+
+      -webkit-overflow-scrolling:
+        touch;
+
+      padding:
+        4px 0 8px;
+    }
+
+
+    .numberline-wrap svg {
+
+      width:
+        min(
+          100%,
+          760px
+        );
+
+      min-width:
+        560px;
+
+      display:
+        block;
+
+      margin:
+        0 auto;
+    }
+
+
+    .line-hit {
+
+      cursor:
+        pointer;
+    }
+
+
+    .line-hit:hover
+    .line-hover {
+
+      opacity:
+        1;
+    }
+
+
+    .line-hover {
+
+      opacity:
+        0;
+
+      transition:
+        opacity .12s ease;
+    }
+
+
+    .line-selected-message {
+
+      margin-top:
+        8px;
+
+      text-align:
+        center;
+
+      color:
+        var(--primary-dark);
+
+      font-weight:
+        900;
+    }
+
+
+    /*
+    ==================================================
+    排序
+    ==================================================
+    */
+
+    .sort-prompt {
+
+      margin-bottom:
+        12px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-weight:
+        800;
+    }
+
+
+    .sort-pool,
+    .sort-result {
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        9px;
+    }
+
+
+    .sort-result {
+
+      min-height:
+        58px;
+
+      margin-bottom:
+        12px;
+
+      padding:
+        10px;
+
+      border:
+        2px dashed
+        #99f6e4;
+
+      border-radius:
+        14px;
+
+      background:
+        #f0fdfa;
+    }
+
+
+    .sort-result-item {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--primary-dark);
+
+      font-size:
+        18px;
+
+      font-weight:
+        900;
+    }
+
+
+    .sort-actions {
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      gap:
+        8px;
+
+      margin-top:
+        12px;
+    }
+
+
+    .mini-button {
+
+      min-height:
+        38px;
+
+      padding:
+        7px 12px;
+
+      border:
+        1px solid
+        #cbd5e1;
+
+      border-radius:
+        10px;
+
+      background:
+        #ffffff;
+
+      color:
+        #334155;
+
+      font-weight:
+        900;
+
+      cursor:
+        pointer;
+    }
+
+
+    /*
+    ==================================================
+    回饋
+    ==================================================
+    */
+
+    .feedback {
+
+      margin-top:
+        16px;
+
+      padding:
+        12px 14px;
+
+      border-radius:
+        13px;
+
+      font-weight:
+        900;
+
+      line-height:
+        1.6;
+    }
+
+
+    .feedback:empty {
+
+      display:
+        none;
+    }
+
+
+    .feedback.correct {
+
+      background:
+        #dcfce7;
+
+      color:
+        #166534;
+    }
+
+
+    .feedback.wrong {
+
+      background:
+        #fee2e2;
+
+      color:
+        #991b1b;
+    }
+
+
+    .feedback.warning {
+
+      background:
+        #fef3c7;
+
+      color:
+        #92400e;
+    }
+
+
+    /*
+    ==================================================
+    詳解
+    ==================================================
+    */
+
+    .explanation {
+
+      margin-top:
+        16px;
+
+      padding:
+        18px;
+
+      border:
+        2px solid
+        #bfdbfe;
+
+      border-radius:
+        18px;
+
+      background:
+        #eff6ff;
+
+      line-height:
+        1.75;
+    }
+
+
+    .explanation-title {
+
+      margin-bottom:
+        12px;
+
+      color:
+        #1e3a8a;
+
+      font-size:
+        19px;
+
+      font-weight:
+        900;
+    }
+
+
+    .explanation-block {
+
+      margin-top:
+        9px;
+
+      padding:
+        10px 12px;
+
+      border-radius:
+        12px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          .84
+        );
+    }
+
+
+    .explanation-block strong {
+
+      color:
+        #1e40af;
+    }
+
+
+    .explanation-step {
+
+      margin:
+        7px 0;
+
+      padding-left:
+        8px;
+
+      border-left:
+        3px solid
+        #93c5fd;
+    }
+
+
+    .explanation-tip {
+
+      margin-top:
+        10px;
+
+      padding:
+        10px 12px;
+
+      border-radius:
+        12px;
+
+      background:
+        #fff7ed;
+
+      color:
+        #9a3412;
+    }
+
+
+    /*
+    ==================================================
+    共用按鈕列
+    ==================================================
+    */
+
+    .button-row {
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        10px;
+
+      margin-top:
+        18px;
+    }
+
+
+    /*
+    ==================================================
+    結果
+    ==================================================
+    */
+
+    .result-panel {
+
+      text-align:
+        center;
+    }
+
+
+    .result-score {
+
+      margin:
+        16px 0 6px;
+
+      color:
+        var(--orange);
+
+      font-size:
+        56px;
+
+      font-weight:
+        900;
+    }
+
+
+    .result-stars {
+
+      font-size:
+        31px;
+    }
+
+
+    .result-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          1fr
+        );
+
+      gap:
+        10px;
+
+      margin:
+        20px auto;
+    }
+
+
+    .result-stat {
+
+      padding:
+        15px 8px;
+
+      border:
+        1px solid
+        #e2e8f0;
+
+      border-radius:
+        15px;
+
+      background:
+        #f8fafc;
+
+      color:
+        #64748b;
+
+      font-weight:
+        800;
+    }
+
+
+    .result-stat span {
+
+      color:
+        #0f172a;
+
+      font-size:
+        24px;
+
+      font-weight:
+        900;
+    }
+
+
+    .save-status {
+
+      min-height:
+        25px;
+
+      margin:
+        10px 0;
+
+      font-weight:
+        800;
+    }
+
+
+    /*
+    ==================================================
+    詳解回顧
+    ==================================================
+    */
+
+    .review-list {
+
+      display:
+        grid;
+
+      gap:
+        14px;
+
+      margin-top:
+        14px;
+    }
+
+
+    .review-card {
+
+      padding:
+        16px;
+
+      border:
+        1px solid
+        #dbeafe;
+
+      border-radius:
+        16px;
+
+      background:
+        #ffffff;
+    }
+
+
+    .review-card.correct-review {
+
+      border-left:
+        6px solid
+        #22c55e;
+    }
+
+
+    .review-card.wrong-review {
+
+      border-left:
+        6px solid
+        #ef4444;
+    }
+
+
+    .review-title {
+
+      margin-bottom:
+        8px;
+
+      font-size:
+        17px;
+
+      font-weight:
+        900;
+    }
+
+
+    .review-question {
+
+      margin:
+        8px 0 12px;
+
+      color:
+        #0f172a;
+
+      font-size:
+        18px;
+
+      font-weight:
+        800;
+
+      line-height:
+        1.6;
+    }
+
+
+    .review-answer-line {
+
+      margin:
+        5px 0;
+
+      color:
+        #475569;
+
+      line-height:
+        1.6;
+    }
+
+
+    /*
+    ==================================================
+    平板／手機
+    ==================================================
+    */
+
+    @media (
+      max-width:
+        760px
+    ) {
+
+      body {
+
+        padding:
+          8px;
+      }
+
+
+      .screen {
+
+        padding:
+          14px;
+      }
+
+
+      .game-header {
+
+        padding:
+          22px 13px 17px;
+      }
+
+
+      .mode-grid {
+
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .mode-card {
+
+        min-height:
+          0;
+      }
+
+
+      .quiz-top {
+
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .quiz-stats {
+
+        grid-template-columns:
+          repeat(
+            3,
+            1fr
+          );
+      }
+
+
+      .stat-pill {
+
+        min-width:
+          0;
+      }
+
+
+      .question-card {
+
+        padding:
+          16px 12px;
+      }
+
+
+      .choice-grid {
+
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .result-grid {
+
+        grid-template-columns:
+          repeat(
+            2,
+            1fr
+          );
+      }
+
+
+      .game-button {
+
+        flex:
+          1 1 180px;
+      }
+
+    }
+
+
+    @media (
+      max-width:
+        430px
+    ) {
+
+      .quiz-stats {
+
+        gap:
+          5px;
+      }
+
+
+      .stat-pill {
+
+        padding:
+          7px 5px;
+
+        font-size:
+          11px;
+      }
+
+
+      .stat-pill strong {
+
+        font-size:
+          16px;
+      }
+
+
+      .compare-button {
+
+        font-size:
+          23px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <div class="page-shell">
+
+
+    <!-- 共用頁首 -->
+
+    <div id="commonHeaderMount"></div>
+
+
+    <main class="game-card">
+
+
+      <!--
+      ==================================================
+      遊戲標題
+      ==================================================
+      -->
+
+      <header class="game-header">
+
+        <div class="title-row">
+
+          <h1 class="game-title">
+            ➕➖ 正數與負數大挑戰
+          </h1>
+
+          <span class="new-badge">
+            新版
+          </span>
+
+        </div>
+
+
+        <p class="game-subtitle">
+
+          1-1 正數與負數｜從生活情境、數線、大小比較，
+          到相反數與絕對值，每題都有完整詳解，
+          答錯也能重新學會。
+
+        </p>
+
+
+        <div class="concept-strip">
+
+          <span class="concept-chip">
+            🌡️ 正負情境
+          </span>
+
+          <span class="concept-chip">
+            📍 數線
+          </span>
+
+          <span class="concept-chip">
+            ⚖️ 大小比較
+          </span>
+
+          <span class="concept-chip">
+            🔄 相反數
+          </span>
+
+          <span class="concept-chip">
+            📏 絕對值
+          </span>
+
+        </div>
+
+      </header>
+
+
+      <!--
+      ==================================================
+      模式選擇
+      ==================================================
+      -->
+
+      <section
+        id="start-screen"
+        class="screen"
+      >
+
+        <h2>
+          選擇挑戰模式
+        </h2>
+
+
+        <div class="mode-grid">
+
+
+          <!-- 模式一 -->
+
+          <article class="mode-card">
+
+            <div class="mode-icon">
+              🌡️
+            </div>
+
+            <div class="mode-title">
+              正負數情境判讀
+            </div>
+
+            <div class="mode-meta">
+
+              <span class="mode-tag">
+                學習型
+              </span>
+
+              <span class="mode-tag">
+                10 題
+              </span>
+
+            </div>
+
+            <p class="mode-description">
+
+              認識基準、正方向與正負表示，
+              包含改變基準、單位換算與逆向反推。
+
+            </p>
+
+            <button
+              class="mode-button"
+              data-mode="context"
+              type="button"
+            >
+              開始挑戰
+            </button>
+
+          </article>
+
+
+          <!-- 模式二 -->
+
+          <article class="mode-card">
+
+            <div class="mode-icon">
+              📍
+            </div>
+
+            <div class="mode-title">
+              數線定位挑戰
+            </div>
+
+            <div class="mode-meta">
+
+              <span class="mode-tag">
+                學習型
+              </span>
+
+              <span class="mode-tag">
+                10 題
+              </span>
+
+            </div>
+
+            <p class="mode-description">
+
+              讀坐標、找位置、特殊刻度、
+              小數與簡單分數，建立真正的數線概念。
+
+            </p>
+
+            <button
+              class="mode-button"
+              data-mode="numberline"
+              type="button"
+            >
+              開始挑戰
+            </button>
+
+          </article>
+
+
+          <!-- 模式三 -->
+
+          <article class="mode-card">
+
+            <div class="mode-icon">
+              ⚖️
+            </div>
+
+            <div class="mode-title">
+              數的大小比較
+            </div>
+
+            <div class="mode-meta">
+
+              <span class="mode-tag">
+                學習型
+              </span>
+
+              <span class="mode-tag">
+                10 題
+              </span>
+
+            </div>
+
+            <p class="mode-description">
+
+              ＞、＜、＝、負數易錯比較、
+              排序與數線位置關係，不只靠背規則。
+
+            </p>
+
+            <button
+              class="mode-button"
+              data-mode="compare"
+              type="button"
+            >
+              開始挑戰
+            </button>
+
+          </article>
+
+
+          <!-- 模式四 -->
+
+          <article class="mode-card">
+
+            <div class="mode-icon">
+              🔄
+            </div>
+
+            <div class="mode-title">
+              相反數挑戰
+            </div>
+
+            <div class="mode-meta">
+
+              <span class="mode-tag">
+                學習型
+              </span>
+
+              <span class="mode-tag">
+                10 題
+              </span>
+
+            </div>
+
+            <p class="mode-description">
+
+              直接求相反數、雙重負號、
+              逆向題與關於原點對稱的小變化。
+
+            </p>
+
+            <button
+              class="mode-button"
+              data-mode="opposite"
+              type="button"
+            >
+              開始挑戰
+            </button>
+
+          </article>
+
+
+          <!-- 模式五 -->
+
+          <article class="mode-card">
+
+            <div class="mode-icon">
+              📏
+            </div>
+
+            <div class="mode-title">
+              絕對值挑戰
+            </div>
+
+            <div class="mode-meta">
+
+              <span class="mode-tag">
+                學習型
+              </span>
+
+              <span class="mode-tag">
+                10 題
+              </span>
+
+            </div>
+
+            <p class="mode-description">
+
+              從「距離原點」理解絕對值，
+              再加入反推、方向條件與相反數小整合。
+
+            </p>
+
+            <button
+              class="mode-button"
+              data-mode="absolute"
+              type="button"
+            >
+              開始挑戰
+            </button>
+
+          </article>
+
+
+          <!-- 模式六 -->
+
+          <article class="mode-card mixed">
+
+            <div class="mode-icon">
+              🏆
+            </div>
+
+            <div class="mode-title">
+              1-1 綜合挑戰
+            </div>
+
+            <div class="mode-meta">
+
+              <span class="mode-tag">
+                綜合型
+              </span>
+
+              <span class="mode-tag">
+                8 題
+              </span>
+
+            </div>
+
+            <p class="mode-description">
+
+              五大概念全部出現，
+              再加入雙概念與逆向情境題，
+              檢查是否真的理解。
+
+            </p>
+
+            <button
+              class="mode-button"
+              data-mode="mixed"
+              type="button"
+            >
+              開始挑戰
+            </button>
+
+          </article>
+
+
+        </div>
+
+      </section>
+
+
+      <!--
+      ==================================================
+      作答畫面
+      ==================================================
+      -->
+
+      <section
+        id="quiz-screen"
+        class="screen hidden"
+      >
+
+
+        <div class="quiz-top">
+
+
+          <div>
+
+            <div
+              id="mode-name"
+              class="mode-name"
+            ></div>
+
+            <div
+              id="question-number"
+              class="question-number"
+            ></div>
+
+          </div>
+
+
+          <div class="quiz-stats">
+
+
+            <div class="stat-pill">
+
+              ✅ 答對
+
+              <strong id="correct-count">
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="stat-pill">
+
+              🔥 最高連擊
+
+              <strong id="combo-count">
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="stat-pill">
+
+              ⏱️ 時間
+
+              <strong id="timer-display">
+                00:00
+              </strong>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+        <!-- 進度 -->
+
+        <div class="progress-track">
+
+          <div
+            id="progress-bar"
+            class="progress-bar"
+          ></div>
+
+        </div>
+
+
+        <!-- 計算紙 -->
+
+        <div class="scratchpad-row">
+
+          <div
+            id="scratchpad-mobile-button"
+          ></div>
+
+        </div>
+
+
+        <!-- 題目 -->
+
+        <div class="question-card">
+
+
+          <div
+            id="question-label"
+            class="question-label"
+          ></div>
+
+
+          <div
+            id="question-content"
+            class="question-content"
+          ></div>
+
+
+          <div
+            id="answer-area"
+            class="answer-area"
+          ></div>
+
+
+          <div
+            id="feedback"
+            class="feedback"
+          ></div>
+
+
+          <div
+            id="explanation"
+            class="explanation hidden"
+          ></div>
+
+
+          <div class="button-row">
+
+
+            <button
+              id="submit-button"
+              class="game-button primary"
+              type="button"
+            >
+              確認答案（Enter）
+            </button>
+
+
+            <button
+              id="next-button"
+              class="game-button blue hidden"
+              type="button"
+            >
+              下一題（Enter）
+            </button>
+
+
+            <button
+              id="quit-button"
+              class="game-button secondary"
+              type="button"
+            >
+              選擇模式
+            </button>
+
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!--
+      ==================================================
+      結果
+      ==================================================
+      -->
+
+      <section
+        id="result-screen"
+        class="screen hidden result-panel"
+      >
+
+
+        <h2>
+          🎉 挑戰完成
+        </h2>
+
+
+        <div
+          id="final-score"
+          class="result-score"
+        >
+          0 分
+        </div>
+
+
+        <div
+          id="final-stars"
+          class="result-stars"
+        >
+          ★★★☆☆
+        </div>
+
+
+        <p id="final-comment"></p>
+
+
+        <div class="result-grid">
+
+
+          <div class="result-stat">
+
+            答對
+            <br>
+
+            <span id="final-correct">
+              0
+            </span>
+
+            題
+
+          </div>
+
+
+          <div class="result-stat">
+
+            答錯
+            <br>
+
+            <span id="final-wrong">
+              0
+            </span>
+
+            題
+
+          </div>
+
+
+          <div class="result-stat">
+
+            最高連擊
+            <br>
+
+            <span id="final-combo">
+              0
+            </span>
+
+          </div>
+
+
+          <div class="result-stat">
+
+            測驗時間
+            <br>
+
+            <span id="final-time">
+              00:00
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+        <div
+          id="save-status"
+          class="save-status"
+        ></div>
+
+
+        <div class="button-row">
+
+
+          <button
+            id="review-button"
+            class="game-button orange"
+            type="button"
+          >
+            📖 查看本次詳解
+          </button>
+
+
+          <button
+            id="again-button"
+            class="game-button restart"
+            type="button"
+          >
+            🔄 再玩一次
+          </button>
+
+
+          <button
+            id="result-mode-button"
+            class="game-button secondary"
+            type="button"
+          >
+            選擇模式
+          </button>
+
+
+        </div>
+
+
+      </section>
+
+
+      <!--
+      ==================================================
+      詳解回顧
+      ==================================================
+      -->
+
+      <section
+        id="review-screen"
+        class="screen hidden"
+      >
+
+
+        <h2>
+          📖 本次詳解
+        </h2>
+
+
+        <p
+          style="
+            color:#64748b;
+            font-weight:700;
+          "
+        >
+          答對、答錯的題目都可以重新看完整解析。
+        </p>
+
+
+        <div
+          id="review-list"
+          class="review-list"
+        ></div>
+
+
+        <div class="button-row">
+
+
+          <button
+            id="review-again-button"
+            class="game-button restart"
+            type="button"
+          >
+            🔄 再玩一次
+          </button>
+
+
+          <button
+            id="review-result-button"
+            class="game-button secondary"
+            type="button"
+          >
+            回到測驗結果
+          </button>
+
+
+        </div>
+
+
+      </section>
+
+
+    </main>
+
+  </div>
+
+
+  <!--
+  ==================================================
+  共用元件
+  ==================================================
+  -->
+
+  <script src="../js/common-header.js"></script>
+
+  <script src="../js/scratchpad.js"></script>
+
+  <script src="../js/scratchpad-template.js"></script>
+
+  <script src="../js/sound-manager.js?v=1"></script>
+
+
+  <script type="module">
+
+
+    import {
+      saveGameScore
+    } from "../js/scores.js";
+
+
+    "use strict";
+
+
+    /*
+    ==================================================
+    遊戲基本設定
+    ==================================================
+    */
+
+
+    const GAME_ID =
+      "positiveNegative115";
+
+
+    const MODES = {
+
+
+      context: {
+
+        name:
+          "🌡️ 正負數情境判讀",
+
+        count:
+          10
+      },
+
+
+      numberline: {
+
+        name:
+          "📍 數線定位挑戰",
+
+        count:
+          10
+      },
+
+
+      compare: {
+
+        name:
+          "⚖️ 數的大小比較",
+
+        count:
+          10
+      },
+
+
+      opposite: {
+
+        name:
+          "🔄 相反數挑戰",
+
+        count:
+          10
+      },
+
+
+      absolute: {
+
+        name:
+          "📏 絕對值挑戰",
+
+        count:
+          10
+      },
+
+
+      mixed: {
+
+        name:
+          "🏆 1-1 綜合挑戰",
+
+        count:
+          8
+      }
+
+    };
+
+
+    const $ =
+      id =>
+        document.getElementById(
+          id
+        );
+
+
+    /*
+    ==================================================
+    遊戲狀態
+    ==================================================
+    */
+
+
+    let mode =
+      "context";
+
+
+    let questions =
+      [];
+
+
+    let index =
+      0;
+
+
+    let correct =
+      0;
+
+
+    let wrong =
+      0;
+
+
+    let combo =
+      0;
+
+
+    let maxCombo =
+      0;
+
+
+    let records =
+      [];
+
+
+    let answered =
+      false;
+
+
+    let selectedChoice =
+      null;
+
+
+    let selectedCompare =
+      null;
+
+
+    let selectedLineValue =
+      null;
+
+
+    let sortSelected =
+      [];
+
+
+    let startTime =
+      0;
+
+
+    let elapsed =
+      0;
+
+
+    let timerId =
+      null;
+
+
+    let scoreSaved =
+      false;
+
+
+    /*
+    ==================================================
+    工具函式
+    ==================================================
+    */
+
+
+    function rand(
+      min,
+      max
+    ) {
+
+      return Math.floor(
+        Math.random() *
+        (
+          max -
+          min +
+          1
+        )
+      ) +
+      min;
+    }
+
+
+    function pick(
+      list
+    ) {
+
+      return list[
+        rand(
+          0,
+          list.length -
+          1
+        )
+      ];
+    }
+
+
+    function shuffle(
+      list
+    ) {
+
+      const arr =
+        [
+          ...list
+        ];
+
+
+      for (
+        let i =
+          arr.length -
+          1;
+
+        i >
+          0;
+
+        i--
+      ) {
+
+        const j =
+          rand(
+            0,
+            i
+          );
+
+
+        [
+          arr[i],
+          arr[j]
+        ] =
+        [
+          arr[j],
+          arr[i]
+        ];
+      }
+
+
+      return arr;
+    }
+
+
+    function roundTo(
+      value,
+      digits =
+        2
+    ) {
+
+      const p =
+        10 **
+        digits;
+
+
+      return Math.round(
+        (
+          value +
+          Number.EPSILON
+        ) *
+        p
+      ) /
+      p;
+    }
+
+
+    function formatNumber(
+      value
+    ) {
+
+      const n =
+        Math.abs(
+          value
+        ) <
+        1e-10
+
+          ? 0
+
+          : roundTo(
+              value,
+              4
+            );
+
+
+      return String(
+        n
+      )
+        .replace(
+          "-",
+          "−"
+        );
+    }
+
+
+    function signed(
+      value
+    ) {
+
+      if (
+        value >
+        0
+      ) {
+
+        return `+${formatNumber(
+          value
+        )}`;
+      }
+
+
+      return formatNumber(
+        value
+      );
+    }
+
+
+    function escapeHTML(
+      text
+    ) {
+
+      return String(
+        text
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+    }
+
+
+    function fractionText(
+      numerator,
+      denominator
+    ) {
+
+      const sign =
+        numerator <
+        0
+
+          ? "−"
+
+          : "";
+
+
+      return (
+        `${sign}` +
+        `${Math.abs(
+          numerator
+        )}/` +
+        `${denominator}`
+      );
+    }
+
+
+    /*
+    ==================================================
+    詳解資料
+    ==================================================
+    */
+
+
+    function makeExplanation(
+      {
+        answer,
+        observe,
+        think,
+        steps,
+        why,
+        mistake
+      }
+    ) {
+
+      return {
+
+        answer,
+        observe,
+        think,
+        steps,
+        why,
+        mistake
+      };
+    }
+
+
+    /*
+    ==================================================
+    題目資料
+    ==================================================
+    */
+
+
+    function makeQuestion(
+      data
+    ) {
+
+      return {
+
+        id:
+          `${
+            data.modeId
+          }-${
+            data.family
+          }-${
+            Math.random()
+              .toString(
+                36
+              )
+              .slice(
+                2,
+                10
+              )
+          }`,
+
+        level:
+          "core",
+
+        label:
+          "觀念練習",
+
+        ...data
+      };
+    }
+
+
+    function choiceQuestion(
+      base,
+      choices,
+      answer
+    ) {
+
+      return makeQuestion(
+        {
+
+          ...base,
+
+          type:
+            "choice",
+
+          choices:
+            shuffle(
+              choices
+            ),
+
+          answer
+        }
+      );
+    }
+
+
+    function numberQuestion(
+      base,
+      answer
+    ) {
+
+      return makeQuestion(
+        {
+
+          ...base,
+
+          type:
+            "number",
+
+          answer
+        }
+      );
+    }
+
+
+    function compareQuestion(
+      base,
+      answer
+    ) {
+
+      return makeQuestion(
+        {
+
+          ...base,
+
+          type:
+            "compare",
+
+          answer
+        }
+      );
+    }
+
+
+    /*
+    ==================================================
+    音效
+    ==================================================
+    */
+
+
+    function playGameSound(
+      method
+    ) {
+
+      try {
+
+        const sound =
+          window.GameSound ||
+          window.MathGameSound;
+
+
+        sound?.[
+          method
+        ]?.();
+
+      } catch (
+        error
+      ) {
+
+        console.warn(
+          "音效播放失敗：",
+          error
+        );
+      }
+    }
+
+
+    /*
+    ==================================================
+    模式一
+    正負數情境判讀
+    ==================================================
+    */
+
+
+    function generateDirectContext() {
+
+
+      const n =
+        rand(
+          2,
+          20
+        );
+
+
+      const templates =
+        [
+
+
+          {
+
+            html:
+              `規定「向東」為正方向。<br>` +
+              `向西 ${n} 公里應記為多少？`,
+
+            answer:
+              -n,
+
+            observe:
+              "題目已規定向東是正方向，所以向西就是負方向。",
+
+            think:
+              "先判斷方向，再決定正負號。",
+
+            steps:
+              [
+
+                "向西與正方向相反，所以使用負號。",
+
+                `距離是 ${n} 公里，因此記為 −${n}。`
+              ],
+
+            why:
+              "正負號可以用來表示彼此相反的方向。",
+
+            mistake:
+              "不要只看到距離是正的就寫 +，還要先看題目規定的正方向。"
+          },
+
+
+          {
+
+            html:
+              `以海平面為基準 0 公尺。<br>` +
+              `海平面下方 ${n * 10} 公尺應記為多少？`,
+
+            answer:
+              -(n * 10),
+
+            observe:
+              "海平面是基準 0，海平面下方要用負數表示。",
+
+            think:
+              "看位置在基準的上方還是下方。",
+
+            steps:
+              [
+
+                "下方代表低於基準，所以用負號。",
+
+                `距離基準 ${n * 10} 公尺，因此記為 −${n * 10}。`
+              ],
+
+            why:
+              "正負數能表示相對於同一基準的兩種方向。",
+
+            mistake:
+              "負號不是表示距離是負的，而是表示位置在基準的另一側。"
+          },
+
+
+          {
+
+            html:
+              `某商店規定「獲利」記為正。<br>` +
+              `今天虧損 ${n * 100} 元，應記為多少？`,
+
+            answer:
+              -(n * 100),
+
+            observe:
+              "獲利被規定為正，虧損與獲利相反。",
+
+            think:
+              "相反的情況要用負號。",
+
+            steps:
+              [
+
+                "虧損用負號表示。",
+
+                `虧損 ${n * 100} 元，因此記為 −${n * 100}。`
+              ],
+
+            why:
+              "正負數可以表示互相相反的量。",
+
+            mistake:
+              "金額本身不是負的，負號是在表達「虧損」這個方向。"
+          },
+
+
+          {
+
+            html:
+              `水位變化以「上升」為正。<br>` +
+              `今天水位下降 ${n} 公分，應記為多少？`,
+
+            answer:
+              -n,
+
+            observe:
+              "上升是正方向，下降就是相反方向。",
+
+            think:
+              "先決定方向，再加上大小。",
+
+            steps:
+              [
+
+                "下降使用負號。",
+
+                `下降 ${n} 公分，所以記為 −${n}。`
+              ],
+
+            why:
+              "同一個量的上升與下降可以用正、負數表示。",
+
+            mistake:
+              `不要把「下降」忽略掉只寫 ${n}。`
+          }
+
+        ];
+
+
+      const t =
+        pick(
+          templates
+        );
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "context",
+
+          family:
+            "directContext",
+
+          level:
+            "core",
+
+          label:
+            "基本情境",
+
+          html:
+            `<div class="context-text">` +
+              `${t.html}` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    t.answer
+                  ),
+
+                observe:
+                  t.observe,
+
+                think:
+                  t.think,
+
+                steps:
+                  t.steps,
+
+                why:
+                  t.why,
+
+                mistake:
+                  t.mistake
+              }
+            )
+
+        },
+        t.answer
+      );
+    }
+
+
+    function generateBaselineDifference() {
+
+
+      const base =
+        pick(
+          [
+            50,
+            60,
+            70,
+            80,
+            100
+          ]
+        );
+
+
+      let diff =
+        rand(
+          -18,
+          18
+        );
+
+
+      if (
+        diff ===
+        0
+      ) {
+
+        diff =
+          pick(
+            [
+              -8,
+              -5,
+              5,
+              8
+            ]
+          );
+      }
+
+
+      const actual =
+        base +
+        diff;
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "context",
+
+          family:
+            "baselineDifference",
+
+          level:
+            "core",
+
+          label:
+            "基準轉換",
+
+          html:
+            `<div class="context-text">` +
+              `以 ${base} 分為基準，記為 0。<br>` +
+              `${actual} 分應記為多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  signed(
+                    diff
+                  ),
+
+                observe:
+                  `${base} 分是基準 0，要看 ${actual} 分比基準高或低多少。`,
+
+                think:
+                  "用實際分數減去基準分數。",
+
+                steps:
+                  [
+
+                    `${actual} − ${base} ＝ ${diff}。`,
+
+                    `${
+                      diff >
+                      0
+
+                        ? "高於"
+
+                        : "低於"
+                    }基準，所以記為 ${signed(
+                      diff
+                    )}。`
+                  ],
+
+                why:
+                  "紀錄值表示的是相對於基準的差，而不是原來的分數。",
+
+                mistake:
+                  `不要直接回答 ${actual}，題目問的是「相對於 ${base} 的紀錄值」。`
+              }
+            )
+
+        },
+        diff
+      );
+    }
+
+
+    function generateZeroConcept() {
+
+
+      return choiceQuestion(
+        {
+
+          modeId:
+            "context",
+
+          family:
+            "zeroConcept",
+
+          level:
+            "core",
+
+          label:
+            "0 的概念",
+
+          html:
+            `<div class="context-text">` +
+              `下列關於 0 的敘述，哪一個正確？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  "0 不是正數，也不是負數",
+
+                observe:
+                  "題目在考正數、負數與 0 的分類。",
+
+                think:
+                  "正數要大於 0，負數要小於 0。",
+
+                steps:
+                  [
+
+                    "0 不大於 0，所以不是正數。",
+
+                    "0 也不小於 0，所以不是負數。"
+                  ],
+
+                why:
+                  "0 是正數與負數的分界。",
+
+                mistake:
+                  "不要把「不是負數」誤認成「一定是正數」。"
+              }
+            )
+
+        },
+
+        [
+
+          {
+            value:
+              "positive",
+
+            text:
+              "0 是正數"
+          },
+
+          {
+            value:
+              "negative",
+
+            text:
+              "0 是負數"
+          },
+
+          {
+            value:
+              "neither",
+
+            text:
+              "0 不是正數，也不是負數"
+          },
+
+          {
+            value:
+              "both",
+
+            text:
+              "0 同時是正數與負數"
+          }
+
+        ],
+
+        "neither"
+      );
+    }
+
+
+    function generateScaledBaseline() {
+
+
+      const base =
+        pick(
+          [
+            40,
+            50,
+            60,
+            70,
+            80
+          ]
+        );
+
+
+      const actualPerUnit =
+        pick(
+          [
+            1,
+            2,
+            5,
+            10
+          ]
+        );
+
+
+      const refUnits =
+        pick(
+          [
+            2,
+            3,
+            4,
+            5
+          ]
+        );
+
+
+      const refActual =
+        base +
+        actualPerUnit *
+        refUnits;
+
+
+      const targetUnits =
+        pick(
+          [
+            -8,
+            -6,
+            -5,
+            -4,
+            -3,
+            3,
+            4,
+            5,
+            6,
+            8
+          ]
+        );
+
+
+      const targetActual =
+        base +
+        actualPerUnit *
+        targetUnits;
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "context",
+
+          family:
+            "scaledBaseline",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜基準＋單位",
+
+          html:
+            `<div class="context-text">` +
+              `${base} 分記為 0，` +
+              `${refActual} 分記為 +${refUnits}。<br>` +
+              `${targetActual} 分應記為多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  signed(
+                    targetUnits
+                  ),
+
+                observe:
+                  `${base} 分是基準；${refActual} 分比基準多 ${refActual - base} 分，卻只記成 +${refUnits}。`,
+
+                think:
+                  "先找出 1 個記錄單位代表實際幾分。",
+
+                steps:
+                  [
+
+                    `${refActual} − ${base} ＝ ${refActual - base}。`,
+
+                    `${refActual - base} ÷ ${refUnits} ＝ ${actualPerUnit}，所以每 ${actualPerUnit} 分代表 1 個記錄單位。`,
+
+                    `${targetActual} − ${base} ＝ ${targetActual - base}。`,
+
+                    `${Math.abs(
+                      targetActual -
+                      base
+                    )} ÷ ${actualPerUnit} ＝ ${Math.abs(
+                      targetUnits
+                    )}，再依高於或低於基準決定正負，所以是 ${signed(
+                      targetUnits
+                    )}。`
+                  ],
+
+                why:
+                  "同一個情境中，實際差值可以依固定比例換成另一種紀錄單位。",
+
+                mistake:
+                  `不要直接算 ${targetActual} − ${refActual}，因為真正的基準仍然是 ${base}。`
+              }
+            )
+
+        },
+        targetUnits
+      );
+    }
+
+
+    function generateReversedDirection() {
+
+
+      const base =
+        pick(
+          [
+            30,
+            40,
+            50,
+            60
+          ]
+        );
+
+
+      const secondsPerUnit =
+        pick(
+          [
+            1,
+            2,
+            5
+          ]
+        );
+
+
+      const units =
+        rand(
+          2,
+          5
+        );
+
+
+      const actual =
+        base -
+        secondsPerUnit *
+        units;
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "context",
+
+          family:
+            "reversedDirection",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜方向反轉",
+
+          html:
+            `<div class="context-text">` +
+              `跑步以 ${base} 秒為基準 0，規定「比 ${base} 秒快」記為正。<br>` +
+              `每快 ${secondsPerUnit} 秒記為 +1。<br>` +
+              `${actual} 秒應記為多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  `+${units}`,
+
+                observe:
+                  "這題特別規定「更快」是正方向，所以時間數字變小不代表要寫負數。",
+
+                think:
+                  "先遵守題目的方向定義，再算相差幾個單位。",
+
+                steps:
+                  [
+
+                    `${base} − ${actual} ＝ ${base - actual} 秒。`,
+
+                    `${base - actual} ÷ ${secondsPerUnit} ＝ ${units}。`,
+
+                    `因為是「更快」，題目規定記為正，所以是 +${units}。`
+                  ],
+
+                why:
+                  "正負號表示題目指定的方向，不是單純看數字變大或變小。",
+
+                mistake:
+                  `不要因為 ${actual} 小於 ${base} 就寫負號；這題明確規定「更快」是正。`
+              }
+            )
+
+        },
+        units
+      );
+    }
+
+
+    function generateReverseInference() {
+
+
+      const base =
+        pick(
+          [
+            40,
+            50,
+            60,
+            70,
+            80
+          ]
+        );
+
+
+      const perUnit =
+        pick(
+          [
+            1,
+            2,
+            5
+          ]
+        );
+
+
+      const record =
+        pick(
+          [
+            -8,
+            -6,
+            -5,
+            -4,
+            4,
+            5,
+            6,
+            8
+          ]
+        );
+
+
+      const actual =
+        base +
+        record *
+        perUnit;
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "context",
+
+          family:
+            "reverseInference",
+
+          level:
+            "reverse",
+
+          label:
+            "逆向題",
+
+          html:
+            `<div class="context-text">` +
+              `以 ${base} 分為基準 0，每 1 個記錄單位代表 ${perUnit} 分。<br>` +
+              `某生的紀錄是 ${signed(
+                record
+              )}，他的實際分數是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  `${actual} 分`,
+
+                observe:
+                  `已知的不是實際分數，而是相對於 ${base} 分的紀錄值 ${signed(
+                    record
+                  )}。`,
+
+                think:
+                  "先把紀錄單位換回實際分數差，再回到基準。",
+
+                steps:
+                  [
+
+                    `${Math.abs(
+                      record
+                    )} × ${perUnit} ＝ ${Math.abs(
+                      record *
+                      perUnit
+                    )} 分。`,
+
+                    `${
+                      record >
+                      0
+
+                        ? "紀錄為正，代表高於基準"
+
+                        : "紀錄為負，代表低於基準"
+                    }。`,
+
+                    `${base} ${
+                      record >
+                      0
+
+                        ? "+"
+
+                        : "−"
+                    } ${Math.abs(
+                      record *
+                      perUnit
+                    )} ＝ ${actual}。`
+                  ],
+
+                why:
+                  "反推時要把相對紀錄換回原來的實際量。",
+
+                mistake:
+                  `不要把 ${signed(
+                    record
+                  )} 當成實際分數直接作答。`
+              }
+            )
+
+        },
+        actual
+      );
+    }
+
+
+    /*
+    ==================================================
+    數線工具
+    ==================================================
+    */
+
+
+    function makeLineConfig(
+      min,
+      max,
+      step,
+      target,
+      options =
+        {}
+    ) {
+
+      return {
+
+        min,
+        max,
+        step,
+        target,
+
+        ...options
+      };
+    }
+
+
+    /*
+    ==================================================
+    模式二
+    數線定位
+    ==================================================
+    */
+
+
+    function generateReadIntegerPoint() {
+
+
+      const target =
+        rand(
+          -8,
+          8
+        );
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "numberline",
+
+          family:
+            "readIntegerPoint",
+
+          level:
+            "core",
+
+          label:
+            "看數線讀坐標",
+
+          html:
+            `<div class="context-text">` +
+              `觀察數線，A 點的坐標是多少？` +
+            `</div>`,
+
+          line:
+            makeLineConfig(
+              -10,
+              10,
+              1,
+              target,
+              {
+
+                showPoint:
+                  true,
+
+                labelEvery:
+                  2,
+
+                hideTargetLabel:
+                  true
+              }
+            ),
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    target
+                  ),
+
+                observe:
+                  "先找到原點 0，再看 A 點在原點哪一側以及相隔幾格。",
+
+                think:
+                  "右邊是正方向，左邊是負方向。",
+
+                steps:
+                  [
+
+                    `A 點位在原點${
+                      target >=
+                      0
+
+                        ? "右"
+
+                        : "左"
+                    }側。`,
+
+                    `從 0 到 A 共 ${Math.abs(
+                      target
+                    )} 個單位，所以坐標是 ${formatNumber(
+                      target
+                    )}。`
+                  ],
+
+                why:
+                  "數線上的每一個點都可以對應一個數。",
+
+                mistake:
+                  "只數格數還不夠，還要判斷在原點左邊還是右邊。"
+              }
+            )
+
+        },
+        target
+      );
+    }
+
+
+    function generatePlaceIntegerPoint() {
+
+
+      const target =
+        rand(
+          -8,
+          8
+        );
+
+
+      return makeQuestion(
+        {
+
+          modeId:
+            "numberline",
+
+          family:
+            "placeIntegerPoint",
+
+          level:
+            "core",
+
+          label:
+            "在數線上找位置",
+
+          type:
+            "numberlinePick",
+
+          html:
+            `<div class="context-text">` +
+              `請在數線上找出 <strong>${formatNumber(
+                target
+              )}</strong> 的位置。` +
+            `</div>`,
+
+          answer:
+            target,
+
+          line:
+            makeLineConfig(
+              -10,
+              10,
+              1,
+              target,
+              {
+
+                pickable:
+                  true,
+
+                labelEvery:
+                  2
+              }
+            ),
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    target
+                  ),
+
+                observe:
+                  `要找的是 ${formatNumber(
+                    target
+                  )}。`,
+
+                think:
+                  `從原點 0 出發，${
+                    target >=
+                    0
+
+                      ? "往右"
+
+                      : "往左"
+                  }走 ${Math.abs(
+                    target
+                  )} 個單位。`,
+
+                steps:
+                  [
+
+                    "找到原點 0。",
+
+                    `${
+                      target >=
+                      0
+
+                        ? "右邊"
+
+                        : "左邊"
+                    }是${
+                      target >=
+                      0
+
+                        ? "正"
+
+                        : "負"
+                    }方向。`,
+
+                    `移動 ${Math.abs(
+                      target
+                    )} 個單位即可找到 ${formatNumber(
+                      target
+                    )}。`
+                  ],
+
+                why:
+                  "數線以原點、正方向與固定單位長來定位每個數。",
+
+                mistake:
+                  "不要只看數字大小，要注意正負號決定方向。"
+              }
+            )
+
+        }
+      );
+    }
+
+
+    function generateDecimalPoint() {
+
+
+      const tenths =
+        pick(
+          [
+            -18,
+            -15,
+            -12,
+            -8,
+            -5,
+            5,
+            8,
+            12,
+            15,
+            18
+          ]
+        );
+
+
+      const target =
+        tenths /
+        10;
+
+
+      const askPick =
+        Math.random() <
+        .5;
+
+
+      if (
+        askPick
+      ) {
+
+        return makeQuestion(
+          {
+
+            modeId:
+              "numberline",
+
+            family:
+              "decimalPoint",
+
+            level:
+              "core",
+
+            label:
+              "小數定位",
+
+            type:
+              "numberlinePick",
+
+            html:
+              `<div class="context-text">` +
+                `請在數線上找出 <strong>${formatNumber(
+                  target
+                )}</strong>。` +
+              `</div>`,
+
+            answer:
+              target,
+
+            line:
+              makeLineConfig(
+                -2,
+                2,
+                .1,
+                target,
+                {
+
+                  pickable:
+                    true,
+
+                  labelEvery:
+                    5
+                }
+              ),
+
+            explanation:
+              makeExplanation(
+                {
+
+                  answer:
+                    formatNumber(
+                      target
+                    ),
+
+                  observe:
+                    "相鄰小刻度代表 0.1。",
+
+                  think:
+                    `先找到整數位置，再數到 ${formatNumber(
+                      target
+                    )}。`,
+
+                  steps:
+                    [
+
+                      "每小格是 0.1。",
+
+                      `${formatNumber(
+                        target
+                      )} 位於原點${
+                        target >=
+                        0
+
+                          ? "右"
+
+                          : "左"
+                      }側。`,
+
+                      "依 0.1 的刻度逐格定位即可。"
+                    ],
+
+                  why:
+                    "小數也能依單位長等距地表示在數線上。",
+
+                  mistake:
+                    "不要把 0.1 的小刻度看成 1。"
+                }
+              )
+
+          }
+        );
+      }
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "numberline",
+
+          family:
+            "decimalPoint",
+
+          level:
+            "core",
+
+          label:
+            "小數讀坐標",
+
+          html:
+            `<div class="context-text">` +
+              `觀察數線，A 點的坐標是多少？` +
+            `</div>`,
+
+          line:
+            makeLineConfig(
+              -2,
+              2,
+              .1,
+              target,
+              {
+
+                showPoint:
+                  true,
+
+                labelEvery:
+                  5,
+
+                hideTargetLabel:
+                  true
+              }
+            ),
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    target
+                  ),
+
+                observe:
+                  "先看每一小格代表 0.1。",
+
+                think:
+                  "從 0 數到 A 點，並注意左右方向。",
+
+                steps:
+                  [
+
+                    `A 點在 0 的${
+                      target >=
+                      0
+
+                        ? "右"
+
+                        : "左"
+                    }邊。`,
+
+                    `依 0.1 的刻度數到 A，可得 ${formatNumber(
+                      target
+                    )}。`
+                  ],
+
+                why:
+                  "數線的單位長可以細分，所以能表示小數。",
+
+                mistake:
+                  "先確認刻度單位，不要習慣性認為每格都是 1。"
+              }
+            )
+
+        },
+        target
+      );
+    }
+
+
+    function generateFractionPoint() {
+
+
+      const fractions =
+        [
+
+          {
+            n:
+              -3,
+
+            d:
+              4,
+
+            v:
+              -.75
+          },
+
+          {
+            n:
+              -1,
+
+            d:
+              2,
+
+            v:
+              -.5
+          },
+
+          {
+            n:
+              1,
+
+            d:
+              2,
+
+            v:
+              .5
+          },
+
+          {
+            n:
+              3,
+
+            d:
+              4,
+
+            v:
+              .75
+          },
+
+          {
+            n:
+              5,
+
+            d:
+              4,
+
+            v:
+              1.25
+          },
+
+          {
+            n:
+              -5,
+
+            d:
+              4,
+
+            v:
+              -1.25
+          }
+
+        ];
+
+
+      const f =
+        pick(
+          fractions
+        );
+
+
+      return makeQuestion(
+        {
+
+          modeId:
+            "numberline",
+
+          family:
+            "fractionPoint",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜分數定位",
+
+          type:
+            "numberlinePick",
+
+          html:
+            `<div class="context-text">` +
+              `請在數線上找出 <strong>${fractionText(
+                f.n,
+                f.d
+              )}</strong> 的位置。` +
+            `</div>`,
+
+          answer:
+            f.v,
+
+          line:
+            makeLineConfig(
+              -2,
+              2,
+              .25,
+              f.v,
+              {
+
+                pickable:
+                  true,
+
+                labelEvery:
+                  4
+              }
+            ),
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  fractionText(
+                    f.n,
+                    f.d
+                  ),
+
+                observe:
+                  "這條數線每 1 個單位被分成 4 小格，所以每小格是 1/4。",
+
+                think:
+                  `把 ${fractionText(
+                    f.n,
+                    f.d
+                  )} 看成以 1/4 為單位的位置。`,
+
+                steps:
+                  [
+
+                    "先找到 0。",
+
+                    `${
+                      f.n <
+                      0
+
+                        ? "負號表示往左"
+
+                        : "正數表示往右"
+                    }。`,
+
+                    `每小格是 1/4，數到 ${fractionText(
+                      f.n,
+                      f.d
+                    )} 的位置。`
+                  ],
+
+                why:
+                  "分數也可以表示在數線上，只要單位長切分一致。",
+
+                mistake:
+                  "不要把分子當成整數格數；要先看分母表示一個單位被分成幾份。"
+              }
+            )
+
+        }
+      );
+    }
+
+
+    function generateScaledTicks() {
+
+
+      const scale =
+        pick(
+          [
+            2,
+            3,
+            5
+          ]
+        );
+
+
+      const multiplier =
+        pick(
+          [
+            -2,
+            -1,
+            1,
+            2
+          ]
+        );
+
+
+      const target =
+        multiplier *
+        scale;
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "numberline",
+
+          family:
+            "scaledTicks",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜特殊刻度",
+
+          html:
+            `<div class="context-text">` +
+              `觀察數線的標示，A 點的坐標是多少？` +
+            `</div>`,
+
+          line:
+            makeLineConfig(
+              -3 *
+              scale,
+
+              3 *
+              scale,
+
+              scale,
+
+              target,
+
+              {
+
+                showPoint:
+                  true,
+
+                labelValues:
+                  [
+                    -3 *
+                    scale,
+
+                    0,
+
+                    3 *
+                    scale
+                  ],
+
+                hideTargetLabel:
+                  true
+              }
+            ),
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    target
+                  ),
+
+                observe:
+                  `這條數線相鄰刻度不是差 1，而是差 ${scale}。`,
+
+                think:
+                  "先從已標出的數找出每一格代表多少。",
+
+                steps:
+                  [
+
+                    `相鄰刻度相差 ${scale}。`,
+
+                    `A 點依照這個單位長定位，可得 ${formatNumber(
+                      target
+                    )}。`
+                  ],
+
+                why:
+                  "數線的單位長可以選擇不同大小，但同一條數線上必須固定一致。",
+
+                mistake:
+                  "不要看到一格就自動加 1，要先判斷這條數線每格代表多少。"
+              }
+            )
+
+        },
+        target
+      );
+    }
+
+
+    function generatePartialLabels() {
+
+
+      const target =
+        pick(
+          [
+            -4,
+            -3,
+            -2,
+            2,
+            3,
+            4
+          ]
+        );
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "numberline",
+
+          family:
+            "partialLabels",
+
+          level:
+            "reverse",
+
+          label:
+            "逆向題｜不完整標示",
+
+          html:
+            `<div class="context-text">` +
+              `數線只標出部分數字，請推算 A 點的坐標。` +
+            `</div>`,
+
+          line:
+            makeLineConfig(
+              -6,
+              6,
+              1,
+              target,
+              {
+
+                showPoint:
+                  true,
+
+                labelValues:
+                  [
+                    -6,
+                    0,
+                    6
+                  ],
+
+                hideTargetLabel:
+                  true
+              }
+            ),
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    target
+                  ),
+
+                observe:
+                  "雖然中間沒有全部標數字，但刻度仍然等距。",
+
+                think:
+                  "先利用 −6、0、6 算出每一小格的單位長。",
+
+                steps:
+                  [
+
+                    "從 −6 到 0 共有 6 個相同間隔，所以每格是 1。",
+
+                    `再從 0 數到 A 點，可得 ${formatNumber(
+                      target
+                    )}。`
+                  ],
+
+                why:
+                  "數線只要原點、方向與單位長確定，就能推算未標示的坐標。",
+
+                mistake:
+                  "沒有標數字不代表不能判斷，要利用已知刻度找出單位長。"
+              }
+            )
+
+        },
+        target
+      );
+    }
+
+
+    function generateNumberLineConcept() {
+
+
+      return choiceQuestion(
+        {
+
+          modeId:
+            "numberline",
+
+          family:
+            "numberLineConcept",
+
+          level:
+            "core",
+
+          label:
+            "數線概念",
+
+          html:
+            `<div class="context-text">` +
+              `下列哪一項不是數線的三要素？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  "最大值",
+
+                observe:
+                  "數線需要原點、正方向與單位長。",
+
+                think:
+                  "想一想畫數線時一定要先決定哪些東西。",
+
+                steps:
+                  [
+
+                    "原點決定 0 的位置。",
+
+                    "正方向決定哪一邊是正。",
+
+                    "單位長決定刻度距離。",
+
+                    "數線沒有固定的最大值。"
+                  ],
+
+                why:
+                  "數線可以向兩端無限延伸，所以不需要設定最大值。",
+
+                mistake:
+                  "不要把畫面上暫時看到的最右數字誤認成數線的最大值。"
+              }
+            )
+
+        },
+
+        [
+
+          {
+            value:
+              "origin",
+
+            text:
+              "原點"
+          },
+
+          {
+            value:
+              "direction",
+
+            text:
+              "正方向"
+          },
+
+          {
+            value:
+              "unit",
+
+            text:
+              "單位長"
+          },
+
+          {
+            value:
+              "max",
+
+            text:
+              "最大值"
+          }
+
+        ],
+
+        "max"
+      );
+    }
+
+
+    /*
+    ==================================================
+    模式三
+    大小比較
+    ==================================================
+    */
+
+
+    function generateIntegerCompare() {
+
+
+      let a =
+        rand(
+          -30,
+          30
+        );
+
+
+      let b =
+        rand(
+          -30,
+          30
+        );
+
+
+      if (
+        a ===
+        b
+      ) {
+
+        b +=
+          1;
+      }
+
+
+      const answer =
+        a >
+        b
+
+          ? ">"
+
+          : "<";
+
+
+      return compareQuestion(
+        {
+
+          modeId:
+            "compare",
+
+          family:
+            "integerCompare",
+
+          level:
+            "core",
+
+          label:
+            "整數比較",
+
+          html:
+            `<div>` +
+              `${formatNumber(
+                a
+              )}　○　${formatNumber(
+                b
+              )}` +
+            `</div>` +
+            `<span class="small-note">` +
+              `請選擇 ＞、＝ 或 ＜` +
+            `</span>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer,
+
+                observe:
+                  `比較 ${formatNumber(
+                    a
+                  )} 與 ${formatNumber(
+                    b
+                  )}。`,
+
+                think:
+                  "把兩個數放到數線上，越右邊越大。",
+
+                steps:
+                  [
+
+                    `${formatNumber(
+                      a
+                    )} 在數線上位於 ${formatNumber(
+                      b
+                    )} 的${
+                      a >
+                      b
+
+                        ? "右"
+
+                        : "左"
+                    }邊。`,
+
+                    `因此 ${formatNumber(
+                      a
+                    )} ${answer} ${formatNumber(
+                      b
+                    )}。`
+                  ],
+
+                why:
+                  "數線上越右邊的數越大，越左邊的數越小。",
+
+                mistake:
+                  "比較負數時，不要只比較去掉負號後的數字。"
+              }
+            )
+
+        },
+        answer
+      );
+    }
+
+
+    function generateNegativeTrap() {
+
+
+      const smallAbs =
+        rand(
+          2,
+          9
+        );
+
+
+      const largeAbs =
+        rand(
+          smallAbs +
+          2,
+
+          smallAbs +
+          15
+        );
+
+
+      const a =
+        -largeAbs;
+
+
+      const b =
+        -smallAbs;
+
+
+      return compareQuestion(
+        {
+
+          modeId:
+            "compare",
+
+          family:
+            "negativeTrap",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜負數陷阱",
+
+          html:
+            `<div>` +
+              `${formatNumber(
+                a
+              )}　○　${formatNumber(
+                b
+              )}` +
+            `</div>` +
+            `<span class="small-note">` +
+              `兩個都是負數，請特別注意位置。` +
+            `</span>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  "<",
+
+                observe:
+                  `${formatNumber(
+                    a
+                  )} 與 ${formatNumber(
+                    b
+                  )} 都在原點左邊。`,
+
+                think:
+                  "負數仍然用數線判斷，越左邊越小。",
+
+                steps:
+                  [
+
+                    `${formatNumber(
+                      a
+                    )} 離原點更遠，而且在 ${formatNumber(
+                      b
+                    )} 的左邊。`,
+
+                    `所以 ${formatNumber(
+                      a
+                    )} ＜ ${formatNumber(
+                      b
+                    )}。`
+                  ],
+
+                why:
+                  "負數的絕對大小較大時，位置反而更靠左，因此數值更小。",
+
+                mistake:
+                  `不要因為 ${largeAbs} ＞ ${smallAbs} 就寫成 ${formatNumber(
+                    a
+                  )} ＞ ${formatNumber(
+                    b
+                  )}。`
+              }
+            )
+
+        },
+        "<"
+      );
+    }
+
+
+    function generateDecimalCompare() {
+
+
+      const pairs =
+        [
+
+          [
+            -2.04,
+            -2.4
+          ],
+
+          [
+            -0.8,
+            -0.08
+          ],
+
+          [
+            1.2,
+            1.19
+          ],
+
+          [
+            -3.5,
+            -3.05
+          ],
+
+          [
+            0.7,
+            0.70
+          ]
+
+        ];
+
+
+      const [
+        a,
+        b
+      ] =
+        pick(
+          pairs
+        );
+
+
+      const answer =
+        Math.abs(
+          a -
+          b
+        ) <
+        1e-9
+
+          ? "="
+
+          : (
+              a >
+              b
+
+                ? ">"
+
+                : "<"
+            );
+
+
+      return compareQuestion(
+        {
+
+          modeId:
+            "compare",
+
+          family:
+            "decimalCompare",
+
+          level:
+            "core",
+
+          label:
+            "小數比較",
+
+          html:
+            `<div>` +
+              `${formatNumber(
+                a
+              )}　○　${formatNumber(
+                b
+              )}` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer,
+
+                observe:
+                  "這題含有小數，先把位值看清楚。",
+
+                think:
+                  "可以補 0 對齊小數位，再結合正負號判斷。",
+
+                steps:
+                  [
+
+                    `比較後可得 ${formatNumber(
+                      a
+                    )} ${answer} ${formatNumber(
+                      b
+                    )}。`
+                  ],
+
+                why:
+                  "小數仍然遵守數線越右邊越大的原則。",
+
+                mistake:
+                  "不要因為小數位數比較多，就認為那個數一定比較大。"
+              }
+            )
+
+        },
+        answer
+      );
+    }
+
+
+    function generateFractionEquivalentCompare() {
+
+
+      const options =
+        [
+
+          {
+
+            left:
+              "−1.5",
+
+            right:
+              "−3/2",
+
+            answer:
+              "="
+          },
+
+          {
+
+            left:
+              "−0.5",
+
+            right:
+              "−1/4",
+
+            answer:
+              "<"
+          },
+
+          {
+
+            left:
+              "3/4",
+
+            right:
+              "0.7",
+
+            answer:
+              ">"
+          },
+
+          {
+
+            left:
+              "−5/4",
+
+            right:
+              "−1",
+
+            answer:
+              "<"
+          }
+
+        ];
+
+
+      const q =
+        pick(
+          options
+        );
+
+
+      return compareQuestion(
+        {
+
+          modeId:
+            "compare",
+
+          family:
+            "fractionEquivalent",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜不同表示法",
+
+          html:
+            `<div>` +
+              `${q.left}　○　${q.right}` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  q.answer,
+
+                observe:
+                  "兩個數用不同形式表示，先轉成容易比較的形式。",
+
+                think:
+                  "把簡單分數化成小數，或利用已知分數值。",
+
+                steps:
+                  [
+
+                    "先換成相同表示方式。",
+
+                    `因此 ${q.left} ${q.answer} ${q.right}。`
+                  ],
+
+                why:
+                  "同一個數可以有分數、小數等不同寫法，真正要比較的是它們代表的數值。",
+
+                mistake:
+                  "不要只看表面符號或位數，要先確認實際值。"
+              }
+            )
+
+        },
+        q.answer
+      );
+    }
+
+
+    function generateSortNumbers() {
+
+
+      const sets =
+        [
+
+          [
+            -4,
+            1,
+            -1.5,
+            0,
+            3
+          ],
+
+          [
+            -2,
+            -5,
+            4,
+            0,
+            1
+          ],
+
+          [
+            -0.5,
+            -1.2,
+            0.8,
+            0,
+            1.5
+          ],
+
+          [
+            -3,
+            -1,
+            2,
+            -2,
+            4
+          ]
+
+        ];
+
+
+      const values =
+        pick(
+          sets
+        );
+
+
+      const items =
+        shuffle(
+          values.map(
+            (
+              value,
+              i
+            ) => {
+
+              return {
+
+                id:
+                  `v${i}-${value}`,
+
+                value,
+
+                text:
+                  formatNumber(
+                    value
+                  )
+              };
+            }
+          )
+        );
+
+
+      const sorted =
+        [
+          ...items
+        ]
+          .sort(
+            (
+              a,
+              b
+            ) =>
+              a.value -
+              b.value
+          );
+
+
+      return makeQuestion(
+        {
+
+          modeId:
+            "compare",
+
+          family:
+            "sortNumbers",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜排序",
+
+          type:
+            "sort",
+
+          html:
+            `<div class="context-text">` +
+              `請將下列各數由小到大排列。` +
+            `</div>`,
+
+          items,
+
+          answer:
+            sorted.map(
+              item =>
+                item.id
+            ),
+
+          answerDisplay:
+            sorted.map(
+              item =>
+                item.text
+            )
+              .join(
+                " ＜ "
+              ),
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  sorted.map(
+                    item =>
+                      item.text
+                  )
+                    .join(
+                      " ＜ "
+                    ),
+
+                observe:
+                  "同時比較多個數時，可以先分成負數、0、正數。",
+
+                think:
+                  "負數先排，再放 0，最後排正數。",
+
+                steps:
+                  [
+
+                    "先找最左邊、也就是最小的數。",
+
+                    "依序由數線左邊排到右邊。",
+
+                    `正確順序是 ${sorted.map(
+                      item =>
+                        item.text
+                    )
+                      .join(
+                        " ＜ "
+                      )}。`
+                  ],
+
+                why:
+                  "由小到大就是沿著數線從左往右排列。",
+
+                mistake:
+                  "負數部分最容易排反；負得越多通常越靠左。"
+              }
+            )
+
+        }
+      );
+    }
+
+
+    function generateNumberLineRelation() {
+
+
+      return compareQuestion(
+        {
+
+          modeId:
+            "compare",
+
+          family:
+            "numberLineRelation",
+
+          level:
+            "core",
+
+          label:
+            "數線位置關係",
+
+          html:
+            `<div class="context-text">` +
+              `數線上 A 點在 B 點的左邊。<br>` +
+              `請比較 A 與 B 所代表數的大小：A ○ B` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  "<",
+
+                observe:
+                  "題目直接告訴 A 在 B 的左邊。",
+
+                think:
+                  "數線越左邊的數越小。",
+
+                steps:
+                  [
+
+                    "A 在 B 左邊。",
+
+                    "所以 A 所代表的數小於 B。",
+
+                    "因此 A ＜ B。"
+                  ],
+
+                why:
+                  "數線位置本身就能直接判斷大小。",
+
+                mistake:
+                  "不需要知道 A、B 的確切坐標，也能比較。"
+              }
+            )
+
+        },
+        "<"
+      );
+    }
+
+
+    function generateVerbalPosition() {
+
+
+      const leftDist =
+        rand(
+          3,
+          9
+        );
+
+
+      const rightDist =
+        rand(
+          1,
+          leftDist -
+          1
+        );
+
+
+      return choiceQuestion(
+        {
+
+          modeId:
+            "compare",
+
+          family:
+            "verbalPosition",
+
+          level:
+            "reverse",
+
+          label:
+            "逆向題｜文字轉數線",
+
+          html:
+            `<div class="context-text">` +
+              `甲在原點左邊 ${leftDist} 個單位，` +
+              `乙在原點左邊 ${rightDist} 個單位。<br>` +
+              `哪一個數比較大？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  "乙比較大",
+
+                observe:
+                  `甲是 −${leftDist}，乙是 −${rightDist}。`,
+
+                think:
+                  "兩個負數都在左邊，較靠近原點的數比較大。",
+
+                steps:
+                  [
+
+                    `甲＝−${leftDist}，乙＝−${rightDist}。`,
+
+                    `−${rightDist} 位於 −${leftDist} 的右邊。`,
+
+                    "所以乙比較大。"
+                  ],
+
+                why:
+                  "數線上越右邊的數越大。",
+
+                mistake:
+                  `不要因為 ${leftDist} 比 ${rightDist} 大，就認為甲比較大。`
+              }
+            )
+
+        },
+
+        [
+
+          {
+            value:
+              "A",
+
+            text:
+              "甲比較大"
+          },
+
+          {
+            value:
+              "B",
+
+            text:
+              "乙比較大"
+          },
+
+          {
+            value:
+              "same",
+
+            text:
+              "一樣大"
+          },
+
+          {
+            value:
+              "unknown",
+
+            text:
+              "無法判斷"
+          }
+
+        ],
+
+        "B"
+      );
+    }
+
+
+    /*
+    ==================================================
+    模式四
+    相反數
+    ==================================================
+    */
+
+
+    function generateDirectOpposite() {
+
+
+      let n =
+        rand(
+          -20,
+          20
+        );
+
+
+      const answer =
+        -n;
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "opposite",
+
+          family:
+            "directOpposite",
+
+          level:
+            "core",
+
+          label:
+            "基本相反數",
+
+          html:
+            `<div class="context-text">` +
+              `${formatNumber(
+                n
+              )} 的相反數是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    answer
+                  ),
+
+                observe:
+                  `要找與 ${formatNumber(
+                    n
+                  )} 位於原點另一側、距離相同的數。`,
+
+                think:
+                  "相反數只改變方向，與原點距離不變。",
+
+                steps:
+                  [
+
+                    `${formatNumber(
+                      n
+                    )} 的相反數是 ${formatNumber(
+                      answer
+                    )}。`
+                  ],
+
+                why:
+                  "互為相反數的兩個數在數線上關於原點對稱。",
+
+                mistake:
+                  n ===
+                  0
+
+                    ? "0 的相反數仍然是 0。"
+
+                    : "相反數不是倒數，也不是絕對值。"
+              }
+            )
+
+        },
+        answer
+      );
+    }
+
+
+    function generateZeroOpposite() {
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "opposite",
+
+          family:
+            "zeroOpposite",
+
+          level:
+            "core",
+
+          label:
+            "0 的相反數",
+
+          html:
+            `<div class="context-text">` +
+              `0 的相反數是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  "0",
+
+                observe:
+                  "0 就在原點上。",
+
+                think:
+                  "找一個與 0 到原點距離相同、方向相反的數。",
+
+                steps:
+                  [
+
+                    "0 到原點的距離是 0。",
+
+                    "原點關於自己對稱仍然是原點。",
+
+                    "所以 0 的相反數是 0。"
+                  ],
+
+                why:
+                  "只有 0 的相反數仍然是自己。",
+
+                mistake:
+                  "不要認為每個數的相反數都一定不同於原數，0 是例外。"
+              }
+            )
+
+        },
+        0
+      );
+    }
+
+
+    function generateDoubleNegativeOpposite() {
+
+
+      const n =
+        rand(
+          2,
+          15
+        );
+
+
+      const answer =
+        -n;
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "opposite",
+
+          family:
+            "doubleNegative",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜雙重負號",
+
+          html:
+            `<div class="context-text">` +
+              `−(−${n}) 的相反數是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  `−${n}`,
+
+                observe:
+                  `題目不是直接問 −${n} 的相反數，而是先給 −(−${n})。`,
+
+                think:
+                  "先算出 −(−n) 的值，再求它的相反數。",
+
+                steps:
+                  [
+
+                    `−(−${n}) ＝ ${n}。`,
+
+                    `${n} 的相反數是 −${n}。`
+                  ],
+
+                why:
+                  "−(−a)＝a，而相反數是在原點另一側、距離相同的數。",
+
+                mistake:
+                  `算出 −(−${n})＝${n} 還沒有結束；題目還要再求 ${n} 的相反數。`
+              }
+            )
+
+        },
+        answer
+      );
+    }
+
+
+    function generateReverseOpposite() {
+
+
+      const answer =
+        pick(
+          [
+            -12,
+            -9,
+            -7,
+            -5,
+            5,
+            7,
+            9,
+            12
+          ]
+        );
+
+
+      const opposite =
+        -answer;
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "opposite",
+
+          family:
+            "reverseOpposite",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜逆向相反數",
+
+          html:
+            `<div class="context-text">` +
+              `某數的相反數是 ${formatNumber(
+                opposite
+              )}。<br>` +
+              `原來的數是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    answer
+                  ),
+
+                observe:
+                  `已知「相反數」是 ${formatNumber(
+                    opposite
+                  )}，現在要反推原數。`,
+
+                think:
+                  "再取一次相反數就會回到原來的數。",
+
+                steps:
+                  [
+
+                    `${formatNumber(
+                      opposite
+                    )} 的相反數是 ${formatNumber(
+                      answer
+                    )}。`,
+
+                    `所以原來的數是 ${formatNumber(
+                      answer
+                    )}。`
+                  ],
+
+                why:
+                  "a 和 −a 互為相反數，交換兩次會回到原數。",
+
+                mistake:
+                  "不要直接把題目給的相反數當作原數。"
+              }
+            )
+
+        },
+        answer
+      );
+    }
+
+
+    function generateOriginSymmetry() {
+
+
+      const a =
+        pick(
+          [
+            -8,
+            -6,
+            -4,
+            -3,
+            3,
+            4,
+            6,
+            8
+          ]
+        );
+
+
+      const b =
+        -a;
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "opposite",
+
+          family:
+            "originSymmetry",
+
+          level:
+            "core",
+
+          label:
+            "數線對稱",
+
+          html:
+            `<div class="context-text">` +
+              `數線上 A 點的坐標是 ${formatNumber(
+                a
+              )}。<br>` +
+              `B 點與 A 點關於原點對稱，` +
+              `B 的坐標是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    b
+                  ),
+
+                observe:
+                  "關於原點對稱表示兩點在原點兩側且距離相同。",
+
+                think:
+                  "關於原點對稱的坐標互為相反數。",
+
+                steps:
+                  [
+
+                    `A＝${formatNumber(
+                      a
+                    )}。`,
+
+                    `它的相反數是 ${formatNumber(
+                      b
+                    )}。`,
+
+                    `所以 B＝${formatNumber(
+                      b
+                    )}。`
+                  ],
+
+                why:
+                  "相反數的幾何意義就是關於原點對稱。",
+
+                mistake:
+                  "不要只看距離，還要把方向換到原點另一側。"
+              }
+            )
+
+        },
+        b
+      );
+    }
+
+
+    function generateContextReversal() {
+
+
+      const n =
+        rand(
+          2,
+          12
+        );
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "opposite",
+
+          family:
+            "contextReversal",
+
+          level:
+            "reverse",
+
+          label:
+            "逆向題｜交換基準",
+
+          html:
+            `<div class="context-text">` +
+              `以學校為基準，小明的位置記為 +${n} 公里。<br>` +
+              `改成以小明為基準，學校的位置應記為多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  `−${n}`,
+
+                observe:
+                  `從學校看小明是 +${n} 公里。`,
+
+                think:
+                  "把觀察基準交換後，方向會相反，但距離不變。",
+
+                steps:
+                  [
+
+                    `兩地距離仍是 ${n} 公里。`,
+
+                    `方向與原來相反，所以紀錄變成 −${n}。`
+                  ],
+
+                why:
+                  "交換兩個位置的基準時，相對位置會互為相反數。",
+
+                mistake:
+                  "距離不會改變，改變的是方向與正負號。"
+              }
+            )
+
+        },
+        -n
+      );
+    }
+
+
+    /*
+    ==================================================
+    模式五
+    絕對值
+    ==================================================
+    */
+
+
+    function generateDirectAbsolute() {
+
+
+      const n =
+        rand(
+          -20,
+          20
+        );
+
+
+      const answer =
+        Math.abs(
+          n
+        );
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "absolute",
+
+          family:
+            "directAbsolute",
+
+          level:
+            "core",
+
+          label:
+            "基本絕對值",
+
+          html:
+            `<div>` +
+              `|${formatNumber(
+                n
+              )}| ＝ ?` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    answer
+                  ),
+
+                observe:
+                  `|${formatNumber(
+                    n
+                  )}| 表示 ${formatNumber(
+                    n
+                  )} 到原點的距離。`,
+
+                think:
+                  "距離不分正負，只看相隔多少個單位。",
+
+                steps:
+                  [
+
+                    `${formatNumber(
+                      n
+                    )} 到原點的距離是 ${answer}。`,
+
+                    `所以 |${formatNumber(
+                      n
+                    )}|＝${answer}。`
+                  ],
+
+                why:
+                  "絕對值就是數線上某點到原點的距離。",
+
+                mistake:
+                  "絕對值不是把負號「刪掉」的口訣而已，要記得它代表距離。"
+              }
+            )
+
+        },
+        answer
+      );
+    }
+
+
+    function generateOutsideNegative() {
+
+
+      const n =
+        rand(
+          2,
+          15
+        );
+
+
+      const answer =
+        -n;
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "absolute",
+
+          family:
+            "outsideNegative",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜絕對值外的負號",
+
+          html:
+            `<div>` +
+              `−|−${n}| ＝ ?` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  `−${n}`,
+
+                observe:
+                  "絕對值符號外面還有一個負號。",
+
+                think:
+                  "先算絕對值，再處理外面的負號。",
+
+                steps:
+                  [
+
+                    `|−${n}|＝${n}。`,
+
+                    `外面的負號仍然存在，所以 −|−${n}|＝−${n}。`
+                  ],
+
+                why:
+                  "絕對值只作用在兩條直線符號裡面的數。",
+
+                mistake:
+                  "不要因為看到絕對值就把最後答案一定寫成正數，外面的負號仍要保留。"
+              }
+            )
+
+        },
+        answer
+      );
+    }
+
+
+    function generateDistanceCompare() {
+
+
+      const a =
+        -rand(
+          5,
+          10
+        );
+
+
+      const b =
+        rand(
+          2,
+          Math.abs(
+            a
+          ) -
+          1
+        );
+
+
+      return choiceQuestion(
+        {
+
+          modeId:
+            "absolute",
+
+          family:
+            "distanceCompare",
+
+          level:
+            "core",
+
+          label:
+            "距離比較",
+
+          html:
+            `<div class="context-text">` +
+              `A＝${formatNumber(
+                a
+              )}，B＝${formatNumber(
+                b
+              )}。<br>` +
+              `哪一個點離原點比較遠？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  "A 比較遠",
+
+                observe:
+                  `比較離原點的距離，就是比較 |${formatNumber(
+                    a
+                  )}| 與 |${formatNumber(
+                    b
+                  )}|。`,
+
+                think:
+                  "先求兩個數的絕對值。",
+
+                steps:
+                  [
+
+                    `|${formatNumber(
+                      a
+                    )}|＝${Math.abs(
+                      a
+                    )}。`,
+
+                    `|${formatNumber(
+                      b
+                    )}|＝${Math.abs(
+                      b
+                    )}。`,
+
+                    `${Math.abs(
+                      a
+                    )}＞${Math.abs(
+                      b
+                    )}，所以 A 離原點比較遠。`
+                  ],
+
+                why:
+                  "絕對值代表到原點的距離。",
+
+                mistake:
+                  "不要用數值大小直接判斷距離；負數也可能離原點更遠。"
+              }
+            )
+
+        },
+
+        [
+
+          {
+            value:
+              "A",
+
+            text:
+              "A 比較遠"
+          },
+
+          {
+            value:
+              "B",
+
+            text:
+              "B 比較遠"
+          },
+
+          {
+            value:
+              "same",
+
+            text:
+              "一樣遠"
+          },
+
+          {
+            value:
+              "unknown",
+
+            text:
+              "無法判斷"
+          }
+
+        ],
+
+        "A"
+      );
+    }
+
+
+    function generateDistanceFromOrigin() {
+
+
+      const n =
+        pick(
+          [
+            -12,
+            -9,
+            -7,
+            -5,
+            5,
+            7,
+            9,
+            12
+          ]
+        );
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "absolute",
+
+          family:
+            "distanceFromOrigin",
+
+          level:
+            "core",
+
+          label:
+            "數線距離",
+
+          html:
+            `<div class="context-text">` +
+              `數線上某點的坐標是 ${formatNumber(
+                n
+              )}。<br>` +
+              `它和原點相距多少個單位？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    Math.abs(
+                      n
+                    )
+                  ),
+
+                observe:
+                  "題目問的是與原點的距離。",
+
+                think:
+                  `距離就是 |${formatNumber(
+                    n
+                  )}|。`,
+
+                steps:
+                  [
+
+                    `|${formatNumber(
+                      n
+                    )}|＝${Math.abs(
+                      n
+                    )}。`,
+
+                    `所以與原點相距 ${Math.abs(
+                      n
+                    )} 個單位。`
+                  ],
+
+                why:
+                  "絕對值的定義就是與原點的距離。",
+
+                mistake:
+                  "距離不能寫成負數。"
+              }
+            )
+
+        },
+        Math.abs(
+          n
+        )
+      );
+    }
+
+
+    function generateReverseAbsolute() {
+
+
+      const n =
+        rand(
+          2,
+          12
+        );
+
+
+      return choiceQuestion(
+        {
+
+          modeId:
+            "absolute",
+
+          family:
+            "reverseAbsolute",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜由絕對值反推",
+
+          html:
+            `<div class="context-text">` +
+              `某數的絕對值是 ${n}。<br>` +
+              `這個數可能是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  `${n} 或 −${n}`,
+
+                observe:
+                  `絕對值是 ${n}，表示這個數到原點距離為 ${n}。`,
+
+                think:
+                  "原點左右兩側各有一個點距離相同。",
+
+                steps:
+                  [
+
+                    `原點右邊 ${n} 個單位是 ${n}。`,
+
+                    `原點左邊 ${n} 個單位是 −${n}。`,
+
+                    `所以可能是 ${n} 或 −${n}。`
+                  ],
+
+                why:
+                  "互為相反數的兩個數有相同的絕對值。",
+
+                mistake:
+                  `不要只回答 ${n}，負數 −${n} 的絕對值也同樣是 ${n}。`
+              }
+            )
+
+        },
+
+        [
+
+          {
+            value:
+              "both",
+
+            text:
+              `${n} 或 −${n}`
+          },
+
+          {
+            value:
+              "positive",
+
+            text:
+              `只有 ${n}`
+          },
+
+          {
+            value:
+              "negative",
+
+            text:
+              `只有 −${n}`
+          },
+
+          {
+            value:
+              "zero",
+
+            text:
+              "只有 0"
+          }
+
+        ],
+
+        "both"
+      );
+    }
+
+
+    function generateDirectionCondition() {
+
+
+      const n =
+        rand(
+          3,
+          12
+        );
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "absolute",
+
+          family:
+            "directionCondition",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜距離＋方向",
+
+          html:
+            `<div class="context-text">` +
+              `某數與原點距離 ${n} 個單位，` +
+              `而且位於原點左邊。<br>` +
+              `這個數是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  `−${n}`,
+
+                observe:
+                  `距離是 ${n}，所以候選是 ${n} 與 −${n}。`,
+
+                think:
+                  "再利用「位於原點左邊」選出負數。",
+
+                steps:
+                  [
+
+                    `距離 ${n} 個單位的兩個數是 ${n}、−${n}。`,
+
+                    `原點左邊是負方向，所以答案是 −${n}。`
+                  ],
+
+                why:
+                  "絕對值提供距離，方向條件再決定正負。",
+
+                mistake:
+                  "只看到距離時有兩個可能；不要忽略「左邊」這個條件。"
+              }
+            )
+
+        },
+        -n
+      );
+    }
+
+
+    function generateIntegerRange() {
+
+
+      const n =
+        rand(
+          3,
+          6
+        );
+
+
+      const correctArray =
+        Array.from(
+          {
+            length:
+              2 *
+              n -
+              1
+          },
+          (
+            _,
+            i
+          ) =>
+            i -
+            (
+              n -
+              1
+            )
+        );
+
+
+      const includeEnds =
+        Array.from(
+          {
+            length:
+              2 *
+              n +
+              1
+          },
+          (
+            _,
+            i
+          ) =>
+            i -
+            n
+        );
+
+
+      const correctText =
+        correctArray
+          .map(
+            formatNumber
+          )
+          .join(
+            "、"
+          );
+
+
+      return choiceQuestion(
+        {
+
+          modeId:
+            "absolute",
+
+          family:
+            "integerRange",
+
+          level:
+            "reverse",
+
+          label:
+            "逆向題｜符合條件的整數",
+
+          html:
+            `<div class="context-text">` +
+              `哪些整數與原點的距離小於 ${n} 個單位？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  correctText,
+
+                observe:
+                  `距離小於 ${n}，表示不能到達 ±${n}，只能在它們之間。`,
+
+                think:
+                  "從原點向左右各找距離少於 n 的整數點。",
+
+                steps:
+                  [
+
+                    `左邊最遠到 −${n - 1}，右邊最遠到 ${n - 1}。`,
+
+                    "0 也符合，因為它與原點距離是 0。",
+
+                    `所以整數為 ${correctText}。`
+                  ],
+
+                why:
+                  "距離用絕對值理解，但這裡用文字描述，不需要解絕對值不等式。",
+
+                mistake:
+                  `「小於 ${n}」不包含距離剛好等於 ${n} 的 ±${n}。`
+              }
+            )
+
+        },
+
+        [
+
+          {
+            value:
+              "correct",
+
+            text:
+              correctText
+          },
+
+          {
+            value:
+              "includeEnds",
+
+            text:
+              includeEnds
+                .map(
+                  formatNumber
+                )
+                .join(
+                  "、"
+                )
+          },
+
+          {
+            value:
+              "positiveOnly",
+
+            text:
+              [
+                0,
+                ...Array.from(
+                  {
+                    length:
+                      n -
+                      1
+                  },
+                  (
+                    _,
+                    i
+                  ) =>
+                    i +
+                    1
+                )
+              ]
+                .map(
+                  formatNumber
+                )
+                .join(
+                  "、"
+                )
+          },
+
+          {
+            value:
+              "negativeOnly",
+
+            text:
+              [
+                ...Array.from(
+                  {
+                    length:
+                      n -
+                      1
+                  },
+                  (
+                    _,
+                    i
+                  ) =>
+                    -(
+                      n -
+                      1 -
+                      i
+                    )
+                ),
+                0
+              ]
+                .map(
+                  formatNumber
+                )
+                .join(
+                  "、"
+                )
+          }
+
+        ],
+
+        "correct"
+      );
+    }
+
+
+    function generateAbsoluteOpposite() {
+
+
+      const n =
+        rand(
+          3,
+          15
+        );
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "absolute",
+
+          family:
+            "absoluteOpposite",
+
+          level:
+            "twist",
+
+          label:
+            "小變化｜絕對值＋相反數",
+
+          html:
+            `<div class="context-text">` +
+              `|−${n}| 的相反數是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  `−${n}`,
+
+                observe:
+                  "題目要先算絕對值，再求得到的數的相反數。",
+
+                think:
+                  "依題目順序分兩步。",
+
+                steps:
+                  [
+
+                    `|−${n}|＝${n}。`,
+
+                    `${n} 的相反數是 −${n}。`
+                  ],
+
+                why:
+                  "絕對值是在求距離，相反數是在原點另一側找對稱位置。",
+
+                mistake:
+                  `不要做到 |−${n}|＝${n} 就停止，題目還要再求相反數。`
+              }
+            )
+
+        },
+        -n
+      );
+    }
+
+
+    /*
+    ==================================================
+    綜合題
+    ==================================================
+    */
+
+
+    function mixedContextAbsolute() {
+
+
+      const base =
+        60;
+
+
+      const perUnit =
+        2;
+
+
+      const units =
+        pick(
+          [
+            -8,
+            -7,
+            -6,
+            6,
+            7,
+            8
+          ]
+        );
+
+
+      const actual =
+        base +
+        units *
+        perUnit;
+
+
+      const answer =
+        Math.abs(
+          units
+        );
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "mixed",
+
+          family:
+            "contextAbsolute",
+
+          level:
+            "mixed",
+
+          label:
+            "綜合｜情境＋絕對值",
+
+          html:
+            `<div class="context-text">` +
+              `60 分記為 0，70 分記為 +5。<br>` +
+              `小明得到 ${actual} 分，` +
+              `他的「紀錄數的絕對值」是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    answer
+                  ),
+
+                observe:
+                  "先把實際分數換成紀錄數，再求紀錄數的絕對值。",
+
+                think:
+                  "這題有兩個步驟：基準換算 → 絕對值。",
+
+                steps:
+                  [
+
+                    "70−60＝10，10 分對應 5 單位，所以每 2 分是 1 單位。",
+
+                    `${actual}−60＝${actual - 60}，所以紀錄數是 ${signed(
+                      units
+                    )}。`,
+
+                    `|${signed(
+                      units
+                    )}|＝${answer}。`
+                  ],
+
+                why:
+                  "紀錄數先描述相對位置，絕對值再描述它離基準有多遠。",
+
+                mistake:
+                  "不要直接求實際分數的絕對值；題目問的是「紀錄數」的絕對值。"
+              }
+            )
+
+        },
+        answer
+      );
+    }
+
+
+    function mixedOppositeAbsolute() {
+
+
+      const original =
+        pick(
+          [
+            -9,
+            -7,
+            -5,
+            5,
+            7,
+            9
+          ]
+        );
+
+
+      const givenOpposite =
+        -original;
+
+
+      const answer =
+        Math.abs(
+          original
+        );
+
+
+      return numberQuestion(
+        {
+
+          modeId:
+            "mixed",
+
+          family:
+            "oppositeAbsolute",
+
+          level:
+            "mixed",
+
+          label:
+            "綜合｜相反數＋絕對值",
+
+          html:
+            `<div class="context-text">` +
+              `某數的相反數是 ${formatNumber(
+                givenOpposite
+              )}。<br>` +
+              `原來那個數的絕對值是多少？` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  formatNumber(
+                    answer
+                  ),
+
+                observe:
+                  "先由相反數反推原數，再求絕對值。",
+
+                think:
+                  "相反數再取一次相反數會回到原數。",
+
+                steps:
+                  [
+
+                    `${formatNumber(
+                      givenOpposite
+                    )} 的相反數是 ${formatNumber(
+                      original
+                    )}，所以原數是 ${formatNumber(
+                      original
+                    )}。`,
+
+                    `|${formatNumber(
+                      original
+                    )}|＝${answer}。`
+                  ],
+
+                why:
+                  "相反數與絕對值是不同概念：一個看方向，一個看距離。",
+
+                mistake:
+                  "不要把題目給的相反數直接當作原數。"
+              }
+            )
+
+        },
+        answer
+      );
+    }
+
+
+    function mixedDistanceCompare() {
+
+
+      const aDist =
+        rand(
+          5,
+          9
+        );
+
+
+      const a =
+        -aDist;
+
+
+      const b =
+        -rand(
+          1,
+          aDist -
+          1
+        );
+
+
+      return compareQuestion(
+        {
+
+          modeId:
+            "mixed",
+
+          family:
+            "distanceCompareMixed",
+
+          level:
+            "mixed",
+
+          label:
+            "綜合｜距離＋大小",
+
+          html:
+            `<div class="context-text">` +
+              `甲距離原點 ${aDist} 個單位且在原點左側；` +
+              `乙的坐標是 ${formatNumber(
+                b
+              )}。<br>` +
+              `甲 ○ 乙` +
+            `</div>`,
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  "<",
+
+                observe:
+                  `甲先由距離與方向得到坐標 ${formatNumber(
+                    a
+                  )}。`,
+
+                think:
+                  "先找甲的數，再比較兩個負數。",
+
+                steps:
+                  [
+
+                    `甲在左側，所以甲＝${formatNumber(
+                      a
+                    )}。`,
+
+                    `乙＝${formatNumber(
+                      b
+                    )}。`,
+
+                    `${formatNumber(
+                      a
+                    )} 位於 ${formatNumber(
+                      b
+                    )} 左邊，所以 ${formatNumber(
+                      a
+                    )}＜${formatNumber(
+                      b
+                    )}。`
+                  ],
+
+                why:
+                  "先用距離與方向定位，再用數線左右位置比較大小。",
+
+                mistake:
+                  "不要直接比較距離數字；要先把甲轉成真正的坐標。"
+              }
+            )
+
+        },
+        "<"
+      );
+    }
+
+
+    /*
+    ==================================================
+    各模式題組
+    ==================================================
+    */
+
+
+    function createContextQuestions() {
+
+      return shuffle(
+        [
+
+          generateDirectContext(),
+
+          generateDirectContext(),
+
+          generateDirectContext(),
+
+          generateBaselineDifference(),
+
+          generateBaselineDifference(),
+
+          generateZeroConcept(),
+
+          generateScaledBaseline(),
+
+          generateScaledBaseline(),
+
+          generateReversedDirection(),
+
+          generateReverseInference()
+
+        ]
+      );
+    }
+
+
+    function createNumberLineQuestions() {
+
+      return shuffle(
+        [
+
+          generateReadIntegerPoint(),
+
+          generateReadIntegerPoint(),
+
+          generatePlaceIntegerPoint(),
+
+          generateDecimalPoint(),
+
+          generateDecimalPoint(),
+
+          generateFractionPoint(),
+
+          generateScaledTicks(),
+
+          generateScaledTicks(),
+
+          generatePartialLabels(),
+
+          generateNumberLineConcept()
+
+        ]
+      );
+    }
+
+
+    function createCompareQuestions() {
+
+      return shuffle(
+        [
+
+          generateIntegerCompare(),
+
+          generateIntegerCompare(),
+
+          generateNegativeTrap(),
+
+          generateNegativeTrap(),
+
+          generateDecimalCompare(),
+
+          generateFractionEquivalentCompare(),
+
+          generateSortNumbers(),
+
+          generateSortNumbers(),
+
+          generateNumberLineRelation(),
+
+          generateVerbalPosition()
+
+        ]
+      );
+    }
+
+
+    function createOppositeQuestions() {
+
+      return shuffle(
+        [
+
+          generateDirectOpposite(),
+
+          generateDirectOpposite(),
+
+          generateDirectOpposite(),
+
+          generateZeroOpposite(),
+
+          generateDoubleNegativeOpposite(),
+
+          generateDoubleNegativeOpposite(),
+
+          generateReverseOpposite(),
+
+          generateReverseOpposite(),
+
+          generateOriginSymmetry(),
+
+          generateContextReversal()
+
+        ]
+      );
+    }
+
+
+    function createAbsoluteQuestions() {
+
+      return shuffle(
+        [
+
+          generateDirectAbsolute(),
+
+          generateDirectAbsolute(),
+
+          generateDirectAbsolute(),
+
+          generateOutsideNegative(),
+
+          generateDistanceCompare(),
+
+          generateDistanceFromOrigin(),
+
+          generateReverseAbsolute(),
+
+          generateDirectionCondition(),
+
+          generateIntegerRange(),
+
+          generateAbsoluteOpposite()
+
+        ]
+      );
+    }
+
+
+    function cloneForMixed(
+      question,
+      label
+    ) {
+
+      return {
+
+        ...question,
+
+        modeId:
+          "mixed",
+
+        level:
+          "mixed",
+
+        label
+      };
+    }
+
+
+    function createMixedQuestions() {
+
+
+      const baseFive =
+        [
+
+          cloneForMixed(
+            generateScaledBaseline(),
+            "綜合｜正負情境"
+          ),
+
+          cloneForMixed(
+            generatePartialLabels(),
+            "綜合｜數線"
+          ),
+
+          cloneForMixed(
+            generateNegativeTrap(),
+            "綜合｜大小比較"
+          ),
+
+          cloneForMixed(
+            generateDoubleNegativeOpposite(),
+            "綜合｜相反數"
+          ),
+
+          cloneForMixed(
+            generateDirectionCondition(),
+            "綜合｜絕對值"
+          )
+
+        ];
+
+
+      return shuffle(
+        [
+
+          ...baseFive,
+
+          mixedContextAbsolute(),
+
+          mixedOppositeAbsolute(),
+
+          mixedDistanceCompare()
+
+        ]
+      );
+    }
+
+
+    function createQuestions() {
+
+
+      if (
+        mode ===
+        "context"
+      ) {
+
+        return createContextQuestions();
+      }
+
+
+      if (
+        mode ===
+        "numberline"
+      ) {
+
+        return createNumberLineQuestions();
+      }
+
+
+      if (
+        mode ===
+        "compare"
+      ) {
+
+        return createCompareQuestions();
+      }
+
+
+      if (
+        mode ===
+        "opposite"
+      ) {
+
+        return createOppositeQuestions();
+      }
+
+
+      if (
+        mode ===
+        "absolute"
+      ) {
+
+        return createAbsoluteQuestions();
+      }
+
+
+      return createMixedQuestions();
+    }
+
+
+    /*
+    ==================================================
+    數線 SVG
+    ==================================================
+    */
+
+
+    function numberLineSVG(
+      line,
+      pickable =
+        false
+    ) {
+
+
+      const width =
+        760;
+
+
+      const height =
+        150;
+
+
+      const left =
+        50;
+
+
+      const right =
+        710;
+
+
+      const y =
+        72;
+
+
+      const total =
+        line.max -
+        line.min;
+
+
+      const values =
+        [];
+
+
+      for (
+        let value =
+          line.min,
+          guard =
+            0;
+
+        value <=
+          line.max +
+          1e-9 &&
+        guard <
+          100;
+
+        value +=
+          line.step,
+        guard++
+      ) {
+
+        values.push(
+          roundTo(
+            value,
+            6
+          )
+        );
+      }
+
+
+      const xFor =
+        value =>
+          left +
+          (
+            (
+              value -
+              line.min
+            ) /
+            total
+          ) *
+          (
+            right -
+            left
+          );
+
+
+      const labelEvery =
+        line.labelEvery ??
+        1;
+
+
+      const labelValues =
+        line.labelValues ||
+        null;
+
+
+      const tickHTML =
+        values.map(
+          (
+            value,
+            i
+          ) => {
+
+
+            const x =
+              xFor(
+                value
+              );
+
+
+            let shouldLabel =
+              labelValues
+
+                ? labelValues.some(
+                    v =>
+                      Math.abs(
+                        v -
+                        value
+                      ) <
+                      1e-8
+                  )
+
+                : (
+                    i %
+                    labelEvery ===
+                    0
+                  );
+
+
+            if (
+              line.showPoint &&
+              line.hideTargetLabel &&
+              Math.abs(
+                value -
+                line.target
+              ) <
+              1e-8
+            ) {
+
+              shouldLabel =
+                false;
+            }
+
+
+            const label =
+              shouldLabel
+
+                ? `
+                    <text
+                      x="${x}"
+                      y="112"
+                      text-anchor="middle"
+                      font-size="15"
+                      font-weight="700"
+                      fill="#475569"
+                    >
+                      ${escapeHTML(
+                        formatNumber(
+                          value
+                        )
+                      )}
+                    </text>
+                  `
+
+                : "";
+
+
+            const hit =
+              pickable
+
+                ? `
+                    <g
+                      class="line-hit"
+                      data-value="${value}"
+                    >
+
+                      <rect
+                        x="${x - 15}"
+                        y="35"
+                        width="30"
+                        height="70"
+                        fill="transparent"
+                      ></rect>
+
+                      <circle
+                        class="line-hover"
+                        cx="${x}"
+                        cy="${y}"
+                        r="10"
+                        fill="rgba(20,184,166,.18)"
+                      ></circle>
+
+                    </g>
+                  `
+
+                : "";
+
+
+            return `
+              <line
+                x1="${x}"
+                y1="62"
+                x2="${x}"
+                y2="82"
+                stroke="#334155"
+                stroke-width="2"
+              ></line>
+
+              ${label}
+
+              ${hit}
+            `;
+          }
+        )
+          .join(
+            ""
+          );
+
+
+      const point =
+        line.showPoint
+
+          ? `
+              <circle
+                cx="${xFor(
+                  line.target
+                )}"
+                cy="${y}"
+                r="8"
+                fill="#ef4444"
+              ></circle>
+
+              <text
+                x="${xFor(
+                  line.target
+                )}"
+                y="40"
+                text-anchor="middle"
+                font-size="18"
+                font-weight="900"
+                fill="#b91c1c"
+              >
+                A
+              </text>
+            `
+
+          : "";
+
+
+      return `
+
+        <div class="numberline-wrap">
+
+          <svg
+            id="number-line-svg"
+            viewBox="0 0 ${width} ${height}"
+            role="img"
+            aria-label="數線"
+          >
+
+            <defs>
+
+              <marker
+                id="arrowRight"
+                markerWidth="8"
+                markerHeight="8"
+                refX="6"
+                refY="3"
+                orient="auto"
+              >
+                <path
+                  d="M0,0 L0,6 L7,3 z"
+                  fill="#334155"
+                ></path>
+              </marker>
+
+
+              <marker
+                id="arrowLeft"
+                markerWidth="8"
+                markerHeight="8"
+                refX="1"
+                refY="3"
+                orient="auto"
+              >
+                <path
+                  d="M7,0 L7,6 L0,3 z"
+                  fill="#334155"
+                ></path>
+              </marker>
+
+            </defs>
+
+
+            <line
+              x1="36"
+              y1="${y}"
+              x2="724"
+              y2="${y}"
+              stroke="#334155"
+              stroke-width="3"
+              marker-start="url(#arrowLeft)"
+              marker-end="url(#arrowRight)"
+            ></line>
+
+
+            ${tickHTML}
+
+            ${point}
+
+
+            <g id="selected-line-marker"></g>
+
+          </svg>
+
+        </div>
+
+
+        ${
+          pickable
+
+            ? `
+                <div
+                  id="line-selected-message"
+                  class="line-selected-message"
+                >
+                  請點選一個刻度
+                </div>
+              `
+
+            : ""
+        }
+      `;
+    }
+
+
+    function updateLineMarker(
+      line,
+      value
+    ) {
+
+
+      const marker =
+        $(
+          "selected-line-marker"
+        );
+
+
+      const message =
+        $(
+          "line-selected-message"
+        );
+
+
+      if (
+        !marker
+      ) {
+
+        return;
+      }
+
+
+      const left =
+        50;
+
+
+      const right =
+        710;
+
+
+      const y =
+        72;
+
+
+      const x =
+        left +
+        (
+          (
+            value -
+            line.min
+          ) /
+          (
+            line.max -
+            line.min
+          )
+        ) *
+        (
+          right -
+          left
+        );
+
+
+      marker.innerHTML = `
+
+        <circle
+          cx="${x}"
+          cy="${y}"
+          r="9"
+          fill="#0f766e"
+        ></circle>
+
+        <circle
+          cx="${x}"
+          cy="${y}"
+          r="14"
+          fill="none"
+          stroke="#99f6e4"
+          stroke-width="4"
+        ></circle>
+      `;
+
+
+      if (
+        message
+      ) {
+
+        message.textContent =
+          `已選擇：${formatNumber(
+            value
+          )}`;
+      }
+    }
+
+
+    /*
+    ==================================================
+    手機／平板正負號輸入輔助
+    ==================================================
+    */
+
+
+    function numberInputHTML() {
+
+      return `
+
+        <input
+          id="number-answer"
+          class="number-answer"
+          type="text"
+          inputmode="decimal"
+          autocomplete="off"
+          placeholder="輸入答案"
+        >
+
+
+        <div class="sign-helper">
+
+          <button
+            class="sign-helper-button"
+            data-answer-sign="negative"
+            type="button"
+          >
+            − 負號
+          </button>
+
+          <button
+            class="sign-helper-button"
+            data-answer-sign="positive"
+            type="button"
+          >
+            ＋ 正號
+          </button>
+
+        </div>
+      `;
+    }
+
+
+    function bindSignButtons() {
+
+
+      const input =
+        $(
+          "number-answer"
+        );
+
+
+      if (
+        !input
+      ) {
+
+        return;
+      }
+
+
+      document
+        .querySelectorAll(
+          "[data-answer-sign]"
+        )
+        .forEach(
+          button => {
+
+
+            button.addEventListener(
+              "click",
+              () => {
+
+
+                if (
+                  answered
+                ) {
+
+                  return;
+                }
+
+
+                let raw =
+                  input.value
+                    .trim();
+
+
+                raw =
+                  raw.replace(
+                    /^[+-]/,
+                    ""
+                  );
+
+
+                if (
+                  button.dataset
+                    .answerSign ===
+                  "negative"
+                ) {
+
+                  input.value =
+                    `-${raw}`;
+
+                } else {
+
+                  input.value =
+                    raw
+
+                      ? `+${raw}`
+
+                      : "+";
+                }
+
+
+                input.focus();
+              }
+            );
+
+          }
+        );
+    }
+
+
+    /*
+    ==================================================
+    排序作答
+    ==================================================
+    */
+
+
+    function renderSort(
+      question
+    ) {
+
+
+      sortSelected =
+        [];
+
+
+      const selectedIds =
+        new Set();
+
+
+      $(
+        "answer-area"
+      )
+        .innerHTML = `
+
+          <div class="sort-prompt">
+            依序點選數字，排成由小到大的順序。
+          </div>
+
+
+          <div
+            id="sort-result"
+            class="sort-result"
+          ></div>
+
+
+          <div
+            id="sort-pool"
+            class="sort-pool"
+          ></div>
+
+
+          <div class="sort-actions">
+
+            <button
+              id="sort-undo"
+              class="mini-button"
+              type="button"
+            >
+              ↩ 撤回
+            </button>
+
+
+            <button
+              id="sort-reset"
+              class="mini-button"
+              type="button"
+            >
+              🔄 重設
+            </button>
+
+          </div>
+        `;
+
+
+      const redraw =
+        () => {
+
+
+          const pool =
+            $(
+              "sort-pool"
+            );
+
+
+          const result =
+            $(
+              "sort-result"
+            );
+
+
+          result.innerHTML =
+            sortSelected.length
+
+              ? sortSelected.map(
+                  (
+                    id,
+                    i
+                  ) => {
+
+
+                    const item =
+                      question.items
+                        .find(
+                          x =>
+                            x.id ===
+                            id
+                        );
+
+
+                    return `
+                      <span class="sort-result-item">
+
+                        ${
+                          i
+
+                            ? "＜"
+
+                            : ""
+                        }
+
+                        ${escapeHTML(
+                          item.text
+                        )}
+
+                      </span>
+                    `;
+                  }
+                )
+                  .join(
+                    ""
+                  )
+
+              : `
+                  <span
+                    style="
+                      color:#94a3b8;
+                      font-weight:800;
+                    "
+                  >
+                    尚未選擇
+                  </span>
+                `;
+
+
+          pool.innerHTML =
+            question.items
+              .filter(
+                item =>
+                  !selectedIds
+                    .has(
+                      item.id
+                    )
+              )
+              .map(
+                item => `
+
+                  <button
+                    class="sort-chip"
+                    data-sort-id="${escapeHTML(
+                      item.id
+                    )}"
+                    type="button"
+                  >
+                    ${escapeHTML(
+                      item.text
+                    )}
+                  </button>
+                `
+              )
+              .join(
+                ""
+              );
+
+
+          pool
+            .querySelectorAll(
+              "[data-sort-id]"
+            )
+            .forEach(
+              button => {
+
+
+                button.addEventListener(
+                  "click",
+                  () => {
+
+
+                    if (
+                      answered
+                    ) {
+
+                      return;
+                    }
+
+
+                    const id =
+                      button.dataset
+                        .sortId;
+
+
+                    selectedIds
+                      .add(
+                        id
+                      );
+
+
+                    sortSelected
+                      .push(
+                        id
+                      );
+
+
+                    redraw();
+                  }
+                );
+
+              }
+            );
+        };
+
+
+      $(
+        "sort-undo"
+      )
+        .addEventListener(
+          "click",
+          () => {
+
+
+            if (
+              answered ||
+              !sortSelected.length
+            ) {
+
+              return;
+            }
+
+
+            const id =
+              sortSelected
+                .pop();
+
+
+            selectedIds
+              .delete(
+                id
+              );
+
+
+            redraw();
+          }
+        );
+
+
+      $(
+        "sort-reset"
+      )
+        .addEventListener(
+          "click",
+          () => {
+
+
+            if (
+              answered
+            ) {
+
+              return;
+            }
+
+
+            sortSelected =
+              [];
+
+
+            selectedIds
+              .clear();
+
+
+            redraw();
+          }
+        );
+
+
+      redraw();
+    }
+
+
+    /*
+    ==================================================
+    作答區
+    ==================================================
+    */
+
+
+    function renderAnswer(
+      question
+    ) {
+
+
+      selectedChoice =
+        null;
+
+
+      selectedCompare =
+        null;
+
+
+      selectedLineValue =
+        null;
+
+
+      sortSelected =
+        [];
+
+
+      const area =
+        $(
+          "answer-area"
+        );
+
+
+      /*
+      一般數值輸入
+      */
+
+
+      if (
+        question.type ===
+        "number"
+      ) {
+
+        area.innerHTML = `
+
+          ${
+            question.line
+
+              ? numberLineSVG(
+                  question.line,
+                  false
+                )
+
+              : ""
+          }
+
+          ${numberInputHTML()}
+        `;
+
+
+        bindSignButtons();
+
+
+        setTimeout(
+          () =>
+            $(
+              "number-answer"
+            )
+              ?.focus(),
+          0
+        );
+
+
+        return;
+      }
+
+
+      /*
+      選擇題
+      */
+
+
+      if (
+        question.type ===
+        "choice"
+      ) {
+
+        area.innerHTML = `
+
+          <div class="choice-grid">
+
+            ${
+              question.choices
+                .map(
+                  choice => `
+
+                    <button
+                      class="choice-button"
+                      type="button"
+                      data-choice="${escapeHTML(
+                        choice.value
+                      )}"
+                    >
+                      ${escapeHTML(
+                        choice.text
+                      )}
+                    </button>
+                  `
+                )
+                .join(
+                  ""
+                )
+            }
+
+          </div>
+        `;
+
+
+        area
+          .querySelectorAll(
+            "[data-choice]"
+          )
+          .forEach(
+            button => {
+
+
+              button.addEventListener(
+                "click",
+                () => {
+
+
+                  if (
+                    answered
+                  ) {
+
+                    return;
+                  }
+
+
+                  selectedChoice =
+                    button.dataset
+                      .choice;
+
+
+                  area
+                    .querySelectorAll(
+                      "[data-choice]"
+                    )
+                    .forEach(
+                      b =>
+                        b.classList
+                          .remove(
+                            "selected"
+                          )
+                    );
+
+
+                  button.classList
+                    .add(
+                      "selected"
+                    );
+                }
+              );
+
+            }
+          );
+
+
+        return;
+      }
+
+
+      /*
+      ＞＝＜
+      */
+
+
+      if (
+        question.type ===
+        "compare"
+      ) {
+
+        area.innerHTML = `
+
+          <div class="compare-grid">
+
+            <button
+              class="compare-button"
+              data-compare=">"
+              type="button"
+            >
+              ＞
+            </button>
+
+            <button
+              class="compare-button"
+              data-compare="="
+              type="button"
+            >
+              ＝
+            </button>
+
+            <button
+              class="compare-button"
+              data-compare="<"
+              type="button"
+            >
+              ＜
+            </button>
+
+          </div>
+        `;
+
+
+        area
+          .querySelectorAll(
+            "[data-compare]"
+          )
+          .forEach(
+            button => {
+
+
+              button.addEventListener(
+                "click",
+                () => {
+
+
+                  if (
+                    answered
+                  ) {
+
+                    return;
+                  }
+
+
+                  selectedCompare =
+                    button.dataset
+                      .compare;
+
+
+                  area
+                    .querySelectorAll(
+                      "[data-compare]"
+                    )
+                    .forEach(
+                      b =>
+                        b.classList
+                          .remove(
+                            "selected"
+                          )
+                    );
+
+
+                  button.classList
+                    .add(
+                      "selected"
+                    );
+                }
+              );
+
+            }
+          );
+
+
+        return;
+      }
+
+
+      /*
+      點數線
+      */
+
+
+      if (
+        question.type ===
+        "numberlinePick"
+      ) {
+
+        area.innerHTML =
+          numberLineSVG(
+            question.line,
+            true
+          );
+
+
+        area
+          .querySelectorAll(
+            ".line-hit"
+          )
+          .forEach(
+            hit => {
+
+
+              hit.addEventListener(
+                "click",
+                () => {
+
+
+                  if (
+                    answered
+                  ) {
+
+                    return;
+                  }
+
+
+                  selectedLineValue =
+                    Number(
+                      hit.dataset
+                        .value
+                    );
+
+
+                  updateLineMarker(
+                    question.line,
+                    selectedLineValue
+                  );
+                }
+              );
+
+            }
+          );
+
+
+        return;
+      }
+
+
+      /*
+      排序
+      */
+
+
+      if (
+        question.type ===
+        "sort"
+      ) {
+
+        renderSort(
+          question
+        );
+      }
+    }
+
+
+    /*
+    ==================================================
+    顯示題目
+    ==================================================
+    */
+
+
+    function displayQuestion() {
+
+
+      answered =
+        false;
+
+
+      const question =
+        questions[
+          index
+        ];
+
+
+      $(
+        "mode-name"
+      )
+        .textContent =
+          MODES[
+            mode
+          ].name;
+
+
+      $(
+        "question-number"
+      )
+        .textContent =
+          `第 ${index + 1} 題 / 共 ${questions.length} 題`;
+
+
+      $(
+        "correct-count"
+      )
+        .textContent =
+          correct;
+
+
+      $(
+        "combo-count"
+      )
+        .textContent =
+          maxCombo;
+
+
+      $(
+        "progress-bar"
+      )
+        .style
+        .width =
+          `${
+            index /
+            questions.length *
+            100
+          }%`;
+
+
+      $(
+        "question-label"
+      )
+        .textContent =
+          question.label;
+
+
+      $(
+        "question-content"
+      )
+        .innerHTML =
+          question.html;
+
+
+      $(
+        "feedback"
+      )
+        .className =
+          "feedback";
+
+
+      $(
+        "feedback"
+      )
+        .textContent =
+          "";
+
+
+      $(
+        "explanation"
+      )
+        .innerHTML =
+          "";
+
+
+      $(
+        "explanation"
+      )
+        .classList
+        .add(
+          "hidden"
+        );
+
+
+      $(
+        "submit-button"
+      )
+        .classList
+        .remove(
+          "hidden"
+        );
+
+
+      $(
+        "next-button"
+      )
+        .classList
+        .add(
+          "hidden"
+        );
+
+
+      renderAnswer(
+        question
+      );
+
+
+      window
+        .resetGameScratchpad
+        ?.();
+    }
+
+
+    /*
+    ==================================================
+    讀取答案
+    ==================================================
+    */
+
+
+    function readAnswer(
+      question
+    ) {
+
+
+      if (
+        question.type ===
+        "number"
+      ) {
+
+
+        const raw =
+          $(
+            "number-answer"
+          )
+            ?.value
+            .trim() ||
+          "";
+
+
+        if (
+          !/^[-+]?(?:\d+(?:\.\d+)?|\.\d+)$/
+            .test(
+              raw
+            )
+        ) {
+
+          return {
+
+            valid:
+              false,
+
+            message:
+              "請輸入完整的數字答案。"
+          };
+        }
+
+
+        return {
+
+          valid:
+            true,
+
+          value:
+            Number(
+              raw
+            ),
+
+          display:
+            raw.replace(
+              "-",
+              "−"
+            )
+        };
+      }
+
+
+      if (
+        question.type ===
+        "choice"
+      ) {
+
+
+        if (
+          selectedChoice ===
+          null
+        ) {
+
+          return {
+
+            valid:
+              false,
+
+            message:
+              "請先選擇一個答案。"
+          };
+        }
+
+
+        const choice =
+          question.choices
+            .find(
+              x =>
+                String(
+                  x.value
+                ) ===
+                String(
+                  selectedChoice
+                )
+            );
+
+
+        return {
+
+          valid:
+            true,
+
+          value:
+            selectedChoice,
+
+          display:
+            choice?.text ||
+            selectedChoice
+        };
+      }
+
+
+      if (
+        question.type ===
+        "compare"
+      ) {
+
+
+        if (
+          !selectedCompare
+        ) {
+
+          return {
+
+            valid:
+              false,
+
+            message:
+              "請先選擇 ＞、＝ 或 ＜。"
+          };
+        }
+
+
+        return {
+
+          valid:
+            true,
+
+          value:
+            selectedCompare,
+
+          display:
+            selectedCompare
+        };
+      }
+
+
+      if (
+        question.type ===
+        "numberlinePick"
+      ) {
+
+
+        if (
+          selectedLineValue ===
+          null
+        ) {
+
+          return {
+
+            valid:
+              false,
+
+            message:
+              "請先在數線上點選一個位置。"
+          };
+        }
+
+
+        return {
+
+          valid:
+            true,
+
+          value:
+            selectedLineValue,
+
+          display:
+            formatNumber(
+              selectedLineValue
+            )
+        };
+      }
+
+
+      if (
+        question.type ===
+        "sort"
+      ) {
+
+
+        if (
+          sortSelected.length !==
+          question.items.length
+        ) {
+
+          return {
+
+            valid:
+              false,
+
+            message:
+              "請把所有數字都排入順序。"
+          };
+        }
+
+
+        const display =
+          sortSelected
+            .map(
+              id =>
+                question.items
+                  .find(
+                    x =>
+                      x.id ===
+                      id
+                  )
+                  ?.text
+            )
+            .join(
+              " ＜ "
+            );
+
+
+        return {
+
+          valid:
+            true,
+
+          value:
+            [
+              ...sortSelected
+            ],
+
+          display
+        };
+      }
+
+
+      return {
+
+        valid:
+          false,
+
+        message:
+          "目前無法讀取答案。"
+      };
+    }
+
+
+    /*
+    ==================================================
+    判斷答案
+    ==================================================
+    */
+
+
+    function checkCorrect(
+      question,
+      answer
+    ) {
+
+
+      if (
+        question.type ===
+        "number"
+      ) {
+
+        return (
+          Math.abs(
+            Number(
+              answer.value
+            ) -
+            Number(
+              question.answer
+            )
+          ) <
+          1e-8
+        );
+      }
+
+
+      if (
+        question.type ===
+          "choice" ||
+        question.type ===
+          "compare"
+      ) {
+
+        return (
+          String(
+            answer.value
+          ) ===
+          String(
+            question.answer
+          )
+        );
+      }
+
+
+      if (
+        question.type ===
+        "numberlinePick"
+      ) {
+
+        return (
+          Math.abs(
+            Number(
+              answer.value
+            ) -
+            Number(
+              question.answer
+            )
+          ) <
+          1e-8
+        );
+      }
+
+
+      if (
+        question.type ===
+        "sort"
+      ) {
+
+        return (
+          answer.value.length ===
+            question.answer.length &&
+
+          answer.value.every(
+            (
+              value,
+              i
+            ) =>
+              value ===
+              question.answer[
+                i
+              ]
+          )
+        );
+      }
+
+
+      return false;
+    }
+
+
+    /*
+    ==================================================
+    正確答案顯示
+    ==================================================
+    */
+
+
+    function correctAnswerText(
+      question
+    ) {
+
+
+      if (
+        question.answerDisplay
+      ) {
+
+        return question.answerDisplay;
+      }
+
+
+      if (
+        question.type ===
+        "choice"
+      ) {
+
+        return (
+          question.choices
+            .find(
+              x =>
+                String(
+                  x.value
+                ) ===
+                String(
+                  question.answer
+                )
+            )
+            ?.text ||
+          String(
+            question.answer
+          )
+        );
+      }
+
+
+      if (
+        question.type ===
+        "compare"
+      ) {
+
+        return question.answer;
+      }
+
+
+      return formatNumber(
+        question.answer
+      );
+    }
+
+
+    /*
+    ==================================================
+    詳解
+    ==================================================
+    */
+
+
+    function explanationHTML(
+      question
+    ) {
+
+
+      const e =
+        question.explanation;
+
+
+      return `
+
+        <div class="explanation-title">
+          📘 完整詳解
+        </div>
+
+
+        <div class="explanation-block">
+
+          <strong>
+            🎯 正確答案｜
+          </strong>
+
+          ${escapeHTML(
+            e.answer
+          )}
+
+        </div>
+
+
+        <div class="explanation-block">
+
+          <strong>
+            👀 看到什麼｜
+          </strong>
+
+          ${escapeHTML(
+            e.observe
+          )}
+
+        </div>
+
+
+        <div class="explanation-block">
+
+          <strong>
+            💡 先想什麼｜
+          </strong>
+
+          ${escapeHTML(
+            e.think
+          )}
+
+        </div>
+
+
+        <div class="explanation-block">
+
+          <strong>
+            🧮 解題步驟｜
+          </strong>
+
+
+          ${
+            e.steps
+              .map(
+                (
+                  step,
+                  i
+                ) => `
+
+                  <div class="explanation-step">
+
+                    ${i + 1}.
+                    ${escapeHTML(
+                      step
+                    )}
+
+                  </div>
+                `
+              )
+              .join(
+                ""
+              )
+          }
+
+        </div>
+
+
+        <div class="explanation-block">
+
+          <strong>
+            📘 為什麼｜
+          </strong>
+
+          ${escapeHTML(
+            e.why
+          )}
+
+        </div>
+
+
+        <div class="explanation-tip">
+
+          <strong>
+            ⚠️ 易錯提醒｜
+          </strong>
+
+          ${escapeHTML(
+            e.mistake
+          )}
+
+        </div>
+      `;
+    }
+
+
+    function disableAnswerArea() {
+
+
+      $(
+        "answer-area"
+      )
+        .querySelectorAll(
+          "button, input"
+        )
+        .forEach(
+          element => {
+
+            element.disabled =
+              true;
+          }
+        );
+    }
+
+
+    /*
+    ==================================================
+    提交答案
+    ==================================================
+    */
+
+
+    function submitAnswer() {
+
+
+      if (
+        answered
+      ) {
+
+        return;
+      }
+
+
+      const question =
+        questions[
+          index
+        ];
+
+
+      const answer =
+        readAnswer(
+          question
+        );
+
+
+      if (
+        !answer.valid
+      ) {
+
+
+        $(
+          "feedback"
+        )
+          .className =
+            "feedback warning";
+
+
+        $(
+          "feedback"
+        )
+          .textContent =
+            answer.message;
+
+
+        return;
+      }
+
+
+      answered =
+        true;
+
+
+      disableAnswerArea();
+
+
+      const isCorrect =
+        checkCorrect(
+          question,
+          answer
+        );
+
+
+      if (
+        isCorrect
+      ) {
+
+
+        correct++;
+
+
+        combo++;
+
+
+        maxCombo =
+          Math.max(
+            maxCombo,
+            combo
+          );
+
+
+        $(
+          "feedback"
+        )
+          .className =
+            "feedback correct";
+
+
+        $(
+          "feedback"
+        )
+          .textContent =
+            "✨ 回答正確！";
+
+
+        playGameSound(
+          "playCorrect"
+        );
+
+
+      } else {
+
+
+        wrong++;
+
+
+        combo =
+          0;
+
+
+        $(
+          "feedback"
+        )
+          .className =
+            "feedback wrong";
+
+
+        $(
+          "feedback"
+        )
+          .innerHTML = `
+
+            ❌ 答案不正確。正確答案：
+
+            <strong>
+
+              ${escapeHTML(
+                correctAnswerText(
+                  question
+                )
+              )}
+
+            </strong>
+          `;
+
+
+        playGameSound(
+          "playWrong"
+        );
+      }
+
+
+      records.push(
+        {
+
+          number:
+            index +
+            1,
+
+          question,
+
+          userAnswer:
+            answer.display,
+
+          correct:
+            isCorrect
+        }
+      );
+
+
+      $(
+        "correct-count"
+      )
+        .textContent =
+          correct;
+
+
+      $(
+        "combo-count"
+      )
+        .textContent =
+          maxCombo;
+
+
+      $(
+        "explanation"
+      )
+        .innerHTML =
+          explanationHTML(
+            question
+          );
+
+
+      $(
+        "explanation"
+      )
+        .classList
+        .remove(
+          "hidden"
+        );
+
+
+      $(
+        "submit-button"
+      )
+        .classList
+        .add(
+          "hidden"
+        );
+
+
+      $(
+        "next-button"
+      )
+        .classList
+        .remove(
+          "hidden"
+        );
+
+
+      $(
+        "next-button"
+      )
+        .textContent =
+
+          index ===
+            questions.length -
+            1
+
+            ? "查看測驗結果（Enter）"
+
+            : "下一題（Enter）";
+
+
+      $(
+        "next-button"
+      )
+        .focus();
+    }
+
+
+    /*
+    ==================================================
+    下一題
+    ==================================================
+    */
+
+
+    function nextQuestion() {
+
+
+      if (
+        !answered
+      ) {
+
+        return;
+      }
+
+
+      index++;
+
+
+      if (
+        index <
+        questions.length
+      ) {
+
+        displayQuestion();
+
+      } else {
+
+        showResult();
+      }
+    }
+
+
+    /*
+    ==================================================
+    計算時間
+    ==================================================
+    */
+
+
+    function formatTime(
+      seconds
+    ) {
+
+
+      const minutes =
+        Math.floor(
+          seconds /
+          60
+        );
+
+
+      const remain =
+        seconds %
+        60;
+
+
+      return (
+        `${String(
+          minutes
+        )
+          .padStart(
+            2,
+            "0"
+          )}:` +
+
+        `${String(
+          remain
+        )
+          .padStart(
+            2,
+            "0"
+          )}`
+      );
+    }
+
+
+    function stopTimer(
+      update =
+        true
+    ) {
+
+
+      if (
+        timerId !==
+        null
+      ) {
+
+
+        clearInterval(
+          timerId
+        );
+
+
+        timerId =
+          null;
+      }
+
+
+      if (
+        update &&
+        startTime
+      ) {
+
+        elapsed =
+          Math.floor(
+            (
+              Date.now() -
+              startTime
+            ) /
+            1000
+          );
+      }
+    }
+
+
+    function startTimer() {
+
+
+      stopTimer(
+        false
+      );
+
+
+      startTime =
+        Date.now();
+
+
+      elapsed =
+        0;
+
+
+      $(
+        "timer-display"
+      )
+        .textContent =
+          "00:00";
+
+
+      timerId =
+        setInterval(
+          () => {
+
+
+            elapsed =
+              Math.floor(
+                (
+                  Date.now() -
+                  startTime
+                ) /
+                1000
+              );
+
+
+            $(
+              "timer-display"
+            )
+              .textContent =
+                formatTime(
+                  elapsed
+                );
+
+          },
+          500
+        );
+    }
+
+
+    /*
+    ==================================================
+    計算紙
+    ==================================================
+    */
+
+
+    function moveScratchpadButtonToTop() {
+
+
+      const mount =
+        $(
+          "scratchpad-mobile-button"
+        );
+
+
+      const button =
+        $(
+          "scratchpadOpenButton"
+        );
+
+
+      if (
+        mount &&
+        button &&
+        !mount.contains(
+          button
+        )
+      ) {
+
+        mount.appendChild(
+          button
+        );
+      }
+    }
+
+
+    /*
+    ==================================================
+    畫面切換
+    ==================================================
+    */
+
+
+    function showOnly(
+      id
+    ) {
+
+
+      [
+        "start-screen",
+        "quiz-screen",
+        "result-screen",
+        "review-screen"
+      ]
+        .forEach(
+          screen => {
+
+
+            $(
+              screen
+            )
+              .classList
+              .toggle(
+                "hidden",
+                screen !==
+                  id
+              );
+
+          }
+        );
+
+
+      if (
+        id ===
+        "quiz-screen"
+      ) {
+
+
+        moveScratchpadButtonToTop();
+
+
+        window
+          .showGameScratchpadButton
+          ?.();
+
+
+      } else {
+
+
+        window
+          .hideGameScratchpadButton
+          ?.();
+      }
+    }
+
+
+    /*
+    ==================================================
+    開始遊戲
+    ==================================================
+    */
+
+
+    function startGame(
+      selectedMode
+    ) {
+
+
+      stopTimer(
+        false
+      );
+
+
+      mode =
+        selectedMode;
+
+
+      questions =
+        createQuestions();
+
+
+      index =
+        0;
+
+
+      correct =
+        0;
+
+
+      wrong =
+        0;
+
+
+      combo =
+        0;
+
+
+      maxCombo =
+        0;
+
+
+      records =
+        [];
+
+
+      answered =
+        false;
+
+
+      scoreSaved =
+        false;
+
+
+      elapsed =
+        0;
+
+
+      $(
+        "timer-display"
+      )
+        .textContent =
+          "00:00";
+
+
+      $(
+        "save-status"
+      )
+        .textContent =
+          "";
+
+
+      showOnly(
+        "quiz-screen"
+      );
+
+
+      displayQuestion();
+
+
+      startTimer();
+
+
+      playGameSound(
+        "playStart"
+      );
+    }
+
+
+    /*
+    ==================================================
+    成績評語
+    ==================================================
+    */
+
+
+    function rating(
+      score
+    ) {
+
+
+      if (
+        score >=
+        90
+      ) {
+
+        return {
+
+          stars:
+            "★★★★★",
+
+          comment:
+            "太棒了！你已經能靈活運用正負數、數線、相反數與絕對值。"
+        };
+      }
+
+
+      if (
+        score >=
+        80
+      ) {
+
+        return {
+
+          stars:
+            "★★★★☆",
+
+          comment:
+            "表現很好！再留意負數大小、基準換算與多一步的小變化題。"
+        };
+      }
+
+
+      if (
+        score >=
+        60
+      ) {
+
+        return {
+
+          stars:
+            "★★★☆☆",
+
+          comment:
+            "基本觀念已建立，建議查看詳解，把容易混淆的地方再練熟。"
+        };
+      }
+
+
+      return {
+
+        stars:
+          "★★☆☆☆",
+
+        comment:
+          "建議從單一學習模式開始，先把數線、相反數與絕對值的意思弄清楚。"
+      };
+    }
+
+
+    /*
+    ==================================================
+    結果
+    ==================================================
+    */
+
+
+    async function showResult() {
+
+
+      stopTimer();
+
+
+      /*
+      10 題：
+      1題10分
+
+      綜合8題：
+      1題12.5分
+
+      保留一位小數
+      */
+
+
+      const score =
+        Math.round(
+          (
+            correct /
+            questions.length
+          ) *
+          1000
+        ) /
+        10;
+
+
+      const result =
+        rating(
+          score
+        );
+
+
+      showOnly(
+        "result-screen"
+      );
+
+
+      $(
+        "final-score"
+      )
+        .textContent =
+
+          `${
+            Number.isInteger(
+              score
+            )
+
+              ? score
+
+              : score.toFixed(
+                  1
+                )
+          } 分`;
+
+
+      $(
+        "final-stars"
+      )
+        .textContent =
+          result.stars;
+
+
+      $(
+        "final-comment"
+      )
+        .textContent =
+          result.comment;
+
+
+      $(
+        "final-correct"
+      )
+        .textContent =
+          correct;
+
+
+      $(
+        "final-wrong"
+      )
+        .textContent =
+          wrong;
+
+
+      $(
+        "final-combo"
+      )
+        .textContent =
+          maxCombo;
+
+
+      $(
+        "final-time"
+      )
+        .textContent =
+          formatTime(
+            elapsed
+          );
+
+
+      playGameSound(
+        "playComplete"
+      );
+
+
+      await saveCurrentScore(
+        score
+      );
+    }
+
+
+    /*
+    ==================================================
+    Firestore 成績
+    ==================================================
+    */
+
+
+    async function saveCurrentScore(
+      score
+    ) {
+
+
+      if (
+        scoreSaved
+      ) {
+
+        return;
+      }
+
+
+      scoreSaved =
+        true;
+
+
+      const status =
+        $(
+          "save-status"
+        );
+
+
+      status.textContent =
+        "☁️ 正在儲存本次成績……";
+
+
+      status.style.color =
+        "#1d4ed8";
+
+
+      try {
+
+
+        const result =
+          await saveGameScore(
+            {
+
+              game:
+                GAME_ID,
+
+              mode,
+
+              score,
+
+              correctCount:
+                correct,
+
+              wrongCount:
+                wrong,
+
+              maxCombo,
+
+              playTime:
+                elapsed,
+
+              totalQuestions:
+                questions.length
+            }
+          );
+
+
+        if (
+          result.success
+        ) {
+
+
+          status.textContent =
+            "✅ 本次成績已儲存。";
+
+
+          status.style.color =
+            "#15803d";
+
+
+          return;
+        }
+
+
+        if (
+          result.reason ===
+          "not-logged-in"
+        ) {
+
+
+          status.textContent =
+            "ℹ️ 尚未登入，因此本次成績沒有儲存。";
+
+
+          status.style.color =
+            "#b45309";
+
+
+          return;
+        }
+
+
+        status.textContent =
+          "⚠️ 成績暫時無法儲存。";
+
+
+        status.style.color =
+          "#b91c1c";
+
+
+      } catch (
+        error
+      ) {
+
+
+        console.error(
+          "正數與負數成績儲存失敗：",
+          error
+        );
+
+
+        status.textContent =
+          "⚠️ 成績暫時無法儲存。";
+
+
+        status.style.color =
+          "#b91c1c";
+      }
+    }
+
+
+    /*
+    ==================================================
+    本次詳解
+    ==================================================
+    */
+
+
+    function showReview() {
+
+
+      $(
+        "review-list"
+      )
+        .innerHTML =
+          records.map(
+            record => `
+
+              <article
+                class="
+                  review-card
+                  ${
+                    record.correct
+
+                      ? "correct-review"
+
+                      : "wrong-review"
+                  }
+                "
+              >
+
+                <div class="review-title">
+
+                  第 ${record.number} 題
+
+                  ${
+                    record.correct
+
+                      ? "✅"
+
+                      : "❌"
+                  }
+
+                </div>
+
+
+                <div class="review-question">
+
+                  ${record.question.html}
+
+                </div>
+
+
+                <div class="review-answer-line">
+
+                  你的答案：
+
+                  <strong>
+                    ${escapeHTML(
+                      record.userAnswer
+                    )}
+                  </strong>
+
+                </div>
+
+
+                <div class="review-answer-line">
+
+                  正確答案：
+
+                  <strong>
+
+                    ${escapeHTML(
+                      correctAnswerText(
+                        record.question
+                      )
+                    )}
+
+                  </strong>
+
+                </div>
+
+
+                <div class="explanation">
+
+                  ${explanationHTML(
+                    record.question
+                  )}
+
+                </div>
+
+              </article>
+            `
+          )
+          .join(
+            ""
+          );
+
+
+      showOnly(
+        "review-screen"
+      );
+
+
+      window.scrollTo(
+        {
+          top:
+            0,
+
+          behavior:
+            "smooth"
+        }
+      );
+    }
+
+
+    /*
+    ==================================================
+    事件
+    ==================================================
+    */
+
+
+    document
+      .querySelectorAll(
+        "[data-mode]"
+      )
+      .forEach(
+        button => {
+
+
+          button.addEventListener(
+            "click",
+            () => {
+
+
+              startGame(
+                button.dataset
+                  .mode
+              );
+            }
+          );
+
+        }
+      );
+
+
+    $(
+      "submit-button"
+    )
+      .addEventListener(
+        "click",
+        submitAnswer
+      );
+
+
+    $(
+      "next-button"
+    )
+      .addEventListener(
+        "click",
+        nextQuestion
+      );
+
+
+    $(
+      "quit-button"
+    )
+      .addEventListener(
+        "click",
+        () => {
+
+
+          stopTimer();
+
+
+          showOnly(
+            "start-screen"
+          );
+        }
+      );
+
+
+    $(
+      "again-button"
+    )
+      .addEventListener(
+        "click",
+        () => {
+
+
+          startGame(
+            mode
+          );
+        }
+      );
+
+
+    $(
+      "result-mode-button"
+    )
+      .addEventListener(
+        "click",
+        () => {
+
+
+          showOnly(
+            "start-screen"
+          );
+        }
+      );
+
+
+    $(
+      "review-button"
+    )
+      .addEventListener(
+        "click",
+        showReview
+      );
+
+
+    $(
+      "review-again-button"
+    )
+      .addEventListener(
+        "click",
+        () => {
+
+
+          startGame(
+            mode
+          );
+        }
+      );
+
+
+    $(
+      "review-result-button"
+    )
+      .addEventListener(
+        "click",
+        () => {
+
+
+          showOnly(
+            "result-screen"
+          );
+        }
+      );
+
+
+    /*
+    Enter 快捷鍵
+    */
+
+
+    window.addEventListener(
+      "keydown",
+      event => {
+
+
+        if (
+          event.key !==
+          "Enter"
+        ) {
+
+          return;
+        }
+
+
+        if (
+          !$
+          (
+            "quiz-screen"
+          )
+            .classList
+            .contains(
+              "hidden"
+            )
+        ) {
+
+
+          event.preventDefault();
+
+
+          if (
+            answered
+          ) {
+
+            nextQuestion();
+
+          } else {
+
+            submitAnswer();
+          }
+        }
+      }
+    );
+
+
+    window.addEventListener(
+      "beforeunload",
+      () => {
+
+
+        stopTimer(
+          false
+        );
+      }
+    );
+
+
+    /*
+    一開始不要顯示計算紙按鈕
+    */
+
+
+    setTimeout(
+      () => {
+
+
+        window
+          .hideGameScratchpadButton
+          ?.();
+
+      },
+      0
+    );
+
+
+  </script>
+
+</body>
+
+</html>
