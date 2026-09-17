@@ -1,0 +1,9875 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>正負數乘除大挑戰｜數學遊戲樂園</title>
+
+
+<!--
+==================================================
+1-3 專屬 favicon
+× 與 ÷，和 1-1、1-2 不同
+==================================================
+-->
+
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c3aed'/%3E%3Ccircle cx='20' cy='21' r='13' fill='%23f5f3ff'/%3E%3Cpath d='M14 15l12 12M26 15L14 27' stroke='%236d28d9' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='44' cy='21' r='13' fill='%23ecfeff'/%3E%3Ccircle cx='44' cy='14' r='2.7' fill='%230f766e'/%3E%3Ccircle cx='44' cy='28' r='2.7' fill='%230f766e'/%3E%3Cpath d='M37 21h14' stroke='%230f766e' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M13 45h38' stroke='white' stroke-width='3'/%3E%3Cpath d='M22 39v12M42 39v12' stroke='%23fde68a' stroke-width='3'/%3E%3C/svg%3E"
+>
+
+
+<link
+  rel="stylesheet"
+  href="../css/scratchpad.css"
+>
+
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+:root{
+
+  --primary:#7c3aed;
+  --primary-dark:#5b21b6;
+  --primary-light:#f5f3ff;
+  --primary-border:#c4b5fd;
+
+  --teal:#0f766e;
+  --teal-light:#ccfbf1;
+
+  --blue:#2563eb;
+
+  --orange:#ea580c;
+
+  --text:#1e293b;
+  --muted:#64748b;
+
+  --success:#15803d;
+  --danger:#dc2626;
+  --warning:#b45309;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+
+  margin:0;
+
+  min-height:100vh;
+
+  padding:16px;
+
+  color:var(--text);
+
+  font-family:
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif;
+
+  background:
+
+    radial-gradient(
+      circle at 8% 7%,
+      rgba(139,92,246,.20),
+      transparent 30%
+    ),
+
+    radial-gradient(
+      circle at 92% 5%,
+      rgba(20,184,166,.18),
+      transparent 30%
+    ),
+
+    linear-gradient(
+      135deg,
+      #faf5ff,
+      #f8fafc 52%,
+      #ecfeff
+    );
+}
+
+button,
+input{
+  font-family:inherit;
+}
+
+button{
+  touch-action:manipulation;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.page-shell{
+
+  width:min(
+    100%,
+    1050px
+  );
+
+  margin:0 auto;
+}
+
+#commonHeaderMount{
+  margin-bottom:14px;
+}
+
+
+/*
+==================================================
+主卡片
+==================================================
+*/
+
+.game-card{
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    #d8dee8;
+
+  border-top:
+    8px solid
+    var(--primary);
+
+  border-radius:26px;
+
+  background:#fff;
+
+  box-shadow:
+    0 18px 45px
+    rgba(15,23,42,.13);
+}
+
+
+/*
+==================================================
+頁首
+==================================================
+*/
+
+.game-header{
+
+  padding:
+    28px
+    20px
+    22px;
+
+  text-align:center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ede9fe,
+      #ffffff
+    );
+}
+
+.game-title{
+
+  margin:0;
+
+  color:var(--primary-dark);
+
+  font-size:
+    clamp(
+      30px,
+      5vw,
+      44px
+    );
+
+  line-height:1.2;
+}
+
+.game-subtitle{
+
+  max-width:840px;
+
+  margin:12px auto 0;
+
+  color:var(--muted);
+
+  line-height:1.8;
+
+  font-weight:700;
+}
+
+.concept-strip{
+
+  display:flex;
+
+  justify-content:center;
+  flex-wrap:wrap;
+
+  gap:8px;
+
+  margin-top:15px;
+}
+
+.concept-chip{
+
+  padding:
+    7px
+    12px;
+
+  border:
+    1px solid
+    var(--primary-border);
+
+  border-radius:999px;
+
+  background:#fff;
+
+  color:var(--primary-dark);
+
+  font-size:14px;
+  font-weight:900;
+}
+
+.screen{
+  padding:22px;
+}
+
+
+/*
+==================================================
+模式
+==================================================
+*/
+
+.mode-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap:16px;
+}
+
+.mode-card{
+
+  display:flex;
+
+  flex-direction:column;
+
+  min-height:235px;
+
+  padding:21px;
+
+  border:
+    2px solid
+    #d9e0e9;
+
+  border-radius:20px;
+
+  background:#fff;
+
+  box-shadow:
+    0 8px 22px
+    rgba(15,23,42,.06);
+
+  transition:
+    transform .15s ease,
+    border-color .15s ease,
+    box-shadow .15s ease;
+}
+
+.mode-card:hover{
+
+  transform:
+    translateY(-2px);
+
+  border-color:
+    var(--primary-border);
+
+  box-shadow:
+    0 12px 28px
+    rgba(15,23,42,.10);
+}
+
+.mode-card.speed{
+
+  border-color:#14b8a6;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f0fdfa,
+      #fff
+    );
+}
+
+.mode-card.final{
+
+  border-color:#f59e0b;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fffbeb,
+      #fff
+    );
+}
+
+.mode-icon{
+  font-size:34px;
+}
+
+.mode-title{
+
+  margin:
+    9px 0 6px;
+
+  color:
+    var(--primary-dark);
+
+  font-size:21px;
+  font-weight:900;
+}
+
+.mode-card.speed
+.mode-title{
+  color:#0f766e;
+}
+
+.mode-card.final
+.mode-title{
+  color:#92400e;
+}
+
+.mode-meta{
+
+  display:flex;
+  flex-wrap:wrap;
+
+  gap:7px;
+
+  margin-bottom:10px;
+}
+
+.mode-tag{
+
+  padding:
+    4px 8px;
+
+  border-radius:999px;
+
+  background:#f1f5f9;
+
+  color:#475569;
+
+  font-size:12px;
+  font-weight:900;
+}
+
+.mode-description{
+
+  flex:1;
+
+  margin:
+    0 0 16px;
+
+  color:var(--muted);
+
+  line-height:1.7;
+}
+
+.mode-button,
+.game-button{
+
+  min-height:48px;
+
+  padding:
+    11px
+    18px;
+
+  border:none;
+
+  border-radius:14px;
+
+  color:#fff;
+
+  font-size:16px;
+  font-weight:900;
+
+  cursor:pointer;
+
+  transition:
+    transform .12s ease,
+    filter .12s ease;
+}
+
+.mode-button{
+  background:var(--primary);
+}
+
+.mode-card.speed
+.mode-button{
+  background:#0f766e;
+}
+
+.mode-card.final
+.mode-button{
+  background:#d97706;
+}
+
+.game-button.primary{
+  background:var(--primary);
+}
+
+.game-button.blue{
+  background:var(--blue);
+}
+
+.game-button.secondary{
+  background:#475569;
+}
+
+.game-button.orange{
+  background:#d97706;
+}
+
+.game-button.purple{
+  background:var(--primary);
+}
+
+.mode-button:hover,
+.game-button:hover{
+  filter:brightness(1.04);
+}
+
+.mode-button:active,
+.game-button:active{
+  transform:translateY(2px);
+}
+
+.game-button:disabled{
+  opacity:.48;
+  cursor:not-allowed;
+}
+
+
+/*
+==================================================
+測驗上方
+==================================================
+*/
+
+.quiz-top{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr auto;
+
+  gap:14px;
+
+  align-items:start;
+}
+
+.mode-name{
+
+  color:var(--primary-dark);
+
+  font-size:20px;
+  font-weight:900;
+}
+
+.question-number{
+
+  margin-top:4px;
+
+  color:var(--muted);
+
+  font-size:14px;
+  font-weight:800;
+}
+
+.quiz-stats{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      auto
+    );
+
+  gap:8px;
+}
+
+.stat-pill{
+
+  min-width:86px;
+
+  padding:
+    8px 10px;
+
+  border:
+    1px solid
+    #e2e8f0;
+
+  border-radius:12px;
+
+  background:#f8fafc;
+
+  text-align:center;
+
+  color:#475569;
+
+  font-size:12px;
+  font-weight:800;
+}
+
+.stat-pill strong{
+
+  display:block;
+
+  margin-top:2px;
+
+  color:#0f172a;
+
+  font-size:18px;
+}
+
+.progress-track{
+
+  height:10px;
+
+  margin:
+    16px 0 20px;
+
+  overflow:hidden;
+
+  border-radius:999px;
+
+  background:#e2e8f0;
+}
+
+.progress-bar{
+
+  width:0;
+
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #8b5cf6,
+      #14b8a6
+    );
+
+  transition:
+    width .2s ease;
+}
+
+
+/*
+==================================================
+計算紙
+==================================================
+*/
+
+.scratchpad-row{
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  margin-bottom:10px;
+}
+
+#scratchpad-mobile-button
+#scratchpadOpenButton,
+
+#scratchpad-mobile-button
+.scratchpad-open-button{
+
+  position:static!important;
+
+  inset:auto!important;
+
+  transform:none!important;
+
+  margin:0!important;
+
+  z-index:auto!important;
+}
+
+
+/*
+==================================================
+題目
+==================================================
+*/
+
+.question-card{
+
+  padding:24px;
+
+  border:
+    2px solid
+    #ddd6fe;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #faf5ff,
+      #ffffff
+    );
+}
+
+.question-label{
+
+  margin-bottom:8px;
+
+  color:var(--primary-dark);
+
+  font-size:14px;
+  font-weight:900;
+}
+
+.question-content{
+
+  min-height:105px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+
+  color:#0f172a;
+
+  font-size:
+    clamp(
+      24px,
+      4vw,
+      34px
+    );
+
+  font-weight:900;
+
+  line-height:1.75;
+}
+
+.question-note{
+
+  width:100%;
+
+  font-size:
+    clamp(
+      18px,
+      3vw,
+      25px
+    );
+
+  line-height:1.9;
+}
+
+.math{
+
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    sans-serif;
+}
+
+.math-expression{
+
+  display:inline-block;
+
+  max-width:100%;
+
+  margin:
+    7px 0;
+
+  padding:
+    10px 16px;
+
+  border:
+    1px solid
+    #e2e8f0;
+
+  border-radius:12px;
+
+  background:#fff;
+
+  white-space:nowrap;
+}
+
+.nowrap{
+  display:inline-block;
+  white-space:nowrap;
+}
+
+
+/*
+==================================================
+上下分數
+==================================================
+*/
+
+.math-fraction{
+
+  display:inline-flex;
+
+  flex-direction:column;
+
+  align-items:stretch;
+  justify-content:center;
+
+  min-width:1.45em;
+
+  margin:
+    0 .10em;
+
+  vertical-align:middle;
+
+  line-height:1.02;
+}
+
+.math-fraction-top{
+
+  padding:
+    0 .16em .07em;
+
+  border-bottom:
+    2px solid
+    currentColor;
+
+  text-align:center;
+}
+
+.math-fraction-bottom{
+
+  padding:
+    .07em .16em 0;
+
+  text-align:center;
+}
+
+.fraction-with-sign{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  vertical-align:middle;
+}
+
+
+/*
+==================================================
+答案
+==================================================
+*/
+
+.answer-area{
+  margin-top:20px;
+}
+
+.number-answer{
+
+  display:block;
+
+  width:min(
+    100%,
+    340px
+  );
+
+  margin:0 auto;
+
+  padding:
+    14px 16px;
+
+  border:
+    2px solid
+    #94a3b8;
+
+  border-radius:14px;
+
+  background:#fff;
+
+  color:#0f172a;
+
+  text-align:center;
+
+  font-size:25px;
+  font-weight:900;
+
+  outline:none;
+}
+
+.number-answer:focus{
+
+  border-color:
+    var(--primary);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(124,58,237,.13);
+}
+
+.sign-helper{
+
+  display:flex;
+
+  justify-content:center;
+
+  gap:8px;
+
+  margin-top:9px;
+}
+
+.sign-helper-button{
+
+  min-height:39px;
+
+  padding:
+    7px 15px;
+
+  border:
+    1px solid
+    #cbd5e1;
+
+  border-radius:11px;
+
+  background:#fff;
+
+  color:#334155;
+
+  font-size:15px;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+
+/*
+==================================================
+選擇題
+==================================================
+*/
+
+.choice-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap:10px;
+}
+
+.choice-button{
+
+  min-height:58px;
+
+  padding:
+    11px 14px;
+
+  border:
+    2px solid
+    #cbd5e1;
+
+  border-radius:14px;
+
+  background:#fff;
+
+  color:#1e293b;
+
+  font-size:17px;
+  font-weight:900;
+
+  line-height:1.7;
+
+  cursor:pointer;
+}
+
+.choice-button:hover{
+  border-color:var(--primary);
+}
+
+.choice-button.selected{
+
+  border-color:var(--primary);
+
+  background:var(--primary-light);
+
+  color:var(--primary-dark);
+}
+
+
+/*
+==================================================
+回饋
+==================================================
+*/
+
+.feedback{
+
+  margin-top:16px;
+
+  padding:
+    12px 14px;
+
+  border-radius:13px;
+
+  font-weight:900;
+
+  line-height:1.7;
+}
+
+.feedback:empty{
+  display:none;
+}
+
+.feedback.correct{
+
+  background:#dcfce7;
+
+  color:#166534;
+}
+
+.feedback.wrong{
+
+  background:#fee2e2;
+
+  color:#991b1b;
+}
+
+.feedback.warning{
+
+  background:#fef3c7;
+
+  color:#92400e;
+}
+
+
+/*
+==================================================
+詳解
+==================================================
+*/
+
+.explanation{
+
+  margin-top:16px;
+
+  padding:18px;
+
+  border:
+    2px solid
+    #bfdbfe;
+
+  border-radius:18px;
+
+  background:#eff6ff;
+
+  line-height:1.8;
+}
+
+.explanation-title{
+
+  margin-bottom:12px;
+
+  color:#1e3a8a;
+
+  font-size:19px;
+  font-weight:900;
+}
+
+.explanation-block{
+
+  margin-top:9px;
+
+  padding:
+    10px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .88
+    );
+}
+
+.explanation-block strong{
+  color:#1e40af;
+}
+
+.explanation-step{
+
+  margin:
+    7px 0;
+
+  padding-left:8px;
+
+  border-left:
+    3px solid
+    #93c5fd;
+}
+
+.explanation-tip{
+
+  margin-top:10px;
+
+  padding:
+    10px 12px;
+
+  border-radius:12px;
+
+  background:#fff7ed;
+
+  color:#9a3412;
+}
+
+
+/*
+==================================================
+底部按鈕
+==================================================
+*/
+
+.button-row{
+
+  display:flex;
+
+  justify-content:center;
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-top:18px;
+}
+
+
+/*
+==================================================
+競速
+==================================================
+*/
+
+.speed-banner{
+
+  margin-bottom:14px;
+
+  padding:
+    12px 14px;
+
+  border:
+    1px solid
+    #99f6e4;
+
+  border-radius:14px;
+
+  background:#f0fdfa;
+
+  color:#115e59;
+
+  text-align:center;
+
+  font-weight:900;
+}
+
+
+/*
+==================================================
+結果
+==================================================
+*/
+
+.result-panel{
+  text-align:center;
+}
+
+.result-score{
+
+  margin:
+    16px 0 6px;
+
+  color:var(--orange);
+
+  font-size:56px;
+  font-weight:900;
+}
+
+.result-stars{
+  font-size:31px;
+}
+
+.result-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      1fr
+    );
+
+  gap:10px;
+
+  margin:
+    20px auto;
+}
+
+.result-stat{
+
+  padding:
+    15px 8px;
+
+  border:
+    1px solid
+    #e2e8f0;
+
+  border-radius:15px;
+
+  background:#f8fafc;
+
+  color:#64748b;
+
+  font-weight:800;
+}
+
+.result-stat span{
+
+  color:#0f172a;
+
+  font-size:24px;
+  font-weight:900;
+}
+
+.save-status{
+
+  min-height:25px;
+
+  margin:
+    10px 0;
+
+  font-weight:800;
+}
+
+
+/*
+==================================================
+回顧
+==================================================
+*/
+
+.review-list{
+
+  display:grid;
+
+  gap:14px;
+
+  margin-top:14px;
+}
+
+.review-card{
+
+  padding:16px;
+
+  border:
+    1px solid
+    #dbeafe;
+
+  border-radius:16px;
+
+  background:#fff;
+}
+
+.review-card.correct-review{
+  border-left:
+    6px solid
+    #22c55e;
+}
+
+.review-card.wrong-review{
+  border-left:
+    6px solid
+    #ef4444;
+}
+
+.review-title{
+
+  margin-bottom:8px;
+
+  font-size:17px;
+  font-weight:900;
+}
+
+.review-question{
+
+  margin:
+    8px 0 12px;
+
+  color:#0f172a;
+
+  font-size:18px;
+  font-weight:800;
+
+  line-height:1.8;
+}
+
+.review-answer-line{
+
+  margin:
+    5px 0;
+
+  color:#475569;
+
+  line-height:1.7;
+}
+
+
+/*
+==================================================
+手機／平板
+==================================================
+*/
+
+@media(max-width:760px){
+
+  body{
+    padding:8px;
+  }
+
+  .screen{
+    padding:14px;
+  }
+
+  .game-header{
+    padding:
+      22px 13px 17px;
+  }
+
+  .mode-grid{
+    grid-template-columns:1fr;
+  }
+
+  .mode-card{
+    min-height:0;
+  }
+
+  .quiz-top{
+    grid-template-columns:1fr;
+  }
+
+  .quiz-stats{
+    grid-template-columns:
+      repeat(
+        4,
+        1fr
+      );
+  }
+
+  .stat-pill{
+
+    min-width:0;
+
+    padding:
+      7px 5px;
+  }
+
+  .question-card{
+    padding:
+      16px 12px;
+  }
+
+  .choice-grid{
+    grid-template-columns:1fr;
+  }
+
+  .result-grid{
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+
+  .game-button{
+    flex:
+      1 1 180px;
+  }
+
+}
+
+@media(max-width:460px){
+
+  .quiz-stats{
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+
+  .question-content{
+    font-size:23px;
+  }
+
+  .result-score{
+    font-size:46px;
+  }
+
+}
+
+
+/*
+數學算式過長時允許整塊水平捲動，
+不要把（－12）這類重要資訊拆成兩行。
+*/
+
+.question-content{
+  overflow-x:auto;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-shell">
+
+
+<div id="commonHeaderMount"></div>
+
+
+<main class="game-card">
+
+
+<header class="game-header">
+
+<h1 class="game-title">
+✖️➗ 正負數乘除大挑戰
+</h1>
+
+<p class="game-subtitle">
+
+1-3 正負數的乘除｜
+從乘法符號、連乘、乘法交換律與結合律，
+進入正負數除法、四則運算與分配律。
+每題都有完整詳解，先判斷符號，再進行計算。
+
+</p>
+
+
+<div class="concept-strip">
+
+<span class="concept-chip">
+✖️ 正負數乘法
+</span>
+
+<span class="concept-chip">
+🔗 連乘與負號
+</span>
+
+<span class="concept-chip">
+➗ 正負數除法
+</span>
+
+<span class="concept-chip">
+🧮 四則運算
+</span>
+
+<span class="concept-chip">
+🧠 分配律巧算
+</span>
+
+<span class="concept-chip">
+⚡ 60 秒熟練
+</span>
+
+</div>
+
+</header>
+
+
+<!--
+==================================================
+模式選擇
+==================================================
+-->
+
+<section
+  id="start-screen"
+  class="screen"
+>
+
+<h2>
+選擇挑戰模式
+</h2>
+
+
+<div class="mode-grid">
+
+
+<!-- 1 -->
+
+<article class="mode-card">
+
+<div class="mode-icon">
+✖️
+</div>
+
+<div class="mode-title">
+正負數乘法挑戰
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+
+練習正×正、正×負、負×正、負×負，
+以及 1、－1、0 的特殊乘法與生活情境。
+
+</p>
+
+<button
+  class="mode-button"
+  data-mode="multiplication"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<!-- 2 -->
+
+<article class="mode-card">
+
+<div class="mode-icon">
+🔗
+</div>
+
+<div class="mode-title">
+連乘與乘法規律
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+
+判斷負數個數的奇偶、含 0 的連乘，
+並運用乘法交換律與結合律提升計算效率。
+
+</p>
+
+<button
+  class="mode-button"
+  data-mode="chain"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<!-- 3 -->
+
+<article class="mode-card">
+
+<div class="mode-icon">
+➗
+</div>
+
+<div class="mode-title">
+正負數除法挑戰
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+
+同號、異號、0 作為被除數、
+除數不可為 0，以及乘除互逆的符號判斷。
+
+</p>
+
+<button
+  class="mode-button"
+  data-mode="division"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<!-- 4 -->
+
+<article class="mode-card">
+
+<div class="mode-icon">
+🧮
+</div>
+
+<div class="mode-title">
+正負數四則運算
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+進階學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+
+括號優先、先乘除後加減，
+同級運算由左而右，並加入絕對值與應用問題。
+
+</p>
+
+<button
+  class="mode-button"
+  data-mode="operations"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<!-- 5 -->
+
+<article class="mode-card">
+
+<div class="mode-icon">
+🧠
+</div>
+
+<div class="mode-title">
+分配律與巧算
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+進階學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+
+利用乘法分配律拆開或提取共同因數，
+搭配交換律、結合律完成課本型巧算。
+
+</p>
+
+<button
+  class="mode-button"
+  data-mode="distributive"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<!-- 6 -->
+
+<article class="mode-card speed">
+
+<div class="mode-icon">
+⚡
+</div>
+
+<div class="mode-title">
+乘除快手
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+競速型
+</span>
+
+<span class="mode-tag">
+60 秒
+</span>
+
+</div>
+
+<p class="mode-description">
+
+只練二數正負整數乘除，
+答對立即下一題，訓練符號判斷與基本計算熟練度。
+
+</p>
+
+<button
+  class="mode-button"
+  data-mode="speed"
+  type="button"
+>
+開始競速
+</button>
+
+</article>
+
+
+<!-- 7 -->
+
+<article class="mode-card final">
+
+<div class="mode-icon">
+🏆
+</div>
+
+<div class="mode-title">
+1-3 綜合挑戰
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+綜合型
+</span>
+
+<span class="mode-tag">
+8 題
+</span>
+
+</div>
+
+<p class="mode-description">
+
+乘法、連乘、除法、四則運算、
+分配律與情境題全部整合，
+檢查是否真正掌握 1-3。
+
+</p>
+
+<button
+  class="mode-button"
+  data-mode="comprehensive"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+</div>
+
+</section>
+
+
+<!--
+==================================================
+作答畫面
+==================================================
+-->
+
+<section
+  id="quiz-screen"
+  class="screen hidden"
+>
+
+
+<div class="quiz-top">
+
+
+<div>
+
+<div
+  id="mode-name"
+  class="mode-name"
+></div>
+
+<div
+  id="question-number"
+  class="question-number"
+></div>
+
+</div>
+
+
+<div class="quiz-stats">
+
+
+<div class="stat-pill">
+
+✅ 答對
+
+<strong id="correct-count">
+0
+</strong>
+
+</div>
+
+
+<div class="stat-pill">
+
+🔥 最高連擊
+
+<strong id="combo-count">
+0
+</strong>
+
+</div>
+
+
+<div class="stat-pill">
+
+🎯 分數
+
+<strong id="live-score">
+0
+</strong>
+
+</div>
+
+
+<div class="stat-pill">
+
+⏱️ 時間
+
+<strong id="timer-display">
+00:00
+</strong>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<div class="progress-track">
+
+<div
+  id="progress-bar"
+  class="progress-bar"
+></div>
+
+</div>
+
+
+<div
+  id="speed-banner"
+  class="speed-banner hidden"
+>
+
+⚡ 競速模式：
+60 秒內盡量答對更多題。
+每答對一題＋10 分。
+
+</div>
+
+
+<div class="scratchpad-row">
+
+<div
+  id="scratchpad-mobile-button"
+></div>
+
+</div>
+
+
+<div class="question-card">
+
+
+<div
+  id="question-label"
+  class="question-label"
+></div>
+
+
+<div
+  id="question-content"
+  class="question-content"
+></div>
+
+
+<div
+  id="answer-area"
+  class="answer-area"
+></div>
+
+
+<div
+  id="feedback"
+  class="feedback"
+></div>
+
+
+<div
+  id="explanation"
+  class="explanation hidden"
+></div>
+
+
+<div class="button-row">
+
+
+<button
+  id="submit-button"
+  class="game-button primary"
+  type="button"
+>
+確認答案（Enter）
+</button>
+
+
+<button
+  id="next-button"
+  class="game-button blue hidden"
+  type="button"
+>
+下一題（Enter）
+</button>
+
+
+<button
+  id="quit-button"
+  class="game-button secondary"
+  type="button"
+>
+選擇模式
+</button>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+<!--
+==================================================
+結果
+==================================================
+-->
+
+<section
+  id="result-screen"
+  class="screen hidden result-panel"
+>
+
+<h2>
+🎉 挑戰完成
+</h2>
+
+
+<div
+  id="final-score"
+  class="result-score"
+>
+0 分
+</div>
+
+
+<div
+  id="final-stars"
+  class="result-stars"
+>
+★★★☆☆
+</div>
+
+
+<p id="final-comment"></p>
+
+
+<div class="result-grid">
+
+
+<div class="result-stat">
+
+答對
+<br>
+
+<span id="final-correct">
+0
+</span>
+
+題
+
+</div>
+
+
+<div class="result-stat">
+
+答錯
+<br>
+
+<span id="final-wrong">
+0
+</span>
+
+題
+
+</div>
+
+
+<div class="result-stat">
+
+最高連擊
+<br>
+
+<span id="final-combo">
+0
+</span>
+
+</div>
+
+
+<div class="result-stat">
+
+作答時間
+<br>
+
+<span id="final-time">
+00:00
+</span>
+
+</div>
+
+
+</div>
+
+
+<div
+  id="save-status"
+  class="save-status"
+></div>
+
+
+<div class="button-row">
+
+
+<button
+  id="review-button"
+  class="game-button orange"
+  type="button"
+>
+📖 查看本次詳解
+</button>
+
+
+<button
+  id="again-button"
+  class="game-button purple"
+  type="button"
+>
+🔄 再玩一次
+</button>
+
+
+<button
+  id="result-mode-button"
+  class="game-button secondary"
+  type="button"
+>
+選擇模式
+</button>
+
+
+</div>
+
+</section>
+
+
+<!--
+==================================================
+詳解回顧
+==================================================
+-->
+
+<section
+  id="review-screen"
+  class="screen hidden"
+>
+
+<h2>
+📖 本次詳解
+</h2>
+
+
+<p
+  style="
+    color:#64748b;
+    font-weight:700;
+  "
+>
+
+答對、答錯都保留完整解析。
+競速模式也可以在結束後逐題檢查。
+
+</p>
+
+
+<div
+  id="review-list"
+  class="review-list"
+></div>
+
+
+<div class="button-row">
+
+
+<button
+  id="review-again-button"
+  class="game-button purple"
+  type="button"
+>
+🔄 再玩一次
+</button>
+
+
+<button
+  id="review-result-button"
+  class="game-button secondary"
+  type="button"
+>
+回到測驗結果
+</button>
+
+
+</div>
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<!--
+==================================================
+共用套件
+==================================================
+-->
+
+<script src="../js/common-header.js"></script>
+
+<script src="../js/scratchpad.js"></script>
+
+<script src="../js/scratchpad-template.js"></script>
+
+<script src="../js/sound-manager.js?v=1"></script>
+
+
+<script>
+
+"use strict";
+
+
+/*
+==================================================
+基本設定
+==================================================
+*/
+
+const GAME_ID =
+  "positiveNegativeMultiplyDivide";
+
+
+const MODES = {
+
+
+  multiplication:{
+
+    name:
+      "✖️ 正負數乘法挑戰",
+
+    count:10
+  },
+
+
+  chain:{
+
+    name:
+      "🔗 連乘與乘法規律",
+
+    count:10
+  },
+
+
+  division:{
+
+    name:
+      "➗ 正負數除法挑戰",
+
+    count:10
+  },
+
+
+  operations:{
+
+    name:
+      "🧮 正負數四則運算",
+
+    count:10
+  },
+
+
+  distributive:{
+
+    name:
+      "🧠 分配律與巧算",
+
+    count:10
+  },
+
+
+  speed:{
+
+    name:
+      "⚡ 乘除快手",
+
+    seconds:60
+  },
+
+
+  comprehensive:{
+
+    name:
+      "🏆 1-3 綜合挑戰",
+
+    count:8
+  }
+
+};
+
+
+const $ =
+  id =>
+    document.getElementById(
+      id
+    );
+
+
+/*
+==================================================
+狀態
+==================================================
+*/
+
+let mode =
+  "multiplication";
+
+
+let questions =
+  [];
+
+
+let index =
+  0;
+
+
+let currentQuestion =
+  null;
+
+
+let correct =
+  0;
+
+
+let wrong =
+  0;
+
+
+let combo =
+  0;
+
+
+let maxCombo =
+  0;
+
+
+let records =
+  [];
+
+
+let answered =
+  false;
+
+
+let selectedChoice =
+  null;
+
+
+let startTime =
+  0;
+
+
+let elapsed =
+  0;
+
+
+let timerId =
+  null;
+
+
+let scoreSaved =
+  false;
+
+
+/*
+競速
+*/
+
+let speedRemaining =
+  60;
+
+
+let speedScore =
+  0;
+
+
+let speedAttempts =
+  0;
+
+
+let speedLocked =
+  false;
+
+
+/*
+==================================================
+基本工具
+==================================================
+*/
+
+function rand(
+  min,
+  max
+){
+
+  return (
+    Math.floor(
+      Math.random() *
+      (
+        max -
+        min +
+        1
+      )
+    ) +
+    min
+  );
+}
+
+
+function pick(
+  list
+){
+
+  return list[
+    rand(
+      0,
+      list.length -
+      1
+    )
+  ];
+}
+
+
+function shuffle(
+  list
+){
+
+  const arr =
+    [
+      ...list
+    ];
+
+
+  for(
+    let i =
+      arr.length -
+      1;
+
+    i >
+      0;
+
+    i--
+  ){
+
+    const j =
+      rand(
+        0,
+        i
+      );
+
+
+    [
+      arr[i],
+      arr[j]
+    ] =
+    [
+      arr[j],
+      arr[i]
+    ];
+  }
+
+
+  return arr;
+}
+
+
+function roundTo(
+  value,
+  digits =
+    2
+){
+
+  const p =
+    10 **
+    digits;
+
+
+  return (
+    Math.round(
+      (
+        value +
+        Number.EPSILON
+      ) *
+      p
+    ) /
+    p
+  );
+}
+
+
+function fmt(
+  value
+){
+
+  const n =
+
+    Math.abs(
+      value
+    ) <
+    1e-10
+
+      ? 0
+
+      : roundTo(
+          value,
+          4
+        );
+
+
+  return String(
+    n
+  )
+    .replace(
+      "-",
+      "－"
+    );
+}
+
+
+function esc(
+  value
+){
+
+  return String(
+    value ??
+    ""
+  )
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+}
+
+
+/*
+==================================================
+數學符號
+
+負數作為乘數、除數、加減運算中的一個數，
+一律使用括號。
+==================================================
+*/
+
+function operand(
+  value
+){
+
+  if(
+    value <
+    0
+  ){
+
+    return `（${fmt(
+      value
+    )}）`;
+  }
+
+
+  return fmt(
+    value
+  );
+}
+
+
+function mulExpr(
+  a,
+  b
+){
+
+  return (
+    `${operand(
+      a
+    )}` +
+    `×` +
+    `${operand(
+      b
+    )}`
+  );
+}
+
+
+function divExpr(
+  a,
+  b
+){
+
+  return (
+    `${operand(
+      a
+    )}` +
+    `÷` +
+    `${operand(
+      b
+    )}`
+  );
+}
+
+
+function addExpr(
+  a,
+  b
+){
+
+  return (
+    `${operand(
+      a
+    )}` +
+    `＋` +
+    `${operand(
+      b
+    )}`
+  );
+}
+
+
+function subExpr(
+  a,
+  b
+){
+
+  return (
+    `${operand(
+      a
+    )}` +
+    `－` +
+    `${operand(
+      b
+    )}`
+  );
+}
+
+
+function mulChain(
+  values
+){
+
+  return values
+    .map(
+      (
+        value,
+        i
+      ) => {
+
+        if(
+          i ===
+          0
+        ){
+
+          return operand(
+            value
+          );
+        }
+
+
+        return (
+          `×` +
+          operand(
+            value
+          )
+        );
+      }
+    )
+    .join(
+      ""
+    );
+}
+
+
+function countNegative(
+  values
+){
+
+  return values
+    .filter(
+      value =>
+        value <
+        0
+    )
+    .length;
+}
+
+
+/*
+==================================================
+Rich HTML
+==================================================
+*/
+
+function rich(
+  html
+){
+
+  return {
+    __html:
+      html
+  };
+}
+
+
+function richValue(
+  value
+){
+
+  if(
+    value &&
+    typeof value ===
+      "object" &&
+    Object.prototype
+      .hasOwnProperty
+      .call(
+        value,
+        "__html"
+      )
+  ){
+
+    return value.__html;
+  }
+
+
+  return esc(
+    value
+  );
+}
+
+
+/*
+==================================================
+分數顯示
+
+未來若題目需要分數，
+統一採分子在上、分母在下。
+==================================================
+*/
+
+function gcd(
+  a,
+  b
+){
+
+  a =
+    Math.abs(
+      a
+    );
+
+
+  b =
+    Math.abs(
+      b
+    );
+
+
+  while(
+    b
+  ){
+
+    const t =
+      a %
+      b;
+
+
+    a =
+      b;
+
+
+    b =
+      t;
+  }
+
+
+  return a ||
+    1;
+}
+
+
+function fractionHTML(
+  numerator,
+  denominator
+){
+
+  const factor =
+    gcd(
+      numerator,
+      denominator
+    );
+
+
+  let n =
+    numerator /
+    factor;
+
+
+  let d =
+    denominator /
+    factor;
+
+
+  if(
+    d <
+    0
+  ){
+
+    n =
+      -n;
+
+
+    d =
+      -d;
+  }
+
+
+  const negative =
+    n <
+    0;
+
+
+  n =
+    Math.abs(
+      n
+    );
+
+
+  if(
+    d ===
+    1
+  ){
+
+    return (
+      negative
+
+        ? `－${n}`
+
+        : `${n}`
+    );
+  }
+
+
+  return `
+
+    <span class="fraction-with-sign">
+
+      ${
+        negative
+          ? "－"
+          : ""
+      }
+
+      <span class="math-fraction">
+
+        <span class="math-fraction-top">
+          ${n}
+        </span>
+
+        <span class="math-fraction-bottom">
+          ${d}
+        </span>
+
+      </span>
+
+    </span>
+  `;
+}
+
+
+/*
+==================================================
+詳解
+==================================================
+*/
+
+function makeExplanation(
+  {
+    answer,
+    observe,
+    think,
+    steps,
+    why,
+    mistake
+  }
+){
+
+  return {
+
+    answer,
+    observe,
+    think,
+    steps,
+    why,
+    mistake
+  };
+}
+
+
+/*
+==================================================
+題目物件
+==================================================
+*/
+
+function makeQuestion(
+  data
+){
+
+  return {
+
+    id:
+      `${
+        data.modeId
+      }-${
+        data.family
+      }-${
+        Math.random()
+          .toString(
+            36
+          )
+          .slice(
+            2,
+            9
+          )
+      }`,
+
+    type:
+      "number",
+
+    label:
+      "觀念練習",
+
+    ...data
+  };
+}
+
+
+function numberQuestion(
+  base,
+  answer
+){
+
+  return makeQuestion(
+    {
+
+      ...base,
+
+      type:
+        "number",
+
+      answer
+    }
+  );
+}
+
+
+function choiceQuestion(
+  base,
+  choices,
+  answer
+){
+
+  return makeQuestion(
+    {
+
+      ...base,
+
+      type:
+        "choice",
+
+      choices:
+        shuffle(
+          choices
+        ),
+
+      answer
+    }
+  );
+}
+
+
+/*
+==================================================
+音效
+==================================================
+*/
+
+function playGameSound(
+  method
+){
+
+  try{
+
+    const sound =
+      window.GameSound ||
+      window.MathGameSound;
+
+
+    sound?.[
+      method
+    ]?.();
+
+
+  }catch(
+    error
+  ){
+
+    console.warn(
+      "音效播放失敗：",
+      error
+    );
+  }
+}
+
+
+/*
+==================================================
+模式一
+正負數乘法
+==================================================
+*/
+
+function multiplicationDirect(){
+
+  const pairs =
+    [
+
+      [
+        rand(
+          3,
+          15
+        ),
+
+        rand(
+          2,
+          12
+        )
+      ],
+
+      [
+        -rand(
+          3,
+          15
+        ),
+
+        rand(
+          2,
+          12
+        )
+      ],
+
+      [
+        rand(
+          3,
+          15
+        ),
+
+        -rand(
+          2,
+          12
+        )
+      ],
+
+      [
+        -rand(
+          3,
+          15
+        ),
+
+        -rand(
+          2,
+          12
+        )
+      ]
+
+    ];
+
+
+  const [
+    a,
+    b
+  ] =
+    pick(
+      pairs
+    );
+
+
+  const answer =
+    a *
+    b;
+
+
+  const sameSign =
+    (
+      a >
+      0 &&
+      b >
+      0
+    ) ||
+    (
+      a <
+      0 &&
+      b <
+      0
+    );
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "multiplication",
+
+      family:
+        "direct",
+
+      label:
+        "基本乘法",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${mulExpr(
+            a,
+            b
+          )}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              `${
+                a <
+                0
+
+                  ? "第一個數是負數"
+
+                  : "第一個數是正數"
+              }，${
+                b <
+                0
+
+                  ? "第二個數是負數"
+
+                  : "第二個數是正數"
+              }。`,
+
+            think:
+              sameSign
+
+                ? "兩個同號數相乘，結果為正數。"
+
+                : "兩個異號數相乘，結果為負數。",
+
+            steps:
+              [
+
+                sameSign
+
+                  ? (
+                      a <
+                      0
+
+                        ? "負數乘以負數得到正數。"
+
+                        : "正數乘以正數得到正數。"
+                    )
+
+                  : (
+                      a <
+                      0
+
+                        ? "負數乘以正數得到負數。"
+
+                        : "正數乘以負數得到負數。"
+                    ),
+
+                `先算 ${Math.abs(
+                  a
+                )}×${Math.abs(
+                  b
+                )}＝${Math.abs(
+                  answer
+                )}。`,
+
+                `再加上正確符號，所以答案是 ${fmt(
+                  answer
+                )}。`
+              ],
+
+            why:
+              "正負數相乘時，可以先判斷結果的正負號，再計算兩個絕對值的乘積。",
+
+            mistake:
+              "不要把乘法的符號規則和正負數加法混在一起；乘法看的是兩個因數是否同號。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function multiplicationSpecial(){
+
+  const kind =
+    pick(
+      [
+        "one",
+        "negativeOne",
+        "zero"
+      ]
+    );
+
+
+  const n =
+    pick(
+      [
+        -18,
+        -12,
+        -7,
+        5,
+        9,
+        14
+      ]
+    );
+
+
+  let a;
+  let b;
+  let answer;
+  let think;
+  let why;
+
+
+  if(
+    kind ===
+    "one"
+  ){
+
+    a =
+      1;
+
+    b =
+      n;
+
+    answer =
+      n;
+
+    think =
+      "1 與任何數相乘，乘積就是原來的數。";
+
+    why =
+      "1 是乘法的單位元素，不會改變原來的數。";
+  }
+
+
+  else if(
+    kind ===
+    "negativeOne"
+  ){
+
+    a =
+      -1;
+
+    b =
+      n;
+
+    answer =
+      -n;
+
+    think =
+      "（－1）與任何數相乘，結果是原數的相反數。";
+
+    why =
+      "乘以（－1）會改變方向，但絕對值不變。";
+  }
+
+
+  else{
+
+    a =
+      0;
+
+    b =
+      n;
+
+    answer =
+      0;
+
+    think =
+      "0 與任何數相乘，乘積都是 0。";
+
+    why =
+      "只要乘法算式中有一個因數是 0，整個乘積就是 0。";
+  }
+
+
+  if(
+    Math.random() <
+    .5
+  ){
+
+    [
+      a,
+      b
+    ] =
+    [
+      b,
+      a
+    ];
+  }
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "multiplication",
+
+      family:
+        `special-${kind}`,
+
+      label:
+        "1、－1、0 的乘法",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${mulExpr(
+            a,
+            b
+          )}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              `算式中含有 ${
+                kind ===
+                "one"
+
+                  ? "1"
+
+                  : (
+                      kind ===
+                      "negativeOne"
+
+                        ? "（－1）"
+
+                        : "0"
+                    )
+              }。`,
+
+            think,
+
+            steps:
+              [
+
+                `${mulExpr(
+                  a,
+                  b
+                )}＝${fmt(
+                  answer
+                )}。`
+              ],
+
+            why,
+
+            mistake:
+              kind ===
+              "negativeOne"
+
+                ? "乘以（－1）不是變成絕對值，而是變成相反數。"
+
+                : (
+                    kind ===
+                    "zero"
+
+                      ? "只要有一個因數是 0，就不需要再計算其他因數。"
+
+                      : "乘以 1 不會改變原數。"
+                  )
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function multiplicationSignChoice(){
+
+  const a =
+    pick(
+      [
+        -12,
+        -8,
+        -5,
+        4,
+        7,
+        11
+      ]
+    );
+
+
+  const b =
+    pick(
+      [
+        -9,
+        -3,
+        5,
+        8
+      ]
+    );
+
+
+  const answer =
+    a *
+    b >
+    0
+
+      ? "positive"
+
+      : "negative";
+
+
+  return choiceQuestion(
+    {
+
+      modeId:
+        "multiplication",
+
+      family:
+        "sign",
+
+      label:
+        "先判斷乘積符號",
+
+      html:`
+
+        <div class="question-note">
+
+          不必先算完整乘積，
+
+          判斷
+
+          <br>
+
+          <span class="math math-expression">
+
+            ${mulExpr(
+              a,
+              b
+            )}
+
+          </span>
+
+          <br>
+
+          的結果是哪一類？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              answer ===
+              "positive"
+
+                ? "正數"
+
+                : "負數",
+
+            observe:
+              `兩個因數${
+                (
+                  a >
+                  0 &&
+                  b >
+                  0
+                ) ||
+                (
+                  a <
+                  0 &&
+                  b <
+                  0
+                )
+
+                  ? "同號"
+
+                  : "異號"
+              }。`,
+
+            think:
+              answer ===
+              "positive"
+
+                ? "兩個同號數相乘，結果為正數。"
+
+                : "兩個異號數相乘，結果為負數。",
+
+            steps:
+              [
+
+                answer ===
+                "positive"
+
+                  ? "先判斷符號即可知道結果為正。"
+
+                  : "先判斷符號即可知道結果為負。"
+              ],
+
+            why:
+              "正負數乘法的符號由兩個因數是否同號決定。",
+
+            mistake:
+              "這題不需要先把乘積完整算出來；先判斷符號可以降低錯誤。"
+          }
+        )
+
+    },
+
+    [
+
+      {
+        value:
+          "positive",
+
+        html:
+          "正數"
+      },
+
+      {
+        value:
+          "negative",
+
+        html:
+          "負數"
+      },
+
+      {
+        value:
+          "zero",
+
+        html:
+          "0"
+      }
+
+    ],
+
+    answer
+  );
+}
+
+
+function multiplicationContext(){
+
+  const change =
+    pick(
+      [
+        -2,
+        -3,
+        2,
+        3
+      ]
+    );
+
+
+  const days =
+    rand(
+      2,
+      5
+    );
+
+
+  const answer =
+    change *
+    days;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "multiplication",
+
+      family:
+        "context",
+
+      label:
+        "水位變化情境",
+
+      html:`
+
+        <div class="question-note">
+
+          以今天的水位為基準 0。
+
+          <br>
+
+          水位每天變化
+
+          <strong class="nowrap">
+            ${fmt(
+              change
+            )} 公尺
+          </strong>，
+
+          ${days} 天後相對今天的水位變化是多少公尺？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              `${fmt(
+                answer
+              )} 公尺`,
+
+            observe:
+              `每天變化 ${fmt(
+                change
+              )} 公尺，共持續 ${days} 天。`,
+
+            think:
+              "每天的變化量 × 天數＝總變化量。",
+
+            steps:
+              [
+
+                `${mulExpr(
+                  change,
+                  days
+                )}＝${fmt(
+                  answer
+                )}。`,
+
+                `所以 ${days} 天後相對今天的變化量是 ${fmt(
+                  answer
+                )} 公尺。`
+              ],
+
+            why:
+              "重複相同的變化，可以使用乘法表示。",
+
+            mistake:
+              change <
+              0
+
+                ? "每日變化為負數代表下降，不要漏掉負號。"
+
+                : "正數表示上升，答案的正負號也代表方向。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function createMultiplicationQuestions(){
+
+  return shuffle(
+    [
+
+      multiplicationDirect(),
+
+      multiplicationDirect(),
+
+      multiplicationDirect(),
+
+      multiplicationDirect(),
+
+      multiplicationSpecial(),
+
+      multiplicationSpecial(),
+
+      multiplicationSignChoice(),
+
+      multiplicationSignChoice(),
+
+      multiplicationContext(),
+
+      multiplicationDirect()
+
+    ]
+  );
+}
+
+
+/*
+==================================================
+模式二
+連乘與乘法規律
+==================================================
+*/
+
+function chainSignChoice(){
+
+  const negativeCount =
+    pick(
+      [
+        1,
+        2,
+        3,
+        4
+      ]
+    );
+
+
+  const values =
+    [];
+
+
+  for(
+    let i =
+      0;
+
+    i <
+      4;
+
+    i++
+  ){
+
+    const n =
+      rand(
+        2,
+        8
+      );
+
+
+    values.push(
+      i <
+      negativeCount
+
+        ? -n
+
+        : n
+    );
+  }
+
+
+  const shuffled =
+    shuffle(
+      values
+    );
+
+
+  const answer =
+    negativeCount %
+    2 ===
+    0
+
+      ? "positive"
+
+      : "negative";
+
+
+  return choiceQuestion(
+    {
+
+      modeId:
+        "chain",
+
+      family:
+        "signParity",
+
+      label:
+        "負數個數判斷",
+
+      html:`
+
+        <div class="question-note">
+
+          不用完整計算，
+
+          判斷
+
+          <br>
+
+          <span class="math math-expression">
+
+            ${mulChain(
+              shuffled
+            )}
+
+          </span>
+
+          <br>
+
+          的乘積是正數還是負數？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              answer ===
+              "positive"
+
+                ? "正數"
+
+                : "負數",
+
+            observe:
+              `這個連乘算式共有 ${negativeCount} 個負數。`,
+
+            think:
+              negativeCount %
+              2 ===
+              0
+
+                ? "偶數個負數相乘，乘積為正數。"
+
+                : "奇數個負數相乘，乘積為負數。",
+
+            steps:
+              [
+
+                `先數負數個數：${negativeCount} 個。`,
+
+                `${
+                  negativeCount %
+                  2 ===
+                  0
+
+                    ? `${negativeCount} 是偶數`
+
+                    : `${negativeCount} 是奇數`
+                }。`,
+
+                `所以乘積是 ${
+                  answer ===
+                  "positive"
+
+                    ? "正數"
+
+                    : "負數"
+                }。`
+              ],
+
+            why:
+              "每兩個負號相乘會得到正號，因此負數的個數奇偶能直接決定最後符號。",
+
+            mistake:
+              "判斷連乘符號時是數「負數的個數」，不是數總共有幾個因數。"
+          }
+        )
+
+    },
+
+    [
+
+      {
+        value:
+          "positive",
+
+        html:
+          "正數"
+      },
+
+      {
+        value:
+          "negative",
+
+        html:
+          "負數"
+      },
+
+      {
+        value:
+          "zero",
+
+        html:
+          "0"
+      }
+
+    ],
+
+    answer
+  );
+}
+
+
+function chainCompute(){
+
+  const values =
+    pick(
+      [
+
+        [
+          -2,
+          3,
+          -4
+        ],
+
+        [
+          -3,
+          -2,
+          -5
+        ],
+
+        [
+          2,
+          -4,
+          -3,
+          2
+        ],
+
+        [
+          -2,
+          -3,
+          -4,
+          -1
+        ]
+
+      ]
+    );
+
+
+  const answer =
+    values.reduce(
+      (
+        product,
+        value
+      ) =>
+        product *
+        value,
+      1
+    );
+
+
+  const negatives =
+    countNegative(
+      values
+    );
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "chain",
+
+      family:
+        "compute",
+
+      label:
+        "連乘計算",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${mulChain(
+            values
+          )}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              `共有 ${negatives} 個負數。`,
+
+            think:
+              "先由負數個數決定乘積符號，再計算絕對值的乘積。",
+
+            steps:
+              [
+
+                `${
+                  negatives %
+                  2 ===
+                  0
+
+                    ? "負數有偶數個，所以結果為正。"
+
+                    : "負數有奇數個，所以結果為負。"
+                }`,
+
+                `各因數絕對值的乘積為 ${Math.abs(
+                  answer
+                )}。`,
+
+                `所以答案是 ${fmt(
+                  answer
+                )}。`
+              ],
+
+            why:
+              "連乘時可以先處理符號，再處理數值，較不容易在中途漏掉負號。",
+
+            mistake:
+              "若有很多負數，不要每一步都重新猜符號，可以先數負數的個數。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function chainZero(){
+
+  const values =
+    shuffle(
+      [
+        -rand(
+          2,
+          9
+        ),
+
+        rand(
+          2,
+          8
+        ),
+
+        0,
+
+        -rand(
+          2,
+          7
+        )
+      ]
+    );
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "chain",
+
+      family:
+        "zero",
+
+      label:
+        "含 0 的連乘",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${mulChain(
+            values
+          )}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              "0",
+
+            observe:
+              "連乘算式中出現了 0。",
+
+            think:
+              "任何數乘以 0 都是 0。",
+
+            steps:
+              [
+
+                "先找到因數 0。",
+
+                "只要連乘中有任一因數是 0，整個乘積就是 0。"
+              ],
+
+            why:
+              "0 與任何數相乘都得到 0。",
+
+            mistake:
+              "有 0 時不需要再數負數是奇數個還是偶數個。"
+          }
+        )
+
+    },
+    0
+  );
+}
+
+
+function chainLawChoice(){
+
+  return choiceQuestion(
+    {
+
+      modeId:
+        "chain",
+
+      family:
+        "law",
+
+      label:
+        "乘法交換律與結合律",
+
+      html:`
+
+        <div class="question-note">
+
+          為了方便計算，
+
+          <br>
+
+          <span class="math math-expression">
+
+            （－25）×（－17）×4
+
+          </span>
+
+          <br>
+
+          改寫成
+
+          <br>
+
+          <span class="math math-expression">
+
+            （－25）×4×（－17）
+
+          </span>
+
+          <br>
+
+          主要使用哪一個性質？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              "乘法交換律",
+
+            observe:
+              "只是交換了（－17）與 4 的位置。",
+
+            think:
+              "交換兩個因數的位置而乘積不變，是乘法交換律。",
+
+            steps:
+              [
+
+                "a×b＝b×a。",
+
+                "先算（－25）×4＝－100，比較容易。"
+              ],
+
+            why:
+              "乘法交換律與結合律常用來調整計算順序、提高效率。",
+
+            mistake:
+              "除法沒有交換律；這個性質是乘法才可以使用。"
+          }
+        )
+
+    },
+
+    [
+
+      {
+        value:
+          "commutative",
+
+        html:
+          "乘法交換律"
+      },
+
+      {
+        value:
+          "associative",
+
+        html:
+          "乘法結合律"
+      },
+
+      {
+        value:
+          "distributive",
+
+        html:
+          "乘法分配律"
+      },
+
+      {
+        value:
+          "division",
+
+        html:
+          "除法交換律"
+      }
+
+    ],
+
+    "commutative"
+  );
+}
+
+
+function chainShortcut(){
+
+  const sets =
+    [
+
+      [
+        -25,
+        -17,
+        4
+      ],
+
+      [
+        -125,
+        13,
+        8
+      ],
+
+      [
+        20,
+        31,
+        -50
+      ],
+
+      [
+        -125,
+        69,
+        -4,
+        2
+      ]
+
+    ];
+
+
+  const values =
+    pick(
+      sets
+    );
+
+
+  const answer =
+    values.reduce(
+      (
+        product,
+        value
+      ) =>
+        product *
+        value,
+      1
+    );
+
+
+  let rearranged;
+
+
+  if(
+    values.length ===
+    3
+  ){
+
+    if(
+      values.includes(
+        -25
+      )
+    ){
+
+      rearranged =
+        [
+          -25,
+          4,
+          -17
+        ];
+    }
+
+
+    else if(
+      values.includes(
+        -125
+      )
+    ){
+
+      rearranged =
+        [
+          -125,
+          8,
+          13
+        ];
+    }
+
+
+    else{
+
+      rearranged =
+        [
+          20,
+          -50,
+          31
+        ];
+    }
+  }
+
+
+  else{
+
+    rearranged =
+      [
+        -125,
+        -4,
+        2,
+        69
+      ];
+  }
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "chain",
+
+      family:
+        "shortcut",
+
+      label:
+        "交換律與結合律巧算",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${mulChain(
+            values
+          )}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              "題目中有可以先湊成 100、1000 或整齊數字的因數。",
+
+            think:
+              "利用乘法交換律與結合律，把方便的因數先乘。",
+
+            steps:
+              [
+
+                `可重排為 ${mulChain(
+                  rearranged
+                )}。`,
+
+                `依方便的順序計算，最後得到 ${fmt(
+                  answer
+                )}。`
+              ],
+
+            why:
+              "5×2＝10、25×4＝100、125×8＝1000，是常用的乘法巧算組合。",
+
+            mistake:
+              "乘法可以交換因數順序，但每一個因數的正負號都必須跟著保留。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function createChainQuestions(){
+
+  return shuffle(
+    [
+
+      chainSignChoice(),
+
+      chainSignChoice(),
+
+      chainSignChoice(),
+
+      chainCompute(),
+
+      chainCompute(),
+
+      chainCompute(),
+
+      chainZero(),
+
+      chainLawChoice(),
+
+      chainShortcut(),
+
+      chainShortcut()
+
+    ]
+  );
+}
+
+
+/*
+==================================================
+模式三
+正負數除法
+==================================================
+*/
+
+function divisionDirect(){
+
+  const divisor =
+    pick(
+      [
+        2,
+        3,
+        4,
+        5,
+        6,
+        -2,
+        -3,
+        -4,
+        -5,
+        -6
+      ]
+    );
+
+
+  const quotient =
+    pick(
+      [
+        -12,
+        -9,
+        -7,
+        -5,
+        4,
+        6,
+        8,
+        11
+      ]
+    );
+
+
+  const dividend =
+    divisor *
+    quotient;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "division",
+
+      family:
+        "direct",
+
+      label:
+        "基本除法",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${divExpr(
+            dividend,
+            divisor
+          )}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                quotient
+              ),
+
+            observe:
+              `${
+                dividend <
+                0
+
+                  ? "被除數是負數"
+
+                  : "被除數是正數"
+              }，${
+                divisor <
+                0
+
+                  ? "除數是負數"
+
+                  : "除數是正數"
+              }。`,
+
+            think:
+              (
+                dividend >
+                0 &&
+                divisor >
+                0
+              ) ||
+              (
+                dividend <
+                0 &&
+                divisor <
+                0
+              )
+
+                ? "兩個同號數相除，結果為正數。"
+
+                : "兩個異號數相除，結果為負數。",
+
+            steps:
+              [
+
+                (
+                  dividend >
+                  0 &&
+                  divisor >
+                  0
+                ) ||
+                (
+                  dividend <
+                  0 &&
+                  divisor <
+                  0
+                )
+
+                  ? "先判斷：同號相除，商為正。"
+
+                  : "先判斷：異號相除，商為負。",
+
+                `${Math.abs(
+                  dividend
+                )}÷${Math.abs(
+                  divisor
+                )}＝${Math.abs(
+                  quotient
+                )}。`,
+
+                `所以答案是 ${fmt(
+                  quotient
+                )}。`
+              ],
+
+            why:
+              "除法的正負號規則和乘法相同：同號得正、異號得負。",
+
+            mistake:
+              "先判斷符號，再算數值；不要把除法和正負數加減法的規則混在一起。"
+          }
+        )
+
+    },
+    quotient
+  );
+}
+
+
+function divisionZeroDividend(){
+
+  const divisor =
+    pick(
+      [
+        -9,
+        -6,
+        -4,
+        3,
+        5,
+        8
+      ]
+    );
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "division",
+
+      family:
+        "zeroDividend",
+
+      label:
+        "0 作為被除數",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${divExpr(
+            0,
+            divisor
+          )}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              "0",
+
+            observe:
+              "被除數是 0，而且除數不是 0。",
+
+            think:
+              "0 除以任何一個不等於 0 的數，結果都是 0。",
+
+            steps:
+              [
+
+                `${divExpr(
+                  0,
+                  divisor
+                )}＝0。`
+              ],
+
+            why:
+              `因為 0×${operand(
+                divisor
+              )}＝0，所以商是 0。`,
+
+            mistake:
+              "要分清楚「0÷非 0」和「非 0÷0」；除數不能是 0。"
+          }
+        )
+
+    },
+    0
+  );
+}
+
+
+function divisionZeroDivisorConcept(){
+
+  return choiceQuestion(
+    {
+
+      modeId:
+        "division",
+
+      family:
+        "zeroDivisor",
+
+      label:
+        "除數不可為 0",
+
+      html:`
+
+        <div class="question-note">
+
+          下列哪一個除法算式
+
+          <strong>
+            沒有意義
+          </strong>
+          ？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              "18÷0",
+
+            observe:
+              "除法中最重要的限制是除數不能為 0。",
+
+            think:
+              "逐一找出每一個算式的除數。",
+
+            steps:
+              [
+
+                "0÷6＝0，可以計算。",
+
+                "18÷（－3）＝－6，可以計算。",
+
+                "18÷0 的除數是 0，因此沒有意義。"
+              ],
+
+            why:
+              "不存在一個數乘以 0 可以得到非 0 的 18，因此不能把 18 除以 0。",
+
+            mistake:
+              "被除數可以是 0，除數才是不能為 0。"
+          }
+        )
+
+    },
+
+    [
+
+      {
+        value:
+          "a",
+
+        html:
+          "0÷6"
+      },
+
+      {
+        value:
+          "b",
+
+        html:
+          "18÷（－3）"
+      },
+
+      {
+        value:
+          "c",
+
+        html:
+          "18÷0"
+      },
+
+      {
+        value:
+          "d",
+
+        html:
+          "（－18）÷6"
+      }
+
+    ],
+
+    "c"
+  );
+}
+
+
+function divisionSignChoice(){
+
+  const pairs =
+    [
+
+      [
+        -72,
+        -8
+      ],
+
+      [
+        -63,
+        9
+      ],
+
+      [
+        56,
+        -7
+      ],
+
+      [
+        48,
+        6
+      ]
+
+    ];
+
+
+  const [
+    a,
+    b
+  ] =
+    pick(
+      pairs
+    );
+
+
+  const answer =
+    a /
+    b >
+    0
+
+      ? "positive"
+
+      : "negative";
+
+
+  return choiceQuestion(
+    {
+
+      modeId:
+        "division",
+
+      family:
+        "sign",
+
+      label:
+        "先判斷商的符號",
+
+      html:`
+
+        <div class="question-note">
+
+          不必先算完整答案，
+
+          判斷
+
+          <br>
+
+          <span class="math math-expression">
+
+            ${divExpr(
+              a,
+              b
+            )}
+
+          </span>
+
+          <br>
+
+          的商是正數還是負數？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              answer ===
+              "positive"
+
+                ? "正數"
+
+                : "負數",
+
+            observe:
+              `被除數與除數${
+                (
+                  a >
+                  0 &&
+                  b >
+                  0
+                ) ||
+                (
+                  a <
+                  0 &&
+                  b <
+                  0
+                )
+
+                  ? "同號"
+
+                  : "異號"
+              }。`,
+
+            think:
+              answer ===
+              "positive"
+
+                ? "兩個同號數相除，結果為正數。"
+
+                : "兩個異號數相除，結果為負數。",
+
+            steps:
+              [
+
+                `所以商是 ${
+                  answer ===
+                  "positive"
+
+                    ? "正數"
+
+                    : "負數"
+                }。`
+              ],
+
+            why:
+              "除法的符號規則與乘法相同。",
+
+            mistake:
+              "不要因為被除數的數字比較大，就用大小猜正負號。"
+          }
+        )
+
+    },
+
+    [
+
+      {
+        value:
+          "positive",
+
+        html:
+          "正數"
+      },
+
+      {
+        value:
+          "negative",
+
+        html:
+          "負數"
+      },
+
+      {
+        value:
+          "zero",
+
+        html:
+          "0"
+      }
+
+    ],
+
+    answer
+  );
+}
+
+
+function divisionInverse(){
+
+  const quotient =
+    pick(
+      [
+        -8,
+        -6,
+        5,
+        7
+      ]
+    );
+
+
+  const divisor =
+    pick(
+      [
+        -5,
+        -4,
+        3,
+        6
+      ]
+    );
+
+
+  const dividend =
+    quotient *
+    divisor;
+
+
+  return choiceQuestion(
+    {
+
+      modeId:
+        "division",
+
+      family:
+        "inverse",
+
+      label:
+        "乘除互逆",
+
+      html:`
+
+        <div class="question-note">
+
+          已知
+
+          <span class="math math-expression">
+
+            ${mulExpr(
+              quotient,
+              divisor
+            )}
+            ＝
+            ${fmt(
+              dividend
+            )}
+
+          </span>
+
+          <br>
+
+          下列哪一個算式一定正確？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              rich(
+                `${divExpr(
+                  dividend,
+                  divisor
+                )}＝${fmt(
+                  quotient
+                )}`
+              ),
+
+            observe:
+              "乘法和除法互為逆運算。",
+
+            think:
+              "已知 a×b＝c，可以得到 c÷b＝a。",
+
+            steps:
+              [
+
+                rich(
+                  `${mulExpr(
+                    quotient,
+                    divisor
+                  )}＝${fmt(
+                    dividend
+                  )}。`
+                ),
+
+                rich(
+                  `所以 ${divExpr(
+                    dividend,
+                    divisor
+                  )}＝${fmt(
+                    quotient
+                  )}。`
+                )
+              ],
+
+            why:
+              "課本利用乘除互逆的關係建立負數除法。",
+
+            mistake:
+              "這裡是利用乘除互逆，不需要先使用「乘以倒數」的方式。"
+          }
+        )
+
+    },
+
+    [
+
+      {
+        value:
+          "correct",
+
+        html:
+          `${divExpr(
+            dividend,
+            divisor
+          )}＝${fmt(
+            quotient
+          )}`
+      },
+
+      {
+        value:
+          "wrong1",
+
+        html:
+          `${divExpr(
+            divisor,
+            dividend
+          )}＝${fmt(
+            quotient
+          )}`
+      },
+
+      {
+        value:
+          "wrong2",
+
+        html:
+          `${divExpr(
+            dividend,
+            quotient
+          )}＝${fmt(
+            -divisor
+          )}`
+      }
+
+    ],
+
+    "correct"
+  );
+}
+
+
+function createDivisionQuestions(){
+
+  return shuffle(
+    [
+
+      divisionDirect(),
+
+      divisionDirect(),
+
+      divisionDirect(),
+
+      divisionDirect(),
+
+      divisionDirect(),
+
+      divisionZeroDividend(),
+
+      divisionZeroDivisorConcept(),
+
+      divisionSignChoice(),
+
+      divisionSignChoice(),
+
+      divisionInverse()
+
+    ]
+  );
+}
+
+
+/*
+==================================================
+模式四
+四則運算
+==================================================
+*/
+
+function operationsMulFirst(){
+
+  const a =
+    pick(
+      [
+        -8,
+        -5,
+        7,
+        12
+      ]
+    );
+
+
+  const b =
+    pick(
+      [
+        -6,
+        -3,
+        4,
+        5
+      ]
+    );
+
+
+  const c =
+    pick(
+      [
+        -7,
+        -2,
+        3,
+        8
+      ]
+    );
+
+
+  const answer =
+    a *
+    b +
+    c;
+
+
+  const display =
+    `${mulExpr(
+      a,
+      b
+    )}＋${operand(
+      c
+    )}`;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "operations",
+
+      family:
+        "multiplyFirst",
+
+      label:
+        "先乘除後加減",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${display}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              "算式同時有乘法與加法。",
+
+            think:
+              "沒有括號時，先做乘除，再做加減。",
+
+            steps:
+              [
+
+                `${mulExpr(
+                  a,
+                  b
+                )}＝${fmt(
+                  a *
+                  b
+                )}。`,
+
+                `${operand(
+                  a *
+                  b
+                )}＋${operand(
+                  c
+                )}＝${fmt(
+                  answer
+                )}。`
+              ],
+
+            why:
+              "四則運算有固定的優先順序，乘除要先於加減。",
+
+            mistake:
+              "不能直接從左到右先做最前面的加減，必須先找乘除。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function operationsLeftToRight(){
+
+  const sets =
+    [
+
+      [
+        -36,
+        -18,
+        2
+      ],
+
+      [
+        -48,
+        6,
+        -3
+      ],
+
+      [
+        72,
+        -9,
+        -4
+      ]
+
+    ];
+
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    pick(
+      sets
+    );
+
+
+  const first =
+    a /
+    b;
+
+
+  const answer =
+    first /
+    c;
+
+
+  const display =
+    `${divExpr(
+      a,
+      b
+    )}÷${operand(
+      c
+    )}`;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "operations",
+
+      family:
+        "leftToRight",
+
+      label:
+        "同級運算由左而右",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${display}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              "這個算式只有除法，屬於同一級運算。",
+
+            think:
+              "同級的乘除運算要由左而右。",
+
+            steps:
+              [
+
+                `${divExpr(
+                  a,
+                  b
+                )}＝${fmt(
+                  first
+                )}。`,
+
+                `${operand(
+                  first
+                )}÷${operand(
+                  c
+                )}＝${fmt(
+                  answer
+                )}。`
+              ],
+
+            why:
+              "乘法與除法同級，若沒有括號指定順序，就依出現順序由左往右。",
+
+            mistake:
+              `不要先算 ${divExpr(
+                b,
+                c
+              )}；這會改變原來算式的意義。`
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function operationsParentheses(){
+
+  const sets =
+    [
+
+      {
+        a:
+          35,
+
+        b:
+          25,
+
+        c:
+          -7,
+
+        d:
+          2
+      },
+
+      {
+        a:
+          42,
+
+        b:
+          36,
+
+        c:
+          -8,
+
+        d:
+          2
+      },
+
+      {
+        a:
+          -18,
+
+        b:
+          24,
+
+        c:
+          -5,
+
+        d:
+          1
+      }
+
+    ];
+
+
+  const q =
+    pick(
+      sets
+    );
+
+
+  const inside =
+    q.c +
+    q.d;
+
+
+  const answer =
+    q.a +
+    q.b /
+    inside;
+
+
+  /*
+  群組本身使用小括號。
+  因為第一項為負數時，
+  直接依課本形式寫成（－7＋2），
+  避免出現不必要的雙層括號。
+  */
+
+  const insideDisplay =
+    `（${fmt(
+      q.c
+    )}＋${fmt(
+      q.d
+    )}）`;
+
+
+  const display =
+    `${operand(
+      q.a
+    )}＋${q.b}÷${insideDisplay}`;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "operations",
+
+      family:
+        "parentheses",
+
+      label:
+        "括號優先",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${display}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              "算式中有小括號。",
+
+            think:
+              "有括號時，先計算括號內，再處理乘除與加減。",
+
+            steps:
+              [
+
+                `${fmt(
+                  q.c
+                )}＋${fmt(
+                  q.d
+                )}＝${fmt(
+                  inside
+                )}。`,
+
+                `原式＝${operand(
+                  q.a
+                )}＋${q.b}÷${operand(
+                  inside
+                )}。`,
+
+                `${q.b}÷${operand(
+                  inside
+                )}＝${fmt(
+                  q.b /
+                  inside
+                )}。`,
+
+                `最後得到 ${fmt(
+                  answer
+                )}。`
+              ],
+
+            why:
+              "括號可以指定運算順序，因此必須優先處理。",
+
+            mistake:
+              "不要跳過括號直接先做外面的除法。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function operationsAbsolute(){
+
+  const a =
+    -rand(
+      3,
+      8
+    );
+
+
+  const b =
+    rand(
+      2,
+      5
+    );
+
+
+  const c =
+    -rand(
+      3,
+      9
+    );
+
+
+  const answer =
+    a *
+    b -
+    Math.abs(
+      c
+    );
+
+
+  const display =
+    `${mulExpr(
+      a,
+      b
+    )}－|${fmt(
+      c
+    )}|`;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "operations",
+
+      family:
+        "absolute",
+
+      label:
+        "絕對值＋四則",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${display}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              "算式同時有絕對值、乘法和減法。",
+
+            think:
+              "先處理絕對值與乘法，再做最後的減法。",
+
+            steps:
+              [
+
+                `|${fmt(
+                  c
+                )}|＝${Math.abs(
+                  c
+                )}。`,
+
+                `${mulExpr(
+                  a,
+                  b
+                )}＝${fmt(
+                  a *
+                  b
+                )}。`,
+
+                `${operand(
+                  a *
+                  b
+                )}－${Math.abs(
+                  c
+                )}＝${fmt(
+                  answer
+                )}。`
+              ],
+
+            why:
+              "絕對值符號與括號都要先處理，再依四則運算順序計算。",
+
+            mistake:
+              "絕對值的結果是距離，所以不會是負數。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function operationsRobot(){
+
+  const start =
+    -rand(
+      3,
+      9
+    );
+
+
+  const positiveMove =
+    3;
+
+
+  const positiveTimes =
+    rand(
+      5,
+      10
+    );
+
+
+  const negativeMove =
+    -2;
+
+
+  const negativeTimes =
+    rand(
+      3,
+      7
+    );
+
+
+  const answer =
+    start +
+    positiveMove *
+    positiveTimes +
+    negativeMove *
+    negativeTimes;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "operations",
+
+      family:
+        "robot",
+
+      label:
+        "應用題｜數線機器人",
+
+      html:`
+
+        <div class="question-note">
+
+          一個機器人起點在
+
+          <span class="nowrap">
+            P（${fmt(
+              start
+            )}）
+          </span>。
+
+          <br>
+
+          按 A 一次往正方向走 ${positiveMove} 單位，
+          按 B 一次往負方向走 ${Math.abs(
+            negativeMove
+          )} 單位。
+
+          <br>
+
+          先按 A ${positiveTimes} 次，
+          再按 B ${negativeTimes} 次，
+
+          最後坐標是多少？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              "起點、正向重複移動與負向重複移動都要計入。",
+
+            think:
+              "重複移動用乘法表示，再把所有位置變化相加。",
+
+            steps:
+              [
+
+                `A 的總位移：${positiveMove}×${positiveTimes}＝${positiveMove * positiveTimes}。`,
+
+                `B 的總位移：${mulExpr(
+                  negativeMove,
+                  negativeTimes
+                )}＝${negativeMove * negativeTimes}。`,
+
+                `最後位置＝${operand(
+                  start
+                )}＋${positiveMove * positiveTimes}＋${operand(
+                  negativeMove *
+                  negativeTimes
+                )}。`,
+
+                `＝${fmt(
+                  answer
+                )}。`
+              ],
+
+            why:
+              "每次相同的移動可以用乘法表示，再利用加法累積所有位移。",
+
+            mistake:
+              "B 是往負方向移動，所以每次位移應以負數表示。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function operationsScore(){
+
+  const red =
+    -3;
+
+
+  const black =
+    2;
+
+
+  const rolls =
+    pick(
+      [
+
+        [
+          2,
+          4,
+          4
+        ],
+
+        [
+          1,
+          3,
+          5
+        ],
+
+        [
+          4,
+          2,
+          6
+        ]
+
+      ]
+    );
+
+
+  const isRed =
+    value =>
+      value ===
+      1 ||
+      value ===
+      4;
+
+
+  const scores =
+    rolls.map(
+      value =>
+        value *
+        (
+          isRed(
+            value
+          )
+
+            ? red
+
+            : black
+        )
+    );
+
+
+  const answer =
+    scores.reduce(
+      (
+        sum,
+        value
+      ) =>
+        sum +
+        value,
+      0
+    );
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "operations",
+
+      family:
+        "score",
+
+      label:
+        "應用題｜正負計分",
+
+      html:`
+
+        <div class="question-note">
+
+          骰子 1 點、4 點為紅色，
+          紅色得分是點數的（－3）倍；
+
+          <br>
+
+          其他點數為黑色，
+          黑色得分是點數的 2 倍。
+
+          <br>
+
+          某生擲出
+
+          <strong>
+            ${rolls.join(
+              "、"
+            )}
+          </strong>，
+
+          總得分是多少？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              `${fmt(
+                answer
+              )} 分`,
+
+            observe:
+              "每一次擲骰子的點數，要先依顏色決定乘以 2 或（－3）。",
+
+            think:
+              "先算每次得分，再把三次得分相加。",
+
+            steps:
+              rolls.map(
+                (
+                  value,
+                  i
+                ) =>
+                  `${value} 點${
+                    isRed(
+                      value
+                    )
+
+                      ? "是紅色"
+
+                      : "是黑色"
+                  }：${mulExpr(
+                    value,
+                    isRed(
+                      value
+                    )
+
+                      ? red
+
+                      : black
+                  )}＝${fmt(
+                    scores[
+                      i
+                    ]
+                  )}。`
+              )
+              .concat(
+                [
+
+                  `總分＝${scores.map(
+                    operand
+                  ).join(
+                    "＋"
+                  )}＝${fmt(
+                    answer
+                  )}。`
+                ]
+              ),
+
+            why:
+              "正負數乘法可以表示獎勵與扣分等相反方向的計分規則。",
+
+            mistake:
+              "紅色點數的點數本身仍是正數，是『得分倍數』為（－3）。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function createOperationsQuestions(){
+
+  return shuffle(
+    [
+
+      operationsMulFirst(),
+
+      operationsMulFirst(),
+
+      operationsMulFirst(),
+
+      operationsLeftToRight(),
+
+      operationsLeftToRight(),
+
+      operationsParentheses(),
+
+      operationsParentheses(),
+
+      operationsAbsolute(),
+
+      operationsRobot(),
+
+      operationsScore()
+
+    ]
+  );
+}
+
+
+/*
+==================================================
+模式五
+分配律與巧算
+==================================================
+*/
+
+function distributiveExpandChoice(){
+
+  const a =
+    pick(
+      [
+        7,
+        12,
+        -5,
+        -8
+      ]
+    );
+
+
+  const b =
+    pick(
+      [
+        -6,
+        4,
+        9
+      ]
+    );
+
+
+  const c =
+    pick(
+      [
+        -3,
+        5,
+        8
+      ]
+    );
+
+
+  const correct =
+    `${mulExpr(
+      a,
+      b
+    )}＋${mulExpr(
+      a,
+      c
+    )}`;
+
+
+  return choiceQuestion(
+    {
+
+      modeId:
+        "distributive",
+
+      family:
+        "expand",
+
+      label:
+        "分配律｜展開",
+
+      html:`
+
+        <div class="question-note">
+
+          下列哪一式與
+
+          <br>
+
+          <span class="math math-expression">
+
+            ${operand(
+              a
+            )}×（${fmt(
+              b
+            )}＋${fmt(
+              c
+            )}）
+
+          </span>
+
+          <br>
+
+          相等？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              rich(
+                correct
+              ),
+
+            observe:
+              "括號外的因數要分別乘括號內的兩項。",
+
+            think:
+              "使用乘法對加法的分配律：a×（b＋c）＝a×b＋a×c。",
+
+            steps:
+              [
+
+                rich(
+                  `${operand(
+                    a
+                  )}×（${fmt(
+                    b
+                  )}＋${fmt(
+                    c
+                  )}）`
+                ),
+
+                rich(
+                  `＝${correct}。`
+                )
+              ],
+
+            why:
+              "乘法對加法具有分配律。",
+
+            mistake:
+              "括號外的數要乘到括號內每一項，不可以只乘第一項。"
+          }
+        )
+
+    },
+
+    [
+
+      {
+        value:
+          "correct",
+
+        html:
+          correct
+      },
+
+      {
+        value:
+          "one",
+
+        html:
+          `${mulExpr(
+            a,
+            b
+          )}＋${fmt(
+            c
+          )}`
+      },
+
+      {
+        value:
+          "wrongSign",
+
+        html:
+          `${mulExpr(
+            a,
+            b
+          )}－${mulExpr(
+            a,
+            c
+          )}`
+      }
+
+    ],
+
+    "correct"
+  );
+}
+
+
+function distributiveFactorChoice(){
+
+  const common =
+    pick(
+      [
+        -39,
+        -14,
+        12,
+        25
+      ]
+    );
+
+
+  const a =
+    pick(
+      [
+        4.5,
+        38,
+        62,
+        89
+      ]
+    );
+
+
+  const b =
+    pick(
+      [
+        5.5,
+        11,
+        38,
+        12
+      ]
+    );
+
+
+  const original =
+    `${mulExpr(
+      common,
+      a
+    )}＋${mulExpr(
+      common,
+      b
+    )}`;
+
+
+  const correct =
+    `${operand(
+      common
+    )}×（${fmt(
+      a
+    )}＋${fmt(
+      b
+    )}）`;
+
+
+  return choiceQuestion(
+    {
+
+      modeId:
+        "distributive",
+
+      family:
+        "factor",
+
+      label:
+        "分配律｜提取共同因數",
+
+      html:`
+
+        <div class="question-note">
+
+          下列哪一個改寫可以讓
+
+          <br>
+
+          <span class="math math-expression">
+
+            ${original}
+
+          </span>
+
+          <br>
+
+          更方便計算？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              rich(
+                correct
+              ),
+
+            observe:
+              `兩項都有共同因數 ${operand(
+                common
+              )}。`,
+
+            think:
+              "利用分配律反過來，把共同因數提出來。",
+
+            steps:
+              [
+
+                rich(
+                  `${original}`
+                ),
+
+                rich(
+                  `＝${correct}。`
+                )
+              ],
+
+            why:
+              "c×a＋c×b＝c×（a＋b），可以把重複的共同因數只計算一次。",
+
+            mistake:
+              "提出共同因數後，括號內必須保留原來兩項的另一個因數。"
+          }
+        )
+
+    },
+
+    [
+
+      {
+        value:
+          "correct",
+
+        html:
+          correct
+      },
+
+      {
+        value:
+          "wrong1",
+
+        html:
+          `${operand(
+            common
+          )}×（${fmt(
+            a
+          )}－${fmt(
+            b
+          )}）`
+      },
+
+      {
+        value:
+          "wrong2",
+
+        html:
+          `${fmt(
+            a
+          )}×（${operand(
+            common
+          )}＋${fmt(
+            b
+          )}）`
+      }
+
+    ],
+
+    "correct"
+  );
+}
+
+
+function distributiveComputeNearHundred(){
+
+  const multiplier =
+    pick(
+      [
+        -14,
+        -37,
+        15,
+        23
+      ]
+    );
+
+
+  const near =
+    pick(
+      [
+        99,
+        199,
+        299
+      ]
+    );
+
+
+  const answer =
+    multiplier *
+    near;
+
+
+  const base =
+    near +
+    1;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "distributive",
+
+      family:
+        "nearHundred",
+
+      label:
+        "分配律巧算｜接近整百",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${mulExpr(
+            multiplier,
+            near
+          )}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              `${near} 可以寫成 ${base}－1。`,
+
+            think:
+              "把接近整百的數拆開，再使用乘法分配律。",
+
+            steps:
+              [
+
+                `${mulExpr(
+                  multiplier,
+                  near
+                )}`,
+
+                `＝${operand(
+                  multiplier
+                )}×（${base}－1）。`,
+
+                `＝${mulExpr(
+                  multiplier,
+                  base
+                )}－${mulExpr(
+                  multiplier,
+                  1
+                )}。`,
+
+                `＝${fmt(
+                  answer
+                )}。`
+              ],
+
+            why:
+              "把 99、199、299 看成整百減 1，可以降低乘法計算量。",
+
+            mistake:
+              "分配時括號內的兩項都要乘到，並保留中間的減號。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function distributiveComputeCommon(){
+
+  const common =
+    -39;
+
+
+  const a =
+    pick(
+      [
+        4.5,
+        62,
+        89
+      ]
+    );
+
+
+  const b =
+
+    a ===
+    4.5
+
+      ? 5.5
+
+      : (
+          a ===
+          62
+
+            ? 38
+
+            : 11
+        );
+
+
+  const answer =
+    common *
+    a +
+    common *
+    b;
+
+
+  const display =
+    `${mulExpr(
+      common,
+      a
+    )}＋${mulExpr(
+      common,
+      b
+    )}`;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "distributive",
+
+      family:
+        "commonFactor",
+
+      label:
+        "分配律巧算｜共同因數",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${display}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              `兩項都含有共同因數 ${operand(
+                common
+              )}。`,
+
+            think:
+              "先提出共同因數，再算括號內比較簡單。",
+
+            steps:
+              [
+
+                `${display}`,
+
+                `＝${operand(
+                  common
+                )}×（${fmt(
+                  a
+                )}＋${fmt(
+                  b
+                )}）。`,
+
+                `＝${operand(
+                  common
+                )}×${fmt(
+                  a +
+                  b
+                )}。`,
+
+                `＝${fmt(
+                  answer
+                )}。`
+              ],
+
+            why:
+              "分配律可以正向展開，也可以反向提出共同因數。",
+
+            mistake:
+              "共同因數本身若為負數，提出後仍然必須保留負號。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function divisionDistributionConcept(){
+
+  return choiceQuestion(
+    {
+
+      modeId:
+        "distributive",
+
+      family:
+        "divisionDistribution",
+
+      label:
+        "觀念判斷｜除法能不能分配",
+
+      html:`
+
+        <div class="question-note">
+
+          下列哪一個等式是正確的？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              "（80＋20）÷4＝80÷4＋20÷4",
+
+            observe:
+              "要注意除法中『誰被除』以及『除數在哪裡』。",
+
+            think:
+              "和或差整體除以同一個數時，可以分別相除；但不能把 a÷（b＋c）拆成 a÷b＋a÷c。",
+
+            steps:
+              [
+
+                "（80＋20）÷4＝100÷4＝25。",
+
+                "80÷4＋20÷4＝20＋5＝25。",
+
+                "所以這兩式相等。",
+
+                "但 80÷［（－2）＋10］ 不等於 80÷（－2）＋80÷10。"
+              ],
+
+            why:
+              "除法沒有像乘法那樣對除數中的加法直接分配。",
+
+            mistake:
+              "不要看到括號就把除號分到括號內每一項；要先確認是哪一種結構。"
+          }
+        )
+
+    },
+
+    [
+
+      {
+        value:
+          "correct",
+
+        html:
+          "（80＋20）÷4＝80÷4＋20÷4"
+      },
+
+      {
+        value:
+          "wrong1",
+
+        html:
+          "80÷（20＋4）＝80÷20＋80÷4"
+      },
+
+      {
+        value:
+          "wrong2",
+
+        html:
+          "60÷（10－5）＝60÷10－60÷5"
+      }
+
+    ],
+
+    "correct"
+  );
+}
+
+
+function createDistributiveQuestions(){
+
+  return shuffle(
+    [
+
+      distributiveExpandChoice(),
+
+      distributiveExpandChoice(),
+
+      distributiveFactorChoice(),
+
+      distributiveFactorChoice(),
+
+      distributiveComputeNearHundred(),
+
+      distributiveComputeNearHundred(),
+
+      distributiveComputeCommon(),
+
+      distributiveComputeCommon(),
+
+      divisionDistributionConcept(),
+
+      divisionDistributionConcept()
+
+    ]
+  );
+}
+
+
+/*
+==================================================
+模式六
+60 秒乘除快手
+==================================================
+*/
+
+function speedQuestion(){
+
+  const isMultiply =
+    Math.random() <
+    .55;
+
+
+  if(
+    isMultiply
+  ){
+
+    const a =
+      pick(
+        [
+          -12,
+          -9,
+          -8,
+          -7,
+          -6,
+          -5,
+          4,
+          6,
+          7,
+          8,
+          9,
+          12
+        ]
+      );
+
+
+    const b =
+      pick(
+        [
+          -9,
+          -8,
+          -6,
+          -5,
+          -4,
+          3,
+          4,
+          5,
+          6,
+          8
+        ]
+      );
+
+
+    const answer =
+      a *
+      b;
+
+
+    return numberQuestion(
+      {
+
+        modeId:
+          "speed",
+
+        family:
+          "speedMultiply",
+
+        label:
+          "60 秒熟練",
+
+        html:`
+
+          <div class="math math-expression">
+
+            ${mulExpr(
+              a,
+              b
+            )}
+            ＝？
+
+          </div>
+        `,
+
+        explanation:
+          makeExplanation(
+            {
+
+              answer:
+                fmt(
+                  answer
+                ),
+
+              observe:
+                "這是兩個正負整數的乘法。",
+
+              think:
+                (
+                  a >
+                  0 &&
+                  b >
+                  0
+                ) ||
+                (
+                  a <
+                  0 &&
+                  b <
+                  0
+                )
+
+                  ? "同號相乘，結果為正。"
+
+                  : "異號相乘，結果為負。",
+
+              steps:
+                [
+
+                  `${mulExpr(
+                    a,
+                    b
+                  )}＝${fmt(
+                    answer
+                  )}。`
+                ],
+
+              why:
+                "先判斷正負號，再進行基本乘法。",
+
+              mistake:
+                "競速時也不能只算數字而忘記正負號。"
+            }
+          )
+
+      },
+      answer
+    );
+  }
+
+
+  const divisor =
+    pick(
+      [
+        -9,
+        -8,
+        -6,
+        -5,
+        -4,
+        3,
+        4,
+        5,
+        6,
+        8
+      ]
+    );
+
+
+  const quotient =
+    pick(
+      [
+        -12,
+        -9,
+        -7,
+        -6,
+        -5,
+        4,
+        5,
+        6,
+        8,
+        9
+      ]
+    );
+
+
+  const dividend =
+    divisor *
+    quotient;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "speed",
+
+      family:
+        "speedDivision",
+
+      label:
+        "60 秒熟練",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${divExpr(
+            dividend,
+            divisor
+          )}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                quotient
+              ),
+
+            observe:
+              "這是兩個正負整數的除法。",
+
+            think:
+              (
+                dividend >
+                0 &&
+                divisor >
+                0
+              ) ||
+              (
+                dividend <
+                0 &&
+                divisor <
+                0
+              )
+
+                ? "同號相除，結果為正。"
+
+                : "異號相除，結果為負。",
+
+            steps:
+              [
+
+                `${divExpr(
+                  dividend,
+                  divisor
+                )}＝${fmt(
+                  quotient
+                )}。`
+              ],
+
+            why:
+              "正負數除法與乘法使用相同的符號判斷原則。",
+
+            mistake:
+              "除數若是負數，題目中要看清楚括號。"
+          }
+        )
+
+    },
+    quotient
+  );
+}
+
+
+/*
+==================================================
+綜合挑戰
+==================================================
+*/
+
+function comprehensiveLongExpression(){
+
+  const answer =
+    (
+      -4
+    ) *
+    (
+      3 -
+      7
+    ) -
+    2 *
+    Math.abs(
+      -12
+    ) /
+    (
+      -3
+    );
+
+
+  const display =
+    `（3－7）×（－4）－2×|（－6）－6|÷（－3）`;
+
+
+  return numberQuestion(
+    {
+
+      modeId:
+        "comprehensive",
+
+      family:
+        "longExpression",
+
+      label:
+        "綜合｜四則＋絕對值",
+
+      html:`
+
+        <div class="math math-expression">
+
+          ${display}
+          ＝？
+
+        </div>
+      `,
+
+      explanation:
+        makeExplanation(
+          {
+
+            answer:
+              fmt(
+                answer
+              ),
+
+            observe:
+              "這題同時有括號、絕對值、乘法、除法與減法。",
+
+            think:
+              "先處理括號與絕對值，再乘除，最後加減。",
+
+            steps:
+              [
+
+                "3－7＝－4。",
+
+                "|（－6）－6|＝|－12|＝12。",
+
+                "原式＝（－4）×（－4）－2×12÷（－3）。",
+
+                "＝16－24÷（－3）。",
+
+                "＝16－（－8）。",
+
+                "＝24。"
+              ],
+
+            why:
+              "只要按照固定的四則運算順序，就能把複雜題拆成數個小步驟。",
+
+            mistake:
+              "乘法與除法同級，要由左而右；不能先做最後看到的除法。"
+          }
+        )
+
+    },
+    answer
+  );
+}
+
+
+function createComprehensiveQuestions(){
+
+  const list =
+    [
+
+      multiplicationDirect(),
+
+      chainSignChoice(),
+
+      chainShortcut(),
+
+      divisionDirect(),
+
+      operationsParentheses(),
+
+      operationsRobot(),
+
+      distributiveComputeCommon(),
+
+      comprehensiveLongExpression()
+
+    ];
+
+
+  return shuffle(
+    list.map(
+      question => {
+
+        return {
+
+          ...question,
+
+          modeId:
+            "comprehensive"
+        };
+      }
+    )
+  );
+}
+
+
+/*
+==================================================
+建立題組
+==================================================
+*/
+
+function createQuestions(){
+
+  switch(
+    mode
+  ){
+
+    case "multiplication":
+
+      return createMultiplicationQuestions();
+
+
+    case "chain":
+
+      return createChainQuestions();
+
+
+    case "division":
+
+      return createDivisionQuestions();
+
+
+    case "operations":
+
+      return createOperationsQuestions();
+
+
+    case "distributive":
+
+      return createDistributiveQuestions();
+
+
+    case "comprehensive":
+
+      return createComprehensiveQuestions();
+
+
+    default:
+
+      return [];
+  }
+}
+
+
+/*
+==================================================
+數字輸入
+==================================================
+*/
+
+function numberInputHTML(){
+
+  return `
+
+    <input
+      id="number-answer"
+      class="number-answer"
+      type="text"
+      inputmode="decimal"
+      autocomplete="off"
+      placeholder="輸入答案"
+    >
+
+
+    <div class="sign-helper">
+
+
+      <button
+        class="sign-helper-button"
+        data-sign="negative"
+        type="button"
+      >
+        － 負號
+      </button>
+
+
+      <button
+        class="sign-helper-button"
+        data-sign="positive"
+        type="button"
+      >
+        ＋ 正號
+      </button>
+
+
+    </div>
+  `;
+}
+
+
+function bindSignButtons(){
+
+  const input =
+    $(
+      "number-answer"
+    );
+
+
+  if(
+    !input
+  ){
+
+    return;
+  }
+
+
+  document
+    .querySelectorAll(
+      "[data-sign]"
+    )
+    .forEach(
+      button => {
+
+
+        button.addEventListener(
+          "click",
+          () => {
+
+
+            if(
+              answered ||
+              speedLocked
+            ){
+
+              return;
+            }
+
+
+            let raw =
+              input.value
+                .trim()
+                .replace(
+                  /^[+\-－]/,
+                  ""
+                );
+
+
+            if(
+              button.dataset
+                .sign ===
+              "negative"
+            ){
+
+              input.value =
+                `-${raw}`;
+            }
+
+
+            else{
+
+              input.value =
+
+                raw
+
+                  ? `+${raw}`
+
+                  : "+";
+            }
+
+
+            input.focus();
+          }
+        );
+
+      }
+    );
+}
+
+
+/*
+==================================================
+畫答案區
+==================================================
+*/
+
+function renderAnswer(
+  question
+){
+
+  selectedChoice =
+    null;
+
+
+  const area =
+    $(
+      "answer-area"
+    );
+
+
+  if(
+    question.type ===
+    "number"
+  ){
+
+    area.innerHTML =
+      numberInputHTML();
+
+
+    bindSignButtons();
+
+
+    setTimeout(
+      () => {
+
+        $(
+          "number-answer"
+        )
+          ?.focus();
+
+      },
+      0
+    );
+
+
+    return;
+  }
+
+
+  if(
+    question.type ===
+    "choice"
+  ){
+
+    area.innerHTML = `
+
+      <div class="choice-grid">
+
+        ${
+          question.choices
+            .map(
+              choice => `
+
+                <button
+                  class="choice-button"
+                  data-choice="${esc(
+                    choice.value
+                  )}"
+                  type="button"
+                >
+
+                  ${
+                    choice.html ??
+                    esc(
+                      choice.text ??
+                      choice.value
+                    )
+                  }
+
+                </button>
+              `
+            )
+            .join(
+              ""
+            )
+        }
+
+      </div>
+    `;
+
+
+    area
+      .querySelectorAll(
+        "[data-choice]"
+      )
+      .forEach(
+        button => {
+
+
+          button.addEventListener(
+            "click",
+            () => {
+
+
+              if(
+                answered ||
+                speedLocked
+              ){
+
+                return;
+              }
+
+
+              selectedChoice =
+                button.dataset
+                  .choice;
+
+
+              area
+                .querySelectorAll(
+                  "[data-choice]"
+                )
+                .forEach(
+                  item => {
+
+                    item.classList
+                      .remove(
+                        "selected"
+                      );
+                  }
+                );
+
+
+              button.classList
+                .add(
+                  "selected"
+                );
+            }
+          );
+
+        }
+      );
+  }
+}
+
+
+/*
+==================================================
+讀取答案
+==================================================
+*/
+
+function readAnswer(
+  question
+){
+
+  if(
+    question.type ===
+    "number"
+  ){
+
+    const raw =
+      $(
+        "number-answer"
+      )
+        ?.value
+        .trim() ||
+      "";
+
+
+    if(
+      !/^[+\-－]?(?:\d+(?:\.\d+)?|\.\d+)$/
+        .test(
+          raw
+        )
+    ){
+
+      return {
+
+        valid:
+          false,
+
+        message:
+          "請輸入完整的數字答案。"
+      };
+    }
+
+
+    const normalized =
+      raw.replace(
+        "－",
+        "-"
+      );
+
+
+    const value =
+      Number(
+        normalized
+      );
+
+
+    return {
+
+      valid:
+        true,
+
+      value,
+
+      display:
+        fmt(
+          value
+        ),
+
+      displayHTML:
+        esc(
+          fmt(
+            value
+          )
+        )
+    };
+  }
+
+
+  if(
+    question.type ===
+    "choice"
+  ){
+
+    if(
+      selectedChoice ===
+      null
+    ){
+
+      return {
+
+        valid:
+          false,
+
+        message:
+          "請先選擇一個答案。"
+      };
+    }
+
+
+    const selected =
+      question.choices
+        .find(
+          item =>
+            String(
+              item.value
+            ) ===
+            String(
+              selectedChoice
+            )
+        );
+
+
+    return {
+
+      valid:
+        true,
+
+      value:
+        selectedChoice,
+
+      display:
+        selected?.text ??
+        selectedChoice,
+
+      displayHTML:
+        selected?.html ??
+        esc(
+          selected?.text ??
+          selectedChoice
+        )
+    };
+  }
+
+
+  return {
+
+    valid:
+      false,
+
+    message:
+      "目前無法讀取答案。"
+  };
+}
+
+
+/*
+==================================================
+答案判定
+==================================================
+*/
+
+function checkCorrect(
+  question,
+  answer
+){
+
+  if(
+    question.type ===
+    "number"
+  ){
+
+    return (
+      Math.abs(
+        Number(
+          answer.value
+        ) -
+        Number(
+          question.answer
+        )
+      ) <
+      1e-8
+    );
+  }
+
+
+  if(
+    question.type ===
+    "choice"
+  ){
+
+    return (
+      String(
+        answer.value
+      ) ===
+      String(
+        question.answer
+      )
+    );
+  }
+
+
+  return false;
+}
+
+
+/*
+==================================================
+正確答案顯示
+==================================================
+*/
+
+function correctAnswerHTML(
+  question
+){
+
+  if(
+    question.answerDisplayHTML
+  ){
+
+    return question.answerDisplayHTML;
+  }
+
+
+  if(
+    question.answerDisplay !==
+    undefined
+  ){
+
+    return esc(
+      question.answerDisplay
+    );
+  }
+
+
+  if(
+    question.type ===
+    "choice"
+  ){
+
+    const selected =
+      question.choices
+        .find(
+          item =>
+            String(
+              item.value
+            ) ===
+            String(
+              question.answer
+            )
+        );
+
+
+    return (
+      selected?.html ??
+      esc(
+        selected?.text ??
+        question.answer
+      )
+    );
+  }
+
+
+  return esc(
+    fmt(
+      question.answer
+    )
+  );
+}
+
+
+/*
+==================================================
+詳解畫面
+==================================================
+*/
+
+function explanationHTML(
+  question
+){
+
+  const e =
+    question.explanation;
+
+
+  return `
+
+    <div class="explanation-title">
+      📘 完整詳解
+    </div>
+
+
+    <div class="explanation-block">
+
+      <strong>
+        🎯 正確答案｜
+      </strong>
+
+      ${richValue(
+        e.answer
+      )}
+
+    </div>
+
+
+    <div class="explanation-block">
+
+      <strong>
+        👀 看到什麼｜
+      </strong>
+
+      ${richValue(
+        e.observe
+      )}
+
+    </div>
+
+
+    <div class="explanation-block">
+
+      <strong>
+        💡 先想什麼｜
+      </strong>
+
+      ${richValue(
+        e.think
+      )}
+
+    </div>
+
+
+    <div class="explanation-block">
+
+      <strong>
+        🧮 解題步驟｜
+      </strong>
+
+
+      ${
+        e.steps
+          .map(
+            (
+              step,
+              i
+            ) => `
+
+              <div class="explanation-step">
+
+                ${i + 1}.
+                ${richValue(
+                  step
+                )}
+
+              </div>
+            `
+          )
+          .join(
+            ""
+          )
+      }
+
+    </div>
+
+
+    <div class="explanation-block">
+
+      <strong>
+        📘 為什麼｜
+      </strong>
+
+      ${richValue(
+        e.why
+      )}
+
+    </div>
+
+
+    <div class="explanation-tip">
+
+      <strong>
+        ⚠️ 易錯提醒｜
+      </strong>
+
+      ${richValue(
+        e.mistake
+      )}
+
+    </div>
+  `;
+}
+
+
+/*
+==================================================
+停用作答
+==================================================
+*/
+
+function disableAnswerArea(){
+
+  $(
+    "answer-area"
+  )
+    .querySelectorAll(
+      "button, input"
+    )
+    .forEach(
+      element => {
+
+        element.disabled =
+          true;
+      }
+    );
+}
+
+
+/*
+==================================================
+顯示題目
+==================================================
+*/
+
+function displayQuestion(){
+
+  answered =
+    false;
+
+
+  speedLocked =
+    false;
+
+
+  currentQuestion =
+
+    mode ===
+    "speed"
+
+      ? speedQuestion()
+
+      : questions[
+          index
+        ];
+
+
+  const q =
+    currentQuestion;
+
+
+  $(
+    "mode-name"
+  )
+    .textContent =
+      MODES[
+        mode
+      ].name;
+
+
+  $(
+    "question-number"
+  )
+    .textContent =
+
+      mode ===
+      "speed"
+
+        ? `已作答 ${speedAttempts} 題`
+
+        : `第 ${index + 1} 題 / 共 ${questions.length} 題`;
+
+
+  $(
+    "correct-count"
+  )
+    .textContent =
+      correct;
+
+
+  $(
+    "combo-count"
+  )
+    .textContent =
+      maxCombo;
+
+
+  if(
+    mode ===
+    "speed"
+  ){
+
+    $(
+      "live-score"
+    )
+      .textContent =
+        speedScore;
+
+
+    $(
+      "progress-bar"
+    )
+      .style
+      .width =
+        `${
+          (
+            60 -
+            speedRemaining
+          ) /
+          60 *
+          100
+        }%`;
+  }
+
+
+  else{
+
+    const played =
+      index;
+
+
+    $(
+      "live-score"
+    )
+      .textContent =
+
+        played
+
+          ? Math.round(
+              correct /
+              played *
+              100
+            )
+
+          : 0;
+
+
+    $(
+      "progress-bar"
+    )
+      .style
+      .width =
+        `${
+          index /
+          questions.length *
+          100
+        }%`;
+  }
+
+
+  $(
+    "question-label"
+  )
+    .textContent =
+      q.label;
+
+
+  $(
+    "question-content"
+  )
+    .innerHTML =
+      q.html;
+
+
+  $(
+    "feedback"
+  )
+    .className =
+      "feedback";
+
+
+  $(
+    "feedback"
+  )
+    .innerHTML =
+      "";
+
+
+  $(
+    "explanation"
+  )
+    .innerHTML =
+      "";
+
+
+  $(
+    "explanation"
+  )
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  $(
+    "submit-button"
+  )
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $(
+    "next-button"
+  )
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  renderAnswer(
+    q
+  );
+
+
+  window
+    .resetGameScratchpad
+    ?.();
+}
+
+
+/*
+==================================================
+一般模式提交
+==================================================
+*/
+
+function submitNormalAnswer(){
+
+  if(
+    answered
+  ){
+
+    return;
+  }
+
+
+  const q =
+    currentQuestion;
+
+
+  const answer =
+    readAnswer(
+      q
+    );
+
+
+  if(
+    !answer.valid
+  ){
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback warning";
+
+
+    $(
+      "feedback"
+    )
+      .textContent =
+        answer.message;
+
+
+    return;
+  }
+
+
+  answered =
+    true;
+
+
+  disableAnswerArea();
+
+
+  const isCorrect =
+    checkCorrect(
+      q,
+      answer
+    );
+
+
+  if(
+    isCorrect
+  ){
+
+    correct++;
+
+
+    combo++;
+
+
+    maxCombo =
+      Math.max(
+        maxCombo,
+        combo
+      );
+
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback correct";
+
+
+    $(
+      "feedback"
+    )
+      .textContent =
+        "✨ 回答正確！";
+
+
+    playGameSound(
+      "playCorrect"
+    );
+  }
+
+
+  else{
+
+    wrong++;
+
+
+    combo =
+      0;
+
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback wrong";
+
+
+    $(
+      "feedback"
+    )
+      .innerHTML = `
+
+        ❌ 答案不正確。
+
+        正確答案：
+
+        <strong>
+
+          ${correctAnswerHTML(
+            q
+          )}
+
+        </strong>
+      `;
+
+
+    playGameSound(
+      "playWrong"
+    );
+  }
+
+
+  records.push(
+    {
+
+      number:
+        index +
+        1,
+
+      question:
+        q,
+
+      userAnswer:
+        answer.display,
+
+      userAnswerHTML:
+        answer.displayHTML,
+
+      correct:
+        isCorrect
+    }
+  );
+
+
+  $(
+    "correct-count"
+  )
+    .textContent =
+      correct;
+
+
+  $(
+    "combo-count"
+  )
+    .textContent =
+      maxCombo;
+
+
+  $(
+    "live-score"
+  )
+    .textContent =
+      Math.round(
+        correct /
+        (
+          index +
+          1
+        ) *
+        100
+      );
+
+
+  $(
+    "explanation"
+  )
+    .innerHTML =
+      explanationHTML(
+        q
+      );
+
+
+  $(
+    "explanation"
+  )
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $(
+    "submit-button"
+  )
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  $(
+    "next-button"
+  )
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $(
+    "next-button"
+  )
+    .textContent =
+
+      index ===
+      questions.length -
+      1
+
+        ? "查看測驗結果（Enter）"
+
+        : "下一題（Enter）";
+
+
+  $(
+    "next-button"
+  )
+    .focus();
+}
+
+
+/*
+==================================================
+競速提交
+==================================================
+*/
+
+function submitSpeedAnswer(){
+
+  if(
+    speedLocked ||
+    speedRemaining <=
+    0
+  ){
+
+    return;
+  }
+
+
+  const q =
+    currentQuestion;
+
+
+  const answer =
+    readAnswer(
+      q
+    );
+
+
+  if(
+    !answer.valid
+  ){
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback warning";
+
+
+    $(
+      "feedback"
+    )
+      .textContent =
+        answer.message;
+
+
+    return;
+  }
+
+
+  speedLocked =
+    true;
+
+
+  disableAnswerArea();
+
+
+  const isCorrect =
+    checkCorrect(
+      q,
+      answer
+    );
+
+
+  speedAttempts++;
+
+
+  if(
+    isCorrect
+  ){
+
+    correct++;
+
+
+    combo++;
+
+
+    maxCombo =
+      Math.max(
+        maxCombo,
+        combo
+      );
+
+
+    speedScore +=
+      10;
+
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback correct";
+
+
+    $(
+      "feedback"
+    )
+      .textContent =
+        "✅ 正確！＋10 分";
+
+
+    playGameSound(
+      "playCorrect"
+    );
+  }
+
+
+  else{
+
+    wrong++;
+
+
+    combo =
+      0;
+
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback wrong";
+
+
+    $(
+      "feedback"
+    )
+      .innerHTML = `
+
+        ❌ 錯誤，
+
+        答案是
+
+        <strong>
+
+          ${correctAnswerHTML(
+            q
+          )}
+
+        </strong>
+      `;
+
+
+    playGameSound(
+      "playWrong"
+    );
+  }
+
+
+  records.push(
+    {
+
+      number:
+        speedAttempts,
+
+      question:
+        q,
+
+      userAnswer:
+        answer.display,
+
+      userAnswerHTML:
+        answer.displayHTML,
+
+      correct:
+        isCorrect
+    }
+  );
+
+
+  $(
+    "correct-count"
+  )
+    .textContent =
+      correct;
+
+
+  $(
+    "combo-count"
+  )
+    .textContent =
+      maxCombo;
+
+
+  $(
+    "live-score"
+  )
+    .textContent =
+      speedScore;
+
+
+  setTimeout(
+    () => {
+
+
+      if(
+        mode ===
+        "speed" &&
+        speedRemaining >
+        0
+      ){
+
+        displayQuestion();
+      }
+
+    },
+    300
+  );
+}
+
+
+/*
+==================================================
+提交
+==================================================
+*/
+
+function submitAnswer(){
+
+  if(
+    mode ===
+    "speed"
+  ){
+
+    submitSpeedAnswer();
+  }
+
+
+  else{
+
+    submitNormalAnswer();
+  }
+}
+
+
+/*
+==================================================
+下一題
+==================================================
+*/
+
+function nextQuestion(){
+
+  if(
+    mode ===
+    "speed" ||
+    !answered
+  ){
+
+    return;
+  }
+
+
+  index++;
+
+
+  if(
+    index <
+    questions.length
+  ){
+
+    displayQuestion();
+  }
+
+
+  else{
+
+    showResult();
+  }
+}
+
+
+/*
+==================================================
+時間
+==================================================
+*/
+
+function formatTime(
+  seconds
+){
+
+  const minutes =
+    Math.floor(
+      seconds /
+      60
+    );
+
+
+  const remain =
+    seconds %
+    60;
+
+
+  return (
+    `${String(
+      minutes
+    )
+      .padStart(
+        2,
+        "0"
+      )}:` +
+
+    `${String(
+      remain
+    )
+      .padStart(
+        2,
+        "0"
+      )}`
+  );
+}
+
+
+function stopTimer(
+  update =
+    true
+){
+
+  if(
+    timerId !==
+    null
+  ){
+
+    clearInterval(
+      timerId
+    );
+
+
+    timerId =
+      null;
+  }
+
+
+  if(
+    update &&
+    startTime &&
+    mode !==
+    "speed"
+  ){
+
+    elapsed =
+      Math.floor(
+        (
+          Date.now() -
+          startTime
+        ) /
+        1000
+      );
+  }
+}
+
+
+function startNormalTimer(){
+
+  stopTimer(
+    false
+  );
+
+
+  startTime =
+    Date.now();
+
+
+  elapsed =
+    0;
+
+
+  $(
+    "timer-display"
+  )
+    .textContent =
+      "00:00";
+
+
+  timerId =
+    setInterval(
+      () => {
+
+
+        elapsed =
+          Math.floor(
+            (
+              Date.now() -
+              startTime
+            ) /
+            1000
+          );
+
+
+        $(
+          "timer-display"
+        )
+          .textContent =
+            formatTime(
+              elapsed
+            );
+
+      },
+      500
+    );
+}
+
+
+function startSpeedTimer(){
+
+  stopTimer(
+    false
+  );
+
+
+  speedRemaining =
+    60;
+
+
+  elapsed =
+    0;
+
+
+  $(
+    "timer-display"
+  )
+    .textContent =
+      "01:00";
+
+
+  timerId =
+    setInterval(
+      () => {
+
+
+        speedRemaining--;
+
+
+        elapsed =
+          60 -
+          speedRemaining;
+
+
+        $(
+          "timer-display"
+        )
+          .textContent =
+            formatTime(
+              Math.max(
+                speedRemaining,
+                0
+              )
+            );
+
+
+        $(
+          "progress-bar"
+        )
+          .style
+          .width =
+            `${
+              elapsed /
+              60 *
+              100
+            }%`;
+
+
+        if(
+          speedRemaining <=
+          0
+        ){
+
+          stopTimer(
+            false
+          );
+
+
+          showResult();
+        }
+
+      },
+      1000
+    );
+}
+
+
+/*
+==================================================
+計算紙
+==================================================
+*/
+
+function moveScratchpadButtonToTop(){
+
+  const mount =
+    $(
+      "scratchpad-mobile-button"
+    );
+
+
+  const button =
+    $(
+      "scratchpadOpenButton"
+    );
+
+
+  if(
+    mount &&
+    button &&
+    !mount.contains(
+      button
+    )
+  ){
+
+    mount.appendChild(
+      button
+    );
+  }
+}
+
+
+/*
+==================================================
+畫面切換
+==================================================
+*/
+
+function showOnly(
+  id
+){
+
+  [
+    "start-screen",
+    "quiz-screen",
+    "result-screen",
+    "review-screen"
+  ]
+    .forEach(
+      screen => {
+
+
+        $(
+          screen
+        )
+          .classList
+          .toggle(
+            "hidden",
+            screen !==
+              id
+          );
+
+      }
+    );
+
+
+  if(
+    id ===
+    "quiz-screen"
+  ){
+
+    window
+      .showGameScratchpadButton
+      ?.();
+
+
+    setTimeout(
+      moveScratchpadButtonToTop,
+      0
+    );
+
+
+    setTimeout(
+      moveScratchpadButtonToTop,
+      100
+    );
+  }
+
+
+  else{
+
+    window
+      .hideGameScratchpadButton
+      ?.();
+  }
+}
+
+
+/*
+==================================================
+開始遊戲
+==================================================
+*/
+
+function startGame(
+  selectedMode
+){
+
+  try{
+
+    stopTimer(
+      false
+    );
+
+
+    mode =
+      selectedMode;
+
+
+    if(
+      mode ===
+      "speed"
+    ){
+
+      questions =
+        [];
+    }
+
+
+    else{
+
+      questions =
+        createQuestions();
+
+
+      if(
+        !Array.isArray(
+          questions
+        ) ||
+        questions.length ===
+        0
+      ){
+
+        throw new Error(
+          `模式 ${mode} 沒有建立題目`
+        );
+      }
+    }
+
+
+    index =
+      0;
+
+
+    correct =
+      0;
+
+
+    wrong =
+      0;
+
+
+    combo =
+      0;
+
+
+    maxCombo =
+      0;
+
+
+    records =
+      [];
+
+
+    answered =
+      false;
+
+
+    selectedChoice =
+      null;
+
+
+    scoreSaved =
+      false;
+
+
+    speedRemaining =
+      60;
+
+
+    speedScore =
+      0;
+
+
+    speedAttempts =
+      0;
+
+
+    speedLocked =
+      false;
+
+
+    elapsed =
+      0;
+
+
+    $(
+      "save-status"
+    )
+      .textContent =
+        "";
+
+
+    $(
+      "speed-banner"
+    )
+      .classList
+      .toggle(
+        "hidden",
+        mode !==
+          "speed"
+      );
+
+
+    showOnly(
+      "quiz-screen"
+    );
+
+
+    displayQuestion();
+
+
+    if(
+      mode ===
+      "speed"
+    ){
+
+      startSpeedTimer();
+    }
+
+
+    else{
+
+      startNormalTimer();
+    }
+
+
+    playGameSound(
+      "playStart"
+    );
+
+
+  }catch(
+    error
+  ){
+
+    console.error(
+      "1-3 遊戲啟動失敗：",
+      error
+    );
+
+
+    alert(
+      "遊戲啟動時發生錯誤，請重新整理頁面後再試一次。\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/*
+==================================================
+評價
+==================================================
+*/
+
+function rating(
+  score,
+  accuracy =
+    score
+){
+
+  if(
+    mode ===
+    "speed"
+  ){
+
+    if(
+      accuracy >=
+      90 &&
+      correct >=
+      12
+    ){
+
+      return {
+
+        stars:
+          "★★★★★",
+
+        comment:
+          `60 秒答對 ${correct} 題，正確率 ${accuracy}%！乘除符號與計算都很穩定。`
+      };
+    }
+
+
+    if(
+      accuracy >=
+      80
+    ){
+
+      return {
+
+        stars:
+          "★★★★☆",
+
+        comment:
+          `答對 ${correct} 題，正確率 ${accuracy}%；再加強負數除法與符號判斷。`
+      };
+    }
+
+
+    if(
+      accuracy >=
+      60
+    ){
+
+      return {
+
+        stars:
+          "★★★☆☆",
+
+        comment:
+          "熟練度正在建立，先維持正確率，再逐步提高速度。"
+      };
+    }
+
+
+    return {
+
+      stars:
+        "★★☆☆☆",
+
+      comment:
+        "建議先回到乘法、除法學習模式，把符號規則練穩。"
+    };
+  }
+
+
+  if(
+    score >=
+    90
+  ){
+
+    return {
+
+      stars:
+        "★★★★★",
+
+      comment:
+        "太棒了！你已能掌握正負數乘除、四則運算與分配律。"
+    };
+  }
+
+
+  if(
+    score >=
+    80
+  ){
+
+    return {
+
+      stars:
+        "★★★★☆",
+
+      comment:
+        "表現很好！再留意負號個數、乘除順序與括號。"
+    };
+  }
+
+
+  if(
+    score >=
+    60
+  ){
+
+    return {
+
+      stars:
+        "★★★☆☆",
+
+      comment:
+        "基本觀念已建立，建議查看詳解，把容易混淆的符號與順序再練熟。"
+    };
+  }
+
+
+  return {
+
+    stars:
+      "★★☆☆☆",
+
+    comment:
+      "建議先從正負數乘法與除法模式開始，再進入四則運算。"
+  };
+}
+
+
+/*
+==================================================
+結果
+==================================================
+*/
+
+async function showResult(){
+
+  if(
+    !$(
+      "result-screen"
+    )
+      .classList
+      .contains(
+        "hidden"
+      )
+  ){
+
+    return;
+  }
+
+
+  stopTimer();
+
+
+  let score;
+  let accuracy;
+
+
+  if(
+    mode ===
+    "speed"
+  ){
+
+    accuracy =
+
+      speedAttempts
+
+        ? Math.round(
+            correct /
+            speedAttempts *
+            100
+          )
+
+        : 0;
+
+
+    score =
+      speedScore;
+  }
+
+
+  else{
+
+    score =
+      Math.round(
+        correct /
+        questions.length *
+        1000
+      ) /
+      10;
+
+
+    accuracy =
+      score;
+  }
+
+
+  const result =
+    rating(
+      score,
+      accuracy
+    );
+
+
+  showOnly(
+    "result-screen"
+  );
+
+
+  $(
+    "final-score"
+  )
+    .textContent =
+      `${
+        Number.isInteger(
+          score
+        )
+
+          ? score
+
+          : score.toFixed(
+              1
+            )
+      } 分`;
+
+
+  $(
+    "final-stars"
+  )
+    .textContent =
+      result.stars;
+
+
+  $(
+    "final-comment"
+  )
+    .textContent =
+      result.comment;
+
+
+  $(
+    "final-correct"
+  )
+    .textContent =
+      correct;
+
+
+  $(
+    "final-wrong"
+  )
+    .textContent =
+      wrong;
+
+
+  $(
+    "final-combo"
+  )
+    .textContent =
+      maxCombo;
+
+
+  $(
+    "final-time"
+  )
+    .textContent =
+
+      mode ===
+      "speed"
+
+        ? "01:00"
+
+        : formatTime(
+            elapsed
+          );
+
+
+  playGameSound(
+    "playComplete"
+  );
+
+
+  await saveCurrentScore(
+    score,
+    accuracy
+  );
+}
+
+
+/*
+==================================================
+成績儲存
+
+完成遊戲時才載入 scores.js，
+避免成績模組的問題阻斷遊戲開始。
+==================================================
+*/
+
+async function saveCurrentScore(
+  score,
+  accuracy
+){
+
+  if(
+    scoreSaved
+  ){
+
+    return;
+  }
+
+
+  scoreSaved =
+    true;
+
+
+  const status =
+    $(
+      "save-status"
+    );
+
+
+  status.textContent =
+    "☁️ 正在儲存本次成績……";
+
+
+  status.style.color =
+    "#1d4ed8";
+
+
+  try{
+
+    const scoreModule =
+      await import(
+        "../js/scores.js"
+      );
+
+
+    if(
+      typeof scoreModule
+        .saveGameScore !==
+      "function"
+    ){
+
+      throw new Error(
+        "找不到 saveGameScore"
+      );
+    }
+
+
+    const result =
+      await scoreModule
+        .saveGameScore(
+          {
+
+            game:
+              GAME_ID,
+
+            mode,
+
+            score,
+
+            correctCount:
+              correct,
+
+            wrongCount:
+              wrong,
+
+            maxCombo,
+
+            playTime:
+              elapsed,
+
+            totalQuestions:
+
+              mode ===
+              "speed"
+
+                ? speedAttempts
+
+                : questions.length,
+
+            accuracy
+          }
+        );
+
+
+    if(
+      result?.success
+    ){
+
+      status.textContent =
+        "✅ 本次成績已儲存。";
+
+
+      status.style.color =
+        "#15803d";
+
+
+      return;
+    }
+
+
+    if(
+      result?.reason ===
+      "not-logged-in"
+    ){
+
+      status.textContent =
+        "ℹ️ 尚未登入，因此本次成績沒有儲存。";
+
+
+      status.style.color =
+        "#b45309";
+
+
+      return;
+    }
+
+
+    status.textContent =
+      "⚠️ 成績暫時無法儲存。";
+
+
+    status.style.color =
+      "#b91c1c";
+
+
+  }catch(
+    error
+  ){
+
+    console.error(
+      "1-3 成績儲存失敗：",
+      error
+    );
+
+
+    status.textContent =
+      "⚠️ 本次遊戲已完成，但成績暫時無法儲存。";
+
+
+    status.style.color =
+      "#b91c1c";
+  }
+}
+
+
+/*
+==================================================
+回顧
+==================================================
+*/
+
+function showReview(){
+
+  $(
+    "review-list"
+  )
+    .innerHTML =
+      records
+        .map(
+          record => `
+
+            <article
+              class="
+                review-card
+                ${
+                  record.correct
+
+                    ? "correct-review"
+
+                    : "wrong-review"
+                }
+              "
+            >
+
+
+              <div class="review-title">
+
+                第 ${record.number} 題
+
+                ${
+                  record.correct
+
+                    ? "✅"
+
+                    : "❌"
+                }
+
+              </div>
+
+
+              <div class="review-question">
+
+                ${record.question.html}
+
+              </div>
+
+
+              <div class="review-answer-line">
+
+                你的答案：
+
+                <strong>
+
+                  ${
+                    record.userAnswerHTML ??
+                    esc(
+                      record.userAnswer
+                    )
+                  }
+
+                </strong>
+
+              </div>
+
+
+              <div class="review-answer-line">
+
+                正確答案：
+
+                <strong>
+
+                  ${correctAnswerHTML(
+                    record.question
+                  )}
+
+                </strong>
+
+              </div>
+
+
+              <div class="explanation">
+
+                ${explanationHTML(
+                  record.question
+                )}
+
+              </div>
+
+
+            </article>
+          `
+        )
+        .join(
+          ""
+        );
+
+
+  showOnly(
+    "review-screen"
+  );
+
+
+  window.scrollTo(
+    {
+
+      top:0,
+
+      behavior:
+        "smooth"
+    }
+  );
+}
+
+
+/*
+==================================================
+事件
+==================================================
+*/
+
+function bindGameEvents(){
+
+  document
+    .querySelectorAll(
+      "[data-mode]"
+    )
+    .forEach(
+      button => {
+
+
+        button.addEventListener(
+          "click",
+          () => {
+
+
+            startGame(
+              button.dataset
+                .mode
+            );
+          }
+        );
+
+      }
+    );
+
+
+  $(
+    "submit-button"
+  )
+    ?.addEventListener(
+      "click",
+      submitAnswer
+    );
+
+
+  $(
+    "next-button"
+  )
+    ?.addEventListener(
+      "click",
+      nextQuestion
+    );
+
+
+  $(
+    "quit-button"
+  )
+    ?.addEventListener(
+      "click",
+      () => {
+
+
+        stopTimer(
+          false
+        );
+
+
+        showOnly(
+          "start-screen"
+        );
+      }
+    );
+
+
+  $(
+    "again-button"
+  )
+    ?.addEventListener(
+      "click",
+      () => {
+
+
+        startGame(
+          mode
+        );
+      }
+    );
+
+
+  $(
+    "result-mode-button"
+  )
+    ?.addEventListener(
+      "click",
+      () => {
+
+
+        showOnly(
+          "start-screen"
+        );
+      }
+    );
+
+
+  $(
+    "review-button"
+  )
+    ?.addEventListener(
+      "click",
+      showReview
+    );
+
+
+  $(
+    "review-again-button"
+  )
+    ?.addEventListener(
+      "click",
+      () => {
+
+
+        startGame(
+          mode
+        );
+      }
+    );
+
+
+  $(
+    "review-result-button"
+  )
+    ?.addEventListener(
+      "click",
+      () => {
+
+
+        showOnly(
+          "result-screen"
+        );
+      }
+    );
+}
+
+
+/*
+==================================================
+Enter
+==================================================
+*/
+
+window.addEventListener(
+  "keydown",
+  event => {
+
+
+    if(
+      event.key !==
+      "Enter"
+    ){
+
+      return;
+    }
+
+
+    if(
+      $(
+        "quiz-screen"
+      )
+        .classList
+        .contains(
+          "hidden"
+        )
+    ){
+
+      return;
+    }
+
+
+    event.preventDefault();
+
+
+    if(
+      mode ===
+      "speed"
+    ){
+
+      submitAnswer();
+
+
+      return;
+    }
+
+
+    if(
+      answered
+    ){
+
+      nextQuestion();
+    }
+
+
+    else{
+
+      submitAnswer();
+    }
+  }
+);
+
+
+/*
+==================================================
+離開頁面
+==================================================
+*/
+
+window.addEventListener(
+  "beforeunload",
+  () => {
+
+
+    stopTimer(
+      false
+    );
+  }
+);
+
+
+/*
+==================================================
+初始化
+==================================================
+*/
+
+bindGameEvents();
+
+
+setTimeout(
+  () => {
+
+
+    window
+      .hideGameScratchpadButton
+      ?.();
+
+  },
+  0
+);
+
+</script>
+
+
+</body>
+
+</html>
