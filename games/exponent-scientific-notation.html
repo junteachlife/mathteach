@@ -1,0 +1,8086 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>指數與科學記號大挑戰｜數學遊戲樂園</title>
+
+<!-- 1-4 專屬 favicon：xⁿ ＋ 10 -->
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f766e'/%3E%3Ctext x='9' y='36' font-family='Arial' font-size='30' font-weight='700' fill='white'%3Ex%3C/text%3E%3Ctext x='31' y='19' font-family='Arial' font-size='16' font-weight='700' fill='%23fde68a'%3En%3C/text%3E%3Ctext x='33' y='48' font-family='Arial' font-size='18' font-weight='700' fill='%2399f6e4'%3E10%3C/text%3E%3C/svg%3E"
+>
+
+<link
+  rel="stylesheet"
+  href="../css/scratchpad.css"
+>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+:root{
+  --primary:#0f766e;
+  --primary-dark:#115e59;
+  --primary-light:#ccfbf1;
+  --primary-border:#5eead4;
+
+  --blue:#2563eb;
+  --purple:#7c3aed;
+  --orange:#ea580c;
+
+  --text:#1e293b;
+  --muted:#64748b;
+
+  --success:#15803d;
+  --danger:#dc2626;
+  --warning:#b45309;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  padding:16px;
+
+  font-family:
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif;
+
+  color:var(--text);
+
+  background:
+    radial-gradient(
+      circle at 8% 8%,
+      rgba(45,212,191,.20),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 92% 4%,
+      rgba(124,58,237,.17),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #ecfeff,
+      #f8fafc 52%,
+      #f5f3ff
+    );
+}
+
+button,
+input{
+  font-family:inherit;
+}
+
+button{
+  touch-action:manipulation;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.page-shell{
+  width:min(100%,1060px);
+  margin:0 auto;
+}
+
+#commonHeaderMount{
+  margin-bottom:14px;
+}
+
+/* ==================================================
+主體
+================================================== */
+
+.game-card{
+  overflow:hidden;
+
+  border:1px solid #d8dee8;
+  border-top:8px solid var(--primary);
+  border-radius:26px;
+
+  background:#fff;
+
+  box-shadow:
+    0 18px 45px
+    rgba(15,23,42,.13);
+}
+
+.game-header{
+  padding:28px 20px 22px;
+
+  text-align:center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ccfbf1,
+      #ffffff
+    );
+}
+
+.game-title{
+  margin:0;
+
+  color:var(--primary-dark);
+
+  font-size:
+    clamp(30px,5vw,44px);
+
+  line-height:1.2;
+}
+
+.game-subtitle{
+  max-width:860px;
+
+  margin:12px auto 0;
+
+  color:var(--muted);
+
+  font-weight:700;
+  line-height:1.8;
+}
+
+.concept-strip{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+
+  gap:8px;
+
+  margin-top:15px;
+}
+
+.concept-chip{
+  padding:7px 12px;
+
+  border:1px solid var(--primary-border);
+  border-radius:999px;
+
+  background:#fff;
+
+  color:var(--primary-dark);
+
+  font-size:14px;
+  font-weight:900;
+}
+
+.screen{
+  padding:22px;
+}
+
+/* ==================================================
+模式
+================================================== */
+
+.mode-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:16px;
+}
+
+.mode-card{
+  display:flex;
+  flex-direction:column;
+
+  min-height:238px;
+
+  padding:21px;
+
+  border:2px solid #d9e0e9;
+  border-radius:20px;
+
+  background:#fff;
+
+  box-shadow:
+    0 8px 22px
+    rgba(15,23,42,.06);
+
+  transition:.15s ease;
+}
+
+.mode-card:hover{
+  transform:translateY(-2px);
+
+  border-color:var(--primary-border);
+
+  box-shadow:
+    0 12px 28px
+    rgba(15,23,42,.10);
+}
+
+.mode-card.speed{
+  border-color:#8b5cf6;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f5f3ff,
+      #fff
+    );
+}
+
+.mode-card.final{
+  border-color:#f59e0b;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fffbeb,
+      #fff
+    );
+}
+
+.mode-icon{
+  font-size:34px;
+}
+
+.mode-title{
+  margin:9px 0 6px;
+
+  color:var(--primary-dark);
+
+  font-size:21px;
+  font-weight:900;
+}
+
+.mode-card.speed
+.mode-title{
+  color:#6d28d9;
+}
+
+.mode-card.final
+.mode-title{
+  color:#92400e;
+}
+
+.mode-meta{
+  display:flex;
+  flex-wrap:wrap;
+
+  gap:7px;
+
+  margin-bottom:10px;
+}
+
+.mode-tag{
+  padding:4px 8px;
+
+  border-radius:999px;
+
+  background:#f1f5f9;
+
+  color:#475569;
+
+  font-size:12px;
+  font-weight:900;
+}
+
+.mode-description{
+  flex:1;
+
+  margin:0 0 16px;
+
+  color:var(--muted);
+
+  line-height:1.7;
+}
+
+/* ==================================================
+按鈕
+================================================== */
+
+.mode-button,
+.game-button{
+  min-height:48px;
+
+  padding:11px 18px;
+
+  border:none;
+  border-radius:14px;
+
+  color:#fff;
+
+  font-size:16px;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+.mode-button{
+  background:var(--primary);
+}
+
+.mode-card.speed
+.mode-button{
+  background:#7c3aed;
+}
+
+.mode-card.final
+.mode-button{
+  background:#d97706;
+}
+
+.game-button.primary{
+  background:var(--primary);
+}
+
+.game-button.blue{
+  background:var(--blue);
+}
+
+.game-button.secondary{
+  background:#475569;
+}
+
+.game-button.orange{
+  background:#d97706;
+}
+
+.game-button.purple{
+  background:#7c3aed;
+}
+
+button:disabled{
+  opacity:.48;
+  cursor:not-allowed;
+}
+
+/* ==================================================
+測驗頂部
+================================================== */
+
+.quiz-top{
+  display:grid;
+
+  grid-template-columns:
+    1fr auto;
+
+  gap:14px;
+
+  align-items:start;
+}
+
+.mode-name{
+  color:var(--primary-dark);
+
+  font-size:20px;
+  font-weight:900;
+}
+
+.question-number{
+  margin-top:4px;
+
+  color:var(--muted);
+
+  font-size:14px;
+  font-weight:800;
+}
+
+.quiz-stats{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,auto);
+
+  gap:8px;
+}
+
+.stat-pill{
+  min-width:86px;
+
+  padding:8px 10px;
+
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+
+  background:#f8fafc;
+
+  text-align:center;
+
+  color:#475569;
+
+  font-size:12px;
+  font-weight:800;
+}
+
+.stat-pill strong{
+  display:block;
+
+  margin-top:2px;
+
+  color:#0f172a;
+
+  font-size:18px;
+}
+
+.progress-track{
+  height:10px;
+
+  margin:16px 0 20px;
+
+  overflow:hidden;
+
+  border-radius:999px;
+
+  background:#e2e8f0;
+}
+
+.progress-bar{
+  width:0;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #14b8a6,
+      #8b5cf6
+    );
+
+  transition:width .2s ease;
+}
+
+/* ==================================================
+計算紙
+================================================== */
+
+.scratchpad-row{
+  display:flex;
+  justify-content:flex-end;
+
+  margin-bottom:10px;
+}
+
+#scratchpad-mobile-button
+#scratchpadOpenButton,
+#scratchpad-mobile-button
+.scratchpad-open-button{
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  margin:0!important;
+  z-index:auto!important;
+}
+
+/* ==================================================
+題目
+================================================== */
+
+.question-card{
+  padding:24px;
+
+  border:2px solid #99f6e4;
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f0fdfa,
+      #fff
+    );
+}
+
+.question-label{
+  margin-bottom:8px;
+
+  color:var(--primary-dark);
+
+  font-size:14px;
+  font-weight:900;
+}
+
+.question-content{
+  min-height:108px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow-x:auto;
+
+  text-align:center;
+
+  color:#0f172a;
+
+  font-size:
+    clamp(24px,4vw,34px);
+
+  font-weight:900;
+  line-height:1.8;
+}
+
+.question-note{
+  width:100%;
+
+  font-size:
+    clamp(18px,3vw,25px);
+
+  line-height:1.9;
+}
+
+.math{
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    sans-serif;
+}
+
+.math-expression{
+  display:inline-block;
+
+  max-width:100%;
+
+  margin:7px 0;
+
+  padding:10px 16px;
+
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+
+  background:#fff;
+
+  white-space:nowrap;
+}
+
+.math sup{
+  font-size:.62em;
+  vertical-align:super;
+  line-height:0;
+}
+
+.nowrap{
+  display:inline-block;
+  white-space:nowrap;
+}
+
+/* ==================================================
+分數
+================================================== */
+
+.math-fraction{
+  display:inline-flex;
+
+  flex-direction:column;
+
+  align-items:stretch;
+  justify-content:center;
+
+  min-width:1.45em;
+
+  margin:0 .10em;
+
+  vertical-align:middle;
+
+  line-height:1.02;
+}
+
+.math-fraction-top{
+  padding:0 .16em .07em;
+
+  border-bottom:2px solid currentColor;
+
+  text-align:center;
+}
+
+.math-fraction-bottom{
+  padding:.07em .16em 0;
+
+  text-align:center;
+}
+
+.fraction-with-sign{
+  display:inline-flex;
+  align-items:center;
+
+  vertical-align:middle;
+}
+
+/* ==================================================
+數字答案
+================================================== */
+
+.answer-area{
+  margin-top:20px;
+}
+
+.number-answer{
+  display:block;
+
+  width:min(100%,340px);
+
+  margin:0 auto;
+
+  padding:14px 16px;
+
+  border:2px solid #94a3b8;
+  border-radius:14px;
+
+  background:#fff;
+
+  color:#0f172a;
+
+  text-align:center;
+
+  font-size:25px;
+  font-weight:900;
+
+  outline:none;
+}
+
+.number-answer:focus,
+.scientific-input:focus{
+  border-color:var(--primary);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(20,184,166,.13);
+}
+
+.sign-helper{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+
+  gap:8px;
+
+  margin-top:9px;
+}
+
+.sign-helper-button{
+  min-height:39px;
+
+  padding:7px 15px;
+
+  border:1px solid #cbd5e1;
+  border-radius:11px;
+
+  background:#fff;
+
+  color:#334155;
+
+  font-size:15px;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+/* ==================================================
+科學記號輸入
+================================================== */
+
+.scientific-answer-box{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+
+  gap:8px;
+
+  margin:0 auto;
+}
+
+.scientific-input{
+  width:125px;
+
+  padding:12px 10px;
+
+  border:2px solid #94a3b8;
+  border-radius:12px;
+
+  background:#fff;
+
+  text-align:center;
+
+  font-size:22px;
+  font-weight:900;
+
+  outline:none;
+}
+
+.scientific-exponent-wrap{
+  display:inline-flex;
+  align-items:flex-start;
+
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    sans-serif;
+
+  font-size:30px;
+  font-weight:900;
+}
+
+.scientific-exp-input{
+  width:66px;
+
+  margin-left:2px;
+
+  padding:4px 5px;
+
+  border:2px solid #94a3b8;
+  border-radius:9px;
+
+  transform:translateY(-10px);
+
+  text-align:center;
+
+  font-size:15px;
+  font-weight:900;
+
+  outline:none;
+}
+
+/* ==================================================
+選擇題
+================================================== */
+
+.choice-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:10px;
+}
+
+.choice-button{
+  min-height:58px;
+
+  padding:11px 14px;
+
+  border:2px solid #cbd5e1;
+  border-radius:14px;
+
+  background:#fff;
+
+  color:#1e293b;
+
+  font-size:17px;
+  font-weight:900;
+
+  line-height:1.7;
+
+  cursor:pointer;
+}
+
+.choice-button:hover{
+  border-color:var(--primary);
+}
+
+.choice-button.selected{
+  border-color:var(--primary);
+
+  background:var(--primary-light);
+
+  color:var(--primary-dark);
+}
+
+/* ==================================================
+比較
+================================================== */
+
+.compare-grid{
+  width:min(100%,620px);
+
+  margin:0 auto;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:12px;
+}
+
+.compare-button{
+  min-height:72px;
+
+  border:2px solid #5b5bdc;
+  border-bottom:7px solid #4141aa;
+  border-radius:16px;
+
+  background:#5b5bdc;
+
+  color:#fff;
+
+  font-size:32px;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+.compare-button.selected{
+  border-color:#0f766e;
+  border-bottom-color:#115e59;
+
+  background:#ccfbf1;
+
+  color:#115e59;
+}
+
+/* ==================================================
+回饋與詳解
+================================================== */
+
+.feedback{
+  margin-top:16px;
+
+  padding:12px 14px;
+
+  border-radius:13px;
+
+  font-weight:900;
+  line-height:1.7;
+}
+
+.feedback:empty{
+  display:none;
+}
+
+.feedback.correct{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.feedback.wrong{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.feedback.warning{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.explanation{
+  margin-top:16px;
+
+  padding:18px;
+
+  border:2px solid #bfdbfe;
+  border-radius:18px;
+
+  background:#eff6ff;
+
+  line-height:1.8;
+}
+
+.explanation-title{
+  margin-bottom:12px;
+
+  color:#1e3a8a;
+
+  font-size:19px;
+  font-weight:900;
+}
+
+.explanation-block{
+  margin-top:9px;
+
+  padding:10px 12px;
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,.88);
+}
+
+.explanation-block strong{
+  color:#1e40af;
+}
+
+.explanation-step{
+  margin:7px 0;
+
+  padding-left:8px;
+
+  border-left:3px solid #93c5fd;
+}
+
+.explanation-tip{
+  margin-top:10px;
+
+  padding:10px 12px;
+
+  border-radius:12px;
+
+  background:#fff7ed;
+
+  color:#9a3412;
+}
+
+.button-row{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-top:18px;
+}
+
+/* ==================================================
+競速
+================================================== */
+
+.speed-banner{
+  margin-bottom:14px;
+
+  padding:12px 14px;
+
+  border:1px solid #c4b5fd;
+  border-radius:14px;
+
+  background:#f5f3ff;
+
+  color:#5b21b6;
+
+  text-align:center;
+
+  font-weight:900;
+}
+
+/* ==================================================
+結果
+================================================== */
+
+.result-panel{
+  text-align:center;
+}
+
+.result-score{
+  margin:16px 0 6px;
+
+  color:var(--orange);
+
+  font-size:56px;
+  font-weight:900;
+}
+
+.result-stars{
+  font-size:31px;
+}
+
+.result-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:10px;
+
+  margin:20px auto;
+}
+
+.result-stat{
+  padding:15px 8px;
+
+  border:1px solid #e2e8f0;
+  border-radius:15px;
+
+  background:#f8fafc;
+
+  color:#64748b;
+
+  font-weight:800;
+}
+
+.result-stat span{
+  color:#0f172a;
+
+  font-size:24px;
+  font-weight:900;
+}
+
+.save-status{
+  min-height:25px;
+
+  margin:10px 0;
+
+  font-weight:800;
+}
+
+/* ==================================================
+回顧
+================================================== */
+
+.review-list{
+  display:grid;
+
+  gap:14px;
+
+  margin-top:14px;
+}
+
+.review-card{
+  padding:16px;
+
+  border:1px solid #dbeafe;
+  border-radius:16px;
+
+  background:#fff;
+}
+
+.review-card.correct-review{
+  border-left:6px solid #22c55e;
+}
+
+.review-card.wrong-review{
+  border-left:6px solid #ef4444;
+}
+
+.review-title{
+  margin-bottom:8px;
+
+  font-size:17px;
+  font-weight:900;
+}
+
+.review-question{
+  margin:8px 0 12px;
+
+  color:#0f172a;
+
+  font-size:18px;
+  font-weight:800;
+
+  line-height:1.8;
+}
+
+.review-answer-line{
+  margin:5px 0;
+
+  color:#475569;
+
+  line-height:1.7;
+}
+
+/* ==================================================
+RWD
+================================================== */
+
+@media(max-width:760px){
+
+  body{
+    padding:8px;
+  }
+
+  .screen{
+    padding:14px;
+  }
+
+  .game-header{
+    padding:22px 13px 17px;
+  }
+
+  .mode-grid{
+    grid-template-columns:1fr;
+  }
+
+  .mode-card{
+    min-height:0;
+  }
+
+  .quiz-top{
+    grid-template-columns:1fr;
+  }
+
+  .quiz-stats{
+    grid-template-columns:
+      repeat(4,1fr);
+  }
+
+  .stat-pill{
+    min-width:0;
+
+    padding:7px 5px;
+  }
+
+  .question-card{
+    padding:16px 12px;
+  }
+
+  .choice-grid{
+    grid-template-columns:1fr;
+  }
+
+  .result-grid{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .game-button{
+    flex:1 1 180px;
+  }
+
+}
+
+@media(max-width:460px){
+
+  .quiz-stats{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .question-content{
+    font-size:23px;
+  }
+
+  .result-score{
+    font-size:46px;
+  }
+
+  .scientific-input{
+    width:100px;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="page-shell">
+
+<div id="commonHeaderMount"></div>
+
+<main class="game-card">
+
+
+<header class="game-header">
+
+<h1 class="game-title">
+🔢🔬 指數與科學記號大挑戰
+</h1>
+
+<p class="game-subtitle">
+1-4 指數記法與科學記號｜
+從次方、負數底數、含指數四則運算，
+進入 10 的次方、科學記號、位數判讀與大小比較。
+</p>
+
+<div class="concept-strip">
+
+<span class="concept-chip">
+🔢 指數記法
+</span>
+
+<span class="concept-chip">
+➖ 負數次方
+</span>
+
+<span class="concept-chip">
+🧮 指數四則
+</span>
+
+<span class="concept-chip">
+🔟 10 的次方
+</span>
+
+<span class="concept-chip">
+🔬 科學記號
+</span>
+
+<span class="concept-chip">
+⚖️ 大小比較
+</span>
+
+</div>
+
+</header>
+
+
+<!-- ==================================================
+模式
+================================================== -->
+
+<section
+  id="start-screen"
+  class="screen"
+>
+
+<h2>
+選擇挑戰模式
+</h2>
+
+<div class="mode-grid">
+
+
+<article class="mode-card">
+
+<div class="mode-icon">
+🔢
+</div>
+
+<div class="mode-title">
+指數記法基礎
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+連乘寫成次方、次方還原成連乘，
+並辨認底數與指數及計算基本次方。
+</p>
+
+<button
+  class="mode-button"
+  data-mode="notation"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<article class="mode-card">
+
+<div class="mode-icon">
+➖
+</div>
+
+<div class="mode-title">
+負數次方與符號
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+分辨（－3）⁴ 與 －3⁴，
+掌握負數底數的奇偶次方，
+避免最常見的括號與負號錯誤。
+</p>
+
+<button
+  class="mode-button"
+  data-mode="negativePower"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<article class="mode-card">
+
+<div class="mode-icon">
+🧮
+</div>
+
+<div class="mode-title">
+含指數四則運算
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+進階學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+先做指數，再乘除、後加減；
+若有括號則先處理括號。
+</p>
+
+<button
+  class="mode-button"
+  data-mode="operations"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<article class="mode-card">
+
+<div class="mode-icon">
+🔟
+</div>
+
+<div class="mode-title">
+10 的次方與位值
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+10⁰、10⁻¹、10⁻²……
+與個位、十分位、百分位及常用微小單位。
+</p>
+
+<button
+  class="mode-button"
+  data-mode="tenPower"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<article class="mode-card">
+
+<div class="mode-icon">
+🔬
+</div>
+
+<div class="mode-title">
+科學記號轉換
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+大數、小數與 a×10ᵐ 互相轉換，
+並檢查係數是否符合 1≤a＜10。
+</p>
+
+<button
+  class="mode-button"
+  data-mode="scientific"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<article class="mode-card">
+
+<div class="mode-icon">
+⚖️
+</div>
+
+<div class="mode-title">
+科學記號判讀比較
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+進階學習型
+</span>
+
+<span class="mode-tag">
+10 題
+</span>
+
+</div>
+
+<p class="mode-description">
+比較大小、判斷整數位數，
+以及小數點後第幾位開始出現非 0 數字。
+</p>
+
+<button
+  class="mode-button"
+  data-mode="scientificCompare"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+<article class="mode-card speed">
+
+<div class="mode-icon">
+⚡
+</div>
+
+<div class="mode-title">
+指數快手
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+競速型
+</span>
+
+<span class="mode-tag">
+60 秒
+</span>
+
+</div>
+
+<p class="mode-description">
+快速練習基本次方、負數次方
+與 10 的次方，答對立即進入下一題。
+</p>
+
+<button
+  class="mode-button"
+  data-mode="speed"
+  type="button"
+>
+開始競速
+</button>
+
+</article>
+
+
+<article class="mode-card final">
+
+<div class="mode-icon">
+🏆
+</div>
+
+<div class="mode-title">
+1-4 綜合挑戰
+</div>
+
+<div class="mode-meta">
+
+<span class="mode-tag">
+綜合型
+</span>
+
+<span class="mode-tag">
+8 題
+</span>
+
+</div>
+
+<p class="mode-description">
+指數記法、負數次方、四則運算、
+10 的次方與科學記號全部整合。
+</p>
+
+<button
+  class="mode-button"
+  data-mode="comprehensive"
+  type="button"
+>
+開始挑戰
+</button>
+
+</article>
+
+
+</div>
+
+</section>
+
+
+<!-- ==================================================
+測驗
+================================================== -->
+
+<section
+  id="quiz-screen"
+  class="screen hidden"
+>
+
+<div class="quiz-top">
+
+<div>
+
+<div
+  id="mode-name"
+  class="mode-name"
+></div>
+
+<div
+  id="question-number"
+  class="question-number"
+></div>
+
+</div>
+
+
+<div class="quiz-stats">
+
+<div class="stat-pill">
+✅ 答對
+<strong id="correct-count">
+0
+</strong>
+</div>
+
+<div class="stat-pill">
+🔥 最高連擊
+<strong id="combo-count">
+0
+</strong>
+</div>
+
+<div class="stat-pill">
+🎯 分數
+<strong id="live-score">
+0
+</strong>
+</div>
+
+<div class="stat-pill">
+⏱️ 時間
+<strong id="timer-display">
+00:00
+</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="progress-track">
+
+<div
+  id="progress-bar"
+  class="progress-bar"
+></div>
+
+</div>
+
+
+<div
+  id="speed-banner"
+  class="speed-banner hidden"
+>
+⚡ 競速模式：60 秒內盡量答對更多題。
+</div>
+
+
+<div class="scratchpad-row">
+
+<div id="scratchpad-mobile-button"></div>
+
+</div>
+
+
+<div class="question-card">
+
+<div
+  id="question-label"
+  class="question-label"
+></div>
+
+<div
+  id="question-content"
+  class="question-content"
+></div>
+
+<div
+  id="answer-area"
+  class="answer-area"
+></div>
+
+<div
+  id="feedback"
+  class="feedback"
+></div>
+
+<div
+  id="explanation"
+  class="explanation hidden"
+></div>
+
+
+<div class="button-row">
+
+<button
+  id="submit-button"
+  class="game-button primary"
+  type="button"
+>
+確認答案（Enter）
+</button>
+
+<button
+  id="next-button"
+  class="game-button blue hidden"
+  type="button"
+>
+下一題（Enter）
+</button>
+
+<button
+  id="quit-button"
+  class="game-button secondary"
+  type="button"
+>
+選擇模式
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ==================================================
+結果
+================================================== -->
+
+<section
+  id="result-screen"
+  class="screen hidden result-panel"
+>
+
+<h2>
+🎉 挑戰完成
+</h2>
+
+<div
+  id="final-score"
+  class="result-score"
+>
+0 分
+</div>
+
+<div
+  id="final-stars"
+  class="result-stars"
+>
+★★★☆☆
+</div>
+
+<p id="final-comment"></p>
+
+
+<div class="result-grid">
+
+<div class="result-stat">
+答對
+<br>
+<span id="final-correct">
+0
+</span>
+題
+</div>
+
+<div class="result-stat">
+答錯
+<br>
+<span id="final-wrong">
+0
+</span>
+題
+</div>
+
+<div class="result-stat">
+最高連擊
+<br>
+<span id="final-combo">
+0
+</span>
+</div>
+
+<div class="result-stat">
+作答時間
+<br>
+<span id="final-time">
+00:00
+</span>
+</div>
+
+</div>
+
+
+<div
+  id="save-status"
+  class="save-status"
+></div>
+
+
+<div class="button-row">
+
+<button
+  id="review-button"
+  class="game-button orange"
+  type="button"
+>
+📖 查看本次詳解
+</button>
+
+<button
+  id="again-button"
+  class="game-button purple"
+  type="button"
+>
+🔄 再玩一次
+</button>
+
+<button
+  id="result-mode-button"
+  class="game-button secondary"
+  type="button"
+>
+選擇模式
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ==================================================
+回顧
+================================================== -->
+
+<section
+  id="review-screen"
+  class="screen hidden"
+>
+
+<h2>
+📖 本次詳解
+</h2>
+
+<p
+  style="
+    color:#64748b;
+    font-weight:700;
+  "
+>
+答對、答錯都會保留完整解析。
+</p>
+
+<div
+  id="review-list"
+  class="review-list"
+></div>
+
+<div class="button-row">
+
+<button
+  id="review-again-button"
+  class="game-button purple"
+  type="button"
+>
+🔄 再玩一次
+</button>
+
+<button
+  id="review-result-button"
+  class="game-button secondary"
+  type="button"
+>
+回到測驗結果
+</button>
+
+</div>
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<script src="../js/common-header.js"></script>
+<script src="../js/scratchpad.js"></script>
+<script src="../js/scratchpad-template.js"></script>
+<script src="../js/sound-manager.js?v=1"></script>
+
+
+<script>
+
+"use strict";
+
+
+/* ==================================================
+設定
+================================================== */
+
+const GAME_ID =
+  "exponentScientificNotation";
+
+
+const MODES = {
+
+  notation:{
+    name:"🔢 指數記法基礎",
+    count:10
+  },
+
+  negativePower:{
+    name:"➖ 負數次方與符號",
+    count:10
+  },
+
+  operations:{
+    name:"🧮 含指數四則運算",
+    count:10
+  },
+
+  tenPower:{
+    name:"🔟 10 的次方與位值",
+    count:10
+  },
+
+  scientific:{
+    name:"🔬 科學記號轉換",
+    count:10
+  },
+
+  scientificCompare:{
+    name:"⚖️ 科學記號判讀比較",
+    count:10
+  },
+
+  speed:{
+    name:"⚡ 指數快手",
+    seconds:60
+  },
+
+  comprehensive:{
+    name:"🏆 1-4 綜合挑戰",
+    count:8
+  }
+
+};
+
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+
+/* ==================================================
+狀態
+================================================== */
+
+let mode =
+  "notation";
+
+let questions =
+  [];
+
+let index =
+  0;
+
+let currentQuestion =
+  null;
+
+let correct =
+  0;
+
+let wrong =
+  0;
+
+let combo =
+  0;
+
+let maxCombo =
+  0;
+
+let records =
+  [];
+
+let answered =
+  false;
+
+let selectedChoice =
+  null;
+
+let selectedCompare =
+  null;
+
+let startTime =
+  0;
+
+let elapsed =
+  0;
+
+let timerId =
+  null;
+
+let scoreSaved =
+  false;
+
+let speedRemaining =
+  60;
+
+let speedScore =
+  0;
+
+let speedAttempts =
+  0;
+
+let speedLocked =
+  false;
+
+
+/* ==================================================
+工具
+================================================== */
+
+function rand(
+  min,
+  max
+){
+
+  return (
+    Math.floor(
+      Math.random() *
+      (
+        max -
+        min +
+        1
+      )
+    ) +
+    min
+  );
+}
+
+
+function pick(
+  list
+){
+
+  return list[
+    rand(
+      0,
+      list.length - 1
+    )
+  ];
+}
+
+
+function shuffle(
+  list
+){
+
+  const arr =
+    [...list];
+
+  for(
+    let i =
+      arr.length - 1;
+
+    i >
+      0;
+
+    i--
+  ){
+
+    const j =
+      rand(
+        0,
+        i
+      );
+
+    [
+      arr[i],
+      arr[j]
+    ] =
+    [
+      arr[j],
+      arr[i]
+    ];
+  }
+
+  return arr;
+}
+
+
+function roundTo(
+  value,
+  digits = 6
+){
+
+  const p =
+    10 ** digits;
+
+  return (
+    Math.round(
+      (
+        value +
+        Number.EPSILON
+      ) *
+      p
+    ) /
+    p
+  );
+}
+
+
+function fmt(
+  value
+){
+
+  const n =
+    Math.abs(value) <
+    1e-12
+
+      ? 0
+
+      : roundTo(
+          value,
+          8
+        );
+
+  return String(n)
+    .replace(
+      "-",
+      "－"
+    );
+}
+
+
+function esc(
+  value
+){
+
+  return String(
+    value ?? ""
+  )
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+}
+
+
+function operand(
+  value
+){
+
+  if(
+    value <
+    0
+  ){
+
+    return `（${fmt(value)}）`;
+  }
+
+  return fmt(value);
+}
+
+
+/* ==================================================
+指數表示
+================================================== */
+
+function expText(
+  exponent
+){
+
+  return String(exponent)
+    .replace(
+      "-",
+      "－"
+    );
+}
+
+
+function powerHTML(
+  base,
+  exponent
+){
+
+  const baseHTML =
+    Number(base) <
+    0
+
+      ? `（${fmt(base)}）`
+
+      : fmt(base);
+
+  return (
+    `${baseHTML}` +
+    `<sup>${expText(exponent)}</sup>`
+  );
+}
+
+
+/*
+－3⁴
+負號在次方外面，
+與（－3）⁴不同
+*/
+
+function outsideNegativePowerHTML(
+  base,
+  exponent
+){
+
+  return (
+    `－${Math.abs(base)}` +
+    `<sup>${expText(exponent)}</sup>`
+  );
+}
+
+
+function repeatedHTML(
+  base,
+  times
+){
+
+  return Array.from(
+    {
+      length:times
+    },
+    () =>
+      operand(base)
+  )
+    .join("×");
+}
+
+
+/* ==================================================
+科學記號
+================================================== */
+
+function scientificHTML(
+  coefficient,
+  exponent
+){
+
+  return (
+    `${fmt(coefficient)}` +
+    `×10<sup>${expText(exponent)}</sup>`
+  );
+}
+
+
+/*
+將科學記號轉成不使用 e 的一般數字字串
+*/
+
+function scientificToPlainString(
+  coefficient,
+  exponent
+){
+
+  let raw =
+    String(coefficient);
+
+
+  if(
+    raw.includes("e") ||
+    raw.includes("E")
+  ){
+
+    raw =
+      Number(coefficient)
+        .toFixed(12)
+        .replace(
+          /0+$/,
+          ""
+        )
+        .replace(
+          /\.$/,
+          ""
+        );
+  }
+
+
+  const parts =
+    raw.split(".");
+
+
+  const integerPart =
+    parts[0];
+
+
+  const decimalPart =
+    parts[1] || "";
+
+
+  const digits =
+    integerPart +
+    decimalPart;
+
+
+  const originalPosition =
+    integerPart.length;
+
+
+  const newPosition =
+    originalPosition +
+    exponent;
+
+
+  if(
+    newPosition <=
+    0
+  ){
+
+    return (
+      "0." +
+      "0".repeat(
+        Math.abs(
+          newPosition
+        )
+      ) +
+      digits
+    );
+  }
+
+
+  if(
+    newPosition >=
+    digits.length
+  ){
+
+    return (
+      digits +
+      "0".repeat(
+        newPosition -
+        digits.length
+      )
+    );
+  }
+
+
+  return (
+    digits.slice(
+      0,
+      newPosition
+    ) +
+    "." +
+    digits.slice(
+      newPosition
+    )
+  );
+}
+
+
+/* ==================================================
+Rich HTML
+================================================== */
+
+function rich(
+  html
+){
+
+  return {
+    __html:html
+  };
+}
+
+
+function richValue(
+  value
+){
+
+  if(
+    value &&
+    typeof value ===
+      "object" &&
+    Object.prototype
+      .hasOwnProperty
+      .call(
+        value,
+        "__html"
+      )
+  ){
+
+    return value.__html;
+  }
+
+  return esc(value);
+}
+
+
+/* ==================================================
+分數元件
+================================================== */
+
+function gcd(
+  a,
+  b
+){
+
+  a =
+    Math.abs(a);
+
+  b =
+    Math.abs(b);
+
+  while(b){
+
+    const t =
+      a % b;
+
+    a =
+      b;
+
+    b =
+      t;
+  }
+
+  return a || 1;
+}
+
+
+function fractionHTML(
+  numerator,
+  denominator
+){
+
+  const factor =
+    gcd(
+      numerator,
+      denominator
+    );
+
+  let n =
+    numerator /
+    factor;
+
+  let d =
+    denominator /
+    factor;
+
+  if(
+    d <
+    0
+  ){
+
+    n =
+      -n;
+
+    d =
+      -d;
+  }
+
+  const negative =
+    n <
+    0;
+
+  n =
+    Math.abs(n);
+
+  if(
+    d ===
+    1
+  ){
+
+    return (
+      negative
+        ? `－${n}`
+        : `${n}`
+    );
+  }
+
+  return `
+
+    <span class="fraction-with-sign">
+
+      ${
+        negative
+          ? "－"
+          : ""
+      }
+
+      <span class="math-fraction">
+
+        <span class="math-fraction-top">
+          ${n}
+        </span>
+
+        <span class="math-fraction-bottom">
+          ${d}
+        </span>
+
+      </span>
+
+    </span>
+  `;
+}
+
+
+/* ==================================================
+詳解
+================================================== */
+
+function makeExplanation({
+  answer,
+  observe,
+  think,
+  steps,
+  why,
+  mistake
+}){
+
+  return {
+    answer,
+    observe,
+    think,
+    steps,
+    why,
+    mistake
+  };
+}
+
+
+/* ==================================================
+題目物件
+================================================== */
+
+function makeQuestion(
+  data
+){
+
+  return {
+
+    id:
+      `${
+        data.modeId
+      }-${
+        data.family
+      }-${
+        Math.random()
+          .toString(36)
+          .slice(2,9)
+      }`,
+
+    type:"number",
+
+    label:"觀念練習",
+
+    ...data
+  };
+}
+
+
+function numberQuestion(
+  base,
+  answer
+){
+
+  return makeQuestion({
+
+    ...base,
+
+    type:"number",
+
+    answer
+  });
+}
+
+
+function choiceQuestion(
+  base,
+  choices,
+  answer
+){
+
+  return makeQuestion({
+
+    ...base,
+
+    type:"choice",
+
+    choices:
+      shuffle(choices),
+
+    answer
+  });
+}
+
+
+function compareQuestion(
+  base,
+  answer
+){
+
+  return makeQuestion({
+
+    ...base,
+
+    type:"compare",
+
+    answer
+  });
+}
+
+
+function scientificQuestion(
+  base,
+  coefficient,
+  exponent
+){
+
+  return makeQuestion({
+
+    ...base,
+
+    type:"scientific",
+
+    answer:{
+      coefficient,
+      exponent
+    },
+
+    answerDisplayHTML:
+      scientificHTML(
+        coefficient,
+        exponent
+      )
+  });
+}
+
+
+/* ==================================================
+音效
+================================================== */
+
+function playGameSound(
+  method
+){
+
+  try{
+
+    const sound =
+      window.GameSound ||
+      window.MathGameSound;
+
+    sound?.[
+      method
+    ]?.();
+
+  }catch(error){
+
+    console.warn(
+      "音效播放失敗：",
+      error
+    );
+  }
+}
+
+
+/* ==================================================
+模式一
+指數記法基礎
+================================================== */
+
+function notationRepeatedToPower(){
+
+  const base =
+    pick([
+      2,
+      3,
+      4,
+      5,
+      -2,
+      -3,
+      -4
+    ]);
+
+  const exponent =
+    rand(
+      2,
+      5
+    );
+
+  const correct =
+    powerHTML(
+      base,
+      exponent
+    );
+
+  return choiceQuestion({
+
+    modeId:"notation",
+
+    family:"repeatedToPower",
+
+    label:"連乘寫成指數",
+
+    html:`
+
+      <div class="question-note">
+
+        將
+
+        <br>
+
+        <span class="math math-expression">
+          ${repeatedHTML(base,exponent)}
+        </span>
+
+        <br>
+
+        寫成指數記法。
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          rich(correct),
+
+        observe:
+          `同一個數 ${operand(base)} 連乘 ${exponent} 次。`,
+
+        think:
+          "連乘中重複出現的數是底數，出現幾次就是指數。",
+
+        steps:[
+          `底數是 ${fmt(base)}。`,
+
+          `共有 ${exponent} 個相同因數。`,
+
+          rich(
+            `所以寫成 ${correct}。`
+          )
+        ],
+
+        why:
+          "同一個數 a 連乘 m 次，可以簡記成 a 的 m 次方。",
+
+        mistake:
+          base < 0
+            ? "負數作為底數時，必須把負號和數字一起放在括號內。"
+            : "不要把底數和指數的位置顛倒。"
+      })
+
+  },[
+
+    {
+      value:"correct",
+      html:correct
+    },
+
+    {
+      value:"swap",
+      html:
+        powerHTML(
+          exponent,
+          Math.abs(base)
+        )
+    },
+
+    {
+      value:"wrongExp",
+      html:
+        powerHTML(
+          base,
+          exponent + 1
+        )
+    }
+
+  ],"correct");
+}
+
+
+function notationPowerToRepeated(){
+
+  const base =
+    pick([
+      2,
+      3,
+      -2,
+      -3
+    ]);
+
+  const exponent =
+    rand(
+      3,
+      5
+    );
+
+  const correct =
+    repeatedHTML(
+      base,
+      exponent
+    );
+
+  return choiceQuestion({
+
+    modeId:"notation",
+
+    family:"powerToRepeated",
+
+    label:"次方還原成連乘",
+
+    html:`
+
+      <div class="question-note">
+
+        <span class="math math-expression">
+          ${powerHTML(base,exponent)}
+        </span>
+
+        <br>
+
+        表示下列哪一個連乘？
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          rich(correct),
+
+        observe:
+          rich(
+            `${powerHTML(base,exponent)} 的底數是 ${operand(base)}，指數是 ${exponent}。`
+          ),
+
+        think:
+          `把底數 ${operand(base)} 連乘 ${exponent} 次。`,
+
+        steps:[
+          rich(
+            `${powerHTML(base,exponent)}＝${correct}。`
+          )
+        ],
+
+        why:
+          "指數表示底數作為因數重複出現的次數。",
+
+        mistake:
+          base < 0
+            ? "底數是負數時，每一個因數都是同一個負數。"
+            : "指數不是拿來和底數相乘。"
+      })
+
+  },[
+
+    {
+      value:"correct",
+      html:correct
+    },
+
+    {
+      value:"times",
+      html:
+        `${fmt(base)}×${exponent}`
+    },
+
+    {
+      value:"less",
+      html:
+        repeatedHTML(
+          base,
+          exponent - 1
+        )
+    }
+
+  ],"correct");
+}
+
+
+function notationBaseExponent(){
+
+  const base =
+    pick([
+      -5,
+      -4,
+      -3,
+      2,
+      6,
+      7
+    ]);
+
+  const exponent =
+    rand(
+      2,
+      6
+    );
+
+  const correct =
+    `底數 ${fmt(base)}，指數 ${exponent}`;
+
+  return choiceQuestion({
+
+    modeId:"notation",
+
+    family:"baseExponent",
+
+    label:"辨認底數與指數",
+
+    html:`
+
+      <div class="question-note">
+
+        在
+
+        <span class="math math-expression">
+          ${powerHTML(base,exponent)}
+        </span>
+
+        中，
+
+        底數與指數分別是多少？
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:correct,
+
+        observe:
+          rich(
+            `${powerHTML(base,exponent)} 中，被重複相乘的數是底數，上方的小數字是指數。`
+          ),
+
+        think:
+          "先完整讀出底數，再看連乘次數。",
+
+        steps:[
+          `底數＝${fmt(base)}。`,
+          `指數＝${exponent}。`
+        ],
+
+        why:
+          "a 的 m 次方中，a 是底數，m 是指數。",
+
+        mistake:
+          base < 0
+            ? `括號表示底數是完整的 ${fmt(base)}，不是只有 ${Math.abs(base)}。`
+            : "不要把底數與指數對調。"
+      })
+
+  },[
+
+    {
+      value:"correct",
+      html:correct
+    },
+
+    {
+      value:"swap",
+      html:
+        `底數 ${exponent}，指數 ${fmt(base)}`
+    },
+
+    {
+      value:"abs",
+      html:
+        `底數 ${Math.abs(base)}，指數 ${exponent}`
+    }
+
+  ],"correct");
+}
+
+
+function notationValue(){
+
+  const base =
+    pick([
+      2,
+      3,
+      4,
+      5
+    ]);
+
+  const exponent =
+    pick([
+      2,
+      3,
+      4
+    ]);
+
+  const answer =
+    base **
+    exponent;
+
+  return numberQuestion({
+
+    modeId:"notation",
+
+    family:"value",
+
+    label:"計算次方",
+
+    html:`
+
+      <div class="math math-expression">
+        ${powerHTML(base,exponent)}＝？
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          fmt(answer),
+
+        observe:
+          rich(
+            `${powerHTML(base,exponent)} 表示 ${exponent} 個 ${base} 相乘。`
+          ),
+
+        think:
+          "先把次方還原成連乘。",
+
+        steps:[
+          `${repeatedHTML(base,exponent)}＝${answer}。`
+        ],
+
+        why:
+          "次方是重複乘法的簡記。",
+
+        mistake:
+          `${powerHTML(base,exponent)} 不是 ${base}×${exponent}。`
+      })
+
+  },answer);
+}
+
+
+function createNotationQuestions(){
+
+  return shuffle([
+
+    notationRepeatedToPower(),
+    notationRepeatedToPower(),
+    notationRepeatedToPower(),
+
+    notationPowerToRepeated(),
+    notationPowerToRepeated(),
+
+    notationBaseExponent(),
+    notationBaseExponent(),
+
+    notationValue(),
+    notationValue(),
+    notationValue()
+
+  ]);
+}
+
+
+/* ==================================================
+模式二
+負數次方
+================================================== */
+
+function negativePowerValue(){
+
+  const base =
+    -pick([
+      2,
+      3,
+      4,
+      5
+    ]);
+
+  const exponent =
+    pick([
+      2,
+      3,
+      4,
+      5
+    ]);
+
+  const answer =
+    base **
+    exponent;
+
+  return numberQuestion({
+
+    modeId:"negativePower",
+
+    family:"negativeValue",
+
+    label:
+      exponent %
+      2 ===
+      0
+        ? "負數的偶次方"
+        : "負數的奇次方",
+
+    html:`
+
+      <div class="math math-expression">
+        ${powerHTML(base,exponent)}＝？
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          fmt(answer),
+
+        observe:
+          `底數是負數 ${fmt(base)}，指數是 ${exponent}。`,
+
+        think:
+          exponent %
+          2 ===
+          0
+            ? "負數共有偶數個，因此乘積為正數。"
+            : "負數共有奇數個，因此乘積為負數。",
+
+        steps:[
+          rich(
+            `${powerHTML(base,exponent)}＝${repeatedHTML(base,exponent)}。`
+          ),
+
+          `負數共有 ${exponent} 個。`,
+
+          `所以答案是 ${fmt(answer)}。`
+        ],
+
+        why:
+          "負數底數的偶次方為正，奇次方為負。",
+
+        mistake:
+          "先確認負號是否真的在括號中的底數裡。"
+      })
+
+  },answer);
+}
+
+
+function outsideNegativePower(){
+
+  const base =
+    pick([
+      2,
+      3,
+      4,
+      5
+    ]);
+
+  const exponent =
+    pick([
+      2,
+      3,
+      4
+    ]);
+
+  const answer =
+    -(
+      base **
+      exponent
+    );
+
+  return numberQuestion({
+
+    modeId:"negativePower",
+
+    family:"outsideNegative",
+
+    label:"負號在次方外",
+
+    html:`
+
+      <div class="math math-expression">
+        ${outsideNegativePowerHTML(base,exponent)}＝？
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          fmt(answer),
+
+        observe:
+          rich(
+            `${outsideNegativePowerHTML(base,exponent)} 沒有把負號放進底數的括號。`
+          ),
+
+        think:
+          "先計算正數的次方，再處理最前面的負號。",
+
+        steps:[
+          rich(
+            `${outsideNegativePowerHTML(base,exponent)}＝－（${powerHTML(base,exponent)}）`
+          ),
+
+          `${powerHTML(base,exponent)}＝${base ** exponent}。`,
+
+          `所以答案是 ${fmt(answer)}。`
+        ],
+
+        why:
+          "沒有括號時，次方只作用在底數的數字部分。",
+
+        mistake:
+          rich(
+            `${outsideNegativePowerHTML(base,exponent)} 與 ${powerHTML(-base,exponent)} 不一定相同。`
+          )
+      })
+
+  },answer);
+}
+
+
+function negativePowerContrast(){
+
+  const base =
+    pick([
+      2,
+      3,
+      4
+    ]);
+
+  const exponent =
+    pick([
+      2,
+      4
+    ]);
+
+  return compareQuestion({
+
+    modeId:"negativePower",
+
+    family:"contrast",
+
+    label:"括號與負號比較",
+
+    html:`
+
+      <div class="question-note">
+
+        比較：
+
+        <br>
+
+        <span class="math math-expression">
+          ${powerHTML(-base,exponent)}
+        </span>
+
+        與
+
+        <span class="math math-expression">
+          ${outsideNegativePowerHTML(base,exponent)}
+        </span>
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:"＞",
+
+        observe:
+          rich(
+            `${powerHTML(-base,exponent)} 的底數是負數；${outsideNegativePowerHTML(base,exponent)} 的負號在次方外。`
+          ),
+
+        think:
+          "偶次方的負數底數會得到正數，但外面的負號仍會留下。",
+
+        steps:[
+          rich(
+            `${powerHTML(-base,exponent)}＝${base ** exponent}。`
+          ),
+
+          rich(
+            `${outsideNegativePowerHTML(base,exponent)}＝－${base ** exponent}。`
+          ),
+
+          `所以前者較大。`
+        ],
+
+        why:
+          "括號會改變負號是否屬於底數。",
+
+        mistake:
+          "看到相同的數字與指數，不代表兩個算式一定相等。"
+      })
+
+  },">");
+}
+
+
+function negativePowerSign(){
+
+  const base =
+    -rand(
+      2,
+      9
+    );
+
+  const exponent =
+    rand(
+      3,
+      8
+    );
+
+  const answer =
+    exponent %
+    2 ===
+    0
+      ? "positive"
+      : "negative";
+
+  return choiceQuestion({
+
+    modeId:"negativePower",
+
+    family:"sign",
+
+    label:"不用計算判斷正負",
+
+    html:`
+
+      <div class="question-note">
+
+        不必算出完整數值，
+
+        判斷
+
+        <br>
+
+        <span class="math math-expression">
+          ${powerHTML(base,exponent)}
+        </span>
+
+        <br>
+
+        的結果是哪一類？
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          answer ===
+          "positive"
+            ? "正數"
+            : "負數",
+
+        observe:
+          `底數是負數，指數 ${exponent} 是${
+            exponent %
+            2 ===
+            0
+              ? "偶數"
+              : "奇數"
+          }。`,
+
+        think:
+          exponent %
+          2 ===
+          0
+            ? "偶數個負數相乘，結果為正。"
+            : "奇數個負數相乘，結果為負。",
+
+        steps:[
+          `所以結果是 ${
+            answer ===
+            "positive"
+              ? "正數"
+              : "負數"
+          }。`
+        ],
+
+        why:
+          "負數次方的正負可以直接從指數的奇偶判斷。",
+
+        mistake:
+          "這個規則的前提是負號在底數的括號內。"
+      })
+
+  },[
+
+    {
+      value:"positive",
+      html:"正數"
+    },
+
+    {
+      value:"negative",
+      html:"負數"
+    },
+
+    {
+      value:"zero",
+      html:"0"
+    }
+
+  ],answer);
+}
+
+
+function specialZeroOnePower(){
+
+  const type =
+    pick([
+      "zero",
+      "one",
+      "negativeOne"
+    ]);
+
+  const exponent =
+    rand(
+      2,
+      7
+    );
+
+  let base;
+  let answer;
+
+  if(
+    type ===
+    "zero"
+  ){
+
+    base =
+      0;
+
+    answer =
+      0;
+  }
+
+  else if(
+    type ===
+    "one"
+  ){
+
+    base =
+      1;
+
+    answer =
+      1;
+  }
+
+  else{
+
+    base =
+      -1;
+
+    answer =
+      exponent %
+      2 ===
+      0
+        ? 1
+        : -1;
+  }
+
+
+  return numberQuestion({
+
+    modeId:"negativePower",
+
+    family:"zeroOne",
+
+    label:"0、1、－1 的次方",
+
+    html:`
+
+      <div class="math math-expression">
+        ${powerHTML(base,exponent)}＝？
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          fmt(answer),
+
+        observe:
+          `底數是 ${fmt(base)}。`,
+
+        think:
+          type ===
+          "zero"
+            ? "0 的正整數次方都是 0。"
+            : (
+                type ===
+                "one"
+                  ? "1 的任何正整數次方都是 1。"
+                  : "（－1）的偶次方為 1，奇次方為－1。"
+              ),
+
+        steps:[
+          rich(
+            `${powerHTML(base,exponent)}＝${fmt(answer)}。`
+          )
+        ],
+
+        why:
+          "這三個底數有非常規律的次方結果。",
+
+        mistake:
+          "不要把指數直接當作答案。"
+      })
+
+  },answer);
+}
+
+
+function createNegativePowerQuestions(){
+
+  return shuffle([
+
+    negativePowerValue(),
+    negativePowerValue(),
+    negativePowerValue(),
+
+    outsideNegativePower(),
+    outsideNegativePower(),
+
+    negativePowerContrast(),
+    negativePowerContrast(),
+
+    negativePowerSign(),
+    negativePowerSign(),
+
+    specialZeroOnePower()
+
+  ]);
+}
+
+
+/* ==================================================
+模式三
+含指數四則
+================================================== */
+
+function exponentOperationA(){
+
+  const sets =
+    [
+
+      {
+        a:-3,
+        p:2,
+        b:-2,
+        q:3,
+        c:2
+      },
+
+      {
+        a:-4,
+        p:2,
+        b:-3,
+        q:2,
+        c:2
+      },
+
+      {
+        a:-2,
+        p:4,
+        b:-3,
+        q:3,
+        c:1
+      }
+
+    ];
+
+  const q =
+    pick(sets);
+
+  const first =
+    q.a **
+    q.p;
+
+  const second =
+    q.b **
+    q.q;
+
+  const answer =
+    first +
+    second *
+    q.c;
+
+  const display =
+    `${powerHTML(q.a,q.p)}＋${powerHTML(q.b,q.q)}×${q.c}`;
+
+  return numberQuestion({
+
+    modeId:"operations",
+
+    family:"powerFirst",
+
+    label:"先指數再乘除",
+
+    html:`
+
+      <div class="math math-expression">
+        ${display}＝？
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          fmt(answer),
+
+        observe:
+          "算式中同時有次方、乘法與加法。",
+
+        think:
+          "先算次方，再乘法，最後加法。",
+
+        steps:[
+          rich(
+            `${powerHTML(q.a,q.p)}＝${fmt(first)}。`
+          ),
+
+          rich(
+            `${powerHTML(q.b,q.q)}＝${fmt(second)}。`
+          ),
+
+          `${operand(second)}×${q.c}＝${fmt(second*q.c)}。`,
+
+          `${operand(first)}＋${operand(second*q.c)}＝${fmt(answer)}。`
+        ],
+
+        why:
+          "含指數的四則運算，指數運算要先完成。",
+
+        mistake:
+          "不能先做最左邊看到的加法。"
+      })
+
+  },answer);
+}
+
+
+function exponentOperationB(){
+
+  const sets =
+    [
+
+      {
+        a:16,
+        b:-2,
+        p:2,
+        c:-5,
+        q:3
+      },
+
+      {
+        a:48,
+        b:-2,
+        p:3,
+        c:-3,
+        q:3
+      },
+
+      {
+        a:72,
+        b:-3,
+        p:2,
+        c:-4,
+        q:2
+      }
+
+    ];
+
+  const q =
+    pick(sets);
+
+  const powerB =
+    q.b **
+    q.p;
+
+  const powerC =
+    q.c **
+    q.q;
+
+  const answer =
+    q.a /
+    powerB +
+    powerC;
+
+  const display =
+    `${q.a}÷${powerHTML(q.b,q.p)}＋${powerHTML(q.c,q.q)}`;
+
+  return numberQuestion({
+
+    modeId:"operations",
+
+    family:"divisionPower",
+
+    label:"指數＋除法＋加法",
+
+    html:`
+
+      <div class="math math-expression">
+        ${display}＝？
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          fmt(answer),
+
+        observe:
+          "先看到兩個次方，再有除法與加法。",
+
+        think:
+          "先算所有次方，再做除法，最後做加法。",
+
+        steps:[
+          rich(
+            `${powerHTML(q.b,q.p)}＝${fmt(powerB)}。`
+          ),
+
+          rich(
+            `${powerHTML(q.c,q.q)}＝${fmt(powerC)}。`
+          ),
+
+          `${q.a}÷${operand(powerB)}＝${fmt(q.a/powerB)}。`,
+
+          `${operand(q.a/powerB)}＋${operand(powerC)}＝${fmt(answer)}。`
+        ],
+
+        why:
+          "每一個次方都是比乘除更優先的運算。",
+
+        mistake:
+          "負數底數的括號不能省略。"
+      })
+
+  },answer);
+}
+
+
+function exponentOperationC(){
+
+  const a =
+    pick([
+      -3,
+      -2
+    ]);
+
+  const p =
+    pick([
+      3,
+      4
+    ]);
+
+  const b =
+    -2;
+
+  const q =
+    pick([
+      3,
+      4
+    ]);
+
+  const multiplier =
+    pick([
+      4,
+      9
+    ]);
+
+  const answer =
+    a **
+    p -
+    (
+      b **
+      q
+    ) *
+    multiplier;
+
+  const display =
+    `${powerHTML(a,p)}－${powerHTML(b,q)}×${multiplier}`;
+
+  return numberQuestion({
+
+    modeId:"operations",
+
+    family:"subtractPower",
+
+    label:"次方＋乘法＋減法",
+
+    html:`
+
+      <div class="math math-expression">
+        ${display}＝？
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          fmt(answer),
+
+        observe:
+          "次方必須先算，之後才處理乘法與減法。",
+
+        think:
+          "依運算順序逐層完成。",
+
+        steps:[
+          rich(
+            `${powerHTML(a,p)}＝${fmt(a**p)}。`
+          ),
+
+          rich(
+            `${powerHTML(b,q)}＝${fmt(b**q)}。`
+          ),
+
+          `${operand(b**q)}×${multiplier}＝${fmt((b**q)*multiplier)}。`,
+
+          `${operand(a**p)}－${operand((b**q)*multiplier)}＝${fmt(answer)}。`
+        ],
+
+        why:
+          "順序固定後，複雜算式就能拆成幾個簡單步驟。",
+
+        mistake:
+          "減去負數時，減數應完整加括號。"
+      })
+
+  },answer);
+}
+
+
+function createOperationQuestions(){
+
+  return shuffle([
+
+    exponentOperationA(),
+    exponentOperationA(),
+    exponentOperationA(),
+
+    exponentOperationB(),
+    exponentOperationB(),
+    exponentOperationB(),
+
+    exponentOperationC(),
+    exponentOperationC(),
+    exponentOperationC(),
+
+    exponentOperationA()
+
+  ]);
+}
+
+
+/* ==================================================
+模式四
+10 的次方
+================================================== */
+
+function tenPowerValue(){
+
+  const exponent =
+    pick([
+      -7,
+      -6,
+      -5,
+      -4,
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4
+    ]);
+
+  const answerText =
+    scientificToPlainString(
+      1,
+      exponent
+    );
+
+  const answer =
+    Number(answerText);
+
+  return numberQuestion({
+
+    modeId:"tenPower",
+
+    family:"tenValue",
+
+    label:"10 的次方",
+
+    html:`
+
+      <div class="math math-expression">
+        ${powerHTML(10,exponent)}＝？
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:answerText,
+
+        observe:
+          `底數是 10，指數是 ${expText(exponent)}。`,
+
+        think:
+          exponent >
+          0
+            ? `10 的 ${exponent} 次方是 1 後面有 ${exponent} 個 0。`
+            : (
+                exponent ===
+                0
+                  ? "10 的 0 次方規定為 1。"
+                  : `10 的負 ${Math.abs(exponent)} 次方對應小數點後第 ${Math.abs(exponent)} 位的位值。`
+              ),
+
+        steps:[
+          rich(
+            `${powerHTML(10,exponent)}＝${answerText}。`
+          )
+        ],
+
+        why:
+          "相鄰的 10 的次方彼此相差 10 倍。",
+
+        mistake:
+          exponent <
+          0
+            ? "負指數不是負數答案，它表示小於 1 的位值。"
+            : "指數表示 10 的連乘次數，不是 10×指數。"
+      })
+
+  },answer);
+}
+
+
+function decimalToTenPower(){
+
+  const exponent =
+    -pick([
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]);
+
+  const decimal =
+    scientificToPlainString(
+      1,
+      exponent
+    );
+
+  const correct =
+    powerHTML(
+      10,
+      exponent
+    );
+
+  return choiceQuestion({
+
+    modeId:"tenPower",
+
+    family:"decimalToPower",
+
+    label:"小數寫成 10 的次方",
+
+    html:`
+
+      <div class="question-note">
+
+        <span class="math math-expression">
+          ${decimal}
+        </span>
+
+        <br>
+
+        可以寫成哪一個 10 的次方？
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          rich(correct),
+
+        observe:
+          `第一個 1 出現在小數點後第 ${Math.abs(exponent)} 位。`,
+
+        think:
+          `小數點後第 ${Math.abs(exponent)} 位的位值是 10 的負 ${Math.abs(exponent)} 次方。`,
+
+        steps:[
+          rich(
+            `${decimal}＝${correct}。`
+          )
+        ],
+
+        why:
+          "十分位是 10⁻¹、百分位是 10⁻²，依此類推。",
+
+        mistake:
+          "小於 1 的這些位值使用的是 10 的負整數次方。"
+      })
+
+  },[
+
+    {
+      value:"correct",
+      html:correct
+    },
+
+    {
+      value:"positive",
+      html:
+        powerHTML(
+          10,
+          Math.abs(exponent)
+        )
+    },
+
+    {
+      value:"offOne",
+      html:
+        powerHTML(
+          10,
+          exponent - 1
+        )
+    }
+
+  ],"correct");
+}
+
+
+function tenPlaceValue(){
+
+  const items =
+    [
+
+      {
+        name:"個位",
+        exponent:0
+      },
+
+      {
+        name:"十分位",
+        exponent:-1
+      },
+
+      {
+        name:"百分位",
+        exponent:-2
+      },
+
+      {
+        name:"千分位",
+        exponent:-3
+      },
+
+      {
+        name:"百位",
+        exponent:2
+      },
+
+      {
+        name:"千位",
+        exponent:3
+      }
+
+    ];
+
+  const item =
+    pick(items);
+
+  const correct =
+    powerHTML(
+      10,
+      item.exponent
+    );
+
+  return choiceQuestion({
+
+    modeId:"tenPower",
+
+    family:"placeValue",
+
+    label:"位值與 10 的次方",
+
+    html:`
+
+      <div class="question-note">
+
+        「${item.name}」的位值，
+
+        可以用下列哪一個 10 的次方表示？
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          rich(correct),
+
+        observe:
+          `題目要把 ${item.name} 轉成以 10 為底的指數記法。`,
+
+        think:
+          item.exponent >=
+          0
+            ? "個位向左每移一位，指數增加 1。"
+            : "個位向右每移一位，指數減少 1。",
+
+        steps:[
+          rich(
+            `${item.name}＝${correct}。`
+          )
+        ],
+
+        why:
+          "十進位制中相鄰位值相差 10 倍。",
+
+        mistake:
+          "個位是 10⁰，不是 10¹。"
+      })
+
+  },[
+
+    {
+      value:"correct",
+      html:correct
+    },
+
+    {
+      value:"opposite",
+      html:
+        powerHTML(
+          10,
+          -item.exponent
+        )
+    },
+
+    {
+      value:"shift",
+      html:
+        powerHTML(
+          10,
+          item.exponent + 1
+        )
+    }
+
+  ],"correct");
+}
+
+
+function tenUnitQuestion(){
+
+  const units =
+    [
+
+      {
+        name:"1 毫米",
+        decimal:"0.001",
+        exponent:-3
+      },
+
+      {
+        name:"1 微米",
+        decimal:"0.000001",
+        exponent:-6
+      },
+
+      {
+        name:"1 奈米",
+        decimal:"0.000000001",
+        exponent:-9
+      }
+
+    ];
+
+  const item =
+    pick(units);
+
+  const correct =
+    powerHTML(
+      10,
+      item.exponent
+    );
+
+  return choiceQuestion({
+
+    modeId:"tenPower",
+
+    family:"unit",
+
+    label:"生活中的微小單位",
+
+    html:`
+
+      <div class="question-note">
+
+        ${item.name}
+
+        ＝
+
+        ${item.decimal} 公尺。
+
+        <br>
+
+        用 10 的次方表示為何？
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          rich(
+            `${correct} 公尺`
+          ),
+
+        observe:
+          `第一個非 0 數字位於小數點後第 ${Math.abs(item.exponent)} 位。`,
+
+        think:
+          `所以對應 ${powerHTML(10,item.exponent)}。`,
+
+        steps:[
+          rich(
+            `${item.decimal}＝${correct}。`
+          )
+        ],
+
+        why:
+          "10 的負整數次方很適合表示非常小的長度。",
+
+        mistake:
+          "負的是指數，不是整個數的正負。"
+      })
+
+  },[
+
+    {
+      value:"correct",
+      html:
+        `${correct} 公尺`
+    },
+
+    {
+      value:"positive",
+      html:
+        `${powerHTML(10,Math.abs(item.exponent))} 公尺`
+    },
+
+    {
+      value:"off",
+      html:
+        `${powerHTML(10,item.exponent+1)} 公尺`
+    }
+
+  ],"correct");
+}
+
+
+function createTenPowerQuestions(){
+
+  return shuffle([
+
+    tenPowerValue(),
+    tenPowerValue(),
+    tenPowerValue(),
+
+    decimalToTenPower(),
+    decimalToTenPower(),
+    decimalToTenPower(),
+
+    tenPlaceValue(),
+    tenPlaceValue(),
+
+    tenUnitQuestion(),
+    tenUnitQuestion()
+
+  ]);
+}
+
+
+/* ==================================================
+模式五
+科學記號轉換
+================================================== */
+
+function scientificLargeInput(){
+
+  const sets =
+    [
+
+      {
+        c:1.2,
+        e:5
+      },
+
+      {
+        c:3.6,
+        e:7
+      },
+
+      {
+        c:9.81,
+        e:8
+      },
+
+      {
+        c:2.35,
+        e:6
+      },
+
+      {
+        c:4.72,
+        e:9
+      }
+
+    ];
+
+  const q =
+    pick(sets);
+
+  const plain =
+    scientificToPlainString(
+      q.c,
+      q.e
+    );
+
+  return scientificQuestion({
+
+    modeId:"scientific",
+
+    family:"largeToScientific",
+
+    label:"大數 → 科學記號",
+
+    html:`
+
+      <div class="question-note">
+
+        將
+
+        <br>
+
+        <span class="math math-expression">
+          ${plain}
+        </span>
+
+        <br>
+
+        寫成科學記號。
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          rich(
+            scientificHTML(
+              q.c,
+              q.e
+            )
+          ),
+
+        observe:
+          `先把小數點移到第一個非 0 數字後面，使前面的係數落在 1 到 10 之間。`,
+
+        think:
+          `小數點需要向左移 ${q.e} 位，所以乘上 10 的 ${q.e} 次方。`,
+
+        steps:[
+          `${plain}＝${fmt(q.c)}×${scientificToPlainString(1,q.e)}。`,
+
+          rich(
+            `＝${scientificHTML(q.c,q.e)}。`
+          )
+        ],
+
+        why:
+          "科學記號的係數必須大於或等於 1 且小於 10。",
+
+        mistake:
+          "不要只數 0；應該看小數點實際移動了幾位。"
+      })
+
+  },q.c,q.e);
+}
+
+
+function scientificSmallInput(){
+
+  const sets =
+    [
+
+      {
+        c:3.7,
+        e:-7
+      },
+
+      {
+        c:2.1,
+        e:-4
+      },
+
+      {
+        c:8,
+        e:-6
+      },
+
+      {
+        c:3.02,
+        e:-5
+      },
+
+      {
+        c:7.5,
+        e:-8
+      }
+
+    ];
+
+  const q =
+    pick(sets);
+
+  const plain =
+    scientificToPlainString(
+      q.c,
+      q.e
+    );
+
+  return scientificQuestion({
+
+    modeId:"scientific",
+
+    family:"smallToScientific",
+
+    label:"小數 → 科學記號",
+
+    html:`
+
+      <div class="question-note">
+
+        將
+
+        <br>
+
+        <span class="math math-expression">
+          ${plain}
+        </span>
+
+        <br>
+
+        寫成科學記號。
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          rich(
+            scientificHTML(
+              q.c,
+              q.e
+            )
+          ),
+
+        observe:
+          "這是一個介於 0 與 1 之間的正數。",
+
+        think:
+          `第一個非 0 數字從小數點後第 ${Math.abs(q.e)} 位開始出現，因此指數為 ${expText(q.e)}。`,
+
+        steps:[
+          rich(
+            `${plain}＝${scientificHTML(q.c,q.e)}。`
+          )
+        ],
+
+        why:
+          "很小的正數以科學記號表示時，10 的指數為負整數。",
+
+        mistake:
+          "科學記號本身仍然是正數；負的是 10 的指數。"
+      })
+
+  },q.c,q.e);
+}
+
+
+function scientificToPlain(){
+
+  const q =
+    pick([
+
+      {
+        c:3.14,
+        e:7
+      },
+
+      {
+        c:7.68,
+        e:4
+      },
+
+      {
+        c:5.3,
+        e:-6
+      },
+
+      {
+        c:2.345,
+        e:-9
+      },
+
+      {
+        c:6.85,
+        e:7
+      }
+
+    ]);
+
+  const plain =
+    scientificToPlainString(
+      q.c,
+      q.e
+    );
+
+  return numberQuestion({
+
+    modeId:"scientific",
+
+    family:"scientificToPlain",
+
+    label:"科學記號 → 一般數字",
+
+    html:`
+
+      <div class="question-note">
+
+        將
+
+        <br>
+
+        <span class="math math-expression">
+          ${scientificHTML(q.c,q.e)}
+        </span>
+
+        <br>
+
+        化成一般數字。
+
+      </div>
+    `,
+
+    answerDisplay:plain,
+
+    explanation:
+      makeExplanation({
+
+        answer:plain,
+
+        observe:
+          `10 的指數是 ${expText(q.e)}。`,
+
+        think:
+          q.e >
+          0
+            ? `小數點向右移 ${q.e} 位。`
+            : `小數點向左移 ${Math.abs(q.e)} 位。`,
+
+        steps:[
+          rich(
+            `${scientificHTML(q.c,q.e)}＝${plain}。`
+          )
+        ],
+
+        why:
+          "乘上 10 的正次方會放大，乘上 10 的負次方會縮小。",
+
+        mistake:
+          "移動小數點時要把中間缺少的位置補 0。"
+      })
+
+  },Number(plain));
+}
+
+
+function validScientificNotation(){
+
+  const correct =
+    pick([
+
+      {
+        text:
+          scientificHTML(
+            2.75,
+            -9
+          )
+      },
+
+      {
+        text:
+          scientificHTML(
+            3,
+            8
+          )
+      },
+
+      {
+        text:
+          scientificHTML(
+            7.3,
+            5
+          )
+      }
+
+    ]);
+
+  return choiceQuestion({
+
+    modeId:"scientific",
+
+    family:"validScientific",
+
+    label:"判斷科學記號格式",
+
+    html:`
+
+      <div class="question-note">
+
+        下列哪一個
+
+        <strong>
+          符合科學記號表示法
+        </strong>
+        ？
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          rich(correct.text),
+
+        observe:
+          "科學記號必須寫成 a×10ᵐ，而且 1≤a＜10。",
+
+        think:
+          "先檢查係數，再檢查底數是否為 10。",
+
+        steps:[
+          "係數不能小於 1。",
+          "係數不能大於或等於 10。",
+          "次方的底數必須是 10。"
+        ],
+
+        why:
+          "限制係數範圍可以讓同一個數只有一種標準科學記號。",
+
+        mistake:
+          "0.9×10⁵、16×10⁻³ 都不符合標準格式。"
+      })
+
+  },[
+
+    {
+      value:"correct",
+      html:correct.text
+    },
+
+    {
+      value:"small",
+      html:
+        scientificHTML(
+          .9,
+          5
+        )
+    },
+
+    {
+      value:"large",
+      html:
+        scientificHTML(
+          16,
+          -3
+        )
+    },
+
+    {
+      value:"wrongBase",
+      html:
+        `7.3×2<sup>10</sup>`
+    }
+
+  ],"correct");
+}
+
+
+function createScientificQuestions(){
+
+  return shuffle([
+
+    scientificLargeInput(),
+    scientificLargeInput(),
+    scientificLargeInput(),
+
+    scientificSmallInput(),
+    scientificSmallInput(),
+    scientificSmallInput(),
+
+    scientificToPlain(),
+    scientificToPlain(),
+
+    validScientificNotation(),
+    validScientificNotation()
+
+  ]);
+}
+
+
+/* ==================================================
+模式六
+科學記號比較與判讀
+================================================== */
+
+function scientificCompare(){
+
+  const sets =
+    [
+
+      {
+        a:3.2,
+        m:12,
+        b:1.7,
+        n:12
+      },
+
+      {
+        a:6.1,
+        m:8,
+        b:9.35,
+        n:7
+      },
+
+      {
+        a:9.5,
+        m:-5,
+        b:8.7,
+        n:-3
+      },
+
+      {
+        a:1.234,
+        m:-6,
+        b:9.87,
+        n:-5
+      },
+
+      {
+        a:7.53,
+        m:5,
+        b:5.49,
+        n:6
+      }
+
+    ];
+
+  const q =
+    pick(sets);
+
+  const valueA =
+    q.a *
+    10 **
+    q.m;
+
+  const valueB =
+    q.b *
+    10 **
+    q.n;
+
+  const answer =
+    Math.abs(
+      valueA -
+      valueB
+    ) <
+    1e-15
+
+      ? "="
+
+      : (
+          valueA >
+          valueB
+            ? ">"
+            : "<"
+        );
+
+  return compareQuestion({
+
+    modeId:"scientificCompare",
+
+    family:"compare",
+
+    label:"科學記號比較大小",
+
+    html:`
+
+      <div class="question-note">
+
+        比較：
+
+        <br>
+
+        <span class="math math-expression">
+          ${scientificHTML(q.a,q.m)}
+        </span>
+
+        與
+
+        <span class="math math-expression">
+          ${scientificHTML(q.b,q.n)}
+        </span>
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          answer ===
+          ">"
+            ? "＞"
+            : (
+                answer ===
+                "<"
+                  ? "＜"
+                  : "＝"
+              ),
+
+        observe:
+          `兩數的 10 次方指數分別是 ${expText(q.m)} 與 ${expText(q.n)}。`,
+
+        think:
+          q.m !==
+          q.n
+            ? "先比較 10 的指數；指數較大的科學記號代表較大的正數。"
+            : "指數相同時，再比較前面的係數。",
+
+        steps:[
+          q.m !==
+          q.n
+            ? `${expText(q.m)} ${
+                q.m > q.n
+                  ? "＞"
+                  : "＜"
+              } ${expText(q.n)}。`
+            : `指數相同，比較 ${q.a} 與 ${q.b}。`,
+
+          `所以第一個數 ${
+            answer ===
+            ">"
+              ? "＞"
+              : (
+                  answer ===
+                  "<"
+                    ? "＜"
+                    : "＝"
+                )
+          } 第二個數。`
+        ],
+
+        why:
+          "這一單元的科學記號都是正數，因此可先比較 10 的次方。",
+
+        mistake:
+          "當指數不同時，不要只比較前面的係數。"
+      })
+
+  },answer);
+}
+
+
+function scientificDigitCount(){
+
+  const coefficient =
+    pick([
+      1.5,
+      3.14,
+      6.85,
+      8.2
+    ]);
+
+  const exponent =
+    rand(
+      3,
+      11
+    );
+
+  const answer =
+    exponent +
+    1;
+
+  return numberQuestion({
+
+    modeId:"scientificCompare",
+
+    family:"digitCount",
+
+    label:"判斷整數位數",
+
+    html:`
+
+      <div class="question-note">
+
+        <span class="math math-expression">
+          ${scientificHTML(coefficient,exponent)}
+        </span>
+
+        <br>
+
+        化成一般整數後，共有幾位數？
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          `${answer} 位數`,
+
+        observe:
+          `科學記號的指數是 ${exponent}。`,
+
+        think:
+          "若科學記號為 a×10ᵐ 且 m 為正整數，整數部分共有 m＋1 位。",
+
+        steps:[
+          `${exponent}＋1＝${answer}。`,
+
+          `所以共有 ${answer} 位數。`
+        ],
+
+        why:
+          "科學記號的係數第一位會落在最高位，因此位數比指數多 1。",
+
+        mistake:
+          "答案不是直接寫指數本身。"
+      })
+
+  },answer);
+}
+
+
+function scientificFirstNonZero(){
+
+  const coefficient =
+    pick([
+      2.1,
+      3.02,
+      5.3,
+      8.7
+    ]);
+
+  const exponent =
+    -rand(
+      3,
+      9
+    );
+
+  const answer =
+    Math.abs(exponent);
+
+  return numberQuestion({
+
+    modeId:"scientificCompare",
+
+    family:"firstNonZero",
+
+    label:"第一個非 0 數字的位置",
+
+    html:`
+
+      <div class="question-note">
+
+        <span class="math math-expression">
+          ${scientificHTML(coefficient,exponent)}
+        </span>
+
+        <br>
+
+        化成小數後，
+
+        從小數點後第幾位開始出現不是 0 的數字？
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          `第 ${answer} 位`,
+
+        observe:
+          `10 的指數是 ${expText(exponent)}。`,
+
+        think:
+          `a×10⁻ᵐ 會從小數點後第 m 位開始出現第一個非 0 數字。`,
+
+        steps:[
+          `m＝${answer}。`,
+
+          `所以從小數點後第 ${answer} 位開始出現非 0 數字。`
+        ],
+
+        why:
+          "負指數代表小數點向左移動的位數。",
+
+        mistake:
+          "不要把負號也算成位數的一部分。"
+      })
+
+  },answer);
+}
+
+
+function scientificSpecificDigit(){
+
+  const q =
+    pick([
+
+      {
+        c:3.874,
+        e:-5,
+        digit:"7",
+        place:7
+      },
+
+      {
+        c:3.874,
+        e:-5,
+        digit:"8",
+        place:6
+      },
+
+      {
+        c:3.874,
+        e:-50,
+        digit:"8",
+        place:51
+      }
+
+    ]);
+
+  return numberQuestion({
+
+    modeId:"scientificCompare",
+
+    family:"specificDigit",
+
+    label:"進階｜指定數字的位置",
+
+    html:`
+
+      <div class="question-note">
+
+        <span class="math math-expression">
+          ${scientificHTML(q.c,q.e)}
+        </span>
+
+        <br>
+
+        化成小數後，
+
+        數字 ${q.digit}
+
+        位於小數點後第幾位？
+
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          `第 ${q.place} 位`,
+
+        observe:
+          `第一個非 0 數字 3 位於小數點後第 ${Math.abs(q.e)} 位。`,
+
+        think:
+          "接下來的 8、7、4 依序各往後一位。",
+
+        steps:[
+          `數字 3 在第 ${Math.abs(q.e)} 位。`,
+
+          `數字 8 在第 ${Math.abs(q.e)+1} 位。`,
+
+          q.digit ===
+          "7"
+            ? `數字 7 在第 ${Math.abs(q.e)+2} 位。`
+            : `因此指定數字位於第 ${q.place} 位。`
+        ],
+
+        why:
+          "不用把非常長的小數完整寫出來，也能利用指數判斷位置。",
+
+        mistake:
+          "第一個非 0 數字的位置由 10 的負指數決定。"
+      })
+
+  },q.place);
+}
+
+
+function createScientificCompareQuestions(){
+
+  return shuffle([
+
+    scientificCompare(),
+    scientificCompare(),
+    scientificCompare(),
+    scientificCompare(),
+
+    scientificDigitCount(),
+    scientificDigitCount(),
+
+    scientificFirstNonZero(),
+    scientificFirstNonZero(),
+
+    scientificSpecificDigit(),
+    scientificSpecificDigit()
+
+  ]);
+}
+
+
+/* ==================================================
+競速
+================================================== */
+
+function speedQuestion(){
+
+  const family =
+    pick([
+      "negative",
+      "outside",
+      "ten"
+    ]);
+
+
+  if(
+    family ===
+    "ten"
+  ){
+
+    const exponent =
+      pick([
+        -3,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        3
+      ]);
+
+    const answer =
+      Number(
+        scientificToPlainString(
+          1,
+          exponent
+        )
+      );
+
+    return numberQuestion({
+
+      modeId:"speed",
+
+      family:"speedTen",
+
+      label:"60 秒熟練",
+
+      html:`
+
+        <div class="math math-expression">
+          ${powerHTML(10,exponent)}＝？
+        </div>
+      `,
+
+      explanation:
+        makeExplanation({
+
+          answer:
+            scientificToPlainString(
+              1,
+              exponent
+            ),
+
+          observe:
+            "這是 10 的次方。",
+
+          think:
+            exponent < 0
+              ? "負指數代表小於 1 的位值。"
+              : "依 10 的次方快速判斷。",
+
+          steps:[
+            rich(
+              `${powerHTML(10,exponent)}＝${scientificToPlainString(1,exponent)}。`
+            )
+          ],
+
+          why:
+            "熟悉 10 的次方有助於科學記號。",
+
+          mistake:
+            "10 的負次方不是負數。"
+        })
+
+    },answer);
+  }
+
+
+  const base =
+    pick([
+      2,
+      3,
+      4
+    ]);
+
+  const exponent =
+    pick([
+      2,
+      3,
+      4
+    ]);
+
+
+  if(
+    family ===
+    "outside"
+  ){
+
+    const answer =
+      -(
+        base **
+        exponent
+      );
+
+    return numberQuestion({
+
+      modeId:"speed",
+
+      family:"speedOutside",
+
+      label:"60 秒熟練",
+
+      html:`
+
+        <div class="math math-expression">
+          ${outsideNegativePowerHTML(base,exponent)}＝？
+        </div>
+      `,
+
+      explanation:
+        makeExplanation({
+
+          answer:
+            fmt(answer),
+
+          observe:
+            "負號在次方運算外。",
+
+          think:
+            "先算次方，再加上外面的負號。",
+
+          steps:[
+            rich(
+              `${outsideNegativePowerHTML(base,exponent)}＝${fmt(answer)}。`
+            )
+          ],
+
+          why:
+            "括號會影響底數是否包含負號。",
+
+          mistake:
+            "不要誤認為底數是負數。"
+        })
+
+    },answer);
+  }
+
+
+  const negativeBase =
+    -base;
+
+  const answer =
+    negativeBase **
+    exponent;
+
+  return numberQuestion({
+
+    modeId:"speed",
+
+    family:"speedNegative",
+
+    label:"60 秒熟練",
+
+    html:`
+
+      <div class="math math-expression">
+        ${powerHTML(negativeBase,exponent)}＝？
+      </div>
+    `,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          fmt(answer),
+
+        observe:
+          "底數是負數。",
+
+        think:
+          exponent %
+          2 ===
+          0
+            ? "偶次方為正。"
+            : "奇次方為負。",
+
+        steps:[
+          rich(
+            `${powerHTML(negativeBase,exponent)}＝${fmt(answer)}。`
+          )
+        ],
+
+        why:
+          "負數底數的符號由指數奇偶決定。",
+
+        mistake:
+          "括號中的負號屬於底數。"
+      })
+
+  },answer);
+}
+
+
+/* ==================================================
+綜合挑戰
+================================================== */
+
+function comprehensiveScientificCompare(){
+
+  return scientificCompare();
+}
+
+
+function createComprehensiveQuestions(){
+
+  const list =
+    [
+
+      notationRepeatedToPower(),
+
+      negativePowerContrast(),
+
+      exponentOperationB(),
+
+      tenPowerValue(),
+
+      scientificLargeInput(),
+
+      scientificSmallInput(),
+
+      scientificDigitCount(),
+
+      comprehensiveScientificCompare()
+
+    ];
+
+  return shuffle(
+    list.map(
+      question => ({
+        ...question,
+        modeId:"comprehensive"
+      })
+    )
+  );
+}
+
+
+/* ==================================================
+建立題組
+================================================== */
+
+function createQuestions(){
+
+  switch(mode){
+
+    case "notation":
+      return createNotationQuestions();
+
+    case "negativePower":
+      return createNegativePowerQuestions();
+
+    case "operations":
+      return createOperationQuestions();
+
+    case "tenPower":
+      return createTenPowerQuestions();
+
+    case "scientific":
+      return createScientificQuestions();
+
+    case "scientificCompare":
+      return createScientificCompareQuestions();
+
+    case "comprehensive":
+      return createComprehensiveQuestions();
+
+    default:
+      return [];
+  }
+}
+
+
+/* ==================================================
+答案介面
+================================================== */
+
+function numberInputHTML(){
+
+  return `
+
+    <input
+      id="number-answer"
+      class="number-answer"
+      type="text"
+      inputmode="decimal"
+      autocomplete="off"
+      placeholder="輸入答案"
+    >
+
+    <div class="sign-helper">
+
+      <button
+        class="sign-helper-button"
+        data-number-sign="negative"
+        type="button"
+      >
+        － 負號
+      </button>
+
+      <button
+        class="sign-helper-button"
+        data-number-sign="positive"
+        type="button"
+      >
+        ＋ 正號
+      </button>
+
+    </div>
+  `;
+}
+
+
+function scientificInputHTML(){
+
+  return `
+
+    <div class="scientific-answer-box">
+
+      <input
+        id="scientific-coefficient"
+        class="scientific-input"
+        type="text"
+        inputmode="decimal"
+        autocomplete="off"
+        placeholder="a"
+      >
+
+      <span
+        class="math"
+        style="
+          font-size:26px;
+          font-weight:900;
+        "
+      >
+        ×
+      </span>
+
+      <span class="scientific-exponent-wrap">
+
+        10
+
+        <input
+          id="scientific-exponent"
+          class="scientific-exp-input"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          placeholder="m"
+        >
+
+      </span>
+
+    </div>
+
+    <div class="sign-helper">
+
+      <button
+        class="sign-helper-button"
+        data-exp-negative
+        type="button"
+      >
+        － 指數負號
+      </button>
+
+    </div>
+  `;
+}
+
+
+function bindNumberSignButtons(){
+
+  const input =
+    $("number-answer");
+
+  if(
+    !input
+  ){
+
+    return;
+  }
+
+
+  document
+    .querySelectorAll(
+      "[data-number-sign]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            if(
+              answered ||
+              speedLocked
+            ){
+
+              return;
+            }
+
+            let raw =
+              input.value
+                .trim()
+                .replace(
+                  /^[+\-－]/,
+                  ""
+                );
+
+            if(
+              button.dataset
+                .numberSign ===
+              "negative"
+            ){
+
+              input.value =
+                `-${raw}`;
+            }
+
+            else{
+
+              input.value =
+                raw
+                  ? `+${raw}`
+                  : "+";
+            }
+
+            input.focus();
+          }
+        );
+      }
+    );
+}
+
+
+function bindScientificSign(){
+
+  const button =
+    document.querySelector(
+      "[data-exp-negative]"
+    );
+
+  const input =
+    $("scientific-exponent");
+
+  if(
+    !button ||
+    !input
+  ){
+
+    return;
+  }
+
+  button.addEventListener(
+    "click",
+    () => {
+
+      if(
+        answered ||
+        speedLocked
+      ){
+
+        return;
+      }
+
+      let raw =
+        input.value
+          .trim()
+          .replace(
+            /^[+\-－]/,
+            ""
+          );
+
+      input.value =
+        `-${raw}`;
+
+      input.focus();
+    }
+  );
+}
+
+
+function renderAnswer(
+  question
+){
+
+  selectedChoice =
+    null;
+
+  selectedCompare =
+    null;
+
+  const area =
+    $("answer-area");
+
+
+  if(
+    question.type ===
+    "number"
+  ){
+
+    area.innerHTML =
+      numberInputHTML();
+
+    bindNumberSignButtons();
+
+    setTimeout(
+      () => {
+        $("number-answer")
+          ?.focus();
+      },
+      0
+    );
+
+    return;
+  }
+
+
+  if(
+    question.type ===
+    "scientific"
+  ){
+
+    area.innerHTML =
+      scientificInputHTML();
+
+    bindScientificSign();
+
+    setTimeout(
+      () => {
+        $("scientific-coefficient")
+          ?.focus();
+      },
+      0
+    );
+
+    return;
+  }
+
+
+  if(
+    question.type ===
+    "choice"
+  ){
+
+    area.innerHTML = `
+
+      <div class="choice-grid">
+
+        ${
+          question.choices
+            .map(
+              choice => `
+
+                <button
+                  class="choice-button"
+                  data-choice="${esc(choice.value)}"
+                  type="button"
+                >
+                  ${
+                    choice.html ??
+                    esc(
+                      choice.text ??
+                      choice.value
+                    )
+                  }
+                </button>
+              `
+            )
+            .join("")
+        }
+
+      </div>
+    `;
+
+    area
+      .querySelectorAll(
+        "[data-choice]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              if(
+                answered ||
+                speedLocked
+              ){
+
+                return;
+              }
+
+              selectedChoice =
+                button.dataset.choice;
+
+              area
+                .querySelectorAll(
+                  "[data-choice]"
+                )
+                .forEach(
+                  item =>
+                    item.classList
+                      .remove(
+                        "selected"
+                      )
+                );
+
+              button.classList
+                .add(
+                  "selected"
+                );
+            }
+          );
+        }
+      );
+
+    return;
+  }
+
+
+  if(
+    question.type ===
+    "compare"
+  ){
+
+    area.innerHTML = `
+
+      <div class="compare-grid">
+
+        <button
+          class="compare-button"
+          data-compare="<"
+          type="button"
+        >
+          ＜
+        </button>
+
+        <button
+          class="compare-button"
+          data-compare="="
+          type="button"
+        >
+          ＝
+        </button>
+
+        <button
+          class="compare-button"
+          data-compare=">"
+          type="button"
+        >
+          ＞
+        </button>
+
+      </div>
+    `;
+
+
+    area
+      .querySelectorAll(
+        "[data-compare]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              if(
+                answered ||
+                speedLocked
+              ){
+
+                return;
+              }
+
+              selectedCompare =
+                button.dataset.compare;
+
+              area
+                .querySelectorAll(
+                  "[data-compare]"
+                )
+                .forEach(
+                  item =>
+                    item.classList
+                      .remove(
+                        "selected"
+                      )
+                );
+
+              button.classList
+                .add(
+                  "selected"
+                );
+            }
+          );
+        }
+      );
+  }
+}
+
+
+/* ==================================================
+讀取答案
+================================================== */
+
+function readAnswer(
+  question
+){
+
+  if(
+    question.type ===
+    "number"
+  ){
+
+    const raw =
+      $("number-answer")
+        ?.value
+        .trim() ||
+      "";
+
+    if(
+      !/^[+\-－]?(?:\d+(?:\.\d+)?|\.\d+)$/
+        .test(raw)
+    ){
+
+      return {
+
+        valid:false,
+
+        message:
+          "請輸入完整的數字答案。"
+      };
+    }
+
+    const value =
+      Number(
+        raw.replace(
+          "－",
+          "-"
+        )
+      );
+
+    return {
+
+      valid:true,
+
+      value,
+
+      display:
+        fmt(value),
+
+      displayHTML:
+        esc(
+          fmt(value)
+        )
+    };
+  }
+
+
+  if(
+    question.type ===
+    "scientific"
+  ){
+
+    const coefficientRaw =
+      $("scientific-coefficient")
+        ?.value
+        .trim() ||
+      "";
+
+    const exponentRaw =
+      $("scientific-exponent")
+        ?.value
+        .trim() ||
+      "";
+
+
+    if(
+      !/^(?:\d+(?:\.\d+)?|\.\d+)$/
+        .test(
+          coefficientRaw
+        )
+    ){
+
+      return {
+
+        valid:false,
+
+        message:
+          "請先輸入科學記號前面的係數 a。"
+      };
+    }
+
+
+    if(
+      !/^[+\-－]?\d+$/
+        .test(
+          exponentRaw
+        )
+    ){
+
+      return {
+
+        valid:false,
+
+        message:
+          "請輸入完整的整數指數 m。"
+      };
+    }
+
+
+    const coefficient =
+      Number(
+        coefficientRaw
+      );
+
+
+    const exponent =
+      Number(
+        exponentRaw.replace(
+          "－",
+          "-"
+        )
+      );
+
+
+    return {
+
+      valid:true,
+
+      value:{
+        coefficient,
+        exponent
+      },
+
+      display:
+        `${coefficient}×10^${exponent}`,
+
+      displayHTML:
+        scientificHTML(
+          coefficient,
+          exponent
+        )
+    };
+  }
+
+
+  if(
+    question.type ===
+    "choice"
+  ){
+
+    if(
+      selectedChoice ===
+      null
+    ){
+
+      return {
+
+        valid:false,
+
+        message:
+          "請先選擇一個答案。"
+      };
+    }
+
+
+    const selected =
+      question.choices
+        .find(
+          item =>
+            String(item.value) ===
+            String(selectedChoice)
+        );
+
+
+    return {
+
+      valid:true,
+
+      value:selectedChoice,
+
+      display:
+        selected?.text ??
+        selectedChoice,
+
+      displayHTML:
+        selected?.html ??
+        esc(
+          selected?.text ??
+          selectedChoice
+        )
+    };
+  }
+
+
+  if(
+    question.type ===
+    "compare"
+  ){
+
+    if(
+      !selectedCompare
+    ){
+
+      return {
+
+        valid:false,
+
+        message:
+          "請先選擇 ＜、＝ 或 ＞。"
+      };
+    }
+
+
+    return {
+
+      valid:true,
+
+      value:selectedCompare,
+
+      display:
+        selectedCompare ===
+        "<"
+          ? "＜"
+          : (
+              selectedCompare ===
+              ">"
+                ? "＞"
+                : "＝"
+            ),
+
+      displayHTML:
+        selectedCompare ===
+        "<"
+          ? "＜"
+          : (
+              selectedCompare ===
+              ">"
+                ? "＞"
+                : "＝"
+            )
+    };
+  }
+
+
+  return {
+
+    valid:false,
+
+    message:
+      "目前無法讀取答案。"
+  };
+}
+
+
+/* ==================================================
+判定
+================================================== */
+
+function checkCorrect(
+  question,
+  answer
+){
+
+  if(
+    question.type ===
+    "number"
+  ){
+
+    return (
+      Math.abs(
+        Number(answer.value) -
+        Number(question.answer)
+      ) <
+      1e-8
+    );
+  }
+
+
+  if(
+    question.type ===
+    "scientific"
+  ){
+
+    return (
+      Math.abs(
+        Number(
+          answer.value.coefficient
+        ) -
+        Number(
+          question.answer.coefficient
+        )
+      ) <
+      1e-8 &&
+
+      Number(
+        answer.value.exponent
+      ) ===
+      Number(
+        question.answer.exponent
+      )
+    );
+  }
+
+
+  if(
+    question.type ===
+      "choice" ||
+    question.type ===
+      "compare"
+  ){
+
+    return (
+      String(answer.value) ===
+      String(question.answer)
+    );
+  }
+
+
+  return false;
+}
+
+
+/* ==================================================
+正確答案
+================================================== */
+
+function correctAnswerHTML(
+  question
+){
+
+  if(
+    question.answerDisplayHTML
+  ){
+
+    return question.answerDisplayHTML;
+  }
+
+
+  if(
+    question.answerDisplay !==
+    undefined
+  ){
+
+    return esc(
+      question.answerDisplay
+    );
+  }
+
+
+  if(
+    question.type ===
+    "scientific"
+  ){
+
+    return scientificHTML(
+      question.answer.coefficient,
+      question.answer.exponent
+    );
+  }
+
+
+  if(
+    question.type ===
+    "choice"
+  ){
+
+    const selected =
+      question.choices
+        .find(
+          item =>
+            String(item.value) ===
+            String(question.answer)
+        );
+
+    return (
+      selected?.html ??
+      esc(
+        selected?.text ??
+        question.answer
+      )
+    );
+  }
+
+
+  if(
+    question.type ===
+    "compare"
+  ){
+
+    return (
+      question.answer ===
+      "<"
+        ? "＜"
+        : (
+            question.answer ===
+            ">"
+              ? "＞"
+              : "＝"
+          )
+    );
+  }
+
+
+  return esc(
+    fmt(question.answer)
+  );
+}
+
+
+/* ==================================================
+詳解
+================================================== */
+
+function explanationHTML(
+  question
+){
+
+  const e =
+    question.explanation;
+
+
+  return `
+
+    <div class="explanation-title">
+      📘 完整詳解
+    </div>
+
+    <div class="explanation-block">
+
+      <strong>
+        🎯 正確答案｜
+      </strong>
+
+      ${richValue(e.answer)}
+
+    </div>
+
+    <div class="explanation-block">
+
+      <strong>
+        👀 看到什麼｜
+      </strong>
+
+      ${richValue(e.observe)}
+
+    </div>
+
+    <div class="explanation-block">
+
+      <strong>
+        💡 先想什麼｜
+      </strong>
+
+      ${richValue(e.think)}
+
+    </div>
+
+    <div class="explanation-block">
+
+      <strong>
+        🧮 解題步驟｜
+      </strong>
+
+      ${
+        e.steps
+          .map(
+            (
+              step,
+              i
+            ) => `
+
+              <div class="explanation-step">
+
+                ${i + 1}.
+                ${richValue(step)}
+
+              </div>
+            `
+          )
+          .join("")
+      }
+
+    </div>
+
+    <div class="explanation-block">
+
+      <strong>
+        📘 為什麼｜
+      </strong>
+
+      ${richValue(e.why)}
+
+    </div>
+
+    <div class="explanation-tip">
+
+      <strong>
+        ⚠️ 易錯提醒｜
+      </strong>
+
+      ${richValue(e.mistake)}
+
+    </div>
+  `;
+}
+
+
+/* ==================================================
+停用答案
+================================================== */
+
+function disableAnswerArea(){
+
+  $("answer-area")
+    .querySelectorAll(
+      "button, input"
+    )
+    .forEach(
+      element => {
+
+        element.disabled =
+          true;
+      }
+    );
+}
+
+
+/* ==================================================
+顯示題目
+================================================== */
+
+function displayQuestion(){
+
+  answered =
+    false;
+
+  speedLocked =
+    false;
+
+
+  currentQuestion =
+    mode ===
+    "speed"
+
+      ? speedQuestion()
+
+      : questions[index];
+
+
+  const q =
+    currentQuestion;
+
+
+  $("mode-name")
+    .textContent =
+      MODES[mode].name;
+
+
+  $("question-number")
+    .textContent =
+      mode ===
+      "speed"
+
+        ? `已作答 ${speedAttempts} 題`
+
+        : `第 ${index + 1} 題 / 共 ${questions.length} 題`;
+
+
+  $("correct-count")
+    .textContent =
+      correct;
+
+
+  $("combo-count")
+    .textContent =
+      maxCombo;
+
+
+  if(
+    mode ===
+    "speed"
+  ){
+
+    $("live-score")
+      .textContent =
+        speedScore;
+
+
+    $("progress-bar")
+      .style
+      .width =
+        `${
+          (
+            60 -
+            speedRemaining
+          ) /
+          60 *
+          100
+        }%`;
+  }
+
+
+  else{
+
+    const played =
+      index;
+
+
+    $("live-score")
+      .textContent =
+        played
+          ? Math.round(
+              correct /
+              played *
+              100
+            )
+          : 0;
+
+
+    $("progress-bar")
+      .style
+      .width =
+        `${
+          index /
+          questions.length *
+          100
+        }%`;
+  }
+
+
+  $("question-label")
+    .textContent =
+      q.label;
+
+
+  $("question-content")
+    .innerHTML =
+      q.html;
+
+
+  $("feedback")
+    .className =
+      "feedback";
+
+
+  $("feedback")
+    .innerHTML =
+      "";
+
+
+  $("explanation")
+    .innerHTML =
+      "";
+
+
+  $("explanation")
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  $("submit-button")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $("next-button")
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  renderAnswer(q);
+
+
+  window
+    .resetGameScratchpad
+    ?.();
+}
+
+
+/* ==================================================
+一般提交
+================================================== */
+
+function submitNormalAnswer(){
+
+  if(
+    answered
+  ){
+
+    return;
+  }
+
+
+  const q =
+    currentQuestion;
+
+
+  const answer =
+    readAnswer(q);
+
+
+  if(
+    !answer.valid
+  ){
+
+    $("feedback")
+      .className =
+        "feedback warning";
+
+
+    $("feedback")
+      .textContent =
+        answer.message;
+
+
+    return;
+  }
+
+
+  answered =
+    true;
+
+
+  disableAnswerArea();
+
+
+  const isCorrect =
+    checkCorrect(
+      q,
+      answer
+    );
+
+
+  if(
+    isCorrect
+  ){
+
+    correct++;
+
+    combo++;
+
+    maxCombo =
+      Math.max(
+        maxCombo,
+        combo
+      );
+
+
+    $("feedback")
+      .className =
+        "feedback correct";
+
+
+    $("feedback")
+      .textContent =
+        "✨ 回答正確！";
+
+
+    playGameSound(
+      "playCorrect"
+    );
+  }
+
+
+  else{
+
+    wrong++;
+
+    combo =
+      0;
+
+
+    $("feedback")
+      .className =
+        "feedback wrong";
+
+
+    $("feedback")
+      .innerHTML = `
+
+        ❌ 答案不正確。
+
+        正確答案：
+
+        <strong>
+          ${correctAnswerHTML(q)}
+        </strong>
+      `;
+
+
+    playGameSound(
+      "playWrong"
+    );
+  }
+
+
+  records.push({
+
+    number:
+      index + 1,
+
+    question:q,
+
+    userAnswer:
+      answer.display,
+
+    userAnswerHTML:
+      answer.displayHTML,
+
+    correct:
+      isCorrect
+  });
+
+
+  $("correct-count")
+    .textContent =
+      correct;
+
+
+  $("combo-count")
+    .textContent =
+      maxCombo;
+
+
+  $("live-score")
+    .textContent =
+      Math.round(
+        correct /
+        (
+          index +
+          1
+        ) *
+        100
+      );
+
+
+  $("explanation")
+    .innerHTML =
+      explanationHTML(q);
+
+
+  $("explanation")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $("submit-button")
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  $("next-button")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $("next-button")
+    .textContent =
+      index ===
+      questions.length -
+      1
+
+        ? "查看測驗結果（Enter）"
+
+        : "下一題（Enter）";
+
+
+  $("next-button")
+    .focus();
+}
+
+
+/* ==================================================
+競速提交
+================================================== */
+
+function submitSpeedAnswer(){
+
+  if(
+    speedLocked ||
+    speedRemaining <=
+    0
+  ){
+
+    return;
+  }
+
+
+  const q =
+    currentQuestion;
+
+
+  const answer =
+    readAnswer(q);
+
+
+  if(
+    !answer.valid
+  ){
+
+    $("feedback")
+      .className =
+        "feedback warning";
+
+
+    $("feedback")
+      .textContent =
+        answer.message;
+
+
+    return;
+  }
+
+
+  speedLocked =
+    true;
+
+
+  disableAnswerArea();
+
+
+  const isCorrect =
+    checkCorrect(
+      q,
+      answer
+    );
+
+
+  speedAttempts++;
+
+
+  if(
+    isCorrect
+  ){
+
+    correct++;
+
+    combo++;
+
+    maxCombo =
+      Math.max(
+        maxCombo,
+        combo
+      );
+
+    speedScore +=
+      10;
+
+
+    $("feedback")
+      .className =
+        "feedback correct";
+
+
+    $("feedback")
+      .textContent =
+        "✅ 正確！＋10 分";
+
+
+    playGameSound(
+      "playCorrect"
+    );
+  }
+
+
+  else{
+
+    wrong++;
+
+    combo =
+      0;
+
+
+    $("feedback")
+      .className =
+        "feedback wrong";
+
+
+    $("feedback")
+      .innerHTML = `
+
+        ❌ 錯誤，
+
+        答案是
+
+        <strong>
+          ${correctAnswerHTML(q)}
+        </strong>
+      `;
+
+
+    playGameSound(
+      "playWrong"
+    );
+  }
+
+
+  records.push({
+
+    number:
+      speedAttempts,
+
+    question:q,
+
+    userAnswer:
+      answer.display,
+
+    userAnswerHTML:
+      answer.displayHTML,
+
+    correct:
+      isCorrect
+  });
+
+
+  $("correct-count")
+    .textContent =
+      correct;
+
+
+  $("combo-count")
+    .textContent =
+      maxCombo;
+
+
+  $("live-score")
+    .textContent =
+      speedScore;
+
+
+  setTimeout(
+    () => {
+
+      if(
+        mode ===
+        "speed" &&
+        speedRemaining >
+        0
+      ){
+
+        displayQuestion();
+      }
+
+    },
+    300
+  );
+}
+
+
+/* ==================================================
+提交
+================================================== */
+
+function submitAnswer(){
+
+  if(
+    mode ===
+    "speed"
+  ){
+
+    submitSpeedAnswer();
+  }
+
+  else{
+
+    submitNormalAnswer();
+  }
+}
+
+
+/* ==================================================
+下一題
+================================================== */
+
+function nextQuestion(){
+
+  if(
+    mode ===
+    "speed" ||
+    !answered
+  ){
+
+    return;
+  }
+
+
+  index++;
+
+
+  if(
+    index <
+    questions.length
+  ){
+
+    displayQuestion();
+  }
+
+  else{
+
+    showResult();
+  }
+}
+
+
+/* ==================================================
+時間
+================================================== */
+
+function formatTime(
+  seconds
+){
+
+  const minutes =
+    Math.floor(
+      seconds /
+      60
+    );
+
+
+  const remain =
+    seconds %
+    60;
+
+
+  return (
+    `${String(minutes).padStart(2,"0")}:` +
+    `${String(remain).padStart(2,"0")}`
+  );
+}
+
+
+function stopTimer(
+  update = true
+){
+
+  if(
+    timerId !==
+    null
+  ){
+
+    clearInterval(
+      timerId
+    );
+
+    timerId =
+      null;
+  }
+
+
+  if(
+    update &&
+    startTime &&
+    mode !==
+    "speed"
+  ){
+
+    elapsed =
+      Math.floor(
+        (
+          Date.now() -
+          startTime
+        ) /
+        1000
+      );
+  }
+}
+
+
+function startNormalTimer(){
+
+  stopTimer(false);
+
+
+  startTime =
+    Date.now();
+
+
+  elapsed =
+    0;
+
+
+  $("timer-display")
+    .textContent =
+      "00:00";
+
+
+  timerId =
+    setInterval(
+      () => {
+
+        elapsed =
+          Math.floor(
+            (
+              Date.now() -
+              startTime
+            ) /
+            1000
+          );
+
+
+        $("timer-display")
+          .textContent =
+            formatTime(elapsed);
+
+      },
+      500
+    );
+}
+
+
+function startSpeedTimer(){
+
+  stopTimer(false);
+
+
+  speedRemaining =
+    60;
+
+
+  elapsed =
+    0;
+
+
+  $("timer-display")
+    .textContent =
+      "01:00";
+
+
+  timerId =
+    setInterval(
+      () => {
+
+        speedRemaining--;
+
+
+        elapsed =
+          60 -
+          speedRemaining;
+
+
+        $("timer-display")
+          .textContent =
+            formatTime(
+              Math.max(
+                speedRemaining,
+                0
+              )
+            );
+
+
+        $("progress-bar")
+          .style
+          .width =
+            `${
+              elapsed /
+              60 *
+              100
+            }%`;
+
+
+        if(
+          speedRemaining <=
+          0
+        ){
+
+          stopTimer(false);
+
+          showResult();
+        }
+
+      },
+      1000
+    );
+}
+
+
+/* ==================================================
+計算紙
+================================================== */
+
+function moveScratchpadButtonToTop(){
+
+  const mount =
+    $("scratchpad-mobile-button");
+
+
+  const button =
+    $("scratchpadOpenButton");
+
+
+  if(
+    mount &&
+    button &&
+    !mount.contains(button)
+  ){
+
+    mount.appendChild(button);
+  }
+}
+
+
+/* ==================================================
+畫面切換
+================================================== */
+
+function showOnly(
+  id
+){
+
+  [
+    "start-screen",
+    "quiz-screen",
+    "result-screen",
+    "review-screen"
+  ]
+    .forEach(
+      screen => {
+
+        $(screen)
+          .classList
+          .toggle(
+            "hidden",
+            screen !==
+            id
+          );
+      }
+    );
+
+
+  if(
+    id ===
+    "quiz-screen"
+  ){
+
+    window
+      .showGameScratchpadButton
+      ?.();
+
+
+    setTimeout(
+      moveScratchpadButtonToTop,
+      0
+    );
+
+
+    setTimeout(
+      moveScratchpadButtonToTop,
+      100
+    );
+  }
+
+  else{
+
+    window
+      .hideGameScratchpadButton
+      ?.();
+  }
+}
+
+
+/* ==================================================
+開始
+================================================== */
+
+function startGame(
+  selectedMode
+){
+
+  try{
+
+    stopTimer(false);
+
+
+    mode =
+      selectedMode;
+
+
+    if(
+      mode ===
+      "speed"
+    ){
+
+      questions =
+        [];
+    }
+
+    else{
+
+      questions =
+        createQuestions();
+
+
+      if(
+        !Array.isArray(questions) ||
+        questions.length ===
+        0
+      ){
+
+        throw new Error(
+          `模式 ${mode} 沒有建立題目`
+        );
+      }
+    }
+
+
+    index =
+      0;
+
+    correct =
+      0;
+
+    wrong =
+      0;
+
+    combo =
+      0;
+
+    maxCombo =
+      0;
+
+    records =
+      [];
+
+    answered =
+      false;
+
+    selectedChoice =
+      null;
+
+    selectedCompare =
+      null;
+
+    scoreSaved =
+      false;
+
+    speedRemaining =
+      60;
+
+    speedScore =
+      0;
+
+    speedAttempts =
+      0;
+
+    speedLocked =
+      false;
+
+    elapsed =
+      0;
+
+
+    $("save-status")
+      .textContent =
+        "";
+
+
+    $("speed-banner")
+      .classList
+      .toggle(
+        "hidden",
+        mode !==
+        "speed"
+      );
+
+
+    showOnly(
+      "quiz-screen"
+    );
+
+
+    displayQuestion();
+
+
+    if(
+      mode ===
+      "speed"
+    ){
+
+      startSpeedTimer();
+    }
+
+    else{
+
+      startNormalTimer();
+    }
+
+
+    playGameSound(
+      "playStart"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "1-4 遊戲啟動失敗：",
+      error
+    );
+
+
+    alert(
+      "遊戲啟動時發生錯誤，請重新整理頁面後再試一次。\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+評價
+================================================== */
+
+function rating(
+  score,
+  accuracy = score
+){
+
+  if(
+    mode ===
+    "speed"
+  ){
+
+    if(
+      accuracy >=
+      90 &&
+      correct >=
+      12
+    ){
+
+      return {
+        stars:"★★★★★",
+        comment:
+          `60 秒答對 ${correct} 題，正確率 ${accuracy}%！`
+      };
+    }
+
+
+    if(
+      accuracy >=
+      80
+    ){
+
+      return {
+        stars:"★★★★☆",
+        comment:
+          `答對 ${correct} 題，正確率 ${accuracy}%。`
+      };
+    }
+
+
+    if(
+      accuracy >=
+      60
+    ){
+
+      return {
+        stars:"★★★☆☆",
+        comment:
+          "指數概念已逐漸熟練，再加強括號與負號辨識。"
+      };
+    }
+
+
+    return {
+      stars:"★★☆☆☆",
+      comment:
+        "建議先回到指數記法與負數次方模式重新練習。"
+    };
+  }
+
+
+  if(
+    score >=
+    90
+  ){
+
+    return {
+      stars:"★★★★★",
+      comment:
+        "太棒了！指數記法與科學記號都掌握得很好。"
+    };
+  }
+
+
+  if(
+    score >=
+    80
+  ){
+
+    return {
+      stars:"★★★★☆",
+      comment:
+        "表現很好！再注意負號、括號與科學記號的指數。"
+    };
+  }
+
+
+  if(
+    score >=
+    60
+  ){
+
+    return {
+      stars:"★★★☆☆",
+      comment:
+        "基本觀念已建立，建議查看詳解，把容易混淆的地方再練熟。"
+    };
+  }
+
+
+  return {
+    stars:"★★☆☆☆",
+    comment:
+      "建議先從單一模式開始，把指數與 10 的次方概念建立完整。"
+  };
+}
+
+
+/* ==================================================
+結果
+================================================== */
+
+async function showResult(){
+
+  if(
+    !$("result-screen")
+      .classList
+      .contains(
+        "hidden"
+      )
+  ){
+
+    return;
+  }
+
+
+  stopTimer();
+
+
+  let score;
+  let accuracy;
+
+
+  if(
+    mode ===
+    "speed"
+  ){
+
+    accuracy =
+      speedAttempts
+
+        ? Math.round(
+            correct /
+            speedAttempts *
+            100
+          )
+
+        : 0;
+
+
+    score =
+      speedScore;
+  }
+
+
+  else{
+
+    score =
+      Math.round(
+        correct /
+        questions.length *
+        1000
+      ) /
+      10;
+
+
+    accuracy =
+      score;
+  }
+
+
+  const result =
+    rating(
+      score,
+      accuracy
+    );
+
+
+  showOnly(
+    "result-screen"
+  );
+
+
+  $("final-score")
+    .textContent =
+      `${
+        Number.isInteger(score)
+          ? score
+          : score.toFixed(1)
+      } 分`;
+
+
+  $("final-stars")
+    .textContent =
+      result.stars;
+
+
+  $("final-comment")
+    .textContent =
+      result.comment;
+
+
+  $("final-correct")
+    .textContent =
+      correct;
+
+
+  $("final-wrong")
+    .textContent =
+      wrong;
+
+
+  $("final-combo")
+    .textContent =
+      maxCombo;
+
+
+  $("final-time")
+    .textContent =
+      mode ===
+      "speed"
+
+        ? "01:00"
+
+        : formatTime(elapsed);
+
+
+  playGameSound(
+    "playComplete"
+  );
+
+
+  await saveCurrentScore(
+    score,
+    accuracy
+  );
+}
+
+
+/* ==================================================
+儲存
+================================================== */
+
+async function saveCurrentScore(
+  score,
+  accuracy
+){
+
+  if(
+    scoreSaved
+  ){
+
+    return;
+  }
+
+
+  scoreSaved =
+    true;
+
+
+  const status =
+    $("save-status");
+
+
+  status.textContent =
+    "☁️ 正在儲存本次成績……";
+
+
+  status.style.color =
+    "#1d4ed8";
+
+
+  try{
+
+    const scoreModule =
+      await import(
+        "../js/scores.js"
+      );
+
+
+    if(
+      typeof scoreModule
+        .saveGameScore !==
+      "function"
+    ){
+
+      throw new Error(
+        "找不到 saveGameScore"
+      );
+    }
+
+
+    const result =
+      await scoreModule
+        .saveGameScore({
+
+          game:
+            GAME_ID,
+
+          mode,
+
+          score,
+
+          correctCount:
+            correct,
+
+          wrongCount:
+            wrong,
+
+          maxCombo,
+
+          playTime:
+            elapsed,
+
+          totalQuestions:
+            mode ===
+            "speed"
+              ? speedAttempts
+              : questions.length,
+
+          accuracy
+        });
+
+
+    if(
+      result?.success
+    ){
+
+      status.textContent =
+        "✅ 本次成績已儲存。";
+
+
+      status.style.color =
+        "#15803d";
+
+      return;
+    }
+
+
+    if(
+      result?.reason ===
+      "not-logged-in"
+    ){
+
+      status.textContent =
+        "ℹ️ 尚未登入，因此本次成績沒有儲存。";
+
+
+      status.style.color =
+        "#b45309";
+
+      return;
+    }
+
+
+    status.textContent =
+      "⚠️ 成績暫時無法儲存。";
+
+
+    status.style.color =
+      "#b91c1c";
+
+
+  }catch(error){
+
+    console.error(
+      "1-4 成績儲存失敗：",
+      error
+    );
+
+
+    status.textContent =
+      "⚠️ 本次遊戲已完成，但成績暫時無法儲存。";
+
+
+    status.style.color =
+      "#b91c1c";
+  }
+}
+
+
+/* ==================================================
+回顧
+================================================== */
+
+function showReview(){
+
+  $("review-list")
+    .innerHTML =
+      records
+        .map(
+          record => `
+
+            <article
+              class="
+                review-card
+                ${
+                  record.correct
+                    ? "correct-review"
+                    : "wrong-review"
+                }
+              "
+            >
+
+              <div class="review-title">
+
+                第 ${record.number} 題
+
+                ${
+                  record.correct
+                    ? "✅"
+                    : "❌"
+                }
+
+              </div>
+
+
+              <div class="review-question">
+
+                ${record.question.html}
+
+              </div>
+
+
+              <div class="review-answer-line">
+
+                你的答案：
+
+                <strong>
+
+                  ${
+                    record.userAnswerHTML ??
+                    esc(
+                      record.userAnswer
+                    )
+                  }
+
+                </strong>
+
+              </div>
+
+
+              <div class="review-answer-line">
+
+                正確答案：
+
+                <strong>
+
+                  ${correctAnswerHTML(
+                    record.question
+                  )}
+
+                </strong>
+
+              </div>
+
+
+              <div class="explanation">
+
+                ${explanationHTML(
+                  record.question
+                )}
+
+              </div>
+
+            </article>
+          `
+        )
+        .join("");
+
+
+  showOnly(
+    "review-screen"
+  );
+
+
+  window.scrollTo({
+
+    top:0,
+
+    behavior:"smooth"
+  });
+}
+
+
+/* ==================================================
+事件
+================================================== */
+
+function bindGameEvents(){
+
+  document
+    .querySelectorAll(
+      "[data-mode]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            startGame(
+              button.dataset.mode
+            );
+          }
+        );
+      }
+    );
+
+
+  $("submit-button")
+    ?.addEventListener(
+      "click",
+      submitAnswer
+    );
+
+
+  $("next-button")
+    ?.addEventListener(
+      "click",
+      nextQuestion
+    );
+
+
+  $("quit-button")
+    ?.addEventListener(
+      "click",
+      () => {
+
+        stopTimer(false);
+
+        showOnly(
+          "start-screen"
+        );
+      }
+    );
+
+
+  $("again-button")
+    ?.addEventListener(
+      "click",
+      () => {
+
+        startGame(mode);
+      }
+    );
+
+
+  $("result-mode-button")
+    ?.addEventListener(
+      "click",
+      () => {
+
+        showOnly(
+          "start-screen"
+        );
+      }
+    );
+
+
+  $("review-button")
+    ?.addEventListener(
+      "click",
+      showReview
+    );
+
+
+  $("review-again-button")
+    ?.addEventListener(
+      "click",
+      () => {
+
+        startGame(mode);
+      }
+    );
+
+
+  $("review-result-button")
+    ?.addEventListener(
+      "click",
+      () => {
+
+        showOnly(
+          "result-screen"
+        );
+      }
+    );
+}
+
+
+/* ==================================================
+Enter
+================================================== */
+
+window.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key !==
+      "Enter"
+    ){
+
+      return;
+    }
+
+
+    if(
+      $("quiz-screen")
+        .classList
+        .contains(
+          "hidden"
+        )
+    ){
+
+      return;
+    }
+
+
+    event.preventDefault();
+
+
+    if(
+      mode ===
+      "speed"
+    ){
+
+      submitAnswer();
+
+      return;
+    }
+
+
+    if(
+      answered
+    ){
+
+      nextQuestion();
+    }
+
+    else{
+
+      submitAnswer();
+    }
+  }
+);
+
+
+/* ==================================================
+離開
+================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  () => {
+
+    stopTimer(false);
+  }
+);
+
+
+/* ==================================================
+初始化
+================================================== */
+
+bindGameEvents();
+
+
+setTimeout(
+  () => {
+
+    window
+      .hideGameScratchpadButton
+      ?.();
+
+  },
+  0
+);
+
+</script>
+
+</body>
+</html>
