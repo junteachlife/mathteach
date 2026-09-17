@@ -11,7 +11,6 @@
 
 <title>指數與科學記號大挑戰｜數學遊戲樂園</title>
 
-<!-- 1-4 專屬 favicon：xⁿ ＋ 10 -->
 <link
   rel="icon"
   type="image/svg+xml"
@@ -104,6 +103,7 @@ button{
   margin-bottom:14px;
 }
 
+
 /* ==================================================
 主體
 ================================================== */
@@ -185,6 +185,7 @@ button{
   padding:22px;
 }
 
+
 /* ==================================================
 模式
 ================================================== */
@@ -263,13 +264,11 @@ button{
   font-weight:900;
 }
 
-.mode-card.speed
-.mode-title{
+.mode-card.speed .mode-title{
   color:#6d28d9;
 }
 
-.mode-card.final
-.mode-title{
+.mode-card.final .mode-title{
   color:#92400e;
 }
 
@@ -305,6 +304,7 @@ button{
   line-height:1.7;
 }
 
+
 /* ==================================================
 按鈕
 ================================================== */
@@ -330,13 +330,11 @@ button{
   background:var(--primary);
 }
 
-.mode-card.speed
-.mode-button{
+.mode-card.speed .mode-button{
   background:#7c3aed;
 }
 
-.mode-card.final
-.mode-button{
+.mode-card.final .mode-button{
   background:#d97706;
 }
 
@@ -364,6 +362,7 @@ button:disabled{
   opacity:.48;
   cursor:not-allowed;
 }
+
 
 /* ==================================================
 測驗頂部
@@ -459,6 +458,7 @@ button:disabled{
   transition:width .2s ease;
 }
 
+
 /* ==================================================
 計算紙
 ================================================== */
@@ -480,6 +480,7 @@ button:disabled{
   margin:0!important;
   z-index:auto!important;
 }
+
 
 /* ==================================================
 題目
@@ -573,6 +574,7 @@ button:disabled{
   white-space:nowrap;
 }
 
+
 /* ==================================================
 分數
 ================================================== */
@@ -614,6 +616,7 @@ button:disabled{
 
   vertical-align:middle;
 }
+
 
 /* ==================================================
 數字答案
@@ -684,6 +687,7 @@ button:disabled{
   cursor:pointer;
 }
 
+
 /* ==================================================
 科學記號輸入
 ================================================== */
@@ -750,6 +754,7 @@ button:disabled{
   outline:none;
 }
 
+
 /* ==================================================
 選擇題
 ================================================== */
@@ -795,6 +800,7 @@ button:disabled{
   color:var(--primary-dark);
 }
 
+
 /* ==================================================
 比較
 ================================================== */
@@ -837,6 +843,7 @@ button:disabled{
 
   color:#115e59;
 }
+
 
 /* ==================================================
 回饋與詳解
@@ -938,6 +945,7 @@ button:disabled{
   margin-top:18px;
 }
 
+
 /* ==================================================
 競速
 ================================================== */
@@ -958,6 +966,7 @@ button:disabled{
 
   font-weight:900;
 }
+
 
 /* ==================================================
 結果
@@ -1019,6 +1028,7 @@ button:disabled{
   font-weight:800;
 }
 
+
 /* ==================================================
 回顧
 ================================================== */
@@ -1073,6 +1083,7 @@ button:disabled{
 
   line-height:1.7;
 }
+
 
 /* ==================================================
 RWD
@@ -1211,10 +1222,6 @@ RWD
 
 </header>
 
-
-<!-- ==================================================
-模式
-================================================== -->
 
 <section
   id="start-screen"
@@ -1532,15 +1539,10 @@ RWD
 
 </article>
 
-
 </div>
 
 </section>
 
-
-<!-- ==================================================
-測驗
-================================================== -->
 
 <section
   id="quiz-screen"
@@ -1685,10 +1687,6 @@ RWD
 </section>
 
 
-<!-- ==================================================
-結果
-================================================== -->
-
 <section
   id="result-screen"
   class="screen hidden result-panel"
@@ -1791,10 +1789,6 @@ RWD
 </section>
 
 
-<!-- ==================================================
-回顧
-================================================== -->
-
 <section
   id="review-screen"
   class="screen hidden"
@@ -1857,10 +1851,6 @@ RWD
 "use strict";
 
 
-/* ==================================================
-設定
-================================================== */
-
 const GAME_ID =
   "exponentScientificNotation";
 
@@ -1914,10 +1904,6 @@ const $ =
   id =>
     document.getElementById(id);
 
-
-/* ==================================================
-狀態
-================================================== */
 
 let mode =
   "notation";
@@ -2184,12 +2170,6 @@ function powerHTML(
 }
 
 
-/*
-－3⁴
-負號在次方外面，
-與（－3）⁴不同
-*/
-
 function outsideNegativePowerHTML(
   base,
   exponent
@@ -2233,10 +2213,6 @@ function scientificHTML(
   );
 }
 
-
-/*
-將科學記號轉成不使用 e 的一般數字字串
-*/
 
 function scientificToPlainString(
   coefficient,
@@ -2371,6 +2347,71 @@ function richValue(
   }
 
   return esc(value);
+}
+
+
+/* ==================================================
+選項去重保護
+避免同一題出現兩個相同答案
+================================================== */
+
+function choiceVisualKey(
+  choice
+){
+
+  return String(
+    choice.html ??
+    choice.text ??
+    choice.value ??
+    ""
+  )
+    .replace(
+      /\s+/g,
+      ""
+    )
+    .replace(
+      /&nbsp;/g,
+      ""
+    )
+    .toLowerCase();
+}
+
+
+function uniqueChoices(
+  choices
+){
+
+  const seen =
+    new Set();
+
+
+  return choices.filter(
+    choice => {
+
+      const key =
+        choiceVisualKey(
+          choice
+        );
+
+
+      if(
+        seen.has(
+          key
+        )
+      ){
+
+        return false;
+      }
+
+
+      seen.add(
+        key
+      );
+
+
+      return true;
+    }
+  );
 }
 
 
@@ -2558,6 +2599,12 @@ function choiceQuestion(
   answer
 ){
 
+  const safeChoices =
+    uniqueChoices(
+      choices
+    );
+
+
   return makeQuestion({
 
     ...base,
@@ -2565,7 +2612,9 @@ function choiceQuestion(
     type:"choice",
 
     choices:
-      shuffle(choices),
+      shuffle(
+        safeChoices
+      ),
 
     answer
   });
@@ -2672,6 +2721,86 @@ function notationRepeatedToPower(){
       exponent
     );
 
+
+  /*
+  原本直接將底數和指數交換。
+
+  例如：
+  base＝5、exponent＝5
+
+  正確答案：
+  5⁵
+
+  錯誤選項交換後仍然是：
+  5⁵
+
+  因此會出現兩個一樣的答案。
+
+  現在若數字剛好相同，
+  改成另一個確定不同的干擾選項。
+  */
+
+  let swapDistractor;
+
+
+  if(
+    base >
+    0 &&
+    Math.abs(base) ===
+    exponent
+  ){
+
+    swapDistractor =
+      powerHTML(
+        base,
+        Math.max(
+          1,
+          exponent - 1
+        )
+      );
+  }
+
+  else{
+
+    swapDistractor =
+      powerHTML(
+        exponent,
+        Math.abs(base)
+      );
+  }
+
+
+  let wrongExponent =
+    exponent +
+    1;
+
+
+  let wrongExponentHTML =
+    powerHTML(
+      base,
+      wrongExponent
+    );
+
+
+  if(
+    wrongExponentHTML ===
+    correct ||
+    wrongExponentHTML ===
+    swapDistractor
+  ){
+
+    wrongExponent +=
+      1;
+
+
+    wrongExponentHTML =
+      powerHTML(
+        base,
+        wrongExponent
+      );
+  }
+
+
   return choiceQuestion({
 
     modeId:"notation",
@@ -2727,7 +2856,7 @@ function notationRepeatedToPower(){
         mistake:
           base < 0
             ? "負數作為底數時，必須把負號和數字一起放在括號內。"
-            : "不要把底數和指數的位置顛倒。"
+            : "不要把底數和指數的位置顛倒，也要先確認選項沒有把連乘次數看錯。"
       })
 
   },[
@@ -2739,20 +2868,12 @@ function notationRepeatedToPower(){
 
     {
       value:"swap",
-      html:
-        powerHTML(
-          exponent,
-          Math.abs(base)
-        )
+      html:swapDistractor
     },
 
     {
       value:"wrongExp",
-      html:
-        powerHTML(
-          base,
-          exponent + 1
-        )
+      html:wrongExponentHTML
     }
 
   ],"correct");
@@ -2880,6 +3001,29 @@ function notationBaseExponent(){
   const correct =
     `底數 ${fmt(base)}，指數 ${exponent}`;
 
+
+  /*
+  原本：
+  Math.abs(base)
+
+  若 base 本來就是正數，
+  例如 base＝6，
+  correct 與 abs 會完全一樣。
+
+  現在：
+  負數 → 去掉負號作為錯誤選項
+  正數 → 加上負號作為錯誤選項
+  */
+
+  const wrongBase =
+    base <
+    0
+
+      ? Math.abs(base)
+
+      : -base;
+
+
   return choiceQuestion({
 
     modeId:"notation",
@@ -2929,7 +3073,7 @@ function notationBaseExponent(){
         mistake:
           base < 0
             ? `括號表示底數是完整的 ${fmt(base)}，不是只有 ${Math.abs(base)}。`
-            : "不要把底數與指數對調。"
+            : "不要把底數與指數對調，也不要自行改變底數的正負號。"
       })
 
   },[
@@ -2946,9 +3090,9 @@ function notationBaseExponent(){
     },
 
     {
-      value:"abs",
+      value:"wrongBase",
       html:
-        `底數 ${Math.abs(base)}，指數 ${exponent}`
+        `底數 ${fmt(wrongBase)}，指數 ${exponent}`
     }
 
   ],"correct");
@@ -3012,8 +3156,16 @@ function notationValue(){
         why:
           "次方是重複乘法的簡記。",
 
+        /*
+        修正：
+        原本直接放 powerHTML()，
+        richValue() 會把 <sup> 當普通文字轉義。
+        */
+
         mistake:
-          `${powerHTML(base,exponent)} 不是 ${base}×${exponent}。`
+          rich(
+            `${powerHTML(base,exponent)} 不是 ${base}×${exponent}。`
+          )
       })
 
   },answer);
@@ -3183,7 +3335,9 @@ function outsideNegativePower(){
             `${outsideNegativePowerHTML(base,exponent)}＝－（${powerHTML(base,exponent)}）`
           ),
 
-          `${powerHTML(base,exponent)}＝${base ** exponent}。`,
+          rich(
+            `${powerHTML(base,exponent)}＝${base ** exponent}。`
+          ),
 
           `所以答案是 ${fmt(answer)}。`
         ],
@@ -3267,7 +3421,7 @@ function negativePowerContrast(){
             `${outsideNegativePowerHTML(base,exponent)}＝－${base ** exponent}。`
           ),
 
-          `所以前者較大。`
+          "所以前者較大。"
         ],
 
         why:
@@ -4083,6 +4237,44 @@ function tenPlaceValue(){
       item.exponent
     );
 
+
+  /*
+  原本使用 -item.exponent 當錯誤選項。
+
+  若 item.exponent＝0：
+  -0 仍然是 0，
+  因此會出現兩個 10⁰。
+
+  現在個位會改用 10⁻¹ 作為干擾。
+  */
+
+  const oppositeExponent =
+    item.exponent ===
+    0
+
+      ? -1
+
+      : -item.exponent;
+
+
+  let shiftedExponent =
+    item.exponent +
+    1;
+
+
+  if(
+    shiftedExponent ===
+    oppositeExponent ||
+    shiftedExponent ===
+    item.exponent
+  ){
+
+    shiftedExponent =
+      item.exponent -
+      1;
+  }
+
+
   return choiceQuestion({
 
     modeId:"tenPower",
@@ -4142,7 +4334,7 @@ function tenPlaceValue(){
       html:
         powerHTML(
           10,
-          -item.exponent
+          oppositeExponent
         )
     },
 
@@ -4151,7 +4343,7 @@ function tenPlaceValue(){
       html:
         powerHTML(
           10,
-          item.exponent + 1
+          shiftedExponent
         )
     }
 
@@ -4229,8 +4421,14 @@ function tenUnitQuestion(){
         observe:
           `第一個非 0 數字位於小數點後第 ${Math.abs(item.exponent)} 位。`,
 
+        /*
+        同樣避免 powerHTML 被當成普通字串轉義。
+        */
+
         think:
-          `所以對應 ${powerHTML(10,item.exponent)}。`,
+          rich(
+            `所以對應 ${powerHTML(10,item.exponent)}。`
+          ),
 
         steps:[
           rich(
@@ -4376,7 +4574,7 @@ function scientificLargeInput(){
           ),
 
         observe:
-          `先把小數點移到第一個非 0 數字後面，使前面的係數落在 1 到 10 之間。`,
+          "先把小數點移到第一個非 0 數字後面，使前面的係數落在 1 到 10 之間。",
 
         think:
           `小數點需要向左移 ${q.e} 位，所以乘上 10 的 ${q.e} 次方。`,
@@ -5023,7 +5221,7 @@ function scientificFirstNonZero(){
           `10 的指數是 ${expText(exponent)}。`,
 
         think:
-          `a×10⁻ᵐ 會從小數點後第 m 位開始出現第一個非 0 數字。`,
+          "a×10⁻ᵐ 會從小數點後第 m 位開始出現第一個非 0 數字。",
 
         steps:[
           `m＝${answer}。`,
