@@ -770,8 +770,7 @@
 
     /*
     ==================================================
-    ★ 正式數學分數顯示
-    分子在上、分母在下
+    正式上下分數
     ==================================================
     */
 
@@ -821,6 +820,18 @@
       display: inline-flex;
 
       align-items: center;
+
+      vertical-align: middle;
+    }
+
+
+    .mixed-fraction {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: .08em;
 
       vertical-align: middle;
     }
@@ -980,7 +991,7 @@
 
     /*
     ==================================================
-    ★ 比較大小：沿用舊版比較王風格
+    比較大小
     ==================================================
     */
 
@@ -1172,7 +1183,6 @@
 
 
     .compare-button:hover {
-
       background: #5252d3;
     }
 
@@ -1188,7 +1198,6 @@
     .compare-button.selected {
 
       border-color: #0f766e;
-
       border-bottom-color: #0f5f59;
 
       background: #ccfbf1;
@@ -1199,7 +1208,7 @@
 
     /*
     ==================================================
-    ★ 絕對值整數範圍多選題
+    絕對值複選
     ==================================================
     */
 
@@ -1223,8 +1232,7 @@
           760px
         );
 
-      margin:
-        0 auto;
+      margin: 0 auto;
 
       display: grid;
 
@@ -1278,16 +1286,6 @@
       background: var(--primary-light);
 
       color: var(--primary-dark);
-
-      box-shadow:
-        inset
-        0 0 0 2px
-        rgba(
-          15,
-          118,
-          110,
-          .12
-        );
     }
 
 
@@ -1762,7 +1760,7 @@
 
     /*
     ==================================================
-    手機
+    RWD
     ==================================================
     */
 
@@ -1925,7 +1923,6 @@
 
   <div class="page-shell">
 
-
     <div id="commonHeaderMount"></div>
 
 
@@ -2062,8 +2059,8 @@
 
             <p class="mode-description">
 
-              讀坐標、找位置、特殊刻度、
-              小數與簡單分數，建立真正的數線概念。
+              以負數定位為主，重點練習負分數、
+              負整數、負小數與不同刻度的數線位置。
 
             </p>
 
@@ -3056,10 +3053,35 @@
     }
 
 
-    /*
-    詳解內若需要正式數學排版，
-    使用 richHTML 包裝。
-    */
+    function mixedFractionHTML(
+      whole,
+      numerator,
+      denominator,
+      negative =
+        false
+    ) {
+
+      return `
+
+        <span class="mixed-fraction">
+
+          ${negative ? "−" : ""}${whole}
+
+          <span class="math-fraction">
+
+            <span class="math-fraction-top">
+              ${Math.abs(numerator)}
+            </span>
+
+            <span class="math-fraction-bottom">
+              ${Math.abs(denominator)}
+            </span>
+
+          </span>
+
+        </span>
+      `;
+    }
 
 
     function richHTML(
@@ -4132,7 +4154,7 @@
 
     /*
     ==================================================
-    數線
+    數線設定
     ==================================================
     */
 
@@ -4161,7 +4183,15 @@
     /*
     ==================================================
     模式二：數線定位
+    新版重點：
+    1. 全部以負數位置為主
+    2. 10 題中 5 題為負分數
     ==================================================
+    */
+
+
+    /*
+    負整數讀坐標
     */
 
 
@@ -4169,9 +4199,17 @@
 
 
       const target =
-        rand(
-          -8,
-          8
+        pick(
+          [
+            -9,
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2
+          ]
         );
 
 
@@ -4182,13 +4220,13 @@
             "numberline",
 
           family:
-            "readIntegerPoint",
+            "readNegativeIntegerPoint",
 
           level:
             "core",
 
           label:
-            "看數線讀坐標",
+            "負整數｜看數線讀坐標",
 
           html:
             `<div class="context-text">` +
@@ -4198,7 +4236,7 @@
           line:
             makeLineConfig(
               -10,
-              10,
+              2,
               1,
               target,
               {
@@ -4224,35 +4262,32 @@
                   ),
 
                 observe:
-                  "先找到原點 0，再看 A 點在原點哪一側以及相隔幾格。",
+                  "A 點位於原點左邊，因此它代表的是負數。",
 
                 think:
-                  "右邊是正方向，左邊是負方向。",
+                  "先找到 0，再往左數到 A 點。",
 
                 steps:
                   [
 
-                    `A 點位在原點${
-                      target >=
-                      0
+                    "原點左邊是負方向。",
 
-                        ? "右"
-
-                        : "左"
-                    }側。`,
-
-                    `從 0 到 A 共 ${Math.abs(
+                    `A 點在原點左邊 ${Math.abs(
                       target
-                    )} 個單位，所以坐標是 ${formatNumber(
+                    )} 個單位。`,
+
+                    `所以 A 的坐標是 ${formatNumber(
                       target
                     )}。`
                   ],
 
                 why:
-                  "數線上的每一個點都可以對應一個數。",
+                  "負數在數線上都位於原點左邊。",
 
                 mistake:
-                  "只數格數還不夠，還要判斷在原點左邊還是右邊。"
+                  `不要只寫 ${Math.abs(
+                    target
+                  )}；A 在原點左邊，所以必須有負號。`
               }
             )
 
@@ -4262,13 +4297,26 @@
     }
 
 
+    /*
+    負整數找位置
+    */
+
+
     function generatePlaceIntegerPoint() {
 
 
       const target =
-        rand(
-          -8,
-          8
+        pick(
+          [
+            -9,
+            -8,
+            -7,
+            -6,
+            -5,
+            -4,
+            -3,
+            -2
+          ]
         );
 
 
@@ -4279,13 +4327,13 @@
             "numberline",
 
           family:
-            "placeIntegerPoint",
+            "placeNegativeIntegerPoint",
 
           level:
             "core",
 
           label:
-            "在數線上找位置",
+            "負整數｜找位置",
 
           type:
             "numberlinePick",
@@ -4303,7 +4351,7 @@
           line:
             makeLineConfig(
               -10,
-              10,
+              2,
               1,
               target,
               {
@@ -4326,55 +4374,34 @@
                   ),
 
                 observe:
-                  `要找的是 ${formatNumber(
+                  `${formatNumber(
                     target
-                  )}。`,
+                  )} 是負數，所以一定在原點左邊。`,
 
                 think:
-                  `從原點 0 出發，${
-                    target >=
-                    0
-
-                      ? "往右"
-
-                      : "往左"
-                  }走 ${Math.abs(
+                  `從 0 往左移動 ${Math.abs(
                     target
                   )} 個單位。`,
 
                 steps:
                   [
 
-                    "找到原點 0。",
+                    "先找到原點 0。",
 
-                    `${
-                      target >=
-                      0
+                    "負號表示往左。",
 
-                        ? "右邊"
-
-                        : "左邊"
-                    }是${
-                      target >=
-                      0
-
-                        ? "正"
-
-                        : "負"
-                    }方向。`,
-
-                    `移動 ${Math.abs(
+                    `往左 ${Math.abs(
                       target
-                    )} 個單位即可找到 ${formatNumber(
+                    )} 個單位，就是 ${formatNumber(
                       target
-                    )}。`
+                    )} 的位置。`
                   ],
 
                 why:
-                  "數線以原點、正方向與固定單位長來定位每個數。",
+                  "負整數的位置在原點左側，與原點距離等於去掉負號後的數。",
 
                 mistake:
-                  "不要只看數字大小，要注意正負號決定方向。"
+                  "不要往右找；負號首先決定方向。"
               }
             )
 
@@ -4383,22 +4410,27 @@
     }
 
 
-    function generateDecimalPoint() {
+    /*
+    負小數定位
+    */
+
+
+    function generateNegativeDecimalPoint() {
 
 
       const tenths =
         pick(
           [
             -18,
+            -17,
             -15,
+            -14,
             -12,
+            -9,
             -8,
-            -5,
-            5,
-            8,
-            12,
-            15,
-            18
+            -7,
+            -6,
+            -4
           ]
         );
 
@@ -4408,144 +4440,47 @@
         10;
 
 
-      const askPick =
-        Math.random() <
-        .5;
-
-
-      if (
-        askPick
-      ) {
-
-        return makeQuestion(
-          {
-
-            modeId:
-              "numberline",
-
-            family:
-              "decimalPoint",
-
-            level:
-              "core",
-
-            label:
-              "小數定位",
-
-            type:
-              "numberlinePick",
-
-            html:
-              `<div class="context-text">` +
-                `請在數線上找出 <strong>${formatNumber(
-                  target
-                )}</strong>。` +
-              `</div>`,
-
-            answer:
-              target,
-
-            line:
-              makeLineConfig(
-                -2,
-                2,
-                .1,
-                target,
-                {
-
-                  pickable:
-                    true,
-
-                  labelEvery:
-                    5
-                }
-              ),
-
-            explanation:
-              makeExplanation(
-                {
-
-                  answer:
-                    formatNumber(
-                      target
-                    ),
-
-                  observe:
-                    "相鄰小刻度代表 0.1。",
-
-                  think:
-                    `先找到整數位置，再數到 ${formatNumber(
-                      target
-                    )}。`,
-
-                  steps:
-                    [
-
-                      "每小格是 0.1。",
-
-                      `${formatNumber(
-                        target
-                      )} 位於原點${
-                        target >=
-                        0
-
-                          ? "右"
-
-                          : "左"
-                      }側。`,
-
-                      "依 0.1 的刻度逐格定位即可。"
-                    ],
-
-                  why:
-                    "小數也能依單位長等距地表示在數線上。",
-
-                  mistake:
-                    "不要把 0.1 的小刻度看成 1。"
-                }
-              )
-
-          }
-        );
-      }
-
-
-      return numberQuestion(
+      return makeQuestion(
         {
 
           modeId:
             "numberline",
 
           family:
-            "decimalPoint",
+            "negativeDecimalPoint",
 
           level:
             "core",
 
           label:
-            "小數讀坐標",
+            "負小數｜找位置",
+
+          type:
+            "numberlinePick",
 
           html:
             `<div class="context-text">` +
-              `觀察數線，A 點的坐標是多少？` +
+              `請在數線上找出 <strong>${formatNumber(
+                target
+              )}</strong> 的位置。` +
             `</div>`,
+
+          answer:
+            target,
 
           line:
             makeLineConfig(
               -2,
-              2,
+              1,
               .1,
               target,
               {
 
-                showPoint:
+                pickable:
                   true,
 
                 labelEvery:
-                  5,
-
-                hideTargetLabel:
-                  true
+                  5
               }
             ),
 
@@ -4559,112 +4494,112 @@
                   ),
 
                 observe:
-                  "先看每一小格代表 0.1。",
+                  "這條數線每一小格代表 0.1，而且題目中的數是負數。",
 
                 think:
-                  "從 0 數到 A 點，並注意左右方向。",
+                  "先決定在原點左邊，再依十分之一的刻度定位。",
 
                 steps:
                   [
 
-                    `A 點在 0 的${
-                      target >=
-                      0
-
-                        ? "右"
-
-                        : "左"
-                    }邊。`,
-
-                    `依 0.1 的刻度數到 A，可得 ${formatNumber(
+                    `${formatNumber(
                       target
-                    )}。`
+                    )} 是負數，所以位置在 0 的左邊。`,
+
+                    "每一小格代表 0.1。",
+
+                    `依刻度數到 ${formatNumber(
+                      target
+                    )} 的位置。`
                   ],
 
                 why:
-                  "數線的單位長可以細分，所以能表示小數。",
+                  "負小數和負整數一樣位於原點左側，只是刻度切得更細。",
 
                 mistake:
-                  "先確認刻度單位，不要習慣性認為每格都是 1。"
+                  "不要看到小數就只注意小數位，負號仍然先決定方向。"
               }
             )
 
-        },
-        target
+        }
       );
     }
 
 
-    function generateFractionPoint() {
+    /*
+    負真分數
+    */
 
 
-      const fractions =
+    function generateNegativeProperFractionPoint() {
+
+
+      const pool =
         [
 
           {
-            n:
-              -3,
-
-            d:
-              4,
-
-            v:
-              -.75
+            n: -1,
+            d: 2
           },
 
           {
-            n:
-              -1,
-
-            d:
-              2,
-
-            v:
-              -.5
+            n: -1,
+            d: 3
           },
 
           {
-            n:
-              1,
-
-            d:
-              2,
-
-            v:
-              .5
+            n: -2,
+            d: 3
           },
 
           {
-            n:
-              3,
-
-            d:
-              4,
-
-            v:
-              .75
+            n: -1,
+            d: 4
           },
 
           {
-            n:
-              5,
-
-            d:
-              4,
-
-            v:
-              1.25
+            n: -3,
+            d: 4
           },
 
           {
-            n:
-              -5,
+            n: -1,
+            d: 5
+          },
 
-            d:
-              4,
+          {
+            n: -2,
+            d: 5
+          },
 
-            v:
-              -1.25
+          {
+            n: -3,
+            d: 5
+          },
+
+          {
+            n: -4,
+            d: 5
+          },
+
+          {
+            n: -1,
+            d: 10
+          },
+
+          {
+            n: -3,
+            d: 10
+          },
+
+          {
+            n: -7,
+            d: 10
+          },
+
+          {
+            n: -9,
+            d: 10
           }
 
         ];
@@ -4672,21 +4607,26 @@
 
       const f =
         pick(
-          fractions
+          pool
         );
 
 
-      const fractionDisplay =
+      const target =
+        f.n /
+        f.d;
+
+
+      const display =
         fractionHTML(
           f.n,
           f.d
         );
 
 
-      const quarterDisplay =
+      const unitDisplay =
         fractionHTML(
           1,
-          4
+          f.d
         );
 
 
@@ -4697,41 +4637,42 @@
             "numberline",
 
           family:
-            "fractionPoint",
+            "negativeProperFraction",
 
           level:
-            "twist",
+            "core",
 
           label:
-            "小變化｜分數定位",
+            "負分數｜真分數定位",
 
           type:
             "numberlinePick",
 
           html:
             `<div class="context-text">` +
-              `請在數線上找出 <strong>${fractionDisplay}</strong> 的位置。` +
+              `請在數線上找出 <strong>${display}</strong> 的位置。` +
             `</div>`,
 
           answer:
-            f.v,
+            target,
 
           answerDisplayHTML:
-            fractionDisplay,
+            display,
 
           line:
             makeLineConfig(
-              -2,
-              2,
-              .25,
-              f.v,
+              -1,
+              0,
+              1 /
+              f.d,
+              target,
               {
 
                 pickable:
                   true,
 
                 labelEvery:
-                  4
+                  f.d
               }
             ),
 
@@ -4741,47 +4682,430 @@
 
                 answer:
                   richHTML(
-                    fractionDisplay
+                    display
                   ),
 
                 observe:
                   richHTML(
-                    `這條數線每 1 個單位被分成 4 小格，所以每小格是 ${quarterDisplay}。`
+                    `這個數是負分數，而且分母是 ${f.d}，表示 1 個單位要分成 ${f.d} 等分。`
                   ),
 
                 think:
                   richHTML(
-                    `把 ${fractionDisplay} 看成以 ${quarterDisplay} 為單位的位置。`
+                    `先從 0 往左，再以 ${unitDisplay} 為一小格來找位置。`
                   ),
 
                 steps:
                   [
 
-                    "先找到 0。",
-
-                    f.n <
-                    0
-
-                      ? "負號表示往左。"
-
-                      : "正數表示往右。",
+                    "負號表示位置在原點左邊。",
 
                     richHTML(
-                      `每小格是 ${quarterDisplay}，數到 ${fractionDisplay} 的位置。`
+                      `分母 ${f.d} 表示每小格是 ${unitDisplay}。`
+                    ),
+
+                    richHTML(
+                      `從 0 往左數 ${Math.abs(
+                        f.n
+                      )} 小格，就到 ${display}。`
                     )
                   ],
 
                 why:
-                  "分數也可以表示在數線上，只要單位長切分一致。",
+                  "負分數仍然遵守數線的方向與固定單位長，只是每一個整數單位被再細分。",
 
                 mistake:
-                  "不要把分子當成整數格數；要先看分母表示一個單位被分成幾份。"
+                  "不要把分子直接當成整數格數；要先看分母把一個單位切成幾等分。"
               }
             )
 
         }
       );
     }
+
+
+    /*
+    負帶分數
+    */
+
+
+    function generateNegativeMixedFractionPoint() {
+
+
+      const pool =
+        [
+
+          {
+            whole: 1,
+            n: 1,
+            d: 2
+          },
+
+          {
+            whole: 1,
+            n: 1,
+            d: 4
+          },
+
+          {
+            whole: 1,
+            n: 3,
+            d: 4
+          },
+
+          {
+            whole: 2,
+            n: 1,
+            d: 2
+          },
+
+          {
+            whole: 2,
+            n: 1,
+            d: 4
+          },
+
+          {
+            whole: 2,
+            n: 3,
+            d: 4
+          },
+
+          {
+            whole: 1,
+            n: 2,
+            d: 5
+          },
+
+          {
+            whole: 2,
+            n: 3,
+            d: 5
+          }
+
+        ];
+
+
+      const f =
+        pick(
+          pool
+        );
+
+
+      const target =
+        -(
+          f.whole +
+          f.n /
+          f.d
+        );
+
+
+      const display =
+        mixedFractionHTML(
+          f.whole,
+          f.n,
+          f.d,
+          true
+        );
+
+
+      const unitDisplay =
+        fractionHTML(
+          1,
+          f.d
+        );
+
+
+      const min =
+        -(
+          f.whole +
+          1
+        );
+
+
+      return makeQuestion(
+        {
+
+          modeId:
+            "numberline",
+
+          family:
+            "negativeMixedFraction",
+
+          level:
+            "twist",
+
+          label:
+            "負分數｜帶分數定位",
+
+          type:
+            "numberlinePick",
+
+          html:
+            `<div class="context-text">` +
+              `請在數線上找出 <strong>${display}</strong> 的位置。` +
+            `</div>`,
+
+          answer:
+            target,
+
+          answerDisplayHTML:
+            display,
+
+          line:
+            makeLineConfig(
+              min,
+              0,
+              1 /
+              f.d,
+              target,
+              {
+
+                pickable:
+                  true,
+
+                labelEvery:
+                  f.d
+              }
+            ),
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  richHTML(
+                    display
+                  ),
+
+                observe:
+                  richHTML(
+                    `${display} 是負帶分數，它的位置會在 −${f.whole} 與 −${f.whole + 1} 之間。`
+                  ),
+
+                think:
+                  richHTML(
+                    `先找到 −${f.whole}，再依每小格 ${unitDisplay} 往左找。`
+                  ),
+
+                steps:
+                  [
+
+                    "負號表示整個帶分數在原點左邊。",
+
+                    richHTML(
+                      `分母 ${f.d} 表示每一個整數單位分成 ${f.d} 等分，每小格是 ${unitDisplay}。`
+                    ),
+
+                    richHTML(
+                      `從 −${f.whole} 再往左 ${f.n} 小格，就到 ${display}。`
+                    )
+                  ],
+
+                why:
+                  "負帶分數比它的負整數部分還要小一些，所以位置要繼續往左。",
+
+                mistake:
+                  richHTML(
+                    `不要把 ${display} 放在 −${f.whole} 的右邊；它比 −${f.whole} 更小。`
+                  )
+              }
+            )
+
+        }
+      );
+    }
+
+
+    /*
+    負假分數
+    */
+
+
+    function generateNegativeImproperFractionPoint() {
+
+
+      const pool =
+        [
+
+          {
+            n: -3,
+            d: 2
+          },
+
+          {
+            n: -5,
+            d: 2
+          },
+
+          {
+            n: -5,
+            d: 4
+          },
+
+          {
+            n: -7,
+            d: 4
+          },
+
+          {
+            n: -9,
+            d: 4
+          },
+
+          {
+            n: -6,
+            d: 5
+          },
+
+          {
+            n: -7,
+            d: 5
+          },
+
+          {
+            n: -8,
+            d: 5
+          },
+
+          {
+            n: -9,
+            d: 5
+          }
+
+        ];
+
+
+      const f =
+        pick(
+          pool
+        );
+
+
+      const target =
+        f.n /
+        f.d;
+
+
+      const display =
+        fractionHTML(
+          f.n,
+          f.d
+        );
+
+
+      const unitDisplay =
+        fractionHTML(
+          1,
+          f.d
+        );
+
+
+      const min =
+        Math.floor(
+          target
+        );
+
+
+      return makeQuestion(
+        {
+
+          modeId:
+            "numberline",
+
+          family:
+            "negativeImproperFraction",
+
+          level:
+            "twist",
+
+          label:
+            "負分數｜假分數定位",
+
+          type:
+            "numberlinePick",
+
+          html:
+            `<div class="context-text">` +
+              `請在數線上找出 <strong>${display}</strong> 的位置。` +
+            `</div>`,
+
+          answer:
+            target,
+
+          answerDisplayHTML:
+            display,
+
+          line:
+            makeLineConfig(
+              min,
+              0,
+              1 /
+              f.d,
+              target,
+              {
+
+                pickable:
+                  true,
+
+                labelEvery:
+                  f.d
+              }
+            ),
+
+          explanation:
+            makeExplanation(
+              {
+
+                answer:
+                  richHTML(
+                    display
+                  ),
+
+                observe:
+                  richHTML(
+                    `${display} 是負假分數，先判斷它位於哪兩個負整數之間。`
+                  ),
+
+                think:
+                  richHTML(
+                    `每一小格代表 ${unitDisplay}，再從 0 往左累積 ${Math.abs(
+                      f.n
+                    )} 個小格。`
+                  ),
+
+                steps:
+                  [
+
+                    "負號表示要往原點左邊找。",
+
+                    richHTML(
+                      `分母 ${f.d} 表示每小格是 ${unitDisplay}。`
+                    ),
+
+                    richHTML(
+                      `由 0 往左數 ${Math.abs(
+                        f.n
+                      )} 個小格，即可找到 ${display}。`
+                    )
+                  ],
+
+                why:
+                  "假分數只是超過 1 個完整單位的分數，仍然可以直接依分母決定刻度。",
+
+                mistake:
+                  "不要因為分子大於分母就把它當成整數；仍要依分母的刻度精確定位。"
+              }
+            )
+
+        }
+      );
+    }
+
+
+    /*
+    特殊刻度，而且答案固定為負數
+    */
 
 
     function generateScaledTicks() {
@@ -4801,9 +5125,7 @@
         pick(
           [
             -2,
-            -1,
-            1,
-            2
+            -1
           ]
         );
 
@@ -4820,13 +5142,13 @@
             "numberline",
 
           family:
-            "scaledTicks",
+            "scaledNegativeTicks",
 
           level:
             "twist",
 
           label:
-            "小變化｜特殊刻度",
+            "小變化｜特殊刻度負數",
 
           html:
             `<div class="context-text">` +
@@ -4838,7 +5160,7 @@
               -3 *
               scale,
 
-              3 *
+              2 *
               scale,
 
               scale,
@@ -4857,7 +5179,7 @@
 
                     0,
 
-                    3 *
+                    2 *
                     scale
                   ],
 
@@ -4876,26 +5198,28 @@
                   ),
 
                 observe:
-                  `這條數線相鄰刻度不是差 1，而是差 ${scale}。`,
+                  `A 點在原點左邊，而且這條數線每一格不是 1。`,
 
                 think:
-                  "先從已標出的數找出每一格代表多少。",
+                  "先利用已知標示求出每一格代表多少，再往左定位。",
 
                 steps:
                   [
 
                     `相鄰刻度相差 ${scale}。`,
 
-                    `A 點依照這個單位長定位，可得 ${formatNumber(
+                    "原點左邊是負方向。",
+
+                    `依每格 ${scale} 的單位長，可得到 A＝${formatNumber(
                       target
                     )}。`
                   ],
 
                 why:
-                  "數線的單位長可以選擇不同大小，但同一條數線上必須固定一致。",
+                  "同一條數線的單位長固定，但不一定等於 1。",
 
                 mistake:
-                  "不要看到一格就自動加 1，要先判斷這條數線每格代表多少。"
+                  "不要習慣性把每一格當成 1，也不要忽略 A 位於原點左邊。"
               }
             )
 
@@ -4905,18 +5229,22 @@
     }
 
 
+    /*
+    不完整標示，而且答案固定為負數
+    */
+
+
     function generatePartialLabels() {
 
 
       const target =
         pick(
           [
+            -5,
             -4,
             -3,
             -2,
-            2,
-            3,
-            4
+            -1
           ]
         );
 
@@ -4928,13 +5256,13 @@
             "numberline",
 
           family:
-            "partialLabels",
+            "partialNegativeLabels",
 
           level:
             "reverse",
 
           label:
-            "逆向題｜不完整標示",
+            "逆向題｜不完整標示負數",
 
           html:
             `<div class="context-text">` +
@@ -4974,130 +5302,35 @@
                   ),
 
                 observe:
-                  "雖然中間沒有全部標數字，但刻度仍然等距。",
+                  "A 點在原點左側，而且中間雖然沒有全部標數字，刻度仍然等距。",
 
                 think:
-                  "先利用 −6、0、6 算出每一小格的單位長。",
+                  "先利用 −6、0、6 判斷每格是多少，再從 0 往左數。",
 
                 steps:
                   [
 
                     "從 −6 到 0 共有 6 個相同間隔，所以每格是 1。",
 
-                    `再從 0 數到 A 點，可得 ${formatNumber(
+                    `A 在 0 的左邊 ${Math.abs(
+                      target
+                    )} 格。`,
+
+                    `所以 A＝${formatNumber(
                       target
                     )}。`
                   ],
 
                 why:
-                  "數線只要原點、方向與單位長確定，就能推算未標示的坐標。",
+                  "只要原點、方向與單位長可以判斷，就能找出沒有標數字的刻度。",
 
                 mistake:
-                  "沒有標數字不代表不能判斷，要利用已知刻度找出單位長。"
+                  "不要因為沒有標示數字就猜答案，要先求出每一格的單位長。"
               }
             )
 
         },
         target
-      );
-    }
-
-
-    function generateNumberLineConcept() {
-
-
-      return choiceQuestion(
-        {
-
-          modeId:
-            "numberline",
-
-          family:
-            "numberLineConcept",
-
-          level:
-            "core",
-
-          label:
-            "數線概念",
-
-          html:
-            `<div class="context-text">` +
-              `下列哪一項不是數線的三要素？` +
-            `</div>`,
-
-          explanation:
-            makeExplanation(
-              {
-
-                answer:
-                  "最大值",
-
-                observe:
-                  "數線需要原點、正方向與單位長。",
-
-                think:
-                  "想一想畫數線時一定要先決定哪些東西。",
-
-                steps:
-                  [
-
-                    "原點決定 0 的位置。",
-
-                    "正方向決定哪一邊是正。",
-
-                    "單位長決定刻度距離。",
-
-                    "數線沒有固定的最大值。"
-                  ],
-
-                why:
-                  "數線可以向兩端無限延伸，所以不需要設定最大值。",
-
-                mistake:
-                  "不要把畫面上暫時看到的最右數字誤認成數線的最大值。"
-              }
-            )
-
-        },
-
-        [
-
-          {
-            value:
-              "origin",
-
-            text:
-              "原點"
-          },
-
-          {
-            value:
-              "direction",
-
-            text:
-              "正方向"
-          },
-
-          {
-            value:
-              "unit",
-
-            text:
-              "單位長"
-          },
-
-          {
-            value:
-              "max",
-
-            text:
-              "最大值"
-          }
-
-        ],
-
-        "max"
       );
     }
 
@@ -5466,17 +5699,8 @@
             leftHTML:
               "−1.5",
 
-            leftText:
-              "−1.5",
-
             rightHTML:
               fractionHTML(
-                -3,
-                2
-              ),
-
-            rightText:
-              fractionPlainText(
                 -3,
                 2
               ),
@@ -5490,17 +5714,8 @@
             leftHTML:
               "−0.5",
 
-            leftText:
-              "−0.5",
-
             rightHTML:
               fractionHTML(
-                -1,
-                4
-              ),
-
-            rightText:
-              fractionPlainText(
                 -1,
                 4
               ),
@@ -5517,16 +5732,7 @@
                 4
               ),
 
-            leftText:
-              fractionPlainText(
-                3,
-                4
-              ),
-
             rightHTML:
-              "0.7",
-
-            rightText:
               "0.7",
 
             answer:
@@ -5541,16 +5747,7 @@
                 4
               ),
 
-            leftText:
-              fractionPlainText(
-                -5,
-                4
-              ),
-
             rightHTML:
-              "−1",
-
-            rightText:
               "−1",
 
             answer:
@@ -7000,13 +7197,6 @@
     }
 
 
-    /*
-    ★ 修正：
-    原本用「整組選項」容易產生語意誤解。
-    現在改成逐個整數複選。
-    */
-
-
     function generateIntegerRange() {
 
 
@@ -7115,7 +7305,7 @@
                 steps:
                   [
 
-                    `距離 0 的整數是 0。`,
+                    "距離 0 的整數是 0。",
 
                     `距離 1 到 ${n - 1} 時，原點左右兩側都要算，所以同時有正數與負數。`,
 
@@ -7508,7 +7698,7 @@
 
     /*
     ==================================================
-    各模式題組
+    題組
     ==================================================
     */
 
@@ -7543,30 +7733,42 @@
     }
 
 
+    /*
+    ★ 數線模式正式配置
+    3 負真分數
+    1 負帶分數
+    1 負假分數
+    2 負整數
+    1 負小數
+    1 特殊刻度負數
+    1 不完整標示負數
+    */
+
+
     function createNumberLineQuestions() {
 
       return shuffle(
         [
 
-          generateReadIntegerPoint(),
+          generateNegativeProperFractionPoint(),
+
+          generateNegativeProperFractionPoint(),
+
+          generateNegativeProperFractionPoint(),
+
+          generateNegativeMixedFractionPoint(),
+
+          generateNegativeImproperFractionPoint(),
 
           generateReadIntegerPoint(),
 
           generatePlaceIntegerPoint(),
 
-          generateDecimalPoint(),
-
-          generateDecimalPoint(),
-
-          generateFractionPoint(),
+          generateNegativeDecimalPoint(),
 
           generateScaledTicks(),
 
-          generateScaledTicks(),
-
-          generatePartialLabels(),
-
-          generateNumberLineConcept()
+          generatePartialLabels()
 
         ]
       );
@@ -7838,7 +8040,7 @@
           line.max +
           1e-9 &&
         guard <
-          100;
+          150;
 
         value +=
           line.step,
@@ -8121,9 +8323,7 @@
 
 
     /*
-    ★ 修正：
-    學生選點後只顯示選取標記，
-    不再公布該點的實際數值。
+    點選後只顯示位置，不公布數值
     */
 
 
@@ -8652,11 +8852,6 @@
         );
 
 
-      /*
-      數字
-      */
-
-
       if (
         question.type ===
         "number"
@@ -8694,11 +8889,6 @@
 
         return;
       }
-
-
-      /*
-      單選
-      */
 
 
       if (
@@ -8789,11 +8979,6 @@
 
         return;
       }
-
-
-      /*
-      ★ 多選
-      */
 
 
       if (
@@ -8906,11 +9091,6 @@
       }
 
 
-      /*
-      比較
-      */
-
-
       if (
         question.type ===
         "compare"
@@ -9002,11 +9182,6 @@
       }
 
 
-      /*
-      點數線
-      */
-
-
       if (
         question.type ===
         "numberlinePick"
@@ -9060,11 +9235,6 @@
 
         return;
       }
-
-
-      /*
-      排序
-      */
 
 
       if (
