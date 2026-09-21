@@ -1,0 +1,5261 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2-2 最大公因數與最小公倍數大挑戰</title>
+
+  <link rel="stylesheet" href="../css/scratchpad.css">
+  <link rel="stylesheet" href="../css/expression-input.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --primary: #1565c0;
+      --primary-dark: #0d47a1;
+      --primary-light: #e3f2fd;
+      --primary-border: #90caf9;
+      --text: #1f2937;
+      --muted: #64748b;
+      --success: #15803d;
+      --warning: #b45309;
+      --danger: #b91c1c;
+      --orange: #f57c00;
+      --surface: #ffffff;
+      --shadow: 0 14px 34px rgba(15, 23, 42, 0.13);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 16px;
+      font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #eaf4ff, #fff8e8);
+    }
+
+    button, input {
+      font-family: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button { touch-action: manipulation; }
+
+    .page-shell {
+      width: min(100%, 1020px);
+      margin: 0 auto;
+    }
+
+    #commonHeaderMount { margin-bottom: 14px; }
+
+    .game-card {
+      overflow: hidden;
+      border: 1px solid #d8e7f7;
+      border-top: 8px solid var(--primary);
+      border-radius: 26px;
+      background: rgba(255,255,255,.98);
+      box-shadow: var(--shadow);
+    }
+
+    .game-header {
+      padding: 26px 24px 20px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--primary-light), #fff);
+    }
+
+    .game-title {
+      margin: 0;
+      color: var(--primary-dark);
+      font-size: clamp(28px, 5vw, 42px);
+      line-height: 1.35;
+    }
+
+    .game-subtitle {
+      max-width: 860px;
+      margin: 10px auto 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .screen { padding: 24px; }
+    .hidden { display: none !important; }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .mode-card {
+      min-height: 184px;
+      padding: 20px;
+      border: 2px solid var(--primary-border);
+      border-radius: 20px;
+      background: linear-gradient(180deg, var(--primary-light), #fff);
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+
+    .mode-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(15,23,42,.11);
+      border-color: var(--primary);
+    }
+
+    .mode-card h2 {
+      margin: 0 0 8px;
+      color: var(--primary-dark);
+      font-size: 21px;
+      line-height: 1.45;
+    }
+
+    .mode-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .mode-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .mode-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--primary-border);
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .mode-card.speed {
+      border-color: #ffcc80;
+      background: linear-gradient(180deg, #fff3e0, #fff);
+    }
+
+    .mode-card.speed h2 { color: #e65100; }
+
+    .mode-card.comprehensive {
+      border-color: #ffe082;
+      background: linear-gradient(180deg, #fff8e1, #fff);
+    }
+
+    .mode-card.comprehensive h2 { color: #9a6700; }
+
+    .quiz-topbar {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .status-box {
+      min-height: 74px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10px 8px;
+      border-radius: 14px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .status-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-value {
+      margin-top: 4px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .timer-danger {
+      background: #fee2e2 !important;
+      color: #991b1b !important;
+      animation: pulse .75s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.025); }
+    }
+
+    .progress-shell {
+      height: 12px;
+      margin-bottom: 18px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e2e8f0;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--primary), #42a5f5);
+      transition: width .2s ease;
+    }
+
+    .question-card {
+      padding: 24px 18px;
+      border: 2px solid var(--primary-border);
+      border-radius: 20px;
+      background: #fff;
+      text-align: center;
+    }
+
+    .question-label {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: clamp(16px, 2.1vw, 20px);
+      font-weight: 900;
+      line-height: 1.65;
+    }
+
+    .question-content {
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f172a;
+      font-size: clamp(22px, 3.4vw, 32px);
+      font-weight: 900;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+
+    .math-expression {
+      white-space: normal;
+      letter-spacing: .02em;
+    }
+
+    .math-expression sup {
+      font-size: .6em;
+      vertical-align: super;
+    }
+
+    .mini-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .scratchpad-row {
+      display: flex;
+      justify-content: center;
+      margin: 14px 0 2px;
+    }
+
+    .answer-panel {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      background: #f8fbff;
+    }
+
+    .answer-title {
+      margin-bottom: 12px;
+      text-align: center;
+      color: var(--primary-dark);
+      font-weight: 900;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .choice-button {
+      min-height: 68px;
+      padding: 12px;
+      border: 2px solid #cbd5e1;
+      border-radius: 16px;
+      background: #fff;
+      color: #0f172a;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.5;
+      cursor: pointer;
+      transition: .14s ease;
+    }
+
+    .choice-button:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .choice-button.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .choice-button.correct-choice {
+      border-color: #22c55e !important;
+      background: #dcfce7 !important;
+      color: #166534 !important;
+    }
+
+    .choice-button.wrong-choice {
+      border-color: #ef4444 !important;
+      background: #fee2e2 !important;
+      color: #991b1b !important;
+    }
+
+    .number-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .number-input {
+      width: min(100%, 360px);
+      min-height: 58px;
+      padding: 10px 16px;
+      border: 2px solid var(--primary-border);
+      border-radius: 15px;
+      background: #fff;
+      color: #0f172a;
+      text-align: center;
+      font-size: 26px;
+      font-weight: 900;
+      outline: none;
+    }
+
+    .number-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(21,101,192,.10);
+    }
+
+    .input-message {
+      min-height: 24px;
+      margin-top: 10px;
+      color: var(--danger);
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .feedback {
+      min-height: 48px;
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.55;
+    }
+
+    .feedback:empty {
+      min-height: 0;
+      padding: 0;
+      margin-top: 0;
+    }
+
+    .feedback.correct {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .feedback.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .explanation {
+      margin-top: 14px;
+      padding: 18px;
+      border-left: 6px solid var(--primary);
+      border-radius: 14px;
+      background: #f8fafc;
+      color: #334155;
+      line-height: 1.85;
+      font-size: 16px;
+    }
+
+    .explanation strong {
+      color: #0f172a;
+    }
+
+    .rule-box,
+    .calculation-box,
+    .decision-box {
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      line-height: 1.8;
+    }
+
+    .rule-box {
+      background: #e0f2fe;
+      border: 1px solid #7dd3fc;
+    }
+
+    .calculation-box {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+    }
+
+    .decision-box {
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+    }
+
+    .factor-line {
+      margin: 6px 0;
+      font-weight: 800;
+    }
+
+    .short-division {
+      width: min(100%, 660px);
+      margin: 12px auto;
+      border-collapse: collapse;
+      background: #fff;
+      font-size: 15px;
+    }
+
+    .short-division th,
+    .short-division td {
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+      text-align: center;
+    }
+
+    .short-division th {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .game-button {
+      min-height: 48px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(21,101,192,.2);
+    }
+
+    .game-button.secondary { background: #64748b; }
+    .game-button.orange { background: var(--orange); }
+    .game-button.restart { background: #16a34a; }
+
+    .game-button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .result-card {
+      text-align: center;
+    }
+
+    .result-card h2 {
+      margin-top: 0;
+      color: var(--primary-dark);
+    }
+
+    .result-score {
+      margin: 10px 0 4px;
+      color: var(--primary-dark);
+      font-size: clamp(40px, 8vw, 66px);
+      font-weight: 1000;
+    }
+
+    .result-stars {
+      font-size: 28px;
+      letter-spacing: 3px;
+    }
+
+    .result-comment {
+      max-width: 720px;
+      margin: 12px auto;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .result-item {
+      padding: 14px 8px;
+      border-radius: 14px;
+      background: var(--primary-light);
+    }
+
+    .result-item .label {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .result-item .value {
+      display: block;
+      margin-top: 5px;
+      color: var(--primary-dark);
+      font-size: 24px;
+      font-weight: 1000;
+    }
+
+    .save-status {
+      min-height: 24px;
+      margin: 10px 0 0;
+      font-weight: 800;
+    }
+
+    .review-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .review-card {
+      padding: 16px;
+      border: 1px solid #dbeafe;
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .review-title {
+      margin-bottom: 10px;
+      color: var(--danger);
+      font-weight: 1000;
+    }
+
+    .review-question {
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    .review-answer {
+      margin: 10px 0;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 8px; }
+      .screen { padding: 16px; }
+      .game-header { padding: 22px 16px 16px; }
+      .mode-grid { grid-template-columns: 1fr; }
+      .quiz-topbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .choice-grid { grid-template-columns: 1fr; }
+      .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .question-card { padding: 20px 12px; }
+    }
+
+    @media (max-width: 420px) {
+      .status-value { font-size: 16px; }
+      .game-button { width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="page-shell">
+
+  <div id="commonHeaderMount"></div>
+
+  <main class="game-card">
+
+    <header class="game-header">
+      <h1 class="game-title">🔵 2-2 最大公因數與最小公倍數大挑戰</h1>
+      <p class="game-subtitle">
+        對應七年級上學期 2-2：公因數、最大公因數、互質、公倍數、最小公倍數、
+        短除法、標準分解式、兩數與三數的計算，以及分組、裁切、等距、週期與同時發生等應用。
+      </p>
+    </header>
+
+    <section id="start-screen" class="screen">
+      <div class="mode-grid">
+
+        <button class="mode-card" type="button" data-mode="concept">
+          <h2>🧠 公因數、公倍數與互質</h2>
+          <p>理解公因數、公倍數、最大公因數、最小公倍數與互質，並熟悉基本判斷。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+          </div>
+        </button>
+
+        <button class="mode-card" type="button" data-mode="gcd">
+          <h2>🧮 最大公因數</h2>
+          <p>練習兩數、三數最大公因數，搭配短除法與標準分解式完整解析。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+          </div>
+        </button>
+
+        <button class="mode-card" type="button" data-mode="lcm">
+          <h2>🔁 最小公倍數</h2>
+          <p>練習兩數、三數最小公倍數，理解短除法到兩兩互質的計算過程。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+          </div>
+        </button>
+
+        <button class="mode-card" type="button" data-mode="standardForm">
+          <h2>🔢 標準分解式求公因公倍</h2>
+          <p>從標準分解式判讀共同或全部質因數，最大公因數取小次方、最小公倍數取大次方。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+          </div>
+        </button>
+
+        <button class="mode-card" type="button" data-mode="application">
+          <h2>🧩 因倍數生活應用</h2>
+          <p>從題意判斷要用最大公因數或最小公倍數，再完成分組、裁切、等距與週期問題。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+          </div>
+        </button>
+
+        <button class="mode-card speed" type="button" data-mode="speed">
+          <h2>⚡ 公因公倍快手</h2>
+          <p>60 秒短題快速熟練；最後 10 秒啟動急促倒數提醒。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">60 秒</span>
+          </div>
+        </button>
+
+        <button class="mode-card comprehensive" type="button" data-mode="comprehensive">
+          <h2>🏆 2-2 綜合挑戰</h2>
+          <p>整合概念、最大公因數、最小公倍數、標準分解式與生活應用。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+          </div>
+        </button>
+
+      </div>
+    </section>
+
+    <section id="quiz-screen" class="screen hidden">
+
+      <div class="quiz-topbar">
+        <div class="status-box">
+          <span class="status-label">模式</span>
+          <span id="mode-display" class="status-value">—</span>
+        </div>
+        <div id="time-box" class="status-box">
+          <span class="status-label">時間</span>
+          <span id="time-display" class="status-value">00:00</span>
+        </div>
+        <div class="status-box">
+          <span class="status-label">分數</span>
+          <span id="score-display" class="status-value">0</span>
+        </div>
+        <div class="status-box">
+          <span class="status-label">連擊</span>
+          <span id="combo-display" class="status-value">0</span>
+        </div>
+      </div>
+
+      <div class="progress-shell">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+
+      <div class="question-card">
+        <div id="question-label" class="question-label"></div>
+        <div id="question-content" class="question-content"></div>
+        <div id="question-note" class="mini-note"></div>
+      </div>
+
+      <div class="scratchpad-row">
+        <div id="scratchpad-mobile-button"></div>
+      </div>
+
+      <div class="answer-panel">
+        <div class="answer-title">請作答</div>
+
+        <div id="choiceMount" class="choice-grid"></div>
+
+        <div id="numberMountWrap" class="number-wrap hidden">
+          <input
+            id="number-input"
+            class="number-input"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="輸入答案"
+          >
+        </div>
+
+        <div id="expressionMountWrap" class="hidden">
+          <div id="answerMount"></div>
+        </div>
+
+        <div id="input-message" class="input-message"></div>
+      </div>
+
+      <div id="feedback" class="feedback"></div>
+      <div id="explanation" class="explanation hidden"></div>
+
+      <div class="button-row">
+        <button id="submit-button" class="game-button" type="button">送出答案</button>
+        <button id="next-button" class="game-button secondary hidden" type="button">下一題</button>
+        <button id="quit-button" class="game-button orange" type="button">選擇模式</button>
+      </div>
+    </section>
+
+    <section id="result-screen" class="screen hidden result-card">
+      <h2 id="result-mode-name">測驗完成</h2>
+
+      <div id="final-score" class="result-score">0 分</div>
+      <div id="final-stars" class="result-stars">★★★★★</div>
+      <p id="final-comment" class="result-comment"></p>
+
+      <div class="result-grid">
+        <div class="result-item">
+          <span class="label">答對</span>
+          <span id="final-correct" class="value">0</span>
+        </div>
+        <div class="result-item">
+          <span class="label">答錯</span>
+          <span id="final-wrong" class="value">0</span>
+        </div>
+        <div class="result-item">
+          <span class="label">最高連擊</span>
+          <span id="final-combo" class="value">0</span>
+        </div>
+        <div class="result-item">
+          <span class="label">作答時間</span>
+          <span id="final-time" class="value">00:00</span>
+        </div>
+      </div>
+
+      <div id="save-status" class="save-status" aria-live="polite"></div>
+
+      <div class="button-row">
+        <button id="again-button" class="game-button restart" type="button">🔄 重新挑戰</button>
+        <button id="review-button" class="game-button orange" type="button">錯題回顧</button>
+        <button id="result-mode-button" class="game-button secondary" type="button">選擇模式</button>
+      </div>
+    </section>
+
+    <section id="review-screen" class="screen hidden">
+      <h2>📝 錯題回顧</h2>
+      <div id="review-list" class="review-list"></div>
+
+      <div class="button-row">
+        <button id="review-again-button" class="game-button restart" type="button">🔄 重新挑戰</button>
+        <button id="review-result-button" class="game-button secondary" type="button">回到測驗結果</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="../js/common-header.js"></script>
+<script src="../js/scratchpad.js"></script>
+<script src="../js/scratchpad-template.js"></script>
+<script src="../js/sound-manager.js?v=1"></script>
+<script src="../js/expression-input.js?v=7"></script>
+
+<script type="module">
+"use strict";
+
+/*
+==================================================
+2-2 最大公因數與最小公倍數大挑戰
+
+新遊戲識別：
+GAME_ID = gcdLcm
+
+modeId 僅供：
+1. Firestore 成績分類
+2. 排行榜分模式
+3. 未來 RPG 經驗值／寶石系統
+學生畫面不顯示 modeId。
+==================================================
+*/
+
+const GAME_ID = "gcdLcm";
+
+const MODE_CONFIG = {
+  concept: {
+    name: "🧠 公因數、公倍數與互質",
+    count: 10,
+    difficultyWeight: 1.00
+  },
+  gcd: {
+    name: "🧮 最大公因數",
+    count: 10,
+    difficultyWeight: 1.12
+  },
+  lcm: {
+    name: "🔁 最小公倍數",
+    count: 10,
+    difficultyWeight: 1.14
+  },
+  standardForm: {
+    name: "🔢 標準分解式求公因公倍",
+    count: 10,
+    difficultyWeight: 1.26
+  },
+  application: {
+    name: "🧩 因倍數生活應用",
+    count: 10,
+    difficultyWeight: 1.30
+  },
+  speed: {
+    name: "⚡ 公因公倍快手",
+    seconds: 60,
+    difficultyWeight: 1.15
+  },
+  comprehensive: {
+    name: "🏆 2-2 綜合挑戰",
+    count: 10,
+    difficultyWeight: 1.38
+  }
+};
+
+const PRIME_LIST = [
+  2,3,5,7,11,13,17,19,23,29,31,
+  37,41,43,47,53,59,61,67,71,73,
+  79,83,89,97
+];
+
+const PRIME_INPUT_OPTIONS = [
+  2,3,5,7,11,13,17,19,23,29,31
+];
+
+const PAIR_POOL = [
+  [12,18],
+  [70,84],
+  [42,112],
+  [126,210],
+  [360,510],
+  [35,64],
+  [154,210],
+  [54,42],
+  [40,64],
+  [14,15],
+  [26,7],
+  [8,12],
+  [240,252],
+  [288,336],
+  [132,156],
+  [25,36],
+  [28,35],
+  [20,28]
+];
+
+const TRIPLE_POOL = [
+  [72,120,84],
+  [72,54,126],
+  [15,45,75],
+  [144,12,48],
+  [24,32,36],
+  [12,15,18],
+  [35,20,28],
+  [28,36,48],
+  [84,24,14],
+  [20,28,35],
+  [4,5,6],
+  [3,4,6],
+  [20,24,30]
+];
+
+const STANDARD_TEMPLATES = [
+  [
+    {2:4,3:1,7:1},
+    {2:3,3:2,5:1}
+  ],
+  [
+    {2:3,3:2,7:4},
+    {2:2,5:3,7:2}
+  ],
+  [
+    {2:4,3:5,5:1},
+    {2:5,3:3,7:1},
+    {2:6,3:2,7:1,11:1}
+  ],
+  [
+    {2:2,3:3,5:1,7:1},
+    {2:3,3:2,5:2,11:1}
+  ],
+  [
+    {2:5,3:1,5:1},
+    {2:4,5:1,7:2}
+  ],
+  [
+    {2:3,5:2,7:1},
+    {2:3,5:1,11:1},
+    {2:2,7:1,11:1}
+  ],
+  [
+    {2:4,3:2,7:1},
+    {2:2,3:3,5:1}
+  ],
+  [
+    {2:3,3:1,5:2},
+    {2:5,3:2,5:1}
+  ],
+  [
+    {2:2,3:2,5:1},
+    {2:3,3:1,5:2},
+    {2:4,3:3,5:1}
+  ],
+  [
+    {2:4,7:1,11:2},
+    {2:3,5:2,11:1},
+    {2:2,5:3,11:1}
+  ],
+  [
+    {2:4,3:2,5:1,7:1},
+    {2:3,3:3,5:2}
+  ],
+  [
+    {2:5,3:2,7:1},
+    {2:3,3:1,5:1,7:2}
+  ]
+];
+
+const $ = id => document.getElementById(id);
+
+let modeId = "concept";
+let questions = [];
+let index = 0;
+let correct = 0;
+let wrong = 0;
+let combo = 0;
+let maxCombo = 0;
+let records = [];
+let selectedChoice = null;
+let answered = false;
+let startTime = 0;
+let elapsed = 0;
+let timerId = null;
+let speedRemaining = 60;
+let speedAttempts = 0;
+let speedScore = 0;
+let scoreSaved = false;
+let attemptId = "";
+let answerInput = null;
+
+window.MathGameSessionMeta = {
+  gameId: GAME_ID,
+  chapter: "2-2",
+  title: "最大公因數與最小公倍數大挑戰",
+  modes: MODE_CONFIG
+};
+
+/*
+==================================================
+基本工具
+==================================================
+*/
+
+function rand(min, max) {
+  return Math.floor(
+    Math.random() * (max - min + 1)
+  ) + min;
+}
+
+function pick(array) {
+  return array[
+    Math.floor(Math.random() * array.length)
+  ];
+}
+
+function shuffle(array) {
+  const result = [...array];
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    [result[i], result[j]] =
+      [result[j], result[i]];
+  }
+
+  return result;
+}
+
+function unique(array) {
+  return [...new Set(array)];
+}
+
+function esc(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function formatTime(seconds) {
+  const safe =
+    Math.max(
+      0,
+      Math.floor(seconds)
+    );
+
+  const min =
+    Math.floor(
+      safe / 60
+    );
+
+  const sec =
+    safe % 60;
+
+  return `${String(min).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+}
+
+function createAttemptId() {
+  return [
+    GAME_ID,
+    modeId,
+    Date.now(),
+    Math.random()
+      .toString(36)
+      .slice(2,10)
+  ].join("-");
+}
+
+function showOnly(id) {
+  [
+    "start-screen",
+    "quiz-screen",
+    "result-screen",
+    "review-screen"
+  ].forEach(screenId => {
+    $(screenId).classList.toggle(
+      "hidden",
+      screenId !== id
+    );
+  });
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+/*
+==================================================
+共用 Header、計算紙
+==================================================
+*/
+
+function mountScratchpadButton() {
+  const mount =
+    $("scratchpad-mobile-button");
+
+  const button =
+    $("scratchpadOpenButton");
+
+  if (!mount || !button) {
+    return false;
+  }
+
+  if (
+    button.parentElement !== mount
+  ) {
+    mount.appendChild(button);
+  }
+
+  return true;
+}
+
+function ensureScratchpadButtonMounted() {
+  if (mountScratchpadButton()) {
+    return;
+  }
+
+  let attempts = 0;
+
+  const retry =
+    window.setInterval(() => {
+      attempts++;
+
+      if (
+        mountScratchpadButton() ||
+        attempts >= 50
+      ) {
+        window.clearInterval(retry);
+      }
+    }, 50);
+}
+
+window.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    if (window.MathGameCommonHeader) {
+      window.MathGameCommonHeader.init({
+        mountId: "commonHeaderMount",
+        basePath: "../"
+      });
+    }
+
+    ensureScratchpadButtonMounted();
+    initExpressionInput();
+  }
+);
+
+/*
+==================================================
+音效
+==================================================
+*/
+
+function playGameSound(method) {
+  try {
+    const sound =
+      window.GameSound ||
+      window.MathGameSound;
+
+    const fn =
+      sound?.[method];
+
+    if (
+      typeof fn !== "function"
+    ) {
+      return false;
+    }
+
+    const result =
+      fn.call(sound);
+
+    if (
+      result &&
+      typeof result.catch === "function"
+    ) {
+      result.catch(() => {});
+    }
+
+    return true;
+  } catch (error) {
+    console.warn(
+      "音效播放失敗：",
+      error
+    );
+
+    return false;
+  }
+}
+
+function playUrgentCountdown() {
+  const sound =
+    window.GameSound ||
+    window.MathGameSound;
+
+  const possibleMethods = [
+    "playCountdown",
+    "playTick",
+    "playTimer",
+    "playUrgent"
+  ];
+
+  for (
+    const method of possibleMethods
+  ) {
+    if (
+      typeof sound?.[method] ===
+      "function"
+    ) {
+      try {
+        sound[method]();
+        return;
+      } catch (_) {}
+    }
+  }
+
+  try {
+    const AudioCtx =
+      window.AudioContext ||
+      window.webkitAudioContext;
+
+    if (!AudioCtx) return;
+
+    const ctx =
+      new AudioCtx();
+
+    const oscillator =
+      ctx.createOscillator();
+
+    const gain =
+      ctx.createGain();
+
+    oscillator.frequency.value =
+      880;
+
+    oscillator.type =
+      "sine";
+
+    gain.gain.setValueAtTime(
+      .06,
+      ctx.currentTime
+    );
+
+    gain.gain
+      .exponentialRampToValueAtTime(
+        .001,
+        ctx.currentTime + .08
+      );
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    oscillator.start();
+    oscillator.stop(
+      ctx.currentTime + .08
+    );
+
+    oscillator.addEventListener(
+      "ended",
+      () => {
+        ctx.close().catch(() => {});
+      }
+    );
+  } catch (_) {}
+}
+
+/*
+==================================================
+數學工具
+==================================================
+*/
+
+function gcd2(a, b) {
+  let x =
+    Math.abs(a);
+
+  let y =
+    Math.abs(b);
+
+  while (y !== 0) {
+    const r =
+      x % y;
+
+    x = y;
+    y = r;
+  }
+
+  return x;
+}
+
+function gcdArray(values) {
+  return values.reduce(
+    (g, value) =>
+      gcd2(g, value)
+  );
+}
+
+function lcm2(a, b) {
+  return (
+    Math.abs(a * b) /
+    gcd2(a, b)
+  );
+}
+
+function lcmArray(values) {
+  return values.reduce(
+    (l, value) =>
+      lcm2(l, value)
+  );
+}
+
+function factorsOf(n) {
+  const result = [];
+
+  for (
+    let d = 1;
+    d * d <= n;
+    d++
+  ) {
+    if (n % d === 0) {
+      result.push(d);
+
+      if (
+        d * d !== n
+      ) {
+        result.push(
+          n / d
+        );
+      }
+    }
+  }
+
+  return result
+    .sort(
+      (a,b) => a - b
+    );
+}
+
+function primeFactorMap(n) {
+  let value = n;
+  const map = {};
+
+  for (
+    let p = 2;
+    p * p <= value;
+    p++
+  ) {
+    while (
+      value % p === 0
+    ) {
+      map[p] =
+        (map[p] || 0) + 1;
+
+      value /= p;
+    }
+  }
+
+  if (value > 1) {
+    map[value] =
+      (map[value] || 0) + 1;
+  }
+
+  return map;
+}
+
+function factorMapValue(map) {
+  return Object.entries(map)
+    .reduce(
+      (
+        product,
+        [prime, exponent]
+      ) =>
+        product *
+        Math.pow(
+          Number(prime),
+          Number(exponent)
+        ),
+      1
+    );
+}
+
+function factorMapToText(map) {
+  const entries =
+    Object.keys(map)
+      .map(Number)
+      .filter(
+        prime =>
+          Number(map[prime]) > 0
+      )
+      .sort(
+        (a,b) => a - b
+      );
+
+  if (
+    entries.length === 0
+  ) {
+    return "1";
+  }
+
+  return entries
+    .map(prime => {
+      const exponent =
+        Number(map[prime]);
+
+      return exponent === 1
+        ? `${prime}`
+        : `${prime}^${exponent}`;
+    })
+    .join("*");
+}
+
+function factorMapToHTML(map) {
+  return factorMapToText(map)
+    .replaceAll("*", "×")
+    .replace(
+      /\^(\d+)/g,
+      "<sup>$1</sup>"
+    );
+}
+
+function factorMapToPlain(map) {
+  return factorMapToText(map)
+    .replaceAll("*", "×");
+}
+
+function mapsEqual(a, b) {
+  const keys =
+    new Set([
+      ...Object.keys(a || {}),
+      ...Object.keys(b || {})
+    ]);
+
+  for (
+    const key of keys
+  ) {
+    if (
+      Number(a?.[key] || 0) !==
+      Number(b?.[key] || 0)
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function gcdFactorMap(maps) {
+  const commonKeys =
+    Object.keys(maps[0] || {})
+      .map(Number)
+      .filter(prime =>
+        maps.every(
+          map =>
+            Number(map[prime] || 0) > 0
+        )
+      );
+
+  const result = {};
+
+  commonKeys.forEach(prime => {
+    result[prime] =
+      Math.min(
+        ...maps.map(
+          map =>
+            Number(map[prime] || 0)
+        )
+      );
+  });
+
+  return result;
+}
+
+function lcmFactorMap(maps) {
+  const keys =
+    new Set(
+      maps.flatMap(
+        map =>
+          Object.keys(map)
+      )
+    );
+
+  const result = {};
+
+  [...keys]
+    .map(Number)
+    .sort((a,b) => a - b)
+    .forEach(prime => {
+      result[prime] =
+        Math.max(
+          ...maps.map(
+            map =>
+              Number(map[prime] || 0)
+          )
+        );
+    });
+
+  return result;
+}
+
+function factorizationLines(values) {
+  return values
+    .map(value => {
+      const map =
+        primeFactorMap(value);
+
+      return `
+        <div class="factor-line">
+          ${value}＝${factorMapToHTML(map)}
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function gcdShortDivisionData(values) {
+  let current =
+    [...values];
+
+  const rows = [];
+  const divisors = [];
+
+  while (true) {
+    const prime =
+      PRIME_LIST.find(
+        p =>
+          current.every(
+            value =>
+              value % p === 0
+          )
+      );
+
+    if (!prime) break;
+
+    const before =
+      [...current];
+
+    current =
+      current.map(
+        value =>
+          value / prime
+      );
+
+    rows.push({
+      divisor: prime,
+      before,
+      after: [...current]
+    });
+
+    divisors.push(prime);
+  }
+
+  return {
+    rows,
+    divisors,
+    finalValues: current,
+    answer:
+      divisors.reduce(
+        (p, value) =>
+          p * value,
+        1
+      )
+  };
+}
+
+function lcmShortDivisionData(values) {
+  let current =
+    [...values];
+
+  const rows = [];
+  const divisors = [];
+
+  while (true) {
+    const prime =
+      PRIME_LIST.find(
+        p =>
+          current.filter(
+            value =>
+              value % p === 0
+          ).length >= 2
+      );
+
+    if (!prime) break;
+
+    const before =
+      [...current];
+
+    current =
+      current.map(
+        value =>
+          value % prime === 0
+            ? value / prime
+            : value
+      );
+
+    rows.push({
+      divisor: prime,
+      before,
+      after: [...current]
+    });
+
+    divisors.push(prime);
+  }
+
+  const answer =
+    divisors.reduce(
+      (p, value) =>
+        p * value,
+      1
+    ) *
+    current.reduce(
+      (p, value) =>
+        p * value,
+      1
+    );
+
+  return {
+    rows,
+    divisors,
+    finalValues: current,
+    answer
+  };
+}
+
+function shortDivisionTable(
+  values,
+  type
+) {
+  const data =
+    type === "gcd"
+      ? gcdShortDivisionData(values)
+      : lcmShortDivisionData(values);
+
+  const rows =
+    data.rows
+      .map(row => `
+        <tr>
+          <td>${row.divisor}</td>
+          <td>${row.before.join("、")}</td>
+          <td>${row.after.join("、")}</td>
+        </tr>
+      `)
+      .join("");
+
+  const emptyRow =
+    rows ||
+    `
+      <tr>
+        <td>—</td>
+        <td>${values.join("、")}</td>
+        <td>沒有可共同提出的質因數</td>
+      </tr>
+    `;
+
+  return `
+    <table class="short-division">
+      <thead>
+        <tr>
+          <th>提出的質因數</th>
+          <th>除以前</th>
+          <th>除以後</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${emptyRow}
+      </tbody>
+    </table>
+  `;
+}
+
+function joinNumberList(values) {
+  return values.join("、");
+}
+
+function expressionLabelForValues(values) {
+  if (
+    values.length === 2
+  ) {
+    return `${values[0]}、${values[1]}`;
+  }
+
+  return values.join("、");
+}
+
+function gcdExplanation(values) {
+  const answer =
+    gcdArray(values);
+
+  const maps =
+    values.map(
+      primeFactorMap
+    );
+
+  const answerMap =
+    gcdFactorMap(maps);
+
+  const short =
+    gcdShortDivisionData(values);
+
+  const divisorText =
+    short.divisors.length
+      ? short.divisors.join("×")
+      : "1";
+
+  return `
+    <strong>第 1 步｜先判斷要找的是「共同的因數中最大者」</strong>
+    <div class="rule-box">
+      最大公因數：幾個整數共同的因數中，最大的一個。
+    </div>
+
+    <strong>第 2 步｜用短除法找共同質因數</strong>
+    ${shortDivisionTable(values, "gcd")}
+
+    <div class="calculation-box">
+      把每一步「全部數都能一起除」的質因數乘起來：
+      ${divisorText}＝<strong>${answer}</strong>
+    </div>
+
+    <strong>第 3 步｜用標準分解式再檢查一次</strong>
+    ${factorizationLines(values)}
+
+    <div class="rule-box">
+      最大公因數只看「共同質因數」，
+      每個共同質因數取<strong>較小的指數</strong>。
+      本題得到 ${factorMapToHTML(answerMap)}＝${answer}。
+    </div>
+
+    <strong>結論：</strong>
+    （${values.join(" , ")}）＝${answer}。
+  `;
+}
+
+function lcmExplanation(values) {
+  const answer =
+    lcmArray(values);
+
+  const maps =
+    values.map(
+      primeFactorMap
+    );
+
+  const answerMap =
+    lcmFactorMap(maps);
+
+  const short =
+    lcmShortDivisionData(values);
+
+  const divisorPart =
+    short.divisors.length
+      ? short.divisors.join("×")
+      : "1";
+
+  const finalPart =
+    short.finalValues.join("×");
+
+  return `
+    <strong>第 1 步｜先判斷要找的是「共同倍數中最小者」</strong>
+    <div class="rule-box">
+      最小公倍數：幾個整數共同的倍數中，最小的一個。
+    </div>
+
+    <strong>第 2 步｜用短除法</strong>
+    ${shortDivisionTable(values, "lcm")}
+
+    <div class="calculation-box">
+      兩數時：一直除到兩數互質。<br>
+      三數時：可先提出三數共同質因數，再提出任意兩數的共同質因數，
+      直到最下面的數兩兩互質。<br><br>
+      所以最小公倍數＝
+      ${divisorPart}×${finalPart}
+      ＝<strong>${answer}</strong>。
+    </div>
+
+    <strong>第 3 步｜用標準分解式再檢查一次</strong>
+    ${factorizationLines(values)}
+
+    <div class="rule-box">
+      最小公倍數要看「全部質因數」，
+      每個質因數取<strong>較大的指數</strong>。
+      本題得到 ${factorMapToHTML(answerMap)}＝${answer}。
+    </div>
+
+    <strong>結論：</strong>
+    〔${values.join(" , ")}〕＝${answer}。
+  `;
+}
+
+/*
+==================================================
+ExpressionInput
+==================================================
+*/
+
+function initExpressionInput() {
+  if (
+    answerInput ||
+    typeof window.ExpressionInput !==
+      "function"
+  ) {
+    return;
+  }
+
+  answerInput =
+    new window.ExpressionInput({
+      mountId: "answerMount",
+      allowNumber: false,
+      allowExpression: true,
+      defaultMode: "expression",
+      baseOptions:
+        PRIME_INPUT_OPTIONS,
+      exponentOptions:
+        [1,2,3,4,5,6],
+      allowCustomBase: true,
+      maxTerms: 8,
+      requireAscendingBases: true,
+      disallowDuplicateBases: true,
+      omitExponentOne: true,
+      theme: {
+        primary: "#1565c0",
+        light: "#eff6ff",
+        border: "#90caf9"
+      },
+      labels: {
+        expressionLabel:
+          "請輸入標準分解式",
+        baseLabel:
+          "選擇質因數",
+        exponentLabel:
+          "選擇指數",
+        editLabel:
+          "編輯答案"
+      }
+    });
+}
+
+function readExpressionAnswer() {
+  initExpressionInput();
+
+  if (!answerInput) {
+    return {
+      valid: false,
+      message:
+        "標準分解式輸入器尚未完成載入，請重新整理頁面。"
+    };
+  }
+
+  const validation =
+    answerInput.validate();
+
+  if (!validation.valid) {
+    return {
+      valid: false,
+      message:
+        "請完成標準分解式後再送出。"
+    };
+  }
+
+  const terms =
+    validation.value.terms;
+
+  const utils =
+    window.ExpressionInputUtils;
+
+  if (
+    utils?.isStandardPrimeFactorization &&
+    !utils.isStandardPrimeFactorization(
+      terms
+    )
+  ) {
+    return {
+      valid: false,
+      message:
+        "質因數要由小到大排列，相同質因數要合併成次方。"
+    };
+  }
+
+  let map = {};
+
+  if (
+    utils?.termsToFactorMap
+  ) {
+    map =
+      utils.termsToFactorMap(
+        terms
+      );
+  } else {
+    terms.forEach(term => {
+      const base =
+        Number(
+          term.base ??
+          term.value ??
+          0
+        );
+
+      const exponent =
+        Number(
+          term.exponent ??
+          1
+        );
+
+      if (base > 1) {
+        map[base] =
+          exponent;
+      }
+    });
+  }
+
+  return {
+    valid: true,
+    map,
+    html:
+      validation.value.html ||
+      factorMapToHTML(map)
+  };
+}
+
+/*
+==================================================
+題目共用格式
+==================================================
+*/
+
+function choiceQuestion({
+  key,
+  label,
+  html,
+  choices,
+  answer,
+  explanation,
+  note = "",
+  topic = ""
+}) {
+  return {
+    key,
+    kind: "choice",
+    label,
+    html,
+    choices,
+    answer: String(answer),
+    explanation,
+    note,
+    topic
+  };
+}
+
+function numberQuestion({
+  key,
+  label,
+  html,
+  answer,
+  explanation,
+  note = "",
+  topic = ""
+}) {
+  return {
+    key,
+    kind: "number",
+    label,
+    html,
+    answer: Number(answer),
+    explanation,
+    note,
+    topic
+  };
+}
+
+function expressionQuestion({
+  key,
+  label,
+  html,
+  answerMap,
+  explanation,
+  note = "",
+  topic = ""
+}) {
+  return {
+    key,
+    kind: "primeExpression",
+    label,
+    html,
+    answerMap,
+    explanation,
+    note,
+    topic
+  };
+}
+
+function yesNoChoices() {
+  return [
+    {
+      value: "yes",
+      text: "是"
+    },
+    {
+      value: "no",
+      text: "不是"
+    }
+  ];
+}
+
+function makeChoiceValues(
+  correctText,
+  wrongTexts
+) {
+  return shuffle([
+    {
+      value: "correct",
+      text: correctText
+    },
+    ...wrongTexts.map(
+      (text, i) => ({
+        value:
+          `wrong${i+1}`,
+        text
+      })
+    )
+  ]);
+}
+
+/*
+==================================================
+模式一：公因數、公倍數與互質
+==================================================
+*/
+
+function makeCommonFactorQuestion() {
+  const [a,b] =
+    pick(
+      PAIR_POOL.filter(
+        pair =>
+          gcdArray(pair) > 1
+      )
+    );
+
+  const common =
+    factorsOf(
+      gcd2(a,b)
+    );
+
+  const answer =
+    pick(
+      common.filter(
+        value => value > 1
+      )
+    );
+
+  const wrongs =
+    unique([
+      a,
+      b,
+      Math.max(2, answer + 1),
+      Math.max(2, answer + 2),
+      ...factorsOf(a)
+        .filter(
+          value =>
+            b % value !== 0
+        ),
+      ...factorsOf(b)
+        .filter(
+          value =>
+            a % value !== 0
+        )
+    ])
+      .filter(
+        value =>
+          value !== answer &&
+          value > 1
+      )
+      .slice(0,3);
+
+  while (
+    wrongs.length < 3
+  ) {
+    const candidate =
+      rand(2,30);
+
+    if (
+      candidate !== answer &&
+      !(a % candidate === 0 &&
+        b % candidate === 0) &&
+      !wrongs.includes(candidate)
+    ) {
+      wrongs.push(candidate);
+    }
+  }
+
+  return choiceQuestion({
+    key:
+      `common-factor-${a}-${b}-${answer}`,
+    label:
+      `下列哪一個數是 ${a} 和 ${b} 的公因數？`,
+    html:
+      `<div class="math-expression">${a}、${b}</div>`,
+    choices:
+      shuffle([
+        {
+          value: "correct",
+          text: String(answer)
+        },
+        ...wrongs.map(
+          (value, i) => ({
+            value:
+              `wrong${i+1}`,
+            text:
+              String(value)
+          })
+        )
+      ]),
+    answer:
+      "correct",
+    topic:
+      "公因數",
+    explanation: `
+      <strong>第 1 步｜分別列出因數</strong>
+      <div class="calculation-box">
+        ${a} 的因數：${factorsOf(a).join("、")}<br>
+        ${b} 的因數：${factorsOf(b).join("、")}
+      </div>
+
+      <strong>第 2 步｜找兩邊都出現的數</strong>
+      <div class="rule-box">
+        兩個整數共同的因數，稱為這兩個整數的<strong>公因數</strong>。
+      </div>
+
+      所以 <strong>${answer}</strong> 同時是 ${a} 與 ${b} 的因數，
+      是本題的公因數。
+    `
+  });
+}
+
+function makeGcdConceptQuestion() {
+  const [a,b] =
+    pick(
+      PAIR_POOL.filter(
+        pair =>
+          gcdArray(pair) > 1
+      )
+    );
+
+  const g =
+    gcd2(a,b);
+
+  const common =
+    factorsOf(g);
+
+  const wrongs =
+    unique([
+      common.at(-2) || 1,
+      g * 2,
+      Math.min(a,b),
+      g + 1
+    ])
+      .filter(
+        value =>
+          value !== g &&
+          value > 0
+      )
+      .slice(0,3);
+
+  while (
+    wrongs.length < 3
+  ) {
+    const candidate =
+      rand(1,Math.max(a,b));
+
+    if (
+      candidate !== g &&
+      !wrongs.includes(candidate)
+    ) {
+      wrongs.push(candidate);
+    }
+  }
+
+  return choiceQuestion({
+    key:
+      `gcd-concept-${a}-${b}`,
+    label:
+      `${a} 和 ${b} 的最大公因數是多少？`,
+    html:
+      `<div class="math-expression">從公因數中找最大的數</div>`,
+    choices:
+      shuffle([
+        {
+          value: "correct",
+          text: String(g)
+        },
+        ...wrongs.map(
+          (value, i) => ({
+            value:
+              `wrong${i+1}`,
+            text:
+              String(value)
+          })
+        )
+      ]),
+    answer:
+      "correct",
+    topic:
+      "最大公因數概念",
+    explanation: `
+      <strong>第 1 步｜先找公因數</strong>
+      <div class="calculation-box">
+        ${a} 和 ${b} 的公因數：
+        ${common.join("、")}
+      </div>
+
+      <strong>第 2 步｜找其中最大的</strong>
+      <div class="rule-box">
+        公因數中最大的一個，稱為<strong>最大公因數</strong>。
+      </div>
+
+      因此（${a} , ${b}）＝<strong>${g}</strong>。
+    `
+  });
+}
+
+function makeCoprimeQuestion() {
+  const candidates = [
+    [25,36],
+    [28,35],
+    [15,28],
+    [4,9],
+    [8,9],
+    [13,17],
+    [14,25],
+    [21,22],
+    [18,35],
+    [12,25],
+    [16,27],
+    [24,35]
+  ];
+
+  const [a,b] =
+    pick(candidates);
+
+  const g =
+    gcd2(a,b);
+
+  const isCoprime =
+    g === 1;
+
+  return choiceQuestion({
+    key:
+      `coprime-${a}-${b}`,
+    label:
+      `${a} 和 ${b} 互質嗎？`,
+    html:
+      `<div class="math-expression">（${a} , ${b}）＝？</div>`,
+    choices:
+      yesNoChoices(),
+    answer:
+      isCoprime
+        ? "yes"
+        : "no",
+    topic:
+      "互質",
+    explanation: `
+      <strong>互質的定義：</strong>
+      <div class="rule-box">
+        如果兩數的最大公因數為 1，就稱這兩個數互質。
+        互質的兩個數<strong>不一定都是質數</strong>。
+      </div>
+
+      本題（${a} , ${b}）＝${g}，
+      所以 ${a} 和 ${b}
+      <strong>${isCoprime ? "互質" : "不互質"}</strong>。
+    `
+  });
+}
+
+function makeCommonMultipleQuestion() {
+  const [a,b] =
+    pick([
+      [4,6],
+      [6,8],
+      [9,15],
+      [8,12],
+      [10,14],
+      [12,18],
+      [5,6]
+    ]);
+
+  const l =
+    lcm2(a,b);
+
+  const correctValue =
+    l * rand(1,3);
+
+  const wrongs = [];
+
+  while (
+    wrongs.length < 3
+  ) {
+    const candidate =
+      rand(
+        Math.min(a,b),
+        Math.max(
+          correctValue + l,
+          50
+        )
+      );
+
+    if (
+      candidate % a !== 0 ||
+      candidate % b !== 0
+    ) {
+      if (
+        !wrongs.includes(candidate)
+      ) {
+        wrongs.push(candidate);
+      }
+    }
+  }
+
+  return choiceQuestion({
+    key:
+      `common-multiple-${a}-${b}-${correctValue}`,
+    label:
+      `下列哪一個數是 ${a} 和 ${b} 的公倍數？`,
+    html:
+      `<div class="math-expression">${a}、${b}</div>`,
+    choices:
+      shuffle([
+        {
+          value: "correct",
+          text:
+            String(correctValue)
+        },
+        ...wrongs.map(
+          (value, i) => ({
+            value:
+              `wrong${i+1}`,
+            text:
+              String(value)
+          })
+        )
+      ]),
+    answer:
+      "correct",
+    topic:
+      "公倍數",
+    explanation: `
+      <strong>公倍數要同時是兩個數的倍數。</strong>
+      <div class="calculation-box">
+        ${correctValue}÷${a}＝${correctValue / a}<br>
+        ${correctValue}÷${b}＝${correctValue / b}
+      </div>
+
+      兩個除法都能整除，所以
+      <strong>${correctValue}</strong>
+      是 ${a} 和 ${b} 的公倍數。
+    `
+  });
+}
+
+function makeLcmConceptQuestion() {
+  const [a,b] =
+    pick([
+      [9,15],
+      [12,18],
+      [8,12],
+      [14,15],
+      [6,25],
+      [10,12],
+      [4,6]
+    ]);
+
+  const l =
+    lcm2(a,b);
+
+  const wrongs =
+    unique([
+      Math.max(a,b),
+      gcd2(a,b),
+      l + Math.min(a,b),
+      l * 2
+    ])
+      .filter(
+        value =>
+          value !== l
+      )
+      .slice(0,3);
+
+  while (
+    wrongs.length < 3
+  ) {
+    const candidate =
+      rand(
+        1,
+        l * 2
+      );
+
+    if (
+      candidate !== l &&
+      !wrongs.includes(candidate)
+    ) {
+      wrongs.push(candidate);
+    }
+  }
+
+  return choiceQuestion({
+    key:
+      `lcm-concept-${a}-${b}`,
+    label:
+      `${a} 和 ${b} 的最小公倍數是多少？`,
+    html:
+      `<div class="math-expression">從共同倍數中找最小的數</div>`,
+    choices:
+      shuffle([
+        {
+          value: "correct",
+          text:
+            String(l)
+        },
+        ...wrongs.map(
+          (value, i) => ({
+            value:
+              `wrong${i+1}`,
+            text:
+              String(value)
+          })
+        )
+      ]),
+    answer:
+      "correct",
+    topic:
+      "最小公倍數概念",
+    explanation: `
+      <strong>第 1 步｜找公倍數</strong>
+      <div class="calculation-box">
+        ${a} 的倍數：${a}、${a*2}、${a*3}、${a*4}、……<br>
+        ${b} 的倍數：${b}、${b*2}、${b*3}、${b*4}、……
+      </div>
+
+      <strong>第 2 步｜找最小的共同倍數</strong>
+      <div class="rule-box">
+        公倍數中最小的一個，稱為<strong>最小公倍數</strong>。
+      </div>
+
+      因此〔${a} , ${b}〕＝<strong>${l}</strong>。
+    `
+  });
+}
+
+function makeDefinitionQuestion(type) {
+  if (
+    type === "factor"
+  ) {
+    return choiceQuestion({
+      key:
+        `definition-factor-${Date.now()}-${Math.random()}`,
+      label:
+        "哪一個敘述最符合「最大公因數」？",
+      html:
+        `<div class="math-expression">選出正確定義</div>`,
+      choices:
+        makeChoiceValues(
+          "幾個整數的公因數中最大的一個",
+          [
+            "幾個整數的公倍數中最小的一個",
+            "一個整數最大的因數一定是最大公因數",
+            "兩數相乘的結果"
+          ]
+        ),
+      answer:
+        "correct",
+      topic:
+        "定義",
+      explanation: `
+        <div class="rule-box">
+          <strong>最大公因數</strong>＝幾個整數共同的因數中，最大的一個。
+        </div>
+        「共同」與「最大」兩個條件都要同時符合。
+      `
+    });
+  }
+
+  return choiceQuestion({
+    key:
+      `definition-multiple-${Date.now()}-${Math.random()}`,
+    label:
+      "哪一個敘述最符合「最小公倍數」？",
+    html:
+      `<div class="math-expression">選出正確定義</div>`,
+    choices:
+      makeChoiceValues(
+        "幾個整數的公倍數中最小的一個",
+        [
+          "幾個整數的公因數中最大的一個",
+          "每個整數本身一定是共同倍數",
+          "兩數的和"
+        ]
+      ),
+    answer:
+      "correct",
+    topic:
+      "定義",
+    explanation: `
+      <div class="rule-box">
+        <strong>最小公倍數</strong>＝幾個整數共同的倍數中，最小的一個。
+      </div>
+      「共同」與「最小」兩個條件都要同時符合。
+    `
+  });
+}
+
+function makeProductRelationQuestion() {
+  const [a,b] =
+    pick([
+      [8,12],
+      [18,30],
+      [14,15],
+      [12,20],
+      [24,36]
+    ]);
+
+  const g =
+    gcd2(a,b);
+
+  const l =
+    lcm2(a,b);
+
+  return numberQuestion({
+    key:
+      `product-relation-${a}-${b}`,
+    label:
+      `已知（${a} , ${b}）＝${g}，求〔${a} , ${b}〕`,
+    html:
+      `<div class="math-expression">利用：最大公因數 × 最小公倍數 ＝ 兩數乘積</div>`,
+    answer:
+      l,
+    topic:
+      "最大公因數與最小公倍數的關係",
+    explanation: `
+      <strong>兩個正整數有一個重要關係：</strong>
+      <div class="rule-box">
+        最大公因數 × 最小公倍數 ＝ 兩數的乘積
+      </div>
+
+      所以
+      <div class="calculation-box">
+        ${g} × 〔${a} , ${b}〕＝${a}×${b}<br>
+        〔${a} , ${b}〕＝${a*b}÷${g}＝<strong>${l}</strong>
+      </div>
+
+      因此答案是 <strong>${l}</strong>。
+    `
+  });
+}
+
+function createConceptSet() {
+  return shuffle([
+    makeCommonFactorQuestion(),
+    makeCommonFactorQuestion(),
+    makeGcdConceptQuestion(),
+    makeCoprimeQuestion(),
+    makeCoprimeQuestion(),
+    makeCommonMultipleQuestion(),
+    makeCommonMultipleQuestion(),
+    makeLcmConceptQuestion(),
+    makeDefinitionQuestion(
+      Math.random() < .5
+        ? "factor"
+        : "multiple"
+    ),
+    makeProductRelationQuestion()
+  ]);
+}
+
+/*
+==================================================
+模式二：最大公因數
+==================================================
+*/
+
+function makeGcdNumberQuestion(
+  values
+) {
+  const answer =
+    gcdArray(values);
+
+  return numberQuestion({
+    key:
+      `gcd-${values.join("-")}-${Date.now()}-${Math.random()}`,
+    label:
+      `求 ${values.length === 2 ? "兩數" : "三數"}的最大公因數`,
+    html:
+      `<div class="math-expression">（${values.join(" , ")}）＝？</div>`,
+    answer,
+    topic:
+      "最大公因數",
+    explanation:
+      gcdExplanation(values)
+  });
+}
+
+function createGcdSet() {
+  const pairCandidates =
+    shuffle(
+      PAIR_POOL
+        .filter(
+          ([a,b]) =>
+            a <= 600 &&
+            b <= 600
+        )
+    )
+      .slice(0,7);
+
+  const tripleCandidates =
+    shuffle(
+      TRIPLE_POOL
+    )
+      .slice(0,3);
+
+  return shuffle([
+    ...pairCandidates.map(
+      values =>
+        makeGcdNumberQuestion(
+          values
+        )
+    ),
+    ...tripleCandidates.map(
+      values =>
+        makeGcdNumberQuestion(
+          values
+        )
+    )
+  ]);
+}
+
+/*
+==================================================
+模式三：最小公倍數
+==================================================
+*/
+
+function makeLcmNumberQuestion(
+  values
+) {
+  const answer =
+    lcmArray(values);
+
+  return numberQuestion({
+    key:
+      `lcm-${values.join("-")}-${Date.now()}-${Math.random()}`,
+    label:
+      `求 ${values.length === 2 ? "兩數" : "三數"}的最小公倍數`,
+    html:
+      `<div class="math-expression">〔${values.join(" , ")}〕＝？</div>`,
+    answer,
+    topic:
+      "最小公倍數",
+    explanation:
+      lcmExplanation(values)
+  });
+}
+
+function createLcmSet() {
+  const pairCandidates =
+    shuffle(
+      PAIR_POOL.filter(
+        values =>
+          lcmArray(values) <=
+          6000
+      )
+    )
+      .slice(0,7);
+
+  const tripleCandidates =
+    shuffle(
+      TRIPLE_POOL.filter(
+        values =>
+          lcmArray(values) <=
+          10000
+      )
+    )
+      .slice(0,3);
+
+  return shuffle([
+    ...pairCandidates.map(
+      values =>
+        makeLcmNumberQuestion(
+          values
+        )
+    ),
+    ...tripleCandidates.map(
+      values =>
+        makeLcmNumberQuestion(
+          values
+        )
+    )
+  ]);
+}
+
+/*
+==================================================
+模式四：標準分解式求公因公倍
+==================================================
+*/
+
+function mapsDisplayHTML(maps) {
+  const labels =
+    ["A","B","C"];
+
+  return `
+    <div class="math-expression">
+      ${maps.map(
+        (map, i) =>
+          `${labels[i]}＝${factorMapToHTML(map)}`
+      ).join("<br>")}
+    </div>
+  `;
+}
+
+function standardExplanation(
+  maps,
+  type
+) {
+  const labels =
+    ["A","B","C"];
+
+  const answerMap =
+    type === "gcd"
+      ? gcdFactorMap(maps)
+      : lcmFactorMap(maps);
+
+  const allPrimes =
+    unique(
+      maps.flatMap(
+        map =>
+          Object.keys(map)
+            .map(Number)
+      )
+    )
+      .sort(
+        (a,b) => a - b
+      );
+
+  const rows =
+    allPrimes
+      .map(prime => {
+        const exponents =
+          maps.map(
+            map =>
+              Number(
+                map[prime] || 0
+              )
+          );
+
+        const chosen =
+          type === "gcd"
+            ? Math.min(
+                ...exponents
+              )
+            : Math.max(
+                ...exponents
+              );
+
+        return `
+          <tr>
+            <td>${prime}</td>
+            ${exponents.map(
+              exponent =>
+                `<td>${exponent}</td>`
+            ).join("")}
+            <td>${chosen}</td>
+          </tr>
+        `;
+      })
+      .join("");
+
+  return `
+    <strong>第 1 步｜先判斷規則</strong>
+    <div class="rule-box">
+      ${
+        type === "gcd"
+          ? "最大公因數：只取每一個數都共同擁有的質因數，指數取最小。"
+          : "最小公倍數：把所有出現過的質因數都列入，指數取最大。"
+      }
+    </div>
+
+    <strong>第 2 步｜逐一比較質因數的指數</strong>
+    <table class="short-division">
+      <thead>
+        <tr>
+          <th>質因數</th>
+          ${maps.map(
+            (_,i) =>
+              `<th>${labels[i]} 的指數</th>`
+          ).join("")}
+          <th>${type === "gcd" ? "取最小" : "取最大"}</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows}
+      </tbody>
+    </table>
+
+    <strong>第 3 步｜組成答案</strong>
+    <div class="calculation-box">
+      ${
+        type === "gcd"
+          ? `（${labels.slice(0,maps.length).join(" , ")}）`
+          : `〔${labels.slice(0,maps.length).join(" , ")}〕`
+      }
+      ＝<strong>${factorMapToHTML(answerMap)}</strong>
+      ＝${factorMapValue(answerMap)}
+    </div>
+
+    ${
+      type === "gcd"
+        ? "記住口訣：<strong>共同質因數，指數取小。</strong>"
+        : "記住口訣：<strong>全部質因數，指數取大。</strong>"
+    }
+  `;
+}
+
+function makeStandardQuestion(
+  maps,
+  type
+) {
+  const answerMap =
+    type === "gcd"
+      ? gcdFactorMap(maps)
+      : lcmFactorMap(maps);
+
+  return expressionQuestion({
+    key:
+      `standard-${type}-${Date.now()}-${Math.random()}`,
+    label:
+      type === "gcd"
+        ? "利用標準分解式求最大公因數"
+        : "利用標準分解式求最小公倍數",
+    html:
+      mapsDisplayHTML(maps),
+    answerMap,
+    topic:
+      type === "gcd"
+        ? "標準分解式求最大公因數"
+        : "標準分解式求最小公倍數",
+    explanation:
+      standardExplanation(
+        maps,
+        type
+      )
+  });
+}
+
+function createStandardFormSet() {
+  const selected =
+    shuffle(
+      STANDARD_TEMPLATES
+    )
+      .slice(0,10);
+
+  const result = [];
+
+  selected.forEach(
+    (maps, i) => {
+      result.push(
+        makeStandardQuestion(
+          maps,
+          i < 5
+            ? "gcd"
+            : "lcm"
+        )
+      );
+    }
+  );
+
+  return shuffle(result);
+}
+
+/*
+==================================================
+模式五：生活應用
+==================================================
+*/
+
+function makeFruitGroupingApplication() {
+  const pairs = [
+    [132,156],
+    [120,168],
+    [84,126],
+    [96,144],
+    [108,180]
+  ];
+
+  const [a,b] =
+    pick(pairs);
+
+  const answer =
+    gcd2(a,b);
+
+  return numberQuestion({
+    key:
+      `app-fruit-${a}-${b}`,
+    label:
+      "分堆問題",
+    html: `
+      <div class="math-expression">
+        有 ${a} 個蘋果和 ${b} 個梨子，要分成若干堆。<br>
+        每堆蘋果數相同、梨子數也相同，而且全部分完。<br>
+        最多可以分成幾堆？
+      </div>
+    `,
+    answer,
+    topic:
+      "最大公因數應用｜分組",
+    explanation: `
+      <strong>第 1 步｜判斷使用哪一種</strong>
+      <div class="decision-box">
+        題目要「<strong>最多分成幾堆</strong>」，而且 ${a}、${b}
+        都要能平均分成同樣的堆數。<br>
+        所以要找兩數共同因數中最大的：
+        <strong>最大公因數</strong>。
+      </div>
+
+      <strong>第 2 步｜求最大公因數</strong>
+      ${gcdExplanation([a,b])}
+
+      <strong>第 3 步｜理解答案</strong>
+      因此最多可分成 <strong>${answer} 堆</strong>。<br>
+      每堆蘋果 ${a}÷${answer}＝${a/answer} 個，
+      每堆梨子 ${b}÷${answer}＝${b/answer} 個。
+    `
+  });
+}
+
+function makeSquareCutApplication() {
+  const pairs = [
+    [102,72],
+    [144,84],
+    [180,120],
+    [210,150],
+    [168,126]
+  ];
+
+  const [length,width] =
+    pick(pairs);
+
+  const answer =
+    gcd2(
+      length,
+      width
+    );
+
+  return numberQuestion({
+    key:
+      `app-square-${length}-${width}`,
+    label:
+      "裁成最大正方形",
+    html: `
+      <div class="math-expression">
+        一張長方形紙長 ${length} 公分、寬 ${width} 公分，<br>
+        要裁成大小相同的正方形且完全沒有剩餘。<br>
+        正方形邊長最大是多少公分？
+      </div>
+    `,
+    answer,
+    topic:
+      "最大公因數應用｜裁切",
+    explanation: `
+      <strong>第 1 步｜判斷</strong>
+      <div class="decision-box">
+        正方形邊長要能同時整除長與寬，又要求「最大」，
+        所以要用<strong>最大公因數</strong>。
+      </div>
+
+      ${gcdExplanation(
+        [length,width]
+      )}
+
+      <strong>第 3 步｜結論</strong>
+      最大邊長是 <strong>${answer} 公分</strong>。<br>
+      可裁成
+      ${length/answer}×${width/answer}
+      ＝${(length/answer)*(width/answer)}
+      張正方形。
+    `
+  });
+}
+
+function makeEqualSpacingApplication() {
+  const triples = [
+    [140,154,168],
+    [216,264,360],
+    [120,150,180],
+    [84,126,210]
+  ];
+
+  const values =
+    pick(triples);
+
+  const answer =
+    gcdArray(values);
+
+  return numberQuestion({
+    key:
+      `app-spacing-${values.join("-")}`,
+    label:
+      "等距問題",
+    html: `
+      <div class="math-expression">
+        三段邊長分別為 ${values[0]}、${values[1]}、${values[2]} 公尺。<br>
+        若要用相同距離設置標記，且每段都剛好整除，<br>
+        相鄰標記的距離最大是多少公尺？
+      </div>
+    `,
+    answer,
+    topic:
+      "最大公因數應用｜等距",
+    explanation: `
+      <strong>關鍵字：</strong>
+      「相同距離」、「每段都能整除」、「距離最大」。
+      <div class="decision-box">
+        要找同時能整除三段長度的最大數，
+        所以使用<strong>最大公因數</strong>。
+      </div>
+
+      ${gcdExplanation(values)}
+
+      因此最大等距為
+      <strong>${answer} 公尺</strong>。
+    `
+  });
+}
+
+function makeRibbonApplication() {
+  const pairs = [
+    [96,144],
+    [126,210],
+    [150,225],
+    [168,252]
+  ];
+
+  const [a,b] =
+    pick(pairs);
+
+  const answer =
+    gcd2(a,b);
+
+  return numberQuestion({
+    key:
+      `app-ribbon-${a}-${b}`,
+    label:
+      "等長分切問題",
+    html: `
+      <div class="math-expression">
+        有兩條緞帶長 ${a} 公分與 ${b} 公分，<br>
+        都要剪成一樣長的小段且完全剪完。<br>
+        每小段最長可以是多少公分？
+      </div>
+    `,
+    answer,
+    topic:
+      "最大公因數應用｜等長分切",
+    explanation: `
+      <div class="decision-box">
+        小段長度要同時是 ${a}、${b} 的因數，
+        又要求「每段最長」，
+        所以取<strong>最大公因數</strong>。
+      </div>
+
+      ${gcdExplanation([a,b])}
+
+      因此每小段最長
+      <strong>${answer} 公分</strong>。
+    `
+  });
+}
+
+function makePackageApplication() {
+  const pairs = [
+    [72,120],
+    [90,150],
+    [105,140],
+    [144,216]
+  ];
+
+  const [a,b] =
+    pick(pairs);
+
+  const answer =
+    gcd2(a,b);
+
+  return numberQuestion({
+    key:
+      `app-package-${a}-${b}`,
+    label:
+      "平均分裝問題",
+    html: `
+      <div class="math-expression">
+        有甲物品 ${a} 個、乙物品 ${b} 個，<br>
+        要平均裝成內容完全相同的禮袋，而且全部用完。<br>
+        最多可裝成幾袋？
+      </div>
+    `,
+    answer,
+    topic:
+      "最大公因數應用｜平均分裝",
+    explanation: `
+      <div class="decision-box">
+        每袋內容要一樣，袋數必須同時整除 ${a} 與 ${b}，
+        而且要求袋數最多，所以使用<strong>最大公因數</strong>。
+      </div>
+
+      ${gcdExplanation([a,b])}
+
+      因此最多可以裝成
+      <strong>${answer} 袋</strong>。
+    `
+  });
+}
+
+function makeMeetingApplication() {
+  const triples = [
+    [4,5,6],
+    [6,8,10],
+    [8,12,15],
+    [12,15,18],
+    [20,24,30]
+  ];
+
+  const periods =
+    pick(triples);
+
+  const answer =
+    lcmArray(periods);
+
+  return numberQuestion({
+    key:
+      `app-meeting-${periods.join("-")}`,
+    label:
+      "週期會合問題",
+    html: `
+      <div class="math-expression">
+        三個人分別每 ${periods[0]}、${periods[1]}、${periods[2]} 分鐘回到起點一次。<br>
+        現在同時從起點出發，至少幾分鐘後會再次同時回到起點？
+      </div>
+    `,
+    answer,
+    topic:
+      "最小公倍數應用｜週期會合",
+    explanation: `
+      <strong>第 1 步｜判斷</strong>
+      <div class="decision-box">
+        要找三個週期「再次同時發生」的最早時間，
+        所以要找三數的<strong>最小公倍數</strong>。
+      </div>
+
+      ${lcmExplanation(periods)}
+
+      因此至少
+      <strong>${answer} 分鐘</strong>
+      後再次同時回到起點。
+    `
+  });
+}
+
+function makeRoadApplication() {
+  const pairs = [
+    [6,25],
+    [8,15],
+    [12,20],
+    [14,21],
+    [9,12]
+  ];
+
+  const [a,b] =
+    pick(pairs);
+
+  const answer =
+    lcm2(a,b);
+
+  return numberQuestion({
+    key:
+      `app-road-${a}-${b}`,
+    label:
+      "同時設置問題",
+    html: `
+      <div class="math-expression">
+        一條道路從起點開始，每隔 ${a} 公尺設一個標誌，<br>
+        另一種標誌每隔 ${b} 公尺設一個。<br>
+        兩種標誌相鄰兩次同時出現的距離是多少公尺？
+      </div>
+    `,
+    answer,
+    topic:
+      "最小公倍數應用｜共同位置",
+    explanation: `
+      <div class="decision-box">
+        同一位置必須同時是 ${a} 與 ${b} 的倍數，
+        而「下一次最近的位置」就是最小公倍數。
+      </div>
+
+      ${lcmExplanation([a,b])}
+
+      因此相鄰兩次共同位置相距
+      <strong>${answer} 公尺</strong>。
+    `
+  });
+}
+
+function makeCubeApplication() {
+  const triples = [
+    [3,4,6],
+    [4,6,8],
+    [6,8,12],
+    [4,10,12]
+  ];
+
+  const dims =
+    pick(triples);
+
+  const side =
+    lcmArray(dims);
+
+  const count =
+    (side / dims[0]) *
+    (side / dims[1]) *
+    (side / dims[2]);
+
+  const askCount =
+    Math.random() < .45;
+
+  return numberQuestion({
+    key:
+      `app-cube-${dims.join("-")}-${askCount ? "count" : "side"}`,
+    label:
+      "堆正方體問題",
+    html: `
+      <div class="math-expression">
+        用長、寬、高分別為
+        ${dims[0]}、${dims[1]}、${dims[2]} 公分的小長方體，
+        以相同方向堆成實心正方體。<br>
+        ${
+          askCount
+            ? "若要堆成最小的正方體，共需要幾塊小長方體？"
+            : "這個最小正方體的邊長是多少公分？"
+        }
+      </div>
+    `,
+    answer:
+      askCount
+        ? count
+        : side,
+    topic:
+      "最小公倍數應用｜正方體",
+    explanation: `
+      <strong>第 1 步｜先求正方體最小邊長</strong>
+      <div class="decision-box">
+        正方體邊長必須同時被
+        ${dims.join("、")}
+        整除，所以最小邊長是三數的<strong>最小公倍數</strong>。
+      </div>
+
+      ${lcmExplanation(dims)}
+
+      <strong>第 2 步｜計算積木數</strong>
+      <div class="calculation-box">
+        最小邊長＝${side} 公分。<br>
+        ${side}÷${dims[0]}＝${side/dims[0]}，
+        ${side}÷${dims[1]}＝${side/dims[1]}，
+        ${side}÷${dims[2]}＝${side/dims[2]}。<br>
+        積木數＝${side/dims[0]}×${side/dims[1]}×${side/dims[2]}
+        ＝${count}。
+      </div>
+
+      ${
+        askCount
+          ? `所以共需要 <strong>${count} 塊</strong>。`
+          : `所以最小正方體邊長為 <strong>${side} 公分</strong>。`
+      }
+    `
+  });
+}
+
+function makeCarpetApplication() {
+  const triples = [
+    [20,28,35],
+    [12,18,30],
+    [8,12,18],
+    [15,20,24]
+  ];
+
+  const values =
+    pick(triples);
+
+  const answer =
+    lcmArray(values);
+
+  return numberQuestion({
+    key:
+      `app-carpet-${values.join("-")}`,
+    label:
+      "最短共同長度問題",
+    html: `
+      <div class="math-expression">
+        有三種同寬地毯，每段長
+        ${values[0]}、${values[1]}、${values[2]} 呎。<br>
+        若每次只使用其中一種長度，且都能剛好鋪滿同一條走廊，<br>
+        走廊最短是多少呎？
+      </div>
+    `,
+    answer,
+    topic:
+      "最小公倍數應用｜共同長度",
+    explanation: `
+      <div class="decision-box">
+        走廊長度必須同時是三種地毯長度的倍數，
+        又要求「最短」，所以使用<strong>最小公倍數</strong>。
+      </div>
+
+      ${lcmExplanation(values)}
+
+      因此走廊最短為
+      <strong>${answer} 呎</strong>。
+    `
+  });
+}
+
+function makeEventApplication() {
+  const pairs = [
+    [6,8],
+    [9,12],
+    [10,15],
+    [14,21],
+    [12,18]
+  ];
+
+  const [a,b] =
+    pick(pairs);
+
+  const answer =
+    lcm2(a,b);
+
+  return numberQuestion({
+    key:
+      `app-event-${a}-${b}`,
+    label:
+      "定期事件問題",
+    html: `
+      <div class="math-expression">
+        甲活動每 ${a} 天舉行一次，乙活動每 ${b} 天舉行一次。<br>
+        今天兩個活動同一天舉行，至少幾天後會再次同一天舉行？
+      </div>
+    `,
+    answer,
+    topic:
+      "最小公倍數應用｜週期",
+    explanation: `
+      <div class="decision-box">
+        要找兩個週期下一次「同時發生」的最短時間，
+        所以使用<strong>最小公倍數</strong>。
+      </div>
+
+      ${lcmExplanation([a,b])}
+
+      因此至少
+      <strong>${answer} 天</strong>
+      後會再次同一天舉行。
+    `
+  });
+}
+
+function createApplicationSet() {
+  return shuffle([
+    makeFruitGroupingApplication(),
+    makeSquareCutApplication(),
+    makeEqualSpacingApplication(),
+    makeRibbonApplication(),
+    makePackageApplication(),
+    makeMeetingApplication(),
+    makeRoadApplication(),
+    makeCubeApplication(),
+    makeCarpetApplication(),
+    makeEventApplication()
+  ]);
+}
+
+/*
+==================================================
+競速模式
+==================================================
+*/
+
+function makeQuickGcdChoice() {
+  const [a,b] =
+    pick(
+      PAIR_POOL.filter(
+        values =>
+          Math.max(...values) <=
+          300
+      )
+    );
+
+  const g =
+    gcd2(a,b);
+
+  const wrongs =
+    unique([
+      g * 2,
+      Math.max(
+        1,
+        Math.floor(g / 2)
+      ),
+      Math.min(a,b),
+      g + 1
+    ])
+      .filter(
+        value =>
+          value !== g &&
+          value > 0
+      )
+      .slice(0,3);
+
+  while (
+    wrongs.length < 3
+  ) {
+    const candidate =
+      rand(
+        1,
+        Math.min(a,b)
+      );
+
+    if (
+      candidate !== g &&
+      !wrongs.includes(candidate)
+    ) {
+      wrongs.push(candidate);
+    }
+  }
+
+  return choiceQuestion({
+    key:
+      `quick-gcd-${a}-${b}-${Date.now()}-${Math.random()}`,
+    label:
+      `（${a} , ${b}）＝？`,
+    html:
+      `<div class="math-expression">快速求最大公因數</div>`,
+    choices:
+      shuffle([
+        {
+          value:
+            "correct",
+          text:
+            String(g)
+        },
+        ...wrongs.map(
+          (value,i) => ({
+            value:
+              `wrong${i+1}`,
+            text:
+              String(value)
+          })
+        )
+      ]),
+    answer:
+      "correct",
+    topic:
+      "快速最大公因數",
+    explanation:
+      gcdExplanation([a,b])
+  });
+}
+
+function makeQuickLcmChoice() {
+  const [a,b] =
+    pick(
+      PAIR_POOL.filter(
+        values =>
+          lcmArray(values) <=
+          1000
+      )
+    );
+
+  const l =
+    lcm2(a,b);
+
+  const wrongs =
+    unique([
+      gcd2(a,b),
+      Math.max(a,b),
+      l + Math.min(a,b),
+      l * 2
+    ])
+      .filter(
+        value =>
+          value !== l &&
+          value > 0
+      )
+      .slice(0,3);
+
+  while (
+    wrongs.length < 3
+  ) {
+    const candidate =
+      rand(
+        1,
+        Math.max(
+          l * 2,
+          50
+        )
+      );
+
+    if (
+      candidate !== l &&
+      !wrongs.includes(candidate)
+    ) {
+      wrongs.push(candidate);
+    }
+  }
+
+  return choiceQuestion({
+    key:
+      `quick-lcm-${a}-${b}-${Date.now()}-${Math.random()}`,
+    label:
+      `〔${a} , ${b}〕＝？`,
+    html:
+      `<div class="math-expression">快速求最小公倍數</div>`,
+    choices:
+      shuffle([
+        {
+          value:
+            "correct",
+          text:
+            String(l)
+        },
+        ...wrongs.map(
+          (value,i) => ({
+            value:
+              `wrong${i+1}`,
+            text:
+              String(value)
+          })
+        )
+      ]),
+    answer:
+      "correct",
+    topic:
+      "快速最小公倍數",
+    explanation:
+      lcmExplanation([a,b])
+  });
+}
+
+function makeQuickRuleQuestion() {
+  const chooseGcd =
+    Math.random() < .5;
+
+  const prime =
+    pick([2,3,5,7]);
+
+  const a =
+    rand(1,5);
+
+  let b =
+    rand(1,5);
+
+  if (a === b) {
+    b =
+      a === 5
+        ? 4
+        : a + 1;
+  }
+
+  const answer =
+    chooseGcd
+      ? Math.min(a,b)
+      : Math.max(a,b);
+
+  return choiceQuestion({
+    key:
+      `quick-rule-${chooseGcd}-${prime}-${a}-${b}-${Date.now()}`,
+    label:
+      chooseGcd
+        ? `求最大公因數時，${prime} 的指數要取哪一個？`
+        : `求最小公倍數時，${prime} 的指數要取哪一個？`,
+    html:
+      `<div class="math-expression">${prime}<sup>${a}</sup> 與 ${prime}<sup>${b}</sup></div>`,
+    choices:
+      shuffle([
+        {
+          value:
+            "correct",
+          text:
+            String(answer)
+        },
+        {
+          value:
+            "wrong1",
+          text:
+            String(
+              chooseGcd
+                ? Math.max(a,b)
+                : Math.min(a,b)
+            )
+        },
+        {
+          value:
+            "wrong2",
+          text:
+            String(a+b)
+        },
+        {
+          value:
+            "wrong3",
+          text:
+            "0"
+        }
+      ]),
+    answer:
+      "correct",
+    topic:
+      "指數取法",
+    explanation: `
+      <div class="rule-box">
+        ${
+          chooseGcd
+            ? "最大公因數：共同質因數的指數取最小。"
+            : "最小公倍數：全部質因數的指數取最大。"
+        }
+      </div>
+      所以本題應取指數
+      <strong>${answer}</strong>。
+    `
+  });
+}
+
+function makeQuickDecisionQuestion() {
+  const cases = [
+    {
+      text:
+        "把 84 個甲物品和 126 個乙物品平均分成最多相同組數",
+      answer:
+        "gcd"
+    },
+    {
+      text:
+        "兩盞燈分別每 6 秒、8 秒亮一次，求下一次同時亮的最短時間",
+      answer:
+        "lcm"
+    },
+    {
+      text:
+        "長 144、寬 84 的布裁成最大相同正方形",
+      answer:
+        "gcd"
+    },
+    {
+      text:
+        "每 12 天與每 18 天發生一次的活動，求下次同一天",
+      answer:
+        "lcm"
+    }
+  ];
+
+  const item =
+    pick(cases);
+
+  return choiceQuestion({
+    key:
+      `quick-decision-${Date.now()}-${Math.random()}`,
+    label:
+      "這一題應該用哪一種方法？",
+    html:
+      `<div class="math-expression">${item.text}</div>`,
+    choices: [
+      {
+        value: "gcd",
+        text: "最大公因數"
+      },
+      {
+        value: "lcm",
+        text: "最小公倍數"
+      }
+    ],
+    answer:
+      item.answer,
+    topic:
+      "應用判斷",
+    explanation: `
+      <div class="decision-box">
+        ${
+          item.answer === "gcd"
+            ? "要找「能同時整除」且要求最大／最多的分組單位，所以用最大公因數。"
+            : "要找「同時發生／共同倍數」且要求最早／最短，所以用最小公倍數。"
+        }
+      </div>
+    `
+  });
+}
+
+function makeSpeedQuestion() {
+  const type =
+    rand(1,5);
+
+  if (type === 1) {
+    return makeQuickGcdChoice();
+  }
+
+  if (type === 2) {
+    return makeQuickLcmChoice();
+  }
+
+  if (type === 3) {
+    return makeCoprimeQuestion();
+  }
+
+  if (type === 4) {
+    return makeQuickRuleQuestion();
+  }
+
+  return makeQuickDecisionQuestion();
+}
+
+/*
+==================================================
+綜合挑戰
+==================================================
+*/
+
+function createComprehensiveSet() {
+  const concept =
+    createConceptSet();
+
+  const gcdSet =
+    createGcdSet();
+
+  const lcmSet =
+    createLcmSet();
+
+  const standard =
+    createStandardFormSet();
+
+  const applications =
+    createApplicationSet();
+
+  const standardGcd =
+    standard.find(
+      q =>
+        q.topic.includes(
+          "最大公因數"
+        )
+    );
+
+  const standardLcm =
+    standard.find(
+      q =>
+        q.topic.includes(
+          "最小公倍數"
+        )
+    );
+
+  const gcdApp =
+    applications.find(
+      q =>
+        q.topic.includes(
+          "最大公因數"
+        )
+    );
+
+  const lcmApp =
+    applications.find(
+      q =>
+        q.topic.includes(
+          "最小公倍數"
+        )
+    );
+
+  return shuffle([
+    concept[0],
+    concept[1],
+    gcdSet[0],
+    gcdSet[1],
+    lcmSet[0],
+    lcmSet[1],
+    standardGcd,
+    standardLcm,
+    gcdApp,
+    lcmApp
+  ]);
+}
+
+/*
+==================================================
+題組建立
+==================================================
+*/
+
+function createQuestionSet(
+  selectedMode
+) {
+  switch (
+    selectedMode
+  ) {
+    case "concept":
+      return createConceptSet();
+
+    case "gcd":
+      return createGcdSet();
+
+    case "lcm":
+      return createLcmSet();
+
+    case "standardForm":
+      return createStandardFormSet();
+
+    case "application":
+      return createApplicationSet();
+
+    case "comprehensive":
+      return createComprehensiveSet();
+
+    default:
+      return [];
+  }
+}
+
+/*
+==================================================
+畫面與作答
+==================================================
+*/
+
+function startGame(
+  selectedMode
+) {
+  modeId =
+    selectedMode;
+
+  attemptId =
+    createAttemptId();
+
+  index = 0;
+  correct = 0;
+  wrong = 0;
+  combo = 0;
+  maxCombo = 0;
+  records = [];
+  selectedChoice = null;
+  answered = false;
+  elapsed = 0;
+  speedRemaining = 60;
+  speedAttempts = 0;
+  speedScore = 0;
+  scoreSaved = false;
+
+  $("save-status").textContent =
+    "";
+
+  $("review-button").disabled =
+    false;
+
+  if (
+    modeId === "speed"
+  ) {
+    questions = [];
+  } else {
+    questions =
+      createQuestionSet(
+        modeId
+      );
+  }
+
+  $("mode-display").textContent =
+    MODE_CONFIG[modeId].name;
+
+  $("score-display").textContent =
+    "0";
+
+  $("combo-display").textContent =
+    "0";
+
+  $("time-box")
+    .classList
+    .remove(
+      "timer-danger"
+    );
+
+  showOnly(
+    "quiz-screen"
+  );
+
+  startTime =
+    Date.now();
+
+  startTimer();
+
+  if (
+    modeId === "speed"
+  ) {
+    renderSpeedQuestion();
+  } else {
+    renderQuestion();
+  }
+}
+
+function resetQuestionUI() {
+  if (
+    typeof window.resetGameScratchpad ===
+    "function"
+  ) {
+    window.resetGameScratchpad();
+  }
+
+  answered = false;
+  selectedChoice = null;
+
+  $("feedback").textContent =
+    "";
+
+  $("feedback").className =
+    "feedback";
+
+  $("explanation").innerHTML =
+    "";
+
+  $("explanation")
+    .classList
+    .add(
+      "hidden"
+    );
+
+  $("input-message").textContent =
+    "";
+
+  $("submit-button")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+  $("next-button")
+    .classList
+    .add(
+      "hidden"
+    );
+
+  $("number-input").value =
+    "";
+}
+
+function renderQuestion() {
+  resetQuestionUI();
+
+  const q =
+    questions[index];
+
+  $("question-label").innerHTML =
+    q.label;
+
+  $("question-content").innerHTML =
+    q.html;
+
+  $("question-note").textContent =
+    q.note || "";
+
+  renderAnswer(q);
+
+  $("progress-bar").style.width =
+    `${index / questions.length * 100}%`;
+
+  updateStatus();
+}
+
+function renderSpeedQuestion() {
+  resetQuestionUI();
+
+  const q =
+    makeSpeedQuestion();
+
+  questions =
+    [q];
+
+  $("question-label").innerHTML =
+    q.label;
+
+  $("question-content").innerHTML =
+    q.html;
+
+  $("question-note").textContent =
+    "競速模式作答後會自動進入下一題；錯題可於測驗結果中回顧完整解析。";
+
+  renderAnswer(q);
+
+  updateStatus();
+}
+
+function renderAnswer(q) {
+  $("choiceMount").innerHTML =
+    "";
+
+  $("choiceMount")
+    .classList
+    .add(
+      "hidden"
+    );
+
+  $("numberMountWrap")
+    .classList
+    .add(
+      "hidden"
+    );
+
+  $("expressionMountWrap")
+    .classList
+    .add(
+      "hidden"
+    );
+
+  if (
+    q.kind === "choice"
+  ) {
+    $("choiceMount")
+      .classList
+      .remove(
+        "hidden"
+      );
+
+    q.choices.forEach(
+      choice => {
+        const button =
+          document.createElement(
+            "button"
+          );
+
+        button.type =
+          "button";
+
+        button.className =
+          "choice-button";
+
+        button.dataset.value =
+          choice.value;
+
+        button.innerHTML =
+          String(
+            choice.text
+          )
+            .replace(
+              /\^(\d+)/g,
+              "<sup>$1</sup>"
+            );
+
+        button.addEventListener(
+          "click",
+          () => {
+            if (answered) return;
+
+            selectedChoice =
+              String(
+                choice.value
+              );
+
+            document
+              .querySelectorAll(
+                ".choice-button"
+              )
+              .forEach(item => {
+                item.classList
+                  .toggle(
+                    "selected",
+                    item === button
+                  );
+              });
+
+            $("input-message").textContent =
+              "";
+          }
+        );
+
+        $("choiceMount")
+          .appendChild(
+            button
+          );
+      }
+    );
+
+    return;
+  }
+
+  if (
+    q.kind === "number"
+  ) {
+    $("numberMountWrap")
+      .classList
+      .remove(
+        "hidden"
+      );
+
+    window.setTimeout(
+      () => {
+        $("number-input")
+          ?.focus();
+      },
+      50
+    );
+
+    return;
+  }
+
+  $("expressionMountWrap")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+  initExpressionInput();
+
+  if (answerInput) {
+    answerInput.reset();
+    answerInput.setDisabled(
+      false
+    );
+  }
+}
+
+function readAnswer(q) {
+  if (
+    q.kind === "choice"
+  ) {
+    if (
+      selectedChoice ===
+      null
+    ) {
+      return {
+        valid: false,
+        message:
+          "請先選擇一個答案。"
+      };
+    }
+
+    const choice =
+      q.choices.find(
+        item =>
+          String(
+            item.value
+          ) ===
+          String(
+            selectedChoice
+          )
+      );
+
+    return {
+      valid: true,
+      value:
+        String(
+          selectedChoice
+        ),
+      display:
+        choice?.text ??
+        selectedChoice
+    };
+  }
+
+  if (
+    q.kind === "number"
+  ) {
+    const raw =
+      $("number-input")
+        .value
+        .trim();
+
+    if (
+      raw === ""
+    ) {
+      return {
+        valid: false,
+        message:
+          "請先輸入答案。"
+      };
+    }
+
+    if (
+      !/^\d+$/.test(
+        raw
+      )
+    ) {
+      return {
+        valid: false,
+        message:
+          "本單元答案為正整數，請輸入整數。"
+      };
+    }
+
+    const value =
+      Number(raw);
+
+    if (
+      !Number.isSafeInteger(
+        value
+      )
+    ) {
+      return {
+        valid: false,
+        message:
+          "輸入的數字太大，請重新確認。"
+      };
+    }
+
+    return {
+      valid: true,
+      value,
+      display:
+        String(value)
+    };
+  }
+
+  const answer =
+    readExpressionAnswer();
+
+  if (!answer.valid) {
+    return answer;
+  }
+
+  return {
+    ...answer,
+    value:
+      answer.map,
+    display:
+      answer.html ||
+      factorMapToHTML(
+        answer.map
+      )
+  };
+}
+
+function isAnswerCorrect(
+  q,
+  answer
+) {
+  if (
+    q.kind === "choice"
+  ) {
+    return (
+      String(
+        answer.value
+      ) ===
+      String(
+        q.answer
+      )
+    );
+  }
+
+  if (
+    q.kind === "number"
+  ) {
+    return (
+      Number(
+        answer.value
+      ) ===
+      Number(
+        q.answer
+      )
+    );
+  }
+
+  return mapsEqual(
+    answer.map,
+    q.answerMap
+  );
+}
+
+function correctAnswerHTML(q) {
+  if (
+    q.kind === "choice"
+  ) {
+    const item =
+      q.choices.find(
+        choice =>
+          String(
+            choice.value
+          ) ===
+          String(
+            q.answer
+          )
+      );
+
+    return String(
+      item?.text ??
+      q.answer
+    )
+      .replace(
+        /\^(\d+)/g,
+        "<sup>$1</sup>"
+      );
+  }
+
+  if (
+    q.kind === "number"
+  ) {
+    return String(
+      q.answer
+    );
+  }
+
+  return factorMapToHTML(
+    q.answerMap
+  );
+}
+
+function markChoices(
+  q,
+  answer
+) {
+  if (
+    q.kind !== "choice"
+  ) {
+    return;
+  }
+
+  document
+    .querySelectorAll(
+      ".choice-button"
+    )
+    .forEach(button => {
+      button.disabled =
+        true;
+
+      const value =
+        String(
+          button.dataset.value
+        );
+
+      if (
+        value ===
+        String(
+          q.answer
+        )
+      ) {
+        button.classList
+          .add(
+            "correct-choice"
+          );
+      }
+
+      if (
+        value ===
+          String(
+            answer.value
+          ) &&
+        value !==
+          String(
+            q.answer
+          )
+      ) {
+        button.classList
+          .add(
+            "wrong-choice"
+          );
+      }
+    });
+}
+
+function submitAnswer() {
+  if (answered) return;
+
+  const q =
+    modeId === "speed"
+      ? questions[0]
+      : questions[index];
+
+  const answer =
+    readAnswer(q);
+
+  if (!answer.valid) {
+    $("input-message").textContent =
+      answer.message;
+
+    if (
+      q.kind ===
+        "primeExpression" &&
+      answerInput
+    ) {
+      answerInput.showMessage(
+        answer.message
+      );
+    }
+
+    return;
+  }
+
+  const isCorrect =
+    isAnswerCorrect(
+      q,
+      answer
+    );
+
+  answered =
+    true;
+
+  if (
+    q.kind ===
+    "primeExpression"
+  ) {
+    answerInput
+      ?.setDisabled(
+        true
+      );
+  }
+
+  $("number-input").disabled =
+    q.kind === "number";
+
+  markChoices(
+    q,
+    answer
+  );
+
+  if (isCorrect) {
+    correct++;
+    combo++;
+
+    maxCombo =
+      Math.max(
+        maxCombo,
+        combo
+      );
+
+    playGameSound(
+      "playCorrect"
+    );
+  } else {
+    wrong++;
+    combo = 0;
+
+    playGameSound(
+      "playWrong"
+    );
+  }
+
+  records.push({
+    number:
+      modeId === "speed"
+        ? speedAttempts + 1
+        : index + 1,
+    question: q,
+    userAnswer:
+      answer.display,
+    correct:
+      isCorrect
+  });
+
+  if (
+    modeId === "speed"
+  ) {
+    speedAttempts++;
+
+    if (isCorrect) {
+      speedScore += 10;
+    }
+
+    $("feedback").textContent =
+      isCorrect
+        ? "✅ 正確！＋10 分"
+        : "❌ 答錯了，下一題！";
+
+    $("feedback").className =
+      `feedback ${
+        isCorrect
+          ? "correct"
+          : "wrong"
+      }`;
+
+    updateStatus();
+
+    window.setTimeout(
+      () => {
+        if (
+          modeId === "speed" &&
+          speedRemaining > 0 &&
+          $("result-screen")
+            .classList
+            .contains(
+              "hidden"
+            )
+        ) {
+          $("number-input").disabled =
+            false;
+
+          renderSpeedQuestion();
+        }
+      },
+      320
+    );
+
+    return;
+  }
+
+  $("feedback").textContent =
+    isCorrect
+      ? "✅ 回答正確！"
+      : "❌ 答案不正確，請看下方完整解析。";
+
+  $("feedback").className =
+    `feedback ${
+      isCorrect
+        ? "correct"
+        : "wrong"
+    }`;
+
+  $("explanation").innerHTML =
+    q.explanation;
+
+  $("explanation")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+  $("submit-button")
+    .classList
+    .add(
+      "hidden"
+    );
+
+  $("next-button")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+  $("next-button").textContent =
+    index ===
+      questions.length - 1
+      ? "查看測驗結果"
+      : "下一題";
+
+  updateStatus();
+}
+
+function nextQuestion() {
+  if (!answered) return;
+
+  $("number-input").disabled =
+    false;
+
+  index++;
+
+  if (
+    index >=
+    questions.length
+  ) {
+    showResult();
+    return;
+  }
+
+  renderQuestion();
+}
+
+function updateStatus() {
+  $("combo-display").textContent =
+    combo;
+
+  if (
+    modeId === "speed"
+  ) {
+    $("score-display").textContent =
+      speedScore;
+
+    $("time-display").textContent =
+      formatTime(
+        speedRemaining
+      );
+
+    $("progress-bar").style.width =
+      `${Math.min(
+        100,
+        (
+          60 -
+          speedRemaining
+        ) /
+        60 *
+        100
+      )}%`;
+
+    return;
+  }
+
+  const score =
+    questions.length
+      ? Math.round(
+          correct /
+          questions.length *
+          100
+        )
+      : 0;
+
+  $("score-display").textContent =
+    score;
+
+  $("time-display").textContent =
+    formatTime(
+      elapsed
+    );
+}
+
+/*
+==================================================
+計時
+==================================================
+*/
+
+function startTimer() {
+  stopTimer();
+
+  timerId =
+    window.setInterval(
+      () => {
+        if (
+          modeId === "speed"
+        ) {
+          speedRemaining--;
+
+          if (
+            speedRemaining <= 10 &&
+            speedRemaining > 0
+          ) {
+            $("time-box")
+              .classList
+              .add(
+                "timer-danger"
+              );
+
+            playUrgentCountdown();
+          }
+
+          if (
+            speedRemaining <= 0
+          ) {
+            speedRemaining = 0;
+
+            updateStatus();
+            stopTimer();
+
+            window.setTimeout(
+              showResult,
+              50
+            );
+
+            return;
+          }
+
+          updateStatus();
+          return;
+        }
+
+        elapsed =
+          Math.floor(
+            (
+              Date.now() -
+              startTime
+            ) /
+            1000
+          );
+
+        updateStatus();
+      },
+      1000
+    );
+}
+
+function stopTimer() {
+  if (timerId) {
+    window.clearInterval(
+      timerId
+    );
+
+    timerId =
+      null;
+  }
+}
+
+/*
+==================================================
+結果
+==================================================
+*/
+
+function rating(
+  score,
+  accuracy
+) {
+  const value =
+    modeId === "speed"
+      ? accuracy
+      : score;
+
+  if (
+    value >= 90
+  ) {
+    return {
+      stars:
+        "★★★★★",
+      comment:
+        "公因數、公倍數與應用判斷都很穩定，已能靈活切換最大公因數與最小公倍數。"
+    };
+  }
+
+  if (
+    value >= 80
+  ) {
+    return {
+      stars:
+        "★★★★☆",
+      comment:
+        "整體掌握很好！再留意三數短除法，以及標準分解式的「取小／取大」。"
+    };
+  }
+
+  if (
+    value >= 60
+  ) {
+    return {
+      stars:
+        "★★★☆☆",
+      comment:
+        "核心概念已建立，建議利用錯題回顧加強互質、三數計算與應用題判斷。"
+    };
+  }
+
+  return {
+    stars:
+      "★★☆☆☆",
+    comment:
+      "建議依序從公因數／公倍數與互質開始，再練最大公因數、最小公倍數與生活應用。"
+  };
+}
+
+async function showResult() {
+  if (
+    !$("result-screen")
+      .classList
+      .contains(
+        "hidden"
+      )
+  ) {
+    return;
+  }
+
+  stopTimer();
+
+  if (
+    modeId !== "speed"
+  ) {
+    elapsed =
+      Math.floor(
+        (
+          Date.now() -
+          startTime
+        ) /
+        1000
+      );
+  } else {
+    elapsed =
+      60 -
+      speedRemaining;
+  }
+
+  let score;
+  let accuracy;
+  let total;
+
+  if (
+    modeId === "speed"
+  ) {
+    total =
+      speedAttempts;
+
+    accuracy =
+      total
+        ? Math.round(
+            correct /
+            total *
+            100
+          )
+        : 0;
+
+    score =
+      speedScore;
+  } else {
+    total =
+      questions.length;
+
+    score =
+      Math.round(
+        correct /
+        total *
+        1000
+      ) /
+      10;
+
+    accuracy =
+      Math.round(
+        correct /
+        total *
+        1000
+      ) /
+      10;
+  }
+
+  const result =
+    rating(
+      score,
+      accuracy
+    );
+
+  showOnly(
+    "result-screen"
+  );
+
+  $("result-mode-name").textContent =
+    MODE_CONFIG[modeId].name;
+
+  $("final-score").textContent =
+    modeId === "speed"
+      ? `${score} 分`
+      : `${Number.isInteger(score)
+          ? score
+          : score.toFixed(1)
+        } 分`;
+
+  $("final-stars").textContent =
+    result.stars;
+
+  $("final-comment").textContent =
+    modeId === "speed"
+      ? `${result.comment}　本次 60 秒共作答 ${total} 題，正確率 ${accuracy}%。`
+      : result.comment;
+
+  $("final-correct").textContent =
+    correct;
+
+  $("final-wrong").textContent =
+    wrong;
+
+  $("final-combo").textContent =
+    maxCombo;
+
+  $("final-time").textContent =
+    formatTime(
+      elapsed
+    );
+
+  const wrongCount =
+    records.filter(
+      record =>
+        !record.correct
+    ).length;
+
+  $("review-button").disabled =
+    wrongCount === 0;
+
+  $("review-button").textContent =
+    wrongCount === 0
+      ? "全部答對，無錯題"
+      : `錯題回顧（${wrongCount}）`;
+
+  playGameSound(
+    "playComplete"
+  );
+
+  await saveCompletion({
+    score,
+    accuracy,
+    total
+  });
+}
+
+/*
+==================================================
+現有 scores.js 成績儲存
+==================================================
+*/
+
+async function saveScoreRecord({
+  score,
+  accuracy,
+  total
+}) {
+  const status =
+    $("save-status");
+
+  try {
+    const scoreModule =
+      await import(
+        "../js/scores.js?v=7"
+      );
+
+    if (
+      typeof scoreModule.saveGameScore !==
+      "function"
+    ) {
+      return {
+        success: false,
+        reason:
+          "module-missing"
+      };
+    }
+
+    return await scoreModule
+      .saveGameScore({
+        game:
+          GAME_ID,
+        mode:
+          modeId,
+        score,
+        correctCount:
+          correct,
+        wrongCount:
+          wrong,
+        maxCombo,
+        playTime:
+          elapsed,
+        totalQuestions:
+          total,
+        accuracy
+      });
+
+  } catch (error) {
+    console.error(
+      "2-2 成績儲存失敗：",
+      error
+    );
+
+    status.textContent =
+      "⚠️ 本次遊戲已完成，但成績暫時無法儲存。";
+
+    status.style.color =
+      "#b91c1c";
+
+    return {
+      success: false,
+      reason:
+        "save-error"
+    };
+  }
+}
+
+/*
+==================================================
+RPG 相容橋接
+==================================================
+*/
+
+async function completeRpgBridge({
+  score,
+  accuracy,
+  total
+}) {
+  const payload = {
+    gameId:
+      GAME_ID,
+    modeId,
+    score,
+    correct,
+    total,
+    playTime:
+      elapsed,
+    accuracy,
+    maxCombo,
+    attemptId,
+    difficultyWeight:
+      MODE_CONFIG[modeId]
+        ?.difficultyWeight ??
+      1
+  };
+
+  try {
+    window.dispatchEvent(
+      new CustomEvent(
+        "mathgame:session-complete",
+        {
+          detail:
+            payload
+        }
+      )
+    );
+  } catch (_) {}
+
+  try {
+    const globalHandler =
+      window.MathGameProgress
+        ?.completeLearningSession;
+
+    if (
+      typeof globalHandler ===
+      "function"
+    ) {
+      return await globalHandler(
+        payload
+      );
+    }
+  } catch (error) {
+    console.warn(
+      "RPG 全域橋接失敗：",
+      error
+    );
+  }
+
+  try {
+    const progressModule =
+      await import(
+        "../js/progress-system.js?v=1"
+      );
+
+    const handler =
+      progressModule
+        .completeLearningSession ||
+      progressModule
+        .default
+        ?.completeLearningSession;
+
+    if (
+      typeof handler ===
+      "function"
+    ) {
+      return await handler(
+        payload
+      );
+    }
+  } catch (_) {}
+
+  return null;
+}
+
+async function saveCompletion({
+  score,
+  accuracy,
+  total
+}) {
+  if (scoreSaved) return;
+
+  scoreSaved =
+    true;
+
+  const status =
+    $("save-status");
+
+  status.textContent =
+    "☁️ 正在儲存本次成績……";
+
+  status.style.color =
+    "#1d4ed8";
+
+  const scoreResult =
+    await saveScoreRecord({
+      score,
+      accuracy,
+      total
+    });
+
+  if (
+    scoreResult?.success
+  ) {
+    status.textContent =
+      "✅ 本次成績已儲存。";
+
+    status.style.color =
+      "#15803d";
+  } else if (
+    scoreResult?.reason ===
+    "not-logged-in"
+  ) {
+    status.textContent =
+      "ℹ️ 尚未登入，因此本次成績沒有儲存。";
+
+    status.style.color =
+      "#b45309";
+  } else if (
+    scoreResult?.reason !==
+    "save-error"
+  ) {
+    status.textContent =
+      "⚠️ 成績暫時無法儲存。";
+
+    status.style.color =
+      "#b91c1c";
+  }
+
+  await completeRpgBridge({
+    score,
+    accuracy,
+    total
+  });
+}
+
+/*
+==================================================
+錯題回顧
+==================================================
+*/
+
+function showReview() {
+  const wrongRecords =
+    records.filter(
+      record =>
+        !record.correct
+    );
+
+  if (
+    wrongRecords.length === 0
+  ) {
+    $("review-list").innerHTML =
+      `
+        <div class="review-card">
+          全部答對，沒有需要回顧的錯題！
+        </div>
+      `;
+  } else {
+    $("review-list").innerHTML =
+      wrongRecords
+        .map(record => {
+          const q =
+            record.question;
+
+          return `
+            <article class="review-card">
+
+              <div class="review-title">
+                第 ${record.number} 題 ❌
+              </div>
+
+              <div class="review-question">
+                ${q.label}<br>
+                ${q.html}
+              </div>
+
+              <div class="review-answer">
+                你的答案：
+                <strong>${record.userAnswer || "未作答"}</strong><br>
+
+                正確答案：
+                <strong>${correctAnswerHTML(q)}</strong>
+              </div>
+
+              <div class="explanation">
+                ${q.explanation}
+              </div>
+
+            </article>
+          `;
+        })
+        .join(
+          ""
+        );
+  }
+
+  showOnly(
+    "review-screen"
+  );
+}
+
+/*
+==================================================
+事件
+==================================================
+*/
+
+document
+  .querySelectorAll(
+    "[data-mode]"
+  )
+  .forEach(button => {
+    button.addEventListener(
+      "click",
+      () => {
+        startGame(
+          button.dataset.mode
+        );
+      }
+    );
+  });
+
+$("submit-button")
+  .addEventListener(
+    "click",
+    submitAnswer
+  );
+
+$("next-button")
+  .addEventListener(
+    "click",
+    nextQuestion
+  );
+
+$("quit-button")
+  .addEventListener(
+    "click",
+    () => {
+      stopTimer();
+
+      $("number-input").disabled =
+        false;
+
+      showOnly(
+        "start-screen"
+      );
+    }
+  );
+
+$("again-button")
+  .addEventListener(
+    "click",
+    () => {
+      $("number-input").disabled =
+        false;
+
+      startGame(
+        modeId
+      );
+    }
+  );
+
+$("review-button")
+  .addEventListener(
+    "click",
+    showReview
+  );
+
+$("result-mode-button")
+  .addEventListener(
+    "click",
+    () => {
+      showOnly(
+        "start-screen"
+      );
+    }
+  );
+
+$("review-again-button")
+  .addEventListener(
+    "click",
+    () => {
+      $("number-input").disabled =
+        false;
+
+      startGame(
+        modeId
+      );
+    }
+  );
+
+$("review-result-button")
+  .addEventListener(
+    "click",
+    () => {
+      showOnly(
+        "result-screen"
+      );
+    }
+  );
+
+window.addEventListener(
+  "keydown",
+  event => {
+    if (
+      event.key === "Enter" &&
+      !$("quiz-screen")
+        .classList
+        .contains(
+          "hidden"
+        )
+    ) {
+      if (
+        !$("next-button")
+          .classList
+          .contains(
+            "hidden"
+          )
+      ) {
+        nextQuestion();
+      } else {
+        submitAnswer();
+      }
+    }
+  }
+);
+
+</script>
+</body>
+</html>
