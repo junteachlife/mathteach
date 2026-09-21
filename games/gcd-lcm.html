@@ -422,6 +422,11 @@
       font-weight: 800;
     }
 
+    /*
+    ==================================================
+    標準分解式比較表
+    ==================================================
+    */
     .short-division {
       width: min(100%, 660px);
       margin: 12px auto;
@@ -440,6 +445,132 @@
     .short-division th {
       background: var(--primary-light);
       color: var(--primary-dark);
+    }
+
+    /*
+    ==================================================
+    課本式短除法
+    左側：共同除數
+    右側：被除數／商逐層往下寫
+    ==================================================
+    */
+    .textbook-division-wrap {
+      width: 100%;
+      margin: 14px 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .textbook-division {
+      width: max-content;
+      min-width: 300px;
+      margin: 0 auto;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #fff;
+      color: #0f172a;
+      font-size: clamp(17px, 2.4vw, 22px);
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .textbook-division td {
+      min-width: 64px;
+      padding: 7px 13px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .textbook-division .division-divisor {
+      min-width: 46px;
+      padding-left: 6px;
+      padding-right: 10px;
+      color: var(--primary-dark);
+      text-align: right;
+      border-right: 3px solid #334155;
+    }
+
+    .textbook-division .division-divisor.blank {
+      color: transparent;
+      border-right-color: transparent;
+    }
+
+    .textbook-division tr.division-step td.division-number {
+      border-bottom: 3px solid #334155;
+    }
+
+    .textbook-division tr.division-final td.division-number {
+      padding-top: 9px;
+      color: #7c2d12;
+    }
+
+    .textbook-division-caption {
+      margin: 8px auto 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .division-step-list {
+      margin: 12px 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #dbeafe;
+    }
+
+    .division-step-item {
+      padding: 7px 0;
+      border-bottom: 1px dashed #cbd5e1;
+      line-height: 1.75;
+    }
+
+    .division-step-item:last-child {
+      border-bottom: 0;
+    }
+
+    .division-step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      margin-right: 7px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 1000;
+    }
+
+    .division-carry {
+      color: #b45309;
+      font-weight: 1000;
+    }
+
+    .division-stop {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #ecfdf5;
+      border: 1px solid #86efac;
+      color: #166534;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 520px) {
+      .textbook-division td {
+        min-width: 52px;
+        padding: 6px 9px;
+      }
+
+      .textbook-division .division-divisor {
+        min-width: 40px;
+      }
     }
 
     .button-row {
@@ -785,6 +916,8 @@
 /*
 ==================================================
 2-2 最大公因數與最小公倍數大挑戰
+
+詳解短除法：115 七上課本式版型
 
 新遊戲識別：
 GAME_ID = gcdLcm
@@ -1608,40 +1741,224 @@ function shortDivisionTable(
       ? gcdShortDivisionData(values)
       : lcmShortDivisionData(values);
 
-  const rows =
-    data.rows
-      .map(row => `
-        <tr>
-          <td>${row.divisor}</td>
-          <td>${row.before.join("、")}</td>
-          <td>${row.after.join("、")}</td>
-        </tr>
-      `)
-      .join("");
+  if (
+    data.rows.length === 0
+  ) {
+    return `
+      <div class="textbook-division-wrap">
+        <table class="textbook-division" aria-label="課本式短除法">
+          <tbody>
+            <tr class="division-final">
+              <td class="division-divisor blank">1</td>
+              ${values.map(
+                value =>
+                  `<td class="division-number">${value}</td>`
+              ).join("")}
+            </tr>
+          </tbody>
+        </table>
 
-  const emptyRow =
-    rows ||
-    `
-      <tr>
-        <td>—</td>
-        <td>${values.join("、")}</td>
-        <td>沒有可共同提出的質因數</td>
-      </tr>
+        <div class="textbook-division-caption">
+          這些數已沒有可共同提出的質因數，因此不需要再除。
+        </div>
+      </div>
     `;
+  }
+
+  const rows = [];
+
+  data.rows.forEach(
+    row => {
+      rows.push(`
+        <tr class="division-step">
+          <td class="division-divisor">${row.divisor}</td>
+          ${row.before.map(
+            value =>
+              `<td class="division-number">${value}</td>`
+          ).join("")}
+        </tr>
+      `);
+    }
+  );
+
+  rows.push(`
+    <tr class="division-final">
+      <td class="division-divisor blank">1</td>
+      ${data.finalValues.map(
+        value =>
+          `<td class="division-number">${value}</td>`
+      ).join("")}
+    </tr>
+  `);
 
   return `
-    <table class="short-division">
-      <thead>
-        <tr>
-          <th>提出的質因數</th>
-          <th>除以前</th>
-          <th>除以後</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${emptyRow}
-      </tbody>
-    </table>
+    <div class="textbook-division-wrap">
+      <table class="textbook-division" aria-label="課本式短除法">
+        <tbody>
+          ${rows.join("")}
+        </tbody>
+      </table>
+
+      <div class="textbook-division-caption">
+        左邊寫每一步提出的質因數；右邊的商逐層往下寫。
+      </div>
+    </div>
+  `;
+}
+
+function shortDivisionStepExplanation(
+  values,
+  type
+) {
+  const data =
+    type === "gcd"
+      ? gcdShortDivisionData(values)
+      : lcmShortDivisionData(values);
+
+  if (
+    data.rows.length === 0
+  ) {
+    return `
+      <div class="division-step-list">
+        <div class="division-stop">
+          ${values.join("、")}
+          已沒有可依本題規則繼續共同提出的質因數，因此短除法在這裡停止。
+        </div>
+      </div>
+    `;
+  }
+
+  const stepHtml =
+    data.rows
+      .map(
+        (row, i) => {
+          const divisibleIndexes =
+            row.before
+              .map(
+                (value, index) =>
+                  value %
+                    row.divisor ===
+                  0
+                    ? index
+                    : -1
+              )
+              .filter(
+                index =>
+                  index >= 0
+              );
+
+          const carriedIndexes =
+            row.before
+              .map(
+                (value, index) =>
+                  value %
+                    row.divisor !==
+                  0
+                    ? index
+                    : -1
+              )
+              .filter(
+                index =>
+                  index >= 0
+              );
+
+          let explanation = "";
+
+          if (
+            type === "gcd"
+          ) {
+            explanation = `
+              ${row.before.join("、")}
+              <strong>全部都能被 ${row.divisor} 整除</strong>，
+              所以一起除以 ${row.divisor}，
+              得到 ${row.after.join("、")}。
+            `;
+          } else if (
+            values.length === 2
+          ) {
+            explanation = `
+              ${row.before.join("、")}
+              都能被 ${row.divisor} 整除，
+              所以一起除以 ${row.divisor}，
+              得到 ${row.after.join("、")}。
+            `;
+          } else {
+            const dividedText =
+              divisibleIndexes
+                .map(
+                  index =>
+                    String(
+                      row.before[index]
+                    )
+                )
+                .join("、");
+
+            const carriedText =
+              carriedIndexes
+                .map(
+                  index =>
+                    String(
+                      row.before[index]
+                    )
+                )
+                .join("、");
+
+            if (
+              carriedIndexes.length === 0
+            ) {
+              explanation = `
+                ${row.before.join("、")}
+                <strong>三個數都能被 ${row.divisor} 整除</strong>，
+                所以全部一起除以 ${row.divisor}，
+                得到 ${row.after.join("、")}。
+              `;
+            } else {
+              explanation = `
+                這一步只有
+                <strong>${dividedText}</strong>
+                能同時被 ${row.divisor} 整除，
+                所以它們除以 ${row.divisor}；
+                <span class="division-carry">
+                  ${carriedText} 不能被 ${row.divisor} 整除，要原數照抄到下一層
+                </span>，
+                因此得到 ${row.after.join("、")}。
+              `;
+            }
+          }
+
+          return `
+            <div class="division-step-item">
+              <span class="division-step-number">第 ${i + 1} 步</span>
+              ${explanation}
+            </div>
+          `;
+        }
+      )
+      .join("");
+
+  let stopText = "";
+
+  if (
+    type === "gcd"
+  ) {
+    stopText =
+      values.length === 2
+        ? `最後得到 ${data.finalValues.join("、")}，兩數的公因數只有 1，因此停止。`
+        : `最後得到 ${data.finalValues.join("、")}，三數已沒有大於 1 的共同因數，因此停止。`;
+  } else {
+    stopText =
+      values.length === 2
+        ? `最後得到 ${data.finalValues.join("、")}，兩數互質，因此停止。`
+        : `最後得到 ${data.finalValues.join("、")}，這些數已兩兩互質，因此停止。`;
+  }
+
+  return `
+    <div class="division-step-list">
+      ${stepHtml}
+      <div class="division-stop">
+        ${stopText}
+      </div>
+    </div>
   `;
 }
 
@@ -1676,34 +1993,47 @@ function gcdExplanation(values) {
 
   const divisorText =
     short.divisors.length
-      ? short.divisors.join("×")
+      ? short.divisors.join(" × ")
       : "1";
 
   return `
-    <strong>第 1 步｜先判斷要找的是「共同的因數中最大者」</strong>
+    <strong>第 1 步｜判斷題目要找什麼</strong>
     <div class="rule-box">
-      最大公因數：幾個整數共同的因數中，最大的一個。
+      最大公因數是幾個整數「共同的因數」中最大的一個。
+      用短除法時，<strong>每一步都必須是所有數都能一起除</strong>。
     </div>
 
-    <strong>第 2 步｜用短除法找共同質因數</strong>
+    <strong>第 2 步｜照課本格式做短除法</strong>
+
     ${shortDivisionTable(values, "gcd")}
 
+    ${shortDivisionStepExplanation(values, "gcd")}
+
+    <strong>第 3 步｜把左邊共同除數全部乘起來</strong>
     <div class="calculation-box">
-      把每一步「全部數都能一起除」的質因數乘起來：
-      ${divisorText}＝<strong>${answer}</strong>
+      （${values.join(" , ")}）<br>
+      ＝${divisorText}<br>
+      ＝<strong>${answer}</strong>
     </div>
 
-    <strong>第 3 步｜用標準分解式再檢查一次</strong>
+    <div class="rule-box">
+      最大公因數的短除法只乘<strong>左邊共同提出的質因數</strong>；
+      最底下一排的數不用再乘進答案。
+    </div>
+
+    <strong>第 4 步｜用標準分解式再檢查一次</strong>
     ${factorizationLines(values)}
 
     <div class="rule-box">
-      最大公因數只看「共同質因數」，
-      每個共同質因數取<strong>較小的指數</strong>。
-      本題得到 ${factorMapToHTML(answerMap)}＝${answer}。
+      最大公因數只看「所有數都有的共同質因數」，
+      再把每個共同質因數的指數取<strong>最小</strong>。<br>
+      本題得到
+      ${factorMapToHTML(answerMap)}
+      ＝${answer}。
     </div>
 
     <strong>結論：</strong>
-    （${values.join(" , ")}）＝${answer}。
+    （${values.join(" , ")}）＝<strong>${answer}</strong>。
   `;
 }
 
@@ -1724,41 +2054,77 @@ function lcmExplanation(values) {
 
   const divisorPart =
     short.divisors.length
-      ? short.divisors.join("×")
+      ? short.divisors.join(" × ")
       : "1";
 
   const finalPart =
-    short.finalValues.join("×");
+    short.finalValues.join(" × ");
+
+  const fullProduct =
+    [
+      ...short.divisors,
+      ...short.finalValues
+    ].join(" × ");
 
   return `
-    <strong>第 1 步｜先判斷要找的是「共同倍數中最小者」</strong>
+    <strong>第 1 步｜判斷題目要找什麼</strong>
     <div class="rule-box">
-      最小公倍數：幾個整數共同的倍數中，最小的一個。
+      最小公倍數是幾個整數「共同的倍數」中最小的一個。
     </div>
 
-    <strong>第 2 步｜用短除法</strong>
+    <strong>第 2 步｜照課本格式做短除法</strong>
+
     ${shortDivisionTable(values, "lcm")}
 
-    <div class="calculation-box">
-      兩數時：一直除到兩數互質。<br>
-      三數時：可先提出三數共同質因數，再提出任意兩數的共同質因數，
-      直到最下面的數兩兩互質。<br><br>
-      所以最小公倍數＝
-      ${divisorPart}×${finalPart}
-      ＝<strong>${answer}</strong>。
+    ${shortDivisionStepExplanation(values, "lcm")}
+
+    <div class="rule-box">
+      ${
+        values.length === 2
+          ? `
+            兩數求最小公倍數時，
+            一直提出兩數共同的質因數，
+            直到最下面兩數<strong>互質</strong>。
+          `
+          : `
+            三數求最小公倍數時，
+            先提出三數共同的質因數；
+            三數沒有共同因數後，
+            還要繼續提出<strong>任意兩數的共同質因數</strong>。<br>
+            沒有被除到的數要<strong>原數照抄</strong>到下一層，
+            直到最下面三數<strong>兩兩互質</strong>。
+          `
+      }
     </div>
 
-    <strong>第 3 步｜用標準分解式再檢查一次</strong>
+    <strong>第 3 步｜左邊除數與最底下一排全部相乘</strong>
+    <div class="calculation-box">
+      〔${values.join(" , ")}〕<br>
+      ＝${fullProduct || `${divisorPart} × ${finalPart}`}<br>
+      ＝<strong>${answer}</strong>
+    </div>
+
+    <div class="rule-box">
+      最小公倍數的短除法要把
+      <strong>左邊所有除數</strong>
+      和
+      <strong>最底下一排所有數</strong>
+      全部乘起來。
+    </div>
+
+    <strong>第 4 步｜用標準分解式再檢查一次</strong>
     ${factorizationLines(values)}
 
     <div class="rule-box">
-      最小公倍數要看「全部質因數」，
-      每個質因數取<strong>較大的指數</strong>。
-      本題得到 ${factorMapToHTML(answerMap)}＝${answer}。
+      最小公倍數要把「所有出現過的質因數」都列入，
+      每個質因數的指數取<strong>最大</strong>。<br>
+      本題得到
+      ${factorMapToHTML(answerMap)}
+      ＝${answer}。
     </div>
 
     <strong>結論：</strong>
-    〔${values.join(" , ")}〕＝${answer}。
+    〔${values.join(" , ")}〕＝<strong>${answer}</strong>。
   `;
 }
 
