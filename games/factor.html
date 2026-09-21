@@ -2,21 +2,14 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>質因數分解、公因數公倍數大挑戰</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2-1 質因數分解大挑戰</title>
 
   <link rel="stylesheet" href="../css/scratchpad.css">
-
   <link rel="stylesheet" href="../css/expression-input.css">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     :root {
       --primary: #00897b;
@@ -28,6 +21,7 @@
       --success: #15803d;
       --warning: #b45309;
       --danger: #b91c1c;
+      --orange: #f57c00;
       --surface: #ffffff;
       --shadow: 0 14px 34px rgba(15, 23, 42, 0.13);
     }
@@ -36,111 +30,86 @@
       margin: 0;
       min-height: 100vh;
       padding: 16px;
-      font-family:
-        "Microsoft JhengHei",
-        "Noto Sans TC",
-        sans-serif;
+      font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif;
       color: var(--text);
-      background:
-        linear-gradient(
-          135deg,
-          #e8f5f3,
-          #fff8e8
-        );
+      background: linear-gradient(135deg, #e8f5f3, #fff8e8);
     }
 
-    button {
+    button, input {
       font-family: inherit;
       -webkit-tap-highlight-color: transparent;
     }
 
+    button { touch-action: manipulation; }
+
     .page-shell {
-      width: min(100%, 920px);
+      width: min(100%, 980px);
       margin: 0 auto;
     }
 
-    #commonHeaderMount {
-      margin-bottom: 14px;
-    }
+    #commonHeaderMount { margin-bottom: 14px; }
 
     .game-card {
       overflow: hidden;
       border: 1px solid #dbe7e5;
       border-top: 8px solid var(--primary);
       border-radius: 26px;
-      background: rgba(255, 255, 255, 0.97);
+      background: rgba(255,255,255,.98);
       box-shadow: var(--shadow);
     }
 
     .game-header {
       padding: 26px 24px 20px;
       text-align: center;
-      background:
-        linear-gradient(
-          180deg,
-          var(--primary-light),
-          #ffffff
-        );
+      background: linear-gradient(180deg, var(--primary-light), #fff);
     }
 
     .game-title {
       margin: 0;
       color: var(--primary-dark);
-      font-size: clamp(28px, 5vw, 40px);
+      font-size: clamp(28px, 5vw, 42px);
       line-height: 1.35;
     }
 
     .game-subtitle {
-      margin: 10px 0 0;
+      max-width: 820px;
+      margin: 10px auto 0;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.8;
     }
 
-    .screen {
-      padding: 24px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
+    .screen { padding: 24px; }
+    .hidden { display: none !important; }
 
     .mode-grid {
       display: grid;
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
     }
 
     .mode-card {
-      min-height: 170px;
+      min-height: 184px;
       padding: 20px;
       border: 2px solid var(--primary-border);
       border-radius: 20px;
-      background:
-        linear-gradient(
-          180deg,
-          var(--primary-light),
-          #ffffff
-        );
+      background: linear-gradient(180deg, var(--primary-light), #fff);
       color: var(--text);
       text-align: left;
       cursor: pointer;
-      transition:
-        transform 0.16s ease,
-        box-shadow 0.16s ease;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
     }
 
     .mode-card:hover {
       transform: translateY(-3px);
-      box-shadow:
-        0 10px 24px
-        rgba(15, 23, 42, 0.11);
+      box-shadow: 0 10px 24px rgba(15,23,42,.11);
+      border-color: var(--primary);
     }
 
     .mode-card h2 {
-      margin: 0 0 9px;
+      margin: 0 0 8px;
       color: var(--primary-dark);
       font-size: 21px;
+      line-height: 1.45;
     }
 
     .mode-card p {
@@ -149,23 +118,49 @@
       line-height: 1.65;
     }
 
-    .mode-note {
-      margin-top: 8px;
-      color: #475569;
-      font-size: 14px;
-      font-weight: 800;
+    .mode-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
     }
+
+    .mode-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--primary-border);
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .mode-card.speed {
+      border-color: #ffcc80;
+      background: linear-gradient(180deg, #fff3e0, #fff);
+    }
+
+    .mode-card.speed h2 { color: #e65100; }
+
+    .mode-card.comprehensive {
+      border-color: #ffe082;
+      background: linear-gradient(180deg, #fff8e1, #fff);
+    }
+
+    .mode-card.comprehensive h2 { color: #9a6700; }
 
     .quiz-topbar {
       display: grid;
-      grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+      grid-template-columns: 1.5fr repeat(3, minmax(0, 1fr));
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .status-box {
-      min-height: 72px;
+      min-height: 74px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -177,9 +172,26 @@
       font-weight: 900;
     }
 
+    .status-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .status-value {
       margin-top: 4px;
-      font-size: 19px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .timer-danger {
+      background: #fee2e2 !important;
+      color: #991b1b !important;
+      animation: pulse .75s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.025); }
     }
 
     .progress-shell {
@@ -194,29 +206,24 @@
       width: 0%;
       height: 100%;
       border-radius: inherit;
-      background:
-        linear-gradient(
-          90deg,
-          var(--primary),
-          #26a69a
-        );
-      transition: width 0.2s ease;
+      background: linear-gradient(90deg, var(--primary), #26a69a);
+      transition: width .2s ease;
     }
 
     .question-card {
       padding: 24px 18px;
       border: 2px solid var(--primary-border);
       border-radius: 20px;
-      background: #ffffff;
+      background: #fff;
       text-align: center;
     }
 
     .question-label {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       color: var(--muted);
-      font-size: clamp(17px, 2.2vw, 21px);
+      font-size: clamp(16px, 2.1vw, 20px);
       font-weight: 900;
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     .question-content {
@@ -225,53 +232,27 @@
       align-items: center;
       justify-content: center;
       color: #0f172a;
-      font-size: clamp(21px, 3.2vw, 31px);
+      font-size: clamp(22px, 3.4vw, 32px);
       font-weight: 900;
-      line-height: 1.55;
+      line-height: 1.6;
       overflow-x: auto;
-      overflow-y: hidden;
     }
 
-    .question-line {
+    .math-expression {
       white-space: nowrap;
+      letter-spacing: .02em;
     }
 
-    .pair-expression {
-      display: inline-flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 3px;
-      max-width: 100%;
-      white-space: nowrap;
-      letter-spacing: 0.01em;
-    }
-
-    .pair-bracket,
-    .pair-comma {
-      color: var(--primary-dark);
-      font-weight: 900;
-    }
-
-    .pair-bracket {
-      font-size: 1.12em;
-    }
-
-    .pair-comma {
-      margin: 0 3px;
-    }
-
-    .question-content sup {
-      position: relative;
-      top: -0.48em;
-      margin-left: 1px;
-      font-size: 0.58em;
-      line-height: 1;
-      vertical-align: baseline;
-    }
-
-    sup {
-      font-size: 0.62em;
+    .math-expression sup {
+      font-size: .6em;
       vertical-align: super;
+    }
+
+    .mini-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
     }
 
     .scratchpad-row {
@@ -285,17 +266,9 @@
       justify-content: center;
     }
 
-    /*
-    共用計算紙按鈕：
-    尚未掛載到正式作答畫面前先隱藏，
-    進入挑戰後固定顯示在題目下方。
-    */
-    #scratchpadOpenButton {
-      display: none !important;
-    }
+    #scratchpadOpenButton { display: none !important; }
 
-    #scratchpad-mobile-button
-    #scratchpadOpenButton {
+    #scratchpad-mobile-button #scratchpadOpenButton {
       position: static !important;
       inset: auto !important;
       display: inline-flex !important;
@@ -306,16 +279,11 @@
     }
 
     .answer-panel {
-      margin-top: 18px;
-      padding: 20px;
+      margin-top: 16px;
+      padding: 18px;
       border: 2px solid var(--primary-border);
       border-radius: 20px;
-      background:
-        linear-gradient(
-          180deg,
-          #f0fdfa,
-          #ffffff
-        );
+      background: linear-gradient(180deg, #f0fdfa, #fff);
     }
 
     .answer-title {
@@ -325,129 +293,55 @@
       font-weight: 900;
     }
 
-    .prime-expression {
-      display: flex;
-      min-height: 94px;
-      align-items: center;
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
-      overflow-x: auto;
-      padding: 12px;
-      border: 3px solid var(--primary-border);
-      border-radius: 16px;
-      background: #ffffff;
     }
 
-    .factor-slot {
-      position: relative;
-      min-width: 74px;
-      min-height: 64px;
-      display: inline-flex;
-      flex: 0 0 auto;
-      align-items: center;
-      justify-content: center;
-      padding: 17px 12px 8px;
+    .choice-button {
+      min-height: 58px;
+      padding: 11px 12px;
       border: 2px solid #cbd5e1;
       border-radius: 14px;
-      background: #ffffff;
+      background: #fff;
+      color: #0f172a;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.5;
       cursor: pointer;
-      transition:
-        border-color 0.14s ease,
-        box-shadow 0.14s ease;
+      transition: border-color .14s ease, background .14s ease, transform .14s ease;
     }
 
-    .factor-slot.active {
+    .choice-button:hover {
       border-color: var(--primary);
-      box-shadow:
-        0 0 0 4px
-        rgba(0, 137, 123, 0.14);
-    }
-
-    .factor-base {
-      font-size: 32px;
-      font-weight: 900;
-      line-height: 1;
-    }
-
-    .factor-exponent {
-      position: absolute;
-      top: 5px;
-      right: 9px;
-      color: var(--primary-dark);
-      font-size: 17px;
-      font-weight: 900;
-      line-height: 1;
-    }
-
-    .factor-placeholder {
-      color: #94a3b8;
-      font-size: 14px;
-      font-weight: 900;
-    }
-
-    .multiply-symbol {
-      flex: 0 0 auto;
-      color: var(--primary-dark);
-      font-size: 30px;
-      font-weight: 900;
-    }
-
-    .input-controls {
-      margin-top: 16px;
-    }
-
-    .control-group {
-      margin-top: 12px;
-    }
-
-    .control-label {
-      margin-bottom: 8px;
-      color: var(--muted);
-      text-align: center;
-      font-size: 14px;
-      font-weight: 900;
-    }
-
-    .control-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .math-key {
-      min-width: 54px;
-      min-height: 44px;
-      padding: 8px 12px;
-      border: 2px solid var(--primary-border);
-      border-radius: 12px;
-      background: #ffffff;
-      color: var(--primary-dark);
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .math-key:hover,
-    .math-key:active {
       background: var(--primary-light);
     }
 
-    .math-key.action {
-      min-width: 112px;
+    .choice-button.selected {
+      border-color: var(--primary);
+      background: #ccfbf1;
+      box-shadow: 0 0 0 3px rgba(0,137,123,.12);
     }
 
-    .math-key.danger {
-      border-color: #fecaca;
-      background: #fff7f7;
-      color: var(--danger);
+    .choice-button:disabled {
+      cursor: default;
+      opacity: .82;
     }
 
-    .input-hint {
-      margin: 13px 0 0;
-      color: var(--muted);
-      text-align: center;
-      font-size: 14px;
-      line-height: 1.6;
+    .choice-button.correct-choice {
+      border-color: #86efac;
+      background: #dcfce7;
+      color: #166534;
     }
+
+    .choice-button.wrong-choice {
+      border-color: #fca5a5;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    #expressionMountWrap { max-width: 780px; margin: 0 auto; }
 
     .input-message {
       min-height: 24px;
@@ -473,97 +367,153 @@
       border: none;
       border-radius: 12px;
       background: var(--primary);
-      color: #ffffff;
+      color: #fff;
       font-size: 16px;
       font-weight: 900;
       cursor: pointer;
-      box-shadow:
-        0 5px 0
-        var(--primary-dark);
+      box-shadow: 0 5px 0 var(--primary-dark);
     }
 
     .game-button:active {
       transform: translateY(4px);
-      box-shadow:
-        0 1px 0
-        var(--primary-dark);
+      box-shadow: 0 1px 0 var(--primary-dark);
     }
 
     .game-button.secondary {
       background: #607d8b;
-      box-shadow:
-        0 5px 0
-        #455a64;
+      box-shadow: 0 5px 0 #455a64;
     }
 
     .game-button.orange {
       background: #f57c00;
-      box-shadow:
-        0 5px 0
-        #d86600;
+      box-shadow: 0 5px 0 #e65100;
+    }
+
+    .game-button.restart {
+      background: #2563eb;
+      box-shadow: 0 5px 0 #1d4ed8;
     }
 
     .feedback {
-      min-height: 54px;
+      min-height: 32px;
       margin-top: 16px;
       text-align: center;
       font-size: 18px;
       font-weight: 900;
-      line-height: 1.6;
+      line-height: 1.55;
     }
 
-    .feedback.correct {
-      color: var(--success);
-    }
-
-    .feedback.wrong {
-      color: var(--danger);
-    }
+    .feedback.correct { color: var(--success); }
+    .feedback.wrong { color: var(--danger); }
 
     .explanation {
       margin-top: 14px;
-      padding: 16px;
-      border-radius: 14px;
+      padding: 18px;
+      border-radius: 16px;
       background: #f8fafc;
+      border-left: 6px solid var(--primary);
       color: #334155;
-      line-height: 1.75;
+      line-height: 1.85;
+      font-size: 16px;
     }
 
-    .result-panel {
+    .explanation strong { color: #0f172a; }
+
+    .rule-box, .calculation-box, .tip-box {
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+
+    .rule-box {
+      background: #ecfeff;
+      border: 1px solid #a5f3fc;
+    }
+
+    .calculation-box {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+    }
+
+    .tip-box {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+    }
+
+    .short-division {
+      width: min(100%, 420px);
+      margin: 12px auto;
+      border-collapse: collapse;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .short-division td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #cbd5e1;
+    }
+
+    .short-division td:first-child {
+      width: 34%;
+      border-right: 2px solid #475569;
+      color: var(--primary-dark);
+    }
+
+    .result-card {
       text-align: center;
     }
 
     .result-score {
-      margin: 16px 0;
-      color: #f57c00;
-      font-size: 56px;
-      font-weight: 900;
+      margin: 6px 0;
+      color: var(--primary-dark);
+      font-size: clamp(46px, 9vw, 72px);
+      font-weight: 1000;
     }
 
     .result-stars {
-      margin-bottom: 10px;
-      font-size: 31px;
+      margin: 6px 0;
+      color: #f59e0b;
+      font-size: clamp(28px, 5vw, 42px);
+      letter-spacing: 4px;
+    }
+
+    .result-comment {
+      color: #475569;
+      font-size: 18px;
+      line-height: 1.7;
     }
 
     .result-grid {
       display: grid;
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
       margin: 20px 0;
     }
 
-    .result-stat {
-      padding: 16px 10px;
-      border-radius: 16px;
+    .result-item {
+      padding: 14px 10px;
+      border-radius: 14px;
       background: var(--primary-light);
+    }
+
+    .result-item .label {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .result-item .value {
+      display: block;
+      margin-top: 4px;
       color: var(--primary-dark);
-      font-weight: 900;
+      font-size: 21px;
+      font-weight: 1000;
     }
 
     .save-status {
       min-height: 28px;
-      margin: 14px 0 0;
+      margin-top: 14px;
       font-weight: 900;
       line-height: 1.5;
     }
@@ -577,3113 +527,3399 @@
       padding: 18px;
       border: 1px solid #e2e8f0;
       border-radius: 16px;
-      background: #ffffff;
-      box-shadow:
-        0 8px 20px
-        rgba(15, 23, 42, 0.08);
+      background: #fff;
     }
 
     .review-title {
-      margin-bottom: 8px;
       color: var(--danger);
-      font-weight: 900;
+      font-size: 18px;
+      font-weight: 1000;
+      margin-bottom: 8px;
     }
 
     .review-question {
-      margin-bottom: 8px;
-      color: #0f172a;
-      font-size: 21px;
-      font-weight: 900;
-      line-height: 1.6;
-    }
-
-    .review-answer {
-      color: #475569;
+      font-weight: 800;
       line-height: 1.7;
     }
 
-    @media (max-width: 700px) {
-      body {
-        padding: 8px;
-      }
+    .review-answer {
+      margin: 10px 0;
+      line-height: 1.7;
+    }
 
-      .screen {
-        padding: 18px 12px;
-      }
+    @media (max-width: 760px) {
+      body { padding: 8px; }
+      .screen { padding: 16px; }
+      .game-header { padding: 22px 16px 16px; }
+      .mode-grid { grid-template-columns: 1fr; }
+      .quiz-topbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .choice-grid { grid-template-columns: 1fr; }
+      .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .question-card { padding: 20px 12px; }
+    }
 
-      .game-header {
-        padding: 22px 14px 17px;
-      }
-
-      .mode-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .quiz-topbar {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-      .answer-panel {
-        padding: 16px 10px;
-      }
-
-      .question-label {
-        font-size: 17px;
-      }
-
-      .question-content {
-        justify-content: flex-start;
-        font-size: clamp(18px, 4.6vw, 25px);
-      }
-
-      .pair-expression {
-        min-width: max-content;
-      }
-
-      .result-grid {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 420px) {
+      .status-value { font-size: 16px; }
+      .game-button { width: 100%; }
     }
   </style>
 </head>
 
 <body>
+<div class="page-shell">
 
-  <div class="page-shell">
+  <div id="commonHeaderMount"></div>
 
-    <div id="commonHeaderMount"></div>
+  <main class="game-card">
 
-    <main class="game-card">
+    <header class="game-header">
+      <h1 class="game-title">🧩 2-1 質因數分解大挑戰</h1>
+      <p class="game-subtitle">
+        對應七年級上學期 2-1：因數與倍數、2／3／4／5／9／11 倍數判別、
+        質數與合數、埃拉托賽尼篩法、質因數、質因數分解、標準分解式，
+        以及利用標準分解式判斷因數與倍數。
+      </p>
+    </header>
 
-      <header class="game-header">
-        <h1 class="game-title">
-          🧩 質因數分解、公因數公倍數大挑戰
-        </h1>
+    <section id="start-screen" class="screen">
+      <div class="mode-grid">
 
-        <p class="game-subtitle">
-          四種模式皆使用標準分解式作答。<br>
-          質因數由小到大排列，相同質因數合併成次方。
-        </p>
-      </header>
-
-      <section id="start-screen" class="screen">
-
-        <div class="mode-grid">
-
-          <button
-            class="mode-card"
-            type="button"
-            data-mode="primeFactorization"
-          >
-            <h2>模式一｜標準分解式</h2>
-            <p>
-              將一般整數寫成標準分解式。
-            </p>
-            <div class="mode-note">
-              例如：180＝2²×3²×5
-            </div>
-          </button>
-
-          <button
-            class="mode-card"
-            type="button"
-            data-mode="gcd"
-          >
-            <h2>模式二｜最大公因數</h2>
-            <p>
-              比較兩個標準分解式，取共同質因數的較小指數。
-            </p>
-            <div class="mode-note">
-              答案也必須寫成標準分解式
-            </div>
-          </button>
-
-          <button
-            class="mode-card"
-            type="button"
-            data-mode="lcm"
-          >
-            <h2>模式三｜最小公倍數</h2>
-            <p>
-              比較兩個標準分解式，取所有質因數的較大指數。
-            </p>
-            <div class="mode-note">
-              答案也必須寫成標準分解式
-            </div>
-          </button>
-
-          <button
-            class="mode-card"
-            type="button"
-            data-mode="mixed"
-          >
-            <h2>模式四｜進階混合</h2>
-            <p>
-              一般整數、標準分解式與連續乘積交錯出題。
-            </p>
-            <div class="mode-note">
-              先分解，再求最大公因數或最小公倍數
-            </div>
-          </button>
-
-        </div>
-
-      </section>
-
-      <section id="quiz-screen" class="screen hidden">
-
-        <div class="quiz-topbar">
-
-          <div class="status-box">
-            模式
-            <span id="mode-badge" class="status-value"></span>
+        <button class="mode-card" type="button" data-mode="factorMultiple">
+          <h2>🔍 因數、倍數與倍數判別</h2>
+          <p>練習因數倍數關係，以及 2、3、4、5、9、11 的倍數判別法。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+            <span class="mode-badge">modeId：factorMultiple</span>
           </div>
+        </button>
 
-          <div class="status-box">
-            題目
-            <span id="question-number" class="status-value"></span>
+        <button class="mode-card" type="button" data-mode="primeComposite">
+          <h2>💎 質數、合數與篩法</h2>
+          <p>辨認質數、合數與 1，熟悉 100 以內質數及埃拉托賽尼篩法。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+            <span class="mode-badge">modeId：primeComposite</span>
           </div>
+        </button>
 
-          <div class="status-box">
-            分數
-            <span id="score-display" class="status-value">0</span>
+        <button class="mode-card" type="button" data-mode="primeFactor">
+          <h2>🧩 因數與質因數</h2>
+          <p>列出因數、辨認質因數，理解「因數」與「質因數」的差異。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+            <span class="mode-badge">modeId：primeFactor</span>
           </div>
+        </button>
 
-          <div class="status-box">
-            時間
-            <span id="time-display" class="status-value">00:00</span>
+        <button class="mode-card" type="button" data-mode="standardForm">
+          <h2>🔢 質因數分解與標準分解式</h2>
+          <p>用短除法或樹狀圖完成質因數分解，寫出標準分解式與相異質因數。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+            <span class="mode-badge">modeId：standardForm</span>
           </div>
+        </button>
 
+        <button class="mode-card" type="button" data-mode="standardJudge">
+          <h2>⚖️ 標準分解式判別因數倍數</h2>
+          <p>比較相同質因數的指數大小，判斷標準分解式間的因數／倍數關係。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">10 題</span>
+            <span class="mode-badge">modeId：standardJudge</span>
+          </div>
+        </button>
+
+        <button class="mode-card speed" type="button" data-mode="speed">
+          <h2>⚡ 質因數快手</h2>
+          <p>60 秒短題快速熟練；最後 10 秒啟動急促倒數提醒。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">60 秒</span>
+            <span class="mode-badge">modeId：speed</span>
+          </div>
+        </button>
+
+        <button class="mode-card comprehensive" type="button" data-mode="comprehensive">
+          <h2>🏆 2-1 綜合挑戰</h2>
+          <p>整合本節所有核心概念，以 8 題完成一次全單元檢核。</p>
+          <div class="mode-meta">
+            <span class="mode-badge">8 題</span>
+            <span class="mode-badge">modeId：comprehensive</span>
+          </div>
+        </button>
+
+      </div>
+    </section>
+
+    <section id="quiz-screen" class="screen hidden">
+
+      <div class="quiz-topbar">
+        <div class="status-box">
+          <span class="status-label">模式</span>
+          <span id="mode-display" class="status-value">—</span>
         </div>
-
-        <div class="progress-shell">
-          <div id="progress-bar" class="progress-bar"></div>
+        <div id="time-box" class="status-box">
+          <span class="status-label">時間</span>
+          <span id="time-display" class="status-value">00:00</span>
         </div>
-
-        <div class="question-card">
-
-          <div id="question-label" class="question-label"></div>
-
-          <div id="question-content" class="question-content"></div>
-
+        <div class="status-box">
+          <span class="status-label">分數</span>
+          <span id="score-display" class="status-value">0</span>
         </div>
-
-        <div class="scratchpad-row">
-          <div id="scratchpad-mobile-button"></div>
+        <div class="status-box">
+          <span class="status-label">連擊</span>
+          <span id="combo-display" class="status-value">0</span>
         </div>
+      </div>
 
-        <div class="answer-panel">
+      <div class="progress-shell">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+
+      <div class="question-card">
+        <div id="question-label" class="question-label"></div>
+        <div id="question-content" class="question-content"></div>
+        <div id="question-note" class="mini-note"></div>
+      </div>
+
+      <div class="scratchpad-row">
+        <div id="scratchpad-mobile-button"></div>
+      </div>
+
+      <div class="answer-panel">
+        <div class="answer-title">請作答</div>
+
+        <div id="choiceMount" class="choice-grid"></div>
+
+        <div id="expressionMountWrap" class="hidden">
           <div id="answerMount"></div>
         </div>
 
-        <div class="button-row">
+        <div id="input-message" class="input-message"></div>
+      </div>
 
-          <button
-            id="submit-button"
-            class="game-button"
-            type="button"
-          >
-            送出答案
-          </button>
+      <div id="feedback" class="feedback"></div>
+      <div id="explanation" class="explanation hidden"></div>
 
-          <button
-            id="next-button"
-            class="game-button hidden"
-            type="button"
-          >
-            下一題
-          </button>
+      <div class="button-row">
+        <button id="submit-button" class="game-button" type="button">送出答案</button>
+        <button id="next-button" class="game-button secondary hidden" type="button">下一題</button>
+        <button id="quit-button" class="game-button orange" type="button">選擇模式</button>
+      </div>
+    </section>
 
-          <button
-            id="change-mode-button"
-            class="game-button secondary"
-            type="button"
-          >
-            重新選擇模式
-          </button>
+    <section id="result-screen" class="screen hidden result-card">
+      <h2 id="result-mode-name">測驗完成</h2>
 
+      <div id="final-score" class="result-score">0 分</div>
+      <div id="final-stars" class="result-stars">★★★★★</div>
+      <p id="final-comment" class="result-comment"></p>
+
+      <div class="result-grid">
+        <div class="result-item">
+          <span class="label">答對</span>
+          <span id="final-correct" class="value">0</span>
         </div>
-
-        <div id="feedback" class="feedback"></div>
-
-        <div
-          id="explanation"
-          class="explanation hidden"
-        ></div>
-
-      </section>
-
-      <section id="result-screen" class="screen result-panel hidden">
-
-        <h2>🏆 挑戰完成</h2>
-
-        <div id="final-score" class="result-score">
-          0 分
+        <div class="result-item">
+          <span class="label">答錯</span>
+          <span id="final-wrong" class="value">0</span>
         </div>
-
-        <div id="final-stars" class="result-stars"></div>
-
-        <p id="final-comment"></p>
-
-        <div class="result-grid">
-
-          <div class="result-stat">
-            答對<br>
-            <span id="final-correct">0</span> 題
-          </div>
-
-          <div class="result-stat">
-            答錯<br>
-            <span id="final-wrong">0</span> 題
-          </div>
-
-          <div class="result-stat">
-            用時<br>
-            <span id="final-time">00:00</span>
-          </div>
-
+        <div class="result-item">
+          <span class="label">最高連擊</span>
+          <span id="final-combo" class="value">0</span>
         </div>
-
-        <div
-          id="save-status"
-          class="save-status"
-          aria-live="polite"
-        ></div>
-
-        <div class="button-row">
-
-          <button
-            id="again-button"
-            class="game-button"
-            type="button"
-          >
-            再玩一次
-          </button>
-
-          <button
-            id="review-button"
-            class="game-button orange"
-            type="button"
-          >
-            錯題回顧
-          </button>
-
-          <button
-            id="result-mode-button"
-            class="game-button secondary"
-            type="button"
-          >
-            選擇模式
-          </button>
-
+        <div class="result-item">
+          <span class="label">作答時間</span>
+          <span id="final-time" class="value">00:00</span>
         </div>
-
-      </section>
-
-      <section id="review-screen" class="screen hidden">
-
-        <h2>📝 錯題回顧</h2>
-
-        <div id="review-list" class="review-list"></div>
-
-        <div class="button-row">
-
-          <button
-            id="review-again-button"
-            class="game-button"
-            type="button"
-          >
-            再玩一次
-          </button>
-
-          <button
-            id="review-result-button"
-            class="game-button secondary"
-            type="button"
-          >
-            回到測驗結果
-          </button>
-
-        </div>
-
-      </section>
-
-    </main>
-
-  </div>
-
-  <script src="../js/common-header.js"></script>
-  <script src="../js/scratchpad.js"></script>
-  <script src="../js/scratchpad-template.js"></script>
-  <script src="../js/sound-manager.js?v=1"></script>
-  <script src="../js/expression-input.js?v=1"></script>
-
-  <script type="module">
-
-    import {
-      saveGameScore
-    } from "../js/scores.js";
-
-    "use strict";
-
-    const GAME_ID =
-      "factor";
-
-    const TOTAL_QUESTIONS =
-      10;
-
-    const PRIME_OPTIONS = [
-      2,
-      3,
-      5,
-      7,
-      11,
-      13
-    ];
-
-    const EXPONENT_OPTIONS = [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6
-    ];
-
-    const MODE_NAMES = {
-      primeFactorization:
-        "標準分解式",
-
-      gcd:
-        "最大公因數",
-
-      lcm:
-        "最小公倍數",
-
-      mixed:
-        "進階混合"
-    };
-
-    const $ =
-      (id) =>
-        document.getElementById(id);
-
-    let mode =
-      "primeFactorization";
-
-    let questions =
-      [];
-
-    let index =
-      0;
-
-    let correct =
-      0;
-
-    let wrong =
-      0;
-
-    let combo =
-      0;
-
-    let maxCombo =
-      0;
-
-    let records =
-      [];
-
-    let startTime =
-      0;
-
-    let finalElapsed =
-      0;
-
-    let timer =
-      null;
-
-    let locked =
-      false;
-
-    let nextReady =
-      false;
-
-    let scoreSaved =
-      false;
-
-    const answerInput =
-      new window.ExpressionInput({
-        mountId:
-          "answerMount",
-
-        allowNumber:
-          false,
-
-        allowExpression:
-          true,
-
-        defaultMode:
-          "expression",
-
-        baseOptions: [
-          2,
-          3,
-          5,
-          7,
-          11,
-          13
-        ],
-
-        exponentOptions: [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ],
-
-        allowCustomBase:
-          false,
-
-        maxTerms:
-          7,
-
-        requireAscendingBases:
-          true,
-
-        disallowDuplicateBases:
-          true,
-
-        omitExponentOne:
-          true,
-
-        theme: {
-          primary:
-            "#00897b",
-
-          light:
-            "#f0fdfa",
-
-          border:
-            "#80cbc4"
-        },
-
-        labels: {
-          expressionLabel:
-            "請輸入標準分解式",
-
-          baseLabel:
-            "選擇質因數",
-
-          exponentLabel:
-            "選擇指數",
-
-          editLabel:
-            "編輯答案"
-        }
-      });
-
-    /*
-    ==================================================
-    共用 Header＋計算紙按鈕
-    ==================================================
-    */
-
-    function mountScratchpadButton() {
-      const buttonMount =
-        $("scratchpad-mobile-button");
-
-      const openButton =
-        $("scratchpadOpenButton");
-
-      if (
-        !buttonMount ||
-        !openButton
-      ) {
-        return false;
-      }
-
-      if (
-        openButton.parentElement !==
-        buttonMount
-      ) {
-        buttonMount.appendChild(
-          openButton
-        );
-      }
-
-      return true;
-    }
-
-    function ensureScratchpadButtonMounted() {
-      if (
-        mountScratchpadButton()
-      ) {
-        return;
-      }
-
-      let attempts =
-        0;
-
-      const retryTimer =
-        window.setInterval(
-          () => {
-            attempts++;
-
-            if (
-              mountScratchpadButton() ||
-              attempts >=
-                40
-            ) {
-              window.clearInterval(
-                retryTimer
-              );
-            }
-          },
-          50
-        );
-    }
-
-    window.addEventListener(
-      "DOMContentLoaded",
-      () => {
-        if (
-          window.MathGameCommonHeader
-        ) {
-          window.MathGameCommonHeader.init({
-            mountId:
-              "commonHeaderMount",
-
-            basePath:
-              "../"
-          });
-        }
-
-        ensureScratchpadButtonMounted();
-      }
+      </div>
+
+      <div id="save-status" class="save-status" aria-live="polite"></div>
+
+      <div class="button-row">
+        <button id="again-button" class="game-button restart" type="button">🔄 重新挑戰</button>
+        <button id="review-button" class="game-button orange" type="button">錯題回顧</button>
+        <button id="result-mode-button" class="game-button secondary" type="button">選擇模式</button>
+      </div>
+    </section>
+
+    <section id="review-screen" class="screen hidden">
+      <h2>📝 錯題回顧</h2>
+      <div id="review-list" class="review-list"></div>
+
+      <div class="button-row">
+        <button id="review-again-button" class="game-button restart" type="button">🔄 重新挑戰</button>
+        <button id="review-result-button" class="game-button secondary" type="button">回到測驗結果</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="../js/common-header.js"></script>
+<script src="../js/scratchpad.js"></script>
+<script src="../js/scratchpad-template.js"></script>
+<script src="../js/sound-manager.js?v=1"></script>
+<script src="../js/expression-input.js?v=7"></script>
+
+<script type="module">
+"use strict";
+
+/*
+==================================================
+2-1 質因數分解大挑戰
+現有專案相容：
+GAME_ID 仍沿用 factor
+每個模式以 modeId 儲存
+==================================================
+*/
+
+const GAME_ID = "factor";
+
+const MODE_CONFIG = {
+  factorMultiple: {
+    name: "🔍 因數、倍數與倍數判別",
+    count: 10,
+    difficultyWeight: 1.00
+  },
+  primeComposite: {
+    name: "💎 質數、合數與篩法",
+    count: 10,
+    difficultyWeight: 1.00
+  },
+  primeFactor: {
+    name: "🧩 因數與質因數",
+    count: 10,
+    difficultyWeight: 1.08
+  },
+  standardForm: {
+    name: "🔢 質因數分解與標準分解式",
+    count: 10,
+    difficultyWeight: 1.22
+  },
+  standardJudge: {
+    name: "⚖️ 標準分解式判別因數倍數",
+    count: 10,
+    difficultyWeight: 1.25
+  },
+  speed: {
+    name: "⚡ 質因數快手",
+    seconds: 60,
+    difficultyWeight: 1.12
+  },
+  comprehensive: {
+    name: "🏆 2-1 綜合挑戰",
+    count: 8,
+    difficultyWeight: 1.35
+  }
+};
+
+const PRIME_LIST_100 = [
+  2,3,5,7,11,13,17,19,23,29,
+  31,37,41,43,47,53,59,61,67,71,
+  73,79,83,89,97
+];
+
+const PRIME_INPUT_OPTIONS = [
+  2,3,5,7,11,13,17,19,23,29,31
+];
+
+const STANDARD_POOL = [
+  24,36,40,48,54,60,72,75,84,90,
+  96,108,120,126,132,144,150,168,180,198,
+  210,216,225,240,252,270,288,300,315,330,
+  360,396,420,450,480,504,525,540,600,630,
+  660,720,756,810,840,900,945,990,1020,1080,
+  1170,1260,1320,1386,1440,1530,1680,1750,1800
+];
+
+const $ = id => document.getElementById(id);
+
+let modeId = "factorMultiple";
+let questions = [];
+let index = 0;
+let correct = 0;
+let wrong = 0;
+let combo = 0;
+let maxCombo = 0;
+let records = [];
+let selectedChoice = null;
+let answered = false;
+let startTime = 0;
+let elapsed = 0;
+let timerId = null;
+let speedRemaining = 60;
+let speedAttempts = 0;
+let speedScore = 0;
+let scoreSaved = false;
+let attemptId = "";
+let answerInput = null;
+
+window.MathGameSessionMeta = {
+  gameId: GAME_ID,
+  chapter: "2-1",
+  title: "質因數分解大挑戰",
+  modes: MODE_CONFIG
+};
+
+/*
+==================================================
+基本工具
+==================================================
+*/
+
+function rand(min, max) {
+  return Math.floor(
+    Math.random() * (max - min + 1)
+  ) + min;
+}
+
+function pick(array) {
+  return array[
+    Math.floor(Math.random() * array.length)
+  ];
+}
+
+function shuffle(array) {
+  const result = [...array];
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(
+      Math.random() * (i + 1)
     );
 
-    /*
-    ==================================================
-    音效
-    ==================================================
-    */
+    [result[i], result[j]] =
+      [result[j], result[i]];
+  }
 
-    function playGameSound(
-      soundName
+  return result;
+}
+
+function unique(array) {
+  return [...new Set(array)];
+}
+
+function esc(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function formatTime(seconds) {
+  const safe = Math.max(
+    0,
+    Math.floor(seconds)
+  );
+
+  const min = Math.floor(safe / 60);
+  const sec = safe % 60;
+
+  return `${String(min).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+}
+
+function createAttemptId() {
+  return [
+    GAME_ID,
+    modeId,
+    Date.now(),
+    Math.random().toString(36).slice(2,10)
+  ].join("-");
+}
+
+function showOnly(id) {
+  [
+    "start-screen",
+    "quiz-screen",
+    "result-screen",
+    "review-screen"
+  ].forEach(screenId => {
+    $(screenId).classList.toggle(
+      "hidden",
+      screenId !== id
+    );
+  });
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+/*
+==================================================
+共用 Header、計算紙
+==================================================
+*/
+
+function mountScratchpadButton() {
+  const mount = $("scratchpad-mobile-button");
+  const button = $("scratchpadOpenButton");
+
+  if (!mount || !button) {
+    return false;
+  }
+
+  if (button.parentElement !== mount) {
+    mount.appendChild(button);
+  }
+
+  return true;
+}
+
+function ensureScratchpadButtonMounted() {
+  if (mountScratchpadButton()) {
+    return;
+  }
+
+  let attempts = 0;
+
+  const retry = window.setInterval(() => {
+    attempts++;
+
+    if (
+      mountScratchpadButton() ||
+      attempts >= 50
     ) {
+      window.clearInterval(retry);
+    }
+  }, 50);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  if (window.MathGameCommonHeader) {
+    window.MathGameCommonHeader.init({
+      mountId: "commonHeaderMount",
+      basePath: "../"
+    });
+  }
+
+  ensureScratchpadButtonMounted();
+  initExpressionInput();
+});
+
+/*
+==================================================
+音效
+==================================================
+*/
+
+function playGameSound(method) {
+  try {
+    const sound =
+      window.GameSound ||
+      window.MathGameSound;
+
+    const fn = sound?.[method];
+
+    if (typeof fn !== "function") {
+      return false;
+    }
+
+    const result =
+      fn.call(sound);
+
+    if (
+      result &&
+      typeof result.catch === "function"
+    ) {
+      result.catch(() => {});
+    }
+
+    return true;
+  } catch (error) {
+    console.warn("音效播放失敗：", error);
+    return false;
+  }
+}
+
+function playUrgentCountdown() {
+  const sound =
+    window.GameSound ||
+    window.MathGameSound;
+
+  const possibleMethods = [
+    "playCountdown",
+    "playTick",
+    "playTimer",
+    "playUrgent"
+  ];
+
+  for (const method of possibleMethods) {
+    if (typeof sound?.[method] === "function") {
       try {
-        const soundManager =
-          window.GameSound ||
-          window.MathGameSound;
-
-        const soundFunction =
-          soundManager?.[
-            soundName
-          ];
-
-        if (
-          typeof soundFunction !==
-          "function"
-        ) {
-          return;
-        }
-
-        const result =
-          soundFunction.call(
-            soundManager
-          );
-
-        if (
-          result &&
-          typeof result.catch ===
-          "function"
-        ) {
-          result.catch(
-            (error) => {
-              console.warn(
-                `音效播放失敗：${soundName}`,
-                error
-              );
-            }
-          );
-        }
-      } catch (error) {
-        console.warn(
-          `音效播放失敗：${soundName}`,
-          error
-        );
-      }
-    }
-
-    /*
-    ==================================================
-    畫面切換
-    ==================================================
-    */
-
-    function showOnly(
-      screenId
-    ) {
-      [
-        "start-screen",
-        "quiz-screen",
-        "result-screen",
-        "review-screen"
-      ].forEach(
-        (id) => {
-          $(id).classList.toggle(
-            "hidden",
-            id !== screenId
-          );
-        }
-      );
-    }
-
-    /*
-    ==================================================
-    開始遊戲
-    ==================================================
-    */
-
-    function startGame(
-      selectedMode
-    ) {
-      clearInterval(
-        timer
-      );
-
-      mode =
-        selectedMode ||
-        mode;
-
-      questions =
-        createQuestionSet(
-          mode
-        );
-
-      index =
-        0;
-
-      correct =
-        0;
-
-      wrong =
-        0;
-
-      combo =
-        0;
-
-      maxCombo =
-        0;
-
-      records =
-        [];
-
-      locked =
-        false;
-
-      nextReady =
-        false;
-
-      scoreSaved =
-        false;
-
-      finalElapsed =
-        0;
-
-      startTime =
-        Date.now();
-
-      $("save-status")
-        .textContent =
-        "";
-
-      $("mode-badge")
-        .textContent =
-        MODE_NAMES[mode];
-
-      setTimer();
-
-      showOnly(
-        "quiz-screen"
-      );
-
-      /*
-      每次開始挑戰都再次確認
-      共用計算紙按鈕已掛載到正式作答畫面。
-      */
-      ensureScratchpadButtonMounted();
-
-      loadQuestion();
-    }
-
-    function setTimer() {
-      clearInterval(
-        timer
-      );
-
-      timer =
-        setInterval(
-          () => {
-            const elapsed =
-              Math.floor(
-                (
-                  Date.now() -
-                  startTime
-                ) /
-                1000
-              );
-
-            $("time-display")
-              .textContent =
-              formatElapsed(
-                elapsed
-              );
-          },
-          1000
-        );
-    }
-
-    /*
-    ==================================================
-    載入題目
-    ==================================================
-    */
-
-    function loadQuestion() {
-      if (
-        typeof window
-          .resetGameScratchpad ===
-        "function"
-      ) {
-        window
-          .resetGameScratchpad();
-      }
-
-      locked =
-        false;
-
-      nextReady =
-        false;
-
-      $("submit-button")
-        .classList.remove(
-          "hidden"
-        );
-
-      $("next-button")
-        .classList.add(
-          "hidden"
-        );
-
-      $("feedback")
-        .textContent =
-        "";
-
-      $("feedback")
-        .className =
-        "feedback";
-
-      $("explanation")
-        .innerHTML =
-        "";
-
-      $("explanation")
-        .classList.add(
-          "hidden"
-        );
-
-      const question =
-        questions[index];
-
-      if (!question) {
-        console.error(
-          "題目載入失敗：找不到目前題目",
-          { index, questions, mode }
-        );
-
-        $("question-label")
-          .textContent =
-          "題目載入失敗";
-
-        $("question-content")
-          .textContent =
-          "請重新選擇模式後再試一次。";
-
+        sound[method]();
         return;
-      }
-
-      $("question-label")
-        .textContent =
-        question.label;
-
-      $("question-content")
-        .innerHTML =
-        question.html;
-
-      $("question-number")
-        .textContent =
-        `${index + 1} / ${TOTAL_QUESTIONS}`;
-
-      $("score-display")
-        .textContent =
-        Math.round(
-          correct /
-          TOTAL_QUESTIONS *
-          100
-        );
-
-      $("progress-bar")
-        .style.width =
-        `${
-          index /
-          TOTAL_QUESTIONS *
-          100
-        }%`;
-
-      answerInput.reset();
-
-      answerInput.setDisabled(
-        false
-      );
+      } catch (_) {}
     }
+  }
 
-    /*
-    ==================================================
-    讀取共用標準分解式輸入器
-    ==================================================
-    */
+  // 共用音效若尚未提供倒數音，使用極短提示音作為保底。
+  try {
+    const AudioCtx =
+      window.AudioContext ||
+      window.webkitAudioContext;
 
-    function readPrimeFactorAnswer() {
-      const validation =
-        answerInput.validate();
+    if (!AudioCtx) return;
 
-      if (
-        !validation.valid
-      ) {
-        return {
-          valid:
-            false,
+    const ctx = new AudioCtx();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
 
-          message:
-            "請完成正確的標準分解式。"
-        };
-      }
+    oscillator.frequency.value = 880;
+    oscillator.type = "sine";
 
-      const terms =
-        validation.value.terms;
+    gain.gain.setValueAtTime(.06, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+      .001,
+      ctx.currentTime + .08
+    );
 
-      const isStandard =
-        window.ExpressionInputUtils
-          .isStandardPrimeFactorization(
-            terms
-          );
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
 
-      if (
-        !isStandard
-      ) {
-        return {
-          valid:
-            false,
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + .08);
 
-          message:
-            "答案必須是質因數由小到大排列的標準分解式。"
-        };
-      }
+    oscillator.addEventListener("ended", () => {
+      ctx.close().catch(() => {});
+    });
+  } catch (_) {}
+}
 
-      return {
-        valid:
-          true,
+/*
+==================================================
+數學工具
+==================================================
+*/
 
-        map:
-          window.ExpressionInputUtils
-            .termsToFactorMap(
-              terms
-            ),
+function isPrime(n) {
+  if (n < 2) return false;
 
-        terms,
+  if (n === 2) return true;
 
-        html:
-          validation.value.html
-      };
+  if (n % 2 === 0) return false;
+
+  for (
+    let d = 3;
+    d * d <= n;
+    d += 2
+  ) {
+    if (n % d === 0) {
+      return false;
     }
+  }
 
-    /*
-    ==================================================
-    判斷答案
-    ==================================================
-    */
+  return true;
+}
 
-    function checkAnswer() {
-      if (locked) {
-        return;
-      }
+function factorsOf(n) {
+  const result = [];
 
-      const answer =
-        readPrimeFactorAnswer();
+  for (let d = 1; d * d <= n; d++) {
+    if (n % d === 0) {
+      result.push(d);
 
-      if (
-        !answer.valid
-      ) {
-        answerInput.showMessage(
-          answer.message
-        );
-
-        return;
-      }
-
-      const question =
-        questions[index];
-
-      const isCorrect =
-        mapsEqual(
-          answer.map,
-          question.answerMap
-        );
-
-      locked =
-        true;
-
-      answerInput.setDisabled(
-        true
-      );
-
-      if (
-        isCorrect
-      ) {
-        correct++;
-
-        combo++;
-
-        maxCombo =
-          Math.max(
-            maxCombo,
-            combo
-          );
-
-        $("feedback")
-          .textContent =
-          "✨ 答對了！這是正確的標準分解式。";
-
-        $("feedback")
-          .className =
-          "feedback correct";
-
-        playGameSound(
-          "playCorrect"
-        );
-      } else {
-        wrong++;
-
-        combo =
-          0;
-
-        $("feedback")
-          .textContent =
-          "❌ 答案不正確，請查看解析。";
-
-        $("feedback")
-          .className =
-          "feedback wrong";
-
-        playGameSound(
-          "playWrong"
-        );
-      }
-
-      records.push({
-        number:
-          index + 1,
-
-        question,
-
-        userAnswerMap:
-          answer.map,
-
-        correct:
-          isCorrect
-      });
-
-      $("score-display")
-        .textContent =
-        Math.round(
-          correct /
-          TOTAL_QUESTIONS *
-          100
-        );
-
-      $("explanation")
-        .innerHTML =
-        buildExplanation(
-          question
-        );
-
-      $("explanation")
-        .classList.remove(
-          "hidden"
-        );
-
-      $("submit-button")
-        .classList.add(
-          "hidden"
-        );
-
-      $("next-button")
-        .classList.remove(
-          "hidden"
-        );
-
-      $("next-button")
-        .textContent =
-        index ===
-          TOTAL_QUESTIONS -
-          1
-          ? "查看測驗結果"
-          : "下一題";
-
-      nextReady =
-        true;
-
-      $("next-button")
-        .focus();
-    }
-
-    function nextQuestion() {
-      if (
-        !nextReady
-      ) {
-        return;
-      }
-
-      index++;
-
-      if (
-        index <
-        TOTAL_QUESTIONS
-      ) {
-        loadQuestion();
-      } else {
-        showResult();
+      if (d * d !== n) {
+        result.push(n / d);
       }
     }
+  }
 
-    /*
-    ==================================================
-    題目產生
-    ==================================================
-    */
+  return result.sort((a,b) => a - b);
+}
 
-    function createQuestionSet(
-      selectedMode
-    ) {
-      if (
-        selectedMode ===
-        "mixed"
-      ) {
-        return createMixedQuestionSet();
-      }
+function primeFactorMap(n) {
+  let value = n;
+  const map = {};
 
-      const generated =
-        [];
-
-      let safetyCount =
-        0;
-
-      while (
-        generated.length <
-          TOTAL_QUESTIONS &&
-        safetyCount <
-          500
-      ) {
-        safetyCount++;
-
-        const question =
-          createQuestion(
-            selectedMode
-          );
-
-        const key =
-          `${question.type}|${question.plainText}`;
-
-        if (
-          !generated.some(
-            (item) =>
-              `${item.type}|${item.plainText}` ===
-              key
-          )
-        ) {
-          generated.push(
-            question
-          );
-        }
-      }
-
-      if (
-        generated.length <
-        TOTAL_QUESTIONS
-      ) {
-        throw new Error(
-          "無法產生足夠的不重複題目。"
-        );
-      }
-
-      return generated;
+  for (
+    let p = 2;
+    p * p <= value;
+    p++
+  ) {
+    while (value % p === 0) {
+      map[p] = (map[p] || 0) + 1;
+      value /= p;
     }
-
-
-    function createQuestion(
-      selectedMode
-    ) {
-      if (
-        selectedMode ===
-        "primeFactorization"
-      ) {
-        return createPrimeFactorizationQuestion();
-      }
-
-      if (
-        selectedMode ===
-        "gcd"
-      ) {
-        return createStandardPairQuestion(
-          "gcd"
-        );
-      }
-
-      if (
-        selectedMode ===
-        "lcm"
-      ) {
-        return createStandardPairQuestion(
-          "lcm"
-        );
-      }
-
-      return createMixedQuestion();
-    }
-
-    function createPrimeFactorizationQuestion() {
-      const factorMap =
-        randomFactorMap({
-          maxValue:
-            1800,
-
-          minPrimeCount:
-            2,
-
-          maxPrimeCount:
-            4
-        });
-
-      const number =
-        valueFromMap(
-          factorMap
-        );
-
-      return {
-        type:
-          "primeFactorization",
-
-        label:
-          "請將下列整數寫成標準分解式",
-
-        html:
-          `<div class="question-line">${number}＝？</div>`,
-
-        plainText:
-          `${number}`,
-
-        sourceMaps: [
-          factorMap
-        ],
-
-        answerMap:
-          factorMap
-      };
-    }
-
-    function createStandardPairQuestion(
-      operation
-    ) {
-      const pair =
-        randomStandardPair(
-          operation
-        );
-
-      const firstExpression =
-        mapToExpression(
-          pair.firstMap
-        );
-
-      const secondExpression =
-        mapToExpression(
-          pair.secondMap
-        );
-
-      const answerMap =
-        operation ===
-        "gcd"
-          ? gcdMap(
-              pair.firstMap,
-              pair.secondMap
-            )
-          : lcmMap(
-              pair.firstMap,
-              pair.secondMap
-            );
-
-      return {
-        type:
-          operation,
-
-        label:
-          operation ===
-          "gcd"
-            ? "求下列兩數的最大公因數，答案請寫成標準分解式"
-            : "求下列兩數的最小公倍數，答案請寫成標準分解式",
-
-        html:
-          operation === "gcd"
-            ? `<div class="pair-expression"><span class="pair-bracket">(</span>${expressionToHtml(firstExpression)}<span class="pair-comma">,</span>${expressionToHtml(secondExpression)}<span class="pair-bracket">)</span></div>`
-            : `<div class="pair-expression"><span class="pair-bracket">[</span>${expressionToHtml(firstExpression)}<span class="pair-comma">,</span>${expressionToHtml(secondExpression)}<span class="pair-bracket">]</span></div>`,
-
-        plainText:
-          `${firstExpression}|${secondExpression}`,
-
-        sourceMaps: [
-          pair.firstMap,
-          pair.secondMap
-        ],
-
-        answerMap
-      };
-    }
-
-    /*
-    ==================================================
-    模式四：十種進階混合題型
-    每次挑戰固定十種各一題，再隨機排序
-    ==================================================
-    */
-
-    function createMixedQuestionSet() {
-      const questionSettings = [
-        {
-          form:
-            "standard-standard",
-
-          operation:
-            "gcd"
-        },
-
-        {
-          form:
-            "standard-standard",
-
-          operation:
-            "lcm"
-        },
-
-        {
-          form:
-            "integer-standard",
-
-          operation:
-            "gcd"
-        },
-
-        {
-          form:
-            "integer-standard",
-
-          operation:
-            "lcm"
-        },
-
-        {
-          form:
-            "integer-product",
-
-          operation:
-            "gcd"
-        },
-
-        {
-          form:
-            "integer-product",
-
-          operation:
-            "lcm"
-        },
-
-        {
-          form:
-            "standard-product",
-
-          operation:
-            Math.random() <
-            0.5
-              ? "gcd"
-              : "lcm"
-        },
-
-        {
-          form:
-            "integer-integer",
-
-          operation:
-            Math.random() <
-            0.5
-              ? "gcd"
-              : "lcm"
-        },
-
-        {
-          form:
-            "three-values",
-
-          operation:
-            "gcd"
-        },
-
-        {
-          form:
-            "three-values",
-
-          operation:
-            "lcm"
-        }
-      ];
-
-      return shuffle(
-        questionSettings.map(
-          (
-            setting,
-            questionIndex
-          ) => {
-            return createMixedQuestion(
-              setting.form,
-              setting.operation,
-              questionIndex + 1
-            );
-          }
-        )
-      );
-    }
-
-    function createMixedQuestion(
-      formType = null,
-      operation = null,
-      typeNumber = 0
-    ) {
-      const resolvedFormType =
-        formType ||
-        randomChoice([
-          "standard-standard",
-          "integer-standard",
-          "integer-product",
-          "standard-product",
-          "integer-integer"
-        ]);
-
-      const resolvedOperation =
-        operation ||
-        (
-          Math.random() <
-          0.5
-            ? "gcd"
-            : "lcm"
-        );
-
-      if (
-        resolvedFormType ===
-        "three-values"
-      ) {
-        return createThreeValueMixedQuestion(
-          resolvedOperation,
-          typeNumber
-        );
-      }
-
-      const pair =
-        randomStandardPair(
-          resolvedOperation
-        );
-
-      const firstMap =
-        pair.firstMap;
-
-      const secondMap =
-        pair.secondMap;
-
-      const firstInteger =
-        valueFromMap(
-          firstMap
-        );
-
-      const secondInteger =
-        valueFromMap(
-          secondMap
-        );
-
-      const firstStandard =
-        expressionToHtml(
-          mapToExpression(
-            firstMap
-          )
-        );
-
-      const secondStandard =
-        expressionToHtml(
-          mapToExpression(
-            secondMap
-          )
-        );
-
-      const firstProduct =
-        mapToCompositeProduct(
-          firstMap
-        ).join("×");
-
-      const secondProduct =
-        mapToCompositeProduct(
-          secondMap
-        ).join("×");
-
-      let displays =
-        [];
-
-      let formDescription =
-        "";
-
-      if (
-        resolvedFormType ===
-        "standard-standard"
-      ) {
-        displays = [
-          firstStandard,
-          secondStandard
-        ];
-
-        formDescription =
-          "兩個標準分解式";
-      } else if (
-        resolvedFormType ===
-        "integer-standard"
-      ) {
-        if (
-          Math.random() <
-          0.5
-        ) {
-          displays = [
-            String(
-              firstInteger
-            ),
-            secondStandard
-          ];
-        } else {
-          displays = [
-            firstStandard,
-            String(
-              secondInteger
-            )
-          ];
-        }
-
-        formDescription =
-          "一般整數與標準分解式";
-      } else if (
-        resolvedFormType ===
-        "integer-product"
-      ) {
-        if (
-          Math.random() <
-          0.5
-        ) {
-          displays = [
-            String(
-              firstInteger
-            ),
-            secondProduct
-          ];
-        } else {
-          displays = [
-            firstProduct,
-            String(
-              secondInteger
-            )
-          ];
-        }
-
-        formDescription =
-          "一般整數與連續乘積";
-      } else if (
-        resolvedFormType ===
-        "standard-product"
-      ) {
-        if (
-          Math.random() <
-          0.5
-        ) {
-          displays = [
-            firstStandard,
-            secondProduct
-          ];
-        } else {
-          displays = [
-            firstProduct,
-            secondStandard
-          ];
-        }
-
-        formDescription =
-          "標準分解式與連續乘積";
-      } else {
-        displays = [
-          String(
-            firstInteger
-          ),
-          String(
-            secondInteger
-          )
-        ];
-
-        formDescription =
-          "兩個一般整數";
-      }
-
-      const answerMap =
-        resolvedOperation ===
-        "gcd"
-          ? gcdMap(
-              firstMap,
-              secondMap
-            )
-          : lcmMap(
-              firstMap,
-              secondMap
-            );
-
-      return {
-        type:
-          "mixed",
-
-        mixedType:
-          resolvedFormType,
-
-        typeNumber,
-
-        operation:
-          resolvedOperation,
-
-        label:
-          resolvedOperation ===
-          "gcd"
-            ? `進階：求下列${formDescription}的最大公因數，答案請寫成標準分解式`
-            : `進階：求下列${formDescription}的最小公倍數，答案請寫成標準分解式`,
-
-        html:
-          buildOperationDisplay(
-            resolvedOperation,
-            displays
-          ),
-
-        plainText:
-          `${typeNumber}|${resolvedFormType}|${resolvedOperation}|${displays.join("|")}`,
-
-        sourceMaps: [
-          firstMap,
-          secondMap
-        ],
-
-        answerMap
-      };
-    }
-
-    function createThreeValueMixedQuestion(
-      operation,
-      typeNumber
-    ) {
-      const maps =
-        createThreeFactorMaps(
-          operation
-        );
-
-      const displayType =
-        randomChoice([
-          "three-integers",
-          "three-standards",
-          "three-mixed"
-        ]);
-
-      let displays =
-        [];
-
-      let formDescription =
-        "";
-
-      if (
-        displayType ===
-        "three-integers"
-      ) {
-        displays =
-          maps.map(
-            (factorMap) => {
-              return String(
-                valueFromMap(
-                  factorMap
-                )
-              );
-            }
-          );
-
-        formDescription =
-          "三個一般整數";
-      } else if (
-        displayType ===
-        "three-standards"
-      ) {
-        displays =
-          maps.map(
-            (factorMap) => {
-              return expressionToHtml(
-                mapToExpression(
-                  factorMap
-                )
-              );
-            }
-          );
-
-        formDescription =
-          "三個標準分解式";
-      } else {
-        displays =
-          shuffle([
-            String(
-              valueFromMap(
-                maps[0]
-              )
-            ),
-
-            expressionToHtml(
-              mapToExpression(
-                maps[1]
-              )
-            ),
-
-            mapToCompositeProduct(
-              maps[2]
-            ).join("×")
-          ]);
-
-        formDescription =
-          "三個不同形式的數";
-      }
-
-      const answerMap =
-        operation ===
-        "gcd"
-          ? gcdMapMany(
-              maps
-            )
-          : lcmMapMany(
-              maps
-            );
-
-      return {
-        type:
-          "mixed",
-
-        mixedType:
-          displayType,
-
-        typeNumber,
-
-        operation,
-
-        label:
-          operation ===
-          "gcd"
-            ? `進階：求下列${formDescription}的最大公因數，答案請寫成標準分解式`
-            : `進階：求下列${formDescription}的最小公倍數，答案請寫成標準分解式`,
-
-        html:
-          buildOperationDisplay(
-            operation,
-            displays
-          ),
-
-        plainText:
-          `${typeNumber}|${displayType}|${operation}|${displays.join("|")}`,
-
-        sourceMaps:
-          maps,
-
-        answerMap
-      };
-    }
-
-    function createThreeFactorMaps(
-      operation
-    ) {
-      let attemptCount =
-        0;
-
-      while (
-        attemptCount <
-        300
-      ) {
-        attemptCount++;
-
-        const maps = [
-          randomFactorMap({
-            maxValue:
-              700,
-
-            minPrimeCount:
-              2,
-
-            maxPrimeCount:
-              4
-          }),
-
-          randomFactorMap({
-            maxValue:
-              700,
-
-            minPrimeCount:
-              2,
-
-            maxPrimeCount:
-              4
-          }),
-
-          randomFactorMap({
-            maxValue:
-              700,
-
-            minPrimeCount:
-              2,
-
-            maxPrimeCount:
-              4
-          })
-        ];
-
-        if (
-          operation ===
-          "gcd"
-        ) {
-          const sharedPrime =
-            randomChoice([
-              2,
-              3,
-              5,
-              7
-            ]);
-
-          maps.forEach(
-            (factorMap) => {
-              factorMap[
-                sharedPrime
-              ] =
-                Math.max(
-                  1,
-                  factorMap[
-                    sharedPrime
-                  ] ||
-                  0
-                );
-            }
-          );
-        }
-
-        const values =
-          maps.map(
-            (factorMap) =>
-              valueFromMap(
-                factorMap
-              )
-          );
-
-        if (
-          new Set(
-            values
-          ).size !==
-          3
-        ) {
-          continue;
-        }
-
-        if (
-          values.some(
-            (value) =>
-              value >
-              1200
-          )
-        ) {
-          continue;
-        }
-
-        if (
-          operation ===
-          "gcd" &&
-          Object.keys(
-            gcdMapMany(
-              maps
-            )
-          ).length ===
-          0
-        ) {
-          continue;
-        }
-
-        if (
-          operation ===
-          "lcm" &&
-          valueFromMap(
-            lcmMapMany(
-              maps
-            )
-          ) >
-          3000000
-        ) {
-          continue;
-        }
-
-        return maps;
-      }
-
-      return [
-        {
-          2: 3,
-          3: 1
-        },
-
-        {
-          2: 2,
-          3: 2
-        },
-
-        {
-          2: 2,
-          3: 1,
-          5: 1
-        }
-      ];
-    }
-
-    function gcdMapMany(
-      maps
-    ) {
-      if (
-        !Array.isArray(
-          maps
-        ) ||
-        maps.length ===
-          0
-      ) {
-        return {};
-      }
-
-      return maps
-        .slice(1)
-        .reduce(
-          (
-            currentMap,
-            nextMap
-          ) => {
-            return gcdMap(
-              currentMap,
-              nextMap
-            );
-          },
-          {
-            ...maps[0]
-          }
-        );
-    }
-
-    function lcmMapMany(
-      maps
-    ) {
-      if (
-        !Array.isArray(
-          maps
-        ) ||
-        maps.length ===
-          0
-      ) {
-        return {};
-      }
-
-      return maps
-        .slice(1)
-        .reduce(
-          (
-            currentMap,
-            nextMap
-          ) => {
-            return lcmMap(
-              currentMap,
-              nextMap
-            );
-          },
-          {
-            ...maps[0]
-          }
-        );
-    }
-
-    function buildOperationDisplay(
-      operation,
-      displays
-    ) {
-      const openingBracket =
-        operation ===
-        "gcd"
-          ? "("
-          : "[";
-
-      const closingBracket =
-        operation ===
-        "gcd"
-          ? ")"
-          : "]";
-
-      const joinedContent =
-        displays
-          .map(
-            (display) => {
-              return (
-                `<span class="pair-value">${display}</span>`
-              );
-            }
-          )
-          .join(
-            `<span class="pair-comma">,</span>`
-          );
-
-      return (
-        `<div class="pair-expression">` +
-          `<span class="pair-bracket">${openingBracket}</span>` +
-          joinedContent +
-          `<span class="pair-bracket">${closingBracket}</span>` +
-        `</div>`
-      );
-    }
-
-    function randomStandardPair(
-      operation
-    ) {
-      let firstMap;
-      let secondMap;
-
-      do {
-        firstMap =
-          randomFactorMap({
-            maxValue:
-              5000,
-
-            minPrimeCount:
-              2,
-
-            maxPrimeCount:
-              4
-          });
-
-        secondMap =
-          randomFactorMap({
-            maxValue:
-              5000,
-
-            minPrimeCount:
-              2,
-
-            maxPrimeCount:
-              4
-          });
-
-        if (
-          operation ===
-          "gcd" &&
-          Object.keys(
-            gcdMap(
-              firstMap,
-              secondMap
-            )
-          ).length ===
-          0
-        ) {
-          const sharedPrime =
-            randomChoice([
-              2,
-              3,
-              5,
-              7
-            ]);
-
-          firstMap[
-            sharedPrime
-          ] =
-            Math.max(
-              1,
-              firstMap[
-                sharedPrime
-              ] ||
-              0
-            );
-
-          secondMap[
-            sharedPrime
-          ] =
-            Math.max(
-              1,
-              secondMap[
-                sharedPrime
-              ] ||
-              0
-            );
-        }
-      } while (
-        mapsEqual(
-          firstMap,
-          secondMap
-        ) ||
-        valueFromMap(
-          firstMap
-        ) >
-          8000 ||
-        valueFromMap(
-          secondMap
-        ) >
-          8000
-      );
-
-      return {
-        firstMap,
-        secondMap
-      };
-    }
-
-    function randomFactorMap({
-      maxValue,
-      minPrimeCount,
-      maxPrimeCount
-    }) {
-      const map =
-        {};
-
-      const primeCount =
-        randomInteger(
-          minPrimeCount,
-          maxPrimeCount
-        );
-
-      const selectedPrimes =
-        shuffle([
-          2,
-          3,
-          5,
-          7,
-          11,
-          13
-        ])
-          .slice(
-            0,
-            primeCount
-          )
-          .sort(
-            (
-              firstPrime,
-              secondPrime
-            ) =>
-              firstPrime -
-              secondPrime
-          );
-
-      selectedPrimes.forEach(
-        (prime) => {
-          const maximumExponent =
-            prime === 2
-              ? 5
-              : prime === 3
-                ? 4
-                : prime === 5
-                  ? 3
-                  : 2;
-
-          map[prime] =
-            randomInteger(
-              1,
-              maximumExponent
-            );
-        }
-      );
-
-      while (
-        valueFromMap(
-          map
-        ) >
-        maxValue
-      ) {
-        const reduciblePrimes =
-          Object.keys(
-            map
-          )
-            .map(
-              Number
-            )
-            .filter(
-              (prime) =>
-                map[prime] >
-                1
-            )
-            .sort(
-              (
-                firstPrime,
-                secondPrime
-              ) =>
-                secondPrime -
-                firstPrime
-            );
-
-        if (
-          reduciblePrimes.length
-        ) {
-          map[
-            reduciblePrimes[0]
-          ]--;
-        } else {
-          const largestPrime =
-            Object.keys(
-              map
-            )
-              .map(
-                Number
-              )
-              .sort(
-                (
-                  firstPrime,
-                  secondPrime
-                ) =>
-                  secondPrime -
-                  firstPrime
-              )[0];
-
-          delete map[
-            largestPrime
-          ];
-        }
-      }
-
-      return map;
-    }
-
-    function mapToCompositeProduct(
-      factorMap
-    ) {
-      const primeCopies =
-        [];
-
-      Object.entries(
-        factorMap
-      ).forEach(
-        (
-          [
-            prime,
-            exponent
-          ]
-        ) => {
-          for (
-            let copyIndex =
-              0;
-            copyIndex <
-              exponent;
-            copyIndex++
-          ) {
-            primeCopies.push(
-              Number(
-                prime
-              )
-            );
-          }
-        }
-      );
-
-      shuffle(
-        primeCopies
-      );
-
-      const parts =
-        [];
-
-      while (
-        primeCopies.length
-      ) {
-        const takeCount =
-          primeCopies.length >=
-          4
-            ? randomInteger(
-                1,
-                2
-              )
-            : 1;
-
-        let part =
-          1;
-
-        for (
-          let takeIndex =
-            0;
-          takeIndex <
-            takeCount &&
-          primeCopies.length;
-          takeIndex++
-        ) {
-          part *=
-            primeCopies.pop();
-        }
-
-        parts.push(
-          part
-        );
-      }
-
-      if (
-        parts.length <
-        2
-      ) {
-        const value =
-          parts[0];
-
-        const divisor =
-          smallestPrimeFactor(
-            value
-          );
-
-        return [
-          divisor,
-          value /
-            divisor
-        ];
-      }
-
-      return parts;
-    }
-
-    /*
-    ==================================================
-    解析
-    ==================================================
-    */
-
-    function buildExplanation(
-      question
-    ) {
-      if (
-        question.type ===
-        "primeFactorization"
-      ) {
-        const number =
-          valueFromMap(
-            question.answerMap
-          );
-
-        return (
-          `<strong>標準分解式：</strong><br>` +
-          `${number}＝${expressionToHtml(mapToExpression(question.answerMap))}`
-        );
-      }
-
-      const firstExpression =
-        expressionToHtml(
-          mapToExpression(
-            question.sourceMaps[0]
-          )
-        );
-
-      const secondExpression =
-        expressionToHtml(
-          mapToExpression(
-            question.sourceMaps[1]
-          )
-        );
-
-      const answerExpression =
-        expressionToHtml(
-          mapToExpression(
-            question.answerMap
-          )
-        );
-
-      const operation =
-        question.operation ||
-        question.type;
-
-      const rule =
-        operation ===
-        "gcd"
-          ? "共同質因數取較小指數"
-          : "所有質因數取較大指數";
-
-      return (
-        `<strong>先化成標準分解式：</strong><br>` +
-        `第一個數：${firstExpression}<br>` +
-        `第二個數：${secondExpression}<br><br>` +
-        `<strong>${rule}</strong><br>` +
-        `答案：${answerExpression}`
-      );
-    }
-
-    /*
-    ==================================================
-    結果與儲存
-    ==================================================
-    */
-
-    function rating(
-      score
-    ) {
-      if (
-        score >=
-        90
-      ) {
-        return {
-          stars:
-            "★★★★★",
-
-          comment:
-            "太棒了！你已熟練標準分解式與指數比較。"
-        };
-      }
-
-      if (
-        score >=
-        80
-      ) {
-        return {
-          stars:
-            "★★★★☆",
-
-          comment:
-            "表現很好，再注意取較小指數或較大指數。"
-        };
-      }
-
-      if (
-        score >=
-        60
-      ) {
-        return {
-          stars:
-            "★★★☆☆",
-
-          comment:
-            "已掌握基本概念，建議再練習標準分解式。"
-        };
-      }
-
-      return {
-        stars:
-          "★★☆☆☆",
-
-        comment:
-          "先從模式一練習，再挑戰最大公因數與最小公倍數。"
-      };
-    }
-
-    async function showResult() {
-      clearInterval(
-        timer
-      );
-
-      playGameSound(
-        "playComplete"
-      );
-
-      $("progress-bar")
-        .style.width =
-        "100%";
-
-      finalElapsed =
-        Math.floor(
-          (
-            Date.now() -
-            startTime
-          ) /
-          1000
-        );
-
-      const score =
-        Math.round(
-          correct /
-          TOTAL_QUESTIONS *
-          100
-        );
-
-      const result =
-        rating(
-          score
-        );
-
-      showOnly(
-        "result-screen"
-      );
-
-      $("final-score")
-        .textContent =
-        `${score} 分`;
-
-      $("final-stars")
-        .textContent =
-        result.stars;
-
-      $("final-comment")
-        .textContent =
-        result.comment;
-
-      $("final-correct")
-        .textContent =
-        correct;
-
-      $("final-wrong")
-        .textContent =
-        wrong;
-
-      $("final-time")
-        .textContent =
-        formatElapsed(
-          finalElapsed
-        );
-
-      $("review-button")
-        .disabled =
-        wrong ===
-        0;
-
-      $("review-button")
-        .textContent =
-        wrong ===
-        0
-          ? "全部答對，無錯題"
-          : "錯題回顧";
-
-      await saveCurrentScore(
-        score
-      );
-    }
-
-    async function saveCurrentScore(
-      score
-    ) {
-      if (
-        scoreSaved
-      ) {
-        return;
-      }
-
-      scoreSaved =
-        true;
-
-      const status =
-        $("save-status");
-
-      status.textContent =
-        "☁️ 正在儲存本次成績……";
-
-      status.style.color =
-        "#1d4ed8";
-
-      try {
-        const result =
-          await saveGameScore({
-            game:
-              GAME_ID,
-
-            mode,
-
-            score,
-
-            correctCount:
-              correct,
-
-            wrongCount:
-              wrong,
-
-            maxCombo,
-
-            playTime:
-              finalElapsed
-          });
-
-        if (
-          result.success
-        ) {
-          status.textContent =
-            "✅ 本次成績已儲存。";
-
-          status.style.color =
-            "#15803d";
-
-          return;
-        }
-
-        if (
-          result.reason ===
-          "not-logged-in"
-        ) {
-          status.textContent =
-            "ℹ️ 尚未登入，因此本次成績沒有儲存。";
-
-          status.style.color =
-            "#b45309";
-
-          return;
-        }
-
-        status.textContent =
-          "⚠️ 成績暫時無法儲存。";
-
-        status.style.color =
-          "#b91c1c";
-      } catch (error) {
-        console.error(
-          "質因數分解遊戲成績儲存失敗：",
-          error
-        );
-
-        status.textContent =
-          "⚠️ 成績暫時無法儲存。";
-
-        status.style.color =
-          "#b91c1c";
-      }
-    }
-
-    function showReview() {
-      const wrongRecords =
-        records.filter(
-          (record) =>
-            !record.correct
-        );
-
-      const reviewList =
-        $("review-list");
-
-      if (
-        wrongRecords.length ===
-        0
-      ) {
-        reviewList.innerHTML =
-          `<div class="review-card">全部答對，沒有需要回顧的錯題！</div>`;
-      } else {
-        reviewList.innerHTML =
-          wrongRecords
-            .map(
-              (record) => {
-                return (
-                  `<article class="review-card">` +
-                    `<div class="review-title">第 ${record.number} 題 ❌</div>` +
-                    `<div class="review-question">${record.question.label}<br>${record.question.html}</div>` +
-                    `<div class="review-answer">` +
-                      `你的答案：<strong>${expressionToHtml(mapToExpression(record.userAnswerMap))}</strong><br>` +
-                      `正確答案：<strong>${expressionToHtml(mapToExpression(record.question.answerMap))}</strong>` +
-                    `</div>` +
-                    `<div class="explanation">${buildExplanation(record.question)}</div>` +
-                  `</article>`
-                );
-              }
-            )
-            .join("");
-      }
-
-      showOnly(
-        "review-screen"
-      );
-    }
-
-    /*
-    ==================================================
-    數學工具
-    ==================================================
-    */
-
-    function gcdMap(
-      firstMap,
-      secondMap
-    ) {
-      const result =
-        {};
-
-      Object.keys(
-        firstMap
-      ).forEach(
-        (prime) => {
-          if (
-            secondMap[
-              prime
-            ]
-          ) {
-            result[
-              prime
-            ] =
-              Math.min(
-                firstMap[
-                  prime
-                ],
-                secondMap[
-                  prime
-                ]
-              );
-          }
-        }
-      );
-
-      return result;
-    }
-
-    function lcmMap(
-      firstMap,
-      secondMap
-    ) {
-      const result =
-        {};
-
-      new Set([
-        ...Object.keys(
-          firstMap
+  }
+
+  if (value > 1) {
+    map[value] = (map[value] || 0) + 1;
+  }
+
+  return map;
+}
+
+function factorMapValue(map) {
+  return Object.entries(map)
+    .reduce(
+      (product, [prime, exponent]) =>
+        product *
+        Math.pow(
+          Number(prime),
+          Number(exponent)
         ),
-        ...Object.keys(
-          secondMap
-        )
-      ]).forEach(
-        (prime) => {
-          result[
-            prime
-          ] =
-            Math.max(
-              firstMap[
-                prime
-              ] ||
-              0,
-              secondMap[
-                prime
-              ] ||
-              0
-            );
-        }
-      );
+      1
+    );
+}
 
-      return result;
+function mapsEqual(a, b) {
+  const keys = new Set([
+    ...Object.keys(a || {}),
+    ...Object.keys(b || {})
+  ]);
+
+  for (const key of keys) {
+    if (
+      Number(a?.[key] || 0) !==
+      Number(b?.[key] || 0)
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function factorMapToText(map) {
+  return Object.keys(map)
+    .map(Number)
+    .sort((a,b) => a - b)
+    .map(prime => {
+      const exponent = map[prime];
+
+      return exponent === 1
+        ? `${prime}`
+        : `${prime}^${exponent}`;
+    })
+    .join("*");
+}
+
+function factorMapToHTML(map) {
+  return factorMapToText(map)
+    .replaceAll("*", "×")
+    .replace(
+      /\^(\d+)/g,
+      "<sup>$1</sup>"
+    );
+}
+
+function factorMapToPlain(map) {
+  return factorMapToText(map)
+    .replaceAll("*", "×")
+    .replace(/\^/g, "^");
+}
+
+function listText(values) {
+  return values.join("、");
+}
+
+function digitSum(n) {
+  return String(Math.abs(n))
+    .split("")
+    .reduce(
+      (sum, digit) =>
+        sum + Number(digit),
+      0
+    );
+}
+
+function lastTwoDigits(n) {
+  return Math.abs(n) % 100;
+}
+
+function alternating11Data(n) {
+  const digits =
+    String(Math.abs(n))
+      .split("")
+      .map(Number)
+      .reverse();
+
+  let odd = 0;
+  let even = 0;
+
+  digits.forEach((digit, i) => {
+    if (i % 2 === 0) {
+      odd += digit;
+    } else {
+      even += digit;
+    }
+  });
+
+  return {
+    odd,
+    even,
+    diff: Math.abs(odd - even)
+  };
+}
+
+function divisibilityRule(divisor) {
+  const rules = {
+    2: "個位數是 0、2、4、6、8，就是 2 的倍數。",
+    3: "各位數字和是 3 的倍數，就是 3 的倍數。",
+    4: "末兩位所成的數是 4 的倍數，就是 4 的倍數。",
+    5: "個位數是 0 或 5，就是 5 的倍數。",
+    9: "各位數字和是 9 的倍數，就是 9 的倍數。",
+    11: "奇數位數字和與偶數位數字和的差，是 11 的倍數或 0，就是 11 的倍數。"
+  };
+
+  return rules[divisor];
+}
+
+function divisibilityWork(n, divisor) {
+  const digits = String(Math.abs(n)).split("");
+
+  if (divisor === 2) {
+    const last = digits.at(-1);
+
+    return `個位數是 ${last}，${Number(last) % 2 === 0 ? "是偶數" : "不是偶數"}。`;
+  }
+
+  if (divisor === 3 || divisor === 9) {
+    const sum = digitSum(n);
+
+    return `各位數字和：${digits.join("＋")}＝${sum}；${sum} ${sum % divisor === 0 ? "是" : "不是"} ${divisor} 的倍數。`;
+  }
+
+  if (divisor === 4) {
+    const last2 = lastTwoDigits(n);
+
+    return `末兩位是 ${String(last2).padStart(2,"0")}；${last2} ${last2 % 4 === 0 ? "是" : "不是"} 4 的倍數。`;
+  }
+
+  if (divisor === 5) {
+    const last = digits.at(-1);
+
+    return `個位數是 ${last}；只有個位數為 0 或 5 才是 5 的倍數。`;
+  }
+
+  if (divisor === 11) {
+    const data = alternating11Data(n);
+
+    return `由個位數起交錯分組：奇數位數字和＝${data.odd}，偶數位數字和＝${data.even}，差＝${data.diff}；${data.diff} ${data.diff % 11 === 0 ? "是" : "不是"} 11 的倍數。`;
+  }
+
+  return "";
+}
+
+function shortDivisionHTML(n) {
+  const rows = [];
+  let value = n;
+
+  while (value > 1) {
+    let divisor = 2;
+
+    while (
+      divisor <= value &&
+      value % divisor !== 0
+    ) {
+      divisor++;
     }
 
-    function mapToExpression(
-      factorMap
+    const quotient =
+      value / divisor;
+
+    rows.push(
+      `<tr><td>${divisor}</td><td>${value} → ${quotient}</td></tr>`
+    );
+
+    value = quotient;
+  }
+
+  return `
+    <table class="short-division">
+      <tbody>
+        ${rows.join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+/*
+==================================================
+ExpressionInput
+==================================================
+*/
+
+function initExpressionInput() {
+  if (
+    answerInput ||
+    typeof window.ExpressionInput !== "function"
+  ) {
+    return;
+  }
+
+  answerInput =
+    new window.ExpressionInput({
+      mountId: "answerMount",
+      allowNumber: false,
+      allowExpression: true,
+      defaultMode: "expression",
+      baseOptions: PRIME_INPUT_OPTIONS,
+      exponentOptions: [1,2,3,4,5,6],
+      allowCustomBase: true,
+      maxTerms: 8,
+      requireAscendingBases: true,
+      disallowDuplicateBases: true,
+      omitExponentOne: true,
+      theme: {
+        primary: "#00897b",
+        light: "#f0fdfa",
+        border: "#80cbc4"
+      },
+      labels: {
+        expressionLabel: "請輸入標準分解式",
+        baseLabel: "選擇質因數",
+        exponentLabel: "選擇指數",
+        editLabel: "編輯答案"
+      }
+    });
+}
+
+function readExpressionAnswer() {
+  initExpressionInput();
+
+  if (!answerInput) {
+    return {
+      valid: false,
+      message: "標準分解式輸入器尚未完成載入，請重新整理頁面。"
+    };
+  }
+
+  const validation =
+    answerInput.validate();
+
+  if (!validation.valid) {
+    return {
+      valid: false,
+      message: "請完成標準分解式後再送出。"
+    };
+  }
+
+  const terms =
+    validation.value.terms;
+
+  const utils =
+    window.ExpressionInputUtils;
+
+  if (
+    utils?.isStandardPrimeFactorization &&
+    !utils.isStandardPrimeFactorization(terms)
+  ) {
+    return {
+      valid: false,
+      message: "標準分解式的質因數要由小到大排列，且相同質因數要合併成次方。"
+    };
+  }
+
+  let map = {};
+
+  if (utils?.termsToFactorMap) {
+    map =
+      utils.termsToFactorMap(terms);
+  } else {
+    terms.forEach(term => {
+      const base =
+        Number(
+          term.base ??
+          term.value ??
+          0
+        );
+
+      const exponent =
+        Number(
+          term.exponent ??
+          1
+        );
+
+      if (base > 1) {
+        map[base] = exponent;
+      }
+    });
+  }
+
+  return {
+    valid: true,
+    map,
+    html:
+      validation.value.html ||
+      factorMapToHTML(map)
+  };
+}
+
+/*
+==================================================
+題目共用格式
+==================================================
+*/
+
+function choiceQuestion({
+  key,
+  label,
+  html,
+  choices,
+  answer,
+  explanation,
+  note = "",
+  topic = ""
+}) {
+  return {
+    key,
+    kind: "choice",
+    label,
+    html,
+    choices,
+    answer: String(answer),
+    explanation,
+    note,
+    topic
+  };
+}
+
+function expressionQuestion({
+  key,
+  label,
+  html,
+  answerMap,
+  explanation,
+  note = "",
+  topic = ""
+}) {
+  return {
+    key,
+    kind: "primeExpression",
+    label,
+    html,
+    answerMap,
+    explanation,
+    note,
+    topic
+  };
+}
+
+function yesNoChoices() {
+  return [
+    { value: "yes", text: "是" },
+    { value: "no", text: "不是" }
+  ];
+}
+
+function makeChoiceValues(correctText, wrongTexts) {
+  const raw = [
+    { value: "correct", text: correctText },
+    ...wrongTexts.map((text, i) => ({
+      value: `wrong${i+1}`,
+      text
+    }))
+  ];
+
+  return shuffle(raw);
+}
+
+/*
+==================================================
+模式一：因數、倍數與倍數判別
+==================================================
+*/
+
+function makeDivisibilityQuestion(divisor, force = null) {
+  const shouldBe =
+    force === null
+      ? Math.random() < .5
+      : force;
+
+  let n = 0;
+
+  for (let guard = 0; guard < 500; guard++) {
+    const candidate =
+      rand(100, 99999);
+
+    if (
+      (candidate % divisor === 0) ===
+      shouldBe
     ) {
-      const primes =
-        Object.keys(
-          factorMap
-        )
-          .map(
-            Number
+      n = candidate;
+      break;
+    }
+  }
+
+  if (!n) {
+    n = shouldBe
+      ? divisor * rand(20, 500)
+      : divisor * rand(20, 500) + 1;
+  }
+
+  const correctValue =
+    n % divisor === 0
+      ? "yes"
+      : "no";
+
+  return choiceQuestion({
+    key: `div-${divisor}-${n}`,
+    label: `判斷 ${n} 是否為 ${divisor} 的倍數`,
+    html: `<div class="math-expression">${n}</div>`,
+    choices: yesNoChoices(),
+    answer: correctValue,
+    topic: `${divisor} 的倍數判別`,
+    explanation: `
+      <strong>第 1 步｜使用 ${divisor} 的倍數判別法</strong>
+      <div class="rule-box">${divisibilityRule(divisor)}</div>
+      <strong>第 2 步｜代入本題</strong>
+      <div class="calculation-box">${divisibilityWork(n, divisor)}</div>
+      <strong>結論：</strong>
+      ${n} ${n % divisor === 0 ? "是" : "不是"} ${divisor} 的倍數。
+    `
+  });
+}
+
+function makeFactorRelationQuestion() {
+  const a = rand(3, 18);
+  const b = rand(3, 18);
+  const product = a * b;
+
+  const correctText =
+    `${a} 是 ${product} 的因數，${product} 是 ${a} 的倍數`;
+
+  const wrongs = [
+    `${product} 是 ${a} 的因數，${a} 是 ${product} 的倍數`,
+    `${a + b} 一定是 ${product} 的因數`,
+    `${product} 不是 ${b} 的倍數`
+  ];
+
+  const choices =
+    makeChoiceValues(
+      correctText,
+      wrongs
+    );
+
+  return choiceQuestion({
+    key: `relation-${a}-${b}`,
+    label: "根據乘法關係，選出正確敘述",
+    html: `<div class="math-expression">${a} × ${b} ＝ ${product}</div>`,
+    choices,
+    answer: "correct",
+    topic: "因數與倍數關係",
+    explanation: `
+      <strong>因數與倍數要成對理解。</strong>
+      <div class="rule-box">
+        若 a × b＝c，則 a、b 都是 c 的因數；c 是 a、b 的倍數。
+      </div>
+      本題 ${a} × ${b}＝${product}，所以
+      <strong>${a}、${b} 都是 ${product} 的因數</strong>，
+      而 <strong>${product} 是 ${a}、${b} 的倍數</strong>。
+    `
+  });
+}
+
+function makeFactorCheckQuestion() {
+  const base = rand(4, 30);
+  const quotient = rand(3, 25);
+  const trueNumber = base * quotient;
+  const makeTrue = Math.random() < .5;
+  const target =
+    makeTrue
+      ? trueNumber
+      : trueNumber + rand(1, base - 1);
+
+  const isFactor =
+    target % base === 0;
+
+  return choiceQuestion({
+    key: `factor-check-${base}-${target}`,
+    label: `判斷 ${base} 是否為 ${target} 的因數`,
+    html: `<div class="math-expression">${target} ÷ ${base}</div>`,
+    choices: yesNoChoices(),
+    answer: isFactor ? "yes" : "no",
+    topic: "因數判別",
+    explanation: `
+      <strong>判斷因數的方法：</strong>
+      看 ${target} ÷ ${base} 能不能整除。
+      <div class="calculation-box">
+        ${target} ÷ ${base}
+        ${isFactor
+          ? `＝${target / base}，沒有餘數`
+          : `不能整除，會有餘數`}
+      </div>
+      所以 ${base} ${isFactor ? "是" : "不是"} ${target} 的因數。
+    `
+  });
+}
+
+function makeWhichMultipleQuestion() {
+  const divisor =
+    pick([2,3,4,5,9,11]);
+
+  const correct =
+    divisor * rand(21, 300);
+
+  const wrongs = [];
+
+  while (wrongs.length < 3) {
+    const n =
+      rand(50, 3000);
+
+    if (
+      n % divisor !== 0 &&
+      !wrongs.includes(n)
+    ) {
+      wrongs.push(n);
+    }
+  }
+
+  const choices =
+    shuffle([
+      { value: "correct", text: String(correct) },
+      ...wrongs.map((n,i) => ({
+        value: `wrong${i+1}`,
+        text: String(n)
+      }))
+    ]);
+
+  return choiceQuestion({
+    key: `which-multiple-${divisor}-${correct}`,
+    label: `下列哪一個數是 ${divisor} 的倍數？`,
+    html: `<div class="math-expression">請使用倍數判別法</div>`,
+    choices,
+    answer: "correct",
+    topic: `${divisor} 的倍數判別`,
+    explanation: `
+      <strong>${divisor} 的倍數判別法：</strong>
+      <div class="rule-box">${divisibilityRule(divisor)}</div>
+      正確選項是 <strong>${correct}</strong>。<br>
+      ${divisibilityWork(correct, divisor)}
+    `
+  });
+}
+
+function createFactorMultipleSet() {
+  return shuffle([
+    makeDivisibilityQuestion(2),
+    makeDivisibilityQuestion(3),
+    makeDivisibilityQuestion(4),
+    makeDivisibilityQuestion(5),
+    makeDivisibilityQuestion(9),
+    makeDivisibilityQuestion(11),
+    makeFactorRelationQuestion(),
+    makeFactorRelationQuestion(),
+    makeFactorCheckQuestion(),
+    makeWhichMultipleQuestion()
+  ]);
+}
+
+/*
+==================================================
+模式二：質數、合數與篩法
+==================================================
+*/
+
+function classificationOf(n) {
+  if (n === 1) return "neither";
+  return isPrime(n) ? "prime" : "composite";
+}
+
+function classificationText(value) {
+  return {
+    prime: "質數",
+    composite: "合數",
+    neither: "不是質數也不是合數"
+  }[value];
+}
+
+function makeClassificationQuestion(n = null) {
+  const number =
+    n ??
+    rand(2, 100);
+
+  const answer =
+    classificationOf(number);
+
+  const factors =
+    factorsOf(number);
+
+  let detail = "";
+
+  if (number === 1) {
+    detail =
+      "1 只有一個正因數 1，不符合「恰有 1 和本身兩個因數」的質數定義，也不是合數。";
+  } else if (answer === "prime") {
+    detail =
+      `${number} 的正因數只有 1、${number}，所以是質數。`;
+  } else {
+    detail =
+      `${number} 的正因數包含 ${listText(factors.slice(0, Math.min(factors.length, 8)))}${factors.length > 8 ? "……" : ""}，除了 1 和本身以外還有其他因數，所以是合數。`;
+  }
+
+  return choiceQuestion({
+    key: `class-${number}`,
+    label: `判斷 ${number} 是質數、合數，或兩者都不是`,
+    html: `<div class="math-expression">${number}</div>`,
+    choices: [
+      { value: "prime", text: "質數" },
+      { value: "composite", text: "合數" },
+      { value: "neither", text: "不是質數也不是合數" }
+    ],
+    answer,
+    topic: "質數與合數",
+    explanation: `
+      <strong>定義：</strong>
+      <div class="rule-box">
+        大於 1 且只有 1 和本身兩個正因數的是質數；<br>
+        大於 1 且還有其他正因數的是合數；<br>
+        1 不是質數，也不是合數。
+      </div>
+      ${detail}
+    `
+  });
+}
+
+function makeChoosePrimeQuestion() {
+  const prime =
+    pick(PRIME_LIST_100.filter(p => p >= 11));
+
+  const composites = [];
+
+  while (composites.length < 3) {
+    const n = rand(10, 99);
+
+    if (
+      !isPrime(n) &&
+      n !== 1 &&
+      !composites.includes(n)
+    ) {
+      composites.push(n);
+    }
+  }
+
+  const choices =
+    shuffle([
+      { value: "correct", text: String(prime) },
+      ...composites.map((n,i) => ({
+        value: `wrong${i+1}`,
+        text: String(n)
+      }))
+    ]);
+
+  return choiceQuestion({
+    key: `choose-prime-${prime}-${composites.join("-")}`,
+    label: "下列哪一個數是質數？",
+    html: `<div class="math-expression">找出只有 1 和本身兩個正因數的數</div>`,
+    choices,
+    answer: "correct",
+    topic: "100 以內質數",
+    explanation: `
+      正確答案是 <strong>${prime}</strong>。<br>
+      ${prime} 只有 1 和 ${prime} 兩個正因數，因此是質數。
+      <div class="tip-box">
+        100 以內判斷質數時，只要檢查可能的較小質因數即可，不需要從 2 一直除到本身。
+      </div>
+    `
+  });
+}
+
+function makeChooseCompositeQuestion() {
+  const compositeCandidates =
+    [12,15,21,25,27,33,35,39,49,51,55,57,63,65,77,81,85,87,91,93,95,99];
+
+  const composite =
+    pick(compositeCandidates);
+
+  const primes =
+    shuffle(
+      PRIME_LIST_100.filter(
+        p => p > 10
+      )
+    ).slice(0,3);
+
+  const choices =
+    shuffle([
+      { value: "correct", text: String(composite) },
+      ...primes.map((n,i) => ({
+        value: `wrong${i+1}`,
+        text: String(n)
+      }))
+    ]);
+
+  const smallFactor =
+    factorsOf(composite)
+      .find(
+        d =>
+          d !== 1 &&
+          d !== composite
+      );
+
+  return choiceQuestion({
+    key: `choose-composite-${composite}`,
+    label: "下列哪一個數是合數？",
+    html: `<div class="math-expression">找出除了 1 和本身以外，還有其他因數的數</div>`,
+    choices,
+    answer: "correct",
+    topic: "質數與合數",
+    explanation: `
+      正確答案是 <strong>${composite}</strong>。<br>
+      因為 ${composite} 可以寫成
+      <strong>${smallFactor} × ${composite / smallFactor}</strong>，
+      所以除了 1 和 ${composite} 以外還有其他因數，因此是合數。
+    `
+  });
+}
+
+function makePrimeListQuestion() {
+  const correctGroup =
+    [2,3,5,7];
+
+  const choices =
+    makeChoiceValues(
+      "2、3、5、7",
+      [
+        "1、2、3、5",
+        "2、4、6、8",
+        "3、5、7、9"
+      ]
+    );
+
+  return choiceQuestion({
+    key: "prime-under-10",
+    label: "下列哪一組全部都是 10 以內的質數？",
+    html: `<div class="math-expression">1 ～ 10</div>`,
+    choices,
+    answer: "correct",
+    topic: "100 以內質數",
+    explanation: `
+      10 以內的質數是 <strong>${listText(correctGroup)}</strong>。<br>
+      1 不是質數；4、6、8、9 都有 1 和本身以外的因數，因此是合數。
+    `
+  });
+}
+
+function makeSieveFirstQuestion() {
+  return choiceQuestion({
+    key: "sieve-first",
+    label: "使用埃拉托賽尼篩法找 1～100 的質數，第一個要先刪去哪一個數？",
+    html: `<div class="math-expression">1　2　3　4　5　6　……　100</div>`,
+    choices: [
+      { value: "one", text: "1" },
+      { value: "two", text: "2" },
+      { value: "three", text: "3" },
+      { value: "ten", text: "10" }
+    ],
+    answer: "one",
+    topic: "埃拉托賽尼篩法",
+    explanation: `
+      <strong>第一步先刪去 1。</strong><br>
+      因為 1 不是質數，也不是合數。
+      接著圈出最小的未刪除數 2，並刪去 2 的其他倍數。
+    `
+  });
+}
+
+function makeSieveStepQuestion() {
+  const choices = [
+    { value: "21", text: "21" },
+    { value: "23", text: "23" },
+    { value: "29", text: "29" },
+    { value: "31", text: "31" }
+  ];
+
+  return choiceQuestion({
+    key: "sieve-three-multiples",
+    label: "篩法中圈出 3 後，下列哪一個數會因為是 3 的倍數而被刪去？",
+    html: `<div class="math-expression">21　23　29　31</div>`,
+    choices,
+    answer: "21",
+    topic: "埃拉托賽尼篩法",
+    explanation: `
+      3 的倍數有 6、9、12、15、18、21……。<br>
+      在選項中只有 <strong>21＝3×7</strong> 是 3 的倍數，所以會被刪去。
+      23、29、31 都是質數。
+    `
+  });
+}
+
+function makeSieveStopQuestion() {
+  return choiceQuestion({
+    key: "sieve-stop-100",
+    label: "找 100 以內的質數時，處理完 2、3、5、7 的倍數後，為什麼不必再從 11 開始刪？",
+    html: `<div class="math-expression">11<sup>2</sup>＝121 ＞ 100</div>`,
+    choices: makeChoiceValues(
+      "因為 11² 已大於 100，新的合數不會到這時才第一次被發現",
+      [
+        "因為 11 不是質數",
+        "因為 11 的倍數全部都是質數",
+        "因為 100 只能被 2、3、5、7 整除"
+      ]
+    ),
+    answer: "correct",
+    topic: "埃拉托賽尼篩法",
+    explanation: `
+      <strong>關鍵是平方。</strong>
+      <div class="calculation-box">
+        11<sup>2</sup>＝121 ＞ 100
+      </div>
+      若 100 以內的合數含有 11 或更大的質因數，
+      它一定還會搭配一個比 11 小的質因數，因此早已在處理 2、3、5、7 時被刪除。
+    `
+  });
+}
+
+function createPrimeCompositeSet() {
+  const randomPrime =
+    pick(
+      PRIME_LIST_100.filter(
+        p => p > 20
+      )
+    );
+
+  let composite = rand(20, 99);
+  while (isPrime(composite)) {
+    composite = rand(20,99);
+  }
+
+  return shuffle([
+    makeClassificationQuestion(1),
+    makeClassificationQuestion(2),
+    makeClassificationQuestion(randomPrime),
+    makeClassificationQuestion(composite),
+    makeChoosePrimeQuestion(),
+    makeChooseCompositeQuestion(),
+    makePrimeListQuestion(),
+    makeSieveFirstQuestion(),
+    makeSieveStepQuestion(),
+    makeSieveStopQuestion()
+  ]);
+}
+
+/*
+==================================================
+模式三：因數與質因數
+==================================================
+*/
+
+function makeFactorListQuestion() {
+  const pool =
+    [18,20,24,28,30,36,40,42,45,48,50,54,60,63,70,72,75,84,90];
+
+  const n = pick(pool);
+  const factors = factorsOf(n);
+
+  const correct =
+    listText(factors);
+
+  const wrong1 =
+    listText(
+      factors.filter((_,i) => i !== 1)
+    );
+
+  const wrong2 =
+    listText(
+      factors.filter(
+        f => isPrime(f)
+      )
+    );
+
+  const wrong3 =
+    listText(
+      unique([
+        ...factors,
+        n + 1
+      ]).sort((a,b) => a-b)
+    );
+
+  return choiceQuestion({
+    key: `factor-list-${n}`,
+    label: `下列哪一組完整列出 ${n} 的所有正因數？`,
+    html: `<div class="math-expression">${n}</div>`,
+    choices: makeChoiceValues(
+      correct,
+      [wrong1,wrong2,wrong3]
+    ),
+    answer: "correct",
+    topic: "找因數",
+    explanation: `
+      <strong>找因數時要成對尋找：</strong>
+      <div class="calculation-box">
+        ${factorsOf(n)
+          .filter(
+            f => f <= Math.sqrt(n)
           )
-          .sort(
-            (
-              firstPrime,
-              secondPrime
-            ) =>
-              firstPrime -
-              secondPrime
+          .map(
+            f => `${f}×${n/f}＝${n}`
+          )
+          .join("；")}
+      </div>
+      所以 ${n} 的正因數是
+      <strong>${correct}</strong>。
+    `
+  });
+}
+
+function makePrimeFactorIdentifyQuestion() {
+  const n =
+    pick([30,42,60,70,84,90,105,126,150,210]);
+
+  const map =
+    primeFactorMap(n);
+
+  const primeFactors =
+    Object.keys(map)
+      .map(Number)
+      .sort((a,b) => a-b);
+
+  const answerText =
+    listText(primeFactors);
+
+  const factors =
+    factorsOf(n);
+
+  const compositeFactor =
+    factors.find(
+      f =>
+        f > 1 &&
+        f < n &&
+        !isPrime(f)
+    );
+
+  const wrongs = [
+    `1、${answerText}`,
+    listText(
+      unique([
+        ...primeFactors,
+        compositeFactor
+      ]).sort((a,b) => a-b)
+    ),
+    listText(
+      factors.filter(
+        f => f > 1 && f < n
+      ).slice(0, Math.min(5, factors.length))
+    )
+  ];
+
+  return choiceQuestion({
+    key: `prime-factors-${n}`,
+    label: `下列哪一組是 ${n} 的所有相異質因數？`,
+    html: `<div class="math-expression">${n}</div>`,
+    choices: makeChoiceValues(
+      answerText,
+      wrongs
+    ),
+    answer: "correct",
+    topic: "辨認質因數",
+    explanation: `
+      <strong>質因數要同時符合兩個條件：</strong>
+      <div class="rule-box">
+        ① 是 ${n} 的因數。<br>
+        ② 本身是質數。
+      </div>
+      ${n}＝${factorMapToHTML(map)}，所以相異質因數是
+      <strong>${answerText}</strong>。
+      1 不是質數；合數因數也不能叫做質因數。
+    `
+  });
+}
+
+function makeFactorNotPrimeFactorQuestion() {
+  const n =
+    pick([24,36,48,60,72,84,90]);
+
+  const factors =
+    factorsOf(n);
+
+  const compositeFactors =
+    factors.filter(
+      f =>
+        f > 1 &&
+        f < n &&
+        !isPrime(f)
+    );
+
+  const answer =
+    pick(compositeFactors);
+
+  const primeFactors =
+    Object.keys(primeFactorMap(n))
+      .map(Number);
+
+  const otherPrime =
+    PRIME_LIST_100.find(
+      p =>
+        !primeFactors.includes(p) &&
+        n % p !== 0
+    );
+
+  const choices =
+    shuffle([
+      { value: "correct", text: String(answer) },
+      { value: "prime", text: String(pick(primeFactors)) },
+      { value: "notfactor", text: String(otherPrime) },
+      { value: "one", text: "1" }
+    ]);
+
+  return choiceQuestion({
+    key: `factor-not-prime-${n}-${answer}`,
+    label: `下列哪一個數「是 ${n} 的因數，但不是 ${n} 的質因數」？`,
+    html: `<div class="math-expression">${n}</div>`,
+    choices,
+    answer: "correct",
+    topic: "因數與質因數差異",
+    explanation: `
+      <strong>${answer}</strong> 可以整除 ${n}，所以是 ${n} 的因數；<br>
+      但 ${answer} 本身是合數，所以不是質因數。
+      <div class="tip-box">
+        「質因數」比「因數」多一個條件：那個因數本身還必須是質數。
+      </div>
+    `
+  });
+}
+
+function makeDefinitionPrimeFactorQuestion() {
+  return choiceQuestion({
+    key: "prime-factor-definition",
+    label: "下列哪一個敘述正確說明「質因數」？",
+    html: `<div class="math-expression">質因數＝？</div>`,
+    choices: makeChoiceValues(
+      "既是某數的因數，本身又是質數",
+      [
+        "只要是質數，就是所有數的質因數",
+        "只要能被某數整除，就是那個數的質因數",
+        "1 是每一個正整數的質因數"
+      ]
+    ),
+    answer: "correct",
+    topic: "質因數定義",
+    explanation: `
+      <strong>定義：</strong>
+      如果 a 是 b 的因數，而且 a 是質數，就稱 a 為 b 的質因數。
+      <div class="tip-box">
+        例如 15 的因數有 1、3、5、15，其中 3、5 是質數，所以 3、5 才是 15 的質因數。
+      </div>
+    `
+  });
+}
+
+function makeIsPrimeFactorQuestion() {
+  const n =
+    pick([30,42,60,70,84,90,105,126]);
+
+  const primeFactors =
+    Object.keys(primeFactorMap(n))
+      .map(Number);
+
+  const should =
+    Math.random() < .5;
+
+  let p;
+
+  if (should) {
+    p = pick(primeFactors);
+  } else {
+    p =
+      PRIME_LIST_100.find(
+        prime =>
+          prime <= 19 &&
+          !primeFactors.includes(prime)
+      );
+  }
+
+  return choiceQuestion({
+    key: `is-prime-factor-${p}-${n}`,
+    label: `判斷 ${p} 是否為 ${n} 的質因數`,
+    html: `<div class="math-expression">${n} ÷ ${p}</div>`,
+    choices: yesNoChoices(),
+    answer: should ? "yes" : "no",
+    topic: "辨認質因數",
+    explanation: `
+      ${p} 本身${isPrime(p) ? "是質數" : "不是質數"}。<br>
+      再檢查 ${n} ÷ ${p}：
+      <div class="calculation-box">
+        ${n} ${n % p === 0 ? `＝${p}×${n/p}` : `不能被 ${p} 整除`}
+      </div>
+      所以 ${p} ${should ? "是" : "不是"} ${n} 的質因數。
+    `
+  });
+}
+
+function createPrimeFactorSet() {
+  return shuffle([
+    makeFactorListQuestion(),
+    makeFactorListQuestion(),
+    makePrimeFactorIdentifyQuestion(),
+    makePrimeFactorIdentifyQuestion(),
+    makeFactorNotPrimeFactorQuestion(),
+    makeFactorNotPrimeFactorQuestion(),
+    makeDefinitionPrimeFactorQuestion(),
+    makeIsPrimeFactorQuestion(),
+    makeIsPrimeFactorQuestion(),
+    makeFactorListQuestion()
+  ]);
+}
+
+/*
+==================================================
+模式四：質因數分解與標準分解式
+==================================================
+*/
+
+function makeStandardExpressionQuestion(n) {
+  const map =
+    primeFactorMap(n);
+
+  return expressionQuestion({
+    key: `standard-${n}`,
+    label: "請用短除法或樹狀圖思考，將下列正整數寫成標準分解式",
+    html: `<div class="math-expression">${n}＝？</div>`,
+    answerMap: map,
+    topic: "標準分解式",
+    note: "質因數請由小到大排列；相同質因數要合併成次方。",
+    explanation: `
+      <strong>方法一｜短除法</strong>
+      ${shortDivisionHTML(n)}
+      <strong>方法二｜整理質因數</strong>
+      <div class="calculation-box">
+        ${n}＝${Object.entries(map)
+          .flatMap(
+            ([prime, exponent]) =>
+              Array(Number(exponent))
+                .fill(prime)
+          )
+          .join("×")}
+        ＝<strong>${factorMapToHTML(map)}</strong>
+      </div>
+      <strong>標準分解式：</strong>
+      質因數由小到大排列，相同質因數以指數表示。
+    `
+  });
+}
+
+function makeDistinctPrimeFactorQuestion(n) {
+  const map =
+    primeFactorMap(n);
+
+  const primes =
+    Object.keys(map)
+      .map(Number)
+      .sort((a,b) => a-b);
+
+  const correct =
+    listText(primes);
+
+  const exponentExpanded =
+    Object.entries(map)
+      .flatMap(
+        ([prime, exponent]) =>
+          Array(Number(exponent))
+            .fill(Number(prime))
+      );
+
+  const wrongs = [
+    listText(exponentExpanded),
+    `1、${correct}`,
+    listText(
+      unique([
+        ...primes,
+        primes.at(-1) + 2
+      ])
+    )
+  ];
+
+  return choiceQuestion({
+    key: `distinct-prime-${n}`,
+    label: `已知 ${n} 的標準分解式如下，它的相異質因數有哪些？`,
+    html: `<div class="math-expression">${n}＝${factorMapToHTML(map)}</div>`,
+    choices: makeChoiceValues(
+      correct,
+      wrongs
+    ),
+    answer: "correct",
+    topic: "相異質因數",
+    explanation: `
+      標準分解式中出現的「不同質數」就是相異質因數。<br>
+      <div class="calculation-box">
+        ${n}＝${factorMapToHTML(map)}
+      </div>
+      所以相異質因數是 <strong>${correct}</strong>。<br>
+      指數只表示同一質因數重複幾次，不會產生新的相異質因數。
+    `
+  });
+}
+
+function createStandardFormSet() {
+  const selected =
+    shuffle(STANDARD_POOL)
+      .slice(0,10);
+
+  return shuffle([
+    ...selected.slice(0,7)
+      .map(makeStandardExpressionQuestion),
+    ...selected.slice(7,10)
+      .map(makeDistinctPrimeFactorQuestion)
+  ]);
+}
+
+/*
+==================================================
+模式五：標準分解式判別因數倍數
+==================================================
+*/
+
+function randomBaseMap() {
+  const primes =
+    shuffle([2,3,5,7,11])
+      .slice(0, rand(2,4))
+      .sort((a,b) => a-b);
+
+  const map = {};
+
+  primes.forEach(prime => {
+    map[prime] = rand(1,3);
+  });
+
+  return map;
+}
+
+function makeFactorCandidate(baseMap, shouldBeFactor) {
+  const result = {};
+
+  Object.entries(baseMap)
+    .forEach(([prime, exponent]) => {
+      const exp = Number(exponent);
+
+      if (Math.random() < .78) {
+        result[prime] =
+          rand(1, exp);
+      }
+    });
+
+  if (Object.keys(result).length === 0) {
+    const prime =
+      Object.keys(baseMap)[0];
+
+    result[prime] = 1;
+  }
+
+  if (!shouldBeFactor) {
+    const keys =
+      Object.keys(baseMap);
+
+    if (Math.random() < .65) {
+      const prime =
+        pick(keys);
+
+      result[prime] =
+        Number(baseMap[prime]) + 1;
+    } else {
+      const newPrime =
+        [2,3,5,7,11,13]
+          .find(
+            p =>
+              !baseMap[p]
           );
+
+      result[newPrime] = 1;
+    }
+  }
+
+  return result;
+}
+
+function makeMultipleCandidate(baseMap, shouldBeMultiple) {
+  const result = {};
+
+  Object.entries(baseMap)
+    .forEach(([prime, exponent]) => {
+      result[prime] =
+        Number(exponent) +
+        rand(0,2);
+    });
+
+  if (Math.random() < .45) {
+    const extra =
+      [2,3,5,7,11,13]
+        .find(
+          p => !result[p]
+        );
+
+    if (extra) {
+      result[extra] =
+        rand(1,2);
+    }
+  }
+
+  if (!shouldBeMultiple) {
+    const keys =
+      Object.keys(baseMap);
+
+    const prime =
+      pick(keys);
+
+    const exp =
+      Number(baseMap[prime]);
+
+    if (exp === 1) {
+      delete result[prime];
+    } else {
+      result[prime] =
+        exp - 1;
+    }
+  }
+
+  return result;
+}
+
+function compareMapExplanation(baseMap, candidateMap, relation) {
+  const allPrimes =
+    unique([
+      ...Object.keys(baseMap).map(Number),
+      ...Object.keys(candidateMap).map(Number)
+    ]).sort((a,b) => a-b);
+
+  const rows =
+    allPrimes.map(prime => {
+      const a =
+        Number(baseMap[prime] || 0);
+
+      const b =
+        Number(candidateMap[prime] || 0);
+
+      return `質因數 ${prime}：原數指數 ${a}，比較數指數 ${b}`;
+    });
+
+  const rule =
+    relation === "factor"
+      ? "要成為原數的因數：比較數不能出現原數沒有的質因數，而且每個質因數的指數都不能大於原數。"
+      : "要成為原數的倍數：原數出現的每個質因數都必須保留，而且比較數的對應指數不能小於原數。";
+
+  return `
+    <div class="rule-box">${rule}</div>
+    <div class="calculation-box">
+      ${rows.join("<br>")}
+    </div>
+  `;
+}
+
+function isFactorMap(candidate, base) {
+  for (const [prime, exponent] of Object.entries(candidate)) {
+    if (
+      Number(exponent) >
+      Number(base[prime] || 0)
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isMultipleMap(candidate, base) {
+  for (const [prime, exponent] of Object.entries(base)) {
+    if (
+      Number(candidate[prime] || 0) <
+      Number(exponent)
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function makeStandardJudgeQuestion(relation = null) {
+  const baseMap =
+    randomBaseMap();
+
+  const resolvedRelation =
+    relation ??
+    (Math.random() < .5 ? "factor" : "multiple");
+
+  const should =
+    Math.random() < .5;
+
+  const candidateMap =
+    resolvedRelation === "factor"
+      ? makeFactorCandidate(baseMap, should)
+      : makeMultipleCandidate(baseMap, should);
+
+  const actual =
+    resolvedRelation === "factor"
+      ? isFactorMap(candidateMap, baseMap)
+      : isMultipleMap(candidateMap, baseMap);
+
+  const baseHTML =
+    factorMapToHTML(baseMap);
+
+  const candidateHTML =
+    factorMapToHTML(candidateMap);
+
+  const wording =
+    resolvedRelation === "factor"
+      ? "因數"
+      : "倍數";
+
+  return choiceQuestion({
+    key: `judge-${resolvedRelation}-${factorMapToText(baseMap)}-${factorMapToText(candidateMap)}`,
+    label: `判斷 B 是否為 A 的${wording}`,
+    html: `
+      <div class="math-expression">
+        A＝${baseHTML}<br>
+        B＝${candidateHTML}
+      </div>
+    `,
+    choices: yesNoChoices(),
+    answer: actual ? "yes" : "no",
+    topic: `標準分解式判斷${wording}`,
+    explanation: `
+      <strong>比較質因數與指數：</strong>
+      ${compareMapExplanation(
+        baseMap,
+        candidateMap,
+        resolvedRelation
+      )}
+      所以 B <strong>${actual ? "是" : "不是"}</strong> A 的${wording}。
+    `
+  });
+}
+
+function makeChooseFactorByStandardQuestion() {
+  const baseMap =
+    randomBaseMap();
+
+  const correctMap =
+    makeFactorCandidate(baseMap, true);
+
+  const wrongMaps = [
+    makeFactorCandidate(baseMap, false),
+    makeFactorCandidate(baseMap, false),
+    makeFactorCandidate(baseMap, false)
+  ];
+
+  const choices =
+    shuffle([
+      {
+        value: "correct",
+        text: factorMapToPlain(correctMap)
+      },
+      ...wrongMaps.map((map,i) => ({
+        value: `wrong${i+1}`,
+        text: factorMapToPlain(map)
+      }))
+    ]);
+
+  return choiceQuestion({
+    key: `choose-factor-${factorMapToText(baseMap)}`,
+    label: "下列哪一個標準分解式一定是 A 的因數？",
+    html: `<div class="math-expression">A＝${factorMapToHTML(baseMap)}</div>`,
+    choices,
+    answer: "correct",
+    topic: "標準分解式判斷因數",
+    explanation: `
+      <strong>判斷因數：質因數不能多，指數不能超過。</strong>
+      ${compareMapExplanation(
+        baseMap,
+        correctMap,
+        "factor"
+      )}
+      因此正確選項是
+      <strong>${factorMapToHTML(correctMap)}</strong>。
+    `
+  });
+}
+
+function makeChooseMultipleByStandardQuestion() {
+  const baseMap =
+    randomBaseMap();
+
+  const correctMap =
+    makeMultipleCandidate(baseMap, true);
+
+  const wrongMaps = [
+    makeMultipleCandidate(baseMap, false),
+    makeMultipleCandidate(baseMap, false),
+    makeMultipleCandidate(baseMap, false)
+  ];
+
+  const choices =
+    shuffle([
+      {
+        value: "correct",
+        text: factorMapToPlain(correctMap)
+      },
+      ...wrongMaps.map((map,i) => ({
+        value: `wrong${i+1}`,
+        text: factorMapToPlain(map)
+      }))
+    ]);
+
+  return choiceQuestion({
+    key: `choose-multiple-${factorMapToText(baseMap)}`,
+    label: "下列哪一個標準分解式一定是 A 的倍數？",
+    html: `<div class="math-expression">A＝${factorMapToHTML(baseMap)}</div>`,
+    choices,
+    answer: "correct",
+    topic: "標準分解式判斷倍數",
+    explanation: `
+      <strong>判斷倍數：原數的質因數都要保留，對應指數不能變小。</strong>
+      ${compareMapExplanation(
+        baseMap,
+        correctMap,
+        "multiple"
+      )}
+      因此正確選項是
+      <strong>${factorMapToHTML(correctMap)}</strong>。
+    `
+  });
+}
+
+function createStandardJudgeSet() {
+  return shuffle([
+    makeStandardJudgeQuestion("factor"),
+    makeStandardJudgeQuestion("factor"),
+    makeStandardJudgeQuestion("factor"),
+    makeStandardJudgeQuestion("multiple"),
+    makeStandardJudgeQuestion("multiple"),
+    makeStandardJudgeQuestion("multiple"),
+    makeChooseFactorByStandardQuestion(),
+    makeChooseFactorByStandardQuestion(),
+    makeChooseMultipleByStandardQuestion(),
+    makeChooseMultipleByStandardQuestion()
+  ]);
+}
+
+/*
+==================================================
+競速題
+==================================================
+*/
+
+function makeQuickStandardChoice() {
+  const n =
+    pick(STANDARD_POOL);
+
+  const map =
+    primeFactorMap(n);
+
+  const correct =
+    factorMapToPlain(map);
+
+  const entries =
+    Object.entries(map);
+
+  const wrong1 = {...map};
+  const firstPrime =
+    Number(entries[0][0]);
+
+  wrong1[firstPrime] =
+    Number(wrong1[firstPrime]) + 1;
+
+  const wrong2 = {...map};
+  const secondPrime =
+    Number(
+      entries[
+        Math.min(
+          1,
+          entries.length - 1
+        )
+      ][0]
+    );
+
+  if (Number(wrong2[secondPrime]) > 1) {
+    wrong2[secondPrime] =
+      Number(wrong2[secondPrime]) - 1;
+  } else {
+    wrong2[secondPrime] = 2;
+  }
+
+  const expanded =
+    Object.entries(map)
+      .flatMap(
+        ([prime, exponent]) =>
+          Array(Number(exponent))
+            .fill(prime)
+      )
+      .join("×");
+
+  return choiceQuestion({
+    key: `quick-standard-${n}-${Date.now()}-${Math.random()}`,
+    label: `選出 ${n} 的正確標準分解式`,
+    html: `<div class="math-expression">${n}</div>`,
+    choices: makeChoiceValues(
+      correct,
+      [
+        factorMapToPlain(wrong1),
+        factorMapToPlain(wrong2),
+        expanded === correct
+          ? `${correct}×1`
+          : expanded
+      ]
+    ),
+    answer: "correct",
+    topic: "快速標準分解式",
+    explanation: `
+      ${n} 的質因數分解為
+      <strong>${factorMapToHTML(map)}</strong>。
+      標準分解式要把相同質因數合併成次方。
+    `
+  });
+}
+
+function makeSpeedQuestion() {
+  const type =
+    rand(1,5);
+
+  if (type === 1) {
+    return makeDivisibilityQuestion(
+      pick([2,3,4,5,9,11])
+    );
+  }
+
+  if (type === 2) {
+    return makeClassificationQuestion(
+      rand(1,100)
+    );
+  }
+
+  if (type === 3) {
+    return makeIsPrimeFactorQuestion();
+  }
+
+  if (type === 4) {
+    return makeStandardJudgeQuestion(
+      Math.random() < .5
+        ? "factor"
+        : "multiple"
+    );
+  }
+
+  return makeQuickStandardChoice();
+}
+
+/*
+==================================================
+綜合挑戰
+==================================================
+*/
+
+function createComprehensiveSet() {
+  const factorMultiple =
+    createFactorMultipleSet();
+
+  const primeComposite =
+    createPrimeCompositeSet();
+
+  const primeFactor =
+    createPrimeFactorSet();
+
+  const standardForm =
+    createStandardFormSet();
+
+  const standardJudge =
+    createStandardJudgeSet();
+
+  return shuffle([
+    factorMultiple[0],
+    factorMultiple[1],
+    primeComposite[0],
+    primeFactor[0],
+    standardForm.find(q => q.kind === "primeExpression"),
+    standardForm.find(q => q.kind === "choice"),
+    standardJudge[0],
+    standardJudge[1]
+  ]);
+}
+
+/*
+==================================================
+題組建立
+==================================================
+*/
+
+function createQuestionSet(selectedMode) {
+  switch (selectedMode) {
+    case "factorMultiple":
+      return createFactorMultipleSet();
+
+    case "primeComposite":
+      return createPrimeCompositeSet();
+
+    case "primeFactor":
+      return createPrimeFactorSet();
+
+    case "standardForm":
+      return createStandardFormSet();
+
+    case "standardJudge":
+      return createStandardJudgeSet();
+
+    case "comprehensive":
+      return createComprehensiveSet();
+
+    default:
+      return [];
+  }
+}
+
+/*
+==================================================
+畫面與作答
+==================================================
+*/
+
+function startGame(selectedMode) {
+  modeId =
+    selectedMode;
+
+  attemptId =
+    createAttemptId();
+
+  index = 0;
+  correct = 0;
+  wrong = 0;
+  combo = 0;
+  maxCombo = 0;
+  records = [];
+  selectedChoice = null;
+  answered = false;
+  elapsed = 0;
+  speedRemaining = 60;
+  speedAttempts = 0;
+  speedScore = 0;
+  scoreSaved = false;
+
+  $("save-status").textContent = "";
+  $("review-button").disabled = false;
+
+  if (modeId === "speed") {
+    questions = [];
+  } else {
+    questions =
+      createQuestionSet(modeId);
+  }
+
+  $("mode-display").textContent =
+    MODE_CONFIG[modeId].name;
+
+  $("score-display").textContent = "0";
+  $("combo-display").textContent = "0";
+  $("time-box").classList.remove("timer-danger");
+
+  showOnly("quiz-screen");
+
+  startTime = Date.now();
+
+  startTimer();
+
+  if (modeId === "speed") {
+    renderSpeedQuestion();
+  } else {
+    renderQuestion();
+  }
+}
+
+function renderQuestion() {
+  if (
+    typeof window.resetGameScratchpad === "function"
+  ) {
+    window.resetGameScratchpad();
+  }
+
+  answered = false;
+  selectedChoice = null;
+
+  $("feedback").textContent = "";
+  $("feedback").className = "feedback";
+  $("explanation").innerHTML = "";
+  $("explanation").classList.add("hidden");
+  $("input-message").textContent = "";
+
+  $("submit-button").classList.remove("hidden");
+  $("next-button").classList.add("hidden");
+
+  const q =
+    questions[index];
+
+  $("question-label").innerHTML =
+    q.label;
+
+  $("question-content").innerHTML =
+    q.html;
+
+  $("question-note").textContent =
+    q.note || "";
+
+  renderAnswer(q);
+
+  $("progress-bar").style.width =
+    `${index / questions.length * 100}%`;
+
+  updateStatus();
+}
+
+function renderSpeedQuestion() {
+  if (
+    typeof window.resetGameScratchpad === "function"
+  ) {
+    window.resetGameScratchpad();
+  }
+
+  answered = false;
+  selectedChoice = null;
+
+  const q =
+    makeSpeedQuestion();
+
+  questions = [q];
+
+  $("feedback").textContent = "";
+  $("feedback").className = "feedback";
+  $("explanation").classList.add("hidden");
+  $("input-message").textContent = "";
+
+  $("submit-button").classList.remove("hidden");
+  $("next-button").classList.add("hidden");
+
+  $("question-label").innerHTML =
+    q.label;
+
+  $("question-content").innerHTML =
+    q.html;
+
+  $("question-note").textContent =
+    "競速模式會在作答後自動進入下一題；完整解析可於錯題回顧查看。";
+
+  renderAnswer(q);
+
+  updateStatus();
+}
+
+function renderAnswer(q) {
+  $("choiceMount").innerHTML = "";
+
+  if (q.kind === "choice") {
+    $("choiceMount").classList.remove("hidden");
+    $("expressionMountWrap").classList.add("hidden");
+
+    q.choices.forEach(choice => {
+      const button =
+        document.createElement("button");
+
+      button.type = "button";
+      button.className = "choice-button";
+      button.dataset.value =
+        choice.value;
+      button.innerHTML =
+        choice.text
+          .replace(/\^(\d+)/g, "<sup>$1</sup>");
+
+      button.addEventListener("click", () => {
+        if (answered) return;
+
+        selectedChoice =
+          String(choice.value);
+
+        document
+          .querySelectorAll(".choice-button")
+          .forEach(item => {
+            item.classList.toggle(
+              "selected",
+              item === button
+            );
+          });
+
+        $("input-message").textContent = "";
+      });
+
+      $("choiceMount")
+        .appendChild(button);
+    });
+
+    return;
+  }
+
+  $("choiceMount").classList.add("hidden");
+  $("expressionMountWrap").classList.remove("hidden");
+
+  initExpressionInput();
+
+  if (answerInput) {
+    answerInput.reset();
+    answerInput.setDisabled(false);
+  }
+}
+
+function readAnswer(q) {
+  if (q.kind === "choice") {
+    if (selectedChoice === null) {
+      return {
+        valid: false,
+        message: "請先選擇一個答案。"
+      };
+    }
+
+    const choice =
+      q.choices.find(
+        item =>
+          String(item.value) ===
+          String(selectedChoice)
+      );
+
+    return {
+      valid: true,
+      value: String(selectedChoice),
+      display:
+        choice?.text ??
+        selectedChoice
+    };
+  }
+
+  const answer =
+    readExpressionAnswer();
+
+  if (!answer.valid) {
+    return answer;
+  }
+
+  return {
+    ...answer,
+    value: answer.map,
+    display:
+      answer.html ||
+      factorMapToHTML(answer.map)
+  };
+}
+
+function isAnswerCorrect(q, answer) {
+  if (q.kind === "choice") {
+    return (
+      String(answer.value) ===
+      String(q.answer)
+    );
+  }
+
+  return mapsEqual(
+    answer.map,
+    q.answerMap
+  );
+}
+
+function correctAnswerHTML(q) {
+  if (q.kind === "choice") {
+    const item =
+      q.choices.find(
+        choice =>
+          String(choice.value) ===
+          String(q.answer)
+      );
+
+    return (
+      item?.text ??
+      q.answer
+    )
+      .replace(/\^(\d+)/g, "<sup>$1</sup>");
+  }
+
+  return factorMapToHTML(
+    q.answerMap
+  );
+}
+
+function markChoices(q, answer) {
+  if (q.kind !== "choice") return;
+
+  document
+    .querySelectorAll(".choice-button")
+    .forEach(button => {
+      button.disabled = true;
+
+      const value =
+        String(button.dataset.value);
 
       if (
-        primes.length ===
-        0
+        value ===
+        String(q.answer)
       ) {
-        return "1";
-      }
-
-      return primes
-        .map(
-          (prime) => {
-            const exponent =
-              factorMap[
-                prime
-              ];
-
-            return exponent ===
-              1
-              ? `${prime}`
-              : `${prime}^${exponent}`;
-          }
-        )
-        .join("*");
-    }
-
-    function expressionToHtml(
-      expression
-    ) {
-      return String(
-        expression
-      )
-        .replace(
-          /\*/g,
-          "×"
-        )
-        .replace(
-          /\^(\d+)/g,
-          "<sup>$1</sup>"
+        button.classList.add(
+          "correct-choice"
         );
-    }
-
-    function valueFromMap(
-      factorMap
-    ) {
-      return Object.entries(
-        factorMap
-      ).reduce(
-        (
-          product,
-          [
-            prime,
-            exponent
-          ]
-        ) => {
-          return (
-            product *
-            Math.pow(
-              Number(
-                prime
-              ),
-              Number(
-                exponent
-              )
-            )
-          );
-        },
-        1
-      );
-    }
-
-    function mapsEqual(
-      firstMap,
-      secondMap
-    ) {
-      const keys =
-        new Set([
-          ...Object.keys(
-            firstMap
-          ),
-          ...Object.keys(
-            secondMap
-          )
-        ]);
-
-      return [
-        ...keys
-      ].every(
-        (key) => {
-          return (
-            (
-              firstMap[
-                key
-              ] ||
-              0
-            ) ===
-            (
-              secondMap[
-                key
-              ] ||
-              0
-            )
-          );
-        }
-      );
-    }
-
-    function toSuperscript(
-      value
-    ) {
-      const superscriptDigits = {
-        0:
-          "⁰",
-
-        1:
-          "¹",
-
-        2:
-          "²",
-
-        3:
-          "³",
-
-        4:
-          "⁴",
-
-        5:
-          "⁵",
-
-        6:
-          "⁶",
-
-        7:
-          "⁷",
-
-        8:
-          "⁸",
-
-        9:
-          "⁹"
-      };
-
-      return String(
-        value
-      )
-        .split("")
-        .map(
-          (digit) =>
-            superscriptDigits[
-              digit
-            ] ||
-            digit
-        )
-        .join("");
-    }
-
-    function smallestPrimeFactor(
-      number
-    ) {
-      for (
-        let divisor =
-          2;
-        divisor <=
-          number;
-        divisor++
-      ) {
-        if (
-          number %
-            divisor ===
-          0
-        ) {
-          return divisor;
-        }
       }
 
-      return number;
-    }
-
-    function randomInteger(
-      minimum,
-      maximum
-    ) {
-      return (
-        Math.floor(
-          Math.random() *
-          (
-            maximum -
-            minimum +
-            1
-          )
-        ) +
-        minimum
-      );
-    }
-
-    function randomChoice(
-      values
-    ) {
-      return values[
-        randomInteger(
-          0,
-          values.length -
-          1
-        )
-      ];
-    }
-
-    function shuffle(
-      values
-    ) {
-      for (
-        let currentIndex =
-          values.length -
-          1;
-        currentIndex >
-          0;
-        currentIndex--
+      if (
+        value ===
+          String(answer.value) &&
+        value !==
+          String(q.answer)
       ) {
-        const randomIndex =
-          randomInteger(
-            0,
-            currentIndex
-          );
-
-        [
-          values[
-            currentIndex
-          ],
-          values[
-            randomIndex
-          ]
-        ] = [
-          values[
-            randomIndex
-          ],
-          values[
-            currentIndex
-          ]
-        ];
-      }
-
-      return values;
-    }
-
-    function formatElapsed(
-      seconds
-    ) {
-      const minutes =
-        Math.floor(
-          seconds /
-          60
+        button.classList.add(
+          "wrong-choice"
         );
+      }
+    });
+}
 
-      const remainingSeconds =
-        seconds %
-        60;
+function submitAnswer() {
+  if (answered) return;
 
-      return (
-        `${String(minutes).padStart(2, "0")}:` +
-        `${String(remainingSeconds).padStart(2, "0")}`
+  const q =
+    modeId === "speed"
+      ? questions[0]
+      : questions[index];
+
+  const answer =
+    readAnswer(q);
+
+  if (!answer.valid) {
+    $("input-message").textContent =
+      answer.message;
+
+    if (
+      q.kind === "primeExpression" &&
+      answerInput
+    ) {
+      answerInput.showMessage(
+        answer.message
       );
     }
 
-    /*
-    ==================================================
-    事件
-    ==================================================
-    */
+    return;
+  }
 
-    document
-      .querySelectorAll(
-        "[data-mode]"
-      )
-      .forEach(
-        (button) => {
-          button.addEventListener(
-            "click",
-            () => {
-              startGame(
-                button.dataset.mode
-              );
-            }
-          );
-        }
+  const isCorrect =
+    isAnswerCorrect(
+      q,
+      answer
+    );
+
+  answered = true;
+
+  if (q.kind === "primeExpression") {
+    answerInput?.setDisabled(true);
+  }
+
+  markChoices(q, answer);
+
+  if (isCorrect) {
+    correct++;
+    combo++;
+    maxCombo =
+      Math.max(
+        maxCombo,
+        combo
       );
 
-    $("submit-button")
-      .addEventListener(
-        "click",
-        checkAnswer
-      );
+    playGameSound("playCorrect");
+  } else {
+    wrong++;
+    combo = 0;
+    playGameSound("playWrong");
+  }
 
-    $("next-button")
-      .addEventListener(
-        "click",
-        nextQuestion
-      );
+  records.push({
+    number:
+      modeId === "speed"
+        ? speedAttempts + 1
+        : index + 1,
+    question: q,
+    userAnswer:
+      answer.display,
+    correct: isCorrect
+  });
 
-    $("change-mode-button")
-      .addEventListener(
-        "click",
-        () => {
-          clearInterval(
-            timer
-          );
+  if (modeId === "speed") {
+    speedAttempts++;
 
-          showOnly(
-            "start-screen"
-          );
-        }
-      );
+    if (isCorrect) {
+      speedScore += 10;
+    }
 
-    $("again-button")
-      .addEventListener(
-        "click",
-        () => {
-          startGame(
-            mode
-          );
-        }
-      );
+    $("feedback").textContent =
+      isCorrect
+        ? "✅ 正確！＋10 分"
+        : "❌ 答錯了，下一題！";
 
-    $("review-button")
-      .addEventListener(
-        "click",
-        showReview
-      );
+    $("feedback").className =
+      `feedback ${isCorrect ? "correct" : "wrong"}`;
 
-    $("result-mode-button")
-      .addEventListener(
-        "click",
-        () => {
-          showOnly(
-            "start-screen"
-          );
-        }
-      );
+    updateStatus();
 
-    $("review-again-button")
-      .addEventListener(
-        "click",
-        () => {
-          startGame(
-            mode
-          );
-        }
-      );
+    window.setTimeout(() => {
+      if (
+        modeId === "speed" &&
+        speedRemaining > 0 &&
+        !$("result-screen")
+          .classList
+          .contains("hidden") === false
+      ) {
+        renderSpeedQuestion();
+      } else if (
+        modeId === "speed" &&
+        speedRemaining > 0
+      ) {
+        renderSpeedQuestion();
+      }
+    }, 320);
 
-    $("review-result-button")
-      .addEventListener(
-        "click",
-        () => {
-          showOnly(
-            "result-screen"
-          );
-        }
-      );
+    return;
+  }
 
-    document.addEventListener(
-      "keydown",
-      (event) => {
+  $("feedback").textContent =
+    isCorrect
+      ? "✅ 回答正確！"
+      : "❌ 答案不正確，請看下方完整解析。";
+
+  $("feedback").className =
+    `feedback ${isCorrect ? "correct" : "wrong"}`;
+
+  $("explanation").innerHTML =
+    q.explanation;
+
+  $("explanation")
+    .classList
+    .remove("hidden");
+
+  $("submit-button")
+    .classList
+    .add("hidden");
+
+  $("next-button")
+    .classList
+    .remove("hidden");
+
+  $("next-button").textContent =
+    index === questions.length - 1
+      ? "查看測驗結果"
+      : "下一題";
+
+  updateStatus();
+}
+
+function nextQuestion() {
+  if (!answered) return;
+
+  index++;
+
+  if (index >= questions.length) {
+    showResult();
+    return;
+  }
+
+  renderQuestion();
+}
+
+function updateStatus() {
+  $("combo-display").textContent =
+    combo;
+
+  if (modeId === "speed") {
+    $("score-display").textContent =
+      speedScore;
+
+    $("time-display").textContent =
+      formatTime(speedRemaining);
+
+    $("progress-bar").style.width =
+      `${Math.min(
+        100,
+        (60 - speedRemaining) / 60 * 100
+      )}%`;
+
+    return;
+  }
+
+  const score =
+    questions.length
+      ? Math.round(
+          correct /
+          questions.length *
+          100
+        )
+      : 0;
+
+  $("score-display").textContent =
+    score;
+
+  $("time-display").textContent =
+    formatTime(elapsed);
+}
+
+/*
+==================================================
+計時
+==================================================
+*/
+
+function startTimer() {
+  stopTimer();
+
+  timerId =
+    window.setInterval(() => {
+      if (modeId === "speed") {
+        speedRemaining--;
+
         if (
-          event.key !==
-            "Enter" ||
-          $("quiz-screen")
-            .classList.contains(
-              "hidden"
-            )
+          speedRemaining <= 10 &&
+          speedRemaining > 0
         ) {
+          $("time-box")
+            .classList
+            .add("timer-danger");
+
+          playUrgentCountdown();
+        }
+
+        if (speedRemaining <= 0) {
+          speedRemaining = 0;
+          updateStatus();
+          stopTimer();
+
+          window.setTimeout(
+            showResult,
+            50
+          );
+
           return;
         }
 
-        event.preventDefault();
-
-        if (
-          nextReady
-        ) {
-          nextQuestion();
-        } else if (
-          !locked
-        ) {
-          checkAnswer();
-        }
+        updateStatus();
+        return;
       }
+
+      elapsed =
+        Math.floor(
+          (Date.now() - startTime) /
+          1000
+        );
+
+      updateStatus();
+    }, 1000);
+}
+
+function stopTimer() {
+  if (timerId) {
+    window.clearInterval(timerId);
+    timerId = null;
+  }
+}
+
+/*
+==================================================
+結果
+==================================================
+*/
+
+function rating(score, accuracy) {
+  const value =
+    modeId === "speed"
+      ? accuracy
+      : score;
+
+  if (value >= 90) {
+    return {
+      stars: "★★★★★",
+      comment: "觀念非常穩定！因數、質數、質因數與標準分解式都掌握得很好。"
+    };
+  }
+
+  if (value >= 80) {
+    return {
+      stars: "★★★★☆",
+      comment: "表現很好！再留意倍數判別規則與標準分解式的指數比較。"
+    };
+  }
+
+  if (value >= 60) {
+    return {
+      stars: "★★★☆☆",
+      comment: "核心概念已建立，建議利用錯題回顧把容易混淆的規則再練熟。"
+    };
+  }
+
+  return {
+    stars: "★★☆☆☆",
+    comment: "建議依序從因數倍數、質數合數、質因數，再進入標準分解式練習。"
+  };
+}
+
+async function showResult() {
+  if (
+    !$("result-screen")
+      .classList
+      .contains("hidden")
+  ) {
+    return;
+  }
+
+  stopTimer();
+
+  if (modeId !== "speed") {
+    elapsed =
+      Math.floor(
+        (Date.now() - startTime) /
+        1000
+      );
+  } else {
+    elapsed =
+      60 - speedRemaining;
+  }
+
+  let score;
+  let accuracy;
+  let total;
+
+  if (modeId === "speed") {
+    total =
+      speedAttempts;
+
+    accuracy =
+      total
+        ? Math.round(
+            correct /
+            total *
+            100
+          )
+        : 0;
+
+    score =
+      speedScore;
+  } else {
+    total =
+      questions.length;
+
+    score =
+      Math.round(
+        correct /
+        total *
+        1000
+      ) / 10;
+
+    accuracy =
+      Math.round(
+        correct /
+        total *
+        1000
+      ) / 10;
+  }
+
+  const result =
+    rating(
+      score,
+      accuracy
     );
 
-  </script>
+  showOnly("result-screen");
 
+  $("result-mode-name").textContent =
+    MODE_CONFIG[modeId].name;
+
+  $("final-score").textContent =
+    modeId === "speed"
+      ? `${score} 分`
+      : `${Number.isInteger(score) ? score : score.toFixed(1)} 分`;
+
+  $("final-stars").textContent =
+    result.stars;
+
+  $("final-comment").textContent =
+    modeId === "speed"
+      ? `${result.comment}　本次 60 秒共作答 ${total} 題，正確率 ${accuracy}%。`
+      : result.comment;
+
+  $("final-correct").textContent =
+    correct;
+
+  $("final-wrong").textContent =
+    wrong;
+
+  $("final-combo").textContent =
+    maxCombo;
+
+  $("final-time").textContent =
+    formatTime(elapsed);
+
+  const wrongCount =
+    records.filter(
+      record =>
+        !record.correct
+    ).length;
+
+  $("review-button").disabled =
+    wrongCount === 0;
+
+  $("review-button").textContent =
+    wrongCount === 0
+      ? "全部答對，無錯題"
+      : `錯題回顧（${wrongCount}）`;
+
+  playGameSound("playComplete");
+
+  await saveCompletion({
+    score,
+    accuracy,
+    total
+  });
+}
+
+/*
+==================================================
+現有 scores.js 成績儲存
+==================================================
+*/
+
+async function saveScoreRecord({
+  score,
+  accuracy,
+  total
+}) {
+  const status =
+    $("save-status");
+
+  try {
+    const scoreModule =
+      await import(
+        "../js/scores.js?v=7"
+      );
+
+    if (
+      typeof scoreModule.saveGameScore !==
+      "function"
+    ) {
+      return {
+        success: false,
+        reason: "module-missing"
+      };
+    }
+
+    return await scoreModule.saveGameScore({
+      game: GAME_ID,
+      mode: modeId,
+      score,
+      correctCount: correct,
+      wrongCount: wrong,
+      maxCombo,
+      playTime: elapsed,
+      totalQuestions: total,
+      accuracy
+    });
+
+  } catch (error) {
+    console.error(
+      "2-1 成績儲存失敗：",
+      error
+    );
+
+    status.textContent =
+      "⚠️ 本次遊戲已完成，但成績暫時無法儲存。";
+
+    status.style.color =
+      "#b91c1c";
+
+    return {
+      success: false,
+      reason: "save-error"
+    };
+  }
+}
+
+/*
+==================================================
+RPG 相容橋接
+未來 progress-system.js 上線後，
+本遊戲檔本身不必重寫。
+==================================================
+*/
+
+async function completeRpgBridge({
+  score,
+  accuracy,
+  total
+}) {
+  const payload = {
+    gameId: GAME_ID,
+    modeId,
+    score,
+    correct,
+    total,
+    playTime: elapsed,
+    accuracy,
+    maxCombo,
+    attemptId,
+    difficultyWeight:
+      MODE_CONFIG[modeId]
+        ?.difficultyWeight ??
+      1
+  };
+
+  // 1. 先廣播統一完成事件，未來 RPG 可直接監聽。
+  try {
+    window.dispatchEvent(
+      new CustomEvent(
+        "mathgame:session-complete",
+        {
+          detail: payload
+        }
+      )
+    );
+  } catch (_) {}
+
+  // 2. 若未來已掛載全域 RPG 系統，直接呼叫。
+  try {
+    const globalHandler =
+      window.MathGameProgress
+        ?.completeLearningSession;
+
+    if (
+      typeof globalHandler === "function"
+    ) {
+      return await globalHandler(
+        payload
+      );
+    }
+  } catch (error) {
+    console.warn(
+      "RPG 全域橋接失敗：",
+      error
+    );
+  }
+
+  // 3. 嘗試未來規劃的 progress-system.js。
+  //    現階段檔案尚未建立時，失敗不影響既有遊戲。
+  try {
+    const progressModule =
+      await import(
+        "../js/progress-system.js?v=1"
+      );
+
+    const handler =
+      progressModule
+        .completeLearningSession ||
+      progressModule
+        .default
+        ?.completeLearningSession;
+
+    if (
+      typeof handler === "function"
+    ) {
+      return await handler(
+        payload
+      );
+    }
+  } catch (_) {
+    // 尚未啟用 RPG 時保持靜默。
+  }
+
+  return null;
+}
+
+async function saveCompletion({
+  score,
+  accuracy,
+  total
+}) {
+  if (scoreSaved) return;
+
+  scoreSaved = true;
+
+  const status =
+    $("save-status");
+
+  status.textContent =
+    "☁️ 正在儲存本次成績……";
+
+  status.style.color =
+    "#1d4ed8";
+
+  const scoreResult =
+    await saveScoreRecord({
+      score,
+      accuracy,
+      total
+    });
+
+  if (scoreResult?.success) {
+    status.textContent =
+      "✅ 本次成績已儲存。";
+
+    status.style.color =
+      "#15803d";
+  } else if (
+    scoreResult?.reason ===
+    "not-logged-in"
+  ) {
+    status.textContent =
+      "ℹ️ 尚未登入，因此本次成績沒有儲存。";
+
+    status.style.color =
+      "#b45309";
+  } else if (
+    scoreResult?.reason !==
+    "save-error"
+  ) {
+    status.textContent =
+      "⚠️ 成績暫時無法儲存。";
+
+    status.style.color =
+      "#b91c1c";
+  }
+
+  // RPG 獎勵由中央 progress-system 統一計算，
+  // 遊戲端不自行發 XP／寶石，避免重複發放。
+  await completeRpgBridge({
+    score,
+    accuracy,
+    total
+  });
+}
+
+/*
+==================================================
+錯題回顧
+==================================================
+*/
+
+function showReview() {
+  const wrongRecords =
+    records.filter(
+      record =>
+        !record.correct
+    );
+
+  if (wrongRecords.length === 0) {
+    $("review-list").innerHTML =
+      `<div class="review-card">全部答對，沒有需要回顧的錯題！</div>`;
+  } else {
+    $("review-list").innerHTML =
+      wrongRecords
+        .map(record => {
+          const q =
+            record.question;
+
+          return `
+            <article class="review-card">
+              <div class="review-title">
+                第 ${record.number} 題 ❌
+              </div>
+
+              <div class="review-question">
+                ${q.label}<br>
+                ${q.html}
+              </div>
+
+              <div class="review-answer">
+                你的答案：
+                <strong>${record.userAnswer || "未作答"}</strong><br>
+                正確答案：
+                <strong>${correctAnswerHTML(q)}</strong>
+              </div>
+
+              <div class="explanation">
+                ${q.explanation}
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+  }
+
+  showOnly("review-screen");
+}
+
+/*
+==================================================
+事件
+==================================================
+*/
+
+document
+  .querySelectorAll("[data-mode]")
+  .forEach(button => {
+    button.addEventListener(
+      "click",
+      () => {
+        startGame(
+          button.dataset.mode
+        );
+      }
+    );
+  });
+
+$("submit-button")
+  .addEventListener(
+    "click",
+    submitAnswer
+  );
+
+$("next-button")
+  .addEventListener(
+    "click",
+    nextQuestion
+  );
+
+$("quit-button")
+  .addEventListener(
+    "click",
+    () => {
+      stopTimer();
+      showOnly("start-screen");
+    }
+  );
+
+$("again-button")
+  .addEventListener(
+    "click",
+    () => {
+      startGame(modeId);
+    }
+  );
+
+$("review-button")
+  .addEventListener(
+    "click",
+    showReview
+  );
+
+$("result-mode-button")
+  .addEventListener(
+    "click",
+    () => {
+      showOnly("start-screen");
+    }
+  );
+
+$("review-again-button")
+  .addEventListener(
+    "click",
+    () => {
+      startGame(modeId);
+    }
+  );
+
+$("review-result-button")
+  .addEventListener(
+    "click",
+    () => {
+      showOnly("result-screen");
+    }
+  );
+
+window.addEventListener(
+  "keydown",
+  event => {
+    if (
+      event.key === "Enter" &&
+      !$("quiz-screen")
+        .classList
+        .contains("hidden")
+    ) {
+      if (
+        !$("next-button")
+          .classList
+          .contains("hidden")
+      ) {
+        nextQuestion();
+      } else {
+        submitAnswer();
+      }
+    }
+  }
+);
+
+</script>
 </body>
 </html>
