@@ -451,10 +451,10 @@ export const GAME_CONFIG = {
       "factor",
 
     name:
-      "質因數分解、公因數公倍數大挑戰",
+      "2-1 質因數分解大挑戰",
 
     shortName:
-      "質因數分解與公因數公倍數",
+      "2-1 質因數分解",
 
     semester:
       "grade7-first",
@@ -472,7 +472,7 @@ export const GAME_CONFIG = {
       "games/factor.html",
 
     description:
-      "練習質因數分解，並用指數形式求最大公因數與最小公倍數。",
+      "練習因數與倍數、2／3／4／5／9／11 倍數判別、質數與合數、埃拉托賽尼篩法、質因數、標準分解式，以及利用標準分解式判斷因數與倍數。",
 
     finished:
       true,
@@ -495,17 +495,26 @@ export const GAME_CONFIG = {
 
     modes: {
 
-      primeFactorization:
-        "質因數分解",
+      factorMultiple:
+        "因數、倍數與倍數判別",
 
-      gcd:
-        "最大公因數",
+      primeComposite:
+        "質數、合數與篩法",
 
-      lcm:
-        "最小公倍數",
+      primeFactor:
+        "因數與質因數",
 
-      mixed:
-        "綜合挑戰"
+      standardForm:
+        "質因數分解與標準分解式",
+
+      standardJudge:
+        "標準分解式判別因數倍數",
+
+      speed:
+        "質因數快手",
+
+      comprehensive:
+        "2-1 綜合挑戰"
 
     },
 
