@@ -11,7 +11,7 @@
 >
 
 <title>
-1-1 連比大挑戰｜數學遊戲樂園
+九上 1-1 連比大挑戰｜生活有解．心中有數
 </title>
 
 
@@ -48,7 +48,6 @@
   --primary-light:#e8f2ff;
   --primary-border:#91b8e1;
 
-  --blue:#2563eb;
   --purple:#7c3aed;
   --orange:#d97706;
 
@@ -79,22 +78,20 @@ body{
     "Noto Sans TC",
     sans-serif;
 
-  color:var(--text);
+  color:
+    var(--text);
 
   background:
-
     radial-gradient(
       circle at 8% 8%,
       rgba(96,165,250,.20),
       transparent 30%
     ),
-
     radial-gradient(
       circle at 92% 4%,
       rgba(245,158,11,.13),
       transparent 30%
     ),
-
     linear-gradient(
       135deg,
       #eff6ff,
@@ -187,9 +184,7 @@ button{
   margin:0;
 
   color:
-    var(
-      --primary-dark
-    );
+    var(--primary-dark);
 
   font-size:
     clamp(
@@ -210,9 +205,7 @@ button{
     12px auto 0;
 
   color:
-    var(
-      --muted
-    );
+    var(--muted);
 
   font-weight:700;
 
@@ -242,18 +235,14 @@ button{
 
   border:
     1px solid
-    var(
-      --primary-border
-    );
+    var(--primary-border);
 
   border-radius:999px;
 
   background:#fff;
 
   color:
-    var(
-      --primary-dark
-    );
+    var(--primary-dark);
 
   font-size:14px;
 
@@ -279,10 +268,7 @@ button{
   grid-template-columns:
     repeat(
       2,
-      minmax(
-        0,
-        1fr
-      )
+      minmax(0,1fr)
     );
 
   gap:16px;
@@ -318,14 +304,10 @@ button{
 .mode-card:hover{
 
   transform:
-    translateY(
-      -2px
-    );
+    translateY(-2px);
 
   border-color:
-    var(
-      --primary-border
-    );
+    var(--primary-border);
 
   box-shadow:
     0 12px 28px
@@ -357,19 +339,11 @@ button{
     9px 0 6px;
 
   color:
-    var(
-      --primary-dark
-    );
+    var(--primary-dark);
 
   font-size:21px;
 
   font-weight:900;
-}
-
-
-.mode-card.final
-.mode-title{
-  color:#92400e;
 }
 
 
@@ -410,9 +384,7 @@ button{
     0 0 16px;
 
   color:
-    var(
-      --muted
-    );
+    var(--muted);
 
   line-height:1.7;
 }
@@ -446,7 +418,8 @@ button{
 }
 
 
-.mode-button{
+.mode-button,
+.game-button.primary{
   background:var(--primary);
 }
 
@@ -454,11 +427,6 @@ button{
 .mode-card.final
 .mode-button{
   background:var(--orange);
-}
-
-
-.game-button.primary{
-  background:var(--primary);
 }
 
 
@@ -507,9 +475,7 @@ button:disabled{
 .mode-name{
 
   color:
-    var(
-      --primary-dark
-    );
+    var(--primary-dark);
 
   font-size:20px;
 
@@ -522,9 +488,7 @@ button:disabled{
   margin-top:4px;
 
   color:
-    var(
-      --muted
-    );
+    var(--muted);
 
   font-size:14px;
 
@@ -537,10 +501,7 @@ button:disabled{
   display:grid;
 
   grid-template-columns:
-    repeat(
-      4,
-      auto
-    );
+    repeat(4,auto);
 
   gap:8px;
 }
@@ -658,6 +619,8 @@ button:disabled{
 
 .question-card{
 
+  overflow:hidden;
+
   padding:24px;
 
   border:
@@ -677,12 +640,10 @@ button:disabled{
 
 .question-label{
 
-  margin-bottom:8px;
+  margin-bottom:12px;
 
   color:
-    var(
-      --primary-dark
-    );
+    var(--primary-dark);
 
   font-size:14px;
 
@@ -694,43 +655,103 @@ button:disabled{
 
   min-height:108px;
 
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  overflow-x:auto;
-
   text-align:center;
 
   color:#0f172a;
 
   font-size:
     clamp(
-      23px,
-      4vw,
-      33px
+      22px,
+      3.3vw,
+      31px
     );
 
   font-weight:900;
 
-  line-height:1.85;
+  line-height:1.75;
 }
 
 
-.question-note{
+.question-stack{
 
   width:100%;
 
-  font-size:
-    clamp(
-      18px,
-      3vw,
-      25px
-    );
+  display:flex;
 
-  line-height:1.9;
+  flex-direction:column;
+
+  align-items:center;
+
+  gap:12px;
+}
+
+
+/*
+==================================================
+重要條件
+
+★ 不允許條件被切成兩行。
+★ 螢幕太窄時改用區塊內橫向滑動。
+==================================================
+*/
+
+.important-line{
+
+  display:block;
+
+  width:max-content;
+
+  max-width:100%;
+
+  margin:
+    2px auto;
+
+  padding:
+    4px 8px;
+
+  overflow-x:auto;
+
+  overflow-y:hidden;
+
+  white-space:nowrap;
+
+  -webkit-overflow-scrolling:touch;
+
+  scrollbar-width:thin;
+}
+
+
+.condition-pill{
+
+  display:block;
+
+  width:max-content;
+
+  max-width:100%;
+
+  margin:
+    0 auto;
+
+  padding:
+    10px 16px;
+
+  overflow-x:auto;
+
+  overflow-y:hidden;
+
+  border:
+    1px solid
+    #dbeafe;
+
+  border-radius:12px;
+
+  background:#fff;
+
+  white-space:nowrap;
+
+  -webkit-overflow-scrolling:touch;
+
+  scrollbar-width:thin;
 }
 
 
@@ -744,34 +765,7 @@ button:disabled{
 }
 
 
-.math-expression{
-
-  display:inline-block;
-
-  max-width:100%;
-
-  margin:
-    7px 0;
-
-  padding:
-    10px 16px;
-
-  border:
-    1px solid
-    #dbeafe;
-
-  border-radius:12px;
-
-  background:#fff;
-
-  white-space:nowrap;
-}
-
-
-.nowrap{
-
-  display:inline-block;
-
+.no-wrap{
   white-space:nowrap;
 }
 
@@ -779,6 +773,9 @@ button:disabled{
 /*
 ==================================================
 堆疊分數
+
+★ 可接受 x、y、z 等文字，
+  不會再出現 NaN。
 ==================================================
 */
 
@@ -792,7 +789,7 @@ button:disabled{
 
   justify-content:center;
 
-  min-width:1.45em;
+  min-width:1.5em;
 
   margin:
     0 .12em;
@@ -805,8 +802,10 @@ button:disabled{
 
 .math-fraction-top{
 
+  min-width:1.5em;
+
   padding:
-    0 .16em .07em;
+    0 .18em .08em;
 
   border-bottom:
     2px solid
@@ -818,8 +817,10 @@ button:disabled{
 
 .math-fraction-bottom{
 
+  min-width:1.5em;
+
   padding:
-    .07em .16em 0;
+    .08em .18em 0;
 
   text-align:center;
 }
@@ -876,18 +877,11 @@ button:disabled{
 .ratio-input:focus{
 
   border-color:
-    var(
-      --primary
-    );
+    var(--primary);
 
   box-shadow:
     0 0 0 4px
-    rgba(
-      59,
-      130,
-      246,
-      .13
-    );
+    rgba(59,130,246,.13);
 }
 
 
@@ -899,13 +893,25 @@ button:disabled{
 
   align-items:center;
 
-  flex-wrap:wrap;
+  flex-wrap:nowrap;
 
   gap:10px;
+
+  width:100%;
+
+  overflow-x:auto;
+
+  padding:
+    4px 2px;
+
+  -webkit-overflow-scrolling:touch;
 }
 
 
 .ratio-input{
+
+  flex:
+    0 0 105px;
 
   width:105px;
 
@@ -932,10 +938,11 @@ button:disabled{
 
 .ratio-colon{
 
+  flex:
+    0 0 auto;
+
   color:
-    var(
-      --primary-dark
-    );
+    var(--primary-dark);
 
   font-size:28px;
 
@@ -948,15 +955,20 @@ button:disabled{
   margin-top:9px;
 
   color:
-    var(
-      --muted
-    );
+    var(--muted);
 
   text-align:center;
 
   font-size:14px;
 
   font-weight:800;
+
+  line-height:1.7;
+}
+
+
+.answer-help strong{
+  color:#b45309;
 }
 
 
@@ -973,10 +985,7 @@ button:disabled{
   grid-template-columns:
     repeat(
       2,
-      minmax(
-        0,
-        1fr
-      )
+      minmax(0,1fr)
     );
 
   gap:10px;
@@ -985,10 +994,12 @@ button:disabled{
 
 .choice-button{
 
-  min-height:58px;
+  min-height:62px;
 
   padding:
-    11px 14px;
+    12px 14px;
+
+  overflow-x:auto;
 
   border:
     2px solid
@@ -1007,6 +1018,10 @@ button:disabled{
   line-height:1.7;
 
   cursor:pointer;
+
+  white-space:nowrap;
+
+  -webkit-overflow-scrolling:touch;
 }
 
 
@@ -1018,19 +1033,13 @@ button:disabled{
 .choice-button.selected{
 
   border-color:
-    var(
-      --primary
-    );
+    var(--primary);
 
   background:
-    var(
-      --primary-light
-    );
+    var(--primary-light);
 
   color:
-    var(
-      --primary-dark
-    );
+    var(--primary-dark);
 }
 
 
@@ -1124,12 +1133,7 @@ button:disabled{
   border-radius:12px;
 
   background:
-    rgba(
-      255,
-      255,
-      255,
-      .90
-    );
+    rgba(255,255,255,.90);
 }
 
 
@@ -1197,9 +1201,7 @@ button:disabled{
     16px 0 6px;
 
   color:
-    var(
-      --orange
-    );
+    var(--orange);
 
   font-size:56px;
 
@@ -1217,10 +1219,7 @@ button:disabled{
   display:grid;
 
   grid-template-columns:
-    repeat(
-      4,
-      1fr
-    );
+    repeat(4,1fr);
 
   gap:10px;
 
@@ -1361,61 +1360,83 @@ button:disabled{
     padding:8px;
   }
 
+
   .screen{
     padding:14px;
   }
 
+
   .game-header{
+
     padding:
-      22px 13px 17px;
+      22px
+      13px
+      17px;
   }
+
 
   .mode-grid{
     grid-template-columns:1fr;
   }
 
+
   .mode-card{
     min-height:0;
   }
+
 
   .quiz-top{
     grid-template-columns:1fr;
   }
 
+
   .quiz-stats{
+
     grid-template-columns:
-      repeat(
-        4,
-        1fr
-      );
+      repeat(4,1fr);
   }
 
+
   .stat-pill{
+
     min-width:0;
+
     padding:
       7px 5px;
   }
 
+
   .question-card{
+
     padding:
-      16px 12px;
+      16px 8px;
   }
+
 
   .choice-grid{
     grid-template-columns:1fr;
   }
 
+
   .result-grid{
+
     grid-template-columns:
-      repeat(
-        2,
-        1fr
-      );
+      repeat(2,1fr);
   }
 
+
   .game-button{
+
     flex:
       1 1 180px;
+  }
+
+
+  .ratio-input{
+
+    flex-basis:86px;
+
+    width:86px;
   }
 }
 
@@ -1423,23 +1444,41 @@ button:disabled{
 @media(max-width:460px){
 
   .quiz-stats{
+
     grid-template-columns:
-      repeat(
-        2,
-        1fr
-      );
+      repeat(2,1fr);
   }
 
+
   .question-content{
-    font-size:22px;
+    font-size:21px;
   }
+
 
   .result-score{
     font-size:46px;
   }
 
+
   .ratio-input{
-    width:78px;
+
+    flex-basis:76px;
+
+    width:76px;
+
+    font-size:20px;
+  }
+
+
+  .ratio-colon{
+    font-size:23px;
+  }
+
+
+  .condition-pill{
+
+    padding:
+      9px 11px;
   }
 }
 
@@ -1465,6 +1504,7 @@ button:disabled{
 <h1 class="game-title">
 🔗 1-1 連比大挑戰
 </h1>
+
 
 <p class="game-subtitle">
 
@@ -1542,7 +1582,7 @@ button:disabled{
 <div class="mode-meta">
 
 <span class="mode-tag">
-學習型
+核心模式
 </span>
 
 <span class="mode-tag">
@@ -1585,7 +1625,7 @@ button:disabled{
 <div class="mode-meta">
 
 <span class="mode-tag">
-學習型
+核心模式
 </span>
 
 <span class="mode-tag">
@@ -1628,7 +1668,7 @@ button:disabled{
 <div class="mode-meta">
 
 <span class="mode-tag">
-進階學習型
+核心模式
 </span>
 
 <span class="mode-tag">
@@ -1671,7 +1711,7 @@ button:disabled{
 <div class="mode-meta">
 
 <span class="mode-tag">
-綜合型
+綜合模式
 </span>
 
 <span class="mode-tag">
@@ -2245,6 +2285,36 @@ function shuffle(
 }
 
 
+function escapeHTML(
+  value
+){
+
+  return String(
+    value
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+}
+
+
 function gcd(
   a,
   b
@@ -2271,8 +2341,10 @@ function gcd(
       a %
       b;
 
+
     a =
       b;
+
 
     b =
       t;
@@ -2289,6 +2361,14 @@ function gcd(
 function gcdAll(
   values
 ){
+
+  if(
+    !values.length
+  ){
+
+    return 1;
+  }
+
 
   return values
     .reduce(
@@ -2332,21 +2412,16 @@ function simplifyRatio(
     );
 
 
-  const d =
+  const divisor =
     gcdAll(
-      nums.map(
-        value =>
-          Math.abs(
-            value
-          )
-      )
+      nums
     );
 
 
   return nums.map(
     value =>
       value /
-      d
+      divisor
   );
 }
 
@@ -2367,68 +2442,40 @@ function ratioHTML(
 ){
 
   return `
-    <span class="math nowrap">
+    <span class="math no-wrap">
       ${values.join("：")}
     </span>
   `;
 }
 
 
+/*
+==================================================
+★ 修正 NaN
+
+這個函式可以接受：
+數字、x、y、z、a、b……
+
+完全不進行 Math.abs()，
+所以不會再把文字變成 NaN。
+==================================================
+*/
+
 function fractionHTML(
   numerator,
   denominator
 ){
 
-  if(
-    denominator ===
-    1
-  ){
-
-    return String(
-      numerator
-    );
-  }
-
-
-  const negative =
-    (
-      numerator <
-      0
-    ) !==
-    (
-      denominator <
-      0
-    );
-
-
-  const n =
-    Math.abs(
-      numerator
-    );
-
-
-  const d =
-    Math.abs(
-      denominator
-    );
-
-
   return `
-
-    ${
-      negative
-        ? "－"
-        : ""
-    }
 
     <span class="math-fraction">
 
       <span class="math-fraction-top">
-        ${n}
+        ${escapeHTML(numerator)}
       </span>
 
       <span class="math-fraction-bottom">
-        ${d}
+        ${escapeHTML(denominator)}
       </span>
 
     </span>
@@ -2441,17 +2488,36 @@ function reducedFractionHTML(
   denominator
 ){
 
-  const d =
+  const divisor =
     gcd(
       numerator,
       denominator
     );
 
 
-  return fractionHTML(
+  const n =
     numerator /
-    d,
+    divisor;
+
+
+  const d =
     denominator /
+    divisor;
+
+
+  if(
+    d ===
+    1
+  ){
+
+    return String(
+      n
+    );
+  }
+
+
+  return fractionHTML(
+    n,
     d
   );
 }
@@ -2465,19 +2531,19 @@ function parseRational(
     String(
       raw
     )
-    .trim()
-    .replace(
-      /，/g,
-      ""
-    )
-    .replace(
-      /－/g,
-      "-"
-    )
-    .replace(
-      /／/g,
-      "/"
-    );
+      .trim()
+      .replace(
+        /，/g,
+        ""
+      )
+      .replace(
+        /－/g,
+        "-"
+      )
+      .replace(
+        /／/g,
+        "/"
+      );
 
 
   if(
@@ -2537,13 +2603,19 @@ function sameNumber(
 }
 
 
-function sameRatio(
-  input,
+/*
+==================================================
+判斷兩組比例是否等值
+==================================================
+*/
+
+function sameRatioValues(
+  values,
   answer
 ){
 
   if(
-    input.length !==
+    values.length !==
     answer.length
   ){
 
@@ -2551,27 +2623,12 @@ function sameRatio(
   }
 
 
-  const values =
-    input.map(
-      parseRational
-    );
-
-
   if(
     values.some(
       value =>
-        value ===
-        null
-    )
-  ){
-
-    return false;
-  }
-
-
-  if(
-    values.some(
-      value =>
+        !Number.isFinite(
+          value
+        ) ||
         value <=
         0
     )
@@ -2605,6 +2662,179 @@ function sameRatio(
 
 
   return true;
+}
+
+
+/*
+==================================================
+★ 比例答案檢查
+
+1. 必須等值
+2. 必須全部是正整數
+3. 最大公因數必須為 1
+==================================================
+*/
+
+function analyzeRatioAnswer(
+  rawValues,
+  answer
+){
+
+  const values =
+    rawValues.map(
+      parseRational
+    );
+
+
+  if(
+    values.some(
+      value =>
+        value ===
+        null
+    )
+  ){
+
+    return {
+
+      valid:false,
+
+      message:
+        "請輸入有效的數字。"
+    };
+  }
+
+
+  if(
+    values.some(
+      value =>
+        value <=
+        0
+    )
+  ){
+
+    return {
+
+      valid:false,
+
+      message:
+        "本單元的連比請輸入正數。"
+    };
+  }
+
+
+  const equivalent =
+    sameRatioValues(
+      values,
+      answer
+    );
+
+
+  if(
+    !equivalent
+  ){
+
+    return {
+
+      valid:true,
+
+      equivalent:false,
+
+      simplest:false,
+
+      values
+    };
+  }
+
+
+  /*
+  必須直接輸入整數。
+  例如 0.5：1：1.5
+  即使等值也要重新整理。
+  */
+
+
+  const integerFormat =
+    rawValues.every(
+      value =>
+        /^\+?\d+$/
+          .test(
+            String(value)
+              .trim()
+          )
+    );
+
+
+  if(
+    !integerFormat
+  ){
+
+    return {
+
+      valid:true,
+
+      equivalent:true,
+
+      simplest:false,
+
+      reason:
+        "not-integer",
+
+      values
+    };
+  }
+
+
+  const integers =
+    rawValues.map(
+      value =>
+        Number(
+          String(value)
+            .trim()
+        )
+    );
+
+
+  const divisor =
+    gcdAll(
+      integers
+    );
+
+
+  if(
+    divisor !==
+    1
+  ){
+
+    return {
+
+      valid:true,
+
+      equivalent:true,
+
+      simplest:false,
+
+      reason:
+        "not-simplest",
+
+      values:
+        integers,
+
+      divisor
+    };
+  }
+
+
+  return {
+
+    valid:true,
+
+    equivalent:true,
+
+    simplest:true,
+
+    values:
+      integers
+  };
 }
 
 
@@ -2648,6 +2878,52 @@ function makeExplanation({
     why,
     mistake
   };
+}
+
+
+/*
+==================================================
+★ 產生三個互不相同的最簡整數比
+
+因此不會再產生：
+1：1
+20：20
+0.3：0.3
+0.8：0.8
+==================================================
+*/
+
+function makePrimitiveTriple(){
+
+  let values;
+
+
+  do{
+
+    values =
+      [
+        rand(2,9),
+        rand(2,9),
+        rand(2,9)
+      ];
+
+  }while(
+
+    new Set(
+      values
+    ).size !==
+      3
+
+    ||
+
+    gcdAll(
+      values
+    ) !==
+      1
+  );
+
+
+  return values;
 }
 
 
@@ -2746,47 +3022,6 @@ function choiceQuestion({
 
 /*
 ==================================================
-產生基本連比
-==================================================
-*/
-
-function makePrimitiveTriple(){
-
-  let values;
-
-
-  do{
-
-    values =
-      [
-        rand(
-          2,
-          8
-        ),
-        rand(
-          2,
-          8
-        ),
-        rand(
-          2,
-          8
-        )
-      ];
-
-  }while(
-    gcdAll(
-      values
-    ) !==
-    1
-  );
-
-
-  return values;
-}
-
-
-/*
-==================================================
 模式一｜連比合併
 ==================================================
 */
@@ -2802,17 +3037,21 @@ function makeMergeCommonY(){
 
 
   const k =
-    rand(
-      2,
-      5
-    );
+    rand(2,5);
 
 
-  const h =
-    rand(
-      2,
-      5
-    );
+  let h;
+
+
+  do{
+
+    h =
+      rand(2,5);
+
+  }while(
+    h ===
+    k
+  );
 
 
   const leftY =
@@ -2852,29 +3091,26 @@ function makeMergeCommonY(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        已知
+        <div class="important-line">
+          已知
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           x：y＝${a*k}：${b*k}
-        </span>
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           y：z＝${b*h}：${c*h}
-        </span>
+        </div>
 
-        <br>
-
-        求
-
-        <span class="math">
-          x：y：z
-        </span>。
+        <div class="important-line">
+          求
+          <span class="math">
+            x：y：z
+          </span>。
+        </div>
 
       </div>
     `,
@@ -2919,7 +3155,7 @@ function makeMergeCommonY(){
           "兩個兩兩比要合成三數連比時，共同文字符號所對應的數必須先相同。",
 
         mistake:
-          "不能直接把兩個比接在一起；若共同項的數不同，一定要先統一。"
+          "不能直接把兩個比接在一起；共同項不同時，一定要先統一。"
       })
 
   });
@@ -2937,17 +3173,21 @@ function makeMergeCommonZ(){
 
 
   const k =
-    rand(
-      2,
-      5
-    );
+    rand(2,5);
 
 
-  const h =
-    rand(
-      2,
-      5
-    );
+  let h;
+
+
+  do{
+
+    h =
+      rand(2,5);
+
+  }while(
+    h ===
+    k
+  );
 
 
   const leftZ =
@@ -2987,28 +3227,23 @@ function makeMergeCommonZ(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        已知
+        <div class="important-line">
+          已知
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           x：z＝${a*k}：${c*k}
-        </span>
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           y：z＝${b*h}：${c*h}
-        </span>
+        </div>
 
-        <br>
-
-        求
-        <span class="math">
-          x：y：z
-        </span>。
+        <div class="important-line">
+          求 x：y：z。
+        </div>
 
       </div>
     `,
@@ -3033,7 +3268,7 @@ function makeMergeCommonZ(){
           ),
 
         observe:
-          `兩組比的共同文字是 z，對應的數分別是 ${leftZ} 與 ${rightZ}。`,
+          `兩組比的共同文字是 z，對應數分別是 ${leftZ} 與 ${rightZ}。`,
 
         think:
           `先把 z 統一成 ${common}。`,
@@ -3044,16 +3279,16 @@ function makeMergeCommonZ(){
 
           `y：z 同乘 ${rightScale}。`,
 
-          `可得到 x：y：z＝${a*k*leftScale}：${b*h*rightScale}：${common}。`,
+          `得到 x：y：z＝${a*k*leftScale}：${b*h*rightScale}：${common}。`,
 
-          `化成最簡整數比為 ${a}：${b}：${c}。`
+          `再化成最簡整數比 ${a}：${b}：${c}。`
         ],
 
         why:
-          "x：y、y：z、x：z 三個兩兩比中，只要知道任意兩個，就能求出三數連比。",
+          "任意兩組兩兩比，只要有共同文字，就能先統一共同項後合成連比。",
 
         mistake:
-          "先找出真正的共同文字符號，不一定每一題都是 y。"
+          "先找真正的共同文字，不一定每一題都是 y。"
       })
 
   });
@@ -3071,17 +3306,11 @@ function makeMergeFraction(){
 
 
   const d1 =
-    rand(
-      2,
-      6
-    );
+    rand(2,6);
 
 
   const d2 =
-    rand(
-      2,
-      6
-    );
+    rand(2,6);
 
 
   return ratioQuestion({
@@ -3094,13 +3323,13 @@ function makeMergeFraction(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        已知
+        <div class="important-line">
+          已知
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
 
           x：y＝
 
@@ -3116,11 +3345,9 @@ function makeMergeFraction(){
             d1
           )}
 
-        </span>
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
 
           y：z＝
 
@@ -3136,11 +3363,11 @@ function makeMergeFraction(){
             d2
           )}
 
-        </span>
+        </div>
 
-        <br>
-
-        求 x：y：z。
+        <div class="important-line">
+          求 x：y：z。
+        </div>
 
       </div>
     `,
@@ -3168,22 +3395,22 @@ function makeMergeFraction(){
           "兩個比中出現分數。",
 
         think:
-          "可以先把每一組分數比同乘適當的數，化成整數比，再合併連比。",
+          "先把每一組分數比同乘適當的數，化成整數比。",
 
         steps:[
 
-          `第一組分數比化簡後與 ${a}：${b} 相同。`,
+          `第一組分數比可化成 ${a}：${b}。`,
 
-          `第二組分數比化簡後與 ${b}：${c} 相同。`,
+          `第二組分數比可化成 ${b}：${c}。`,
 
           `共同項 y 已一致，因此 x：y：z＝${a}：${b}：${c}。`
         ],
 
         why:
-          "比的前後項同乘同一個非 0 數，比值不會改變。",
+          "比的每一項同乘同一個非 0 數，比值不會改變。",
 
         mistake:
-          "不要把分數中的分子直接互相比；應先把整個比化成整數比。"
+          "不要只看分子；應把整組分數比一起化成整數比。"
       })
 
   });
@@ -3226,9 +3453,7 @@ function makeMergeDecimal(){
         a *
         s1
       )
-      .toFixed(
-        2
-      )
+        .toFixed(2)
     );
 
 
@@ -3238,9 +3463,7 @@ function makeMergeDecimal(){
         b *
         s1
       )
-      .toFixed(
-        2
-      )
+        .toFixed(2)
     );
 
 
@@ -3250,9 +3473,7 @@ function makeMergeDecimal(){
         b *
         s2
       )
-      .toFixed(
-        2
-      )
+        .toFixed(2)
     );
 
 
@@ -3262,9 +3483,7 @@ function makeMergeDecimal(){
         c *
         s2
       )
-      .toFixed(
-        2
-      )
+        .toFixed(2)
     );
 
 
@@ -3278,25 +3497,23 @@ function makeMergeDecimal(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        已知
+        <div class="important-line">
+          已知
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           x：y＝${A}：${B1}
-        </span>
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           y：z＝${B2}：${C}
-        </span>
+        </div>
 
-        <br>
-
-        求 x：y：z。
+        <div class="important-line">
+          求 x：y：z。
+        </div>
 
       </div>
     `,
@@ -3321,7 +3538,7 @@ function makeMergeDecimal(){
           ),
 
         observe:
-          "兩組比含有小數。",
+          "兩組比中含有小數。",
 
         think:
           "先同乘 10、100 等適當倍數，把小數化成整數比。",
@@ -3336,10 +3553,10 @@ function makeMergeDecimal(){
         ],
 
         why:
-          "連比最後通常整理成最簡整數比。",
+          "連比最後應整理成最簡整數比。",
 
         mistake:
-          "小數點移動時，同一個比的每一項都要同乘相同倍數。"
+          "同一個比的每一項都必須同乘相同倍數。"
       })
 
   });
@@ -3366,25 +3583,23 @@ function makeMergeEquation(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        已知 x、y、z 皆不為 0，
+        <div class="important-line">
+          已知 x、y、z 皆不為 0
+        </div>
 
-        <br><br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           ${b}x＝${a}y
-        </span>
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           ${c}y＝${b}z
-        </span>
+        </div>
 
-        <br>
-
-        求 x：y：z。
+        <div class="important-line">
+          求 x：y：z。
+        </div>
 
       </div>
     `,
@@ -3409,10 +3624,10 @@ function makeMergeEquation(){
           ),
 
         observe:
-          "題目給的是等式，不是直接給比。",
+          "題目給的是等式，需要先轉成兩兩比。",
 
         think:
-          "先把每個等式轉成兩兩比，再合成連比。",
+          "若 px＝qy，則 x：y＝q：p。",
 
         steps:[
 
@@ -3420,14 +3635,14 @@ function makeMergeEquation(){
 
           `${c}y＝${b}z，所以 y：z＝${b}：${c}。`,
 
-          `共同項 y 已一致，因此 x：y：z＝${a}：${b}：${c}。`
+          `因此 x：y：z＝${a}：${b}：${c}。`
         ],
 
         why:
-          "若 px＝qy，則 x：y＝q：p。",
+          "等式兩邊相等，可以利用交叉相乘的關係改寫成比例。",
 
         mistake:
-          "等式轉成比時最容易把係數方向寫反。"
+          "係數轉成比例時方向很容易寫反。"
       })
 
   });
@@ -3459,7 +3674,7 @@ function createMergeQuestions(){
 
 /*
 ==================================================
-模式二｜按比例分配與連比例式
+模式二｜按比例分配
 ==================================================
 */
 
@@ -3473,10 +3688,6 @@ function makeEquivalentForm(){
     makePrimitiveTriple();
 
 
-  const correctValue =
-    "correct";
-
-
   return choiceQuestion({
 
     family:
@@ -3487,82 +3698,152 @@ function makeEquivalentForm(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        已知
+        <div class="important-line">
+          已知
+        </div>
 
-        <span class="math math-expression">
+        <div class="condition-pill math">
           x：y：z＝${a}：${b}：${c}
-        </span>
+        </div>
 
-        <br>
-
-        下列哪一個表示方式正確？
+        <div class="important-line">
+          下列哪一個表示方式正確？
+        </div>
 
       </div>
     `,
 
     answer:
-      correctValue,
+      "correct",
 
     choices:[
 
       {
+
         value:
-          correctValue,
+          "correct",
 
         html:`
-          <span class="math">
-            ${fractionHTML("x",a)}
+
+          <span class="math no-wrap">
+
+            ${fractionHTML(
+              "x",
+              a
+            )}
+
             ＝
-            ${fractionHTML("y",b)}
+
+            ${fractionHTML(
+              "y",
+              b
+            )}
+
             ＝
-            ${fractionHTML("z",c)}
+
+            ${fractionHTML(
+              "z",
+              c
+            )}
+
           </span>
         `
       },
 
       {
+
         value:
           "wrong1",
 
         html:`
-          <span class="math">
-            ${fractionHTML("x",b)}
+
+          <span class="math no-wrap">
+
+            ${fractionHTML(
+              "x",
+              b
+            )}
+
             ＝
-            ${fractionHTML("y",a)}
+
+            ${fractionHTML(
+              "y",
+              a
+            )}
+
             ＝
-            ${fractionHTML("z",c)}
+
+            ${fractionHTML(
+              "z",
+              c
+            )}
+
           </span>
         `
       },
 
       {
+
         value:
           "wrong2",
 
         html:`
-          <span class="math">
-            ${fractionHTML("x",a)}
+
+          <span class="math no-wrap">
+
+            ${fractionHTML(
+              "x",
+              a
+            )}
+
             ＝
-            ${fractionHTML("y",c)}
+
+            ${fractionHTML(
+              "y",
+              c
+            )}
+
             ＝
-            ${fractionHTML("z",b)}
+
+            ${fractionHTML(
+              "z",
+              b
+            )}
+
           </span>
         `
       },
 
       {
+
         value:
           "wrong3",
 
         html:`
-          <span class="math">
-            ${fractionHTML(a,"x")}
+
+          <span class="math no-wrap">
+
+            ${fractionHTML(
+              a,
+              "x"
+            )}
+
             ＝
-            ${fractionHTML(b,"y")}
+
+            ${fractionHTML(
+              b,
+              "y"
+            )}
+
             ＝
-            ${fractionHTML(c,"z")}
+
+            ${fractionHTML(
+              c,
+              "z"
+            )}
+
           </span>
         `
       }
@@ -3573,30 +3854,44 @@ function makeEquivalentForm(){
       makeExplanation({
 
         answer:`
-          ${fractionHTML("x",a)}
+
+          ${fractionHTML(
+            "x",
+            a
+          )}
+
           ＝
-          ${fractionHTML("y",b)}
+
+          ${fractionHTML(
+            "y",
+            b
+          )}
+
           ＝
-          ${fractionHTML("z",c)}
+
+          ${fractionHTML(
+            "z",
+            c
+          )}
         `,
 
         observe:
           `x、y、z 分別對應 ${a}、${b}、${c}。`,
 
         think:
-          "連比可以轉成三個相同的比例參數。",
+          "把三個量都寫成同一個比例參數。",
 
         steps:[
 
-          `設共同倍數為 r。`,
+          "設共同倍數為 r。",
 
-          `則 x＝${a}r，y＝${b}r，z＝${c}r。`,
+          `則 x＝${a}r、y＝${b}r、z＝${c}r。`,
 
-          `所以三者分別除以 ${a}、${b}、${c} 後都等於 r。`
+          `所以 ${fractionHTML("x",a)}＝${fractionHTML("y",b)}＝${fractionHTML("z",c)}＝r。`
         ],
 
         why:
-          "x：y：z＝a：b：c、x/a＝y/b＝z/c、x＝ar、y＝br、z＝cr 是相同概念的不同表示。",
+          "x：y：z＝a：b：c 與 x/a＝y/b＝z/c 是同一個連比例關係。",
 
         mistake:
           "分母必須和各自對應的連比數字一致。"
@@ -3617,31 +3912,19 @@ function makeLinearApplication(){
 
 
   const r =
-    rand(
-      2,
-      8
-    );
+    rand(2,8);
 
 
   const p =
-    rand(
-      1,
-      3
-    );
+    rand(1,3);
 
 
   const q =
-    rand(
-      1,
-      3
-    );
+    rand(1,3);
 
 
   const s =
-    rand(
-      1,
-      3
-    );
+    rand(1,3);
 
 
   const x =
@@ -3660,12 +3943,9 @@ function makeLinearApplication(){
 
 
   const total =
-    p *
-    x +
-    q *
-    y +
-    s *
-    z;
+    p*x +
+    q*y +
+    s*z;
 
 
   const target =
@@ -3684,14 +3964,33 @@ function makeLinearApplication(){
 
       ? x
 
-      : (
-          target ===
-          "y"
+      : target ===
+        "y"
 
-            ? y
+        ? y
 
-            : z
-        );
+        : z;
+
+
+  const px =
+    p ===
+    1
+      ? "x"
+      : `${p}x`;
+
+
+  const qy =
+    q ===
+    1
+      ? "y"
+      : `${q}y`;
+
+
+  const sz =
+    s ===
+    1
+      ? "z"
+      : `${s}z`;
 
 
   return numberQuestion({
@@ -3704,37 +4003,27 @@ function makeLinearApplication(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        已知
+        <div class="important-line">
+          已知
+        </div>
 
-        <span class="math math-expression">
+        <div class="condition-pill math">
           x：y：z＝${a}：${b}：${c}
-        </span>
+        </div>
 
-        <br>
+        <div class="important-line">
+          且
+        </div>
 
-        且
+        <div class="condition-pill math">
+          ${px}＋${qy}＋${sz}＝${total}
+        </div>
 
-        <span class="math math-expression">
-
-          ${p === 1 ? "" : p}x
-
-          ＋
-
-          ${q === 1 ? "" : q}y
-
-          ＋
-
-          ${s === 1 ? "" : s}z
-
-          ＝${total}
-
-        </span>
-
-        <br>
-
-        求 ${target}。
+        <div class="important-line">
+          求 ${target}。
+        </div>
 
       </div>
     `,
@@ -3751,10 +4040,10 @@ function makeLinearApplication(){
           ),
 
         observe:
-          `連比為 ${a}：${b}：${c}。`,
+          `x：y：z＝${a}：${b}：${c}。`,
 
         think:
-          "設 x＝ar、y＝br、z＝cr，再代入題目的等式。",
+          "設 x＝ar、y＝br、z＝cr，再代入已知等式。",
 
         steps:[
 
@@ -3770,10 +4059,10 @@ function makeLinearApplication(){
         ],
 
         why:
-          "知道連比後，可以用同一個比例參數 r 表示每一個量。",
+          "連比可以用共同倍數 r 表示所有未知數。",
 
         mistake:
-          "題目中的係數也要一起乘進去，不能只把 a、b、c 相加。"
+          "代入時不要漏掉題目原本 x、y、z 前面的係數。"
       })
 
   });
@@ -3791,10 +4080,7 @@ function makeDistribution(){
 
 
   const unit =
-    rand(
-      3,
-      15
-    );
+    rand(3,15);
 
 
   const total =
@@ -3807,10 +4093,7 @@ function makeDistribution(){
 
 
   const targetIndex =
-    rand(
-      0,
-      2
-    );
+    rand(0,2);
 
 
   const names =
@@ -3842,20 +4125,19 @@ function makeDistribution(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        甲、乙、丙三人依
+        <div class="important-line">
+          甲、乙、丙三人依下列比例分配 ${total} 元
+        </div>
 
-        <span class="math math-expression">
-          ${a}：${b}：${c}
-        </span>
+        <div class="condition-pill math">
+          甲：乙：丙＝${a}：${b}：${c}
+        </div>
 
-        分配 ${total} 元。
-
-        <br>
-
-        ${names[targetIndex]}
-        可以分得多少元？
+        <div class="important-line">
+          ${names[targetIndex]} 可以分得多少元？
+        </div>
 
       </div>
     `,
@@ -3872,7 +4154,7 @@ function makeDistribution(){
           `總份數＝${a}＋${b}＋${c}＝${a+b+c} 份。`,
 
         think:
-          "先求出每一份是多少，再乘上目標所占的份數。",
+          "先求每一份，再乘上指定人物所占的份數。",
 
         steps:[
 
@@ -3884,10 +4166,10 @@ function makeDistribution(){
         ],
 
         why:
-          "連比表示各部分占有的相對份數。",
+          "連比表示各部分所占的相對份數。",
 
         mistake:
-          "分母應是三個比數的總和，不是只除以其中一個比數。"
+          "求每一份時，分母要用三個比數的總和。"
       })
 
   });
@@ -3896,63 +4178,29 @@ function makeDistribution(){
 
 function makeRecipe(){
 
-  const a =
-    rand(
-      2,
-      7
-    );
-
-
-  const b =
-    rand(
-      2,
-      7
-    );
-
-
-  const c =
-    rand(
-      1,
-      5
-    );
-
-
-  const d =
-    gcdAll(
-      [
-        a,
-        b,
-        c
-      ]
-    );
-
-
-  const ratio =
-    [
-      a/d,
-      b/d,
-      c/d
-    ];
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
 
 
   const unit =
-    rand(
-      40,
-      100
-    );
+    rand(30,90);
 
 
   const total =
     (
-      ratio[0] +
-      ratio[1] +
-      ratio[2]
+      a +
+      b +
+      c
     ) *
     unit;
 
 
   const answer =
-    ratio[0] *
+    a *
     unit;
 
 
@@ -3966,23 +4214,19 @@ function makeRecipe(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        一杯飲料中，
+        <div class="important-line">
+          茶、牛奶、糖水依下列比例調配
+        </div>
 
-        茶：牛奶：糖水
+        <div class="condition-pill math">
+          茶：牛奶：糖水＝${a}：${b}：${c}
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
-          ＝${ratioText(ratio)}
-        </span>
-
-        <br>
-
-        若要調配 ${total} 毫升，
-
-        需要多少毫升的茶？
+        <div class="important-line">
+          若共調配 ${total} 毫升，需要多少毫升的茶？
+        </div>
 
       </div>
     `,
@@ -3996,25 +4240,25 @@ function makeRecipe(){
           `${answer} 毫升`,
 
         observe:
-          `茶占 ${ratio[0]} 份，總份數是 ${ratio.reduce((s,v)=>s+v,0)} 份。`,
+          `總份數＝${a+b+c} 份。`,
 
         think:
-          "先將總量依連比分成相同大小的份數。",
+          "先算一份是多少毫升，再乘茶所占的份數。",
 
         steps:[
 
-          `每份＝${total}÷${ratio.reduce((s,v)=>s+v,0)}＝${unit} 毫升。`,
+          `每份＝${total}÷${a+b+c}＝${unit} 毫升。`,
 
-          `茶需要 ${ratio[0]} 份。`,
+          `茶占 ${a} 份。`,
 
-          `${unit}×${ratio[0]}＝${answer} 毫升。`
+          `${unit}×${a}＝${answer} 毫升。`
         ],
 
         why:
-          "生活中的配方比例就是連比例式的直接應用。",
+          "配方比例就是連比例式在生活中的直接應用。",
 
         mistake:
-          "題目問哪一個部分，就要乘上那個部分所對應的份數。"
+          "題目問哪一種材料，就要乘上那個材料所占的比數。"
       })
 
   });
@@ -4101,19 +4345,19 @@ function makeEqualProduct(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        已知 x、y、z 皆不為 0，
+        <div class="important-line">
+          已知 x、y、z 皆不為 0
+        </div>
 
-        <br><br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           ${a}x＝${b}y＝${c}z
-        </span>
+        </div>
 
-        <br>
-
-        求 x：y：z。
+        <div class="important-line">
+          求 x：y：z。
+        </div>
 
       </div>
     `,
@@ -4138,16 +4382,16 @@ function makeEqualProduct(){
 
           `x：y：z＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}。`,
 
-          `把分數同乘適當的公倍數化成整數比。`,
+          "將三個分數同乘適當的公倍數。",
 
-          `得到 x：y：z＝${ratioText(answer)}。`
+          `得到最簡整數比 ${ratioText(answer)}。`
         ],
 
         why:
-          "在乘積固定時，一個量越大，另一個量就要越小，因此形成反比。",
+          "乘積固定時，一個量越大，另一個量必須越小，所以形成反比。",
 
         mistake:
-          `不能直接寫成 ${a}：${b}：${c}，方向正好相反。`
+          `不能直接寫成 ${a}：${b}：${c}，方向會相反。`
       })
 
   });
@@ -4184,21 +4428,23 @@ function makeTriangleAreaInverse(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        三個三角形的面積相等，
+        <div class="important-line">
+          三個三角形的面積相等
+        </div>
 
-        底邊長比為
+        <div class="important-line">
+          底邊長比為
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           ${a}：${b}：${c}
-        </span>
+        </div>
 
-        <br>
-
-        對應高的比為何？
+        <div class="important-line">
+          求對應高的比。
+        </div>
 
       </div>
     `,
@@ -4214,25 +4460,25 @@ function makeTriangleAreaInverse(){
           ),
 
         observe:
-          "三個三角形面積相同。",
+          "三個三角形的面積相同。",
 
         think:
-          "三角形面積＝底×高÷2。面積固定時，底與高成反比。",
+          "三角形面積＝底×高÷2，面積固定時，底與高成反比。",
 
         steps:[
 
           `高的比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}。`,
 
-          "將三個分數同乘公倍數，化成整數比。",
+          "將分數化成整數比。",
 
-          `得到 ${ratioText(answer)}。`
+          `得到最簡整數比 ${ratioText(answer)}。`
         ],
 
         why:
-          "底變大時，高必須變小，才能維持相同面積。",
+          "底越長，高就必須越短，才能維持相同面積。",
 
         mistake:
-          "等面積時，高的比不是直接等於底邊長的比，而是反比。"
+          "高的比不是直接照抄底邊長的比。"
       })
 
   });
@@ -4269,21 +4515,23 @@ function makeRectangleInverse(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        三個長方形面積相等，
+        <div class="important-line">
+          三個長方形面積相等
+        </div>
 
-        長的比為
+        <div class="important-line">
+          長的比為
+        </div>
 
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           ${a}：${b}：${c}
-        </span>
+        </div>
 
-        <br>
-
-        寬的比為何？
+        <div class="important-line">
+          求寬的比。
+        </div>
 
       </div>
     `,
@@ -4314,10 +4562,10 @@ function makeRectangleInverse(){
         ],
 
         why:
-          "乘積相同時，兩個量互為反比關係。",
+          "乘積固定時，兩個量形成反比關係。",
 
         mistake:
-          "不要把「相同面積」誤判成長與寬也同方向變化。"
+          "不要把相同面積誤認成長與寬也成正比。"
       })
 
   });
@@ -4354,23 +4602,19 @@ function makeRateTimeInverse(){
 
     html:`
 
-      <div class="question-note">
+      <div class="question-stack">
 
-        甲、乙、丙三臺機器
+        <div class="important-line">
+          甲、乙、丙三臺機器每小時產量比為
+        </div>
 
-        每小時產量比為
-
-        <br>
-
-        <span class="math math-expression">
+        <div class="condition-pill math">
           ${a}：${b}：${c}
-        </span>
+        </div>
 
-        <br>
-
-        若完成相同數量的產品，
-
-        所需時間比為何？
+        <div class="important-line">
+          若完成相同數量的產品，所需時間比為何？
+        </div>
 
       </div>
     `,
@@ -4386,25 +4630,25 @@ function makeRateTimeInverse(){
           ),
 
         observe:
-          "三臺機器要完成相同的總工作量。",
+          "三臺機器要完成相同總工作量。",
 
         think:
-          "產量越快，完成相同工作所需的時間越短，因此產量與時間成反比。",
+          "產量越快，完成相同工作所需時間越短。",
 
         steps:[
 
           `時間比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}。`,
 
-          "化成最簡整數比。",
+          "將分數化成最簡整數比。",
 
           `得到 ${ratioText(answer)}。`
         ],
 
         why:
-          "工作量＝工作效率×時間；工作量固定時，效率與時間成反比。",
+          "工作量＝效率×時間；工作量固定時，效率與時間成反比。",
 
         mistake:
-          "題目若問的是時間比，不能直接抄產量比。"
+          "題目問時間比時，不能直接把每小時產量比照抄。"
       })
 
   });
@@ -4436,7 +4680,6 @@ function createInverseQuestions(){
 /*
 ==================================================
 綜合模式
-固定題型覆蓋
 ==================================================
 */
 
@@ -4446,14 +4689,14 @@ function createMixedQuestions(){
     [
       makeMergeCommonY(),
       makeMergeFraction(),
+      makeMergeDecimal(),
       makeMergeEquation(),
 
       makeEquivalentForm(),
       makeLinearApplication(),
       makeDistribution(),
 
-      makeEqualProduct(),
-      makeTriangleAreaInverse()
+      makeRateTimeInverse()
     ]
   );
 }
@@ -4614,7 +4857,7 @@ function ensureScratchpadButton(){
 
 /*
 ==================================================
-畫面切換
+畫面
 ==================================================
 */
 
@@ -4634,12 +4877,12 @@ function showOnly(
         $(
           screen
         )
-        .classList
-        .toggle(
-          "hidden",
-          screen !==
-          id
-        );
+          .classList
+          .toggle(
+            "hidden",
+            screen !==
+            id
+          );
       }
     );
 
@@ -4676,7 +4919,7 @@ function showOnly(
 
 /*
 ==================================================
-答案畫面
+答案介面
 ==================================================
 */
 
@@ -4715,20 +4958,28 @@ function renderRatioAnswer(
   $(
     "answer-area"
   )
-  .innerHTML = `
+    .innerHTML = `
 
-    <div class="ratio-answer">
+      <div class="ratio-answer">
 
-      ${inputs.join(
-        '<span class="ratio-colon">：</span>'
-      )}
+        ${inputs.join(
+          '<span class="ratio-colon">：</span>'
+        )}
 
-    </div>
+      </div>
 
-    <div class="answer-help">
-      可輸入任何等值連比，系統會自動判斷。
-    </div>
-  `;
+      <div class="answer-help">
+
+        請輸入
+        <strong>
+          最簡整數比
+        </strong>。
+
+        若比例關係正確但尚未化簡，
+        系統會提示你重新整理。
+
+      </div>
+    `;
 
 
   setTimeout(
@@ -4751,18 +5002,18 @@ function renderNumberAnswer(){
   $(
     "answer-area"
   )
-  .innerHTML = `
+    .innerHTML = `
 
-    <input
-      id="number-answer"
-      class="number-answer"
-      type="text"
-      inputmode="decimal"
-      autocomplete="off"
-      placeholder="請輸入答案"
-      aria-label="你的答案"
-    >
-  `;
+      <input
+        id="number-answer"
+        class="number-answer"
+        type="text"
+        inputmode="decimal"
+        autocomplete="off"
+        placeholder="請輸入答案"
+        aria-label="你的答案"
+      >
+    `;
 
 
   setTimeout(
@@ -4771,7 +5022,7 @@ function renderNumberAnswer(){
       $(
         "number-answer"
       )
-      ?.focus();
+        ?.focus();
 
     },
     0
@@ -4790,92 +5041,90 @@ function renderChoices(
   $(
     "answer-area"
   )
-  .innerHTML = `
+    .innerHTML = `
 
-    <div class="choice-grid">
+      <div class="choice-grid">
 
-      ${shuffle(
-        question.choices
-      )
-        .map(
-          choice => `
-
-            <button
-              class="choice-button"
-              type="button"
-              data-choice="${choice.value}"
-            >
-
-              ${
-                choice.html ??
-                choice.text ??
-                choice.value
-              }
-
-            </button>
-          `
+        ${shuffle(
+          question.choices
         )
-        .join(
-          ""
-        )
-      }
+          .map(
+            choice => `
 
-    </div>
-  `;
+              <button
+                class="choice-button"
+                type="button"
+                data-choice="${choice.value}"
+              >
+
+                ${
+                  choice.html ??
+                  choice.text ??
+                  choice.value
+                }
+
+              </button>
+            `
+          )
+          .join("")
+        }
+
+      </div>
+    `;
 
 
   $(
     "answer-area"
   )
-  .querySelectorAll(
-    "[data-choice]"
-  )
-  .forEach(
-    button => {
+    .querySelectorAll(
+      "[data-choice]"
+    )
+    .forEach(
+      button => {
 
-      button.addEventListener(
-        "click",
-        () => {
+        button.addEventListener(
+          "click",
+          () => {
 
-          if(
-            answered
-          ){
+            if(
+              answered
+            ){
 
-            return;
-          }
-
-
-          selectedChoice =
-            button.dataset.choice;
-
-
-          $(
-            "answer-area"
-          )
-          .querySelectorAll(
-            ".choice-button"
-          )
-          .forEach(
-            item => {
-
-              item
-                .classList
-                .remove(
-                  "selected"
-                );
+              return;
             }
-          );
 
 
-          button
-            .classList
-            .add(
-              "selected"
-            );
-        }
-      );
-    }
-  );
+            selectedChoice =
+              button.dataset.choice;
+
+
+            $(
+              "answer-area"
+            )
+              .querySelectorAll(
+                ".choice-button"
+              )
+              .forEach(
+                item => {
+
+                  item
+                    .classList
+                    .remove(
+                      "selected"
+                    );
+                }
+              );
+
+
+            button
+              .classList
+              .add(
+                "selected"
+              );
+          }
+        );
+      }
+    );
 }
 
 
@@ -4928,7 +5177,7 @@ function readAnswer(
     "ratio"
   ){
 
-    const values =
+    const rawValues =
       [
         ...
         document
@@ -4936,57 +5185,65 @@ function readAnswer(
             "[data-ratio-input]"
           )
       ]
-      .map(
-        input =>
-          input.value.trim()
-      );
+        .map(
+          input =>
+            input.value.trim()
+        );
 
 
     if(
-      values.some(
+      rawValues.some(
         value =>
           !value
       )
     ){
 
       return {
+
         valid:false,
+
         message:
           "請把連比的每一項都填完整。"
       };
     }
 
 
+    const analysis =
+      analyzeRatioAnswer(
+        rawValues,
+        question.answer
+      );
+
+
     if(
-      values.some(
-        value =>
-          parseRational(
-            value
-          ) ===
-          null
-      )
+      !analysis.valid
     ){
 
-      return {
-        valid:false,
-        message:
-          "連比中請輸入有效的數字。"
-      };
+      return analysis;
     }
 
 
     return {
+
       valid:true,
+
       value:
-        values,
+        rawValues,
+
       display:
-        values.join(
+        rawValues.join(
           "："
         ),
+
       displayHTML:
-        values.join(
-          "："
-        )
+        escapeHTML(
+          rawValues.join(
+            "："
+          )
+        ),
+
+      ratioAnalysis:
+        analysis
     };
   }
 
@@ -5000,8 +5257,8 @@ function readAnswer(
       $(
         "number-answer"
       )
-      ?.value
-      .trim() ??
+        ?.value
+        .trim() ??
       "";
 
 
@@ -5017,7 +5274,9 @@ function readAnswer(
     ){
 
       return {
+
         valid:false,
+
         message:
           "請輸入有效的數字答案。"
       };
@@ -5025,10 +5284,18 @@ function readAnswer(
 
 
     return {
+
       valid:true,
+
       value,
-      display:raw,
-      displayHTML:raw
+
+      display:
+        raw,
+
+      displayHTML:
+        escapeHTML(
+          raw
+        )
     };
   }
 
@@ -5039,7 +5306,9 @@ function readAnswer(
   ){
 
     return {
+
       valid:false,
+
       message:
         "請先選擇一個答案。"
     };
@@ -5078,6 +5347,12 @@ function readAnswer(
 }
 
 
+/*
+==================================================
+判斷答案
+==================================================
+*/
+
 function isCorrectAnswer(
   question,
   answer
@@ -5088,9 +5363,19 @@ function isCorrectAnswer(
     "ratio"
   ){
 
-    return sameRatio(
-      answer.value,
-      question.answer
+    return (
+
+      answer
+        .ratioAnalysis
+        ?.equivalent ===
+        true
+
+      &&
+
+      answer
+        .ratioAnalysis
+        ?.simplest ===
+        true
     );
   }
 
@@ -5138,7 +5423,7 @@ function correctAnswerHTML(
     "number"
   ){
 
-    return String(
+    return escapeHTML(
       question.answer
     );
   }
@@ -5241,9 +5526,7 @@ function explanationHTML(
             </div>
           `
         )
-        .join(
-          ""
-        )
+        .join("")
       }
 
     </div>
@@ -5302,122 +5585,122 @@ function displayQuestion(){
   $(
     "mode-name"
   )
-  .textContent =
-    MODES[
-      mode
-    ]
-    .name;
+    .textContent =
+      MODES[
+        mode
+      ]
+        .name;
 
 
   $(
     "question-number"
   )
-  .textContent =
-    `第 ${index+1} 題／共 ${questions.length} 題`;
+    .textContent =
+      `第 ${index+1} 題／共 ${questions.length} 題`;
 
 
   $(
     "live-score"
   )
-  .textContent =
-    index ===
-    0
+    .textContent =
+      index ===
+      0
 
-      ? "0"
+        ? "0"
 
-      : Math.round(
-          correct /
-          index *
-          100
-        );
+        : Math.round(
+            correct /
+            index *
+            100
+          );
 
 
   $(
     "correct-count"
   )
-  .textContent =
-    correct;
+    .textContent =
+      correct;
 
 
   $(
     "combo-count"
   )
-  .textContent =
-    combo;
+    .textContent =
+      combo;
 
 
   $(
     "progress-bar"
   )
-  .style
-  .width =
-    `${
-      index /
-      questions.length *
-      100
-    }%`;
+    .style
+    .width =
+      `${
+        index /
+        questions.length *
+        100
+      }%`;
 
 
   $(
     "question-label"
   )
-  .textContent =
-    question.label;
+    .textContent =
+      question.label;
 
 
   $(
     "question-content"
   )
-  .innerHTML =
-    question.html;
+    .innerHTML =
+      question.html;
 
 
   $(
     "feedback"
   )
-  .className =
-    "feedback";
+    .className =
+      "feedback";
 
 
   $(
     "feedback"
   )
-  .innerHTML =
-    "";
+    .innerHTML =
+      "";
 
 
   $(
     "explanation"
   )
-  .innerHTML =
-    "";
+    .innerHTML =
+      "";
 
 
   $(
     "explanation"
   )
-  .classList
-  .add(
-    "hidden"
-  );
+    .classList
+    .add(
+      "hidden"
+    );
 
 
   $(
     "submit-button"
   )
-  .classList
-  .remove(
-    "hidden"
-  );
+    .classList
+    .remove(
+      "hidden"
+    );
 
 
   $(
     "next-button"
   )
-  .classList
-  .add(
-    "hidden"
-  );
+    .classList
+    .add(
+      "hidden"
+    );
 
 
   renderAnswerArea(
@@ -5433,7 +5716,7 @@ function displayQuestion(){
 
 /*
 ==================================================
-提交答案
+鎖定答案
 ==================================================
 */
 
@@ -5442,18 +5725,24 @@ function disableAnswerArea(){
   $(
     "answer-area"
   )
-  .querySelectorAll(
-    "input,button"
-  )
-  .forEach(
-    element => {
+    .querySelectorAll(
+      "input,button"
+    )
+    .forEach(
+      element => {
 
-      element.disabled =
-        true;
-    }
-  );
+        element.disabled =
+          true;
+      }
+    );
 }
 
+
+/*
+==================================================
+送出答案
+==================================================
+*/
 
 function submitAnswer(){
 
@@ -5484,15 +5773,95 @@ function submitAnswer(){
     $(
       "feedback"
     )
-    .className =
-      "feedback warning";
+      .className =
+        "feedback warning";
 
 
     $(
       "feedback"
     )
-    .textContent =
-      answer.message;
+      .textContent =
+        answer.message;
+
+
+    return;
+  }
+
+
+  /*
+  ================================================
+  ★ 比例關係正確，
+    但是沒有寫成最簡整數比。
+
+  不算錯。
+  不鎖答案。
+  不進下一題。
+  ================================================
+  */
+
+  if(
+    question.type ===
+      "ratio"
+
+    &&
+
+    answer
+      .ratioAnalysis
+      ?.equivalent ===
+      true
+
+    &&
+
+    answer
+      .ratioAnalysis
+      ?.simplest ===
+      false
+  ){
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback warning";
+
+
+    $(
+      "feedback"
+    )
+      .innerHTML = `
+
+        👍 比例關係是正確的！
+
+        <br>
+
+        但本單元答案要寫成
+        <strong>
+          最簡整數比
+        </strong>。
+
+        <br>
+
+        請再約分整理後重新送出。
+
+        <br>
+
+        提示：
+
+        <strong>
+          ${ratioHTML(
+            question.answer
+          )}
+        </strong>
+
+        是整理後應有的形式。
+      `;
+
+
+    document
+      .querySelector(
+        "[data-ratio-input='0']"
+      )
+      ?.focus();
 
 
     return;
@@ -5531,15 +5900,15 @@ function submitAnswer(){
     $(
       "feedback"
     )
-    .className =
-      "feedback correct";
+      .className =
+        "feedback correct";
 
 
     $(
       "feedback"
     )
-    .innerHTML =
-      "✨ 回答正確！";
+      .innerHTML =
+        "✨ 回答正確！";
 
 
     playGameSound(
@@ -5557,23 +5926,25 @@ function submitAnswer(){
     $(
       "feedback"
     )
-    .className =
-      "feedback wrong";
+      .className =
+        "feedback wrong";
 
 
     $(
       "feedback"
     )
-    .innerHTML = `
+      .innerHTML = `
 
-      ❌ 答案不正確。
+        ❌ 答案不正確。
 
-      正確答案：
+        正確答案：
 
-      <strong>
-        ${correctAnswerHTML(question)}
-      </strong>
-    `;
+        <strong>
+          ${correctAnswerHTML(
+            question
+          )}
+        </strong>
+      `;
 
 
     playGameSound(
@@ -5604,85 +5975,85 @@ function submitAnswer(){
   $(
     "live-score"
   )
-  .textContent =
-    Math.round(
-      correct /
-      (
-        index +
-        1
-      ) *
-      100
-    );
+    .textContent =
+      Math.round(
+        correct /
+        (
+          index +
+          1
+        ) *
+        100
+      );
 
 
   $(
     "correct-count"
   )
-  .textContent =
-    correct;
+    .textContent =
+      correct;
 
 
   $(
     "combo-count"
   )
-  .textContent =
-    combo;
+    .textContent =
+      combo;
 
 
   $(
     "explanation"
   )
-  .innerHTML =
-    explanationHTML(
-      question
+    .innerHTML =
+      explanationHTML(
+        question
+      );
+
+
+  $(
+    "explanation"
+  )
+    .classList
+    .remove(
+      "hidden"
     );
-
-
-  $(
-    "explanation"
-  )
-  .classList
-  .remove(
-    "hidden"
-  );
 
 
   $(
     "submit-button"
   )
-  .classList
-  .add(
-    "hidden"
-  );
+    .classList
+    .add(
+      "hidden"
+    );
 
 
   $(
     "next-button"
   )
-  .classList
-  .remove(
-    "hidden"
-  );
+    .classList
+    .remove(
+      "hidden"
+    );
 
 
   $(
     "next-button"
   )
-  .textContent =
+    .textContent =
 
-    index ===
-    questions.length -
-    1
+      index ===
+      questions.length -
+      1
 
-      ? "查看測驗結果（Enter）"
+        ? "查看測驗結果（Enter）"
 
-      : "下一題（Enter）";
+        : "下一題（Enter）";
 
 
   $(
     "next-button"
   )
-  .focus();
+    .focus();
 }
 
 
@@ -5782,8 +6153,8 @@ function startTimer(){
   $(
     "timer-display"
   )
-  .textContent =
-    "00:00";
+    .textContent =
+      "00:00";
 
 
   timerId =
@@ -5803,10 +6174,10 @@ function startTimer(){
         $(
           "timer-display"
         )
-        .textContent =
-          formatTime(
-            elapsed
-          );
+          .textContent =
+            formatTime(
+              elapsed
+            );
 
       },
       500
@@ -5888,8 +6259,8 @@ function startGame(
     $(
       "save-status"
     )
-    .textContent =
-      "";
+      .textContent =
+        "";
 
 
     showOnly(
@@ -5906,7 +6277,6 @@ function startGame(
     playGameSound(
       "playStart"
     );
-
 
   }catch(
     error
@@ -6023,9 +6393,9 @@ async function showResult(){
   $(
     "progress-bar"
   )
-  .style
-  .width =
-    "100%";
+    .style
+    .width =
+      "100%";
 
 
   showOnly(
@@ -6036,62 +6406,60 @@ async function showResult(){
   $(
     "final-score"
   )
-  .textContent =
-    `${
-      Number.isInteger(
-        score
-      )
+    .textContent =
+      `${
+        Number.isInteger(
+          score
+        )
 
-        ? score
+          ? score
 
-        : score.toFixed(
-            1
-          )
-    } 分`;
+          : score.toFixed(1)
+      } 分`;
 
 
   $(
     "final-stars"
   )
-  .textContent =
-    result.stars;
+    .textContent =
+      result.stars;
 
 
   $(
     "final-comment"
   )
-  .textContent =
-    result.comment;
+    .textContent =
+      result.comment;
 
 
   $(
     "final-correct"
   )
-  .textContent =
-    correct;
+    .textContent =
+      correct;
 
 
   $(
     "final-wrong"
   )
-  .textContent =
-    wrong;
+    .textContent =
+      wrong;
 
 
   $(
     "final-combo"
   )
-  .textContent =
-    maxCombo;
+    .textContent =
+      maxCombo;
 
 
   $(
     "final-time"
   )
-  .textContent =
-    formatTime(
-      elapsed
-    );
+    .textContent =
+      formatTime(
+        elapsed
+      );
 
 
   playGameSound(
@@ -6231,7 +6599,6 @@ async function saveCurrentScore(
     status.style.color =
       "#b91c1c";
 
-
   }catch(
     error
   ){
@@ -6254,7 +6621,7 @@ async function saveCurrentScore(
 
 /*
 ==================================================
-本次詳解
+詳解回顧
 ==================================================
 */
 
@@ -6263,86 +6630,84 @@ function showReview(){
   $(
     "review-list"
   )
-  .innerHTML =
-    records
-      .map(
-        record => `
+    .innerHTML =
+      records
+        .map(
+          record => `
 
-          <article
-            class="
-              review-card
-              ${
-                record.correct
-                  ? "correct-review"
-                  : "wrong-review"
-              }
-            "
-          >
+            <article
+              class="
+                review-card
+                ${
+                  record.correct
+                    ? "correct-review"
+                    : "wrong-review"
+                }
+              "
+            >
 
-            <div class="review-title">
+              <div class="review-title">
 
-              第 ${record.number} 題
+                第 ${record.number} 題
 
-              ${
-                record.correct
-                  ? "✅"
-                  : "❌"
-              }
+                ${
+                  record.correct
+                    ? "✅"
+                    : "❌"
+                }
 
-            </div>
-
-
-            <div class="review-question">
-
-              <strong>
-                ${record.question.label}
-              </strong>
-
-              <br><br>
-
-              ${record.question.html}
-
-            </div>
+              </div>
 
 
-            <div class="review-answer-line">
+              <div class="review-question">
 
-              你的答案：
+                <strong>
+                  ${record.question.label}
+                </strong>
 
-              <strong>
-                ${record.userAnswerHTML}
-              </strong>
+                <br><br>
 
-            </div>
+                ${record.question.html}
+
+              </div>
 
 
-            <div class="review-answer-line">
+              <div class="review-answer-line">
 
-              正確答案：
+                你的答案：
 
-              <strong>
-                ${correctAnswerHTML(
+                <strong>
+                  ${record.userAnswerHTML}
+                </strong>
+
+              </div>
+
+
+              <div class="review-answer-line">
+
+                正確答案：
+
+                <strong>
+                  ${correctAnswerHTML(
+                    record.question
+                  )}
+                </strong>
+
+              </div>
+
+
+              <div class="explanation">
+
+                ${explanationHTML(
                   record.question
                 )}
-              </strong>
 
-            </div>
+              </div>
 
-
-            <div class="explanation">
-
-              ${explanationHTML(
-                record.question
-              )}
-
-            </div>
-
-          </article>
-        `
-      )
-      .join(
-        ""
-      );
+            </article>
+          `
+        )
+        .join("");
 
 
   showOnly(
@@ -6351,11 +6716,8 @@ function showReview(){
 
 
   window.scrollTo({
-
     top:0,
-
-    behavior:
-      "smooth"
+    behavior:"smooth"
   });
 }
 
@@ -6389,117 +6751,118 @@ document
 $(
   "submit-button"
 )
-.addEventListener(
-  "click",
-  submitAnswer
-);
+  .addEventListener(
+    "click",
+    submitAnswer
+  );
 
 
 $(
   "next-button"
 )
-.addEventListener(
-  "click",
-  nextQuestion
-);
+  .addEventListener(
+    "click",
+    nextQuestion
+  );
 
 
 $(
   "quit-button"
 )
-.addEventListener(
-  "click",
-  () => {
+  .addEventListener(
+    "click",
+    () => {
 
-    if(
-      timerId !==
-      null
-    ){
+      if(
+        timerId !==
+        null
+      ){
 
-      clearInterval(
-        timerId
+        clearInterval(
+          timerId
+        );
+
+
+        timerId =
+          null;
+      }
+
+
+      showOnly(
+        "start-screen"
       );
-
-      timerId =
-        null;
     }
-
-
-    showOnly(
-      "start-screen"
-    );
-  }
-);
+  );
 
 
 $(
   "again-button"
 )
-.addEventListener(
-  "click",
-  () => {
+  .addEventListener(
+    "click",
+    () => {
 
-    startGame(
-      mode
-    );
-  }
-);
+      startGame(
+        mode
+      );
+    }
+  );
 
 
 $(
   "result-mode-button"
 )
-.addEventListener(
-  "click",
-  () => {
+  .addEventListener(
+    "click",
+    () => {
 
-    showOnly(
-      "start-screen"
-    );
-  }
-);
+      showOnly(
+        "start-screen"
+      );
+    }
+  );
 
 
 $(
   "review-button"
 )
-.addEventListener(
-  "click",
-  showReview
-);
+  .addEventListener(
+    "click",
+    showReview
+  );
 
 
 $(
   "review-again-button"
 )
-.addEventListener(
-  "click",
-  () => {
+  .addEventListener(
+    "click",
+    () => {
 
-    startGame(
-      mode
-    );
-  }
-);
+      startGame(
+        mode
+      );
+    }
+  );
 
 
 $(
   "review-result-button"
 )
-.addEventListener(
-  "click",
-  () => {
+  .addEventListener(
+    "click",
+    () => {
 
-    showOnly(
-      "result-screen"
-    );
-  }
-);
+      showOnly(
+        "result-screen"
+      );
+    }
+  );
 
 
 /*
 ==================================================
-Enter 鍵
+Enter
 ==================================================
 */
 
@@ -6509,14 +6872,17 @@ document.addEventListener(
 
     if(
       event.key !==
-      "Enter" ||
+      "Enter"
+
+      ||
+
       $(
         "quiz-screen"
       )
-      .classList
-      .contains(
-        "hidden"
-      )
+        .classList
+        .contains(
+          "hidden"
+        )
     ){
 
       return;
@@ -6542,7 +6908,7 @@ document.addEventListener(
 
 /*
 ==================================================
-Header + 計算紙
+共用 Header + 計算紙
 ==================================================
 */
 
@@ -6580,4 +6946,5 @@ showOnly(
 </script>
 
 </body>
+
 </html>
