@@ -1,5052 +1,2355 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
-
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <!-- 網站分頁圖示 -->
-  <link
-    rel="icon"
-    type="image/png"
-    href="./favicon.png?v=20260825"
-  >
-
-  <link
-    rel="shortcut icon"
-    type="image/png"
-    href="./favicon.png?v=20260825"
-  >
-
-  <link
-    rel="apple-touch-icon"
-    href="./favicon.png?v=20260825"
-  >
-
-  <meta
-    name="theme-color"
-    content="#083770"
-  >
-
-  <title>
-    生活有解．心中有數
-  </title>
-
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-    }
-
-
-    :root {
-
-      --primary: #1976d2;
-      --primary-dark: #125ca6;
-
-      --secondary: #f57c00;
-      --secondary-dark: #d86600;
-
-      --success: #2e7d32;
-      --danger: #e53935;
-
-      --text: #1f2937;
-      --muted: #64748b;
-
-      --border: #dce7f5;
-
-    }
-
-
-    body {
-
-      min-height: 100vh;
-
-      margin: 0;
-
-      font-family:
-        "Microsoft JhengHei",
-        "Noto Sans TC",
-        sans-serif;
-
-      color:
-        var(--text);
-
-      background:
-        linear-gradient(
-          135deg,
-          #e8f2ff,
-          #fff8e8
-        );
-
-    }
-
-
-    button,
-    select {
-      font-family: inherit;
-    }
-
-
-    a {
-      color: inherit;
-    }
-
-
-    /*
-    ==================================================
-    整體寬度
-    ==================================================
-    */
-
-
-    .page-container {
-
-      width: 100%;
-
-      max-width: 1500px;
-
-      margin:
-        0 auto;
-
-      padding:
-        28px 26px 60px;
-
-    }
-
-
-    /*
-    ==================================================
-    ★ 新版首頁左右配置
-
-    左側：40% 資訊區
-    右側：60% 遊戲區
-    ==================================================
-    */
-
-
-    .home-layout {
-
-      display: grid;
-
-      grid-template-columns:
-        minmax(330px, 40fr)
-        minmax(0, 60fr);
-
-      align-items: start;
-
-      gap: 26px;
-
-    }
-
-
-    .info-column,
-    .game-column {
-
-      min-width: 0;
-
-    }
-
-
-    /*
-    左側資訊欄固定在畫面上方附近。
-
-    電腦長頁面瀏覽遊戲時，
-    左側資訊不會一下就完全消失。
-    */
-
-
-    .info-column {
-
-      position: sticky;
-
-      top: 18px;
-
-      align-self: start;
-
-    }
-
-
-    /*
-    ==================================================
-    共用按鈕
-    ==================================================
-    */
-
-
-    .button {
-
-      display: inline-block;
-
-      min-width: 132px;
-
-      padding:
-        12px 22px;
-
-      border: 0;
-
-      border-radius: 12px;
-
-      background:
-        var(--primary);
-
-      color: white;
-
-      font-size: 16px;
-
-      font-weight: 900;
-
-      text-align: center;
-
-      text-decoration: none;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 5px 0
-        var(--primary-dark);
-
-    }
-
-
-    .button:active {
-
-      transform:
-        translateY(4px);
-
-      box-shadow:
-        0 1px 0
-        var(--primary-dark);
-
-    }
-
-
-    /*
-    ==================================================
-    左側資訊總卡
-    ==================================================
-    */
-
-
-    .info-stack {
-
-      display: grid;
-
-      gap: 18px;
-
-    }
-
-
-    /*
-    ==================================================
-    網站資訊
-    ==================================================
-    */
-
-
-    .dashboard {
-
-      display: grid;
-
-      grid-template-columns: 1fr;
-
-      gap: 16px;
-
-      padding: 20px;
-
-      border-radius: 24px;
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          .94
-        );
-
-      box-shadow:
-        0 12px 30px
-        rgba(
-          15,
-          23,
-          42,
-          .10
-        );
-
-    }
-
-
-    .dashboard-brand {
-
-      display: flex;
-
-      flex-direction: column;
-
-      justify-content: center;
-
-      min-width: 0;
-
-    }
-
-
-    .dashboard-title-row {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 12px;
-
-      margin-bottom: 8px;
-
-    }
-
-
-    .dashboard-logo {
-
-      width: 48px;
-
-      height: 48px;
-
-      flex:
-        0 0 48px;
-
-    }
-
-
-    .dashboard-logo img {
-
-      display: block;
-
-      width: 48px;
-
-      height: 48px;
-
-      object-fit: contain;
-
-      border-radius: 10px;
-
-    }
-
-
-    .dashboard-title {
-
-      margin: 0;
-
-      color: #174f8f;
-
-      font-size:
-        clamp(
-          25px,
-          2.2vw,
-          34px
-        );
-
-      font-weight: 900;
-
-      letter-spacing: 1px;
-
-    }
-
-
-    .dashboard-subtitle {
-
-      margin:
-        0 0 14px;
-
-      color:
-        #64748b;
-
-      font-size: 14px;
-
-      line-height: 1.65;
-
-    }
-
-
-    /*
-    ==================================================
-    登入狀態
-    ==================================================
-    */
-
-
-    .compact-user-box {
-
-      min-height: 68px;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 12px;
-
-      padding:
-        12px 14px;
-
-      border:
-        1px solid
-        #cfe0f7;
-
-      border-radius: 16px;
-
-      background:
-        #f4f8ff;
-
-      color:
-        #174a7e;
-
-    }
-
-
-    .compact-user-box img {
-
-      width: 44px;
-
-      height: 44px;
-
-      flex:
-        0 0 44px;
-
-      border:
-        2px solid
-        #dbeafe;
-
-      border-radius: 50%;
-
-      object-fit: cover;
-
-    }
-
-
-    .compact-user-text {
-
-      min-width: 0;
-
-    }
-
-
-    .compact-user-name {
-
-      color:
-        #174f8f;
-
-      font-size: 16px;
-
-      font-weight: 900;
-
-      overflow: hidden;
-
-      text-overflow: ellipsis;
-
-      white-space: nowrap;
-
-    }
-
-
-    .compact-user-email {
-
-      margin-top: 3px;
-
-      color:
-        #64748b;
-
-      font-size: 13px;
-
-      overflow: hidden;
-
-      text-overflow: ellipsis;
-
-      white-space: nowrap;
-
-    }
-
-
-    .compact-auth-actions {
-
-      display: flex;
-
-      justify-content: center;
-
-      margin-top: 10px;
-
-    }
-
-
-    .compact-auth-button {
-
-      min-width: 112px;
-
-      padding:
-        10px 18px;
-
-      border: 0;
-
-      border-radius: 12px;
-
-      color: white;
-
-      font-size: 15px;
-
-      font-weight: 900;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 4px 0
-        rgba(
-          0,
-          0,
-          0,
-          .16
-        );
-
-    }
-
-
-    .compact-login-button {
-      background: #1976d2;
-    }
-
-
-    .compact-logout-button {
-      background: #ef4444;
-    }
-
-
-    /*
-    ==================================================
-    排行榜／我的成績
-    ==================================================
-    */
-
-
-    .dashboard-links {
-
-      display: grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
-      gap: 10px;
-
-    }
-
-
-    .dashboard-link-card {
-
-      display: grid;
-
-      grid-template-columns:
-        48px 1fr;
-
-      gap: 10px;
-
-      align-items: center;
-
-      min-height: 82px;
-
-      padding:
-        12px;
-
-      border:
-        1px solid
-        #e2e8f0;
-
-      border-radius: 18px;
-
-      background: white;
-
-      text-decoration: none;
-
-      transition:
-        transform .15s ease,
-        box-shadow .15s ease;
-
-    }
-
-
-    .dashboard-link-card:hover {
-
-      transform:
-        translateY(-2px);
-
-      box-shadow:
-        0 10px 20px
-        rgba(
-          15,
-          23,
-          42,
-          .08
-        );
-
-    }
-
-
-    .dashboard-link-icon {
-
-      width: 48px;
-
-      height: 48px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      border-radius: 14px;
-
-      font-size: 25px;
-
-    }
-
-
-    .dashboard-link-icon.rank {
-      background: #fff3db;
-    }
-
-
-    .dashboard-link-icon.scores {
-      background: #eaf7ec;
-    }
-
-
-    .dashboard-link-title {
-
-      margin-bottom: 3px;
-
-      color:
-        #174f8f;
-
-      font-size: 16px;
-
-      font-weight: 900;
-
-    }
-
-
-    .dashboard-link-text {
-
-      color:
-        #64748b;
-
-      font-size: 12px;
-
-      line-height: 1.45;
-
-    }
-
-
-    /*
-    ==================================================
-    公告欄
-    ==================================================
-    */
-
-
-    .news-area {
-
-      display: grid;
-
-      gap: 18px;
-
-    }
-
-
-    .announcement-board {
-
-      position: relative;
-
-      overflow: hidden;
-
-      padding:
-        20px 20px;
-
-      border:
-        2px solid
-        #f7c66a;
-
-      border-radius: 22px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #fff8df,
-          #fffdf6
-        );
-
-      box-shadow:
-        0 10px 26px
-        rgba(
-          120,
-          72,
-          0,
-          .10
-        );
-
-    }
-
-
-    .announcement-board::before {
-
-      content: "";
-
-      position: absolute;
-
-      top: 0;
-
-      left: 0;
-
-      width: 8px;
-
-      height: 100%;
-
-      background:
-        #f59e0b;
-
-    }
-
-
-    .announcement-top {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 10px;
-
-      margin-bottom: 12px;
-
-    }
-
-
-    .announcement-heading {
-
-      margin: 0;
-
-      color:
-        #92400e;
-
-      font-size: 20px;
-
-      font-weight: 900;
-
-    }
-
-
-    .announcement-date {
-
-      color:
-        #9a6b24;
-
-      font-size: 12px;
-
-      font-weight: 800;
-
-      white-space: nowrap;
-
-    }
-
-
-    .announcement-badge {
-
-      display: inline-flex;
-
-      padding:
-        5px 10px;
-
-      margin-bottom: 10px;
-
-      border:
-        1px solid
-        #fdba74;
-
-      border-radius: 999px;
-
-      background:
-        #fff7ed;
-
-      color:
-        #c2410c;
-
-      font-size: 12px;
-
-      font-weight: 900;
-
-    }
-
-
-    .announcement-title {
-
-      margin:
-        0 0 8px;
-
-      color:
-        #7c2d12;
-
-      font-size: 18px;
-
-      font-weight: 900;
-
-      line-height: 1.5;
-
-    }
-
-
-    .announcement-content {
-
-      margin: 0;
-
-      color:
-        #6b4f2b;
-
-      font-size: 14px;
-
-      line-height: 1.7;
-
-    }
-
-
-    /*
-    ==================================================
-    最新消息
-    ==================================================
-    */
-
-
-    .latest-news-box {
-
-      margin-top: 0;
-
-      padding: 18px;
-
-      border:
-        1px solid
-        #dbe7f5;
-
-      border-radius: 22px;
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          .94
-        );
-
-      box-shadow:
-        0 10px 26px
-        rgba(
-          15,
-          23,
-          42,
-          .08
-        );
-
-    }
-
-
-    .latest-news-header {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      gap: 10px;
-
-      margin-bottom: 12px;
-
-    }
-
-
-    .latest-news-title {
-
-      margin: 0;
-
-      color:
-        #174f8f;
-
-      font-size: 19px;
-
-      font-weight: 900;
-
-    }
-
-
-    .latest-news-subtitle {
-
-      color:
-        #64748b;
-
-      font-size: 11px;
-
-      font-weight: 700;
-
-    }
-
-
-    .latest-news-list {
-
-      display: grid;
-
-      gap: 9px;
-
-    }
-
-
-    .news-item {
-
-      display: grid;
-
-      grid-template-columns:
-        38px
-        1fr;
-
-      gap: 10px;
-
-      align-items: center;
-
-      padding:
-        11px 12px;
-
-      border:
-        1px solid
-        #e2e8f0;
-
-      border-radius: 14px;
-
-      background: white;
-
-    }
-
-
-    .news-icon {
-
-      width: 38px;
-
-      height: 38px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      border-radius: 11px;
-
-      background:
-        #f1f5f9;
-
-      font-size: 20px;
-
-    }
-
-
-    .news-item-title {
-
-      color:
-        #1f2937;
-
-      font-size: 14px;
-
-      font-weight: 900;
-
-    }
-
-
-    .news-item-content {
-
-      margin-top: 3px;
-
-      color:
-        #64748b;
-
-      font-size: 12px;
-
-      line-height: 1.5;
-
-    }
-
-
-    .news-date {
-
-      grid-column: 2;
-
-      color:
-        #94a3b8;
-
-      font-size: 11px;
-
-      font-weight: 800;
-
-      white-space: nowrap;
-
-    }
-
-
-    .news-type {
-
-      display: inline-flex;
-
-      padding:
-        3px 7px;
-
-      margin-bottom: 4px;
-
-      border-radius: 999px;
-
-      font-size: 11px;
-
-      font-weight: 900;
-
-    }
-
-
-    .news-type.new-game {
-
-      background:
-        #ecfdf5;
-
-      color:
-        #047857;
-
-    }
-
-
-    .news-type.system {
-
-      background:
-        #eff6ff;
-
-      color:
-        #1d4ed8;
-
-    }
-
-
-    .news-type.game-update {
-
-      background:
-        #f5f3ff;
-
-      color:
-        #6d28d9;
-
-    }
-
-
-    .news-type.notice {
-
-      background:
-        #fff7ed;
-
-      color:
-        #c2410c;
-
-    }
-
-
-    .news-empty {
-
-      padding: 20px;
-
-      color:
-        #64748b;
-
-      text-align: center;
-
-      font-weight: 700;
-
-    }
-
-
-    /*
-    ==================================================
-    右側：選擇遊戲
-    ==================================================
-    */
-
-
-    .section {
-
-      margin-top: 0;
-
-    }
-
-
-    .section-header {
-
-      display: flex;
-
-      align-items: end;
-
-      justify-content: space-between;
-
-      gap: 16px;
-
-      margin-bottom: 20px;
-
-    }
-
-
-    .section-title {
-
-      margin: 0;
-
-      font-size: 28px;
-
-    }
-
-
-    .section-description {
-
-      margin: 0;
-
-      color:
-        var(--muted);
-
-      font-size: 14px;
-
-      text-align: right;
-
-    }
-
-
-    /*
-    ==================================================
-    學期選擇
-    ==================================================
-    */
-
-
-    .semester-control {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 12px;
-
-      margin-bottom: 24px;
-
-      padding: 18px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 18px;
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          .82
-        );
-
-      box-shadow:
-        0 8px 22px
-        rgba(
-          31,
-          41,
-          55,
-          .08
-        );
-
-    }
-
-
-    .semester-control label {
-
-      color:
-        #174f8f;
-
-      font-size: 17px;
-
-      font-weight: 900;
-
-    }
-
-
-    .semester-select {
-
-      min-width: 240px;
-
-      padding:
-        12px 16px;
-
-      border:
-        2px solid
-        #bfdbfe;
-
-      border-radius: 12px;
-
-      background: white;
-
-      color:
-        var(--text);
-
-      font-size: 17px;
-
-      font-weight: 800;
-
-      outline: none;
-
-    }
-
-
-    .semester-select:focus {
-
-      border-color:
-        var(--primary);
-
-      box-shadow:
-        0 0 0 4px
-        rgba(
-          25,
-          118,
-          210,
-          .14
-        );
-
-    }
-
-
-    .semester-panel {
-      display: none;
-    }
-
-
-    .semester-panel.active {
-      display: block;
-    }
-
-
-    .semester-title {
-
-      margin:
-        0 0 18px;
-
-      color:
-        #174f8f;
-
-      font-size: 24px;
-
-      text-align: center;
-
-    }
-
-
-    /*
-    ==================================================
-    遊戲卡牌
-    ==================================================
-    */
-
-
-    .games-grid {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          2,
-          minmax(
-            0,
-            1fr
-          )
-        );
-
-      gap: 20px;
-
-    }
-
-
-    .game-card {
-
-      position: relative;
-
-      min-height: 220px;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      justify-content: center;
-
-      padding:
-        24px 18px 20px;
-
-      overflow: hidden;
-
-      border:
-        2px solid
-        var(
-          --game-border,
-          #dce7f5
-        );
-
-      border-top:
-        8px solid
-        var(
-          --game-primary,
-          #1976d2
-        );
-
-      border-radius: 22px;
-
-      background:
-        linear-gradient(
-          180deg,
-          var(
-            --game-light,
-            #ffffff
-          ),
-          #ffffff 75%
-        );
-
-      box-shadow:
-        0 10px 28px
-        rgba(
-          31,
-          41,
-          55,
-          .12
-        );
-
-      text-align: center;
-
-    }
-
-
-    .game-heading {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 10px;
-
-      margin-bottom: 10px;
-
-    }
-
-
-    .game-icon {
-
-      width: 54px;
-
-      height: 54px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      flex:
-        0 0 54px;
-
-      border:
-        2px solid
-        var(
-          --game-border,
-          #dce7f5
-        );
-
-      border-radius: 17px;
-
-      background:
-        var(
-          --game-light,
-          #eef5ff
-        );
-
-      color:
-        var(
-          --game-primary,
-          #1976d2
-        );
-
-      font-size: 27px;
-
-    }
-
-
-    .game-card h2 {
-
-      margin: 0;
-
-      font-size: 20px;
-
-    }
-
-
-    .game-card p {
-
-      min-height: 46px;
-
-      margin:
-        0 0 13px;
-
-      color:
-        var(--muted);
-
-      font-size: 14px;
-
-      line-height: 1.65;
-
-    }
-
-
-    .game-meta {
-
-      display: flex;
-
-      justify-content: center;
-
-      align-items: center;
-
-      gap: 8px;
-
-      min-height: 30px;
-
-      margin-bottom: 14px;
-
-      flex-wrap: wrap;
-
-    }
-
-
-    .game-meta-badge {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      min-height: 28px;
-
-      padding:
-        5px 10px;
-
-      border:
-        1px solid
-        var(
-          --game-border,
-          #dce7f5
-        );
-
-      border-radius: 999px;
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          .92
-        );
-
-      color:
-        var(
-          --game-primary,
-          #1976d2
-        );
-
-      font-size: 13px;
-
-      font-weight: 900;
-
-    }
-
-
-    .game-meta-badge.recommended {
-
-      border-color:
-        #fdba74;
-
-      background:
-        #fff7ed;
-
-      color:
-        #c2410c;
-
-    }
-
-
-    .game-meta-badge.new {
-
-      border-color:
-        #86efac;
-
-      background:
-        #f0fdf4;
-
-      color:
-        #15803d;
-
-    }
-
-
-    .status-badge {
-
-      display: inline-block;
-
-      margin-bottom: 12px;
-
-      padding:
-        6px 11px;
-
-      border-radius: 999px;
-
-      font-size: 13px;
-
-      font-weight: 900;
-
-    }
-
-
-    .status-soon {
-
-      background:
-        #f1f5f9;
-
-      color:
-        #64748b;
-
-    }
-
-
-    .start-button {
-
-      background:
-        var(
-          --game-primary,
-          #1976d2
-        );
-
-      box-shadow:
-        0 5px 0
-        var(
-          --game-dark,
-          #125ca6
-        );
-
-    }
-
-
-    .waiting-button {
-
-      background:
-        #7b8794;
-
-      box-shadow:
-        0 5px 0
-        #56616d;
-
-      opacity: .72;
-
-      cursor: not-allowed;
-
-    }
-
-
-    /*
-    ==================================================
-    Footer
-    ==================================================
-    */
-
-
-    .page-footer {
-
-      margin-top: 48px;
-
-      padding:
-        26px 18px 8px;
-
-      border-top:
-        1px solid
-        rgba(
-          100,
-          116,
-          139,
-          .22
-        );
-
-      color:
-        #748094;
-
-      text-align: center;
-
-    }
-
-
-    .footer-brand {
-
-      color:
-        #174f8f;
-
-      font-size: 17px;
-
-      font-weight: 900;
-
-      letter-spacing: 1px;
-
-    }
-
-
-    .footer-author {
-
-      margin-top: 8px;
-
-      color:
-        #475569;
-
-      font-size: 14px;
-
-      font-weight: 800;
-
-    }
-
-
-    .footer-copyright {
-
-      margin-top: 6px;
-
-      color:
-        #94a3b8;
-
-      font-size: 12px;
-
-      line-height: 1.6;
-
-    }
-
-
-    /*
-    ==================================================
-    ★ 平板
-
-    平板開始恢復上下排列。
-    ==================================================
-    */
-
-
-    @media (
-      max-width: 1100px
-    ) {
-
-      .page-container {
-
-        max-width: 980px;
-
-      }
-
-
-      .home-layout {
-
-        grid-template-columns: 1fr;
-
-        gap: 30px;
-
-      }
-
-
-      .info-column {
-
-        position: static;
-
-      }
-
-
-      /*
-      上方資訊區恢復較寬配置
-      */
-
-
-      .dashboard {
-
-        grid-template-columns:
-          minmax(0, 1.05fr)
-          minmax(300px, .95fr);
-
-        gap: 18px;
-
-      }
-
-
-      .dashboard-links {
-
-        grid-template-columns: 1fr;
-
-      }
-
-
-      .dashboard-subtitle {
-
-        margin-left: 60px;
-
-      }
-
-
-      .news-area {
-
-        grid-template-columns:
-          1fr 1fr;
-
-        align-items: start;
-
-      }
-
-
-      .latest-news-box {
-
-        height: 100%;
-
-      }
-
-
-      .games-grid {
-
-        grid-template-columns:
-          repeat(
-            2,
-            minmax(
-              0,
-              1fr
-            )
-          );
-
-      }
-
-    }
-
-
-    /*
-    ==================================================
-    手機／窄平板
-    ==================================================
-    */
-
-
-    @media (
-      max-width: 760px
-    ) {
-
-      .page-container {
-
-        padding:
-          18px 12px 45px;
-
-      }
-
-
-      .home-layout {
-
-        display: block;
-
-      }
-
-
-      .game-column {
-
-        margin-top: 32px;
-
-      }
-
-
-      .dashboard {
-
-        grid-template-columns: 1fr;
-
-        padding: 16px;
-
-      }
-
-
-      .dashboard-subtitle {
-
-        margin-left: 0;
-
-        text-align: center;
-
-      }
-
-
-      .dashboard-title-row {
-
-        justify-content: center;
-
-      }
-
-
-      .dashboard-links {
-
-        grid-template-columns:
-          1fr 1fr;
-
-      }
-
-
-      .dashboard-link-card {
-
-        grid-template-columns:
-          46px 1fr;
-
-        padding: 12px;
-
-      }
-
-
-      .dashboard-link-icon {
-
-        width: 46px;
-
-        height: 46px;
-
-        font-size: 24px;
-
-      }
-
-
-      .dashboard-link-title {
-
-        font-size: 16px;
-
-      }
-
-
-      .dashboard-link-text {
-
-        font-size: 12px;
-
-      }
-
-
-      .news-area {
-
-        grid-template-columns: 1fr;
-
-      }
-
-
-      .announcement-top,
-      .latest-news-header {
-
-        align-items: flex-start;
-
-        flex-direction: column;
-
-      }
-
-
-      .news-item {
-
-        grid-template-columns:
-          40px
-          1fr;
-
-      }
-
-
-      .news-date {
-
-        grid-column: 2;
-
-      }
-
-
-      .section-header {
-
-        display: block;
-
-      }
-
-
-      .section-description {
-
-        margin-top: 7px;
-
-        text-align: left;
-
-      }
-
-
-      .semester-control {
-
-        flex-direction: column;
-
-        align-items: stretch;
-
-      }
-
-
-      .semester-control label {
-
-        text-align: center;
-
-      }
-
-
-      .semester-select {
-
-        width: 100%;
-
-        min-width: 0;
-
-      }
-
-
-      .games-grid {
-
-        grid-template-columns: 1fr;
-
-      }
-
-
-      .game-card {
-
-        min-height: 190px;
-
-        padding:
-          20px 16px;
-
-      }
-
-
-      .game-card p {
-
-        min-height: auto;
-
-      }
-
-    }
-
-
-  </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/png" href="./favicon.png?v=20260825">
+<link rel="shortcut icon" type="image/png" href="./favicon.png?v=20260825">
+<link rel="apple-touch-icon" href="./favicon.png?v=20260825">
+
+<meta name="theme-color" content="#083770">
+
+<title>生活有解．心中有數</title>
+
+<style>
+*{box-sizing:border-box}
+
+:root{
+  --primary:#1976d2;
+  --primary-dark:#125ca6;
+  --secondary:#f57c00;
+  --secondary-dark:#d86600;
+  --success:#2e7d32;
+  --danger:#e53935;
+  --text:#1f2937;
+  --muted:#64748b;
+  --border:#dce7f5;
+}
+
+body{
+  min-height:100vh;
+  margin:0;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  color:var(--text);
+  background:linear-gradient(135deg,#e8f2ff,#fff8e8);
+}
+
+button,
+select{
+  font-family:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.page-container{
+  width:100%;
+  max-width:1500px;
+  margin:0 auto;
+  padding:28px 26px 60px;
+}
+
+.home-layout{
+  display:grid;
+  grid-template-columns:minmax(330px,40fr) minmax(0,60fr);
+  align-items:start;
+  gap:26px;
+}
+
+.info-column,
+.game-column{
+  min-width:0;
+}
+
+.info-column{
+  position:sticky;
+  top:18px;
+  align-self:start;
+}
+
+.info-stack{
+  display:grid;
+  gap:18px;
+}
+
+.dashboard{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+  padding:20px;
+  border-radius:24px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 12px 30px rgba(15,23,42,.10);
+}
+
+.dashboard-title-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:8px;
+}
+
+.dashboard-logo{
+  width:48px;
+  height:48px;
+  flex:0 0 48px;
+}
+
+.dashboard-logo img{
+  display:block;
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border-radius:10px;
+}
+
+.dashboard-title{
+  margin:0;
+  color:#174f8f;
+  font-size:clamp(25px,2.2vw,34px);
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.dashboard-subtitle{
+  margin:0 0 14px;
+  color:#64748b;
+  font-size:14px;
+  line-height:1.65;
+}
+
+.compact-user-box{
+  min-height:68px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  border:1px solid #cfe0f7;
+  border-radius:16px;
+  background:#f4f8ff;
+  color:#174a7e;
+}
+
+.compact-user-box img{
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  border:2px solid #dbeafe;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.compact-user-text{
+  min-width:0;
+}
+
+.compact-user-name{
+  color:#174f8f;
+  font-size:16px;
+  font-weight:900;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.compact-user-email{
+  margin-top:3px;
+  color:#64748b;
+  font-size:13px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.compact-auth-actions{
+  display:flex;
+  justify-content:center;
+  margin-top:10px;
+}
+
+.compact-auth-button{
+  min-width:112px;
+  padding:10px 18px;
+  border:0;
+  border-radius:12px;
+  color:white;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 4px 0 rgba(0,0,0,.16);
+}
+
+.compact-login-button{
+  background:#1976d2;
+}
+
+.compact-logout-button{
+  background:#ef4444;
+}
+
+.dashboard-links{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.dashboard-link-card{
+  display:grid;
+  grid-template-columns:48px 1fr;
+  gap:10px;
+  align-items:center;
+  min-height:82px;
+  padding:12px;
+  border:1px solid #e2e8f0;
+  border-radius:18px;
+  background:white;
+  text-decoration:none;
+  transition:.15s ease;
+}
+
+.dashboard-link-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 20px rgba(15,23,42,.08);
+}
+
+.dashboard-link-icon{
+  width:48px;
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  font-size:25px;
+}
+
+.dashboard-link-icon.rank{
+  background:#fff3db;
+}
+
+.dashboard-link-icon.scores{
+  background:#eaf7ec;
+}
+
+.dashboard-link-title{
+  margin-bottom:3px;
+  color:#174f8f;
+  font-size:16px;
+  font-weight:900;
+}
+
+.dashboard-link-text{
+  color:#64748b;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.news-area{
+  display:grid;
+  gap:18px;
+}
+
+.announcement-board{
+  position:relative;
+  overflow:hidden;
+  padding:20px;
+  border:2px solid #f7c66a;
+  border-radius:22px;
+  background:linear-gradient(135deg,#fff8df,#fffdf6);
+  box-shadow:0 10px 26px rgba(120,72,0,.10);
+}
+
+.announcement-board::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:8px;
+  height:100%;
+  background:#f59e0b;
+}
+
+.announcement-top,
+.latest-news-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.announcement-heading,
+.latest-news-title{
+  margin:0;
+  font-size:20px;
+  font-weight:900;
+}
+
+.announcement-heading{
+  color:#92400e;
+}
+
+.latest-news-title{
+  color:#174f8f;
+}
+
+.announcement-date{
+  color:#9a6b24;
+  font-size:12px;
+  font-weight:800;
+}
+
+.announcement-badge{
+  display:inline-flex;
+  padding:5px 10px;
+  margin-bottom:10px;
+  border:1px solid #fdba74;
+  border-radius:999px;
+  background:#fff7ed;
+  color:#c2410c;
+  font-size:12px;
+  font-weight:900;
+}
+
+.announcement-title{
+  margin:0 0 8px;
+  color:#7c2d12;
+  font-size:18px;
+  font-weight:900;
+  line-height:1.5;
+}
+
+.announcement-content{
+  margin:0;
+  color:#6b4f2b;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.latest-news-box{
+  padding:18px;
+  border:1px solid #dbe7f5;
+  border-radius:22px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 10px 26px rgba(15,23,42,.08);
+}
+
+.latest-news-subtitle{
+  color:#64748b;
+  font-size:11px;
+  font-weight:700;
+}
+
+.latest-news-list{
+  display:grid;
+  gap:9px;
+}
+
+.news-item{
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:10px;
+  align-items:center;
+  padding:11px 12px;
+  border:1px solid #e2e8f0;
+  border-radius:14px;
+  background:white;
+}
+
+.news-icon{
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:11px;
+  background:#f1f5f9;
+  font-size:20px;
+}
+
+.news-item-title{
+  color:#1f2937;
+  font-size:14px;
+  font-weight:900;
+}
+
+.news-item-content{
+  margin-top:3px;
+  color:#64748b;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.news-date{
+  grid-column:2;
+  color:#94a3b8;
+  font-size:11px;
+  font-weight:800;
+}
+
+.news-type{
+  display:inline-flex;
+  padding:3px 7px;
+  margin-bottom:4px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:900;
+}
+
+.news-type.new-game{
+  background:#ecfdf5;
+  color:#047857;
+}
+
+.news-type.system{
+  background:#eff6ff;
+  color:#1d4ed8;
+}
+
+.news-type.game-update{
+  background:#f5f3ff;
+  color:#6d28d9;
+}
+
+.news-type.notice{
+  background:#fff7ed;
+  color:#c2410c;
+}
+
+.news-empty{
+  padding:20px;
+  color:#64748b;
+  text-align:center;
+  font-weight:700;
+}
+
+.section-header{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:20px;
+}
+
+.section-title{
+  margin:0;
+  font-size:28px;
+}
+
+.section-description{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  text-align:right;
+}
+
+.semester-control{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:24px;
+  padding:18px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:rgba(255,255,255,.82);
+  box-shadow:0 8px 22px rgba(31,41,55,.08);
+}
+
+.semester-control label{
+  color:#174f8f;
+  font-size:17px;
+  font-weight:900;
+}
+
+.semester-select{
+  min-width:240px;
+  padding:12px 16px;
+  border:2px solid #bfdbfe;
+  border-radius:12px;
+  background:white;
+  color:var(--text);
+  font-size:17px;
+  font-weight:800;
+  outline:none;
+}
+
+.semester-panel{
+  display:none;
+}
+
+.semester-panel.active{
+  display:block;
+}
+
+.semester-title{
+  margin:0 0 18px;
+  color:#174f8f;
+  font-size:24px;
+  text-align:center;
+}
+
+.games-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px;
+}
+
+.game-card{
+  position:relative;
+  min-height:220px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:24px 18px 20px;
+  overflow:hidden;
+  border:2px solid var(--game-border,#dce7f5);
+  border-top:8px solid var(--game-primary,#1976d2);
+  border-radius:22px;
+  background:linear-gradient(
+    180deg,
+    var(--game-light,#fff),
+    #fff 75%
+  );
+  box-shadow:0 10px 28px rgba(31,41,55,.12);
+  text-align:center;
+}
+
+.game-heading{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.game-icon{
+  width:54px;
+  height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 54px;
+  border:2px solid var(--game-border,#dce7f5);
+  border-radius:17px;
+  background:var(--game-light,#eef5ff);
+  color:var(--game-primary,#1976d2);
+  font-size:27px;
+}
+
+.game-card h2{
+  margin:0;
+  font-size:20px;
+}
+
+.game-card p{
+  min-height:46px;
+  margin:0 0 13px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.65;
+}
+
+.game-meta{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  min-height:30px;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+
+.game-meta-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:28px;
+  padding:5px 10px;
+  border:1px solid var(--game-border,#dce7f5);
+  border-radius:999px;
+  background:rgba(255,255,255,.92);
+  color:var(--game-primary,#1976d2);
+  font-size:13px;
+  font-weight:900;
+}
+
+.game-meta-badge.recommended{
+  border-color:#fdba74;
+  background:#fff7ed;
+  color:#c2410c;
+}
+
+.game-meta-badge.new{
+  border-color:#86efac;
+  background:#f0fdf4;
+  color:#15803d;
+}
+
+.status-badge{
+  display:inline-block;
+  margin-bottom:12px;
+  padding:6px 11px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:900;
+}
+
+.status-soon{
+  background:#f1f5f9;
+  color:#64748b;
+}
+
+.button{
+  display:inline-block;
+  min-width:132px;
+  padding:12px 22px;
+  border:0;
+  border-radius:12px;
+  color:white;
+  font-size:16px;
+  font-weight:900;
+  text-align:center;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.start-button{
+  background:var(--game-primary,#1976d2);
+  box-shadow:0 5px 0 var(--game-dark,#125ca6);
+}
+
+.waiting-button{
+  background:#7b8794;
+  box-shadow:0 5px 0 #56616d;
+  opacity:.72;
+  cursor:not-allowed;
+}
+
+.page-footer{
+  margin-top:48px;
+  padding:26px 18px 8px;
+  border-top:1px solid rgba(100,116,139,.22);
+  color:#748094;
+  text-align:center;
+}
+
+.footer-brand{
+  color:#174f8f;
+  font-size:17px;
+  font-weight:900;
+}
+
+.footer-author{
+  margin-top:8px;
+  color:#475569;
+  font-size:14px;
+  font-weight:800;
+}
+
+.footer-copyright{
+  margin-top:6px;
+  color:#94a3b8;
+  font-size:12px;
+}
+
+@media(max-width:1100px){
+  .home-layout{
+    grid-template-columns:1fr;
+  }
+
+  .info-column{
+    position:static;
+  }
+
+  .dashboard{
+    grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);
+  }
+
+  .dashboard-links{
+    grid-template-columns:1fr;
+  }
+
+  .news-area{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:760px){
+  .page-container{
+    padding:18px 12px 45px;
+  }
+
+  .home-layout{
+    display:block;
+  }
+
+  .game-column{
+    margin-top:32px;
+  }
+
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+
+  .dashboard-links{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .news-area{
+    grid-template-columns:1fr;
+  }
+
+  .section-header{
+    display:block;
+  }
+
+  .section-description{
+    margin-top:7px;
+    text-align:left;
+  }
+
+  .semester-control{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .semester-select{
+    width:100%;
+    min-width:0;
+  }
+
+  .games-grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
 </head>
-
 
 <body>
 
+<main class="page-container">
 
-  <main class="page-container">
+<div class="home-layout">
 
+<aside class="info-column">
+
+<div class="info-stack">
+
+<section class="dashboard">
+
+<div>
 
-    <!--
-    ==================================================
-    ★ 首頁左右雙欄
-    ==================================================
-    -->
+<div class="dashboard-title-row">
 
+<div class="dashboard-logo">
+<img
+  src="./favicon.png?v=20260825"
+  alt="生活有解．心中有數"
+>
+</div>
 
-    <div class="home-layout">
+<h1 class="dashboard-title">
+生活有解．心中有數
+</h1>
 
+</div>
 
-      <!--
-      ==================================================
-      左側 40%｜資訊區
-      ==================================================
-      -->
+<p class="dashboard-subtitle">
+一步一題，累積實力；生活有解，心中有數。
+</p>
 
+<div
+  id="compactUserBox"
+  class="compact-user-box"
+>
+<div class="compact-user-text">
+<div class="compact-user-name">
+正在確認登入狀態……
+</div>
+</div>
+</div>
 
-      <aside class="info-column">
+<div class="compact-auth-actions">
 
+<button
+  id="compactLoginButton"
+  class="compact-auth-button compact-login-button"
+  type="button"
+>
+Google 登入
+</button>
 
-        <div class="info-stack">
+<button
+  id="compactLogoutButton"
+  class="compact-auth-button compact-logout-button"
+  type="button"
+  hidden
+>
+登出
+</button>
 
+</div>
 
-          <!-- 網站／登入／排行榜／我的成績 -->
+</div>
 
 
-          <section class="dashboard">
+<div class="dashboard-links">
 
+<a
+  class="dashboard-link-card"
+  href="leaderboard.html"
+>
 
-            <div class="dashboard-brand">
+<div class="dashboard-link-icon rank">
+🏆
+</div>
 
+<div>
+<div class="dashboard-link-title">
+排行榜
+</div>
+<div class="dashboard-link-text">
+查看各遊戲高手排行，挑戰更高名次。
+</div>
+</div>
 
-              <div class="dashboard-title-row">
+</a>
 
 
-                <div class="dashboard-logo">
+<a
+  id="myScoresLink"
+  class="dashboard-link-card"
+  href="my-scores.html"
+>
 
-                  <img
-                    src="./favicon.png?v=20260825"
-                    alt="生活有解．心中有數"
-                  >
+<div class="dashboard-link-icon scores">
+📊
+</div>
 
-                </div>
+<div>
+<div class="dashboard-link-title">
+我的成績
+</div>
+<div class="dashboard-link-text">
+查看最高分、平均分數、答題紀錄與遊玩次數。
+</div>
+</div>
 
+</a>
 
-                <h1 class="dashboard-title">
-                  生活有解．心中有數
-                </h1>
+</div>
 
+</section>
 
-              </div>
 
+<section class="news-area">
 
-              <p class="dashboard-subtitle">
-                一步一題，累積實力；生活有解，心中有數。
-              </p>
+<div
+  id="announcementBoard"
+  class="announcement-board"
+>
 
+<div class="announcement-top">
 
-              <div
-                id="compactUserBox"
-                class="compact-user-box"
-              >
+<h2 class="announcement-heading">
+📢 公告欄
+</h2>
 
-                <div class="compact-user-text">
+<div
+  id="announcementDate"
+  class="announcement-date"
+></div>
 
-                  <div class="compact-user-name">
-                    正在確認登入狀態……
-                  </div>
+</div>
 
-                </div>
+<div
+  id="announcementBadge"
+  class="announcement-badge"
+>
+最新公告
+</div>
 
-              </div>
+<h3
+  id="announcementTitle"
+  class="announcement-title"
+>
+公告載入中……
+</h3>
 
+<p
+  id="announcementContent"
+  class="announcement-content"
+>
+請稍候。
+</p>
 
-              <div class="compact-auth-actions">
+</div>
 
 
-                <button
-                  id="compactLoginButton"
-                  class="compact-auth-button compact-login-button"
-                  type="button"
-                >
-                  Google 登入
-                </button>
+<div class="latest-news-box">
 
+<div class="latest-news-header">
 
-                <button
-                  id="compactLogoutButton"
-                  class="compact-auth-button compact-logout-button"
-                  type="button"
-                  hidden
-                >
-                  登出
-                </button>
+<h2 class="latest-news-title">
+📰 最新消息
+</h2>
 
+<div class="latest-news-subtitle">
+顯示最近 4 則更新
+</div>
 
-              </div>
+</div>
 
+<div
+  id="latestNewsList"
+  class="latest-news-list"
+></div>
 
-            </div>
+</div>
 
+</section>
 
-            <div class="dashboard-links">
+</div>
 
+</aside>
 
-              <a
-                class="dashboard-link-card"
-                href="leaderboard.html"
-              >
 
+<section class="game-column">
 
-                <div class="dashboard-link-icon rank">
-                  🏆
-                </div>
+<div class="section-header">
 
+<h2 class="section-title">
+🎯 選擇一個遊戲
+</h2>
 
-                <div>
+<p class="section-description">
+完成遊戲後，登入玩家的成績會自動儲存。
+</p>
 
-                  <div class="dashboard-link-title">
-                    排行榜
-                  </div>
+</div>
 
-                  <div class="dashboard-link-text">
-                    查看各遊戲高手排行，挑戰更高名次。
-                  </div>
 
-                </div>
+<div class="semester-control">
 
+<label for="semesterSelect">
+📚 請選擇學期
+</label>
 
-              </a>
+<select
+  id="semesterSelect"
+  class="semester-select"
+>
 
+<option value="grade7-first">
+七年級上學期
+</option>
 
-              <a
-                id="myScoresLink"
-                class="dashboard-link-card"
-                href="my-scores.html"
-              >
+<option value="grade7-second">
+七年級下學期
+</option>
 
+<option value="grade8-first">
+八年級上學期
+</option>
+
+<option value="grade8-second">
+八年級下學期
+</option>
 
-                <div class="dashboard-link-icon scores">
-                  📊
-                </div>
+<option value="grade9-first">
+九年級上學期
+</option>
 
+<option value="grade9-second">
+九年級下學期
+</option>
 
-                <div>
+</select>
 
-                  <div class="dashboard-link-title">
-                    我的成績
-                  </div>
+</div>
 
-                  <div class="dashboard-link-text">
-                    查看最高分、平均分數、答題紀錄與遊玩次數。
-                  </div>
 
-                </div>
+<div
+  id="grade7-first"
+  class="semester-panel active"
+>
+<h3 class="semester-title">
+七年級上學期
+</h3>
+<div
+  id="grade7FirstGames"
+  class="games-grid"
+></div>
+</div>
 
 
-              </a>
+<div
+  id="grade7-second"
+  class="semester-panel"
+>
+<h3 class="semester-title">
+七年級下學期
+</h3>
+<div
+  id="grade7SecondGames"
+  class="games-grid"
+></div>
+</div>
 
 
-            </div>
+<div
+  id="grade8-first"
+  class="semester-panel"
+>
+<h3 class="semester-title">
+八年級上學期
+</h3>
+<div
+  id="grade8FirstGames"
+  class="games-grid"
+></div>
+</div>
 
 
-          </section>
+<div
+  id="grade8-second"
+  class="semester-panel"
+>
+<h3 class="semester-title">
+八年級下學期
+</h3>
+<div
+  id="grade8SecondGames"
+  class="games-grid"
+></div>
+</div>
 
 
-          <!-- 公告＋最新消息 -->
+<div
+  id="grade9-first"
+  class="semester-panel"
+>
+<h3 class="semester-title">
+九年級上學期
+</h3>
+<div
+  id="grade9FirstGames"
+  class="games-grid"
+></div>
+</div>
 
 
-          <section class="news-area">
+<div
+  id="grade9-second"
+  class="semester-panel"
+>
+<h3 class="semester-title">
+九年級下學期
+</h3>
+<div
+  id="grade9SecondGames"
+  class="games-grid"
+></div>
+</div>
 
+</section>
 
-            <div
-              id="announcementBoard"
-              class="announcement-board"
-            >
+</div>
 
 
-              <div class="announcement-top">
+<footer class="page-footer">
 
+<div class="footer-brand">
+生活有解．心中有數
+</div>
 
-                <h2 class="announcement-heading">
-                  📢 公告欄
-                </h2>
+<div class="footer-author">
+文化國中｜張宏維老師 製作
+</div>
 
+<div class="footer-copyright">
+© 2026 生活有解．心中有數．教學與學習使用
+</div>
 
-                <div
-                  id="announcementDate"
-                  class="announcement-date"
-                >
-                </div>
+</footer>
 
+</main>
 
-              </div>
 
+<script type="module">
 
-              <div
-                id="announcementBadge"
-                class="announcement-badge"
-              >
-                最新公告
-              </div>
+import {
+  login,
+  logout
+} from "./js/auth.js";
 
+import {
+  auth
+} from "./js/firebase-config.js";
 
-              <h3
-                id="announcementTitle"
-                class="announcement-title"
-              >
-                公告載入中……
-              </h3>
+import {
+  createOrUpdatePlayer
+} from "./js/firestore.js";
 
+import {
+  getGamesBySemester
+} from "./js/game-config.js?v=6.8";
 
-              <p
-                id="announcementContent"
-                class="announcement-content"
-              >
-                請稍候。
-              </p>
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-            </div>
+const $ =
+  id =>
+    document.getElementById(id);
 
 
-            <div class="latest-news-box">
+const compactUserBox =
+  $("compactUserBox");
 
+const compactLoginButton =
+  $("compactLoginButton");
 
-              <div class="latest-news-header">
+const compactLogoutButton =
+  $("compactLogoutButton");
 
+const myScoresLink =
+  $("myScoresLink");
 
-                <h2 class="latest-news-title">
-                  📰 最新消息
-                </h2>
+const semesterSelect =
+  $("semesterSelect");
 
+const semesterPanels =
+  document.querySelectorAll(
+    ".semester-panel"
+  );
 
-                <div class="latest-news-subtitle">
-                  顯示最近 4 則更新
-                </div>
 
+const GAME_MOUNTS = {
+  "grade7-first":
+    $("grade7FirstGames"),
 
-              </div>
+  "grade7-second":
+    $("grade7SecondGames"),
 
+  "grade8-first":
+    $("grade8FirstGames"),
 
-              <div
-                id="latestNewsList"
-                class="latest-news-list"
-              ></div>
+  "grade8-second":
+    $("grade8SecondGames"),
 
+  "grade9-first":
+    $("grade9FirstGames"),
 
-            </div>
+  "grade9-second":
+    $("grade9SecondGames")
+};
 
 
-          </section>
+function theme(
+  primary,
+  dark,
+  light,
+  border
+){
+  return {
+    primary,
+    dark,
+    light,
+    border
+  };
+}
 
 
-        </div>
+function formatDate(text){
 
+  const parts =
+    String(text || "")
+      .split("-");
 
-      </aside>
+  if (
+    parts.length !== 3
+  ){
+    return text || "";
+  }
 
+  return (
+    `${parts[0]} / ${parts[1]} / ${parts[2]}`
+  );
+}
 
-      <!--
-      ==================================================
-      右側 60%｜遊戲區
-      ==================================================
-      -->
 
+async function loadAnnouncements(){
 
-      <section class="game-column">
+  const board =
+    $("announcementBoard");
 
+  const dateElement =
+    $("announcementDate");
 
-        <section class="section">
+  const badgeElement =
+    $("announcementBadge");
 
+  const titleElement =
+    $("announcementTitle");
 
-          <div class="section-header">
+  const contentElement =
+    $("announcementContent");
 
+  const newsList =
+    $("latestNewsList");
 
-            <h2 class="section-title">
-              🎯 選擇一個遊戲
-            </h2>
+  try{
 
-
-            <p class="section-description">
-              完成遊戲後，登入玩家的成績會自動儲存。
-            </p>
-
-
-          </div>
-
-
-          <div class="semester-control">
-
-
-            <label for="semesterSelect">
-              📚 請選擇學期
-            </label>
-
-
-            <select
-              id="semesterSelect"
-              class="semester-select"
-            >
-
-
-              <option value="grade7-first">
-                七年級上學期
-              </option>
-
-
-              <option value="grade7-second">
-                七年級下學期
-              </option>
-
-
-              <option value="grade8-first">
-                八年級上學期
-              </option>
-
-
-              <option value="grade8-second">
-                八年級下學期
-              </option>
-
-
-              <option value="grade9-first">
-                九年級上學期
-              </option>
-
-
-              <option value="grade9-second">
-                九年級下學期
-              </option>
-
-
-            </select>
-
-
-          </div>
-
-
-          <!-- 七上 -->
-
-
-          <div
-            id="grade7-first"
-            class="semester-panel active"
-          >
-
-
-            <h3 class="semester-title">
-              七年級上學期
-            </h3>
-
-
-            <div
-              id="grade7FirstGames"
-              class="games-grid"
-            ></div>
-
-
-          </div>
-
-
-          <!-- 七下 -->
-
-
-          <div
-            id="grade7-second"
-            class="semester-panel"
-          >
-
-
-            <h3 class="semester-title">
-              七年級下學期
-            </h3>
-
-
-            <div
-              id="grade7SecondGames"
-              class="games-grid"
-            ></div>
-
-
-          </div>
-
-
-          <!-- 八上 -->
-
-
-          <div
-            id="grade8-first"
-            class="semester-panel"
-          >
-
-
-            <h3 class="semester-title">
-              八年級上學期
-            </h3>
-
-
-            <div
-              id="grade8FirstGames"
-              class="games-grid"
-            ></div>
-
-
-          </div>
-
-
-          <!-- 八下 -->
-
-
-          <div
-            id="grade8-second"
-            class="semester-panel"
-          >
-
-
-            <h3 class="semester-title">
-              八年級下學期
-            </h3>
-
-
-            <div
-              id="grade8SecondGames"
-              class="games-grid"
-            ></div>
-
-
-          </div>
-
-
-          <!-- 九上 -->
-
-
-          <div
-            id="grade9-first"
-            class="semester-panel"
-          >
-
-
-            <h3 class="semester-title">
-              九年級上學期
-            </h3>
-
-
-            <div
-              id="grade9FirstGames"
-              class="games-grid"
-            ></div>
-
-
-          </div>
-
-
-          <!-- 九下 -->
-
-
-          <div
-            id="grade9-second"
-            class="semester-panel"
-          >
-
-
-            <h3 class="semester-title">
-              九年級下學期
-            </h3>
-
-
-            <div
-              id="grade9SecondGames"
-              class="games-grid"
-            ></div>
-
-
-          </div>
-
-
-        </section>
-
-
-      </section>
-
-
-    </div>
-
-
-    <!--
-    ==================================================
-    Footer
-    ==================================================
-    -->
-
-
-    <footer class="page-footer">
-
-      <div class="footer-brand">
-        生活有解．心中有數
-      </div>
-
-      <div class="footer-author">
-        文化國中｜張宏維老師 製作
-      </div>
-
-      <div class="footer-copyright">
-        © 2026 生活有解．心中有數．教學與學習使用
-      </div>
-
-    </footer>
-
-
-  </main>
-
-
-  <script type="module">
-
-
-    /*
-    ==================================================
-    共用模組
-    ==================================================
-    */
-
-
-    import {
-      login,
-      logout
-    } from "./js/auth.js";
-
-
-    import {
-      auth
-    } from "./js/firebase-config.js";
-
-
-    import {
-      createOrUpdatePlayer
-    } from "./js/firestore.js";
-
-
-    import {
-      getGamesBySemester
-    } from "./js/game-config.js?v=6.8";
-
-
-    import {
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-    /*
-    ==================================================
-    DOM
-    ==================================================
-    */
-
-
-    const compactUserBox =
-      document.getElementById(
-        "compactUserBox"
+    const module =
+      await import(
+        "./js/announcements.js?v=2"
       );
 
+    const {
+      getImportantAnnouncement,
+      getLatestAnnouncements
+    } = module;
 
-    const compactLoginButton =
-      document.getElementById(
-        "compactLoginButton"
+    if (
+      typeof getImportantAnnouncement !==
+        "function" ||
+      typeof getLatestAnnouncements !==
+        "function"
+    ){
+      throw new Error(
+        "announcements.js 匯出格式不正確"
       );
-
-
-    const compactLogoutButton =
-      document.getElementById(
-        "compactLogoutButton"
-      );
-
-
-    const myScoresLink =
-      document.getElementById(
-        "myScoresLink"
-      );
-
-
-    const semesterSelect =
-      document.getElementById(
-        "semesterSelect"
-      );
-
-
-    const semesterPanels =
-      document.querySelectorAll(
-        ".semester-panel"
-      );
-
-
-    const grade7FirstGames =
-      document.getElementById(
-        "grade7FirstGames"
-      );
-
-
-    const grade7SecondGames =
-      document.getElementById(
-        "grade7SecondGames"
-      );
-
-
-    const grade8FirstGames =
-      document.getElementById(
-        "grade8FirstGames"
-      );
-
-
-    const grade8SecondGames =
-      document.getElementById(
-        "grade8SecondGames"
-      );
-
-
-    const grade9FirstGames =
-      document.getElementById(
-        "grade9FirstGames"
-      );
-
-
-    const grade9SecondGames =
-      document.getElementById(
-        "grade9SecondGames"
-      );
-
-
-    /*
-    ==================================================
-    日期
-    ==================================================
-    */
-
-
-    function formatDate(
-      text
-    ) {
-
-      const parts =
-        String(
-          text ||
-          ""
-        )
-          .split(
-            "-"
-          );
-
-
-      if (
-        parts.length !==
-        3
-      ) {
-
-        return (
-          text ||
-          ""
-        );
-      }
-
-
-      return (
-        `${parts[0]} / ${parts[1]} / ${parts[2]}`
-      );
-
     }
 
+    const important =
+      getImportantAnnouncement();
 
-    /*
-    ==================================================
-    公告安全載入
-    ==================================================
-    */
+    if (important){
 
-
-    async function loadAnnouncements() {
-
-
-      const board =
-        document.getElementById(
-          "announcementBoard"
-        );
-
-
-      const dateElement =
-        document.getElementById(
-          "announcementDate"
-        );
-
-
-      const badgeElement =
-        document.getElementById(
-          "announcementBadge"
-        );
-
-
-      const titleElement =
-        document.getElementById(
-          "announcementTitle"
-        );
-
-
-      const contentElement =
-        document.getElementById(
-          "announcementContent"
-        );
-
-
-      const newsList =
-        document.getElementById(
-          "latestNewsList"
-        );
-
-
-      try {
-
-
-        const module =
-          await import(
-            "./js/announcements.js?v=2"
-          );
-
-
-        const getImportantAnnouncement =
-          module.getImportantAnnouncement;
-
-
-        const getLatestAnnouncements =
-          module.getLatestAnnouncements;
-
-
-        if (
-          typeof getImportantAnnouncement !==
-            "function" ||
-
-          typeof getLatestAnnouncements !==
-            "function"
-        ) {
-
-          throw new Error(
-            "announcements.js 匯出格式不正確"
-          );
-
-        }
-
-
-        const important =
-          getImportantAnnouncement();
-
-
-        if (
-          important
-        ) {
-
-
-          board.hidden =
-            false;
-
-
-          dateElement.textContent =
-            formatDate(
-              important.date
-            );
-
-
-          badgeElement.textContent =
-            `${important.icon || "📌"} ${
-              important.typeName ||
-              "最新公告"
-            }`;
-
-
-          titleElement.textContent =
-            important.title ||
-            "最新公告";
-
-
-          contentElement.textContent =
-            important.content ||
-            "";
-
-
-        } else {
-
-
-          board.hidden =
-            true;
-
-        }
-
-
-        const latest =
-          getLatestAnnouncements(
-            4
-          );
-
-
-        if (
-          !latest ||
-          latest.length ===
-          0
-        ) {
-
-
-          newsList.innerHTML = `
-
-            <div class="news-empty">
-              目前沒有最新消息。
-            </div>
-
-          `;
-
-
-          return;
-
-        }
-
-
-        newsList.innerHTML =
-          latest
-            .map(
-              item => `
-
-                <article class="news-item">
-
-
-                  <div class="news-icon">
-                    ${item.icon || "📌"}
-                  </div>
-
-
-                  <div>
-
-
-                    <span
-                      class="news-type ${item.type || "notice"}"
-                    >
-                      ${
-                        item.typeName ||
-                        "網站公告"
-                      }
-                    </span>
-
-
-                    <div class="news-item-title">
-                      ${item.title || ""}
-                    </div>
-
-
-                    <div class="news-item-content">
-                      ${item.content || ""}
-                    </div>
-
-
-                  </div>
-
-
-                  <div class="news-date">
-
-                    ${formatDate(
-                      item.date
-                    )}
-
-                  </div>
-
-
-                </article>
-
-              `
-            )
-            .join(
-              ""
-            );
-
-
-      } catch (
-        error
-      ) {
-
-
-        console.error(
-          "公告載入失敗：",
-          error
-        );
-
-
-        board.hidden =
-          false;
-
-
-        dateElement.textContent =
-          "";
-
-
-        badgeElement.textContent =
-          "📌 網站公告";
-
-
-        titleElement.textContent =
-          "生活有解．心中有數";
-
-
-        contentElement.textContent =
-          "公告系統暫時無法載入，但數學遊戲仍可正常使用。";
-
-
-        newsList.innerHTML = `
-
-          <div class="news-empty">
-            最新消息暫時無法載入。
-          </div>
-
-        `;
-
-      }
-
-    }
-
-
-    loadAnnouncements();
-
-
-    /*
-    ==================================================
-    主題建立工具
-    ==================================================
-    */
-
-
-    function theme(
-      primary,
-      dark,
-      light,
-      border
-    ) {
-
-      return {
-        primary,
-        dark,
-        light,
-        border
-      };
-
-    }
-
-
-    /*
-    ==================================================
-    八年級下學期｜12 張
-    ==================================================
-    */
-
-
-    const GRADE8_SECOND_GAMES = [
-
-
-      {
-
-        id:
-          "sequence-arithmetic",
-
-        name:
-          "數列與等差數列大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 1,
-
-        icon:
-          "🔢",
-
-        file:
-          "games/sequence-arithmetic.html",
-
-        description:
-          "認識數列規律、等差數列、公差與一般項。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#1565C0",
-            "#0D47A1",
-            "#E3F2FD",
-            "#90CAF9"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "arithmetic-series",
-
-        name:
-          "等差級數大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 2,
-
-        icon:
-          "➕",
-
-        file:
-          "games/arithmetic-series.html",
-
-        description:
-          "練習等差級數的項數、首項、末項與總和。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#00897B",
-            "#00695C",
-            "#E0F2F1",
-            "#80CBC4"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "geometric-sequence",
-
-        name:
-          "等比數列大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 3,
-
-        icon:
-          "✖️",
-
-        file:
-          "games/geometric-sequence.html",
-
-        description:
-          "認識等比數列、公比與一般項。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#7B1FA2",
-            "#6A1B9A",
-            "#F3E5F5",
-            "#CE93D8"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "linear-function",
-
-        name:
-          "線型函數與圖形大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 4,
-
-        icon:
-          "📈",
-
-        file:
-          "games/linear-function.html",
-
-        description:
-          "練習線型函數、座標代入與圖形判讀。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#F57C00",
-            "#E65100",
-            "#FFF3E0",
-            "#FFCC80"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "triangle-angles",
-
-        name:
-          "三角形內角與外角大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 5,
-
-        icon:
-          "📐",
-
-        file:
-          "games/triangle-angles.html",
-
-        description:
-          "運用內角和與外角性質進行角度計算。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#D81B60",
-            "#AD1457",
-            "#FCE4EC",
-            "#F48FB1"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "compass-straightedge",
-
-        name:
-          "基本尺規作圖大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 6,
-
-        icon:
-          "📏",
-
-        file:
-          "games/compass-straightedge.html",
-
-        description:
-          "練習垂直平分線、角平分線與基本尺規作圖。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#3949AB",
-            "#283593",
-            "#E8EAF6",
-            "#9FA8DA"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "triangle-congruence",
-
-        name:
-          "三角形全等大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 7,
-
-        icon:
-          "🔺",
-
-        file:
-          "games/triangle-congruence.html",
-
-        description:
-          "練習三角形全等性質與判別條件。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#00838F",
-            "#006064",
-            "#E0F7FA",
-            "#80DEEA"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "bisector-perpendicular",
-
-        name:
-          "中垂線與角平分線大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 8,
-
-        icon:
-          "🎯",
-
-        file:
-          "games/bisector-perpendicular.html",
-
-        description:
-          "練習中垂線、角平分線與等距性質。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#43A047",
-            "#2E7D32",
-            "#E8F5E9",
-            "#A5D6A7"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "triangle-side-angle",
-
-        name:
-          "三角形邊角關係大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 9,
-
-        icon:
-          "📐",
-
-        file:
-          "games/triangle-side-angle.html",
-
-        description:
-          "練習三角形邊長、角度大小與三角形不等式。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#EF6C00",
-            "#E65100",
-            "#FFF3E0",
-            "#FFB74D"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "parallel-transversal",
-
-        name:
-          "平行線與截角大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 10,
-
-        icon:
-          "∥",
-
-        file:
-          "games/parallel-transversal.html",
-
-        description:
-          "練習同位角、內錯角、同側內角與平行線判別。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#1976D2",
-            "#125CA6",
-            "#E3F2FD",
-            "#90CAF9"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "parallelogram",
-
-        name:
-          "平行四邊形大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 11,
-
-        icon:
-          "▱",
-
-        file:
-          "games/parallelogram.html",
-
-        description:
-          "練習平行四邊形的性質與判別。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#5E35B1",
-            "#4527A0",
-            "#EDE7F6",
-            "#B39DDB"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "special-quadrilateral",
-
-        name:
-          "特殊四邊形大挑戰",
-
-        semester:
-          "grade8-second",
-
-        grade: 8,
-
-        order: 12,
-
-        icon:
-          "◇",
-
-        file:
-          "games/special-quadrilateral.html",
-
-        description:
-          "練習長方形、菱形與正方形的性質與判別。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#C2185B",
-            "#880E4F",
-            "#FCE4EC",
-            "#F48FB1"
-          )
-
-      }
-
-
-    ];
-
-
-    /*
-    ==================================================
-    九年級上學期｜11 張
-    ==================================================
-    */
-
-
-    const GRADE9_FIRST_GAMES = [
-
-
-      {
-
-        id:
-          "continued-ratio",
-
-        name:
-          "連比大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 1,
-
-        icon:
-          "🔗",
-
-        file:
-          "games/continued-ratio.html",
-
-        description:
-          "練習連比、連比化簡與利用連比求未知數。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#1565C0",
-            "#0D47A1",
-            "#E3F2FD",
-            "#90CAF9"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "proportional-segment",
-
-        name:
-          "比例線段大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 2,
-
-        icon:
-          "📏",
-
-        file:
-          "games/proportional-segment.html",
-
-        description:
-          "練習比例線段、平行線截比例線段與相關計算。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#00897B",
-            "#00695C",
-            "#E0F2F1",
-            "#80CBC4"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "similar-polygon",
-
-        name:
-          "相似多邊形大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 3,
-
-        icon:
-          "🔷",
-
-        file:
-          "games/similar-polygon.html",
-
-        description:
-          "練習相似多邊形、對應邊、對應角與相似比。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#3949AB",
-            "#283593",
-            "#E8EAF6",
-            "#9FA8DA"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "similar-triangle",
-
-        name:
-          "相似三角形大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 4,
-
-        icon:
-          "🔺",
-
-        file:
-          "games/similar-triangle.html",
-
-        description:
-          "練習三角形相似判別與相似三角形的邊長應用。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#D81B60",
-            "#AD1457",
-            "#FCE4EC",
-            "#F48FB1"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "trigonometric-ratio",
-
-        name:
-          "三角比大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 5,
-
-        icon:
-          "📐",
-
-        file:
-          "games/trigonometric-ratio.html",
-
-        description:
-          "練習直角三角形中的 sin、cos、tan 與邊長計算。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#F57C00",
-            "#E65100",
-            "#FFF3E0",
-            "#FFCC80"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "point-line-circle",
-
-        name:
-          "點、線、圓大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 6,
-
-        icon:
-          "⭕",
-
-        file:
-          "games/point-line-circle.html",
-
-        description:
-          "練習點與圓、直線與圓的位置關係。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#00838F",
-            "#006064",
-            "#E0F7FA",
-            "#80DEEA"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "central-inscribed-angle",
-
-        name:
-          "圓心角與圓周角大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 7,
-
-        icon:
-          "🟠",
-
-        file:
-          "games/central-inscribed-angle.html",
-
-        description:
-          "練習弧、圓心角、圓周角以及角度關係。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#EF6C00",
-            "#E65100",
-            "#FFF3E0",
-            "#FFB74D"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "geometric-proof",
-
-        name:
-          "推理證明大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 8,
-
-        icon:
-          "🧠",
-
-        file:
-          "games/geometric-proof.html",
-
-        description:
-          "練習已知、求證與幾何推理證明的邏輯過程。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#7B1FA2",
-            "#6A1B9A",
-            "#F3E5F5",
-            "#CE93D8"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "triangle-circumcenter",
-
-        name:
-          "三角形外心大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 9,
-
-        icon:
-          "🎯",
-
-        file:
-          "games/triangle-circumcenter.html",
-
-        description:
-          "練習外心、外接圓與外心的位置及性質。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#1976D2",
-            "#125CA6",
-            "#E3F2FD",
-            "#90CAF9"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "triangle-incenter",
-
-        name:
-          "三角形內心大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 10,
-
-        icon:
-          "❤️",
-
-        file:
-          "games/triangle-incenter.html",
-
-        description:
-          "練習內心、內切圓與角平分線的相關性質。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#E91E63",
-            "#AD1457",
-            "#FCE4EC",
-            "#F48FB1"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "triangle-centroid",
-
-        name:
-          "三角形重心大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 11,
-
-        icon:
-          "⚖️",
-
-        file:
-          "games/triangle-centroid.html",
-
-        description:
-          "練習重心、中線與重心分割比例等性質。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#43A047",
-            "#2E7D32",
-            "#E8F5E9",
-            "#A5D6A7"
-          )
-
-      }
-
-
-    ];
-
-
-    /*
-    ==================================================
-    九年級下學期｜6 張
-    ==================================================
-    */
-
-
-    const GRADE9_SECOND_GAMES = [
-
-
-      {
-
-        id:
-          "quadratic-function-graph",
-
-        name:
-          "二次函數圖形大挑戰",
-
-        semester:
-          "grade9-second",
-
-        grade: 9,
-
-        order: 1,
-
-        icon:
-          "📈",
-
-        file:
-          "games/quadratic-function-graph.html",
-
-        description:
-          "認識基本二次函數圖形、開口方向、頂點與對稱軸。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#1565C0",
-            "#0D47A1",
-            "#E3F2FD",
-            "#90CAF9"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "quadratic-function-extrema",
-
-        name:
-          "二次函數最值大挑戰",
-
-        semester:
-          "grade9-second",
-
-        grade: 9,
-
-        order: 2,
-
-        icon:
-          "🎢",
-
-        file:
-          "games/quadratic-function-extrema.html",
-
-        description:
-          "練習二次函數圖形與最大值、最小值。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#7B1FA2",
-            "#6A1B9A",
-            "#F3E5F5",
-            "#CE93D8"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "quartile-boxplot",
-
-        name:
-          "四分位數與盒狀圖大挑戰",
-
-        semester:
-          "grade9-second",
-
-        grade: 9,
-
-        order: 3,
-
-        icon:
-          "📊",
-
-        file:
-          "games/quartile-boxplot.html",
-
-        description:
-          "練習四分位數、四分位距以及盒狀圖判讀。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#D81B60",
-            "#AD1457",
-            "#FCE4EC",
-            "#F48FB1"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "probability",
-
-        name:
-          "機率大挑戰",
-
-        semester:
-          "grade9-second",
-
-        grade: 9,
-
-        order: 4,
-
-        icon:
-          "🎲",
-
-        file:
-          "games/probability.html",
-
-        description:
-          "練習樣本空間、事件與基本機率計算。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#F57C00",
-            "#E65100",
-            "#FFF3E0",
-            "#FFCC80"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "prism-cylinder",
-
-        name:
-          "角柱與圓柱大挑戰",
-
-        semester:
-          "grade9-second",
-
-        grade: 9,
-
-        order: 5,
-
-        icon:
-          "🥫",
-
-        file:
-          "games/prism-cylinder.html",
-
-        description:
-          "練習角柱、圓柱的展開圖、表面積與體積。",
-
-        finished:
-          false,
-
-        difficulty:
-          2,
-
-        theme:
-          theme(
-            "#0288D1",
-            "#0277BD",
-            "#E1F5FE",
-            "#81D4FA"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "pyramid-cone",
-
-        name:
-          "角錐與圓錐大挑戰",
-
-        semester:
-          "grade9-second",
-
-        grade: 9,
-
-        order: 6,
-
-        icon:
-          "🔺",
-
-        file:
-          "games/pyramid-cone.html",
-
-        description:
-          "練習角錐、圓錐的展開圖、表面積與體積。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#E53935",
-            "#C62828",
-            "#FFEBEE",
-            "#EF9A9A"
-          )
-
-      }
-
-
-    ];
-
-
-    /*
-    ==================================================
-    建立卡牌
-    ==================================================
-    */
-
-
-    function createGameCard(
-      game
-    ) {
-
-
-      const card =
-        document.createElement(
-          "article"
-        );
-
-
-      card.className =
-        "game-card";
-
-
-      const gameTheme =
-        game.theme ||
-        {};
-
-
-      card.style.setProperty(
-        "--game-primary",
-        gameTheme.primary ||
-        "#1976D2"
-      );
-
-
-      card.style.setProperty(
-        "--game-dark",
-        gameTheme.dark ||
-        "#125CA6"
-      );
-
-
-      card.style.setProperty(
-        "--game-light",
-        gameTheme.light ||
-        "#E3F2FD"
-      );
-
-
-      card.style.setProperty(
-        "--game-border",
-        gameTheme.border ||
-        "#90CAF9"
-      );
-
-
-      if (
-        !game.finished
-      ) {
-
-
-        const status =
-          document.createElement(
-            "span"
-          );
-
-
-        status.className =
-          "status-badge status-soon";
-
-
-        status.textContent =
-          "開發中";
-
-
-        card.appendChild(
-          status
-        );
-
-      }
-
-
-      const heading =
-        document.createElement(
-          "div"
-        );
-
-
-      heading.className =
-        "game-heading";
-
-
-      const icon =
-        document.createElement(
-          "div"
-        );
-
-
-      icon.className =
-        "game-icon";
-
-
-      icon.textContent =
-        game.icon ||
-        "🎮";
-
-
-      const title =
-        document.createElement(
-          "h2"
-        );
-
-
-      title.textContent =
-        game.name ||
-        "數學遊戲";
-
-
-      heading.append(
-        icon,
-        title
-      );
-
-
-      const description =
-        document.createElement(
-          "p"
-        );
-
-
-      description.textContent =
-        game.description ||
-        "";
-
-
-      const meta =
-        document.createElement(
-          "div"
-        );
-
-
-      meta.className =
-        "game-meta";
-
-
-      const difficulty =
-        Math.min(
-          3,
-          Math.max(
-            1,
-            Number(
-              game.difficulty
-            ) ||
-            1
-          )
-        );
-
-
-      const difficultyBadge =
-        document.createElement(
-          "span"
-        );
-
-
-      difficultyBadge.className =
-        "game-meta-badge";
-
-
-      difficultyBadge.textContent =
-        "⭐".repeat(
-          difficulty
-        );
-
-
-      meta.appendChild(
-        difficultyBadge
-      );
-
-
-      if (
-        game.recommended
-      ) {
-
-
-        const recommended =
-          document.createElement(
-            "span"
-          );
-
-
-        recommended.className =
-          "game-meta-badge recommended";
-
-
-        recommended.textContent =
-          "🔥 推薦";
-
-
-        meta.appendChild(
-          recommended
-        );
-
-      }
-
-
-      if (
-        game.isNew
-      ) {
-
-
-        const newBadge =
-          document.createElement(
-            "span"
-          );
-
-
-        newBadge.className =
-          "game-meta-badge new";
-
-
-        newBadge.textContent =
-          "🆕 NEW";
-
-
-        meta.appendChild(
-          newBadge
-        );
-
-      }
-
-
-      card.append(
-        heading,
-        description,
-        meta
-      );
-
-
-      if (
-        game.finished
-      ) {
-
-
-        const link =
-          document.createElement(
-            "a"
-          );
-
-
-        link.className =
-          "button start-button";
-
-
-        link.href =
-          game.file;
-
-
-        link.textContent =
-          "開始挑戰";
-
-
-        card.appendChild(
-          link
-        );
-
-
-      } else {
-
-
-        const waiting =
-          document.createElement(
-            "button"
-          );
-
-
-        waiting.className =
-          "button waiting-button";
-
-
-        waiting.type =
-          "button";
-
-
-        waiting.disabled =
-          true;
-
-
-        waiting.textContent =
-          "敬請期待";
-
-
-        card.appendChild(
-          waiting
-        );
-
-      }
-
-
-      return card;
-
-    }
-
-
-    /*
-    ==================================================
-    依學期取得卡牌
-    ==================================================
-    */
-
-
-    function getSemesterGames(
-      semester
-    ) {
-
-
-      if (
-        semester ===
-        "grade8-second"
-      ) {
-
-        return GRADE8_SECOND_GAMES;
-
-      }
-
-
-      if (
-        semester ===
-        "grade9-first"
-      ) {
-
-        return GRADE9_FIRST_GAMES;
-
-      }
-
-
-      if (
-        semester ===
-        "grade9-second"
-      ) {
-
-        return GRADE9_SECOND_GAMES;
-
-      }
-
-
-      try {
-
-
-        return (
-          getGamesBySemester(
-            semester
-          ) ||
-          []
-        );
-
-
-      } catch (
-        error
-      ) {
-
-
-        console.error(
-          `讀取 ${semester} 遊戲失敗：`,
-          error
-        );
-
-
-        return [];
-
-      }
-
-    }
-
-
-    /*
-    ==================================================
-    顯示單一學期
-    ==================================================
-    */
-
-
-    function renderSemesterGames(
-      semester,
-      mount
-    ) {
-
-
-      if (
-        !mount
-      ) {
-
-        return;
-
-      }
-
-
-      mount.innerHTML =
-        "";
-
-
-      const games =
-        getSemesterGames(
-          semester
-        );
-
-
-      if (
-        !games.length
-      ) {
-
-
-        mount.innerHTML = `
-
-          <div
-            style="
-              grid-column:1/-1;
-              padding:24px;
-              border:2px dashed #cbd5e1;
-              border-radius:18px;
-              background:#f8fafc;
-              color:#64748b;
-              text-align:center;
-              font-weight:800;
-            "
-          >
-            這個學期目前尚未設定遊戲。
-          </div>
-
-        `;
-
-
-        return;
-
-      }
-
-
-      games
-        .sort(
-          (
-            a,
-            b
-          ) =>
-            Number(
-              a.order ||
-              999
-            ) -
-            Number(
-              b.order ||
-              999
-            )
-        )
-        .forEach(
-          game => {
-
-
-            mount.appendChild(
-              createGameCard(
-                game
-              )
-            );
-
-          }
-        );
-
-    }
-
-
-    /*
-    ==================================================
-    六學期全部建立
-    ==================================================
-    */
-
-
-    function renderAllGames() {
-
-
-      renderSemesterGames(
-        "grade7-first",
-        grade7FirstGames
-      );
-
-
-      renderSemesterGames(
-        "grade7-second",
-        grade7SecondGames
-      );
-
-
-      renderSemesterGames(
-        "grade8-first",
-        grade8FirstGames
-      );
-
-
-      renderSemesterGames(
-        "grade8-second",
-        grade8SecondGames
-      );
-
-
-      renderSemesterGames(
-        "grade9-first",
-        grade9FirstGames
-      );
-
-
-      renderSemesterGames(
-        "grade9-second",
-        grade9SecondGames
-      );
-
-    }
-
-
-    renderAllGames();
-
-
-    /*
-    ==================================================
-    學期切換
-    ==================================================
-    */
-
-
-    semesterSelect
-      .addEventListener(
-        "change",
-        () => {
-
-
-          const selected =
-            semesterSelect.value;
-
-
-          semesterPanels
-            .forEach(
-              panel => {
-
-
-                panel.classList.toggle(
-                  "active",
-                  panel.id ===
-                  selected
-                );
-
-              }
-            );
-
-        }
-      );
-
-
-    /*
-    ==================================================
-    Google 登入
-    ==================================================
-    */
-
-
-    compactLoginButton
-      .addEventListener(
-        "click",
-        async () => {
-
-
-          compactLoginButton.disabled =
-            true;
-
-
-          compactLoginButton.textContent =
-            "登入中……";
-
-
-          try {
-
-
-            await login();
-
-
-          } catch (
-            error
-          ) {
-
-
-            console.error(
-              "Google 登入失敗：",
-              error
-            );
-
-
-            alert(
-              "登入沒有完成，請稍後再試一次。"
-            );
-
-
-          } finally {
-
-
-            compactLoginButton.disabled =
-              false;
-
-
-            compactLoginButton.textContent =
-              "Google 登入";
-
-          }
-
-        }
-      );
-
-
-    /*
-    ==================================================
-    登出
-    ==================================================
-    */
-
-
-    compactLogoutButton
-      .addEventListener(
-        "click",
-        async () => {
-
-
-          compactLogoutButton.disabled =
-            true;
-
-
-          compactLogoutButton.textContent =
-            "登出中……";
-
-
-          try {
-
-
-            await logout();
-
-
-          } catch (
-            error
-          ) {
-
-
-            console.error(
-              "登出失敗：",
-              error
-            );
-
-
-            alert(
-              "登出失敗，請稍後再試一次。"
-            );
-
-
-          } finally {
-
-
-            compactLogoutButton.disabled =
-              false;
-
-
-            compactLogoutButton.textContent =
-              "登出";
-
-          }
-
-        }
-      );
-
-
-    /*
-    ==================================================
-    我的成績登入保護
-    ==================================================
-    */
-
-
-    myScoresLink
-      .addEventListener(
-        "click",
-        event => {
-
-
-          if (
-            !auth.currentUser
-          ) {
-
-
-            event.preventDefault();
-
-
-            alert(
-              "請先登入 Google 帳號，才能查看自己的成績。"
-            );
-
-          }
-
-        }
-      );
-
-
-    /*
-    ==================================================
-    登出畫面
-    ==================================================
-    */
-
-
-    function renderLoggedOut() {
-
-
-      compactUserBox.innerHTML = `
-
-        <div class="compact-user-text">
-
-          <div class="compact-user-name">
-            尚未登入
-          </div>
-
-          <div class="compact-user-email">
-            登入後即可儲存成績與查看個人紀錄。
-          </div>
-
-        </div>
-
-      `;
-
-
-      compactLoginButton.hidden =
+      board.hidden =
         false;
 
+      dateElement.textContent =
+        formatDate(
+          important.date
+        );
 
-      compactLogoutButton.hidden =
-        true;
+      badgeElement.textContent =
+        `${important.icon || "📌"} ${
+          important.typeName ||
+          "最新公告"
+        }`;
 
-    }
+      titleElement.textContent =
+        important.title ||
+        "最新公告";
 
-
-    /*
-    ==================================================
-    登入畫面
-    ==================================================
-    */
-
-
-    function renderLoggedIn(
-      user
-    ) {
-
-
-      compactUserBox.innerHTML =
+      contentElement.textContent =
+        important.content ||
         "";
 
+    }else{
 
-      if (
-        user.photoURL
-      ) {
-
-
-        const image =
-          document.createElement(
-            "img"
-          );
-
-
-        image.src =
-          user.photoURL;
-
-
-        image.alt =
-          "玩家頭像";
-
-
-        compactUserBox.appendChild(
-          image
-        );
-
-      }
-
-
-      const text =
-        document.createElement(
-          "div"
-        );
-
-
-      text.className =
-        "compact-user-text";
-
-
-      const name =
-        document.createElement(
-          "div"
-        );
-
-
-      name.className =
-        "compact-user-name";
-
-
-      name.textContent =
-        user.displayName ||
-        "玩家";
-
-
-      const email =
-        document.createElement(
-          "div"
-        );
-
-
-      email.className =
-        "compact-user-email";
-
-
-      email.textContent =
-        user.email ||
-        "";
-
-
-      text.append(
-        name,
-        email
-      );
-
-
-      compactUserBox.appendChild(
-        text
-      );
-
-
-      compactLoginButton.hidden =
+      board.hidden =
         true;
-
-
-      compactLogoutButton.hidden =
-        false;
-
     }
 
+    const latest =
+      getLatestAnnouncements(4);
 
-    /*
-    ==================================================
-    Firebase 登入狀態
-    ==================================================
-    */
+    if (
+      !latest ||
+      latest.length === 0
+    ){
 
+      newsList.innerHTML =
+        `<div class="news-empty">
+          目前沒有最新消息。
+        </div>`;
 
-    onAuthStateChanged(
-      auth,
-      async user => {
+      return;
+    }
 
+    newsList.innerHTML =
+      latest.map(
+        item => `
+          <article class="news-item">
 
-        if (
-          !user
-        ) {
+            <div class="news-icon">
+              ${item.icon || "📌"}
+            </div>
 
+            <div>
 
-          renderLoggedOut();
+              <span
+                class="news-type ${
+                  item.type ||
+                  "notice"
+                }"
+              >
+                ${
+                  item.typeName ||
+                  "網站公告"
+                }
+              </span>
 
+              <div class="news-item-title">
+                ${item.title || ""}
+              </div>
 
-          return;
+              <div class="news-item-content">
+                ${item.content || ""}
+              </div>
 
-        }
+            </div>
 
+            <div class="news-date">
+              ${formatDate(item.date)}
+            </div>
 
-        renderLoggedIn(
-          user
-        );
+          </article>
+        `
+      ).join("");
 
+  }catch(error){
 
-        try {
-
-
-          if (
-            typeof createOrUpdatePlayer ===
-            "function"
-          ) {
-
-
-            await createOrUpdatePlayer(
-              user
-            );
-
-          }
-
-
-        } catch (
-          error
-        ) {
-
-
-          console.warn(
-            "玩家資料同步失敗：",
-            error
-          );
-
-        }
-
-
-      },
-      error => {
-
-
-        console.error(
-          "登入狀態確認失敗：",
-          error
-        );
-
-
-        renderLoggedOut();
-
-      }
+    console.error(
+      "公告載入失敗：",
+      error
     );
 
+    board.hidden =
+      false;
 
-  </script>
+    dateElement.textContent =
+      "";
 
+    badgeElement.textContent =
+      "📌 網站公告";
+
+    titleElement.textContent =
+      "生活有解．心中有數";
+
+    contentElement.textContent =
+      "公告系統暫時無法載入，但數學遊戲仍可正常使用。";
+
+    newsList.innerHTML =
+      `<div class="news-empty">
+        最新消息暫時無法載入。
+      </div>`;
+  }
+}
+
+
+const GRADE8_SECOND_GAMES = [
+
+  {
+    id:"sequence-arithmetic",
+    name:"數列與等差數列大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:1,
+    icon:"🔢",
+    file:"games/sequence-arithmetic.html",
+    description:"認識數列規律、等差數列、公差與一般項。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#1565C0","#0D47A1","#E3F2FD","#90CAF9")
+  },
+
+  {
+    id:"arithmetic-series",
+    name:"等差級數大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:2,
+    icon:"➕",
+    file:"games/arithmetic-series.html",
+    description:"練習等差級數的項數、首項、末項與總和。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#00897B","#00695C","#E0F2F1","#80CBC4")
+  },
+
+  {
+    id:"geometric-sequence",
+    name:"等比數列大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:3,
+    icon:"✖️",
+    file:"games/geometric-sequence.html",
+    description:"認識等比數列、公比與一般項。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#7B1FA2","#6A1B9A","#F3E5F5","#CE93D8")
+  },
+
+  {
+    id:"linear-function",
+    name:"線型函數與圖形大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:4,
+    icon:"📈",
+    file:"games/linear-function.html",
+    description:"練習線型函數、座標代入與圖形判讀。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#F57C00","#E65100","#FFF3E0","#FFCC80")
+  },
+
+  {
+    id:"triangle-angles",
+    name:"三角形內角與外角大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:5,
+    icon:"📐",
+    file:"games/triangle-angles.html",
+    description:"運用內角和與外角性質進行角度計算。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#D81B60","#AD1457","#FCE4EC","#F48FB1")
+  },
+
+  {
+    id:"compass-straightedge",
+    name:"基本尺規作圖大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:6,
+    icon:"📏",
+    file:"games/compass-straightedge.html",
+    description:"練習垂直平分線、角平分線與基本尺規作圖。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#3949AB","#283593","#E8EAF6","#9FA8DA")
+  },
+
+  {
+    id:"triangle-congruence",
+    name:"三角形全等大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:7,
+    icon:"🔺",
+    file:"games/triangle-congruence.html",
+    description:"練習三角形全等性質與判別條件。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#00838F","#006064","#E0F7FA","#80DEEA")
+  },
+
+  {
+    id:"bisector-perpendicular",
+    name:"中垂線與角平分線大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:8,
+    icon:"🎯",
+    file:"games/bisector-perpendicular.html",
+    description:"練習中垂線、角平分線與等距性質。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#43A047","#2E7D32","#E8F5E9","#A5D6A7")
+  },
+
+  {
+    id:"triangle-side-angle",
+    name:"三角形邊角關係大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:9,
+    icon:"📐",
+    file:"games/triangle-side-angle.html",
+    description:"練習三角形邊長、角度大小與三角形不等式。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#EF6C00","#E65100","#FFF3E0","#FFB74D")
+  },
+
+  {
+    id:"parallel-transversal",
+    name:"平行線與截角大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:10,
+    icon:"∥",
+    file:"games/parallel-transversal.html",
+    description:"練習同位角、內錯角、同側內角與平行線判別。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#1976D2","#125CA6","#E3F2FD","#90CAF9")
+  },
+
+  {
+    id:"parallelogram",
+    name:"平行四邊形大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:11,
+    icon:"▱",
+    file:"games/parallelogram.html",
+    description:"練習平行四邊形的性質與判別。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#5E35B1","#4527A0","#EDE7F6","#B39DDB")
+  },
+
+  {
+    id:"special-quadrilateral",
+    name:"特殊四邊形大挑戰",
+    semester:"grade8-second",
+    grade:8,
+    order:12,
+    icon:"◇",
+    file:"games/special-quadrilateral.html",
+    description:"練習長方形、菱形與正方形的性質與判別。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#C2185B","#880E4F","#FCE4EC","#F48FB1")
+  }
+
+];
+
+
+const GRADE9_FIRST_GAMES = [
+
+  {
+    id:"continued-ratio",
+    name:"1-1 連比大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:1,
+    icon:"🔗",
+    file:"games/continued-ratio.html",
+    description:"從連比合併、連比例式與按比例分配，到反比例與等面積幾何問題。",
+    finished:true,
+    difficulty:2,
+    recommended:false,
+    isNew:true,
+    theme:theme("#205D9B","#163F70","#E8F2FF","#91B8E1")
+  },
+
+  {
+    id:"proportional-segment",
+    name:"比例線段大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:2,
+    icon:"📏",
+    file:"games/proportional-segment.html",
+    description:"練習比例線段、平行線截比例線段與相關計算。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#00897B","#00695C","#E0F2F1","#80CBC4")
+  },
+
+  {
+    id:"similar-polygon",
+    name:"相似多邊形大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:3,
+    icon:"🔷",
+    file:"games/similar-polygon.html",
+    description:"練習相似多邊形、對應邊、對應角與相似比。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#3949AB","#283593","#E8EAF6","#9FA8DA")
+  },
+
+  {
+    id:"similar-triangle",
+    name:"相似三角形大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:4,
+    icon:"🔺",
+    file:"games/similar-triangle.html",
+    description:"練習三角形相似判別與相似三角形的邊長應用。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#D81B60","#AD1457","#FCE4EC","#F48FB1")
+  },
+
+  {
+    id:"trigonometric-ratio",
+    name:"三角比大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:5,
+    icon:"📐",
+    file:"games/trigonometric-ratio.html",
+    description:"練習直角三角形中的 sin、cos、tan 與邊長計算。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#F57C00","#E65100","#FFF3E0","#FFCC80")
+  },
+
+  {
+    id:"point-line-circle",
+    name:"點、線、圓大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:6,
+    icon:"⭕",
+    file:"games/point-line-circle.html",
+    description:"練習點與圓、直線與圓的位置關係。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#00838F","#006064","#E0F7FA","#80DEEA")
+  },
+
+  {
+    id:"central-inscribed-angle",
+    name:"圓心角與圓周角大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:7,
+    icon:"🟠",
+    file:"games/central-inscribed-angle.html",
+    description:"練習弧、圓心角、圓周角以及角度關係。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#EF6C00","#E65100","#FFF3E0","#FFB74D")
+  },
+
+  {
+    id:"geometric-proof",
+    name:"推理證明大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:8,
+    icon:"🧠",
+    file:"games/geometric-proof.html",
+    description:"練習已知、求證與幾何推理證明的邏輯過程。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#7B1FA2","#6A1B9A","#F3E5F5","#CE93D8")
+  },
+
+  {
+    id:"triangle-circumcenter",
+    name:"三角形外心大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:9,
+    icon:"🎯",
+    file:"games/triangle-circumcenter.html",
+    description:"練習外心、外接圓與外心的位置及性質。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#1976D2","#125CA6","#E3F2FD","#90CAF9")
+  },
+
+  {
+    id:"triangle-incenter",
+    name:"三角形內心大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:10,
+    icon:"❤️",
+    file:"games/triangle-incenter.html",
+    description:"練習內心、內切圓與角平分線的相關性質。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#E91E63","#AD1457","#FCE4EC","#F48FB1")
+  },
+
+  {
+    id:"triangle-centroid",
+    name:"三角形重心大挑戰",
+    semester:"grade9-first",
+    grade:9,
+    order:11,
+    icon:"⚖️",
+    file:"games/triangle-centroid.html",
+    description:"練習重心、中線與重心分割比例等性質。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#43A047","#2E7D32","#E8F5E9","#A5D6A7")
+  }
+
+];
+
+
+const GRADE9_SECOND_GAMES = [
+
+  {
+    id:"quadratic-function-graph",
+    name:"二次函數圖形大挑戰",
+    semester:"grade9-second",
+    grade:9,
+    order:1,
+    icon:"📈",
+    file:"games/quadratic-function-graph.html",
+    description:"認識基本二次函數圖形、開口方向、頂點與對稱軸。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#1565C0","#0D47A1","#E3F2FD","#90CAF9")
+  },
+
+  {
+    id:"quadratic-function-extrema",
+    name:"二次函數最值大挑戰",
+    semester:"grade9-second",
+    grade:9,
+    order:2,
+    icon:"🎢",
+    file:"games/quadratic-function-extrema.html",
+    description:"練習二次函數圖形與最大值、最小值。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#7B1FA2","#6A1B9A","#F3E5F5","#CE93D8")
+  },
+
+  {
+    id:"quartile-boxplot",
+    name:"四分位數與盒狀圖大挑戰",
+    semester:"grade9-second",
+    grade:9,
+    order:3,
+    icon:"📊",
+    file:"games/quartile-boxplot.html",
+    description:"練習四分位數、四分位距以及盒狀圖判讀。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#D81B60","#AD1457","#FCE4EC","#F48FB1")
+  },
+
+  {
+    id:"probability",
+    name:"機率大挑戰",
+    semester:"grade9-second",
+    grade:9,
+    order:4,
+    icon:"🎲",
+    file:"games/probability.html",
+    description:"練習樣本空間、事件與基本機率計算。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#F57C00","#E65100","#FFF3E0","#FFCC80")
+  },
+
+  {
+    id:"prism-cylinder",
+    name:"角柱與圓柱大挑戰",
+    semester:"grade9-second",
+    grade:9,
+    order:5,
+    icon:"🥫",
+    file:"games/prism-cylinder.html",
+    description:"練習角柱、圓柱的展開圖、表面積與體積。",
+    finished:false,
+    difficulty:2,
+    theme:theme("#0288D1","#0277BD","#E1F5FE","#81D4FA")
+  },
+
+  {
+    id:"pyramid-cone",
+    name:"角錐與圓錐大挑戰",
+    semester:"grade9-second",
+    grade:9,
+    order:6,
+    icon:"🔺",
+    file:"games/pyramid-cone.html",
+    description:"練習角錐、圓錐的展開圖、表面積與體積。",
+    finished:false,
+    difficulty:3,
+    theme:theme("#E53935","#C62828","#FFEBEE","#EF9A9A")
+  }
+
+];
+
+
+function createGameCard(game){
+
+  const card =
+    document.createElement(
+      "article"
+    );
+
+  card.className =
+    "game-card";
+
+  const gameTheme =
+    game.theme || {};
+
+  card.style.setProperty(
+    "--game-primary",
+    gameTheme.primary ||
+    "#1976D2"
+  );
+
+  card.style.setProperty(
+    "--game-dark",
+    gameTheme.dark ||
+    "#125CA6"
+  );
+
+  card.style.setProperty(
+    "--game-light",
+    gameTheme.light ||
+    "#E3F2FD"
+  );
+
+  card.style.setProperty(
+    "--game-border",
+    gameTheme.border ||
+    "#90CAF9"
+  );
+
+  if (!game.finished){
+
+    const status =
+      document.createElement(
+        "span"
+      );
+
+    status.className =
+      "status-badge status-soon";
+
+    status.textContent =
+      "開發中";
+
+    card.appendChild(status);
+  }
+
+  const heading =
+    document.createElement(
+      "div"
+    );
+
+  heading.className =
+    "game-heading";
+
+  const icon =
+    document.createElement(
+      "div"
+    );
+
+  icon.className =
+    "game-icon";
+
+  icon.textContent =
+    game.icon || "🎮";
+
+  const title =
+    document.createElement(
+      "h2"
+    );
+
+  title.textContent =
+    game.name ||
+    "數學遊戲";
+
+  heading.append(
+    icon,
+    title
+  );
+
+  const description =
+    document.createElement(
+      "p"
+    );
+
+  description.textContent =
+    game.description || "";
+
+  const meta =
+    document.createElement(
+      "div"
+    );
+
+  meta.className =
+    "game-meta";
+
+  const difficulty =
+    Math.min(
+      3,
+      Math.max(
+        1,
+        Number(
+          game.difficulty
+        ) || 1
+      )
+    );
+
+  const difficultyBadge =
+    document.createElement(
+      "span"
+    );
+
+  difficultyBadge.className =
+    "game-meta-badge";
+
+  difficultyBadge.textContent =
+    "⭐".repeat(
+      difficulty
+    );
+
+  meta.appendChild(
+    difficultyBadge
+  );
+
+  if (game.recommended){
+
+    const recommended =
+      document.createElement(
+        "span"
+      );
+
+    recommended.className =
+      "game-meta-badge recommended";
+
+    recommended.textContent =
+      "🔥 推薦";
+
+    meta.appendChild(
+      recommended
+    );
+  }
+
+  if (game.isNew){
+
+    const newBadge =
+      document.createElement(
+        "span"
+      );
+
+    newBadge.className =
+      "game-meta-badge new";
+
+    newBadge.textContent =
+      "🆕 NEW";
+
+    meta.appendChild(
+      newBadge
+    );
+  }
+
+  card.append(
+    heading,
+    description,
+    meta
+  );
+
+  if (game.finished){
+
+    const link =
+      document.createElement(
+        "a"
+      );
+
+    link.className =
+      "button start-button";
+
+    link.href =
+      game.file;
+
+    link.textContent =
+      "開始挑戰";
+
+    card.appendChild(link);
+
+  }else{
+
+    const waiting =
+      document.createElement(
+        "button"
+      );
+
+    waiting.className =
+      "button waiting-button";
+
+    waiting.type =
+      "button";
+
+    waiting.disabled =
+      true;
+
+    waiting.textContent =
+      "敬請期待";
+
+    card.appendChild(waiting);
+  }
+
+  return card;
+}
+
+
+function getSemesterGames(
+  semester
+){
+
+  if (
+    semester ===
+    "grade8-second"
+  ){
+    return GRADE8_SECOND_GAMES;
+  }
+
+  if (
+    semester ===
+    "grade9-first"
+  ){
+    return GRADE9_FIRST_GAMES;
+  }
+
+  if (
+    semester ===
+    "grade9-second"
+  ){
+    return GRADE9_SECOND_GAMES;
+  }
+
+  try{
+
+    return (
+      getGamesBySemester(
+        semester
+      ) || []
+    );
+
+  }catch(error){
+
+    console.error(
+      `讀取 ${semester} 遊戲失敗：`,
+      error
+    );
+
+    return [];
+  }
+}
+
+
+function renderSemesterGames(
+  semester
+){
+
+  const mount =
+    GAME_MOUNTS[
+      semester
+    ];
+
+  if (!mount){
+    return;
+  }
+
+  mount.innerHTML =
+    "";
+
+  const games =
+    getSemesterGames(
+      semester
+    );
+
+  if (!games.length){
+
+    mount.innerHTML =
+      `<div
+        style="
+          grid-column:1/-1;
+          padding:24px;
+          border:2px dashed #cbd5e1;
+          border-radius:18px;
+          background:#f8fafc;
+          color:#64748b;
+          text-align:center;
+          font-weight:800;
+        "
+      >
+        這個學期目前尚未設定遊戲。
+      </div>`;
+
+    return;
+  }
+
+  [...games]
+    .sort(
+      (a,b) =>
+        Number(
+          a.order || 999
+        ) -
+        Number(
+          b.order || 999
+        )
+    )
+    .forEach(
+      game => {
+        mount.appendChild(
+          createGameCard(game)
+        );
+      }
+    );
+}
+
+
+function renderAllGames(){
+
+  Object.keys(
+    GAME_MOUNTS
+  ).forEach(
+    renderSemesterGames
+  );
+}
+
+
+semesterSelect
+  .addEventListener(
+    "change",
+    () => {
+
+      const selected =
+        semesterSelect.value;
+
+      semesterPanels
+        .forEach(
+          panel => {
+            panel.classList.toggle(
+              "active",
+              panel.id ===
+                selected
+            );
+          }
+        );
+    }
+  );
+
+
+compactLoginButton
+  .addEventListener(
+    "click",
+    async () => {
+
+      compactLoginButton.disabled =
+        true;
+
+      compactLoginButton.textContent =
+        "登入中……";
+
+      try{
+        await login();
+      }catch(error){
+        console.error(
+          "Google 登入失敗：",
+          error
+        );
+
+        alert(
+          "登入沒有完成，請稍後再試一次。"
+        );
+      }finally{
+        compactLoginButton.disabled =
+          false;
+
+        compactLoginButton.textContent =
+          "Google 登入";
+      }
+    }
+  );
+
+
+compactLogoutButton
+  .addEventListener(
+    "click",
+    async () => {
+
+      compactLogoutButton.disabled =
+        true;
+
+      compactLogoutButton.textContent =
+        "登出中……";
+
+      try{
+        await logout();
+      }catch(error){
+        console.error(
+          "登出失敗：",
+          error
+        );
+
+        alert(
+          "登出失敗，請稍後再試一次。"
+        );
+      }finally{
+        compactLogoutButton.disabled =
+          false;
+
+        compactLogoutButton.textContent =
+          "登出";
+      }
+    }
+  );
+
+
+myScoresLink
+  .addEventListener(
+    "click",
+    event => {
+
+      if (!auth.currentUser){
+
+        event.preventDefault();
+
+        alert(
+          "請先登入 Google 帳號，才能查看自己的成績。"
+        );
+      }
+    }
+  );
+
+
+function renderLoggedOut(){
+
+  compactUserBox.innerHTML =
+    `<div class="compact-user-text">
+      <div class="compact-user-name">
+        尚未登入
+      </div>
+      <div class="compact-user-email">
+        登入後即可儲存成績與查看個人紀錄。
+      </div>
+    </div>`;
+
+  compactLoginButton.hidden =
+    false;
+
+  compactLogoutButton.hidden =
+    true;
+}
+
+
+function renderLoggedIn(
+  user
+){
+
+  compactUserBox.innerHTML =
+    "";
+
+  if (user.photoURL){
+
+    const image =
+      document.createElement(
+        "img"
+      );
+
+    image.src =
+      user.photoURL;
+
+    image.alt =
+      "玩家頭像";
+
+    compactUserBox.appendChild(
+      image
+    );
+  }
+
+  const text =
+    document.createElement(
+      "div"
+    );
+
+  text.className =
+    "compact-user-text";
+
+  const name =
+    document.createElement(
+      "div"
+    );
+
+  name.className =
+    "compact-user-name";
+
+  name.textContent =
+    user.displayName ||
+    "玩家";
+
+  const email =
+    document.createElement(
+      "div"
+    );
+
+  email.className =
+    "compact-user-email";
+
+  email.textContent =
+    user.email || "";
+
+  text.append(
+    name,
+    email
+  );
+
+  compactUserBox.appendChild(
+    text
+  );
+
+  compactLoginButton.hidden =
+    true;
+
+  compactLogoutButton.hidden =
+    false;
+}
+
+
+onAuthStateChanged(
+  auth,
+
+  async user => {
+
+    if (!user){
+
+      renderLoggedOut();
+
+      return;
+    }
+
+    renderLoggedIn(user);
+
+    try{
+
+      if (
+        typeof createOrUpdatePlayer ===
+        "function"
+      ){
+        await createOrUpdatePlayer(
+          user
+        );
+      }
+
+    }catch(error){
+
+      console.warn(
+        "玩家資料同步失敗：",
+        error
+      );
+    }
+  },
+
+  error => {
+
+    console.error(
+      "登入狀態確認失敗：",
+      error
+    );
+
+    renderLoggedOut();
+  }
+);
+
+
+loadAnnouncements();
+renderAllGames();
+
+</script>
 
 </body>
-
 </html>
