@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2-4 指數律大挑戰</title>
 
+  <!-- 瀏覽器分頁小圖示：指 -->
+  <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c3aed'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='38' font-family='sans-serif' font-weight='700' fill='white'%3E%E6%8C%87%3C/text%3E%3C/svg%3E">
+
   <link rel="stylesheet" href="../css/scratchpad.css">
   <link rel="stylesheet" href="../css/expression-input.css">
 
@@ -310,13 +314,20 @@
 
     .choice-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns:
+        repeat(
+          var(--choice-count, 3),
+          minmax(0, 1fr)
+        );
       gap: 12px;
+      width: 100%;
+      align-items: stretch;
     }
 
     .choice-button {
+      min-width: 0;
       min-height: 68px;
-      padding: 12px;
+      padding: 12px 8px;
       border: 2px solid #cbd5e1;
       border-radius: 16px;
       background: #fff;
@@ -324,6 +335,9 @@
       font-size: 17px;
       font-weight: 800;
       line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       cursor: pointer;
       transition: .14s ease;
     }
@@ -451,79 +465,43 @@
     }
 
 
-    .system-check-row {
-      margin-top: 12px;
+    .system-read-row {
+      margin-top: 10px;
+      min-height: 28px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .system-check-button {
-      min-height: 44px;
-      padding: 9px 17px;
-      border: 2px solid #7c3aed;
-      border-radius: 13px;
-      background: #f5f3ff;
-      color: #5b21b6;
-      font-size: 15px;
-      font-weight: 900;
-      cursor: pointer;
-      transition: .14s ease;
-    }
-
-    .system-check-button:hover {
-      background: #ede9fe;
-      transform: translateY(-1px);
-    }
-
-    .system-check-button:disabled {
-      opacity: .55;
-      cursor: default;
-      transform: none;
-    }
-
-    .system-check-result {
-      min-height: 24px;
-      width: 100%;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 900;
-      line-height: 1.55;
-    }
-
-    .system-check-result.neutral { color: #64748b; }
-    .system-check-result.correct { color: #15803d; }
-    .system-check-result.wrong { color: #b91c1c; }
-    .system-check-result.warning { color: #b45309; }
-
-    .system-read-answer {
-      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 5px;
-      color: #334155;
+      color: #64748b;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .system-read-row.hidden {
+      display: none !important;
     }
 
     .system-read-label {
-      color: #475569;
-      font-weight: 900;
+      color: #64748b;
+      font-weight: 800;
     }
 
     .system-read-value {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 30px;
-      padding: 3px 10px;
-      border: 1.5px solid #c4b5fd;
-      border-radius: 10px;
-      background: #faf5ff;
-      color: #4c1d95;
-      font-size: 18px;
+      min-height: 28px;
+      color: #475569;
+      font-size: 17px;
       font-weight: 900;
+    }
+
+    .system-read-row.warning .system-read-value {
+      color: #b45309;
+      font-size: 14px;
     }
 
     .feedback {
@@ -590,6 +568,110 @@
     .decision-box {
       background: #fff7ed;
       border: 1px solid #fdba74;
+    }
+
+    /* ==================================================
+       初學者完整詳解
+       版面比照既有多項式遊戲：
+       題目 → 先想一想 → 步驟 → 常見提醒 → 最後答案
+       ================================================== */
+    .explanation-heading{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin:0 0 12px;
+      color:var(--primary-dark);
+      font-size:20px;
+      font-weight:900;
+    }
+
+    .explanation-question{
+      margin-bottom:12px;
+      padding:12px 14px;
+      border:1px solid #dbeafe;
+      border-radius:12px;
+      background:#fff;
+    }
+
+    .explanation-question-title{
+      margin-bottom:6px;
+      color:#475569;
+      font-weight:900;
+    }
+
+    .explanation-question-math{
+      overflow-x:auto;
+      color:#0f172a;
+      font-size:20px;
+      font-weight:900;
+      line-height:1.8;
+    }
+
+    .explanation-method{
+      margin-bottom:12px;
+      padding:12px 14px;
+      border:1px solid #fed7aa;
+      border-radius:12px;
+      background:#fff7ed;
+      line-height:1.8;
+    }
+
+    .explanation-method strong{
+      color:#c2410c;
+    }
+
+    .explanation-step{
+      margin:10px 0;
+      padding:12px 14px;
+      border-left:4px solid var(--primary);
+      border-radius:12px;
+      background:#fff;
+      line-height:1.9;
+    }
+
+    .explanation-step-title{
+      display:block;
+      margin-bottom:5px;
+      color:var(--primary-dark);
+      font-weight:900;
+    }
+
+    .explanation-tip{
+      margin-top:12px;
+      padding:12px 14px;
+      border:1px solid #fecdd3;
+      border-radius:12px;
+      background:#fff1f2;
+      color:#9f1239;
+      line-height:1.8;
+    }
+
+    .explanation-tip strong{
+      color:#be123c;
+    }
+
+    .explanation-summary{
+      margin-top:12px;
+      padding:13px 14px;
+      border:1px solid #bbf7d0;
+      border-radius:12px;
+      background:#ecfdf5;
+      color:#166534;
+      font-weight:900;
+      line-height:1.8;
+    }
+
+    .reduction-work{
+      display:inline-flex;
+      align-items:center;
+      gap:.28em;
+      flex-wrap:wrap;
+      vertical-align:middle;
+    }
+
+    .simplest-warning{
+      font-weight:900;
+      color:#b45309;
     }
 
     .factor-line {
@@ -874,7 +956,14 @@
       .game-header { padding: 22px 16px 16px; }
       .mode-grid { grid-template-columns: 1fr; }
       .quiz-topbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .choice-grid { grid-template-columns: 1fr; }
+      .choice-grid {
+        gap: 8px;
+      }
+      .choice-button {
+        min-height: 60px;
+        padding: 10px 5px;
+        font-size: 15px;
+      }
       .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .question-card { padding: 20px 12px; }
     }
@@ -926,7 +1015,7 @@
           <div class="mode-meta"><span class="mode-badge">10 題</span></div>
         </button>
         <button class="mode-card" type="button" data-mode="powerOfPower">
-          <h2>🪜 冪的乘方</h2>
+          <h2>🔁 冪的乘方</h2>
           <p>掌握冪的乘方要將兩個指數相乘，避免把指數誤相加。</p>
           <div class="mode-meta"><span class="mode-badge">10 題</span></div>
         </button>
@@ -1027,7 +1116,7 @@
             </div>
 
             <div class="fraction-answer-hint">
-              上格填分子、下格填分母；負數可使用左側負號，分子直接輸入負號也可辨識。
+              上格填分子、下格填分母；負數可使用左側負號。答案需化成最簡分數。
             </div>
           </div>
         </div>
@@ -1038,11 +1127,13 @@
 
         <div id="input-message" class="input-message"></div>
 
-        <div class="system-check-row">
-          <button id="system-check-button" class="system-check-button" type="button">🔍 系統判定</button>
-          <div id="system-check-result" class="system-check-result neutral" aria-live="polite">
-            填好答案後，可先讓系統確認；系統會顯示它實際讀到的答案，正式計分仍以「送出答案」為準。
-          </div>
+        <div
+          id="system-read-row"
+          class="system-read-row hidden"
+          aria-live="polite"
+        >
+          <span class="system-read-label">系統判讀：</span>
+          <span id="system-read-value" class="system-read-value"></span>
         </div>
       </div>
 
@@ -1125,7 +1216,7 @@ const MODE_CONFIG={
   fractionPower:{name:"🔢 分數次方與正負號",count:10,difficultyWeight:1.02},
   sameBaseMultiply:{name:"✖️ 同底數相乘",count:10,difficultyWeight:1.08},
   sameBaseDivide:{name:"➗ 同底數相除與零次方",count:10,difficultyWeight:1.12},
-  powerOfPower:{name:"🪜 冪的乘方",count:10,difficultyWeight:1.16},
+  powerOfPower:{name:"🔁 冪的乘方",count:10,difficultyWeight:1.16},
   powerOfProduct:{name:"🧩 積的乘方與分數次方",count:10,difficultyWeight:1.22},
   speed:{name:"⚡ 指數律快手",seconds:60,difficultyWeight:1.12},
   comprehensive:{name:"🏆 2-4 綜合挑戰",count:10,difficultyWeight:1.34}
@@ -1139,9 +1230,42 @@ function ratHTML(x){
   const sign=a.n<0?"−":"",n=Math.abs(a.n);
   return `${sign}<span class="math-frac"><span class="top">${n}</span><span class="bottom">${a.d}</span></span>`;
 }
+
+/*
+==================================================
+保留學生原始分子／分母的分數顯示
+
+用途：
+1. 系統判讀顯示學生實際輸入的答案
+2. 送出答案前不先自動約分
+3. 與 2-3 共用相同規則
+==================================================
+*/
+function rawFracHTML(n,d){
+  if(d<0){
+    n=-n;
+    d=-d;
+  }
+
+  if(d===1){
+    return String(n).replace("-","−");
+  }
+
+  const sign=
+    n<0
+      ? "−"
+      : "";
+
+  return `${sign}<span class="math-frac"><span class="top">${Math.abs(n)}</span><span class="bottom">${d}</span></span>`;
+}
+function mathGroupHTML(content,level=1){
+  if(level<=1)return `(${content})`;
+  if(level===2)return `[${content}]`;
+  return `{${content}}`;
+}
 function operandRatHTML(x){
   const a=R(x.n,x.d),html=ratHTML(a);
-  return a.n<0?`(${html})`:html;
+  return a.n<0?mathGroupHTML(html,1):html;
 }
 function signedIntHTML(n){
   const html=String(n).replace("-","−");
@@ -1159,13 +1283,194 @@ function parseRational(raw){
 function ipow(a,n){let v=1;for(let i=0;i<n;i++)v*=a;return v}
 function rpow(a,n){return R(ipow(a.n,n),ipow(a.d,n))}
 function sup(n){return `<span class="math-sup">${n}</span>`}
-function intBaseHTML(b){return b<0?`(${String(b).replace("-","−")})`:String(b)}
-function pInt(b,e){return `${intBaseHTML(b)}${sup(e)}`}
-function pRat(a,e){return `(${ratHTML(a)})${sup(e)}`}
-function calcBox(rule,lines,answer){
-  return `<div class="rule-box"><b>觀念：</b>${rule}</div>
-  <div class="calculation-box">${lines.map(x=>`<div class="step-line">${x}</div>`).join("")}</div>
-  <div class="decision-box"><b>答案：</b>${answer}</div>`;
+function intBaseHTML(b){return b<0?mathGroupHTML(String(b).replace("-","−"),1):String(b)}
+function pInt(b,e){
+  return `${intBaseHTML(b)}${sup(e)}`;
+}
+
+/*
+==================================================
+題目專用指數顯示
+
+1 次方在題目中省略：
+10¹ → 10
+(-2)¹ → (-2)
+
+詳解仍使用 pInt() 明確寫出 1 次方。
+==================================================
+*/
+function pIntQuestion(b,e){
+  return e===1
+    ? intBaseHTML(b)
+    : pInt(b,e);
+}
+
+/*
+==================================================
+題目中的「冪的乘方」括號層級
+
+若底數本身因負數已使用 ( )，
+外層群組就使用 [ ]。
+
+例：
+[(-2)³]⁴
+==================================================
+*/
+function groupedPowerQuestionHTML(b,e){
+  const content=
+    pIntQuestion(
+      b,
+      e
+    );
+
+  const level=
+    b<0
+      ? 2
+      : 1;
+
+  return mathGroupHTML(
+    content,
+    level
+  );
+}
+
+function groupedPowerHTML(b,e){
+  const level=b<0?2:1;
+  return mathGroupHTML(
+    pInt(b,e),
+    level
+  );
+}
+
+/*
+==================================================
+1 次方提示
+
+題目中省略 ^1，
+詳解要讓學生知道省略的指數就是 1。
+==================================================
+*/
+function implicitExponentOneNote(terms){
+  const seen=
+    new Set();
+
+  const notes=[];
+
+  terms.forEach(
+    ([base,exponent])=>{
+      if(exponent!==1){
+        return;
+      }
+
+      const key=
+        String(base);
+
+      if(seen.has(key)){
+        return;
+      }
+
+      seen.add(key);
+
+      notes.push(
+        `${intBaseHTML(base)} 沒有標出指數時，表示 ${pInt(base,1)}（1 次方）`
+      );
+    }
+  );
+
+  return notes.length
+    ? `題目中 ${notes.join("；")}。`
+    : "";
+}
+function pRat(a,e){return `${mathGroupHTML(ratHTML(a),1)}${sup(e)}`}
+function calcBox(rule,lines,answer,pitfall=""){
+  return `
+    <div class="explanation-method">
+      <strong>先想一想｜</strong>
+      ${rule}
+    </div>
+
+    ${lines.map((line,index)=>`
+      <div class="explanation-step">
+        <span class="explanation-step-title">
+          步驟 ${index+1}｜
+        </span>
+        ${line}
+      </div>
+    `).join("")}
+
+    ${pitfall?`
+      <div class="explanation-tip">
+        <strong>⚠️ 常見提醒｜</strong>
+        ${pitfall}
+      </div>
+    `:""}
+
+    <div class="explanation-summary">
+      ✅ 最後答案：${answer}
+    </div>
+  `;
+}
+
+function explanationHTML(q){
+  return `
+    <div class="explanation-heading">
+      📘 完整詳解
+    </div>
+
+    <div class="explanation-question">
+      <div class="explanation-question-title">
+        題目
+      </div>
+      <div class="explanation-question-math">
+        ${q.html}
+      </div>
+    </div>
+
+    ${q.explanation}
+  `;
+}
+
+function reductionWorkHTML(rawN,rawD,g){
+  if(rawD<0){
+    rawN=-rawN;
+    rawD=-rawD;
+  }
+
+  const sign=rawN<0?"−":"";
+
+  return `
+    <span class="reduction-work">
+      ${rawFracHTML(rawN,rawD)}
+      ＝
+      ${sign}<span class="math-frac">
+        <span class="top">${Math.abs(rawN)} ÷ ${g}</span>
+        <span class="bottom">${rawD} ÷ ${g}</span>
+      </span>
+      ＝
+      ${rawFracHTML(rawN/g,rawD/g)}
+    </span>
+  `;
+}
+
+function reductionDetailLines(rawN,rawD){
+  if(rawD<0){
+    rawN=-rawN;
+    rawD=-rawD;
+  }
+
+  const g=igcd(rawN,rawD);
+
+  if(g<=1){
+    return [
+      `檢查是否還能約分：分子 ${Math.abs(rawN)} 與分母 ${rawD} 的最大公因數是 1，所以 ${rawFracHTML(rawN,rawD)} 已經是最簡分數。`
+    ];
+  }
+
+  return [
+    `檢查是否可以約分：分子 ${Math.abs(rawN)} 與分母 ${rawD} 的最大公因數是 <b>${g}</b>。`,
+    `分子、分母同除以 ${g}：${reductionWorkHTML(rawN,rawD,g)}`,
+    `因此 ${rawFracHTML(rawN,rawD)} 化成最簡分數後是 <b>${rawFracHTML(rawN/g,rawD/g)}</b>。`
+  ];
 }
 function makeChoiceQ(html,items,correctIndex,explanation,note=""){
   const rows=shuffle(items.map((label,i)=>({label,ok:i===correctIndex})));
@@ -1173,14 +1478,41 @@ function makeChoiceQ(html,items,correctIndex,explanation,note=""){
 }
 function nonzeroBase(){return pick([-5,-4,-3,-2,2,3,4,5,6,7,10,11])}
 function makeFractionPower(){
-  const d=pick([3,4,5,6,7]), n=ri(1,d-1), neg=Math.random()<.55, a=R(neg?-n:n,d), e=ri(2,4), ans=rpow(a,e);
-  const expanded=Array.from({length:e},()=>operandRatHTML(a)).join(" × ");
-  return {kind:"rational",html:`<div class="math-expr">計算：${pRat(a,e)}</div>`,answer:ans,
-    explanation:calcBox("分數的次方，就是把這個分數連乘；負數的偶數次方為正、奇數次方為負。",[
-      `${pRat(a,e)} 代表 ${expanded}`,
-      `分子取 ${e} 次方、分母取 ${e} 次方：${operandRatHTML(ans)}`,
-      a.n<0?`因為 ${e} 是${e%2?"奇":"偶"}數，所以結果為${e%2?"負":"正"}數。`:"底數為正，因此結果為正。"
-    ],operandRatHTML(ans))};
+  const d=pick([3,4,5,6,7]);
+  const n=ri(1,d-1);
+  const neg=Math.random()<.55;
+  const a=R(neg?-n:n,d);
+  const e=ri(2,4);
+  const ans=rpow(a,e);
+  const expanded=
+    Array.from(
+      {length:e},
+      ()=>operandRatHTML(a)
+    ).join(" × ");
+
+  const rawN=ipow(a.n,e);
+  const rawD=ipow(a.d,e);
+
+  return {
+    kind:"rational",
+    html:`<div class="math-expr">計算：${pRat(a,e)}</div>`,
+    answer:ans,
+    explanation:calcBox(
+      "分數的次方，就是把同一個分數連乘。先看負號，再分別計算分子的次方與分母的次方，最後檢查是否需要約分。",
+      [
+        `${pRat(a,e)} 表示 ${expanded}。`,
+        a.n<0
+          ? `底數是負數，而且指數 ${e} 是${e%2?"奇":"偶"}數，所以結果是${e%2?"負":"正"}數。`
+          : `底數是正數，所以結果是正數。`,
+        `分子計算：${Math.abs(a.n)}${sup(e)} ＝ ${Math.abs(rawN)}。`,
+        `分母計算：${a.d}${sup(e)} ＝ ${rawD}。`,
+        `因此先得到 ${rawFracHTML(rawN,rawD)}。`,
+        ...reductionDetailLines(rawN,rawD)
+      ],
+      operandRatHTML(ans),
+      "次方要同時作用在分子和分母；若底數是負數，還要先判斷指數的奇偶性。"
+    )
+  };
 }
 function makeSignParity(){
   const b=-pick([2,3,4,5,7]),e=ri(2,7),positive=e%2===0;
@@ -1199,13 +1531,47 @@ function makeIndexFirst(){
     ],signedIntHTML(ans))};
 }
 function makeSameBaseMultiply(){
-  const b=nonzeroBase(),m=ri(1,5),n=ri(1,5),ans=m+n;
-  return {kind:"integer",html:`<div class="math-expr">${pInt(b,m)} × ${pInt(b,n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,answer:ans,
-    explanation:calcBox("同底數相乘，底數不變，指數相加。",[
-      `${pInt(b,m)} × ${pInt(b,n)}`,
-      `＝ ${intBaseHTML(b)}${sup(`${m}+${n}`)}`,
-      `＝ ${pInt(b,ans)}`
-    ],String(ans))};
+  const b=
+    nonzeroBase();
+
+  const m=
+    ri(
+      1,
+      5
+    );
+
+  const n=
+    ri(
+      1,
+      5
+    );
+
+  const ans=
+    m+n;
+
+  const oneNote=
+    implicitExponentOneNote(
+      [
+        [b,m],
+        [b,n]
+      ]
+    );
+
+  return {
+    kind:"integer",
+    html:
+      `<div class="math-expr">${pIntQuestion(b,m)} × ${pIntQuestion(b,n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,
+    answer:ans,
+    explanation:calcBox(
+      "同底數相乘，底數不變，指數相加。",
+      [
+        oneNote,
+        `${pInt(b,m)} × ${pInt(b,n)} ＝ ${intBaseHTML(b)}${sup(`${m}+${n}`)} ＝ ${pInt(b,ans)}。`
+      ].filter(Boolean),
+      String(ans),
+      "同底數相乘是指數相加，不是把底數或指數相乘。"
+    )
+  };
 }
 function makeZeroExponent(){
   const b=nonzeroBase();
@@ -1215,22 +1581,95 @@ function makeZeroExponent(){
     ],"1")};
 }
 function makeSameBaseDivide(){
-  if(Math.random()<.22)return makeZeroExponent();
-  const b=nonzeroBase(),n=ri(1,4),m=ri(n,7),ans=m-n;
-  return {kind:"integer",html:`<div class="math-expr">${pInt(b,m)} ÷ ${pInt(b,n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,answer:ans,
-    explanation:calcBox("同底數相除，底數不變，指數相減；本課只使用前面的指數不小於後面的情況。",[
-      `${pInt(b,m)} ÷ ${pInt(b,n)}`,
-      `＝ ${intBaseHTML(b)}${sup(`${m}−${n}`)}`,
-      `＝ ${pInt(b,ans)}${ans===0?" ＝ 1":""}`
-    ],String(ans))};
+  if(
+    Math.random()<.22
+  ){
+    return makeZeroExponent();
+  }
+
+  const b=
+    nonzeroBase();
+
+  const n=
+    ri(
+      1,
+      4
+    );
+
+  const m=
+    ri(
+      n,
+      7
+    );
+
+  const ans=
+    m-n;
+
+  const oneNote=
+    implicitExponentOneNote(
+      [
+        [b,m],
+        [b,n]
+      ]
+    );
+
+  return {
+    kind:"integer",
+    html:
+      `<div class="math-expr">${pIntQuestion(b,m)} ÷ ${pIntQuestion(b,n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,
+    answer:ans,
+    explanation:calcBox(
+      "同底數相除，底數不變，前面的指數減後面的指數。",
+      [
+        oneNote,
+        `${pInt(b,m)} ÷ ${pInt(b,n)} ＝ ${intBaseHTML(b)}${sup(`${m}−${n}`)}。`,
+        ans===0
+          ? `${m} − ${n} ＝ 0，所以 ${pInt(b,0)} ＝ 1。`
+          : `${m} − ${n} ＝ ${ans}，所以原式化成 ${pInt(b,ans)}。`
+      ].filter(Boolean),
+      String(ans),
+      "非零底數的 0 次方等於 1。"
+    )
+  };
 }
 function makePowerOfPower(){
-  const b=nonzeroBase(),m=ri(1,4),n=ri(2,5),ans=m*n;
-  return {kind:"integer",html:`<div class="math-expr">(${pInt(b,m)})${sup(n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,answer:ans,
-    explanation:calcBox("冪的乘方：底數不變，兩個指數相乘。",[
-      `(${pInt(b,m)})${sup(n)} ＝ ${intBaseHTML(b)}${sup(`${m}×${n}`)}`,
-      `＝ ${pInt(b,ans)}`
-    ],String(ans))};
+  const b=
+    nonzeroBase();
+
+  /*
+  內層從 2 次方開始，
+  才能清楚保留「冪的乘方」結構。
+  */
+  const m=
+    ri(
+      2,
+      4
+    );
+
+  const n=
+    ri(
+      2,
+      5
+    );
+
+  const ans=
+    m*n;
+
+  return {
+    kind:"integer",
+    html:
+      `<div class="math-expr">${groupedPowerQuestionHTML(b,m)}${sup(n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,
+    answer:ans,
+    explanation:calcBox(
+      "冪的乘方，底數不變，內外兩個指數相乘。",
+      [
+        `${groupedPowerHTML(b,m)}${sup(n)} ＝ ${intBaseHTML(b)}${sup(`${m}×${n}`)}。`,
+        `${m} × ${n} ＝ ${ans}，所以原式化成 ${pInt(b,ans)}。`
+      ],
+      String(ans),
+      "冪的乘方是指數相乘，不是指數相加。"
+    )
+  };
 }
 function makePowerOfProduct(){
   const t=ri(0,2);
@@ -1245,11 +1684,25 @@ function makePowerOfProduct(){
   }
   if(t===1){
     const a=R(pick([2,3,4]),pick([3,5,7])),e=ri(2,4),ans=rpow(a,e);
-    return {kind:"rational",html:`<div class="math-expr">計算：${pRat(a,e)}</div>`,answer:ans,
-      explanation:calcBox("分數的次方，可把分子與分母分別取相同次方。",[
-        `${pRat(a,e)} ＝ <span class="math-frac"><span class="top">${Math.abs(a.n)}${sup(e)}</span><span class="bottom">${a.d}${sup(e)}</span></span>`,
-        `＝ ${operandRatHTML(ans)}`
-      ],operandRatHTML(ans))};
+    const rawN=ipow(a.n,e);
+    const rawD=ipow(a.d,e);
+
+    return {
+      kind:"rational",
+      html:`<div class="math-expr">計算：${pRat(a,e)}</div>`,
+      answer:ans,
+      explanation:calcBox(
+        "分數的次方，要把分子和分母分別取相同次方，再檢查結果是否能約分。",
+        [
+          `${pRat(a,e)} ＝ <span class="math-frac"><span class="top">${Math.abs(a.n)}${sup(e)}</span><span class="bottom">${a.d}${sup(e)}</span></span>。`,
+          `分子：${Math.abs(a.n)}${sup(e)} ＝ ${Math.abs(rawN)}；分母：${a.d}${sup(e)} ＝ ${rawD}。`,
+          `所以先得到 ${rawFracHTML(rawN,rawD)}。`,
+          ...reductionDetailLines(rawN,rawD)
+        ],
+        operandRatHTML(ans),
+        "不要只把次方套在分子或只套在分母；分數線上下都要取相同次方。"
+      )
+    };
   }
   const a=pick([2,3,5]),b=pick([2,3,4]),e=ri(2,3),ans=ipow(a*b,e);
   return {kind:"integer",html:`<div class="math-expr">利用指數律計算：${pInt(a,e)} × ${pInt(b,e)}</div>`,answer:ans,
@@ -1259,31 +1712,184 @@ function makePowerOfProduct(){
     ],String(ans))};
 }
 function makeCombined(){
-  const t=ri(0,2);
-  if(t===0){
-    const c=ri(1,3),n=ri(1,3),m=n+c,b=pick([2,3,5]),d=pick([2,3,4]),ans=ipow(b*d,c);
-    return {kind:"integer",html:`<div class="math-expr">利用指數律計算：${pInt(b,m)} ÷ ${pInt(b,n)} × ${pInt(d,c)}</div>`,answer:ans,
-      explanation:calcBox("先用同底數相除，再利用相同指數合併底數。",[
-        `${pInt(b,m)} ÷ ${pInt(b,n)} ＝ ${pInt(b,c)}`,
-        `${pInt(b,c)} × ${pInt(d,c)} ＝ (${b}×${d})${sup(c)}`,
-        `＝ ${pInt(b*d,c)} ＝ ${ans}`
-      ],String(ans))};
+  const t=
+    ri(
+      0,
+      2
+    );
+
+  if(
+    t===0
+  ){
+    const c=
+      ri(
+        1,
+        3
+      );
+
+    const n=
+      ri(
+        1,
+        3
+      );
+
+    const m=
+      n+c;
+
+    const b=
+      pick(
+        [
+          2,3,5
+        ]
+      );
+
+    const d=
+      pick(
+        [
+          2,3,4
+        ]
+      );
+
+    const ans=
+      ipow(
+        b*d,
+        c
+      );
+
+    const oneNote=
+      implicitExponentOneNote(
+        [
+          [b,m],
+          [b,n],
+          [d,c]
+        ]
+      );
+
+    return {
+      kind:"integer",
+      html:
+        `<div class="math-expr">利用指數律計算：${pIntQuestion(b,m)} ÷ ${pIntQuestion(b,n)} × ${pIntQuestion(d,c)}</div>`,
+      answer:ans,
+      explanation:calcBox(
+        "先做同底數相除，再利用相同指數合併底數。",
+        [
+          oneNote,
+          `${pInt(b,m)} ÷ ${pInt(b,n)} ＝ ${pInt(b,c)}。`,
+          `${pInt(b,c)} × ${pInt(d,c)} ＝ ${mathGroupHTML(`${b}×${d}`,1)}${sup(c)} ＝ ${pInt(b*d,c)} ＝ ${ans}。`
+        ].filter(Boolean),
+        String(ans)
+      )
+    };
   }
-  if(t===1){
-    const b=pick([-3,-2,2,3]),m=ri(1,3),n=ri(1,3),ans=ipow(b,m+n);
-    return {kind:"integer",html:`<div class="math-expr">計算：${pInt(b,m)} × ${pInt(b,n)}</div>`,answer:ans,
-      explanation:calcBox("同底數相乘先把指數相加，再計算次方。",[
-        `${pInt(b,m)} × ${pInt(b,n)} ＝ ${pInt(b,m+n)}`,
-        `＝ ${signedIntHTML(ans)}`
-      ],signedIntHTML(ans))};
+
+  if(
+    t===1
+  ){
+    const b=
+      pick(
+        [
+          -3,-2,2,3
+        ]
+      );
+
+    const m=
+      ri(
+        1,
+        3
+      );
+
+    const n=
+      ri(
+        1,
+        3
+      );
+
+    const ans=
+      ipow(
+        b,
+        m+n
+      );
+
+    const oneNote=
+      implicitExponentOneNote(
+        [
+          [b,m],
+          [b,n]
+        ]
+      );
+
+    return {
+      kind:"integer",
+      html:
+        `<div class="math-expr">計算：${pIntQuestion(b,m)} × ${pIntQuestion(b,n)}</div>`,
+      answer:ans,
+      explanation:calcBox(
+        "同底數相乘先把指數相加，再計算次方。",
+        [
+          oneNote,
+          `${pInt(b,m)} × ${pInt(b,n)} ＝ ${pInt(b,m+n)} ＝ ${signedIntHTML(ans)}。`
+        ].filter(Boolean),
+        String(ans).replace("-","−")
+      )
+    };
   }
-  const b=pick([2,3,5]),m=ri(1,3),n=ri(2,3),k=ri(1,m*n),ans=ipow(b,m*n-k);
-  return {kind:"integer",html:`<div class="math-expr">計算：(${pInt(b,m)})${sup(n)} ÷ ${pInt(b,k)}</div>`,answer:ans,
-    explanation:calcBox("先做冪的乘方，再做同底數相除。",[
-      `(${pInt(b,m)})${sup(n)} ＝ ${pInt(b,m*n)}`,
-      `${pInt(b,m*n)} ÷ ${pInt(b,k)} ＝ ${pInt(b,m*n-k)}`,
-      `＝ ${ans}`
-    ],String(ans))};
+
+  const b=
+    pick(
+      [
+        2,3,5
+      ]
+    );
+
+  /*
+  冪的乘方內層固定至少 2 次方。
+  */
+  const m=
+    ri(
+      2,
+      3
+    );
+
+  const n=
+    ri(
+      2,
+      3
+    );
+
+  const k=
+    ri(
+      1,
+      m*n
+    );
+
+  const ans=
+    ipow(
+      b,
+      m*n-k
+    );
+
+  const oneNote=
+    implicitExponentOneNote(
+      [
+        [b,k]
+      ]
+    );
+
+  return {
+    kind:"integer",
+    html:
+      `<div class="math-expr">計算：${groupedPowerQuestionHTML(b,m)}${sup(n)} ÷ ${pIntQuestion(b,k)}</div>`,
+    answer:ans,
+    explanation:calcBox(
+      "先做冪的乘方，再做同底數相除。",
+      [
+        oneNote,
+        `${groupedPowerHTML(b,m)}${sup(n)} ＝ ${pInt(b,m*n)}。`,
+        `${pInt(b,m*n)} ÷ ${pInt(b,k)} ＝ ${pInt(b,m*n-k)} ＝ ${ans}。`
+      ].filter(Boolean),
+      String(ans)
+    )
+  };
 }
 function makeQuestion(mode,i=0){
   if(mode==="fractionPower"){const r=Math.random();return r<.20?makeSignParity():r<.45?makeIndexFirst():makeFractionPower();}
@@ -1444,25 +2050,29 @@ function resetAnswerUI(){
   $("fraction-denominator").disabled=false;
 
   $("input-message").textContent="";
-  clearSystemCheck();
+  clearSystemRead();
   $("feedback").textContent="";
   $("feedback").className="feedback";
   $("explanation").innerHTML="";
   $("explanation").classList.add("hidden");
-  $("system-check-button").disabled=false;
+  $("submit-button").disabled=false;
   $("submit-button").classList.remove("hidden");
   $("next-button").classList.add("hidden");
 }
 function renderAnswerUI(q){
   if(q.kind==="choice"){
     $("choiceMount").classList.remove("hidden");
+    $("choiceMount").style.setProperty(
+      "--choice-count",
+      String(Math.max(1,q.choices.length))
+    );
     q.choices.forEach((label,i)=>{
       const b=document.createElement("button");
       b.type="button";b.className="choice-button";b.innerHTML=label;
       b.addEventListener("click",()=>{
         if(locked)return;
         selectedChoice=i;
-        clearSystemCheck();
+        clearSystemRead();
         [...$("choiceMount").children].forEach((x,j)=>x.classList.toggle("selected",j===i));
       });
       $("choiceMount").appendChild(b);
@@ -1561,7 +2171,13 @@ function getAnswer(q){
       denominator
     );
 
-    if(q.requireSimple && igcd(rawNumerator,denominator)!==1){
+    const commonDivisor=
+      igcd(
+        rawNumerator,
+        denominator
+      );
+
+    if(commonDivisor!==1){
       return {
         ok:false,
         formatOk:true,
@@ -1569,7 +2185,9 @@ function getAnswer(q){
         displayHTML:true,
         systemDisplay,
         systemDisplayHTML:true,
-        msg:"系統已讀取這個分數，但本題指定最簡分數，請先約分後再判定。"
+        msg:"這個答案還不是最簡分數，請修正。",
+        msgHTML:
+          `<span class="simplest-warning">⚠️ 這個答案還不是最簡分數，請修正。</span>`
       };
     }
 
@@ -1618,101 +2236,359 @@ function getAnswer(q){
   };
 }
 
-function clearSystemCheck(){
-  const el=$("system-check-result");
-  if(!el)return;
+function clearSystemRead(){
+  const row=$("system-read-row");
+  const value=$("system-read-value");
 
-  el.className="system-check-result neutral";
-  el.textContent="填好答案後，可先讓系統確認；系統會顯示它實際讀到的答案，正式計分仍以「送出答案」為準。";
+  if(!row || !value)return;
+
+  row.classList.add("hidden");
+  row.classList.remove("warning");
+  value.innerHTML="";
 }
 
-function systemReadAnswerHTML(a){
-  const display=
-    a.systemDisplay ??
-    a.display;
+function showSystemReadHTML(html){
+  const row=$("system-read-row");
+  const value=$("system-read-value");
 
-  if(display===undefined || display===null || display===""){
-    return "";
+  if(!row || !value)return;
+
+  row.classList.remove("hidden","warning");
+  value.innerHTML=html;
+}
+
+function showSystemReadWarning(text){
+  const row=$("system-read-row");
+  const value=$("system-read-value");
+
+  if(!row || !value)return;
+
+  row.classList.remove("hidden");
+  row.classList.add("warning");
+  value.textContent=text;
+}
+
+/*
+==================================================
+系統判讀
+
+設計原則：
+1. 只在「需要解讀輸入格式」的分數答案顯示。
+2. 選擇題完全不顯示。
+3. 一般整數輸入不顯示，避免畫面過度重複。
+4. 分子、分母都完成且格式正確時，
+   顯示系統實際讀到的分數。
+5. 兩格都有內容但格式不合法時，
+   顯示「目前格式無法判讀」。
+6. 此功能只負責顯示系統讀到的答案，
+   不提前透露正確／錯誤。
+==================================================
+*/
+function updateSystemRead(){
+  if(locked){
+    return;
   }
-
-  const valueHTML=
-    a.systemDisplayHTML || a.displayHTML
-      ? display
-      : escapeSystemText(display);
-
-  return `
-    <div class="system-read-answer">
-      <span class="system-read-label">系統讀取答案：</span>
-      <span class="system-read-value">${valueHTML}</span>
-    </div>
-  `;
-}
-
-function systemCheckAnswer(){
-  if(locked)return;
 
   const q=
     modeId==="speed"
       ? questions[0]
       : questions[index];
 
-  const a=getAnswer(q);
-  const el=$("system-check-result");
+  if(!q || q.kind==="choice"){
+    clearSystemRead();
+    return;
+  }
 
-  if(!el)return;
+  /*
+  只有真正需要分子／分母輸入的題目才顯示。
+  */
+  if(!(q.kind==="rational" && q.answer?.d!==1)){
+    clearSystemRead();
+    return;
+  }
 
-  if(!a.ok){
-    el.className="system-check-result warning";
+  const numeratorRaw=
+    $("fraction-numerator").value.trim();
 
-    if(a.formatOk){
-      el.innerHTML=
-        systemReadAnswerHTML(a) +
-        `<div>⚠️ 系統判定：${escapeSystemText(a.msg)}</div>`;
-    }else{
-      el.textContent=
-        `⚠️ 系統判定：目前答案格式不完整或不合法，系統無法判定。${a.msg}`;
+  const denominatorRaw=
+    $("fraction-denominator").value.trim();
+
+  /*
+  尚未填完整時先不顯示，
+  與範例畫面一致，不增加干擾。
+  */
+  if(!numeratorRaw || !denominatorRaw){
+    clearSystemRead();
+    return;
+  }
+
+  /*
+  分子可接受：
+  5
+  -5
+
+  分母必須是正整數格式，
+  且不可為 0。
+  */
+  if(
+    !/^-?\d+$/.test(numeratorRaw) ||
+    !/^\d+$/.test(denominatorRaw)
+  ){
+    showSystemReadWarning(
+      "目前格式無法判讀"
+    );
+    return;
+  }
+
+  const typedNumerator=
+    Number(numeratorRaw);
+
+  const denominator=
+    Number(denominatorRaw);
+
+  if(
+    !Number.isFinite(typedNumerator) ||
+    !Number.isFinite(denominator) ||
+    denominator===0
+  ){
+    showSystemReadWarning(
+      "目前格式無法判讀"
+    );
+    return;
+  }
+
+  const selectedSign=
+    Number(
+      $("fraction-sign").value
+    );
+
+  /*
+  若學生直接在分子輸入 -5，
+  以輸入的負號為準；
+  否則才套用左側正負號選單。
+  */
+  const hasExplicitNegative=
+    numeratorRaw.startsWith("-") &&
+    typedNumerator!==0;
+
+  const rawNumerator=
+    hasExplicitNegative
+      ? -Math.abs(typedNumerator)
+      : selectedSign*Math.abs(typedNumerator);
+
+  /*
+  使用 rawFracHTML，
+  保留學生實際輸入的分子、分母，
+  不先自動約分。
+  例如輸入 -10 / 6，
+  系統判讀就顯示 -10/6。
+  */
+  showSystemReadHTML(
+    rawFracHTML(
+      rawNumerator,
+      denominator
+    )
+  );
+}
+
+function submitAnswer(){
+  if(
+    locked
+  ){
+    return;
+  }
+
+  const submitButton=
+    $("submit-button");
+
+  try{
+    /*
+    防止快速連點重複送出。
+    若答案格式有問題，下面會立刻重新啟用。
+    */
+    submitButton.disabled=
+      true;
+
+    const q=
+      modeId==="speed"
+        ? questions[0]
+        : questions[index];
+
+    const a=
+      getAnswer(
+        q
+      );
+
+    if(
+      !a.ok
+    ){
+      if(
+        a.msgHTML
+      ){
+        $("input-message").innerHTML=
+          a.msgHTML;
+      }else{
+        $("input-message").textContent=
+          a.msg;
+      }
+
+      submitButton.disabled=
+        false;
+
+      return;
     }
 
-    return;
-  }
+    locked=
+      true;
 
-  if(a.correct){
-    el.className="system-check-result correct";
-    el.innerHTML=
-      systemReadAnswerHTML(a) +
-      `<div>✅ 系統判定：目前答案正確，可以送出答案。</div>`;
-  }else{
-    el.className="system-check-result wrong";
-    el.innerHTML=
-      systemReadAnswerHTML(a) +
-      `<div>❌ 系統判定：目前答案不正確，請再檢查後再送出。</div>`;
+    $("number-input").disabled=
+      true;
+
+    $("fraction-sign").disabled=
+      true;
+
+    $("fraction-numerator").disabled=
+      true;
+
+    $("fraction-denominator").disabled=
+      true;
+
+    if(
+      a.correct
+    ){
+      correct++;
+      combo++;
+      maxCombo=
+        Math.max(
+          maxCombo,
+          combo
+        );
+      playGameSound(
+        "playCorrect"
+      );
+    }else{
+      wrong++;
+      combo=0;
+      playGameSound(
+        "playWrong"
+      );
+    }
+
+    records.push(
+      {
+        number:
+          modeId==="speed"
+            ? speedAttempts+1
+            : index+1,
+        question:q,
+        userAnswer:a.display,
+        userAnswerHTML:
+          !!a.displayHTML,
+        correct:
+          a.correct
+      }
+    );
+
+    if(
+      modeId==="speed"
+    ){
+      speedAttempts++;
+
+      if(
+        a.correct
+      ){
+        speedScore+=10;
+      }
+
+      $("feedback").textContent=
+        a.correct
+          ? "✅ 正確！＋10 分"
+          : "❌ 答錯了，下一題！";
+
+      $("feedback").className=
+        `feedback ${a.correct?"correct":"wrong"}`;
+
+      updateStatus();
+
+      setTimeout(
+        ()=>{
+          if(
+            modeId==="speed" &&
+            speedRemaining>0 &&
+            $("result-screen").classList.contains("hidden")
+          ){
+            renderSpeedQuestion();
+          }
+        },
+        260
+      );
+
+      return;
+    }
+
+    $("feedback").textContent=
+      a.correct
+        ? "✅ 回答正確！"
+        : "❌ 答案不正確，請看下方完整解析。";
+
+    $("feedback").className=
+      `feedback ${a.correct?"correct":"wrong"}`;
+
+    $("explanation").innerHTML=
+      explanationHTML(
+        q
+      );
+
+    $("explanation").classList.remove(
+      "hidden"
+    );
+
+    submitButton.classList.add(
+      "hidden"
+    );
+
+    $("next-button").classList.remove(
+      "hidden"
+    );
+
+    $("next-button").textContent=
+      index===questions.length-1
+        ? "查看測驗結果"
+        : "下一題";
+
+    updateStatus();
+
+  }catch(error){
+    /*
+    即使單一題型發生例外，
+    也不讓「送出答案」永久失效。
+    */
+    console.error(
+      "送出答案失敗：",
+      error
+    );
+
+    locked=
+      false;
+
+    submitButton.disabled=
+      false;
+
+    $("number-input").disabled=
+      false;
+
+    $("fraction-sign").disabled=
+      false;
+
+    $("fraction-numerator").disabled=
+      false;
+
+    $("fraction-denominator").disabled=
+      false;
+
+    $("input-message").textContent=
+      "答案送出時發生暫時性錯誤，請再按一次「送出答案」。";
   }
-}
-function submitAnswer(){
-  if(locked)return;
-  const q=modeId==="speed"?questions[0]:questions[index], a=getAnswer(q);
-  if(!a.ok){$("input-message").textContent=a.msg;return}
-  locked=true;
-  $("number-input").disabled=true;
-  $("fraction-sign").disabled=true;
-  $("fraction-numerator").disabled=true;
-  $("fraction-denominator").disabled=true;
-  $("system-check-button").disabled=true;
-  if(a.correct){correct++;combo++;maxCombo=Math.max(maxCombo,combo);playGameSound("playCorrect")}
-  else{wrong++;combo=0;playGameSound("playWrong")}
-  records.push({number:modeId==="speed"?speedAttempts+1:index+1,question:q,userAnswer:a.display,userAnswerHTML:!!a.displayHTML,correct:a.correct});
-  if(modeId==="speed"){
-    speedAttempts++;if(a.correct)speedScore+=10;
-    $("feedback").textContent=a.correct?"✅ 正確！＋10 分":"❌ 答錯了，下一題！";
-    $("feedback").className=`feedback ${a.correct?"correct":"wrong"}`;updateStatus();
-    setTimeout(()=>{if(modeId==="speed"&&speedRemaining>0&&$("result-screen").classList.contains("hidden"))renderSpeedQuestion()},260);
-    return;
-  }
-  $("feedback").textContent=a.correct?"✅ 回答正確！":"❌ 答案不正確，請看下方完整解析。";
-  $("feedback").className=`feedback ${a.correct?"correct":"wrong"}`;
-  $("explanation").innerHTML=q.explanation;$("explanation").classList.remove("hidden");
-  $("submit-button").classList.add("hidden");$("next-button").classList.remove("hidden");
-  $("next-button").textContent=index===questions.length-1?"查看測驗結果":"下一題";updateStatus();
 }
 function nextQuestion(){if(index>=questions.length-1)finishGame();else{index++;renderQuestion();updateStatus()}}
 function currentScore(){
@@ -1752,7 +2628,7 @@ async function sendRpgBridge({score,total,accuracy,elapsed}){
 }
 function renderReview(){
   const list=$("review-list"), bad=records.filter(r=>!r.correct);
-  list.innerHTML=bad.length?bad.map(r=>`<article class="review-item"><h3>第 ${r.number} 題</h3><div class="review-question">${r.question.html}</div><p><b>你的答案：</b>${r.userAnswerHTML?r.userAnswer:esc(r.userAnswer)}</p><p><b>正確答案：</b>${answerHTML(r.question)}</p><div class="review-explanation">${r.question.explanation}</div></article>`).join(""):"<p>本次沒有錯題，太棒了！</p>";
+  list.innerHTML=bad.length?bad.map(r=>`<article class="review-item"><h3>第 ${r.number} 題</h3><div class="review-question">${r.question.html}</div><p><b>你的答案：</b>${r.userAnswerHTML?r.userAnswer:esc(r.userAnswer)}</p><p><b>正確答案：</b>${answerHTML(r.question)}</p><div class="review-explanation">${explanationHTML(r.question)}</div></article>`).join(""):"<p>本次沒有錯題，太棒了！</p>";
   showScreen("review-screen");
 }
 function answerHTML(q){return q.kind==="choice"?q.choices[q.answerIndex]:(q.kind==="integer"?esc(q.answer):ratHTML(q.answer))}
@@ -1766,9 +2642,16 @@ $("review-again-button").addEventListener("click",()=>startGame(modeId));$("revi
 $("number-input").addEventListener("keydown",e=>{if(e.key==="Enter"&&!locked)submitAnswer()});
 $("fraction-numerator").addEventListener("keydown",e=>{if(e.key==="Enter"&&!locked)$("fraction-denominator").focus()});
 $("fraction-denominator").addEventListener("keydown",e=>{if(e.key==="Enter"&&!locked)submitAnswer()});
-$("system-check-button").addEventListener("click",systemCheckAnswer);
-["number-input","fraction-numerator","fraction-denominator"].forEach(id=>$(id)?.addEventListener("input",()=>{if(!locked)clearSystemCheck()}));
-$("fraction-sign")?.addEventListener("change",()=>{if(!locked)clearSystemCheck()});
+["fraction-numerator","fraction-denominator"].forEach(id=>{
+  $(id)?.addEventListener("input",()=>{
+    if(!locked)updateSystemRead();
+  });
+});
+
+$("fraction-sign")?.addEventListener("change",()=>{
+  if(!locked)updateSystemRead();
+});
+
 window.MathGameSessionMeta={gameId:GAME_ID,chapter:CHAPTER,title:GAME_TITLE,modes:MODE_CONFIG};
 
 </script>
