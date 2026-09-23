@@ -1122,6 +1122,34 @@ function ratHTML(x){
   const sign=a.n<0?"−":"",n=Math.abs(a.n);
   return `${sign}<span class="math-frac"><span class="top">${n}</span><span class="bottom">${a.d}</span></span>`;
 }
+
+/*
+==================================================
+保留學生原始分子／分母的分數顯示
+
+用途：
+1. 系統判讀顯示學生實際輸入的答案
+2. 送出答案前不先自動約分
+3. 與 2-3 共用相同規則
+==================================================
+*/
+function rawFracHTML(n,d){
+  if(d<0){
+    n=-n;
+    d=-d;
+  }
+
+  if(d===1){
+    return String(n).replace("-","−");
+  }
+
+  const sign=
+    n<0
+      ? "−"
+      : "";
+
+  return `${sign}<span class="math-frac"><span class="top">${Math.abs(n)}</span><span class="bottom">${d}</span></span>`;
+}
 function mathGroupHTML(content,level=1){
   if(level<=1)return `(${content})`;
   if(level===2)return `[${content}]`;
