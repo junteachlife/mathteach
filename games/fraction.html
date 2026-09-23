@@ -448,6 +448,53 @@
       font-weight: 800;
     }
 
+
+    .system-check-row {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .system-check-button {
+      min-height: 44px;
+      padding: 9px 17px;
+      border: 2px solid #7c3aed;
+      border-radius: 13px;
+      background: #f5f3ff;
+      color: #5b21b6;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: .14s ease;
+    }
+
+    .system-check-button:hover {
+      background: #ede9fe;
+      transform: translateY(-1px);
+    }
+
+    .system-check-button:disabled {
+      opacity: .55;
+      cursor: default;
+      transform: none;
+    }
+
+    .system-check-result {
+      min-height: 24px;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1.55;
+    }
+
+    .system-check-result.neutral { color: #64748b; }
+    .system-check-result.correct { color: #15803d; }
+    .system-check-result.wrong { color: #b91c1c; }
+    .system-check-result.warning { color: #b45309; }
+
     .feedback {
       min-height: 48px;
       margin-top: 16px;
@@ -959,6 +1006,13 @@
         </div>
 
         <div id="input-message" class="input-message"></div>
+
+        <div class="system-check-row">
+          <button id="system-check-button" class="system-check-button" type="button">🔍 系統判定</button>
+          <div id="system-check-result" class="system-check-result neutral" aria-live="polite">
+            填好答案後，可先讓系統確認；正式計分仍以「送出答案」為準。
+          </div>
+        </div>
       </div>
 
       <div id="feedback" class="feedback"></div>
@@ -1037,7 +1091,8 @@
    1. 正式作答頁一定提供共用計算紙。
    2. 題目與詳解中的負數作為運算數時使用括號。
    3. 分數答案使用上下分子／分母答案格，不以斜線文字輸入。
-   4. 正式作答頁、結果頁與錯題回顧均提供重新測驗入口。 */
+   4. 正式作答頁、結果頁與錯題回顧均提供重新測驗入口。
+   5. 答案填寫後可先用「系統判定」確認正誤，正式計分仍以送出答案為準。 */
 const GAME_ID="fraction";
 const CHAPTER="2-3";
 const GAME_TITLE="2-3 分數的四則運算大挑戰";
@@ -1466,10 +1521,12 @@ function resetAnswerUI(){
   $("fraction-denominator").disabled=false;
 
   $("input-message").textContent="";
+  clearSystemCheck();
   $("feedback").textContent="";
   $("feedback").className="feedback";
   $("explanation").innerHTML="";
   $("explanation").classList.add("hidden");
+  $("system-check-button").disabled=false;
   $("submit-button").classList.remove("hidden");
   $("next-button").classList.add("hidden");
 }
@@ -1486,6 +1543,7 @@ function renderAnswerUI(q){
       b.addEventListener("click",()=>{
         if(locked)return;
         selectedChoice=i;
+        clearSystemCheck();
 
         [...$("choiceMount").children]
           .forEach((x,j)=>x.classList.toggle("selected",j===i));
@@ -1591,6 +1649,31 @@ function getAnswer(q){
     display:String(value)
   };
 }
+function clearSystemCheck(){
+  const el=$("system-check-result");
+  if(!el)return;
+  el.className="system-check-result neutral";
+  el.textContent="填好答案後，可先讓系統確認；正式計分仍以「送出答案」為準。";
+}
+function systemCheckAnswer(){
+  if(locked)return;
+  const q=modeId==="speed"?questions[0]:questions[index];
+  const a=getAnswer(q);
+  const el=$("system-check-result");
+  if(!el)return;
+  if(!a.ok){
+    el.className="system-check-result warning";
+    el.textContent=`⚠️ 系統判定：${a.msg}`;
+    return;
+  }
+  if(a.correct){
+    el.className="system-check-result correct";
+    el.textContent="✅ 系統判定：目前答案正確，可以送出答案。";
+  }else{
+    el.className="system-check-result wrong";
+    el.textContent="❌ 系統判定：目前答案不正確，請再檢查後再送出。";
+  }
+}
 function submitAnswer(){
   if(locked)return;
   const q=modeId==="speed"?questions[0]:questions[index], a=getAnswer(q);
@@ -1600,6 +1683,7 @@ function submitAnswer(){
   $("fraction-sign").disabled=true;
   $("fraction-numerator").disabled=true;
   $("fraction-denominator").disabled=true;
+  $("system-check-button").disabled=true;
   if(a.correct){correct++;combo++;maxCombo=Math.max(maxCombo,combo);playGameSound("playCorrect")}
   else{wrong++;combo=0;playGameSound("playWrong")}
   records.push({
