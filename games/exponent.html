@@ -310,20 +310,13 @@
 
     .choice-grid {
       display: grid;
-      grid-template-columns:
-        repeat(
-          var(--choice-count, 3),
-          minmax(0, 1fr)
-        );
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      width: 100%;
-      align-items: stretch;
     }
 
     .choice-button {
-      min-width: 0;
       min-height: 68px;
-      padding: 12px 8px;
+      padding: 12px;
       border: 2px solid #cbd5e1;
       border-radius: 16px;
       background: #fff;
@@ -331,9 +324,6 @@
       font-size: 17px;
       font-weight: 800;
       line-height: 1.5;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       cursor: pointer;
       transition: .14s ease;
     }
@@ -461,43 +451,79 @@
     }
 
 
-    .system-read-row {
-      margin-top: 10px;
-      min-height: 28px;
+    .system-check-row {
+      margin-top: 12px;
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .system-check-button {
+      min-height: 44px;
+      padding: 9px 17px;
+      border: 2px solid #7c3aed;
+      border-radius: 13px;
+      background: #f5f3ff;
+      color: #5b21b6;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: .14s ease;
+    }
+
+    .system-check-button:hover {
+      background: #ede9fe;
+      transform: translateY(-1px);
+    }
+
+    .system-check-button:disabled {
+      opacity: .55;
+      cursor: default;
+      transform: none;
+    }
+
+    .system-check-result {
+      min-height: 24px;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1.55;
+    }
+
+    .system-check-result.neutral { color: #64748b; }
+    .system-check-result.correct { color: #15803d; }
+    .system-check-result.wrong { color: #b91c1c; }
+    .system-check-result.warning { color: #b45309; }
+
+    .system-read-answer {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       flex-wrap: wrap;
-      color: #64748b;
-      font-size: 15px;
-      font-weight: 800;
-      line-height: 1.55;
-      text-align: center;
-    }
-
-    .system-read-row.hidden {
-      display: none !important;
+      margin-bottom: 5px;
+      color: #334155;
     }
 
     .system-read-label {
-      color: #64748b;
-      font-weight: 800;
+      color: #475569;
+      font-weight: 900;
     }
 
     .system-read-value {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 28px;
-      color: #475569;
-      font-size: 17px;
+      min-height: 30px;
+      padding: 3px 10px;
+      border: 1.5px solid #c4b5fd;
+      border-radius: 10px;
+      background: #faf5ff;
+      color: #4c1d95;
+      font-size: 18px;
       font-weight: 900;
-    }
-
-    .system-read-row.warning .system-read-value {
-      color: #b45309;
-      font-size: 14px;
     }
 
     .feedback {
@@ -848,14 +874,7 @@
       .game-header { padding: 22px 16px 16px; }
       .mode-grid { grid-template-columns: 1fr; }
       .quiz-topbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .choice-grid {
-        gap: 8px;
-      }
-      .choice-button {
-        min-height: 60px;
-        padding: 10px 5px;
-        font-size: 15px;
-      }
+      .choice-grid { grid-template-columns: 1fr; }
       .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .question-card { padding: 20px 12px; }
     }
@@ -1019,13 +1038,11 @@
 
         <div id="input-message" class="input-message"></div>
 
-        <div
-          id="system-read-row"
-          class="system-read-row hidden"
-          aria-live="polite"
-        >
-          <span class="system-read-label">系統判讀：</span>
-          <span id="system-read-value" class="system-read-value"></span>
+        <div class="system-check-row">
+          <button id="system-check-button" class="system-check-button" type="button">🔍 系統判定</button>
+          <div id="system-check-result" class="system-check-result neutral" aria-live="polite">
+            填好答案後，可先讓系統確認；系統會顯示它實際讀到的答案，正式計分仍以「送出答案」為準。
+          </div>
         </div>
       </div>
 
@@ -1122,42 +1139,9 @@ function ratHTML(x){
   const sign=a.n<0?"−":"",n=Math.abs(a.n);
   return `${sign}<span class="math-frac"><span class="top">${n}</span><span class="bottom">${a.d}</span></span>`;
 }
-
-/*
-==================================================
-保留學生原始分子／分母的分數顯示
-
-用途：
-1. 系統判讀顯示學生實際輸入的答案
-2. 送出答案前不先自動約分
-3. 與 2-3 共用相同規則
-==================================================
-*/
-function rawFracHTML(n,d){
-  if(d<0){
-    n=-n;
-    d=-d;
-  }
-
-  if(d===1){
-    return String(n).replace("-","−");
-  }
-
-  const sign=
-    n<0
-      ? "−"
-      : "";
-
-  return `${sign}<span class="math-frac"><span class="top">${Math.abs(n)}</span><span class="bottom">${d}</span></span>`;
-}
-function mathGroupHTML(content,level=1){
-  if(level<=1)return `(${content})`;
-  if(level===2)return `[${content}]`;
-  return `{${content}}`;
-}
 function operandRatHTML(x){
   const a=R(x.n,x.d),html=ratHTML(a);
-  return a.n<0?mathGroupHTML(html,1):html;
+  return a.n<0?`(${html})`:html;
 }
 function signedIntHTML(n){
   const html=String(n).replace("-","−");
@@ -1175,16 +1159,9 @@ function parseRational(raw){
 function ipow(a,n){let v=1;for(let i=0;i<n;i++)v*=a;return v}
 function rpow(a,n){return R(ipow(a.n,n),ipow(a.d,n))}
 function sup(n){return `<span class="math-sup">${n}</span>`}
-function intBaseHTML(b){return b<0?mathGroupHTML(String(b).replace("-","−"),1):String(b)}
+function intBaseHTML(b){return b<0?`(${String(b).replace("-","−")})`:String(b)}
 function pInt(b,e){return `${intBaseHTML(b)}${sup(e)}`}
-function groupedPowerHTML(b,e){
-  const level=b<0?2:1;
-  return mathGroupHTML(
-    pInt(b,e),
-    level
-  );
-}
-function pRat(a,e){return `${mathGroupHTML(ratHTML(a),1)}${sup(e)}`}
+function pRat(a,e){return `(${ratHTML(a)})${sup(e)}`}
 function calcBox(rule,lines,answer){
   return `<div class="rule-box"><b>觀念：</b>${rule}</div>
   <div class="calculation-box">${lines.map(x=>`<div class="step-line">${x}</div>`).join("")}</div>
@@ -1249,9 +1226,9 @@ function makeSameBaseDivide(){
 }
 function makePowerOfPower(){
   const b=nonzeroBase(),m=ri(1,4),n=ri(2,5),ans=m*n;
-  return {kind:"integer",html:`<div class="math-expr">${groupedPowerHTML(b,m)}${sup(n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,answer:ans,
+  return {kind:"integer",html:`<div class="math-expr">(${pInt(b,m)})${sup(n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,answer:ans,
     explanation:calcBox("冪的乘方：底數不變，兩個指數相乘。",[
-      `${groupedPowerHTML(b,m)}${sup(n)} ＝ ${intBaseHTML(b)}${sup(`${m}×${n}`)}`,
+      `(${pInt(b,m)})${sup(n)} ＝ ${intBaseHTML(b)}${sup(`${m}×${n}`)}`,
       `＝ ${pInt(b,ans)}`
     ],String(ans))};
 }
@@ -1301,9 +1278,9 @@ function makeCombined(){
       ],signedIntHTML(ans))};
   }
   const b=pick([2,3,5]),m=ri(1,3),n=ri(2,3),k=ri(1,m*n),ans=ipow(b,m*n-k);
-  return {kind:"integer",html:`<div class="math-expr">計算：${groupedPowerHTML(b,m)}${sup(n)} ÷ ${pInt(b,k)}</div>`,answer:ans,
+  return {kind:"integer",html:`<div class="math-expr">計算：(${pInt(b,m)})${sup(n)} ÷ ${pInt(b,k)}</div>`,answer:ans,
     explanation:calcBox("先做冪的乘方，再做同底數相除。",[
-      `${groupedPowerHTML(b,m)}${sup(n)} ＝ ${pInt(b,m*n)}`,
+      `(${pInt(b,m)})${sup(n)} ＝ ${pInt(b,m*n)}`,
       `${pInt(b,m*n)} ÷ ${pInt(b,k)} ＝ ${pInt(b,m*n-k)}`,
       `＝ ${ans}`
     ],String(ans))};
@@ -1467,28 +1444,25 @@ function resetAnswerUI(){
   $("fraction-denominator").disabled=false;
 
   $("input-message").textContent="";
-  clearSystemRead();
+  clearSystemCheck();
   $("feedback").textContent="";
   $("feedback").className="feedback";
   $("explanation").innerHTML="";
   $("explanation").classList.add("hidden");
+  $("system-check-button").disabled=false;
   $("submit-button").classList.remove("hidden");
   $("next-button").classList.add("hidden");
 }
 function renderAnswerUI(q){
   if(q.kind==="choice"){
     $("choiceMount").classList.remove("hidden");
-    $("choiceMount").style.setProperty(
-      "--choice-count",
-      String(Math.max(1,q.choices.length))
-    );
     q.choices.forEach((label,i)=>{
       const b=document.createElement("button");
       b.type="button";b.className="choice-button";b.innerHTML=label;
       b.addEventListener("click",()=>{
         if(locked)return;
         selectedChoice=i;
-        clearSystemRead();
+        clearSystemCheck();
         [...$("choiceMount").children].forEach((x,j)=>x.classList.toggle("selected",j===i));
       });
       $("choiceMount").appendChild(b);
@@ -1644,161 +1618,76 @@ function getAnswer(q){
   };
 }
 
-function clearSystemRead(){
-  const row=$("system-read-row");
-  const value=$("system-read-value");
+function clearSystemCheck(){
+  const el=$("system-check-result");
+  if(!el)return;
 
-  if(!row || !value)return;
-
-  row.classList.add("hidden");
-  row.classList.remove("warning");
-  value.innerHTML="";
+  el.className="system-check-result neutral";
+  el.textContent="填好答案後，可先讓系統確認；系統會顯示它實際讀到的答案，正式計分仍以「送出答案」為準。";
 }
 
-function showSystemReadHTML(html){
-  const row=$("system-read-row");
-  const value=$("system-read-value");
+function systemReadAnswerHTML(a){
+  const display=
+    a.systemDisplay ??
+    a.display;
 
-  if(!row || !value)return;
-
-  row.classList.remove("hidden","warning");
-  value.innerHTML=html;
-}
-
-function showSystemReadWarning(text){
-  const row=$("system-read-row");
-  const value=$("system-read-value");
-
-  if(!row || !value)return;
-
-  row.classList.remove("hidden");
-  row.classList.add("warning");
-  value.textContent=text;
-}
-
-/*
-==================================================
-系統判讀
-
-設計原則：
-1. 只在「需要解讀輸入格式」的分數答案顯示。
-2. 選擇題完全不顯示。
-3. 一般整數輸入不顯示，避免畫面過度重複。
-4. 分子、分母都完成且格式正確時，
-   顯示系統實際讀到的分數。
-5. 兩格都有內容但格式不合法時，
-   顯示「目前格式無法判讀」。
-6. 此功能只負責顯示系統讀到的答案，
-   不提前透露正確／錯誤。
-==================================================
-*/
-function updateSystemRead(){
-  if(locked){
-    return;
+  if(display===undefined || display===null || display===""){
+    return "";
   }
+
+  const valueHTML=
+    a.systemDisplayHTML || a.displayHTML
+      ? display
+      : escapeSystemText(display);
+
+  return `
+    <div class="system-read-answer">
+      <span class="system-read-label">系統讀取答案：</span>
+      <span class="system-read-value">${valueHTML}</span>
+    </div>
+  `;
+}
+
+function systemCheckAnswer(){
+  if(locked)return;
 
   const q=
     modeId==="speed"
       ? questions[0]
       : questions[index];
 
-  if(!q || q.kind==="choice"){
-    clearSystemRead();
+  const a=getAnswer(q);
+  const el=$("system-check-result");
+
+  if(!el)return;
+
+  if(!a.ok){
+    el.className="system-check-result warning";
+
+    if(a.formatOk){
+      el.innerHTML=
+        systemReadAnswerHTML(a) +
+        `<div>⚠️ 系統判定：${escapeSystemText(a.msg)}</div>`;
+    }else{
+      el.textContent=
+        `⚠️ 系統判定：目前答案格式不完整或不合法，系統無法判定。${a.msg}`;
+    }
+
     return;
   }
 
-  /*
-  只有真正需要分子／分母輸入的題目才顯示。
-  */
-  if(!(q.kind==="rational" && q.answer?.d!==1)){
-    clearSystemRead();
-    return;
+  if(a.correct){
+    el.className="system-check-result correct";
+    el.innerHTML=
+      systemReadAnswerHTML(a) +
+      `<div>✅ 系統判定：目前答案正確，可以送出答案。</div>`;
+  }else{
+    el.className="system-check-result wrong";
+    el.innerHTML=
+      systemReadAnswerHTML(a) +
+      `<div>❌ 系統判定：目前答案不正確，請再檢查後再送出。</div>`;
   }
-
-  const numeratorRaw=
-    $("fraction-numerator").value.trim();
-
-  const denominatorRaw=
-    $("fraction-denominator").value.trim();
-
-  /*
-  尚未填完整時先不顯示，
-  與範例畫面一致，不增加干擾。
-  */
-  if(!numeratorRaw || !denominatorRaw){
-    clearSystemRead();
-    return;
-  }
-
-  /*
-  分子可接受：
-  5
-  -5
-
-  分母必須是正整數格式，
-  且不可為 0。
-  */
-  if(
-    !/^-?\d+$/.test(numeratorRaw) ||
-    !/^\d+$/.test(denominatorRaw)
-  ){
-    showSystemReadWarning(
-      "目前格式無法判讀"
-    );
-    return;
-  }
-
-  const typedNumerator=
-    Number(numeratorRaw);
-
-  const denominator=
-    Number(denominatorRaw);
-
-  if(
-    !Number.isFinite(typedNumerator) ||
-    !Number.isFinite(denominator) ||
-    denominator===0
-  ){
-    showSystemReadWarning(
-      "目前格式無法判讀"
-    );
-    return;
-  }
-
-  const selectedSign=
-    Number(
-      $("fraction-sign").value
-    );
-
-  /*
-  若學生直接在分子輸入 -5，
-  以輸入的負號為準；
-  否則才套用左側正負號選單。
-  */
-  const hasExplicitNegative=
-    numeratorRaw.startsWith("-") &&
-    typedNumerator!==0;
-
-  const rawNumerator=
-    hasExplicitNegative
-      ? -Math.abs(typedNumerator)
-      : selectedSign*Math.abs(typedNumerator);
-
-  /*
-  使用 rawFracHTML，
-  保留學生實際輸入的分子、分母，
-  不先自動約分。
-  例如輸入 -10 / 6，
-  系統判讀就顯示 -10/6。
-  */
-  showSystemReadHTML(
-    rawFracHTML(
-      rawNumerator,
-      denominator
-    )
-  );
 }
-
 function submitAnswer(){
   if(locked)return;
   const q=modeId==="speed"?questions[0]:questions[index], a=getAnswer(q);
@@ -1808,6 +1697,7 @@ function submitAnswer(){
   $("fraction-sign").disabled=true;
   $("fraction-numerator").disabled=true;
   $("fraction-denominator").disabled=true;
+  $("system-check-button").disabled=true;
   if(a.correct){correct++;combo++;maxCombo=Math.max(maxCombo,combo);playGameSound("playCorrect")}
   else{wrong++;combo=0;playGameSound("playWrong")}
   records.push({number:modeId==="speed"?speedAttempts+1:index+1,question:q,userAnswer:a.display,userAnswerHTML:!!a.displayHTML,correct:a.correct});
@@ -1876,16 +1766,9 @@ $("review-again-button").addEventListener("click",()=>startGame(modeId));$("revi
 $("number-input").addEventListener("keydown",e=>{if(e.key==="Enter"&&!locked)submitAnswer()});
 $("fraction-numerator").addEventListener("keydown",e=>{if(e.key==="Enter"&&!locked)$("fraction-denominator").focus()});
 $("fraction-denominator").addEventListener("keydown",e=>{if(e.key==="Enter"&&!locked)submitAnswer()});
-["fraction-numerator","fraction-denominator"].forEach(id=>{
-  $(id)?.addEventListener("input",()=>{
-    if(!locked)updateSystemRead();
-  });
-});
-
-$("fraction-sign")?.addEventListener("change",()=>{
-  if(!locked)updateSystemRead();
-});
-
+$("system-check-button").addEventListener("click",systemCheckAnswer);
+["number-input","fraction-numerator","fraction-denominator"].forEach(id=>$(id)?.addEventListener("input",()=>{if(!locked)clearSystemCheck()}));
+$("fraction-sign")?.addEventListener("change",()=>{if(!locked)clearSystemCheck()});
 window.MathGameSessionMeta={gameId:GAME_ID,chapter:CHAPTER,title:GAME_TITLE,modes:MODE_CONFIG};
 
 </script>
