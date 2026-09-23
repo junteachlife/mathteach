@@ -495,6 +495,35 @@
     .system-check-result.wrong { color: #b91c1c; }
     .system-check-result.warning { color: #b45309; }
 
+    .system-read-answer {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 5px;
+      color: #334155;
+    }
+
+    .system-read-label {
+      color: #475569;
+      font-weight: 900;
+    }
+
+    .system-read-value {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 3px 10px;
+      border: 1.5px solid #c4b5fd;
+      border-radius: 10px;
+      background: #faf5ff;
+      color: #4c1d95;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
     .feedback {
       min-height: 48px;
       margin-top: 16px;
@@ -996,7 +1025,7 @@
             </div>
 
             <div class="fraction-answer-hint">
-              上格填分子、下格填分母；負數請使用左側負號。
+              上格填分子、下格填分母；負數可使用左側負號，分子直接輸入負號也可辨識。
             </div>
           </div>
         </div>
@@ -1010,7 +1039,7 @@
         <div class="system-check-row">
           <button id="system-check-button" class="system-check-button" type="button">🔍 系統判定</button>
           <div id="system-check-result" class="system-check-result neutral" aria-live="polite">
-            填好答案後，可先讓系統確認；正式計分仍以「送出答案」為準。
+            填好答案後，可先讓系統確認；系統會顯示它實際讀到的答案，正式計分仍以「送出答案」為準。
           </div>
         </div>
       </div>
@@ -1574,43 +1603,97 @@ function renderAnswerUI(q){
     50
   );
 }
+function escapeSystemText(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
 function getAnswer(q){
   if(q.kind==="choice"){
     if(selectedChoice===null){
       return {ok:false,msg:"請先選擇一個答案。"};
     }
 
+    const display=q.choices[selectedChoice].replace(/<[^>]+>/g,"");
+
     return {
       ok:true,
       correct:selectedChoice===q.answerIndex,
-      display:q.choices[selectedChoice].replace(/<[^>]+>/g,"")
+      display,
+      systemDisplay:display
     };
   }
 
   if(q.kind==="rational" && q.answer?.d!==1){
-    const sign=$("fraction-sign").value==="-"?-1:Number($("fraction-sign").value);
+    const selectedSign=Number($("fraction-sign").value);
     const numeratorRaw=$("fraction-numerator").value.trim();
     const denominatorRaw=$("fraction-denominator").value.trim();
 
     if(!numeratorRaw || !denominatorRaw){
-      return {ok:false,msg:"請在上格填分子、下格填分母。"};
+      return {
+        ok:false,
+        msg:"請在上格填分子、下格填分母。"
+      };
     }
 
-    if(!/^\d+$/.test(numeratorRaw) || !/^\d+$/.test(denominatorRaw)){
-      return {ok:false,msg:"分子、分母請輸入整數數字；負號請使用左側選單。"};
+    /*
+    分子接受：
+    5
+    -5
+
+    若分子本身直接輸入負號，
+    系統以分子負號為準；
+    否則使用左側正負號選單。
+    */
+    if(!/^-?\d+$/.test(numeratorRaw) || !/^\d+$/.test(denominatorRaw)){
+      return {
+        ok:false,
+        msg:"分子、分母必須是整數格式；例如負五分之三可填分子 -5、分母 3，或使用左側負號。"
+      };
     }
 
-    const numerator=Number(numeratorRaw);
+    const typedNumerator=Number(numeratorRaw);
     const denominator=Number(denominatorRaw);
 
     if(denominator===0){
-      return {ok:false,msg:"分母不能是 0。"};
+      return {
+        ok:false,
+        msg:"分母不能是 0。"
+      };
     }
 
-    const rawNumerator=sign*numerator;
+    const hasExplicitNegative=
+      numeratorRaw.startsWith("-") &&
+      typedNumerator!==0;
+
+    const rawNumerator=
+      hasExplicitNegative
+        ? -Math.abs(typedNumerator)
+        : selectedSign*Math.abs(typedNumerator);
+
+    /*
+    systemDisplay 保留學生實際輸入的分子、分母，
+    不先約分，讓學生清楚看到系統到底讀到了什麼。
+    */
+    const systemDisplay=rawFracHTML(
+      rawNumerator,
+      denominator
+    );
 
     if(q.requireSimple && igcd(rawNumerator,denominator)!==1){
-      return {ok:false,msg:"本題指定最簡分數，請先約分。"};
+      return {
+        ok:false,
+        formatOk:true,
+        display:systemDisplay,
+        displayHTML:true,
+        systemDisplay,
+        systemDisplayHTML:true,
+        msg:"系統已讀取這個分數，但本題指定最簡分數，請先約分後再判定。"
+      };
     }
 
     const value=R(rawNumerator,denominator);
@@ -1619,7 +1702,9 @@ function getAnswer(q){
       ok:true,
       correct:ratEq(value,q.answer),
       display:ratHTML(value),
-      displayHTML:true
+      displayHTML:true,
+      systemDisplay,
+      systemDisplayHTML:true
     };
   }
 
@@ -1630,48 +1715,100 @@ function getAnswer(q){
   }
 
   if(!/^[+-]?\d+$/.test(raw)){
-    return {ok:false,msg:"請輸入整數。"};
+    return {
+      ok:false,
+      msg:"答案必須是整數格式，例如 -5、0、12。"
+    };
   }
 
   const value=Number(raw);
+  const display=String(value).replace("-","−");
 
   if(q.kind==="integer"){
     return {
       ok:true,
       correct:value===q.answer,
-      display:String(value)
+      display,
+      systemDisplay:display
     };
   }
 
   return {
     ok:true,
     correct:ratEq(R(value,1),q.answer),
-    display:String(value)
+    display,
+    systemDisplay:display
   };
 }
+
 function clearSystemCheck(){
   const el=$("system-check-result");
   if(!el)return;
+
   el.className="system-check-result neutral";
-  el.textContent="填好答案後，可先讓系統確認；正式計分仍以「送出答案」為準。";
+  el.textContent="填好答案後，可先讓系統確認；系統會顯示它實際讀到的答案，正式計分仍以「送出答案」為準。";
 }
+
+function systemReadAnswerHTML(a){
+  const display=
+    a.systemDisplay ??
+    a.display;
+
+  if(display===undefined || display===null || display===""){
+    return "";
+  }
+
+  const valueHTML=
+    a.systemDisplayHTML || a.displayHTML
+      ? display
+      : escapeSystemText(display);
+
+  return `
+    <div class="system-read-answer">
+      <span class="system-read-label">系統讀取答案：</span>
+      <span class="system-read-value">${valueHTML}</span>
+    </div>
+  `;
+}
+
 function systemCheckAnswer(){
   if(locked)return;
-  const q=modeId==="speed"?questions[0]:questions[index];
+
+  const q=
+    modeId==="speed"
+      ? questions[0]
+      : questions[index];
+
   const a=getAnswer(q);
   const el=$("system-check-result");
+
   if(!el)return;
+
   if(!a.ok){
     el.className="system-check-result warning";
-    el.textContent=`⚠️ 系統判定：${a.msg}`;
+
+    if(a.formatOk){
+      el.innerHTML=
+        systemReadAnswerHTML(a) +
+        `<div>⚠️ 系統判定：${escapeSystemText(a.msg)}</div>`;
+    }else{
+      el.textContent=
+        `⚠️ 系統判定：目前答案格式不完整或不合法，系統無法判定。${a.msg}`;
+    }
+
     return;
   }
+
   if(a.correct){
     el.className="system-check-result correct";
-    el.textContent="✅ 系統判定：目前答案正確，可以送出答案。";
+    el.innerHTML=
+      systemReadAnswerHTML(a) +
+      `<div>✅ 系統判定：目前答案正確，可以送出答案。</div>`;
   }else{
     el.className="system-check-result wrong";
-    el.textContent="❌ 系統判定：目前答案不正確，請再檢查後再送出。";
+    el.innerHTML=
+      systemReadAnswerHTML(a) +
+      `<div>❌ 系統判定：目前答案不正確，請再檢查後再送出。</div>`;
   }
 }
 function submitAnswer(){
