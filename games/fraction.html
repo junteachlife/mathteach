@@ -1,3465 +1,1366 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>正負分數加減大挑戰</title>
-<link rel="stylesheet" href="../css/scratchpad.css">
-
-<style>
-:root{
-  --blue:#2563eb;
-  --blue-dark:#1d4ed8;
-  --green:#16a34a;
-  --red:#dc2626;
-  --amber:#d97706;
-  --ink:#1f2937;
-  --muted:#64748b;
-  --line:#dbe3ef;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-html,
-body{
-  margin:0;
-  min-height:100%;
-  font-family:
-    "Noto Sans TC",
-    "Microsoft JhengHei",
-    sans-serif;
-  color:var(--ink);
-}
-
-body{
-  background:
-    linear-gradient(
-      135deg,
-      #eff6ff,
-      #f8fafc
-    );
-  padding:8px;
-}
-
-button,
-input,
-select{
-  font:inherit;
-}
-
-.hidden{
-  display:none!important;
-}
-
-.app{
-  width:100%;
-  max-width:1500px;
-  min-height:calc(100vh - 16px);
-  margin:auto;
-  background:#fff;
-  border:3px solid #bfdbfe;
-  border-radius:24px;
-  box-shadow:
-    0 18px 45px
-    #1e3a8a22;
-  overflow:hidden;
-}
-
-.progress{
-  height:10px;
-  background:#e5e7eb;
-}
-
-.progress>div{
-  height:100%;
-  width:0;
-  background:
-    linear-gradient(
-      90deg,
-      #60a5fa,
-      #2563eb
-    );
-  transition:width .25s;
-}
-
-.inner{
-  padding:24px;
-}
-
-.title{
-  text-align:center;
-  color:var(--blue-dark);
-  font-size:clamp(28px,4vw,42px);
-  font-weight:900;
-  margin:0 0 8px;
-}
-
-.subtitle{
-  text-align:center;
-  color:var(--muted);
-  margin:0 0 24px;
-  line-height:1.7;
-}
-
-.modes{
-  display:grid;
-  gap:14px;
-  max-width:850px;
-  margin:0 auto 24px;
-}
-
-.mode-card input{
-  position:absolute;
-  opacity:0;
-}
-
-.mode-card span{
-  display:block;
-  border:2px solid var(--line);
-  border-radius:17px;
-  padding:18px;
-  cursor:pointer;
-  background:#fff;
-  transition:.2s;
-}
-
-.mode-card input:checked+span{
-  border-color:#3b82f6;
-  background:#eff6ff;
-  box-shadow:
-    0 0 0 4px
-    #3b82f622;
-}
-
-.mode-title{
-  font-weight:900;
-  color:var(--blue-dark);
-  font-size:19px;
-}
-
-.example{
-  font-family:
-    "Times New Roman",
-    serif;
-  font-size:20px;
-  margin-top:7px;
-  color:#475569;
-}
-
-.btn{
-  border:0;
-  border-radius:14px;
-  padding:13px 20px;
-  font-weight:900;
-  font-size:17px;
-  cursor:pointer;
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  transition:.15s;
-}
-
-.btn:active{
-  transform:scale(.98);
-}
-
-.btn-primary{
-  background:var(--blue);
-  color:#fff;
-}
-
-.btn-green{
-  background:var(--green);
-  color:#fff;
-}
-
-.btn-light{
-  background:#eff6ff;
-  color:var(--blue-dark);
-  border:2px solid #bfdbfe;
-}
-
-.btn-danger-light{
-  background:#fff1f2;
-  color:#be123c;
-  border:2px solid #fecdd3;
-}
-
-.btn-neutral{
-  background:#f1f5f9;
-  color:#334155;
-  border:2px solid #cbd5e1;
-}
-
-.center{
-  text-align:center;
-}
-
-.topbar{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:18px;
-}
-
-.stats{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.pill{
-  padding:9px 14px;
-  border-radius:14px;
-  font-size:15px;
-  font-weight:900;
-  box-shadow:
-    0 4px 12px
-    #0f172a10;
-}
-
-.pill-blue{
-  background:#dbeafe;
-  color:var(--blue-dark);
-}
-
-.pill-amber{
-  background:#fef3c7;
-  color:#92400e;
-}
-
-.pill-gray{
-  background:#f1f5f9;
-  color:#475569;
-}
-
-.pill-green{
-  background:#dcfce7;
-  color:#166534;
-}
-
-#scratchpad-mobile-button{
-  display:flex;
-  align-items:center;
-}
-
-#scratchpad-mobile-button
-.scratchpad-open-button{
-  position:static!important;
-  inset:auto!important;
-  display:inline-flex!important;
-  min-height:42px;
-  padding:10px 16px;
-  border:2px solid #c7d2fe;
-  border-radius:14px;
-  background:
-    linear-gradient(
-      135deg,
-      #4f46e5,
-      #2563eb
-    );
-  color:#fff;
-  font-size:16px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.problem{
-  background:#f8fafc;
-  border:2px solid #e2e8f0;
-  border-radius:20px;
-  padding:28px 14px;
-  text-align:center;
-  font-family:
-    "Times New Roman",
-    serif;
-  font-size:clamp(28px,4.5vw,48px);
-  font-weight:700;
-  margin-bottom:20px;
-  white-space:nowrap;
-  overflow-x:auto;
-}
-
-.math-frac{
-  display:inline-flex;
-  flex-direction:column;
-  align-items:stretch;
-  justify-content:center;
-  min-width:.82em;
-  text-align:center;
-  line-height:.95;
-  margin:0 .08em;
-  vertical-align:middle;
-}
-
-.math-frac .top,
-.math-frac .bottom{
-  display:block;
-  font-size:.68em;
-  line-height:1;
-  padding:0 .12em;
-}
-
-.math-frac .top{
-  border-bottom:2px solid currentColor;
-  padding-bottom:.08em;
-}
-
-.math-frac .bottom{
-  padding-top:.08em;
-}
-
-.answer-wrap{
-  max-width:760px;
-  margin:auto;
-}
-
-.answer-card{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  min-height:128px;
-  padding:14px;
-  border:2px solid #dbeafe;
-  border-radius:18px;
-  background:#f8fbff;
-}
-
-.sign-select{
-  height:48px;
-  min-width:72px;
-  padding:0 10px;
-  border:2px solid #cbd5e1;
-  border-radius:10px;
-  background:#fff;
-  font-family:
-    "Times New Roman",
-    serif;
-  font-size:22px;
-  font-weight:900;
-  text-align:center;
-}
-
-.frac-input{
-  position:relative;
-  display:inline-grid;
-  grid-template-rows:48px 48px;
-  width:88px;
-  gap:8px;
-}
-
-.frac-input input{
-  width:100%;
-  height:48px;
-  border:2px solid #cbd5e1;
-  border-radius:10px;
-  text-align:center;
-  font-size:23px;
-  font-weight:900;
-  outline:none;
-}
-
-.frac-line{
-  position:absolute;
-  left:5px;
-  right:5px;
-  top:50%;
-  height:2px;
-  background:#1f2937;
-  transform:translateY(-1px);
-  pointer-events:none;
-}
-
-.integer-input{
-  width:min(210px,60vw);
-  display:flex;
-}
-
-.integer-input input:first-child{
-  display:block;
-}
-
-.integer-input input:last-child,
-.integer-input .frac-line{
-  display:none;
-}
-
-.help{
-  text-align:center;
-  color:#64748b;
-  font-size:13px;
-  margin:9px 0 12px;
-}
-
-.preview{
-  min-height:26px;
-  text-align:center;
-  color:#64748b;
-  margin:8px 0 14px;
-}
-
-.actions{
-  display:grid;
-  gap:10px;
-}
-
-.feedback{
-  min-height:58px;
-  margin-top:15px;
-  text-align:center;
-  font-size:19px;
-  font-weight:900;
-  line-height:1.55;
-}
-
-.explanation-actions{
-  display:flex;
-  justify-content:center;
-  margin-top:12px;
-}
-
-.explanation-toggle{
-  border:2px solid #93c5fd;
-  background:#eff6ff;
-  color:#1d4ed8;
-  border-radius:12px;
-  padding:10px 16px;
-  font-size:15px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.explanation-panel{
-  margin-top:12px;
-  border:2px solid #bfdbfe;
-  border-radius:16px;
-  background:#f8fbff;
-  padding:16px;
-  text-align:left;
-  color:#334155;
-  line-height:1.7;
-}
-
-.explanation-title{
-  text-align:center;
-  font-size:19px;
-  font-weight:900;
-  color:#1d4ed8;
-  margin-bottom:10px;
-}
-
-.explanation-step{
-  border-left:4px solid #60a5fa;
-  background:#fff;
-  border-radius:10px;
-  padding:10px 12px;
-  margin:9px 0;
-}
-
-.explanation-step-label{
-  display:block;
-  color:#1e40af;
-  font-weight:900;
-  margin-bottom:5px;
-}
-
-.explanation-math{
-  text-align:center;
-  font-family:
-    "Times New Roman",
-    serif;
-  font-size:24px;
-  font-weight:700;
-  overflow-x:auto;
-  white-space:nowrap;
-  padding:4px 0;
-}
-
-.explanation-final{
-  border-color:#22c55e;
-  background:#f0fdf4;
-}
-
-.result-box{
-  max-width:760px;
-  margin:auto;
-  text-align:center;
-}
-
-.grade-card{
-  background:
-    linear-gradient(
-      135deg,
-      #eff6ff,
-      #f8fafc
-    );
-  border:2px solid #bfdbfe;
-  border-radius:22px;
-  padding:24px;
-  margin:18px 0;
-}
-
-.grade-big{
-  font-size:54px;
-  font-weight:900;
-  color:var(--blue-dark);
-}
-
-.stars{
-  font-size:34px;
-  letter-spacing:4px;
-  margin:6px 0;
-}
-
-.comment{
-  font-size:20px;
-  font-weight:900;
-  color:#334155;
-}
-
-/*
-結果改成 4 格：
-答對、答錯、最高連擊、總時間
-*/
-.score-grid{
-  display:grid;
-  grid-template-columns:
-    repeat(4,1fr);
-  gap:12px;
-  margin:18px 0;
-}
-
-.score-card{
-  background:#f8fafc;
-  border:2px solid #e2e8f0;
-  border-radius:16px;
-  padding:15px;
-}
-
-.score-card b{
-  display:block;
-  font-size:26px;
-  margin-top:5px;
-}
-
-.result-actions{
-  display:grid;
-  grid-template-columns:
-    repeat(3,1fr);
-  gap:10px;
-}
-
-.save-status{
-  min-height:24px;
-  margin:10px 0 16px;
-  font-size:15px;
-  font-weight:900;
-}
-
-@media(max-width:900px){
-  .score-grid{
-    grid-template-columns:
-      repeat(2,1fr);
-  }
-}
-
-@media(max-width:700px){
-
-  body{
-    padding:4px;
-  }
-
-  .inner{
-    padding:14px;
-  }
-
-  .topbar{
-    gap:8px;
-  }
-
-  .btn{
-    padding:11px 13px;
-    font-size:15px;
-  }
-
-  .score-grid,
-  .result-actions{
-    grid-template-columns:1fr;
-  }
-
-  .problem{
-    font-size:
-      clamp(25px,8vw,38px);
-  }
-
-  .answer-card{
-    gap:8px;
-  }
-
-  .sign-select{
-    min-width:62px;
-    height:42px;
-  }
-
-  .frac-input{
-    width:70px;
-    grid-template-rows:
-      42px 42px;
-  }
-
-  .frac-input input{
-    height:42px;
-    font-size:20px;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2-3 分數的四則運算大挑戰</title>
+
+  <link rel="stylesheet" href="../css/scratchpad.css">
+  <link rel="stylesheet" href="../css/expression-input.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --primary: #00897b;
+      --primary-dark: #00695c;
+      --primary-light: #e0f2f1;
+      --primary-border: #80cbc4;
+      --text: #1f2937;
+      --muted: #64748b;
+      --success: #15803d;
+      --warning: #b45309;
+      --danger: #b91c1c;
+      --orange: #f57c00;
+      --surface: #ffffff;
+      --shadow: 0 14px 34px rgba(15, 23, 42, 0.13);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 16px;
+      font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg,#e8f8f5,#fff8e8);
+    }
+
+    button, input {
+      font-family: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button { touch-action: manipulation; }
+
+    .page-shell {
+      width: min(100%, 1020px);
+      margin: 0 auto;
+    }
+
+    #commonHeaderMount { margin-bottom: 14px; }
+
+    .game-card {
+      overflow: hidden;
+      border: 1px solid #d8e7f7;
+      border-top: 8px solid var(--primary);
+      border-radius: 26px;
+      background: rgba(255,255,255,.98);
+      box-shadow: var(--shadow);
+    }
+
+    .game-header {
+      padding: 26px 24px 20px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--primary-light), #fff);
+    }
+
+    .game-title {
+      margin: 0;
+      color: var(--primary-dark);
+      font-size: clamp(28px, 5vw, 42px);
+      line-height: 1.35;
+    }
+
+    .game-subtitle {
+      max-width: 860px;
+      margin: 10px auto 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .screen { padding: 24px; }
+    .hidden { display: none !important; }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .mode-card {
+      min-height: 184px;
+      padding: 20px;
+      border: 2px solid var(--primary-border);
+      border-radius: 20px;
+      background: linear-gradient(180deg, var(--primary-light), #fff);
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+
+    .mode-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(15,23,42,.11);
+      border-color: var(--primary);
+    }
+
+    .mode-card h2 {
+      margin: 0 0 8px;
+      color: var(--primary-dark);
+      font-size: 21px;
+      line-height: 1.45;
+    }
+
+    .mode-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .mode-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .mode-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--primary-border);
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .mode-card.speed {
+      border-color: #ffcc80;
+      background: linear-gradient(180deg, #fff3e0, #fff);
+    }
+
+    .mode-card.speed h2 { color: #e65100; }
+
+    .mode-card.comprehensive {
+      border-color: #ffe082;
+      background: linear-gradient(180deg, #fff8e1, #fff);
+    }
+
+    .mode-card.comprehensive h2 { color: #9a6700; }
+
+    .quiz-topbar {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .status-box {
+      min-height: 74px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10px 8px;
+      border-radius: 14px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .status-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-value {
+      margin-top: 4px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .timer-danger {
+      background: #fee2e2 !important;
+      color: #991b1b !important;
+      animation: pulse .75s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.025); }
+    }
+
+    .progress-shell {
+      height: 12px;
+      margin-bottom: 18px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e2e8f0;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--primary), #42a5f5);
+      transition: width .2s ease;
+    }
+
+    .question-card {
+      padding: 24px 18px;
+      border: 2px solid var(--primary-border);
+      border-radius: 20px;
+      background: #fff;
+      text-align: center;
+    }
+
+    .question-label {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: clamp(16px, 2.1vw, 20px);
+      font-weight: 900;
+      line-height: 1.65;
+    }
+
+    .question-content {
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f172a;
+      font-size: clamp(22px, 3.4vw, 32px);
+      font-weight: 900;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+
+    .math-expression {
+      white-space: normal;
+      letter-spacing: .02em;
+    }
+
+    .math-expression sup {
+      font-size: .6em;
+      vertical-align: super;
+    }
+
+    .mini-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .scratchpad-row {
+      display: flex;
+      justify-content: center;
+      margin: 14px 0 2px;
+    }
+
+    .answer-panel {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      background: #f8fbff;
+    }
+
+    .answer-title {
+      margin-bottom: 12px;
+      text-align: center;
+      color: var(--primary-dark);
+      font-weight: 900;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .choice-button {
+      min-height: 68px;
+      padding: 12px;
+      border: 2px solid #cbd5e1;
+      border-radius: 16px;
+      background: #fff;
+      color: #0f172a;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.5;
+      cursor: pointer;
+      transition: .14s ease;
+    }
+
+    .choice-button:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .choice-button.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .choice-button.correct-choice {
+      border-color: #22c55e !important;
+      background: #dcfce7 !important;
+      color: #166534 !important;
+    }
+
+    .choice-button.wrong-choice {
+      border-color: #ef4444 !important;
+      background: #fee2e2 !important;
+      color: #991b1b !important;
+    }
+
+    .number-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .number-input {
+      width: min(100%, 360px);
+      min-height: 58px;
+      padding: 10px 16px;
+      border: 2px solid var(--primary-border);
+      border-radius: 15px;
+      background: #fff;
+      color: #0f172a;
+      text-align: center;
+      font-size: 26px;
+      font-weight: 900;
+      outline: none;
+    }
+
+    .number-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(21,101,192,.10);
+    }
+
+    .input-message {
+      min-height: 24px;
+      margin-top: 10px;
+      color: var(--danger);
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .feedback {
+      min-height: 48px;
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.55;
+    }
+
+    .feedback:empty {
+      min-height: 0;
+      padding: 0;
+      margin-top: 0;
+    }
+
+    .feedback.correct {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .feedback.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .explanation {
+      margin-top: 14px;
+      padding: 18px;
+      border-left: 6px solid var(--primary);
+      border-radius: 14px;
+      background: #f8fafc;
+      color: #334155;
+      line-height: 1.85;
+      font-size: 16px;
+    }
+
+    .explanation strong {
+      color: #0f172a;
+    }
+
+    .rule-box,
+    .calculation-box,
+    .decision-box {
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      line-height: 1.8;
+    }
+
+    .rule-box {
+      background: #e0f2fe;
+      border: 1px solid #7dd3fc;
+    }
+
+    .calculation-box {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+    }
+
+    .decision-box {
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+    }
+
+    .factor-line {
+      margin: 6px 0;
+      font-weight: 800;
+    }
+
+    /*
+    ==================================================
+    標準分解式比較表
+    ==================================================
+    */
+    .short-division {
+      width: min(100%, 660px);
+      margin: 12px auto;
+      border-collapse: collapse;
+      background: #fff;
+      font-size: 15px;
+    }
+
+    .short-division th,
+    .short-division td {
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+      text-align: center;
+    }
+
+    .short-division th {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    /*
+    ==================================================
+    課本式短除法
+    左側：共同除數
+    右側：被除數／商逐層往下寫
+    ==================================================
+    */
+    .textbook-division-wrap {
+      width: 100%;
+      margin: 14px 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .textbook-division {
+      width: max-content;
+      min-width: 300px;
+      margin: 0 auto;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #fff;
+      color: #0f172a;
+      font-size: clamp(17px, 2.4vw, 22px);
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .textbook-division td {
+      min-width: 64px;
+      padding: 7px 13px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .textbook-division .division-divisor {
+      min-width: 46px;
+      padding-left: 6px;
+      padding-right: 10px;
+      color: var(--primary-dark);
+      text-align: right;
+      border-right: 3px solid #334155;
+    }
+
+    .textbook-division .division-divisor.blank {
+      color: transparent;
+      border-right-color: transparent;
+    }
+
+    .textbook-division tr.division-step td.division-number {
+      border-bottom: 3px solid #334155;
+    }
+
+    .textbook-division tr.division-final td.division-number {
+      padding-top: 9px;
+      color: #7c2d12;
+    }
+
+    .textbook-division-caption {
+      margin: 8px auto 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .division-step-list {
+      margin: 12px 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #dbeafe;
+    }
+
+    .division-step-item {
+      padding: 7px 0;
+      border-bottom: 1px dashed #cbd5e1;
+      line-height: 1.75;
+    }
+
+    .division-step-item:last-child {
+      border-bottom: 0;
+    }
+
+    .division-step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      margin-right: 7px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 1000;
+    }
+
+    .division-carry {
+      color: #b45309;
+      font-weight: 1000;
+    }
+
+    .division-stop {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #ecfdf5;
+      border: 1px solid #86efac;
+      color: #166534;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 520px) {
+      .textbook-division td {
+        min-width: 52px;
+        padding: 6px 9px;
+      }
+
+      .textbook-division .division-divisor {
+        min-width: 40px;
+      }
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .game-button {
+      min-height: 48px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(21,101,192,.2);
+    }
+
+    .game-button.secondary { background: #64748b; }
+    .game-button.orange { background: var(--orange); }
+    .game-button.restart { background: #16a34a; }
+
+    .game-button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .result-card {
+      text-align: center;
+    }
+
+    .result-card h2 {
+      margin-top: 0;
+      color: var(--primary-dark);
+    }
+
+    .result-score {
+      margin: 10px 0 4px;
+      color: var(--primary-dark);
+      font-size: clamp(40px, 8vw, 66px);
+      font-weight: 1000;
+    }
+
+    .result-stars {
+      font-size: 28px;
+      letter-spacing: 3px;
+    }
+
+    .result-comment {
+      max-width: 720px;
+      margin: 12px auto;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .result-item {
+      padding: 14px 8px;
+      border-radius: 14px;
+      background: var(--primary-light);
+    }
+
+    .result-item .label {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .result-item .value {
+      display: block;
+      margin-top: 5px;
+      color: var(--primary-dark);
+      font-size: 24px;
+      font-weight: 1000;
+    }
+
+    .save-status {
+      min-height: 24px;
+      margin: 10px 0 0;
+      font-weight: 800;
+    }
+
+    .review-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .review-card {
+      padding: 16px;
+      border: 1px solid #dbeafe;
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .review-title {
+      margin-bottom: 10px;
+      color: var(--danger);
+      font-weight: 1000;
+    }
+
+    .review-question {
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    .review-answer {
+      margin: 10px 0;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 8px; }
+      .screen { padding: 16px; }
+      .game-header { padding: 22px 16px 16px; }
+      .mode-grid { grid-template-columns: 1fr; }
+      .quiz-topbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .choice-grid { grid-template-columns: 1fr; }
+      .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .question-card { padding: 20px 12px; }
+    }
+
+    @media (max-width: 420px) {
+      .status-value { font-size: 16px; }
+      .game-button { width: 100%; }
+    }
+  
+    .math-frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.05;margin:0 .12em;min-width:1.2em}
+    .math-frac .top{padding:0 .14em .08em;border-bottom:1.6px solid currentColor}
+    .math-frac .bottom{padding:.08em .14em 0}
+    .math-expr{font-size:clamp(24px,4vw,34px);font-weight:800;line-height:1.8;word-break:break-word}
+    .math-sup{font-size:.66em;vertical-align:super;margin-left:.04em}
+    .step-line{margin:.5rem 0;line-height:1.85}
+    .law-chip{display:inline-block;padding:.18rem .55rem;border-radius:999px;background:var(--primary-light);color:var(--primary-dark);font-weight:800;margin:.12rem}
+    .answer-hint{color:var(--muted);font-size:.92rem;margin-top:.45rem}
+
+  </style>
 </head>
 
 <body>
+<div class="page-shell">
 
-<main class="app">
+  <div id="commonHeaderMount"></div>
 
-  <div class="progress">
-    <div id="progress-bar"></div>
-  </div>
+  <main class="game-card">
 
-  <div class="inner">
+    <header class="game-header">
+      <h1 class="game-title">2-3 分數的四則運算大挑戰</h1>
+      <p class="game-subtitle">依 115 課本與習作編排：等值分數 → 正負分數加減 → 乘除與倒數 → 四則混合 → 數線與生活應用。答錯後提供可學習的逐步解析。</p>
+    </header>
 
-    <!--
-    ==================================================
-    開始畫面
-    ==================================================
-    -->
+    <section id="start-screen" class="screen">
+      <div class="mode-grid">
+        <button class="mode-card" type="button" data-mode="equivalent">
+          <h2>🧩 等值分數與大小比較</h2>
+          <p>負分數表示、約分與擴分、最簡分數，以及正負分數大小比較。</p>
+          <div class="mode-meta"><span class="mode-badge">10 題</span></div>
+        </button>
+        <button class="mode-card" type="button" data-mode="addSubtract">
+          <h2>➕ 正負分數加減</h2>
+          <p>同分母、異分母、通分、去括號與加法運算律；每題都有完整通分步驟。</p>
+          <div class="mode-meta"><span class="mode-badge">10 題</span></div>
+        </button>
+        <button class="mode-card" type="button" data-mode="multiplyDivide">
+          <h2>✖️ 正負分數乘除與倒數</h2>
+          <p>判斷正負號、約分、倒數，以及分數乘法、除法與乘除混合。</p>
+          <div class="mode-meta"><span class="mode-badge">10 題</span></div>
+        </button>
+        <button class="mode-card" type="button" data-mode="mixed">
+          <h2>🧮 正負分數四則運算</h2>
+          <p>依序處理括號、乘除、加減，避免過度複雜但完整涵蓋課本核心。</p>
+          <div class="mode-meta"><span class="mode-badge">10 題</span></div>
+        </button>
+        <button class="mode-card" type="button" data-mode="application">
+          <h2>📍 數線、距離與生活應用</h2>
+          <p>練習數線距離、中點與生活情境，將分數運算連結到實際問題。</p>
+          <div class="mode-meta"><span class="mode-badge">10 題</span></div>
+        </button>
+        <button class="mode-card speed" type="button" data-mode="speed">
+          <h2>⚡ 分數運算快手</h2>
+          <p>60 秒短題快速熟練；最後 10 秒啟動急促倒數提醒。</p>
+          <div class="mode-meta"><span class="mode-badge">60 秒</span></div>
+        </button>
+        <button class="mode-card comprehensive" type="button" data-mode="comprehensive">
+          <h2>🏆 2-3 綜合挑戰</h2>
+          <p>整合等值分數、加減、乘除、四則混合與應用問題。</p>
+          <div class="mode-meta"><span class="mode-badge">10 題</span></div>
+        </button>
+      </div>
+    </section>
 
-    <section id="start-screen">
+    <section id="quiz-screen" class="screen hidden">
 
-      <h1 class="title">
-        正負分數加減大挑戰
-      </h1>
+      <div class="quiz-topbar">
+        <div class="status-box">
+          <span class="status-label">模式</span>
+          <span id="mode-display" class="status-value">—</span>
+        </div>
+        <div id="time-box" class="status-box">
+          <span class="status-label">時間</span>
+          <span id="time-display" class="status-value">00:00</span>
+        </div>
+        <div class="status-box">
+          <span class="status-label">分數</span>
+          <span id="score-display" class="status-value">0</span>
+        </div>
+        <div class="status-box">
+          <span class="status-label">連擊</span>
+          <span id="combo-display" class="status-value">0</span>
+        </div>
+      </div>
 
-      <p class="subtitle">
-        先複習最小公倍數，
-        再挑戰正負分數的同分母與異分母加減。
-      </p>
+      <div class="progress-shell">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
 
-      <div class="modes">
+      <div class="question-card">
+        <div id="question-label" class="question-label"></div>
+        <div id="question-content" class="question-content"></div>
+        <div id="question-note" class="mini-note"></div>
+      </div>
 
-        <label class="mode-card">
+      <div class="scratchpad-row">
+        <div id="scratchpad-mobile-button"></div>
+      </div>
 
+      <div class="answer-panel">
+        <div class="answer-title">請作答</div>
+
+        <div id="choiceMount" class="choice-grid"></div>
+
+        <div id="numberMountWrap" class="number-wrap hidden">
           <input
-            type="radio"
-            name="mode"
-            value="lcm"
-            checked
+            id="number-input"
+            class="number-input"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            placeholder="可輸入整數、分數，例如 -3/4"
           >
+        </div>
 
-          <span>
+        <div id="expressionMountWrap" class="hidden">
+          <div id="answerMount"></div>
+        </div>
 
-            <div class="mode-title">
-              基礎複習｜最小公倍數
-            </div>
-
-            <div class="example">
-              例如：求 6 與 8 的最小公倍數
-            </div>
-
-          </span>
-
-        </label>
-
-
-        <label class="mode-card">
-
-          <input
-            type="radio"
-            name="mode"
-            value="fraction"
-          >
-
-          <span>
-
-            <div class="mode-title">
-              正式挑戰｜正負分數加減
-            </div>
-
-            <div class="example">
-              同異分母的正負分數加減運算
-            </div>
-
-          </span>
-
-        </label>
-
+        <div id="input-message" class="input-message"></div>
       </div>
 
+      <div id="feedback" class="feedback"></div>
+      <div id="explanation" class="explanation hidden"></div>
 
-      <div class="center">
-
-        <button
-          id="start-btn"
-          class="btn btn-primary"
-        >
-          開始挑戰
-        </button>
-
+      <div class="button-row">
+        <button id="submit-button" class="game-button" type="button">送出答案</button>
+        <button id="next-button" class="game-button secondary hidden" type="button">下一題</button>
+        <button id="quit-button" class="game-button orange" type="button">選擇模式</button>
       </div>
-
     </section>
 
+    <section id="result-screen" class="screen hidden result-card">
+      <h2 id="result-mode-name">測驗完成</h2>
 
-    <!--
-    ==================================================
-    作答畫面
-    ==================================================
-    -->
+      <div id="final-score" class="result-score">0 分</div>
+      <div id="final-stars" class="result-stars">★★★★★</div>
+      <p id="final-comment" class="result-comment"></p>
 
-    <section
-      id="quiz-screen"
-      class="hidden"
-    >
-
-      <div class="topbar">
-
-        <button
-          id="change-mode-btn"
-          class="btn btn-light"
-        >
-          ← 重選模式
-        </button>
-
-
-        <span
-          id="question-number"
-          class="pill pill-blue"
-        >
-          第 1 / 10 題
-        </span>
-
-
-        <span
-          id="mode-badge"
-          class="pill pill-amber"
-        >
-          最小公倍數
-        </span>
-
-
-        <span
-          id="time-display"
-          class="pill pill-gray"
-        >
-          ⏳ 00:00
-        </span>
-
-
-        <!-- 新增目前連擊顯示 -->
-
-        <span
-          id="combo-display"
-          class="pill pill-green"
-        >
-          🔥 連擊 0
-        </span>
-
-
-        <button
-          id="reset-btn"
-          class="btn btn-danger-light"
-        >
-          重新測驗（目前模式）
-        </button>
-
-
-        <div
-          id="scratchpad-mobile-button"
-        ></div>
-
-      </div>
-
-
-      <div
-        id="problem-text"
-        class="problem"
-      ></div>
-
-
-      <div class="answer-wrap">
-
-        <div id="answerInputMount"></div>
-
-
-        <div
-          id="answer-help"
-          class="help"
-        ></div>
-
-
-        <div
-          id="answer-preview"
-          class="preview"
-        ></div>
-
-
-        <div class="actions">
-
-          <button
-            id="submit-btn"
-            class="btn btn-green"
-          >
-            送出答案（Enter）
-          </button>
-
-          <button
-            id="next-btn"
-            class="btn btn-primary hidden"
-          >
-            下一題（Enter）
-          </button>
-
+      <div class="result-grid">
+        <div class="result-item">
+          <span class="label">答對</span>
+          <span id="final-correct" class="value">0</span>
         </div>
-
-
-        <div
-          id="feedback"
-          class="feedback"
-          aria-live="polite"
-        ></div>
-
+        <div class="result-item">
+          <span class="label">答錯</span>
+          <span id="final-wrong" class="value">0</span>
+        </div>
+        <div class="result-item">
+          <span class="label">最高連擊</span>
+          <span id="final-combo" class="value">0</span>
+        </div>
+        <div class="result-item">
+          <span class="label">作答時間</span>
+          <span id="final-time" class="value">00:00</span>
+        </div>
       </div>
 
+      <div id="save-status" class="save-status" aria-live="polite"></div>
+
+      <div class="button-row">
+        <button id="again-button" class="game-button restart" type="button">🔄 重新挑戰</button>
+        <button id="review-button" class="game-button orange" type="button">錯題回顧</button>
+        <button id="result-mode-button" class="game-button secondary" type="button">選擇模式</button>
+      </div>
     </section>
 
+    <section id="review-screen" class="screen hidden">
+      <h2>📝 錯題回顧</h2>
+      <div id="review-list" class="review-list"></div>
 
-    <!--
-    ==================================================
-    結果畫面
-    ==================================================
-    -->
-
-    <section
-      id="result-screen"
-      class="hidden result-box"
-    >
-
-      <h2 class="title">
-        挑戰完成！
-      </h2>
-
-
-      <div class="grade-card">
-
-        <div
-          id="final-score"
-          class="grade-big"
-        >
-          0 分
-        </div>
-
-        <div
-          id="final-stars"
-          class="stars"
-        >
-          ☆☆☆☆☆
-        </div>
-
-        <div
-          id="final-comment"
-          class="comment"
-        ></div>
-
+      <div class="button-row">
+        <button id="review-again-button" class="game-button restart" type="button">🔄 重新挑戰</button>
+        <button id="review-result-button" class="game-button secondary" type="button">回到測驗結果</button>
       </div>
-
-
-      <div class="score-grid">
-
-        <div class="score-card">
-          答對
-          <b id="final-correct">
-            0
-          </b>
-        </div>
-
-
-        <div class="score-card">
-          答錯
-          <b id="final-wrong">
-            0
-          </b>
-        </div>
-
-
-        <div class="score-card">
-          最高連擊
-          <b id="final-combo">
-            0
-          </b>
-        </div>
-
-
-        <div class="score-card">
-          總時間
-          <b id="final-time">
-            00:00
-          </b>
-        </div>
-
-      </div>
-
-
-      <p
-        id="save-status"
-        class="save-status"
-      ></p>
-
-
-      <div class="result-actions">
-
-        <button
-          id="again-btn"
-          class="btn btn-primary"
-        >
-          🔄 再玩一次
-        </button>
-
-
-        <button
-          id="result-change-mode-btn"
-          class="btn btn-light"
-        >
-          重選模式
-        </button>
-
-
-        <a
-          class="btn btn-neutral"
-          href="../leaderboard.html"
-        >
-          🏆 排行榜
-        </a>
-
-
-        <a
-          class="btn btn-neutral"
-          href="../my-scores.html"
-        >
-          📊 我的成績
-        </a>
-
-
-        <a
-          class="btn btn-light"
-          href="../index.html"
-        >
-          🏠 回首頁
-        </a>
-
-      </div>
-
     </section>
 
-  </div>
+  </main>
+</div>
 
-</main>
-
-
+<script src="../js/common-header.js"></script>
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
-<script src="../js/answer-input.js"></script>
-
+<script src="../js/sound-manager.js?v=1"></script>
+<script src="../js/expression-input.js?v=7"></script>
 
 <script type="module">
 
-import {
-  saveGameScore
-} from "../js/scores.js";
-
-
 "use strict";
+/* 2-3 分數的四則運算｜最終版
+   GAME_ID 保留 fraction，直接升級既有七上分數遊戲，不另建重複 ID。
+   modeId 供 Firestore／排行榜／未來 RPG 使用。 */
+const GAME_ID="fraction";
+const CHAPTER="2-3";
+const GAME_TITLE="2-3 分數的四則運算大挑戰";
+const MODE_CONFIG={
+  equivalent:{name:"🧩 等值分數與大小比較",count:10,difficultyWeight:1.00},
+  addSubtract:{name:"➕ 正負分數加減",count:10,difficultyWeight:1.10},
+  multiplyDivide:{name:"✖️ 正負分數乘除與倒數",count:10,difficultyWeight:1.16},
+  mixed:{name:"🧮 正負分數四則運算",count:10,difficultyWeight:1.25},
+  application:{name:"📍 數線、距離與生活應用",count:10,difficultyWeight:1.28},
+  speed:{name:"⚡ 分數運算快手",seconds:60,difficultyWeight:1.12},
+  comprehensive:{name:"🏆 2-3 綜合挑戰",count:10,difficultyWeight:1.36}
+};
 
-
-/*
-==================================================
-計算紙按鈕
-==================================================
-*/
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const mount =
-      document.getElementById(
-        "scratchpad-mobile-button"
-      );
-
-    const button =
-      document.getElementById(
-        "scratchpadOpenButton"
-      );
-
-    if (
-      mount &&
-      button
-    ) {
-
-      mount.appendChild(
-        button
-      );
-    }
+/* ---------- 有理數核心：所有等值分數皆可正確判定 ---------- */
+function igcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1}
+function ilcm(a,b){return Math.abs(a*b)/igcd(a,b)}
+function R(n,d=1){if(!d)throw new Error("分母不可為 0");if(d<0){n=-n;d=-d}const g=igcd(n,d);return {n:n/g,d:d/g}}
+function radd(a,b){return R(a.n*b.d+b.n*a.d,a.d*b.d)}
+function rsub(a,b){return R(a.n*b.d-b.n*a.d,a.d*b.d)}
+function rmul(a,b){return R(a.n*b.n,a.d*b.d)}
+function rdiv(a,b){if(!b.n)throw new Error("除數不可為 0");return R(a.n*b.d,a.d*b.n)}
+function rabs(a){return R(Math.abs(a.n),a.d)}
+function rneg(a){return R(-a.n,a.d)}
+function ratEq(a,b){return !!a&&!!b&&a.n===b.n&&a.d===b.d}
+function ratCmp(a,b){return a.n*b.d-b.n*a.d}
+function ratHTML(x){
+  const a=R(x.n,x.d);if(a.d===1)return String(a.n).replace("-","−");
+  const sign=a.n<0?"−":"", n=Math.abs(a.n);
+  return `${sign}<span class="math-frac"><span class="top">${n}</span><span class="bottom">${a.d}</span></span>`;
+}
+function rawFracHTML(n,d){
+  if(d<0){n=-n;d=-d}if(d===1)return String(n).replace("-","−");
+  const sign=n<0?"−":"";
+  return `${sign}<span class="math-frac"><span class="top">${Math.abs(n)}</span><span class="bottom">${d}</span></span>`;
+}
+function mixedHTML(x){
+  const a=R(x.n,x.d),sg=a.n<0?"−":"",n=Math.abs(a.n);
+  if(a.d===1)return `${sg}${n}`;if(n<a.d)return ratHTML(a);
+  const w=Math.floor(n/a.d),r=n%a.d;if(!r)return `${sg}${w}`;
+  return `${sg}${w}${ratHTML(R(r,a.d))}`;
+}
+function parseRational(raw){
+  let s=String(raw).trim().replace(/[−–—]/g,"-").replace(/\s+/g," ");
+  let m=s.match(/^([+-]?\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+  if(m){const w=Number(m[1]),n=Number(m[2]),d=Number(m[3]);if(!d)return {ok:false};const sign=w<0?-1:1;const rawN=sign*(Math.abs(w)*d+n);return {ok:true,value:R(rawN,d),simple:igcd(rawN,d)===1}}
+  m=s.match(/^([+-]?\d+)\s*\/\s*([+-]?\d+)$/);
+  if(m){const n=Number(m[1]),d=Number(m[2]);if(!d)return {ok:false};return {ok:true,value:R(n,d),simple:igcd(n,d)===1}}
+  if(/^[+-]?\d+$/.test(s)){return {ok:true,value:R(Number(s),1),simple:true}}
+  return {ok:false};
+}
+function frac(a,b,neg=false){return R(neg?-Math.abs(a):Math.abs(a),b)}
+function nzNum(max=9){let n=0;while(!n)n=ri(-max,max);return n}
+function smallRat(proper=true){
+  const d=pick([2,3,4,5,6,7,8,9,10,12]), lim=proper?d-1:d*2+1;
+  return R(nzNum(Math.max(1,lim)),d);
+}
+function calcBox(rule,lines,answer){
+  return `<div class="rule-box"><b>觀念：</b>${rule}</div>
+  <div class="calculation-box">${lines.map(x=>`<div class="step-line">${x}</div>`).join("")}</div>
+  <div class="decision-box"><b>答案：</b>${answer}</div>`;
+}
+function makeChoiceQ(html,items,correctIndex,explanation,note=""){
+  const rows=shuffle(items.map((label,i)=>({label,ok:i===correctIndex})));
+  return {kind:"choice",html,choices:rows.map(x=>x.label),answerIndex:rows.findIndex(x=>x.ok),explanation,note};
+}
+function addSubExplain(a,b,op,ans){
+  const L=ilcm(a.d,b.d),A=a.n*(L/a.d),B=b.n*(L/b.d),symbol=op==="+"?"+":"−",num=op==="+"?A+B:A-B;
+  const rule=op==="-"?"減去一個數等於加上它的相反數；異分母先通分，再做分子加減。":"異分母先用最小公倍數通分，再做分子加法。";
+  return calcBox(rule,[
+    `分母 ${a.d}、${b.d} 的最小公倍數是 <b>${L}</b>。`,
+    `${ratHTML(a)} ${symbol} ${ratHTML(b)} ＝ ${rawFracHTML(A,L)} ${symbol} ${rawFracHTML(B,L)}`,
+    `＝ ${rawFracHTML(num,L)}`,
+    igcd(num,L)>1?`分子、分母同除以 ${igcd(num,L)}，化簡得 ${ratHTML(ans)}。`:`已是最簡結果 ${ratHTML(ans)}。`
+  ],ratHTML(ans));
+}
+function mulExplain(a,b,ans){
+  const rawN=a.n*b.n,rawD=a.d*b.d,g=igcd(rawN,rawD);
+  return calcBox("先判斷正負號，再把分子相乘、分母相乘；最後約分。",[
+    `${ratHTML(a)} × ${ratHTML(b)}`,
+    `＝ ${rawN<0?"−":""}<span class="math-frac"><span class="top">${Math.abs(a.n)}×${Math.abs(b.n)}</span><span class="bottom">${a.d}×${b.d}</span></span>`,
+    `＝ ${rawN<0?"−":""}<span class="math-frac"><span class="top">${Math.abs(rawN)}</span><span class="bottom">${rawD}</span></span>${g>1?`，再同除以 ${g}`:""}`,
+    `＝ ${ratHTML(ans)}`
+  ],ratHTML(ans));
+}
+function divExplain(a,b,ans){
+  const rec=R(b.d,b.n);
+  return calcBox("除以一個不為 0 的數，就是乘以它的倒數；倒數的正負號不變。",[
+    `${ratHTML(a)} ÷ ${ratHTML(b)}`,
+    `＝ ${ratHTML(a)} × ${ratHTML(rec)}　（把除數改乘它的倒數）`,
+    `＝ ${ratHTML(ans)}`
+  ],ratHTML(ans));
+}
+function makeEquivalent(){
+  const t=ri(0,3);
+  if(t===0){
+    const d=pick([4,6,8,9,10,12,15,18,20,24]), g=pick([2,3]), n=nzNum(d-1)*g, den=d*g, ans=R(n,den);
+    return {kind:"rational",html:`<div class="math-expr">將 ${rawFracHTML(n,den)} 化為最簡分數。</div>`,answer:ans,requireSimple:true,
+      note:"本題指定「最簡分數」，需完成約分。",
+      explanation:calcBox("分子與分母同除以最大公因數，分數的值不變。",[
+        `分子 ${Math.abs(n)} 與分母 ${den} 的最大公因數為 ${igcd(n,den)}。`,
+        `${rawFracHTML(n,den)} ＝ ${ratHTML(ans)}`
+      ],ratHTML(ans))};
   }
-);
-
-
-/*
-==================================================
-共用
-==================================================
-*/
-
-const $ =
-  id =>
-    document.getElementById(
-      id
-    );
-
-
-const GAME_ID =
-  "fraction";
-
-
-const TOTAL =
-  10;
-
-
-/*
-==================================================
-共用答案輸入元件
-==================================================
-*/
-
-const answerInput =
-  window.MathAnswerInput.create({
-    mountId:
-      "answerInputMount",
-
-    requireSimplest:
-      true,
-
-    allowMixedNumber:
-      true,
-
-    allowImproperFraction:
-      true
-  });
-
-
-/*
-==================================================
-音效
-==================================================
-*/
-
-let fractionAudioContext =
-  null;
-
-
-function getFractionAudioContext() {
-
-  const AudioContextClass =
-    window.AudioContext ||
-    window.webkitAudioContext;
-
-
-  if (
-    !AudioContextClass
-  ) {
-
-    return null;
+  if(t===1){
+    let a=smallRat(),b=smallRat();while(ratEq(a,b))b=smallRat();
+    const c=ratCmp(a,b), signs=["＜","＝","＞"],correct=c<0?0:c>0?2:1;
+    return makeChoiceQ(`<div class="math-expr">比較大小：${ratHTML(a)}　□　${ratHTML(b)}</div>`,signs,correct,
+      calcBox("可先通分或比較絕對值；兩個負數比較時，絕對值較大的反而較小。",[
+        `通分後比較：${ratHTML(a)} ${c<0?"＜":c>0?"＞":"＝"} ${ratHTML(b)}。`
+      ],`${ratHTML(a)} ${signs[correct]} ${ratHTML(b)}`));
   }
-
-
-  if (
-    !fractionAudioContext
-  ) {
-
-    fractionAudioContext =
-      new AudioContextClass();
+  if(t===3){
+    const n=pick([1,2,3,4,5]),d=pick([3,4,5,7,8]);
+    const neg=rawFracHTML(-n,d), denNeg=`<span class="math-frac"><span class="top">${n}</span><span class="bottom">−${d}</span></span>`;
+    return makeChoiceQ(`<div class="math-expr">下列何者與 ${neg} <b>不相等</b>？</div>`,
+      [rawFracHTML(n,d),denNeg,`−(${rawFracHTML(n,d)})`],0,
+      calcBox("負號可放在分數前、分子或分母其中一處；只有一個負號時，分數為負。",[
+        `${rawFracHTML(-n,d)} ＝ ${denNeg} ＝ −(${rawFracHTML(n,d)})。`,
+        `${rawFracHTML(n,d)} 為正分數，所以不相等。`
+      ],rawFracHTML(n,d)));
   }
-
-
-  return fractionAudioContext;
+  const a=smallRat(),k=pick([2,3,4]), eq=R(a.n*k,a.d*k);
+  const wrong1=R(a.n*k,a.d),wrong2=R(a.n,a.d*k);
+  return makeChoiceQ(`<div class="math-expr">下列哪一個分數與 ${ratHTML(a)} 等值？</div>`,
+    [ratHTML(eq),ratHTML(wrong1),ratHTML(wrong2)],0,
+    calcBox("分子、分母同乘或同除以相同的非零數，分數值不變。",[
+      `${ratHTML(a)} 的分子與分母同乘 ${k}，得到 ${rawFracHTML(a.n*k,a.d*k)}。`
+    ],ratHTML(eq)));
+}
+function makeAddSubtract(speed=false){
+  const ds=speed?[3,4,5,6,8,10]:[2,3,4,5,6,7,8,9,10,12];
+  if(!speed&&Math.random()<.22){
+    const d=pick([5,7,11]),a=R(nzNum(d-1),d),c=R(nzNum(d-1),d),b=smallRat(),ans=radd(radd(a,c),b),ac=radd(a,c);
+    return {kind:"rational",html:`<div class="math-expr">計算：${ratHTML(a)} + ${ratHTML(b)} + ${ratHTML(c)}</div>`,answer:ans,
+      explanation:calcBox("加法可利用交換律、結合律，把容易相加的分數先結合。",[
+        `交換順序：${ratHTML(a)} + ${ratHTML(c)} + ${ratHTML(b)}`,
+        `先算同分母：(${ratHTML(a)} + ${ratHTML(c)}) + ${ratHTML(b)} ＝ ${ratHTML(ac)} + ${ratHTML(b)}`,
+        `＝ ${ratHTML(ans)}`
+      ],ratHTML(ans))};
+  }
+  if(!speed&&Math.random()<.20){
+    const a=smallRat(false),b=smallRat(),c=smallRat(),inside=radd(b,c),ans=rsub(a,inside);
+    return {kind:"rational",html:`<div class="math-expr">計算：${mixedHTML(a)} − (${ratHTML(b)} + ${ratHTML(c)})</div>`,answer:ans,
+      explanation:calcBox("有括號先算括號內；也可用去括號法則把減號分配進去。",[
+        `括號內：${ratHTML(b)} + ${ratHTML(c)} ＝ ${ratHTML(inside)}`,
+        `${ratHTML(a)} − (${ratHTML(inside)}) ＝ ${ratHTML(ans)}`
+      ],ratHTML(ans))};
+  }
+  const d1=pick(ds), d2=speed&&Math.random()<.65?d1:pick(ds);
+  const a=R(nzNum(d1*2),d1),b=R(nzNum(d2*2),d2),op=Math.random()<.5?"+":"-",ans=op==="+"?radd(a,b):rsub(a,b);
+  const displayA=!speed&&Math.abs(a.n)>a.d&&Math.random()<.35?mixedHTML(a):ratHTML(a);
+  const displayB=!speed&&Math.abs(b.n)>b.d&&Math.random()<.35?mixedHTML(b):ratHTML(b);
+  return {kind:"rational",html:`<div class="math-expr">計算：${displayA} ${op==="+"?"+":"−"} (${displayB})</div>`,answer:ans,
+    note:"答案可輸入任何等值分數，例如 -2/4 與 -1/2 都會判定為相同數值。",
+    explanation:addSubExplain(a,b,op,ans)};
+}
+function makeMultiplyDivide(speed=false){
+  if(!speed&&Math.random()<.20){
+    const a=smallRat(),b=smallRat(),c=smallRat(),ans=rmul(rmul(a,b),c);
+    const negatives=[a,b,c].filter(x=>x.n<0).length;
+    return {kind:"rational",html:`<div class="math-expr">計算：${ratHTML(a)} × ${ratHTML(b)} × ${ratHTML(c)}</div>`,answer:ans,
+      explanation:calcBox("多個非零分數連乘：負因數有偶數個，積為正；有奇數個，積為負，再進行約分。",[
+        `本題共有 ${negatives} 個負因數，所以乘積為${negatives%2?"負":"正"}數。`,
+        `${ratHTML(a)} × ${ratHTML(b)} × ${ratHTML(c)} ＝ ${ratHTML(ans)}`
+      ],ratHTML(ans))};
+  }
+  if(Math.random()<.5){
+    const a=smallRat(!speed),b=smallRat(!speed),ans=rmul(a,b);
+    return {kind:"rational",html:`<div class="math-expr">計算：${ratHTML(a)} × ${ratHTML(b)}</div>`,answer:ans,explanation:mulExplain(a,b,ans)};
+  }
+  let a=smallRat(!speed),b=smallRat(!speed);while(!b.n)b=smallRat(!speed);const ans=rdiv(a,b);
+  return {kind:"rational",html:`<div class="math-expr">計算：${ratHTML(a)} ÷ ${ratHTML(b)}</div>`,answer:ans,explanation:divExplain(a,b,ans)};
+}
+function makeReciprocal(){
+  let a=smallRat(false);while(!a.n)a=smallRat(false);const ans=R(a.d,a.n);
+  return {kind:"rational",html:`<div class="math-expr">寫出 ${ratHTML(a)} 的倒數。</div>`,answer:ans,
+    explanation:calcBox("兩個數的乘積為 1 時，稱兩數互為倒數；負數的倒數仍為負數。",[
+      `${ratHTML(a)} × ${ratHTML(ans)} ＝ 1`
+    ],ratHTML(ans))};
+}
+function makeMixed(){
+  const type=ri(0,2);
+  if(type===0){
+    const a=smallRat(),b=smallRat(),c=smallRat(),ans=radd(rmul(a,b),c);
+    return {kind:"rational",html:`<div class="math-expr">計算：${ratHTML(a)} × ${ratHTML(b)} + (${ratHTML(c)})</div>`,answer:ans,
+      explanation:calcBox("四則混合先乘除、後加減。",[
+        `先算乘法：${ratHTML(a)} × ${ratHTML(b)} ＝ ${ratHTML(rmul(a,b))}`,
+        `再算加法：${ratHTML(rmul(a,b))} + (${ratHTML(c)}) ＝ ${ratHTML(ans)}`
+      ],ratHTML(ans))};
+  }
+  if(type===1){
+    let a=smallRat(),b=smallRat(),c=smallRat();while(!c.n)c=smallRat();const inside=rsub(a,b), ans=rdiv(inside,c);
+    return {kind:"rational",html:`<div class="math-expr">計算：(${ratHTML(a)} − ${ratHTML(b)}) ÷ ${ratHTML(c)}</div>`,answer:ans,
+      explanation:calcBox("有括號時先算括號內，再依乘除優先的規則計算。",[
+        `括號內：${ratHTML(a)} − ${ratHTML(b)} ＝ ${ratHTML(inside)}`,
+        `${ratHTML(inside)} ÷ ${ratHTML(c)} ＝ ${ratHTML(inside)} × ${ratHTML(R(c.d,c.n))}`,
+        `＝ ${ratHTML(ans)}`
+      ],ratHTML(ans))};
+  }
+  let a=smallRat(),b=smallRat(),c=smallRat();while(!b.n)b=smallRat();const first=rdiv(a,b),ans=rsub(first,c);
+  return {kind:"rational",html:`<div class="math-expr">計算：${ratHTML(a)} ÷ ${ratHTML(b)} − (${ratHTML(c)})</div>`,answer:ans,
+    explanation:calcBox("四則混合先乘除、後加減；除法改成乘以倒數。",[
+      `先算除法：${ratHTML(a)} ÷ ${ratHTML(b)} ＝ ${ratHTML(first)}`,
+      `再算減法：${ratHTML(first)} − (${ratHTML(c)}) ＝ ${ratHTML(ans)}`
+    ],ratHTML(ans))};
+}
+function makeApplication(){
+  const t=ri(0,2);
+  if(t===0){
+    const a=smallRat(false),b=smallRat(false),ans=rabs(rsub(a,b));
+    return {kind:"rational",html:`<div class="math-expr">數線上 A 點坐標為 ${mixedHTML(a)}，B 點坐標為 ${mixedHTML(b)}。求 AB 的距離。</div>`,answer:ans,
+      explanation:calcBox("數線上兩點 a、b 的距離為 |a−b|。",[
+        `AB＝|${ratHTML(a)} − (${ratHTML(b)})|`,
+        `＝|${ratHTML(rsub(a,b))}|＝${ratHTML(ans)}`
+      ],ratHTML(ans))};
+  }
+  if(t===1){
+    const a=smallRat(false),c=smallRat(false),ans=rdiv(radd(a,c),R(2));
+    return {kind:"rational",html:`<div class="math-expr">A、C 在數線上的坐標分別為 ${mixedHTML(a)}、${mixedHTML(c)}，B 是 AC 的中點。求 B 的坐標。</div>`,answer:ans,
+      explanation:calcBox("中點坐標可用兩端點坐標相加後除以 2。",[
+        `B＝(${ratHTML(a)} + ${ratHTML(c)}) ÷ 2`,
+        `＝${ratHTML(radd(a,c))} × ${ratHTML(R(1,2))}`,
+        `＝${ratHTML(ans)}`
+      ],ratHTML(ans))};
+  }
+  const parts=shuffle([R(1,3),R(1,4),R(1,6)]),sum=radd(radd(parts[0],parts[1]),parts[2]),ans=rsub(R(1),sum);
+  return {kind:"rational",html:`<div class="math-expr">一筆財產中，三人分別取得 ${ratHTML(parts[0])}、${ratHTML(parts[1])}、${ratHTML(parts[2])}，其餘捐作公益。公益部分占全部的幾分之幾？</div>`,answer:ans,
+    explanation:calcBox("把全部看成 1，先算已分配的比例，再用 1 減去。",[
+      `已分配：${ratHTML(parts[0])}+${ratHTML(parts[1])}+${ratHTML(parts[2])}＝${ratHTML(sum)}`,
+      `公益：1−${ratHTML(sum)}＝${ratHTML(ans)}`
+    ],ratHTML(ans))};
+}
+function makeQuestion(mode,i=0){
+  if(mode==="equivalent")return makeEquivalent();
+  if(mode==="addSubtract")return makeAddSubtract();
+  if(mode==="multiplyDivide")return Math.random()<.22?makeReciprocal():makeMultiplyDivide();
+  if(mode==="mixed")return makeMixed();
+  if(mode==="application")return makeApplication();
+  if(mode==="speed")return Math.random()<.55?makeAddSubtract(true):makeMultiplyDivide(true);
+  if(mode==="comprehensive"){
+    const makers=[makeEquivalent,makeAddSubtract,makeMultiplyDivide,makeMixed,makeApplication];
+    return makers[i%makers.length]();
+  }
+  return makeAddSubtract();
 }
 
 
-async function ensureFractionAudio() {
-
-  const context =
-    getFractionAudioContext();
-
-
-  if (
-    !context
-  ) {
-
-    return null;
-  }
-
-
-  if (
-    context.state ===
-    "suspended"
-  ) {
-
-    try {
-
-      await context.resume();
-
-    } catch (error) {
-
-      console.warn(
-        "音效系統無法啟用：",
-        error
-      );
-    }
-  }
-
-
-  return (
-    context.state ===
-    "running"
-  )
-    ? context
-    : null;
+/* =========================
+   共用遊戲執行核心
+   ========================= */
+const $ = id => document.getElementById(id);
+const screens = ["start-screen","quiz-screen","result-screen","review-screen"];
+function mountScratchpadButton(){
+  const mount=$("scratchpad-mobile-button"),button=$("scratchpadOpenButton");
+  if(!mount||!button)return false;if(button.parentElement!==mount)mount.appendChild(button);return true;
 }
-
-
-async function playFractionTone({
-  frequency = 440,
-  duration = 0.18,
-  type = "sine",
-  volume = 0.14,
-  delay = 0
-} = {}) {
-
-  const context =
-    await ensureFractionAudio();
-
-
-  if (
-    !context
-  ) {
-
-    return;
-  }
-
-
-  const startTime =
-    context.currentTime +
-    Math.max(
-      0,
-      delay
-    );
-
-
-  const endTime =
-    startTime +
-    Math.max(
-      0.05,
-      duration
-    );
-
-
-  const oscillator =
-    context.createOscillator();
-
-
-  const gain =
-    context.createGain();
-
-
-  oscillator.type =
-    type;
-
-
-  oscillator.frequency
-    .setValueAtTime(
-      frequency,
-      startTime
-    );
-
-
-  gain.gain
-    .setValueAtTime(
-      0.0001,
-      startTime
-    );
-
-
-  gain.gain
-    .exponentialRampToValueAtTime(
-      Math.max(
-        0.0001,
-        volume
-      ),
-      startTime + 0.02
-    );
-
-
-  gain.gain
-    .exponentialRampToValueAtTime(
-      0.0001,
-      endTime
-    );
-
-
-  oscillator.connect(
-    gain
-  );
-
-
-  gain.connect(
-    context.destination
-  );
-
-
-  oscillator.start(
-    startTime
-  );
-
-
-  oscillator.stop(
-    endTime
-  );
-
-
-  oscillator.addEventListener(
-    "ended",
-    () => {
-
-      oscillator.disconnect();
-      gain.disconnect();
-    },
-    {
-      once:
-        true
-    }
-  );
+function ensureScratchpadButtonMounted(){
+  if(mountScratchpadButton())return;let tries=0;
+  const t=setInterval(()=>{tries++;if(mountScratchpadButton()||tries>=50)clearInterval(t)},50);
 }
+window.addEventListener("DOMContentLoaded",()=>{
+  if(window.MathGameCommonHeader)window.MathGameCommonHeader.init({mountId:"commonHeaderMount",basePath:"../"});
+  ensureScratchpadButtonMounted();
+});
+let modeId="", questions=[], index=0, correct=0, wrong=0, combo=0, maxCombo=0;
+let records=[], startAt=0, timerHandle=null, speedRemaining=0, speedScore=0, speedAttempts=0;
+let selectedChoice=null, locked=false, attemptId="";
 
-
-function playGameSound(
-  soundName
-) {
-
-  try {
-
-    if (
-      soundName ===
-      "playStart"
-    ) {
-
-      Promise.all([
-        playFractionTone({
-          frequency:392,
-          duration:0.16,
-          volume:0.12
-        }),
-
-        playFractionTone({
-          frequency:523.25,
-          duration:0.22,
-          volume:0.13,
-          delay:0.12
-        })
-      ]);
-
-      return;
-    }
-
-
-    if (
-      soundName ===
-      "playCorrect"
-    ) {
-
-      Promise.all([
-        playFractionTone({
-          frequency:523.25,
-          duration:0.17,
-          volume:0.14
-        }),
-
-        playFractionTone({
-          frequency:659.25,
-          duration:0.20,
-          volume:0.13,
-          delay:0.10
-        }),
-
-        playFractionTone({
-          frequency:783.99,
-          duration:0.25,
-          volume:0.12,
-          delay:0.20
-        })
-      ]);
-
-      return;
-    }
-
-
-    if (
-      soundName ===
-      "playWrong"
-    ) {
-
-      Promise.all([
-        playFractionTone({
-          frequency:329.63,
-          duration:0.20,
-          type:"triangle",
-          volume:0.12
-        }),
-
-        playFractionTone({
-          frequency:261.63,
-          duration:0.26,
-          type:"triangle",
-          volume:0.11,
-          delay:0.14
-        })
-      ]);
-
-      return;
-    }
-
-
-    if (
-      soundName ===
-      "playComplete"
-    ) {
-
-      Promise.all([
-        playFractionTone({
-          frequency:523.25,
-          duration:0.18,
-          volume:0.13
-        }),
-
-        playFractionTone({
-          frequency:659.25,
-          duration:0.20,
-          volume:0.13,
-          delay:0.12
-        }),
-
-        playFractionTone({
-          frequency:783.99,
-          duration:0.22,
-          volume:0.13,
-          delay:0.24
-        }),
-
-        playFractionTone({
-          frequency:1046.5,
-          duration:0.34,
-          volume:0.12,
-          delay:0.38
-        })
-      ]);
-    }
-
-  } catch (error) {
-
-    console.warn(
-      `音效播放失敗：${soundName}`,
-      error
-    );
+function showScreen(id){
+  screens.forEach(x=>$(x).classList.toggle("hidden",x!==id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function pick(a){return a[ri(0,a.length-1)]}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+function mmss(sec){sec=Math.max(0,Math.floor(sec));return `${String(Math.floor(sec/60)).padStart(2,"0")}:${String(sec%60).padStart(2,"0")}`}
+function newAttemptId(){return `${GAME_ID}-${Date.now()}-${Math.random().toString(36).slice(2,9)}`}
+function playGameSound(method){
+  try{
+    const sound=window.GameSound||window.MathGameSound, fn=sound?.[method];
+    if(typeof fn!=="function") return false;
+    const r=fn.call(sound); if(r&&typeof r.catch==="function") r.catch(()=>{}); return true;
+  }catch(e){console.warn("音效播放失敗：",e);return false}
+}
+function playUrgentCountdown(){
+  const sound=window.GameSound||window.MathGameSound;
+  for(const m of ["playCountdown","playTick","playTimer","playUrgent"]){
+    if(typeof sound?.[m]==="function"){try{sound[m]();return}catch(_){}}
+  }
+  try{
+    const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+    const c=new C(),o=c.createOscillator(),g=c.createGain();o.frequency.value=880;g.gain.value=.045;
+    o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.07);o.onended=()=>c.close().catch(()=>{});
+  }catch(_){}
+}
+function setTimer(){
+  clearInterval(timerHandle);
+  if(modeId==="speed"){
+    speedRemaining=MODE_CONFIG.speed.seconds;
+    $("time-display").textContent=`${speedRemaining} 秒`;
+    timerHandle=setInterval(()=>{
+      speedRemaining--;
+      $("time-display").textContent=`${Math.max(0,speedRemaining)} 秒`;
+      $("time-box").classList.toggle("urgent",speedRemaining<=10&&speedRemaining>0);
+      if(speedRemaining<=10&&speedRemaining>0) playUrgentCountdown();
+      if(speedRemaining<=0){clearInterval(timerHandle);finishGame()}
+    },1000);
+  }else{
+    $("time-display").textContent="00:00";
+    timerHandle=setInterval(()=>$("time-display").textContent=mmss((Date.now()-startAt)/1000),1000);
   }
 }
-
-
-/*
-==================================================
-遊戲狀態
-==================================================
-*/
-
-let mode =
-  "lcm";
-
-
-let questions =
-  [];
-
-
-let index =
-  0;
-
-
-let correct =
-  0;
-
-
-let wrong =
-  0;
-
-
-/*
-新增：
-目前連擊
-*/
-
-let combo =
-  0;
-
-
-/*
-新增：
-最高連擊
-*/
-
-let highestCombo =
-  0;
-
-
-let locked =
-  false;
-
-
-let nextReady =
-  false;
-
-
-let startTime =
-  0;
-
-
-let timer =
-  null;
-
-
-let finalElapsed =
-  0;
-
-
-let scoreSaved =
-  false;
-
-
-/*
-==================================================
-數學工具
-==================================================
-*/
-
-function rand(
-  min,
-  max
-) {
-
-  return Math.floor(
-    Math.random() *
-    (
-      max -
-      min +
-      1
-    )
-  ) + min;
-}
-
-
-function gcd(
-  a,
-  b
-) {
-
-  a =
-    Math.abs(a);
-
-  b =
-    Math.abs(b);
-
-
-  while (
-    b
-  ) {
-
-    const t =
-      a %
-      b;
-
-    a =
-      b;
-
-    b =
-      t;
-  }
-
-
-  return a ||
-    1;
-}
-
-
-function lcm(
-  a,
-  b
-) {
-
-  return (
-    Math.abs(
-      a *
-      b
-    ) /
-    gcd(
-      a,
-      b
-    )
-  );
-}
-
-
-function simplify(
-  n,
-  d
-) {
-
-  if (
-    d <
-    0
-  ) {
-
-    n =
-      -n;
-
-    d =
-      -d;
-  }
-
-
-  const g =
-    gcd(
-      n,
-      d
-    );
-
-
-  return {
-    n:
-      n /
-      g,
-
-    d:
-      d /
-      g
-  };
-}
-
-
-function shuffle(
-  arr
-) {
-
-  for (
-    let i =
-      arr.length -
-      1;
-
-    i >
-      0;
-
-    i--
-  ) {
-
-    const j =
-      rand(
-        0,
-        i
-      );
-
-
-    [
-      arr[i],
-      arr[j]
-    ] = [
-      arr[j],
-      arr[i]
-    ];
-  }
-
-
+function buildQuestions(mode){
+  if(mode==="speed") return [makeQuestion("speed")];
+  const n=MODE_CONFIG[mode].count||10, arr=[];
+  for(let i=0;i<n;i++) arr.push(makeQuestion(mode,i));
   return arr;
 }
-
-
-/*
-==================================================
-分數顯示
-==================================================
-*/
-
-function fracHTML(
-  n,
-  d,
-  showParens = false
-) {
-
-  const r =
-    simplify(
-      n,
-      d
-    );
-
-
-  if (
-    r.d ===
-    1
-  ) {
-
-    return String(
-      r.n
-    ).replace(
-      "-",
-      "−"
-    );
-  }
-
-
-  const core =
-    `${
-      r.n < 0
-        ? "−"
-        : ""
-    }` +
-
-    `<span class="math-frac">` +
-
-      `<span class="top">` +
-        `${Math.abs(r.n)}` +
-      `</span>` +
-
-      `<span class="bottom">` +
-        `${r.d}` +
-      `</span>` +
-
-    `</span>`;
-
-
-  return (
-    showParens &&
-    r.n <
-    0
-  )
-    ? `(${core})`
-    : core;
+function startGame(mode){
+  modeId=mode; questions=buildQuestions(mode); index=0; correct=wrong=combo=maxCombo=0;
+  records=[];speedScore=speedAttempts=0;selectedChoice=null;locked=false;attemptId=newAttemptId();startAt=Date.now();
+  $("mode-display").textContent=MODE_CONFIG[mode].name.replace(/^[^\s]+\s/,"");
+  showScreen("quiz-screen"); updateStatus(); setTimer(); 
+  mode==="speed"?renderSpeedQuestion():renderQuestion();
 }
-
-
-function rawFracHTML(
-  n,
-  d,
-  showParens = false
-) {
-
-  if (
-    d ===
-    1
-  ) {
-
-    return String(
-      n
-    ).replace(
-      "-",
-      "−"
-    );
-  }
-
-
-  const core =
-    `${
-      n < 0
-        ? "−"
-        : ""
-    }` +
-
-    `<span class="math-frac">` +
-
-      `<span class="top">` +
-        `${Math.abs(n)}` +
-      `</span>` +
-
-      `<span class="bottom">` +
-        `${d}` +
-      `</span>` +
-
-    `</span>`;
-
-
-  return (
-    showParens &&
-    n <
-    0
-  )
-    ? `(${core})`
-    : core;
+function updateStatus(){
+  $("score-display").textContent=modeId==="speed"?speedScore:(questions.length?Math.round(correct/Math.max(1,index+(locked?1:0))*100):0);
+  $("combo-display").textContent=combo;
 }
-
-
-/*
-==================================================
-畫面切換
-==================================================
-*/
-
-function showOnly(
-  id
-) {
-
-  [
-    "start-screen",
-    "quiz-screen",
-    "result-screen"
-  ].forEach(
-    x => {
-
-      $(x).classList.toggle(
-        "hidden",
-        x !== id
-      );
-    }
-  );
+function renderQuestion(){
+  locked=false; selectedChoice=null;
+  const q=questions[index];
+  $("question-label").textContent=`第 ${index+1} 題／共 ${questions.length} 題`;
+  $("question-content").innerHTML=q.html;
+  $("question-note").innerHTML=q.note||"";
+  $("progress-bar").style.width=`${index/questions.length*100}%`;
+  resetAnswerUI(); renderAnswerUI(q);
 }
-
-
-/*
-==================================================
-建立 LCM 題目
-==================================================
-*/
-
-function makeLcmQuestions() {
-
-  const out =
-    [];
-
-
-  const used =
-    new Set();
-
-
-  while (
-    out.length <
-    TOTAL
-  ) {
-
-    const a =
-      rand(
-        2,
-        15
-      );
-
-
-    const b =
-      rand(
-        2,
-        15
-      );
-
-
-    if (
-      a ===
-      b
-    ) {
-
-      continue;
-    }
-
-
-    const key =
-      [
-        a,
-        b
-      ]
-        .sort(
-          (
-            x,
-            y
-          ) =>
-            x -
-            y
-        )
-        .join(
-          "-"
-        );
-
-
-    if (
-      used.has(
-        key
-      )
-    ) {
-
-      continue;
-    }
-
-
-    used.add(
-      key
-    );
-
-
-    out.push({
-      a,
-      b,
-      answer:
-        lcm(
-          a,
-          b
-        )
+function renderSpeedQuestion(){
+  locked=false; selectedChoice=null; questions[0]=makeQuestion("speed");
+  const q=questions[0];
+  $("question-label").textContent=`第 ${speedAttempts+1} 題｜60 秒快手`;
+  $("question-content").innerHTML=q.html;
+  $("question-note").innerHTML=q.note||"";
+  $("progress-bar").style.width=`${Math.min(100,speedAttempts*7)}%`;
+  resetAnswerUI(); renderAnswerUI(q);
+}
+function resetAnswerUI(){
+  $("choiceMount").innerHTML="";$("choiceMount").classList.add("hidden");
+  $("numberMountWrap").classList.add("hidden");$("expressionMountWrap").classList.add("hidden");
+  $("number-input").value="";$("number-input").disabled=false;$("input-message").textContent="";
+  $("feedback").textContent="";$("feedback").className="feedback";
+  $("explanation").innerHTML="";$("explanation").classList.add("hidden");
+  $("submit-button").classList.remove("hidden");$("next-button").classList.add("hidden");
+}
+function renderAnswerUI(q){
+  if(q.kind==="choice"){
+    $("choiceMount").classList.remove("hidden");
+    q.choices.forEach((label,i)=>{
+      const b=document.createElement("button");b.type="button";b.className="choice-button";b.innerHTML=label;
+      b.addEventListener("click",()=>{
+        if(locked)return; selectedChoice=i;
+        [...$("choiceMount").children].forEach((x,j)=>x.classList.toggle("selected",j===i));
+      });$("choiceMount").appendChild(b);
     });
-  }
-
-
-  return shuffle(
-    out
-  );
-}
-
-
-/*
-==================================================
-建立分數題目
-==================================================
-*/
-
-function makeFractionQuestions() {
-
-  const out =
-    [];
-
-
-  const schedule =
-    [
-      ...Array(4)
-        .fill(
-          "same"
-        ),
-
-      ...Array(6)
-        .fill(
-          "different"
-        )
-    ];
-
-
-  shuffle(
-    schedule
-  );
-
-
-  for (
-    const type
-    of schedule
-  ) {
-
-    for (
-      let tries =
-        0;
-
-      tries <
-        500;
-
-      tries++
-    ) {
-
-      let d1 =
-        rand(
-          2,
-          12
-        );
-
-
-      let d2 =
-        type ===
-        "same"
-          ? d1
-          : rand(
-              2,
-              12
-            );
-
-
-      if (
-        type ===
-          "different" &&
-        d1 ===
-          d2
-      ) {
-
-        continue;
-      }
-
-
-      let n1 =
-        rand(
-          1,
-          12
-        ) *
-        (
-          Math.random() <
-          .5
-            ? -1
-            : 1
-        );
-
-
-      let n2 =
-        rand(
-          1,
-          12
-        ) *
-        (
-          Math.random() <
-          .5
-            ? -1
-            : 1
-        );
-
-
-      if (
-        gcd(
-          n1,
-          d1
-        ) !==
-          1 ||
-        gcd(
-          n2,
-          d2
-        ) !==
-          1
-      ) {
-
-        continue;
-      }
-
-
-      const op =
-        Math.random() <
-        .5
-          ? "+"
-          : "−";
-
-
-      const rawN =
-        op ===
-        "+"
-          ? n1 *
-              d2 +
-            n2 *
-              d1
-
-          : n1 *
-              d2 -
-            n2 *
-              d1;
-
-
-      const rawD =
-        d1 *
-        d2;
-
-
-      if (
-        rawN ===
-        0
-      ) {
-
-        continue;
-      }
-
-
-      const ans =
-        simplify(
-          rawN,
-          rawD
-        );
-
-
-      if (
-        Math.abs(
-          ans.n
-        ) >
-          40 ||
-        ans.d >
-          20
-      ) {
-
-        continue;
-      }
-
-
-      out.push({
-        n1,
-        d1,
-        n2,
-        d2,
-        op,
-        rawN,
-        rawD,
-        ans,
-        type
-      });
-
-
-      break;
-    }
-  }
-
-
-  return shuffle(
-    out
-  );
-}
-
-
-/*
-==================================================
-開始遊戲
-==================================================
-*/
-
-function startGame(
-  keepMode = false
-) {
-
-  playGameSound(
-    "playStart"
-  );
-
-
-  if (
-    !keepMode
-  ) {
-
-    mode =
-      document.querySelector(
-        'input[name="mode"]:checked'
-      ).value;
-  }
-
-
-  questions =
-    mode ===
-    "lcm"
-      ? makeLcmQuestions()
-      : makeFractionQuestions();
-
-
-  /*
-  重設所有成績
-  */
-
-  index =
-    0;
-
-  correct =
-    0;
-
-  wrong =
-    0;
-
-  combo =
-    0;
-
-  highestCombo =
-    0;
-
-  locked =
-    false;
-
-  nextReady =
-    false;
-
-  scoreSaved =
-    false;
-
-
-  startTime =
-    Date.now();
-
-
-  clearInterval(
-    timer
-  );
-
-
-  timer =
-    setInterval(
-      updateTimer,
-      1000
-    );
-
-
-  showOnly(
-    "quiz-screen"
-  );
-
-
-  $("mode-badge")
-    .textContent =
-      mode ===
-      "lcm"
-        ? "基礎複習｜最小公倍數"
-        : "正式挑戰｜正負分數加減";
-
-
-  updateComboDisplay();
-
-
-  loadQuestion();
-}
-
-
-/*
-==================================================
-更新時間
-==================================================
-*/
-
-function updateTimer() {
-
-  const e =
-    Math.floor(
-      (
-        Date.now() -
-        startTime
-      ) /
-      1000
-    );
-
-
-  $("time-display")
-    .textContent =
-      `⏳ ${
-        String(
-          Math.floor(
-            e /
-            60
-          )
-        ).padStart(
-          2,
-          "0"
-        )
-      }:${
-        String(
-          e %
-          60
-        ).padStart(
-          2,
-          "0"
-        )
-      }`;
-}
-
-
-/*
-==================================================
-更新連擊顯示
-==================================================
-*/
-
-function updateComboDisplay() {
-
-  $("combo-display")
-    .textContent =
-      `🔥 連擊 ${combo}`;
-}
-
-
-/*
-==================================================
-載入題目
-==================================================
-*/
-
-function loadQuestion() {
-
-  if (
-    typeof window
-      .resetGameScratchpad ===
-      "function"
-  ) {
-
-    window
-      .resetGameScratchpad();
-  }
-
-
-  locked =
-    false;
-
-  nextReady =
-    false;
-
-
-  $("submit-btn")
-    .classList
-    .remove(
-      "hidden"
-    );
-
-
-  $("next-btn")
-    .classList
-    .add(
-      "hidden"
-    );
-
-
-  $("feedback")
-    .innerHTML =
-      "";
-
-
-  $("answer-preview")
-    .innerHTML =
-      "";
-
-
-  $("question-number")
-    .textContent =
-      `第 ${
-        index +
-        1
-      } / ${TOTAL} 題`;
-
-
-  $("progress-bar")
-    .style
-    .width =
-      `${
-        index /
-        TOTAL *
-        100
-      }%`;
-
-
-  updateComboDisplay();
-
-
-  answerInput.reset();
-
-
-  if (
-    mode ===
-    "lcm"
-  ) {
-
-    const q =
-      questions[
-        index
-      ];
-
-
-    $("problem-text")
-      .innerHTML =
-        `求 ${q.a} 與 ${q.b} 的最小公倍數`;
-
-
-    answerInput
-      .showInteger();
-
-
-    $("answer-help")
-      .textContent =
-        "請輸入正整數答案。";
-
-  } else {
-
-    const q =
-      questions[
-        index
-      ];
-
-
-    $("problem-text")
-      .innerHTML =
-        `${rawFracHTML(
-          q.n1,
-          q.d1,
-          true
-        )}` +
-
-        ` <span style="margin:0 .35em">` +
-          `${q.op}` +
-        `</span> ` +
-
-        `${rawFracHTML(
-          q.n2,
-          q.d2,
-          true
-        )}`;
-
-
-    if (
-      q.ans.d ===
-      1
-    ) {
-
-      answerInput
-        .showInteger();
-
-
-      $("answer-help")
-        .textContent =
-          "本題答案為整數，請直接輸入整數答案。";
-
-    } else {
-
-      answerInput
-        .showFraction();
-
-
-      $("answer-help")
-        .textContent =
-          "可輸入最簡假分數，或等值的最簡帶分數；整數部分可留空。";
-    }
+  }else{
+    $("numberMountWrap").classList.remove("hidden");
+    $("number-input").placeholder=q.placeholder||(q.kind==="rational"?"例如 -3/4、2 或 -1 1/2":"輸入整數");
+    setTimeout(()=>$("number-input").focus(),50);
   }
 }
-
-
-/*
-==================================================
-讀取答案
-==================================================
-*/
-
-function readAnswer(
-  showMessage = false
-) {
-
-  const result =
-    answerInput
-      .getValue({
-        showMessage
-      });
-
-
-  if (
-    !result.valid
-  ) {
-
-    return result;
+function getAnswer(q){
+  if(q.kind==="choice"){
+    if(selectedChoice===null) return {ok:false,msg:"請先選擇一個答案。"};
+    return {ok:true,correct:selectedChoice===q.answerIndex,display:q.choices[selectedChoice].replace(/<[^>]+>/g,"")};
   }
-
-
-  if (
-    mode ===
-    "lcm"
-  ) {
-
-    if (
-      !result.isInteger ||
-      result.value <=
-        0
-    ) {
-
-      return {
-        valid:
-          false,
-
-        reason:
-          "invalid-lcm",
-
-        message:
-          "請輸入正整數答案。"
-      };
-    }
-
-
-    return {
-      ...result,
-
-      display:
-        String(
-          result.value
-        )
-    };
+  const raw=$("number-input").value.trim();
+  if(!raw) return {ok:false,msg:"請先輸入答案。"};
+  if(q.kind==="integer"){
+    if(!/^[+-]?\d+$/.test(raw)) return {ok:false,msg:"請輸入整數。"};
+    const v=Number(raw);return {ok:true,correct:v===q.answer,display:String(v)};
   }
-
-
-  return {
-    ...result,
-
-    normalized: {
-      n:
-        result.numerator,
-
-      d:
-        result.denominator
-    },
-
-    display:
-      fracHTML(
-        result.numerator,
-        result.denominator
-      )
-  };
+  const p=parseRational(raw);
+  if(!p.ok) return {ok:false,msg:"格式請輸入整數或分數，例如 -3/4。"};
+  if(q.requireSimple && !p.simple) return {ok:false,msg:"本題指定最簡分數，請先約分。"};
+  return {ok:true,correct:ratEq(p.value,q.answer),display:raw};
 }
-
-
-/*
-==================================================
-答案預覽
-==================================================
-*/
-
-function updatePreview() {
-
-  const a =
-    readAnswer(
-      false
-    );
-
-
-  $("answer-preview")
-    .innerHTML =
-      a.valid
-        ? `系統判讀：${a.display}`
-        : "";
-}
-
-
-/*
-==================================================
-解析
-==================================================
-*/
-
-function explanationHTML(
-  q
-) {
-
-  if (
-    mode ===
-    "lcm"
-  ) {
-
-    const g =
-      gcd(
-        q.a,
-        q.b
-      );
-
-
-    return `
-      <div class="explanation-title">
-        逐步解題解析
-      </div>
-
-      <div class="explanation-step">
-        <span class="explanation-step-label">
-          步驟 1｜找最大公因數
-        </span>
-
-        <div class="explanation-math">
-          GCD(${q.a}, ${q.b}) = ${g}
-        </div>
-      </div>
-
-      <div class="explanation-step">
-        <span class="explanation-step-label">
-          步驟 2｜套用最小公倍數公式
-        </span>
-
-        <div class="explanation-math">
-          (${q.a} × ${q.b}) ÷ ${g} = ${q.answer}
-        </div>
-      </div>
-
-      <div class="explanation-step explanation-final">
-        <span class="explanation-step-label">
-          最後答案
-        </span>
-
-        <div class="explanation-math">
-          ${q.answer}
-        </div>
-      </div>
-    `;
-  }
-
-
-  const common =
-    lcm(
-      q.d1,
-      q.d2
-    );
-
-
-  if (
-    q.d1 ===
-    q.d2
-  ) {
-
-    const combined =
-      q.op ===
-      "+"
-        ? q.n1 +
-          q.n2
-
-        : q.n1 -
-          q.n2;
-
-
-    return `
-      <div class="explanation-title">
-        逐步解題解析
-      </div>
-
-      <div class="explanation-step">
-        <span class="explanation-step-label">
-          步驟 1｜判斷分母
-        </span>
-
-        <div>
-          兩個分數同分母，分母保持 ${q.d1} 不變。
-        </div>
-      </div>
-
-      <div class="explanation-step">
-        <span class="explanation-step-label">
-          步驟 2｜分子相加減
-        </span>
-
-        <div class="explanation-math">
-          ${rawFracHTML(
-            q.n1,
-            q.d1,
-            true
-          )}
-          ${q.op}
-          ${rawFracHTML(
-            q.n2,
-            q.d2,
-            true
-          )}
-          =
-          ${rawFracHTML(
-            combined,
-            q.d1
-          )}
-        </div>
-      </div>
-
-      <div class="explanation-step">
-        <span class="explanation-step-label">
-          步驟 3｜約成最簡分數
-        </span>
-
-        <div class="explanation-math">
-          ${rawFracHTML(
-            combined,
-            q.d1
-          )}
-          =
-          ${fracHTML(
-            q.ans.n,
-            q.ans.d
-          )}
-        </div>
-      </div>
-
-      <div class="explanation-step explanation-final">
-        <span class="explanation-step-label">
-          最後答案
-        </span>
-
-        <div class="explanation-math">
-          ${fracHTML(
-            q.ans.n,
-            q.ans.d
-          )}
-        </div>
-      </div>
-    `;
-  }
-
-
-  const m1 =
-    common /
-    q.d1;
-
-
-  const m2 =
-    common /
-    q.d2;
-
-
-  const newN1 =
-    q.n1 *
-    m1;
-
-
-  const newN2 =
-    q.n2 *
-    m2;
-
-
-  const combined =
-    q.op ===
-    "+"
-      ? newN1 +
-        newN2
-
-      : newN1 -
-        newN2;
-
-
-  return `
-    <div class="explanation-title">
-      逐步解題解析
-    </div>
-
-    <div class="explanation-step">
-      <span class="explanation-step-label">
-        步驟 1｜找最小公倍數
-      </span>
-
-      <div class="explanation-math">
-        LCM(${q.d1}, ${q.d2}) = ${common}
-      </div>
-    </div>
-
-    <div class="explanation-step">
-      <span class="explanation-step-label">
-        步驟 2｜通分
-      </span>
-
-      <div class="explanation-math">
-        ${rawFracHTML(
-          q.n1,
-          q.d1,
-          true
-        )}
-        =
-        ${rawFracHTML(
-          newN1,
-          common
-        )}，
-        ${rawFracHTML(
-          q.n2,
-          q.d2,
-          true
-        )}
-        =
-        ${rawFracHTML(
-          newN2,
-          common
-        )}
-      </div>
-    </div>
-
-    <div class="explanation-step">
-      <span class="explanation-step-label">
-        步驟 3｜分子相加減
-      </span>
-
-      <div class="explanation-math">
-        ${rawFracHTML(
-          newN1,
-          common,
-          true
-        )}
-        ${q.op}
-        ${rawFracHTML(
-          newN2,
-          common,
-          true
-        )}
-        =
-        ${rawFracHTML(
-          combined,
-          common
-        )}
-      </div>
-    </div>
-
-    <div class="explanation-step">
-      <span class="explanation-step-label">
-        步驟 4｜約成最簡分數
-      </span>
-
-      <div class="explanation-math">
-        ${rawFracHTML(
-          combined,
-          common
-        )}
-        =
-        ${fracHTML(
-          q.ans.n,
-          q.ans.d
-        )}
-      </div>
-    </div>
-
-    <div class="explanation-step explanation-final">
-      <span class="explanation-step-label">
-        最後答案
-      </span>
-
-      <div class="explanation-math">
-        ${fracHTML(
-          q.ans.n,
-          q.ans.d
-        )}
-      </div>
-    </div>
-  `;
-}
-
-
-/*
-==================================================
-檢查答案
-==================================================
-*/
-
-function check() {
-
-  if (
-    locked
-  ) {
-
+function submitAnswer(){
+  if(locked)return;
+  const q=modeId==="speed"?questions[0]:questions[index], a=getAnswer(q);
+  if(!a.ok){$("input-message").textContent=a.msg;return}
+  locked=true;$("number-input").disabled=true;
+  if(a.correct){correct++;combo++;maxCombo=Math.max(maxCombo,combo);playGameSound("playCorrect")}
+  else{wrong++;combo=0;playGameSound("playWrong")}
+  records.push({number:modeId==="speed"?speedAttempts+1:index+1,question:q,userAnswer:a.display,correct:a.correct});
+  if(modeId==="speed"){
+    speedAttempts++;if(a.correct)speedScore+=10;
+    $("feedback").textContent=a.correct?"✅ 正確！＋10 分":"❌ 答錯了，下一題！";
+    $("feedback").className=`feedback ${a.correct?"correct":"wrong"}`;updateStatus();
+    setTimeout(()=>{if(modeId==="speed"&&speedRemaining>0&&$("result-screen").classList.contains("hidden"))renderSpeedQuestion()},260);
     return;
   }
-
-
-  const a =
-    readAnswer(
-      true
-    );
-
-
-  const q =
-    questions[
-      index
-    ];
-
-
-  if (
-    !a.valid
-  ) {
-
-    $("feedback")
-      .innerHTML =
-        `<span style="color:#d97706">${
-          a.message ||
-          "請完整輸入有效答案。"
-        }</span>`;
-
-    return;
-  }
-
-
-  locked =
-    true;
-
-
-  const ok =
-    mode ===
-    "lcm"
-      ? a.value ===
-        q.answer
-
-      : (
-          a.normalized.n ===
-            q.ans.n &&
-          a.normalized.d ===
-            q.ans.d
-        );
-
-
-  /*
-  ==================================================
-  答對
-  ==================================================
-  */
-
-  if (
-    ok
-  ) {
-
-    correct++;
-
-
-    /*
-    目前連擊 +1
-    */
-
-    combo++;
-
-
-    /*
-    更新最高連擊
-    */
-
-    if (
-      combo >
-      highestCombo
-    ) {
-
-      highestCombo =
-        combo;
-    }
-
-
-    playGameSound(
-      "playCorrect"
-    );
-
-  } else {
-
-    /*
-    ==================================================
-    答錯
-    ==================================================
-    */
-
-    wrong++;
-
-
-    /*
-    答錯後目前連擊歸零
-    */
-
-    combo =
-      0;
-
-
-    playGameSound(
-      "playWrong"
-    );
-  }
-
-
-  /*
-  更新畫面上的連擊
-  */
-
-  updateComboDisplay();
-
-
-  const ans =
-    mode ===
-    "lcm"
-      ? q.answer
-      : fracHTML(
-          q.ans.n,
-          q.ans.d
-        );
-
-
-  $("feedback")
-    .innerHTML =
-      `<span style="color:${
-        ok
-          ? "#15803d"
-          : "#b91c1c"
-      }">` +
-
-      `${
-        ok
-          ? "✨ 正確！"
-          : "❌ 答案不正確"
-      }` +
-
-      `</span>` +
-
-      `<div class="explanation-actions">` +
-
-        `<button
-          id="explanation-toggle"
-          class="explanation-toggle"
-        >` +
-          `查看解析` +
-        `</button>` +
-
-      `</div>` +
-
-      `<div
-        id="explanation-panel"
-        class="explanation-panel hidden"
-      ></div>`;
-
-
-  $("explanation-toggle")
-    .onclick =
-      () => {
-
-        const panel =
-          $("explanation-panel");
-
-
-        const open =
-          panel.classList
-            .contains(
-              "hidden"
-            );
-
-
-        panel.classList
-          .toggle(
-            "hidden",
-            !open
-          );
-
-
-        $("explanation-toggle")
-          .textContent =
-            open
-              ? "收起解析"
-              : "查看解析";
-
-
-        if (
-          open
-        ) {
-
-          panel.innerHTML =
-            explanationHTML(
-              q
-            );
-        }
-      };
-
-
-  setTimeout(
-    () => {
-
-      $("submit-btn")
-        .classList
-        .add(
-          "hidden"
-        );
-
-
-      $("next-btn")
-        .classList
-        .remove(
-          "hidden"
-        );
-
-
-      $("next-btn")
-        .textContent =
-          index ===
-          TOTAL -
-          1
-            ? "查看測驗結果（Enter）"
-            : "下一題（Enter）";
-
-
-      nextReady =
-        true;
-
-
-      $("next-btn")
-        .focus();
-
-    },
-
-    ok
-      ? 700
-      : 1000
-  );
+  $("feedback").textContent=a.correct?"✅ 回答正確！":"❌ 答案不正確，請看下方完整解析。";
+  $("feedback").className=`feedback ${a.correct?"correct":"wrong"}`;
+  $("explanation").innerHTML=q.explanation;$("explanation").classList.remove("hidden");
+  $("submit-button").classList.add("hidden");$("next-button").classList.remove("hidden");
+  $("next-button").textContent=index===questions.length-1?"查看測驗結果":"下一題";updateStatus();
 }
-
-
-/*
-==================================================
-下一題
-==================================================
-*/
-
-function next() {
-
-  if (
-    !nextReady
-  ) {
-
-    return;
-  }
-
-
-  index++;
-
-
-  if (
-    index <
-    TOTAL
-  ) {
-
-    loadQuestion();
-
-  } else {
-
-    showResult();
-  }
+function nextQuestion(){if(index>=questions.length-1)finishGame();else{index++;renderQuestion();updateStatus()}}
+function currentScore(){
+  if(modeId==="speed") return speedScore;
+  return questions.length?Math.round(correct/questions.length*100):0;
 }
-
-
-/*
-==================================================
-評等
-==================================================
-*/
-
-function rating(
-  score
-) {
-
-  if (
-    score >=
-    90
-  ) {
-
-    return {
-      stars:
-        "★★★★★",
-
-      comment:
-        "太棒了！你已經熟練掌握這個主題。"
-    };
-  }
-
-
-  if (
-    score >=
-    80
-  ) {
-
-    return {
-      stars:
-        "★★★★☆",
-
-      comment:
-        "表現很好，再多練習幾次就更穩定。"
-    };
-  }
-
-
-  if (
-    score >=
-    60
-  ) {
-
-    return {
-      stars:
-        "★★★☆☆",
-
-      comment:
-        "已掌握基本概念，繼續練習通分與約分。"
-    };
-  }
-
-
-  return {
-    stars:
-      "★★☆☆☆",
-
-    comment:
-      "先從最小公倍數複習，再慢慢挑戰正負分數。"
-  };
+function finishGame(){
+  clearInterval(timerHandle);timerHandle=null;
+  const elapsed=Math.max(1,Math.round((Date.now()-startAt)/1000));
+  const total=modeId==="speed"?speedAttempts:questions.length, score=currentScore();
+  const accuracy=total?Math.round(correct/total*1000)/10:0;
+  $("result-mode-name").textContent=MODE_CONFIG[modeId].name;
+  $("final-score").textContent=modeId==="speed"?`${score} 分`:`${score} 分`;
+  $("final-correct").textContent=correct;$("final-wrong").textContent=wrong;$("final-combo").textContent=maxCombo;$("final-time").textContent=mmss(elapsed);
+  $("final-stars").textContent=score>=90?"★★★★★":score>=80?"★★★★☆":score>=70?"★★★☆☆":score>=60?"★★☆☆☆":"★☆☆☆☆";
+  $("final-comment").textContent=score>=90?"掌握得很完整，繼續保持！":score>=75?"整體穩定，可從錯題解析再補強細節。":score>=60?"核心概念已有基礎，建議把錯題再做一次。":"先依錯題解析逐步複習，再重新挑戰。";
+  $("review-button").classList.toggle("hidden",records.every(r=>r.correct));
+  showScreen("result-screen"); saveScore({score,total,accuracy,elapsed}); sendRpgBridge({score,total,accuracy,elapsed});
 }
-
-
-/*
-==================================================
-儲存成績
-==================================================
-*/
-
-async function saveCurrentScore(
-  score
-) {
-
-  if (
-    scoreSaved
-  ) {
-
-    return;
-  }
-
-
-  scoreSaved =
-    true;
-
-
-  const status =
-    $("save-status");
-
-
-  status.textContent =
-    "☁️ 正在儲存本次成績……";
-
-
-  status.style.color =
-    "#1d4ed8";
-
-
-  try {
-
-    const result =
-      await saveGameScore({
-
-        game:
-          GAME_ID,
-
-        score,
-
-        correctCount:
-          correct,
-
-        wrongCount:
-          wrong,
-
-        /*
-        這裡正式改成真正最高連擊
-        */
-
-        maxCombo:
-          highestCombo,
-
-        /*
-        固定 10 題，
-        儲存實際完成時間
-        */
-
-        playTime:
-          finalElapsed,
-
-        mode
-      });
-
-
-    if (
-      result.success
-    ) {
-
-      status.textContent =
-        "✅ 本次成績已儲存。";
-
-
-      status.style.color =
-        "#15803d";
-
-      return;
-    }
-
-
-    if (
-      result.reason ===
-      "not-logged-in"
-    ) {
-
-      status.textContent =
-        "ℹ️ 尚未登入，因此本次成績沒有儲存。";
-
-
-      status.style.color =
-        "#b45309";
-
-      return;
-    }
-
-
-    status.textContent =
-      "⚠️ 成績暫時無法儲存。";
-
-
-    status.style.color =
-      "#b91c1c";
-
-  } catch (error) {
-
-    console.error(
-      "正負分數遊戲成績儲存失敗：",
-      error
-    );
-
-
-    status.textContent =
-      "⚠️ 成績暫時無法儲存。";
-
-
-    status.style.color =
-      "#b91c1c";
-  }
+async function saveScore({score,total,accuracy,elapsed}){
+  const el=$("save-status");el.textContent="正在儲存成績…";
+  try{
+    const m=await import("../js/scores.js?v=7");
+    if(typeof m.saveGameScore!=="function")throw new Error("找不到 saveGameScore");
+    await m.saveGameScore({game:GAME_ID,mode:modeId,score,correctCount:correct,wrongCount:wrong,maxCombo,playTime:elapsed,totalQuestions:total,accuracy});
+    el.textContent="✅ 成績已儲存，可在排行榜與我的成績查看。";
+  }catch(e){console.warn("成績儲存失敗：",e);el.textContent="⚠️ 本次成績已完成，但雲端儲存未成功。";}
 }
-
-
-/*
-==================================================
-結果
-==================================================
-*/
-
-async function showResult() {
-
-  clearInterval(
-    timer
-  );
-
-
-  timer =
-    null;
-
-
-  playGameSound(
-    "playComplete"
-  );
-
-
-  $("progress-bar")
-    .style
-    .width =
-      "100%";
-
-
-  finalElapsed =
-    Math.floor(
-      (
-        Date.now() -
-        startTime
-      ) /
-      1000
-    );
-
-
-  const score =
-    Math.round(
-      correct /
-      TOTAL *
-      100
-    );
-
-
-  const r =
-    rating(
-      score
-    );
-
-
-  showOnly(
-    "result-screen"
-  );
-
-
-  $("final-score")
-    .textContent =
-      `${score} 分`;
-
-
-  $("final-stars")
-    .textContent =
-      r.stars;
-
-
-  $("final-comment")
-    .textContent =
-      r.comment;
-
-
-  $("final-correct")
-    .textContent =
-      correct;
-
-
-  $("final-wrong")
-    .textContent =
-      wrong;
-
-
-  /*
-  顯示最高連擊
-  */
-
-  $("final-combo")
-    .textContent =
-      highestCombo;
-
-
-  $("final-time")
-    .textContent =
-      `${
-        String(
-          Math.floor(
-            finalElapsed /
-            60
-          )
-        ).padStart(
-          2,
-          "0"
-        )
-      }:${
-        String(
-          finalElapsed %
-          60
-        ).padStart(
-          2,
-          "0"
-        )
-      }`;
-
-
-  await saveCurrentScore(
-    score
-  );
+async function sendRpgBridge({score,total,accuracy,elapsed}){
+  const payload={gameId:GAME_ID,modeId,score,correct,total,playTime:elapsed,accuracy,maxCombo,attemptId,difficultyWeight:MODE_CONFIG[modeId]?.difficultyWeight||1};
+  window.dispatchEvent(new CustomEvent("mathgame:session-complete",{detail:payload}));
+  try{
+    if(typeof window.MathGameProgress?.completeLearningSession==="function"){await window.MathGameProgress.completeLearningSession(payload);return}
+    const m=await import("../js/progress-system.js?v=1");
+    if(typeof m.completeLearningSession==="function")await m.completeLearningSession(payload);
+  }catch(e){console.debug("RPG/學習進度尚未啟用：",e?.message||e)}
 }
-
-
-/*
-==================================================
-回模式選擇
-==================================================
-*/
-
-function modeSelect() {
-
-  clearInterval(
-    timer
-  );
-
-
-  timer =
-    null;
-
-
-  showOnly(
-    "start-screen"
-  );
-
-
-  $("progress-bar")
-    .style
-    .width =
-      "0%";
+function renderReview(){
+  const list=$("review-list"), bad=records.filter(r=>!r.correct);
+  list.innerHTML=bad.length?bad.map(r=>`<article class="review-item"><h3>第 ${r.number} 題</h3><div class="review-question">${r.question.html}</div><p><b>你的答案：</b>${esc(r.userAnswer)}</p><p><b>正確答案：</b>${answerHTML(r.question)}</p><div class="review-explanation">${r.question.explanation}</div></article>`).join(""):"<p>本次沒有錯題，太棒了！</p>";
+  showScreen("review-screen");
 }
-
-
-/*
-==================================================
-事件
-==================================================
-*/
-
-$("start-btn")
-  .onclick =
-    () =>
-      startGame(
-        false
-      );
-
-
-$("change-mode-btn")
-  .onclick =
-    modeSelect;
-
-
-$("result-change-mode-btn")
-  .onclick =
-    modeSelect;
-
-
-$("reset-btn")
-  .onclick =
-    () =>
-      startGame(
-        true
-      );
-
-
-$("again-btn")
-  .onclick =
-    () =>
-      startGame(
-        true
-      );
-
-
-$("submit-btn")
-  .onclick =
-    check;
-
-
-$("next-btn")
-  .onclick =
-    next;
-
-
-$("answerInputMount")
-  .addEventListener(
-    "input",
-    updatePreview
-  );
-
-
-$("answerInputMount")
-  .addEventListener(
-    "change",
-    updatePreview
-  );
-
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key !==
-        "Enter" ||
-      $("quiz-screen")
-        .classList
-        .contains(
-          "hidden"
-        )
-    ) {
-
-      return;
-    }
-
-
-    event.preventDefault();
-
-
-    if (
-      nextReady
-    ) {
-
-      next();
-
-    } else if (
-      !locked
-    ) {
-
-      check();
-    }
-  }
-);
+function answerHTML(q){return q.kind==="choice"?q.choices[q.answerIndex]:(q.kind==="integer"?esc(q.answer):ratHTML(q.answer))}
+document.querySelectorAll(".mode-card").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));
+$("submit-button").addEventListener("click",submitAnswer);$("next-button").addEventListener("click",nextQuestion);
+$("quit-button").addEventListener("click",()=>{clearInterval(timerHandle);showScreen("start-screen")});
+$("again-button").addEventListener("click",()=>startGame(modeId));$("review-button").addEventListener("click",renderReview);
+$("result-mode-button").addEventListener("click",()=>showScreen("start-screen"));
+$("review-again-button").addEventListener("click",()=>startGame(modeId));$("review-result-button").addEventListener("click",()=>showScreen("result-screen"));
+$("number-input").addEventListener("keydown",e=>{if(e.key==="Enter"&&!locked)submitAnswer()});
+window.MathGameSessionMeta={gameId:GAME_ID,chapter:CHAPTER,title:GAME_TITLE,modes:MODE_CONFIG};
 
 </script>
-
-
-<script src="../js/common-header.js"></script>
-
 </body>
 </html>
