@@ -1002,7 +1002,23 @@
     .law-chip{display:inline-block;padding:.18rem .55rem;border-radius:999px;background:var(--primary-light);color:var(--primary-dark);font-weight:800;margin:.12rem}
     .answer-hint{color:var(--muted);font-size:.92rem;margin-top:.45rem}
 
-  </style>
+  
+    /*
+    ==================================================
+    大小比較選項
+    固定順序：＞ ＝ ＜
+    符號特別放大，方便平板與手機操作
+    ==================================================
+    */
+    .choice-button.comparison-choice{
+      min-height:72px;
+      font-size:clamp(30px,4vw,38px)!important;
+      font-family:"Cambria Math","Times New Roman","Microsoft JhengHei",serif;
+      font-weight:900;
+      line-height:1!important;
+    }
+
+</style>
 </head>
 
 <body>
@@ -1759,27 +1775,20 @@ function productDetailLines(factors){
   const signText=
     `共有 ${negativeCount} 個負因數，所以結果為${negativeCount%2?"負":"正"}數。`;
 
-  const lines=[];
-
   if(
     data.notes.length
   ){
-    lines.push(
-      `${signText} 先約分：${data.notes.join("；")}，所以 ${original} ＝ ${reduced}。`
-    );
-  }else{
-    lines.push(
-      `${signText} 沒有可以先約分的公因數，直接計算 ${original}。`
-    );
+    return [
+      `${signText} 先約分：${data.notes.join("；")}。` +
+      `${original} ＝ ${reduced} ＝ ${operandHTML(data.result)}。`
+    ];
   }
 
-  lines.push(
-    `再相乘：${reduced} ＝ ${operandHTML(data.result)}。`
-  );
-
-  return lines;
+  return [
+    `${signText} 沒有可先約分的公因數，直接相乘：` +
+    `${original} ＝ ${operandHTML(data.result)}。`
+  ];
 }
-
 function multiplyDetailLines(a,b){
   return productDetailLines(
     [
@@ -1794,19 +1803,78 @@ function multiplyDetailLines(a,b){
       b.n
     );
 
-  return [
-    `除以分數改成乘以倒數：${operandHTML(a)} ÷ ${operandHTML(b)} ＝ ${operandHTML(a)} × ${operandHTML(reciprocal)}。`,
-    ...productDetailLines(
+  const data=
+    crossCancelProductData(
       [
         a,
         reciprocal
       ]
-    )
+    );
+
+  const reduced=
+    reducedProductHTML(
+      data
+    );
+
+  const cancelText=
+    data.notes.length
+      ? `；先約分：${data.notes.join("；")}`
+      : "";
+
+  return [
+    `除以分數改成乘以倒數：` +
+    `${operandHTML(a)} ÷ ${operandHTML(b)}` +
+    ` ＝ ${operandHTML(a)} × ${operandHTML(reciprocal)}` +
+    `${cancelText}` +
+    ` ＝ ${reduced}` +
+    ` ＝ ${operandHTML(data.result)}。`
   ];
 }
-function makeChoiceQ(html,items,correctIndex,explanation,note=""){
-  const rows=shuffle(items.map((label,i)=>({label,ok:i===correctIndex})));
-  return {kind:"choice",html,choices:rows.map(x=>x.label),answerIndex:rows.findIndex(x=>x.ok),explanation,note};
+function makeChoiceQ(
+  html,
+  items,
+  correctIndex,
+  explanation,
+  note="",
+  preserveOrder=false
+){
+  const sourceRows=
+    items.map(
+      (
+        label,
+        i
+      )=>({
+        label,
+        ok:
+          i===
+          correctIndex
+      })
+    );
+
+  const rows=
+    preserveOrder
+      ? sourceRows
+      : shuffle(
+          sourceRows
+        );
+
+  return {
+    kind:
+      "choice",
+    html,
+    choices:
+      rows.map(
+        x=>
+          x.label
+      ),
+    answerIndex:
+      rows.findIndex(
+        x=>
+          x.ok
+      ),
+    explanation,
+    note
+  };
 }
 function addSubExplain(a,b,op,ans){
   return calcBox(
@@ -1842,6 +1910,33 @@ function divExplain(a,b,ans){
     "只有除數取倒數；改成乘法後，能交叉約分就先約分。"
   );
 }
+function comparisonDetailLine(a,b,sign){
+  const L=
+    ilcm(
+      a.d,
+      b.d
+    );
+
+  const A=
+    a.n*
+    (
+      L/a.d
+    );
+
+  const B=
+    b.n*
+    (
+      L/b.d
+    );
+
+  return (
+    `分母 ${a.d}、${b.d} 的最小公倍數是 <b>${L}</b>：` +
+    `${operandHTML(a)} ＝ ${rawOperandFracHTML(A,L)}，` +
+    `${operandHTML(b)} ＝ ${rawOperandFracHTML(B,L)}，` +
+    `所以 ${rawOperandFracHTML(A,L)} ${sign} ${rawOperandFracHTML(B,L)}。`
+  );
+}
+
 function makeEquivalent(){
   const t=
     ri(
@@ -2018,31 +2113,47 @@ function makeEquivalent(){
         b
       );
 
+    /*
+    固定順序：
+    ＞ ＝ ＜
+    */
     const signs=
       [
-        "＜",
+        "＞",
         "＝",
-        "＞"
+        "＜"
       ];
 
     const correct=
-      c<0
+      c>0
         ? 0
-        : c>0
-          ? 2
-          : 1;
+        : c===0
+          ? 1
+          : 2;
+
+    const sign=
+      signs[
+        correct
+      ];
 
     return makeChoiceQ(
       `<div class="math-expr">比較大小：${operandHTML(a)}　□　${operandHTML(b)}</div>`,
       signs,
       correct,
       calcBox(
-        "先看正負；若兩個都是負數，絕對值較大的反而較小。",
+        "先找兩個分母的最小公倍數，通分成同分母後再比較分子。",
         [
-          `${operandHTML(a)} ${signs[correct]} ${operandHTML(b)}`
+          comparisonDetailLine(
+            a,
+            b,
+            sign
+          )
         ],
-        `${operandHTML(a)} ${signs[correct]} ${operandHTML(b)}`
-      )
+        `${ratHTML(a)} ${sign} ${ratHTML(b)}`,
+        "比較負分數時不要只看分子的數字大小；先通分成同分母最清楚。"
+      ),
+      "",
+      true
     );
   }
 
@@ -2165,14 +2276,8 @@ function makeEquivalent(){
   D｜找出「等值分數」
   ==================================================
 
-  題目和正確選項使用不同倍率或不同負號位置，
-  例如：
-  題目 (-3/5)
-  正解可能 (-12/20)
-
-  或：
-  題目 (-6/10)
-  正解可能 (-9/15)
+  詳解只呈現真正需要的擴分或約分，
+  不再額外寫出「原分數＝原分數」。
   */
   const base=
     makeProperSimpleBase(
@@ -2197,42 +2302,79 @@ function makeEquivalent(){
           Math.random()<.30
         );
 
-  const correctFactors=
-    shuffle(
-      [
-        1,2,3,4,5
-      ].filter(
-        factor=>
-          factor!==questionFactor
-      )
-    );
-
-  const correctFactor=
-    correctFactors[0];
-
-  const correctHTML=
-    correctFactor===1
-      ? operandHTML(
-          base
-        )
-      : makeEqualVariant(
-          base,
-          correctFactor,
-          Math.random()<.45
-        );
+  let correctFactor;
+  let correctHTML;
+  let explanationLine;
 
   /*
-  錯誤選項仍保留相似外觀，
-  但只改分子或只改分母，
-  不能和題目等值。
+  題目已經是最簡分數：
+  正確選項使用不同倍率擴分。
   */
-  const wrongFactor1=
-    correctFactors[1]||
-    2;
+  if(
+    questionFactor===1
+  ){
+    correctFactor=
+      pick(
+        [
+          2,3,4,5
+        ]
+      );
 
-  const wrongFactor2=
-    correctFactors[2]||
-    3;
+    correctHTML=
+      makeEqualVariant(
+        base,
+        correctFactor,
+        Math.random()<.45
+      );
+
+    explanationLine=
+      `分子、分母同乘 ${correctFactor}：` +
+      `${questionHTML} ＝ ${correctHTML}。`;
+
+  }else{
+
+    /*
+    題目本身是擴分後的分數：
+    正確選項直接使用最簡分數。
+    */
+    correctFactor=
+      1;
+
+    correctHTML=
+      ratHTML(
+        base
+      );
+
+    explanationLine=
+      `分子、分母同除以 ${questionFactor}：` +
+      `${questionHTML} ＝ ${ratHTML(base)}。`;
+  }
+
+  const wrongFactor1=
+    pick(
+      [
+        2,3,4,5
+      ]
+    );
+
+  let wrongFactor2=
+    pick(
+      [
+        2,3,4,5
+      ]
+    );
+
+  while(
+    wrongFactor2===
+    wrongFactor1
+  ){
+    wrongFactor2=
+      pick(
+        [
+          2,3,4,5
+        ]
+      );
+  }
 
   const wrong1=
     literalOperandFracHTML(
@@ -2265,9 +2407,9 @@ function makeEquivalent(){
     ],
     0,
     calcBox(
-      "等值分數可用擴分、約分或負號位置判斷；分子、分母必須同乘或同除以相同的非零數。",
+      "等值分數可用擴分或約分判斷；分子、分母必須同乘或同除以相同的非零數。",
       [
-        `${questionHTML} 與 ${correctHTML} 都可以化成 ${operandHTML(base)}。`
+        explanationLine
       ],
       correctHTML
     )
@@ -2343,51 +2485,198 @@ function makeReciprocal(){
     ],ratHTML(ans))};
 }
 function makeMixed(){
-  const type=ri(0,2);
-  if(type===0){
-    const a=smallRat(),b=smallRat(),c=smallRat(),ans=radd(rmul(a,b),c);
-    return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} × ${operandHTML(b)} + ${operandHTML(c)}</div>`,answer:ans,
-      explanation:calcBox(
-        "四則混合運算先乘除、後加減。乘法部分能先約分就先約分，再相乘。",
-        [
-          `先算乘法 ${operandHTML(a)} × ${operandHTML(b)}：`,
-          ...multiplyDetailLines(a,b),
-          `乘法得到 ${operandHTML(rmul(a,b))}。`,
-          addSubCompactHTML(rmul(a,b),c,"+")
-        ],
-        ratHTML(ans),
-        "不要從左到右全部直接算；沒有括號時，乘除要優先於加減。"
-      )};
+  const type=
+    ri(
+      0,
+      2
+    );
+
+  /*
+  乘法＋加法
+  */
+  if(
+    type===0
+  ){
+    const a=
+      smallRat();
+
+    const b=
+      smallRat();
+
+    const c=
+      smallRat();
+
+    const product=
+      rmul(
+        a,
+        b
+      );
+
+    const ans=
+      radd(
+        product,
+        c
+      );
+
+    return {
+      kind:
+        "rational",
+
+      html:
+        `<div class="math-expr">計算：${operandHTML(a)} × ${operandHTML(b)} + ${operandHTML(c)}</div>`,
+
+      answer:
+        ans,
+
+      explanation:
+        calcBox(
+          "四則混合先乘除、後加減；乘法能先約分就先約分。",
+          [
+            ...multiplyDetailLines(
+              a,
+              b
+            ),
+            addSubCompactHTML(
+              product,
+              c,
+              "+"
+            )
+          ],
+          ratHTML(
+            ans
+          ),
+          "沒有括號時，乘除要優先於加減。"
+        )
+    };
   }
-  if(type===1){
-    let a=smallRat(),b=smallRat(),c=smallRat();while(!c.n)c=smallRat();const inside=rsub(a,b), ans=rdiv(inside,c);
-    return {kind:"rational",html:`<div class="math-expr">計算：${groupedBinaryHTML(a,"−",b)} ÷ ${operandHTML(c)}</div>`,answer:ans,
-      explanation:calcBox(
-        "有括號先算括號內。再把除法改成乘以倒數，能先約分就先約分，再相乘。",
-        [
-          `括號內：${addSubCompactHTML(a,b,"-")}`,
-          `括號內得到 ${operandHTML(inside)}，再做除法：`,
-          ...divideDetailLines(inside,c)
-        ],
-        ratHTML(ans),
-        "先完成括號，再處理除法；除數取倒數時不要把被除數也一起顛倒。"
-      )};
+
+
+  /*
+  括號＋除法
+  */
+  if(
+    type===1
+  ){
+    let a=
+      smallRat();
+
+    let b=
+      smallRat();
+
+    let c=
+      smallRat();
+
+    while(
+      !c.n
+    ){
+      c=
+        smallRat();
+    }
+
+    const inside=
+      rsub(
+        a,
+        b
+      );
+
+    const ans=
+      rdiv(
+        inside,
+        c
+      );
+
+    return {
+      kind:
+        "rational",
+
+      html:
+        `<div class="math-expr">計算：${groupedBinaryHTML(a,"−",b)} ÷ ${operandHTML(c)}</div>`,
+
+      answer:
+        ans,
+
+      explanation:
+        calcBox(
+          "有括號先算括號，再把除法改成乘以倒數。",
+          [
+            `括號內：${addSubCompactHTML(a,b,"-")}`,
+            ...divideDetailLines(
+              inside,
+              c
+            )
+          ],
+          ratHTML(
+            ans
+          ),
+          "先完成括號，再處理外面的除法。"
+        )
+    };
   }
-  let a=smallRat(),b=smallRat(),c=smallRat();while(!b.n)b=smallRat();const first=rdiv(a,b),ans=rsub(first,c);
-  return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} ÷ ${operandHTML(b)} − ${operandHTML(c)}</div>`,answer:ans,
-    explanation:calcBox(
-      "四則混合先乘除、後加減。除法先改成乘以倒數，先約分再相乘，最後做減法。",
-      [
-        `先算 ${operandHTML(a)} ÷ ${operandHTML(b)}：`,
-        ...divideDetailLines(a,b),
-        `除法得到 ${operandHTML(first)}。`,
-        addSubCompactHTML(first,c,"-")
-      ],
-      ratHTML(ans),
-      "除法一定先完成，不能先做後面的減法。"
-    )};
-}
-function makeApplication(){
+
+
+  /*
+  除法＋減法
+  兩個主要步驟即可完成。
+  */
+  let a=
+    smallRat();
+
+  let b=
+    smallRat();
+
+  let c=
+    smallRat();
+
+  while(
+    !b.n
+  ){
+    b=
+      smallRat();
+  }
+
+  const first=
+    rdiv(
+      a,
+      b
+    );
+
+  const ans=
+    rsub(
+      first,
+      c
+    );
+
+  return {
+    kind:
+      "rational",
+
+    html:
+      `<div class="math-expr">計算：${operandHTML(a)} ÷ ${operandHTML(b)} − ${operandHTML(c)}</div>`,
+
+    answer:
+      ans,
+
+    explanation:
+      calcBox(
+        "先完成除法，再做減法。",
+        [
+          ...divideDetailLines(
+            a,
+            b
+          ),
+          addSubCompactHTML(
+            first,
+            c,
+            "-"
+          )
+        ],
+        ratHTML(
+          ans
+        ),
+        "除法一定先完成，再處理後面的減法。"
+      )
+  };
+}function makeApplication(){
   const t=ri(0,2);
   if(t===0){
     const a=smallRat(false),b=smallRat(false),ans=rabs(rsub(a,b));
@@ -2617,10 +2906,31 @@ function renderAnswerUI(q){
       String(Math.max(1,q.choices.length))
     );
 
+    const comparisonSymbols=
+      new Set(
+        [
+          "＞",
+          "＝",
+          "＜"
+        ]
+      );
+
+    const isComparisonChoice=
+      q.choices.length===3 &&
+      q.choices.every(
+        label=>
+          comparisonSymbols.has(
+            String(label).trim()
+          )
+      );
+
     q.choices.forEach((label,i)=>{
       const b=document.createElement("button");
       b.type="button";
-      b.className="choice-button";
+      b.className=
+        isComparisonChoice
+          ? "choice-button comparison-choice"
+          : "choice-button";
       b.innerHTML=label;
 
       b.addEventListener("click",()=>{
