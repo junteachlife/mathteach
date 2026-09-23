@@ -564,6 +564,110 @@
       border: 1px solid #fdba74;
     }
 
+    /* ==================================================
+       初學者完整詳解
+       版面比照既有多項式遊戲：
+       題目 → 先想一想 → 步驟 → 常見提醒 → 最後答案
+       ================================================== */
+    .explanation-heading{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin:0 0 12px;
+      color:var(--primary-dark);
+      font-size:20px;
+      font-weight:900;
+    }
+
+    .explanation-question{
+      margin-bottom:12px;
+      padding:12px 14px;
+      border:1px solid #dbeafe;
+      border-radius:12px;
+      background:#fff;
+    }
+
+    .explanation-question-title{
+      margin-bottom:6px;
+      color:#475569;
+      font-weight:900;
+    }
+
+    .explanation-question-math{
+      overflow-x:auto;
+      color:#0f172a;
+      font-size:20px;
+      font-weight:900;
+      line-height:1.8;
+    }
+
+    .explanation-method{
+      margin-bottom:12px;
+      padding:12px 14px;
+      border:1px solid #fed7aa;
+      border-radius:12px;
+      background:#fff7ed;
+      line-height:1.8;
+    }
+
+    .explanation-method strong{
+      color:#c2410c;
+    }
+
+    .explanation-step{
+      margin:10px 0;
+      padding:12px 14px;
+      border-left:4px solid var(--primary);
+      border-radius:12px;
+      background:#fff;
+      line-height:1.9;
+    }
+
+    .explanation-step-title{
+      display:block;
+      margin-bottom:5px;
+      color:var(--primary-dark);
+      font-weight:900;
+    }
+
+    .explanation-tip{
+      margin-top:12px;
+      padding:12px 14px;
+      border:1px solid #fecdd3;
+      border-radius:12px;
+      background:#fff1f2;
+      color:#9f1239;
+      line-height:1.8;
+    }
+
+    .explanation-tip strong{
+      color:#be123c;
+    }
+
+    .explanation-summary{
+      margin-top:12px;
+      padding:13px 14px;
+      border:1px solid #bbf7d0;
+      border-radius:12px;
+      background:#ecfdf5;
+      color:#166534;
+      font-weight:900;
+      line-height:1.8;
+    }
+
+    .reduction-work{
+      display:inline-flex;
+      align-items:center;
+      gap:.28em;
+      flex-wrap:wrap;
+      vertical-align:middle;
+    }
+
+    .simplest-warning{
+      font-weight:900;
+      color:#b45309;
+    }
+
     .factor-line {
       margin: 6px 0;
       font-weight: 800;
@@ -1006,7 +1110,7 @@
             </div>
 
             <div class="fraction-answer-hint">
-              上格填分子、下格填分母；負數可使用左側負號，分子直接輸入負號也可辨識。
+              上格填分子、下格填分母；負數可使用左側負號。送出前必須約成最簡分數；若還能約分，系統會提醒修改，而且不算答錯。
             </div>
           </div>
         </div>
@@ -1195,41 +1299,194 @@ function smallRat(proper=true){
   const d=pick([2,3,4,5,6,7,8,9,10,12]), lim=proper?d-1:d*2+1;
   return R(nzNum(Math.max(1,lim)),d);
 }
-function calcBox(rule,lines,answer){
-  return `<div class="rule-box"><b>觀念：</b>${rule}</div>
-  <div class="calculation-box">${lines.map(x=>`<div class="step-line">${x}</div>`).join("")}</div>
-  <div class="decision-box"><b>答案：</b>${answer}</div>`;
+function calcBox(rule,lines,answer,pitfall=""){
+  return `
+    <div class="explanation-method">
+      <strong>先想一想｜</strong>
+      ${rule}
+    </div>
+
+    ${lines.map((line,index)=>`
+      <div class="explanation-step">
+        <span class="explanation-step-title">
+          步驟 ${index+1}｜
+        </span>
+        ${line}
+      </div>
+    `).join("")}
+
+    ${pitfall?`
+      <div class="explanation-tip">
+        <strong>⚠️ 常見提醒｜</strong>
+        ${pitfall}
+      </div>
+    `:""}
+
+    <div class="explanation-summary">
+      ✅ 最後答案：${answer}
+    </div>
+  `;
+}
+
+function explanationHTML(q){
+  return `
+    <div class="explanation-heading">
+      📘 完整詳解
+    </div>
+
+    <div class="explanation-question">
+      <div class="explanation-question-title">
+        題目
+      </div>
+      <div class="explanation-question-math">
+        ${q.html}
+      </div>
+    </div>
+
+    ${q.explanation}
+  `;
+}
+
+function reductionWorkHTML(rawN,rawD,g){
+  if(rawD<0){
+    rawN=-rawN;
+    rawD=-rawD;
+  }
+
+  const sign=rawN<0?"−":"";
+
+  return `
+    <span class="reduction-work">
+      ${rawFracHTML(rawN,rawD)}
+      ＝
+      ${sign}<span class="math-frac">
+        <span class="top">${Math.abs(rawN)} ÷ ${g}</span>
+        <span class="bottom">${rawD} ÷ ${g}</span>
+      </span>
+      ＝
+      ${rawFracHTML(rawN/g,rawD/g)}
+    </span>
+  `;
+}
+
+function reductionDetailLines(rawN,rawD){
+  if(rawD<0){
+    rawN=-rawN;
+    rawD=-rawD;
+  }
+
+  const g=igcd(rawN,rawD);
+
+  if(g<=1){
+    return [
+      `檢查是否還能約分：分子 ${Math.abs(rawN)} 與分母 ${rawD} 的最大公因數是 1，所以 ${rawFracHTML(rawN,rawD)} 已經是最簡分數。`
+    ];
+  }
+
+  return [
+    `檢查是否可以約分：分子 ${Math.abs(rawN)} 與分母 ${rawD} 的最大公因數是 <b>${g}</b>。`,
+    `分子、分母同除以 ${g}：${reductionWorkHTML(rawN,rawD,g)}`,
+    `因此 ${rawFracHTML(rawN,rawD)} 化成最簡分數後是 <b>${rawFracHTML(rawN/g,rawD/g)}</b>。`
+  ];
+}
+
+function expansionDetailHTML(a,targetDenominator){
+  const factor=targetDenominator/a.d;
+
+  if(factor===1){
+    return `${operandHTML(a)} 的分母已經是 ${targetDenominator}，不用擴分。`;
+  }
+
+  const sign=a.n<0?"−":"";
+
+  return `
+    ${operandHTML(a)}
+    ＝
+    ${sign}<span class="math-frac">
+      <span class="top">${Math.abs(a.n)} × ${factor}</span>
+      <span class="bottom">${a.d} × ${factor}</span>
+    </span>
+    ＝
+    ${rawFracHTML(a.n*factor,targetDenominator)}
+  `;
+}
+
+function addSubDetailLines(a,b,op){
+  const L=ilcm(a.d,b.d);
+  const A=a.n*(L/a.d);
+  const B=b.n*(L/b.d);
+  const rawN=op==="+"?A+B:A-B;
+  const symbol=op==="+"?"+":"−";
+
+  return [
+    `先找共同分母：${a.d} 和 ${b.d} 的最小公倍數是 <b>${L}</b>。`,
+    `把第一個分數通分：${expansionDetailHTML(a,L)}`,
+    `把第二個分數通分：${expansionDetailHTML(b,L)}`,
+    `分母相同後，只做分子加減：${rawFracHTML(A,L)} ${symbol} ${rawFracHTML(B,L)} ＝ ${rawFracHTML(rawN,L)}。`,
+    ...reductionDetailLines(rawN,L)
+  ];
+}
+
+function multiplyDetailLines(a,b){
+  const rawN=a.n*b.n;
+  const rawD=a.d*b.d;
+  const negativeCount=(a.n<0?1:0)+(b.n<0?1:0);
+
+  return [
+    `先判斷正負號：本題有 ${negativeCount} 個負因數，所以乘積為${negativeCount%2?"負":"正"}數。`,
+    `分子乘分子、分母乘分母：${operandHTML(a)} × ${operandHTML(b)}`,
+    `＝ ${rawN<0?"−":""}<span class="math-frac"><span class="top">${Math.abs(a.n)} × ${Math.abs(b.n)}</span><span class="bottom">${a.d} × ${b.d}</span></span>`,
+    `＝ ${rawFracHTML(rawN,rawD)}。`,
+    ...reductionDetailLines(rawN,rawD)
+  ];
+}
+
+function divideDetailLines(a,b){
+  const reciprocalRawN=b.d*(b.n<0?-1:1);
+  const reciprocalRawD=Math.abs(b.n);
+  const rawN=a.n*reciprocalRawN;
+  const rawD=a.d*reciprocalRawD;
+
+  return [
+    `除以一個不為 0 的分數，要改成「乘以它的倒數」。`,
+    `${operandHTML(b)} 的倒數是 ${rawOperandFracHTML(reciprocalRawN,reciprocalRawD)}。`,
+    `${operandHTML(a)} ÷ ${operandHTML(b)} ＝ ${operandHTML(a)} × ${rawOperandFracHTML(reciprocalRawN,reciprocalRawD)}。`,
+    `分子乘分子、分母乘分母：${operandHTML(a)} × ${rawOperandFracHTML(reciprocalRawN,reciprocalRawD)} ＝ ${rawFracHTML(rawN,rawD)}。`,
+    ...reductionDetailLines(rawN,rawD)
+  ];
 }
 function makeChoiceQ(html,items,correctIndex,explanation,note=""){
   const rows=shuffle(items.map((label,i)=>({label,ok:i===correctIndex})));
   return {kind:"choice",html,choices:rows.map(x=>x.label),answerIndex:rows.findIndex(x=>x.ok),explanation,note};
 }
 function addSubExplain(a,b,op,ans){
-  const L=ilcm(a.d,b.d),A=a.n*(L/a.d),B=b.n*(L/b.d),symbol=op==="+"?"+":"−",num=op==="+"?A+B:A-B;
-  const rule=op==="-"?"減去一個數等於加上它的相反數；異分母先通分，再做分子加減。":"異分母先用最小公倍數通分，再做分子加法。";
-  return calcBox(rule,[
-    `分母 ${a.d}、${b.d} 的最小公倍數是 <b>${L}</b>。`,
-    `${operandHTML(a)} ${symbol} ${operandHTML(b)} ＝ ${rawOperandFracHTML(A,L)} ${symbol} ${rawOperandFracHTML(B,L)}`,
-    `＝ ${rawFracHTML(num,L)}`,
-    igcd(num,L)>1?`分子、分母同除以 ${igcd(num,L)}，化簡得 ${ratHTML(ans)}。`:`已是最簡結果 ${ratHTML(ans)}。`
-  ],ratHTML(ans));
+  const rule=
+    op==="-"
+      ? "異分母分數相減時，先通分成相同分母，再做分子相減；最後一定檢查能不能約分。"
+      : "異分母分數相加時，先通分成相同分母，再做分子相加；最後一定檢查能不能約分。";
+
+  return calcBox(
+    rule,
+    addSubDetailLines(a,b,op),
+    ratHTML(ans),
+    "分數相加減不能直接把分母相加減；一定要先通分。答案若還能約分，就不能停在原來的分數。"
+  );
 }
 function mulExplain(a,b,ans){
-  const rawN=a.n*b.n,rawD=a.d*b.d,g=igcd(rawN,rawD);
-  return calcBox("先判斷正負號，再把分子相乘、分母相乘；最後約分。",[
-    `${operandHTML(a)} × ${operandHTML(b)}`,
-    `＝ ${rawN<0?"−":""}<span class="math-frac"><span class="top">${Math.abs(a.n)}×${Math.abs(b.n)}</span><span class="bottom">${a.d}×${b.d}</span></span>`,
-    `＝ ${rawN<0?"−":""}<span class="math-frac"><span class="top">${Math.abs(rawN)}</span><span class="bottom">${rawD}</span></span>${g>1?`，再同除以 ${g}`:""}`,
-    `＝ ${ratHTML(ans)}`
-  ],ratHTML(ans));
+  return calcBox(
+    "分數相乘先判斷正負號，再做「分子乘分子、分母乘分母」，最後把結果約成最簡分數。",
+    multiplyDetailLines(a,b),
+    ratHTML(ans),
+    "不要把分數乘法做成分子相加或分母相加；算完後還要檢查分子、分母是否有公因數。"
+  );
 }
 function divExplain(a,b,ans){
-  const rec=R(b.d,b.n);
-  return calcBox("除以一個不為 0 的數，就是乘以它的倒數；倒數的正負號不變。",[
-    `${operandHTML(a)} ÷ ${operandHTML(b)}`,
-    `＝ ${operandHTML(a)} × ${operandHTML(rec)}　（把除數改乘它的倒數）`,
-    `＝ ${ratHTML(ans)}`
-  ],ratHTML(ans));
+  return calcBox(
+    "分數除法不能直接分子除分子、分母除分母；要先把「除以」改成「乘以倒數」，再依分數乘法計算。",
+    divideDetailLines(a,b),
+    ratHTML(ans),
+    "只有除數要取倒數，被除數不變；倒數的正負號也不會消失。"
+  );
 }
 function makeEquivalent(){
   const t=ri(0,3);
@@ -1237,10 +1494,12 @@ function makeEquivalent(){
     const d=pick([4,6,8,9,10,12,15,18,20,24]), g=pick([2,3]), n=nzNum(d-1)*g, den=d*g, ans=R(n,den);
     return {kind:"rational",html:`<div class="math-expr">將 ${rawOperandFracHTML(n,den)} 化為最簡分數。</div>`,answer:ans,requireSimple:true,
       note:"本題指定「最簡分數」，需完成約分。",
-      explanation:calcBox("分子與分母同除以最大公因數，分數的值不變。",[
-        `分子 ${Math.abs(n)} 與分母 ${den} 的最大公因數為 ${igcd(n,den)}。`,
-        `${rawOperandFracHTML(n,den)} ＝ ${operandHTML(ans)}`
-      ],ratHTML(ans))};
+      explanation:calcBox(
+        "要化成最簡分數，就找分子與分母的最大公因數，分子、分母同除以這個數。",
+        reductionDetailLines(n,den),
+        ratHTML(ans),
+        "約分時分子與分母一定要同除以相同的非零整數，分數的值才不會改變。"
+      )};
   }
   if(t===1){
     let a=smallRat(),b=smallRat();while(ratEq(a,b))b=smallRat();
@@ -1273,26 +1532,39 @@ function makeAddSubtract(speed=false){
   if(!speed&&Math.random()<.22){
     const d=pick([5,7,11]),a=R(nzNum(d-1),d),c=R(nzNum(d-1),d),b=smallRat(),ans=radd(radd(a,c),b),ac=radd(a,c);
     return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} + ${operandHTML(b)} + ${operandHTML(c)}</div>`,answer:ans,
-      explanation:calcBox("加法可利用交換律、結合律，把容易相加的分數先結合。",[
-        `交換順序：${operandHTML(a)} + ${operandHTML(c)} + ${operandHTML(b)}`,
-        `先算同分母：${groupedBinaryHTML(a,"+",c)} + ${operandHTML(b)} ＝ ${operandHTML(ac)} + ${operandHTML(b)}`,
-        `＝ ${ratHTML(ans)}`
-      ],ratHTML(ans))};
+      explanation:calcBox(
+        "加法可以利用交換律、結合律，把容易相加的分數先放在一起；每完成一次分數運算，都要檢查是否需要約分。",
+        [
+          `先交換順序：${operandHTML(a)} + ${operandHTML(c)} + ${operandHTML(b)}。`,
+          `先算同分母的兩個分數：${groupedBinaryHTML(a,"+",c)} ＝ ${operandHTML(ac)}。`,
+          `接著計算 ${operandHTML(ac)} + ${operandHTML(b)}。`,
+          ...addSubDetailLines(ac,b,"+")
+        ],
+        ratHTML(ans),
+        "交換律只是在改變相加的順序，分數本身的正負號不能跟著改。"
+      )};
   }
   if(!speed&&Math.random()<.20){
     const a=smallRat(false),b=smallRat(),c=smallRat(),inside=radd(b,c),ans=rsub(a,inside);
     return {kind:"rational",html:`<div class="math-expr">計算：${mixedOperandHTML(a)} − ${groupedBinaryHTML(b,"+",c)}</div>`,answer:ans,
-      explanation:calcBox("有括號先算括號內；也可用去括號法則把減號分配進去。",[
-        `括號內：${operandHTML(b)} + ${operandHTML(c)} ＝ ${operandHTML(inside)}`,
-        `${operandHTML(a)} − ${operandHTML(inside)} ＝ ${operandHTML(ans)}`
-      ],ratHTML(ans))};
+      explanation:calcBox(
+        "有括號時先算括號內。括號內是分數加法，所以先通分；算完括號後，再做外面的減法。",
+        [
+          `先處理括號內：${groupedBinaryHTML(b,"+",c)}。`,
+          ...addSubDetailLines(b,c,"+"),
+          `括號內得到 ${operandHTML(inside)}，原式變成 ${operandHTML(a)} − ${operandHTML(inside)}。`,
+          ...addSubDetailLines(a,inside,"-")
+        ],
+        ratHTML(ans),
+        "不要還沒算完括號就先做外面的減法；分數加減每一步都要先確認分母是否相同。"
+      )};
   }
   const d1=pick(ds), d2=speed&&Math.random()<.65?d1:pick(ds);
   const a=R(nzNum(d1*2),d1),b=R(nzNum(d2*2),d2),op=Math.random()<.5?"+":"-",ans=op==="+"?radd(a,b):rsub(a,b);
   const displayA=!speed&&Math.abs(a.n)>a.d&&Math.random()<.35?mixedOperandHTML(a):operandHTML(a);
   const displayB=!speed&&Math.abs(b.n)>b.d&&Math.random()<.35?mixedOperandHTML(b):operandHTML(b);
   return {kind:"rational",html:`<div class="math-expr">計算：${displayA} ${op==="+"?"+":"−"} ${displayB}</div>`,answer:ans,
-    note:"若答案為分數，請在上格填分子、下格填分母；等值分數會依數值判定。",
+    note:"若答案為分數，請在上格填分子、下格填分母，並先約成最簡分數再送出。",
     explanation:addSubExplain(a,b,op,ans)};
 }
 function makeMultiplyDivide(speed=false){
@@ -1300,10 +1572,22 @@ function makeMultiplyDivide(speed=false){
     const a=smallRat(),b=smallRat(),c=smallRat(),ans=rmul(rmul(a,b),c);
     const negatives=[a,b,c].filter(x=>x.n<0).length;
     return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} × ${operandHTML(b)} × ${operandHTML(c)}</div>`,answer:ans,
-      explanation:calcBox("多個非零分數連乘：負因數有偶數個，積為正；有奇數個，積為負，再進行約分。",[
-        `本題共有 ${negatives} 個負因數，所以乘積為${negatives%2?"負":"正"}數。`,
-        `${operandHTML(a)} × ${operandHTML(b)} × ${operandHTML(c)} ＝ ${operandHTML(ans)}`
-      ],ratHTML(ans))};
+      explanation:(()=>{
+        const rawN=a.n*b.n*c.n;
+        const rawD=a.d*b.d*c.d;
+        return calcBox(
+          "三個分數連乘時，先看負因數個數決定正負號，再把所有分子相乘、所有分母相乘，最後約成最簡分數。",
+          [
+            `本題共有 ${negatives} 個負因數，所以乘積為${negatives%2?"負":"正"}數。`,
+            `分子相乘：${Math.abs(a.n)} × ${Math.abs(b.n)} × ${Math.abs(c.n)} ＝ ${Math.abs(rawN)}。`,
+            `分母相乘：${a.d} × ${b.d} × ${c.d} ＝ ${rawD}。`,
+            `所以先得到 ${rawFracHTML(rawN,rawD)}。`,
+            ...reductionDetailLines(rawN,rawD)
+          ],
+          ratHTML(ans),
+          "負因數個數只決定答案正負；數值大小仍要照分子乘分子、分母乘分母計算。"
+        );
+      })()};
   }
   if(Math.random()<.5){
     const a=smallRat(!speed),b=smallRat(!speed),ans=rmul(a,b);
@@ -1324,26 +1608,46 @@ function makeMixed(){
   if(type===0){
     const a=smallRat(),b=smallRat(),c=smallRat(),ans=radd(rmul(a,b),c);
     return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} × ${operandHTML(b)} + ${operandHTML(c)}</div>`,answer:ans,
-      explanation:calcBox("四則混合先乘除、後加減。",[
-        `先算乘法：${operandHTML(a)} × ${operandHTML(b)} ＝ ${operandHTML(rmul(a,b))}`,
-        `再算加法：${operandHTML(rmul(a,b))} + ${operandHTML(c)} ＝ ${operandHTML(ans)}`
-      ],ratHTML(ans))};
+      explanation:calcBox(
+        "四則混合運算要先乘除、後加減。先把乘法完整算完並約分，再做後面的加法。",
+        [
+          `先算乘法 ${operandHTML(a)} × ${operandHTML(b)}：`,
+          ...multiplyDetailLines(a,b),
+          `乘法得到 ${operandHTML(rmul(a,b))}，接著算 ${operandHTML(rmul(a,b))} + ${operandHTML(c)}。`,
+          ...addSubDetailLines(rmul(a,b),c,"+")
+        ],
+        ratHTML(ans),
+        "不要從左到右全部直接算；沒有括號時，乘除要優先於加減。"
+      )};
   }
   if(type===1){
     let a=smallRat(),b=smallRat(),c=smallRat();while(!c.n)c=smallRat();const inside=rsub(a,b), ans=rdiv(inside,c);
     return {kind:"rational",html:`<div class="math-expr">計算：${groupedBinaryHTML(a,"−",b)} ÷ ${operandHTML(c)}</div>`,answer:ans,
-      explanation:calcBox("有括號時先算括號內，再依乘除優先的規則計算。",[
-        `括號內：${operandHTML(a)} − ${operandHTML(b)} ＝ ${operandHTML(inside)}`,
-        `${operandHTML(inside)} ÷ ${operandHTML(c)} ＝ ${operandHTML(inside)} × ${operandHTML(R(c.d,c.n))}`,
-        `＝ ${ratHTML(ans)}`
-      ],ratHTML(ans))};
+      explanation:calcBox(
+        "有括號先算括號內。括號內完成後，再做除法；除法要改成乘以倒數，最後約成最簡分數。",
+        [
+          `先算括號內 ${groupedBinaryHTML(a,"−",b)}：`,
+          ...addSubDetailLines(a,b,"-"),
+          `括號內得到 ${operandHTML(inside)}，接著計算 ${operandHTML(inside)} ÷ ${operandHTML(c)}。`,
+          ...divideDetailLines(inside,c)
+        ],
+        ratHTML(ans),
+        "先完成括號，再處理除法；除數取倒數時不要把被除數也一起顛倒。"
+      )};
   }
   let a=smallRat(),b=smallRat(),c=smallRat();while(!b.n)b=smallRat();const first=rdiv(a,b),ans=rsub(first,c);
   return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} ÷ ${operandHTML(b)} − ${operandHTML(c)}</div>`,answer:ans,
-    explanation:calcBox("四則混合先乘除、後加減；除法改成乘以倒數。",[
-      `先算除法：${operandHTML(a)} ÷ ${operandHTML(b)} ＝ ${operandHTML(first)}`,
-      `再算減法：${operandHTML(first)} − ${operandHTML(c)} ＝ ${operandHTML(ans)}`
-    ],ratHTML(ans))};
+    explanation:calcBox(
+      "四則混合先乘除、後加減。先把除法改成乘以倒數並完整約分，再做後面的減法。",
+      [
+        `先算 ${operandHTML(a)} ÷ ${operandHTML(b)}：`,
+        ...divideDetailLines(a,b),
+        `除法得到 ${operandHTML(first)}，接著計算 ${operandHTML(first)} − ${operandHTML(c)}。`,
+        ...addSubDetailLines(first,c,"-")
+      ],
+      ratHTML(ans),
+      "除法一定先完成，不能先做後面的減法。"
+    )};
 }
 function makeApplication(){
   const t=ri(0,2);
@@ -1692,7 +1996,19 @@ function getAnswer(q){
       denominator
     );
 
-    if(q.requireSimple && igcd(rawNumerator,denominator)!==1){
+    const commonDivisor=
+      igcd(
+        rawNumerator,
+        denominator
+      );
+
+    if(commonDivisor!==1){
+      const reduced=
+        R(
+          rawNumerator,
+          denominator
+        );
+
       return {
         ok:false,
         formatOk:true,
@@ -1700,7 +2016,12 @@ function getAnswer(q){
         displayHTML:true,
         systemDisplay,
         systemDisplayHTML:true,
-        msg:"系統已讀取這個分數，但本題指定最簡分數，請先約分後再判定。"
+        msg:"答案還不是最簡分數，請先約分後再送出；本次不算答錯。",
+        msgHTML:
+          `<span class="simplest-warning">⚠️ 這個答案還不是最簡分數。</span> ` +
+          `${systemDisplay} 的分子、分母還可以同除以 <b>${commonDivisor}</b>，` +
+          `請先改成 ${ratHTML(reduced)} 再送出。<br>` +
+          `這次不算答錯，也不會進入下一題。`
       };
     }
 
@@ -1907,7 +2228,14 @@ function updateSystemRead(){
 function submitAnswer(){
   if(locked)return;
   const q=modeId==="speed"?questions[0]:questions[index], a=getAnswer(q);
-  if(!a.ok){$("input-message").textContent=a.msg;return}
+  if(!a.ok){
+    if(a.msgHTML){
+      $("input-message").innerHTML=a.msgHTML;
+    }else{
+      $("input-message").textContent=a.msg;
+    }
+    return;
+  }
   locked=true;
   $("number-input").disabled=true;
   $("fraction-sign").disabled=true;
@@ -1931,7 +2259,7 @@ function submitAnswer(){
   }
   $("feedback").textContent=a.correct?"✅ 回答正確！":"❌ 答案不正確，請看下方完整解析。";
   $("feedback").className=`feedback ${a.correct?"correct":"wrong"}`;
-  $("explanation").innerHTML=q.explanation;$("explanation").classList.remove("hidden");
+  $("explanation").innerHTML=explanationHTML(q);$("explanation").classList.remove("hidden");
   $("submit-button").classList.add("hidden");$("next-button").classList.remove("hidden");
   $("next-button").textContent=index===questions.length-1?"查看測驗結果":"下一題";updateStatus();
 }
@@ -1974,7 +2302,7 @@ async function sendRpgBridge({score,total,accuracy,elapsed}){
 function renderReview(){
   const list=$("review-list"), bad=records.filter(r=>!r.correct);
   list.innerHTML=bad.length
-    ?bad.map(r=>`<article class="review-item"><h3>第 ${r.number} 題</h3><div class="review-question">${r.question.html}</div><p><b>你的答案：</b>${r.userAnswerHTML?r.userAnswer:esc(r.userAnswer)}</p><p><b>正確答案：</b>${answerHTML(r.question)}</p><div class="review-explanation">${r.question.explanation}</div></article>`).join("")
+    ?bad.map(r=>`<article class="review-item"><h3>第 ${r.number} 題</h3><div class="review-question">${r.question.html}</div><p><b>你的答案：</b>${r.userAnswerHTML?r.userAnswer:esc(r.userAnswer)}</p><p><b>正確答案：</b>${answerHTML(r.question)}</p><div class="review-explanation">${explanationHTML(r.question)}</div></article>`).join("")
     :"<p>本次沒有錯題，太棒了！</p>";
   showScreen("review-screen");
 }
