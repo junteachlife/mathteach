@@ -309,13 +309,20 @@
 
     .choice-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns:
+        repeat(
+          var(--choice-count, 3),
+          minmax(0, 1fr)
+        );
       gap: 12px;
+      width: 100%;
+      align-items: stretch;
     }
 
     .choice-button {
+      min-width: 0;
       min-height: 68px;
-      padding: 12px;
+      padding: 12px 8px;
       border: 2px solid #cbd5e1;
       border-radius: 16px;
       background: #fff;
@@ -323,6 +330,9 @@
       font-size: 17px;
       font-weight: 800;
       line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       cursor: pointer;
       transition: .14s ease;
     }
@@ -872,7 +882,14 @@
       .game-header { padding: 22px 16px 16px; }
       .mode-grid { grid-template-columns: 1fr; }
       .quiz-topbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .choice-grid { grid-template-columns: 1fr; }
+      .choice-grid {
+        gap: 8px;
+      }
+      .choice-button {
+        min-height: 60px;
+        padding: 10px 5px;
+        font-size: 15px;
+      }
       .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .question-card { padding: 20px 12px; }
     }
@@ -1163,17 +1180,39 @@ function mixedHTML(x){
   const w=Math.floor(n/a.d),r=n%a.d;if(!r)return `${sg}${w}`;
   return `${sg}${w}${ratHTML(R(r,a.d))}`;
 }
+function mathGroupHTML(content,level=1){
+  if(level<=1)return `(${content})`;
+  if(level===2)return `[${content}]`;
+  return `{${content}}`;
+}
+function operandGroupDepth(x){
+  const a=R(x.n,x.d);
+  return a.n<0?1:0;
+}
+function groupedBinaryHTML(a,operator,b){
+  const level=
+    1+
+    Math.max(
+      operandGroupDepth(a),
+      operandGroupDepth(b)
+    );
+
+  return mathGroupHTML(
+    `${operandHTML(a)} ${operator} ${operandHTML(b)}`,
+    level
+  );
+}
 function operandHTML(x){
   const a=R(x.n,x.d),html=ratHTML(a);
-  return a.n<0?`(${html})`:html;
+  return a.n<0?mathGroupHTML(html,1):html;
 }
 function mixedOperandHTML(x){
   const a=R(x.n,x.d),html=mixedHTML(a);
-  return a.n<0?`(${html})`:html;
+  return a.n<0?mathGroupHTML(html,1):html;
 }
 function rawOperandFracHTML(n,d){
   const a=R(n,d),html=rawFracHTML(n,d);
-  return a.n<0?`(${html})`:html;
+  return a.n<0?mathGroupHTML(html,1):html;
 }
 function parseRational(raw){
   let s=String(raw).trim().replace(/[−–—]/g,"-").replace(/\s+/g," ");
@@ -1270,13 +1309,13 @@ function makeAddSubtract(speed=false){
     return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} + ${operandHTML(b)} + ${operandHTML(c)}</div>`,answer:ans,
       explanation:calcBox("加法可利用交換律、結合律，把容易相加的分數先結合。",[
         `交換順序：${operandHTML(a)} + ${operandHTML(c)} + ${operandHTML(b)}`,
-        `先算同分母：(${operandHTML(a)} + ${operandHTML(c)}) + ${operandHTML(b)} ＝ ${operandHTML(ac)} + ${operandHTML(b)}`,
+        `先算同分母：${groupedBinaryHTML(a,"+",c)} + ${operandHTML(b)} ＝ ${operandHTML(ac)} + ${operandHTML(b)}`,
         `＝ ${ratHTML(ans)}`
       ],ratHTML(ans))};
   }
   if(!speed&&Math.random()<.20){
     const a=smallRat(false),b=smallRat(),c=smallRat(),inside=radd(b,c),ans=rsub(a,inside);
-    return {kind:"rational",html:`<div class="math-expr">計算：${mixedOperandHTML(a)} − (${operandHTML(b)} + ${operandHTML(c)})</div>`,answer:ans,
+    return {kind:"rational",html:`<div class="math-expr">計算：${mixedOperandHTML(a)} − ${groupedBinaryHTML(b,"+",c)}</div>`,answer:ans,
       explanation:calcBox("有括號先算括號內；也可用去括號法則把減號分配進去。",[
         `括號內：${operandHTML(b)} + ${operandHTML(c)} ＝ ${operandHTML(inside)}`,
         `${operandHTML(a)} − ${operandHTML(inside)} ＝ ${operandHTML(ans)}`
@@ -1326,7 +1365,7 @@ function makeMixed(){
   }
   if(type===1){
     let a=smallRat(),b=smallRat(),c=smallRat();while(!c.n)c=smallRat();const inside=rsub(a,b), ans=rdiv(inside,c);
-    return {kind:"rational",html:`<div class="math-expr">計算：(${operandHTML(a)} − ${operandHTML(b)}) ÷ ${operandHTML(c)}</div>`,answer:ans,
+    return {kind:"rational",html:`<div class="math-expr">計算：${groupedBinaryHTML(a,"−",b)} ÷ ${operandHTML(c)}</div>`,answer:ans,
       explanation:calcBox("有括號時先算括號內，再依乘除優先的規則計算。",[
         `括號內：${operandHTML(a)} − ${operandHTML(b)} ＝ ${operandHTML(inside)}`,
         `${operandHTML(inside)} ÷ ${operandHTML(c)} ＝ ${operandHTML(inside)} × ${operandHTML(R(c.d,c.n))}`,
@@ -1354,7 +1393,7 @@ function makeApplication(){
     const a=smallRat(false),c=smallRat(false),ans=rdiv(radd(a,c),R(2));
     return {kind:"rational",html:`<div class="math-expr">A、C 在數線上的坐標分別為 ${mixedOperandHTML(a)}、${mixedOperandHTML(c)}，B 是 AC 的中點。求 B 的坐標。</div>`,answer:ans,
       explanation:calcBox("中點坐標可用兩端點坐標相加後除以 2。",[
-        `B＝(${operandHTML(a)} + ${operandHTML(c)}) ÷ 2`,
+        `B＝${groupedBinaryHTML(a,"+",c)} ÷ 2`,
         `＝${operandHTML(radd(a,c))} × ${operandHTML(R(1,2))}`,
         `＝${ratHTML(ans)}`
       ],ratHTML(ans))};
@@ -1562,6 +1601,10 @@ function resetAnswerUI(){
 function renderAnswerUI(q){
   if(q.kind==="choice"){
     $("choiceMount").classList.remove("hidden");
+    $("choiceMount").style.setProperty(
+      "--choice-count",
+      String(Math.max(1,q.choices.length))
+    );
 
     q.choices.forEach((label,i)=>{
       const b=document.createElement("button");
