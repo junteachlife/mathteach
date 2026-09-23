@@ -1383,6 +1383,33 @@ function smallRat(proper=true){
   const d=pick([2,3,4,5,6,7,8,9,10,12]), lim=proper?d-1:d*2+1;
   return R(nzNum(Math.max(1,lim)),d);
 }
+function answerPresentationHTML(html){
+  const value=
+    String(
+      html ?? ""
+    ).trim();
+
+  /*
+  計算過程中的負數會用：
+  (−3/5)
+
+  但「最後答案」呈現時，
+  外層括號拿掉，顯示：
+  −3/5
+  */
+  if(
+    value.startsWith("(") &&
+    value.endsWith(")")
+  ){
+    return value.slice(
+      1,
+      -1
+    );
+  }
+
+  return value;
+}
+
 function calcBox(rule,lines,answer,pitfall=""){
   return `
     <div class="explanation-method">
@@ -1407,12 +1434,10 @@ function calcBox(rule,lines,answer,pitfall=""){
     `:""}
 
     <div class="explanation-summary">
-      ✅ 最後答案：${answer}
+      ✅ 最後答案：${answerPresentationHTML(answer)}
     </div>
   `;
-}
-
-function explanationHTML(q){
+}function explanationHTML(q){
   return `
     <div class="explanation-heading">
       📘 完整詳解
@@ -1593,66 +1618,191 @@ function addSubDetailLines(a,b,op){
       op
     )
   ];
-}function multiplyDetailLines(a,b){
+}function crossCancelProductData(factors){
+  const numerators=
+    factors.map(
+      factor=>
+        factor.n
+    );
+
+  const denominators=
+    factors.map(
+      factor=>
+        factor.d
+    );
+
+  const notes=[];
+
+  /*
+  每一個分子都可以和其他分母先約分。
+  這樣可以避免先乘出很大的數字，
+  再回頭約分。
+  */
+  for(
+    let i=0;
+    i<numerators.length;
+    i++
+  ){
+    for(
+      let j=0;
+      j<denominators.length;
+      j++
+    ){
+      const g=
+        igcd(
+          numerators[i],
+          denominators[j]
+        );
+
+      if(g<=1){
+        continue;
+      }
+
+      const beforeN=
+        Math.abs(
+          numerators[i]
+        );
+
+      const beforeD=
+        denominators[j];
+
+      notes.push(
+        `分子 ${beforeN} 與分母 ${beforeD} 同除以 ${g}`
+      );
+
+      numerators[i] /=
+        g;
+
+      denominators[j] /=
+        g;
+    }
+  }
+
   const rawN=
-    a.n*b.n;
+    numerators.reduce(
+      (
+        total,
+        value
+      )=>
+        total*value,
+      1
+    );
 
   const rawD=
-    a.d*b.d;
+    denominators.reduce(
+      (
+        total,
+        value
+      )=>
+        total*value,
+      1
+    );
+
+  return {
+    numerators,
+    denominators,
+    notes,
+    result:
+      R(
+        rawN,
+        rawD
+      )
+  };
+}
+
+function reducedProductHTML(data){
+  return data.numerators
+    .map(
+      (
+        numerator,
+        index
+      )=>
+        literalOperandFracHTML(
+          numerator,
+          data.denominators[index]
+        )
+    )
+    .join(
+      " × "
+    );
+}
+
+function productDetailLines(factors){
+  const data=
+    crossCancelProductData(
+      factors
+    );
+
+  const original=
+    factors
+      .map(
+        factor=>
+          operandHTML(
+            factor
+          )
+      )
+      .join(
+        " × "
+      );
+
+  const reduced=
+    reducedProductHTML(
+      data
+    );
 
   const negativeCount=
-    (a.n<0?1:0)+
-    (b.n<0?1:0);
+    factors.filter(
+      factor=>
+        factor.n<0
+    ).length;
 
-  const lines=[
-    `先判斷正負：有 ${negativeCount} 個負因數，所以答案為${negativeCount%2?"負":"正"}數。`,
-    `分子乘分子、分母乘分母：${operandHTML(a)} × ${operandHTML(b)} ＝ ${rawOperandFracHTML(rawN,rawD)}。`
-  ];
+  const signText=
+    `共有 ${negativeCount} 個負因數，所以結果為${negativeCount%2?"負":"正"}數。`;
+
+  const lines=[];
+
+  if(
+    data.notes.length
+  ){
+    lines.push(
+      `${signText} 先約分：${data.notes.join("；")}，所以 ${original} ＝ ${reduced}。`
+    );
+  }else{
+    lines.push(
+      `${signText} 沒有可以先約分的公因數，直接計算 ${original}。`
+    );
+  }
 
   lines.push(
-    ...reductionDetailLines(
-      rawN,
-      rawD
-    )
+    `再相乘：${reduced} ＝ ${operandHTML(data.result)}。`
   );
 
   return lines;
 }
-function divideDetailLines(a,b){
-  const reciprocalRawN=
-    b.d*
-    (
-      b.n<0
-        ? -1
-        : 1
-    );
 
-  const reciprocalRawD=
-    Math.abs(
+function multiplyDetailLines(a,b){
+  return productDetailLines(
+    [
+      a,
+      b
+    ]
+  );
+}function divideDetailLines(a,b){
+  const reciprocal=
+    R(
+      b.d,
       b.n
     );
 
-  const rawN=
-    a.n*
-    reciprocalRawN;
-
-  const rawD=
-    a.d*
-    reciprocalRawD;
-
-  const lines=[
-    `除以分數改成乘以倒數：${operandHTML(a)} ÷ ${operandHTML(b)} ＝ ${operandHTML(a)} × ${rawOperandFracHTML(reciprocalRawN,reciprocalRawD)}。`,
-    `相乘得到：${rawOperandFracHTML(rawN,rawD)}。`
-  ];
-
-  lines.push(
-    ...reductionDetailLines(
-      rawN,
-      rawD
+  return [
+    `除以分數改成乘以倒數：${operandHTML(a)} ÷ ${operandHTML(b)} ＝ ${operandHTML(a)} × ${operandHTML(reciprocal)}。`,
+    ...productDetailLines(
+      [
+        a,
+        reciprocal
+      ]
     )
-  );
-
-  return lines;
+  ];
 }
 function makeChoiceQ(html,items,correctIndex,explanation,note=""){
   const rows=shuffle(items.map((label,i)=>({label,ok:i===correctIndex})));
@@ -1666,24 +1816,30 @@ function addSubExplain(a,b,op,ans){
       b,
       op
     ),
-    operandHTML(ans),
+    ratHTML(ans),
     "分數加減時，分母不同要先通分，不能直接把分母相加減。"
   );
 }
 function mulExplain(a,b,ans){
   return calcBox(
-    "先判斷正負，再做分子乘分子、分母乘分母；最後視需要約分。",
-    multiplyDetailLines(a,b),
-    operandHTML(ans),
-    "乘法算完後，記得看分子、分母是否還有公因數。"
+    "先判斷正負；分子和分母若有公因數，先交叉約分，再相乘，可以避免數字變大。",
+    multiplyDetailLines(
+      a,
+      b
+    ),
+    ratHTML(ans),
+    "分數相乘時，能先約分就先約分，不必先把分子、分母全部乘完再約分。"
   );
 }
 function divExplain(a,b,ans){
   return calcBox(
-    "把除法改成乘以倒數，再依分數乘法計算。",
-    divideDetailLines(a,b),
-    operandHTML(ans),
-    "只有除數取倒數，被除數不變。"
+    "除法先改成乘以倒數，再先約分、後相乘。",
+    divideDetailLines(
+      a,
+      b
+    ),
+    ratHTML(ans),
+    "只有除數取倒數；改成乘法後，能交叉約分就先約分。"
   );
 }
 function makeEquivalent(){
@@ -2129,7 +2285,7 @@ function makeAddSubtract(speed=false){
           addSubCompactHTML(a,c,"+"),
           addSubCompactHTML(ac,b,"+")
         ],
-        operandHTML(ans),
+        ratHTML(ans),
         "交換順序時，原本的正負號不能改變。"
       )};
   }
@@ -2142,7 +2298,7 @@ function makeAddSubtract(speed=false){
           `括號內：${addSubCompactHTML(b,c,"+")}`,
           `再算外面：${addSubCompactHTML(a,inside,"-")}`
         ],
-        operandHTML(ans),
+        ratHTML(ans),
         "先完成括號，再處理外面的運算。"
       )};
   }
@@ -2159,22 +2315,18 @@ function makeMultiplyDivide(speed=false){
     const a=smallRat(),b=smallRat(),c=smallRat(),ans=rmul(rmul(a,b),c);
     const negatives=[a,b,c].filter(x=>x.n<0).length;
     return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} × ${operandHTML(b)} × ${operandHTML(c)}</div>`,answer:ans,
-      explanation:(()=>{
-        const rawN=a.n*b.n*c.n;
-        const rawD=a.d*b.d*c.d;
-        return calcBox(
-          "三個分數連乘時，先看負因數個數決定正負號，再把所有分子相乘、所有分母相乘，最後約成最簡分數。",
+      explanation:calcBox(
+        "三個分數連乘也一樣：先判斷正負，所有分子與分母能約分的先約分，再一次相乘。",
+        productDetailLines(
           [
-            `本題共有 ${negatives} 個負因數，所以乘積為${negatives%2?"負":"正"}數。`,
-            `分子相乘：${Math.abs(a.n)} × ${Math.abs(b.n)} × ${Math.abs(c.n)} ＝ ${Math.abs(rawN)}。`,
-            `分母相乘：${a.d} × ${b.d} × ${c.d} ＝ ${rawD}。`,
-            `所以先得到 ${rawOperandFracHTML(rawN,rawD)}。`,
-            ...reductionDetailLines(rawN,rawD)
-          ],
-          operandHTML(ans),
-          "負因數個數只決定答案正負；數值大小仍要照分子乘分子、分母乘分母計算。"
-        );
-      })()};
+            a,
+            b,
+            c
+          ]
+        ),
+        ratHTML(ans),
+        "連乘時不必先把三個分子、三個分母全部乘成大數；先約分會更簡單。"
+      )};
   }
   if(Math.random()<.5){
     const a=smallRat(!speed),b=smallRat(!speed),ans=rmul(a,b);
@@ -2188,7 +2340,7 @@ function makeReciprocal(){
   return {kind:"rational",html:`<div class="math-expr">寫出 ${operandHTML(a)} 的倒數。</div>`,answer:ans,
     explanation:calcBox("兩個數的乘積為 1 時，稱兩數互為倒數；負數的倒數仍為負數。",[
       `${operandHTML(a)} × ${operandHTML(ans)} ＝ 1`
-    ],operandHTML(ans))};
+    ],ratHTML(ans))};
 }
 function makeMixed(){
   const type=ri(0,2);
@@ -2196,14 +2348,14 @@ function makeMixed(){
     const a=smallRat(),b=smallRat(),c=smallRat(),ans=radd(rmul(a,b),c);
     return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} × ${operandHTML(b)} + ${operandHTML(c)}</div>`,answer:ans,
       explanation:calcBox(
-        "四則混合運算要先乘除、後加減。先把乘法完整算完並約分，再做後面的加法。",
+        "四則混合運算先乘除、後加減。乘法部分能先約分就先約分，再相乘。",
         [
           `先算乘法 ${operandHTML(a)} × ${operandHTML(b)}：`,
           ...multiplyDetailLines(a,b),
           `乘法得到 ${operandHTML(rmul(a,b))}。`,
           addSubCompactHTML(rmul(a,b),c,"+")
         ],
-        operandHTML(ans),
+        ratHTML(ans),
         "不要從左到右全部直接算；沒有括號時，乘除要優先於加減。"
       )};
   }
@@ -2211,27 +2363,27 @@ function makeMixed(){
     let a=smallRat(),b=smallRat(),c=smallRat();while(!c.n)c=smallRat();const inside=rsub(a,b), ans=rdiv(inside,c);
     return {kind:"rational",html:`<div class="math-expr">計算：${groupedBinaryHTML(a,"−",b)} ÷ ${operandHTML(c)}</div>`,answer:ans,
       explanation:calcBox(
-        "有括號先算括號內。括號內完成後，再做除法；除法要改成乘以倒數，最後約成最簡分數。",
+        "有括號先算括號內。再把除法改成乘以倒數，能先約分就先約分，再相乘。",
         [
           `括號內：${addSubCompactHTML(a,b,"-")}`,
           `括號內得到 ${operandHTML(inside)}，再做除法：`,
           ...divideDetailLines(inside,c)
         ],
-        operandHTML(ans),
+        ratHTML(ans),
         "先完成括號，再處理除法；除數取倒數時不要把被除數也一起顛倒。"
       )};
   }
   let a=smallRat(),b=smallRat(),c=smallRat();while(!b.n)b=smallRat();const first=rdiv(a,b),ans=rsub(first,c);
   return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} ÷ ${operandHTML(b)} − ${operandHTML(c)}</div>`,answer:ans,
     explanation:calcBox(
-      "四則混合先乘除、後加減。先把除法改成乘以倒數並完整約分，再做後面的減法。",
+      "四則混合先乘除、後加減。除法先改成乘以倒數，先約分再相乘，最後做減法。",
       [
         `先算 ${operandHTML(a)} ÷ ${operandHTML(b)}：`,
         ...divideDetailLines(a,b),
         `除法得到 ${operandHTML(first)}。`,
         addSubCompactHTML(first,c,"-")
       ],
-      operandHTML(ans),
+      ratHTML(ans),
       "除法一定先完成，不能先做後面的減法。"
     )};
 }
@@ -2243,23 +2395,27 @@ function makeApplication(){
       explanation:calcBox(`數線上 A、B 兩點的距離，就是線段 ${segmentHTML("AB")} 的長度，可用兩點坐標相減後取絕對值。`,[
         `${segmentHTML("AB")}＝|${operandHTML(a)} − ${operandHTML(b)}|`,
         `＝|${operandHTML(rsub(a,b))}|＝${operandHTML(ans)}`
-      ],operandHTML(ans))};
+      ],ratHTML(ans))};
   }
   if(t===1){
     const a=smallRat(false),c=smallRat(false),ans=rdiv(radd(a,c),R(2));
     return {kind:"rational",html:`<div class="math-expr">A、C 在數線上的坐標分別為 ${mixedOperandHTML(a)}、${mixedOperandHTML(c)}，B 是線段 ${segmentHTML("AC")} 的中點。求 B 的坐標。</div>`,answer:ans,
       explanation:calcBox(`B 是線段 ${segmentHTML("AC")} 的中點，所以 B 的坐標等於 A、C 兩端點坐標的平均。`,[
-        `B＝${groupedBinaryHTML(a,"+",c)} ÷ 2`,
-        `＝${operandHTML(radd(a,c))} × ${operandHTML(R(1,2))}`,
-        `＝${operandHTML(ans)}`
-      ],operandHTML(ans))};
+        `B＝${groupedBinaryHTML(a,"+",c)} ÷ 2 ＝ ${operandHTML(radd(a,c))} × ${operandHTML(R(1,2))}`,
+        ...productDetailLines(
+          [
+            radd(a,c),
+            R(1,2)
+          ]
+        )
+      ],ratHTML(ans))};
   }
   const parts=shuffle([R(1,3),R(1,4),R(1,6)]),sum=radd(radd(parts[0],parts[1]),parts[2]),ans=rsub(R(1),sum);
   return {kind:"rational",html:`<div class="math-expr">一筆財產中，三人分別取得 ${operandHTML(parts[0])}、${operandHTML(parts[1])}、${operandHTML(parts[2])}，其餘捐作公益。公益部分占全部的幾分之幾？</div>`,answer:ans,
     explanation:calcBox("把全部看成 1，先算已分配的比例，再用 1 減去。",[
       `已分配：${operandHTML(parts[0])}+${operandHTML(parts[1])}+${operandHTML(parts[2])}＝${operandHTML(sum)}`,
       `公益：1−${operandHTML(sum)}＝${operandHTML(ans)}`
-    ],operandHTML(ans))};
+    ],ratHTML(ans))};
 }
 function makeQuestion(mode,i=0){
   if(mode==="equivalent")return makeEquivalent();
@@ -2607,7 +2763,7 @@ function getAnswer(q){
     return {
       ok:true,
       correct:ratEq(value,q.answer),
-      display:operandHTML(value),
+      display:ratHTML(value),
       displayHTML:true,
       systemDisplay,
       systemDisplayHTML:true
@@ -2883,7 +3039,7 @@ function renderReview(){
     :"<p>本次沒有錯題，太棒了！</p>";
   showScreen("review-screen");
 }
-function answerHTML(q){return q.kind==="choice"?q.choices[q.answerIndex]:(q.kind==="integer"?esc(q.answer):operandHTML(q.answer))}
+function answerHTML(q){return q.kind==="choice"?answerPresentationHTML(q.choices[q.answerIndex]):(q.kind==="integer"?esc(q.answer):ratHTML(q.answer))}
 document.querySelectorAll(".mode-card").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));
 $("submit-button").addEventListener("click",submitAnswer);
 $("next-button").addEventListener("click",nextQuestion);
