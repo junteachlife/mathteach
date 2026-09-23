@@ -409,6 +409,34 @@
       text-align: center;
     }
 
+    .fraction-whole-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+    }
+
+    .fraction-whole-label{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .fraction-whole{
+      width:86px;
+      height:52px;
+      padding:4px 8px;
+      border:2px solid #94a3b8;
+      border-radius:12px;
+      background:#fff;
+      color:#0f172a;
+      font-size:23px;
+      font-weight:900;
+      text-align:center;
+      outline:none;
+    }
+
     .fraction-entry {
       display: grid;
       grid-template-rows: 48px 3px 48px;
@@ -432,6 +460,7 @@
     }
 
     .fraction-entry input:focus,
+    .fraction-whole:focus,
     .fraction-sign:focus {
       outline: none;
       border-color: var(--primary);
@@ -600,9 +629,18 @@
     .explanation-question-math{
       overflow-x:auto;
       color:#0f172a;
-      font-size:20px;
+      font-size:18px;
       font-weight:900;
-      line-height:1.8;
+      line-height:1.7;
+    }
+
+    /*
+    題目本身有 .math-expr 的大字設定，
+    在完整詳解區內另外縮小，避免搶過詳解內容。
+    */
+    .explanation-question-math .math-expr{
+      font-size:clamp(18px,2.6vw,24px);
+      line-height:1.65;
     }
 
     .explanation-method{
@@ -1034,7 +1072,7 @@
 
     <header class="game-header">
       <h1 class="game-title">2-3 分數的四則運算大挑戰</h1>
-      <p class="game-subtitle">依 115 課本與習作編排：等值分數 → 正負分數加減 → 乘除與倒數 → 四則混合 → 數線與生活應用。答錯後提供可學習的逐步解析。</p>
+      <p class="game-subtitle">等值分數 → 正負分數加減 → 乘除與倒數 → 四則混合 → 數線與生活應用。答錯後提供可學習的逐步解析。</p>
     </header>
 
     <section id="start-screen" class="screen">
@@ -1135,6 +1173,19 @@
               <option value="-1">−</option>
             </select>
 
+            <div class="fraction-whole-wrap">
+              <span class="fraction-whole-label">整數部分</span>
+              <input
+                id="fraction-whole"
+                class="fraction-whole"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                aria-label="帶分數整數部分，可留空"
+                placeholder="可留空"
+              >
+            </div>
+
             <div class="fraction-entry" aria-label="分子分母">
               <input
                 id="fraction-numerator"
@@ -1156,7 +1207,7 @@
             </div>
 
             <div class="fraction-answer-hint">
-              上格填分子、下格填分母；負數可使用左側負號。答案需化成最簡分數。
+              可直接填最簡分數，也可填帶分數；整數部分不需要時留空。負數可使用左側負號，分數部分仍需化成最簡分數。
             </div>
           </div>
         </div>
@@ -1383,6 +1434,27 @@ function rawOperandFracHTML(n,d){
   const a=R(n,d),html=rawFracHTML(n,d);
   return a.n<0?mathGroupHTML(html,1):html;
 }
+
+/*
+==================================================
+帶分數答案顯示
+
+這是「答案／系統判讀」用途，
+因此負數不加外層括號。
+==================================================
+*/
+function mixedAnswerHTML(sign,whole,numerator,denominator){
+  const w=Math.max(0,Number(whole)||0);
+  const n=Math.abs(Number(numerator)||0);
+  const d=Math.abs(Number(denominator)||1);
+  const prefix=Number(sign)<0?"−":"";
+
+  if(w<=0){
+    return `${prefix}<span class="math-frac"><span class="top">${n}</span><span class="bottom">${d}</span></span>`;
+  }
+
+  return `${prefix}${w}<span class="math-frac"><span class="top">${n}</span><span class="bottom">${d}</span></span>`;
+}
 function parseRational(raw){
   let s=String(raw).trim().replace(/[−–—]/g,"-").replace(/\s+/g," ");
   let m=s.match(/^([+-]?\d+)\s+(\d+)\s*\/\s*(\d+)$/);
@@ -1507,7 +1579,7 @@ function reductionWorkHTML(rawN,rawD,g){
       ＝
       ${middle}
       ＝
-      ${rawOperandFracHTML(rawN/g,rawD/g)}
+      ${rawFracHTML(rawN/g,rawD/g)}
     </span>
   `;
 }
@@ -1605,9 +1677,13 @@ function addSubCompactHTML(a,b,op){
       L
     );
 
+  /*
+  這一行的最後數值已經是「本步答案」，
+  因此若為負數，不再加外層括號。
+  */
   const reductionText=
     g>1
-      ? ` ＝ ${operandHTML(reduced)}（分子、分母同除以 ${g}）`
+      ? ` ＝ ${ratHTML(reduced)}（分子、分母同除以 ${g}）`
       : "";
 
   if(
@@ -1617,7 +1693,7 @@ function addSubCompactHTML(a,b,op){
       `同分母直接計算：` +
       `${operandHTML(a)} ${symbol} ${operandHTML(b)}` +
       ` ＝ ${rawOperandFracHTML(A,L)} ${symbol} ${rawOperandFracHTML(B,L)}` +
-      ` ＝ ${rawOperandFracHTML(rawN,L)}` +
+      ` ＝ ${rawFracHTML(rawN,L)}` +
       `${reductionText}`
     );
   }
@@ -1626,7 +1702,7 @@ function addSubCompactHTML(a,b,op){
     `分母 ${a.d}、${b.d} 的最小公倍數是 <b>${L}</b>：` +
     `${operandHTML(a)} ${symbol} ${operandHTML(b)}` +
     ` ＝ ${rawOperandFracHTML(A,L)} ${symbol} ${rawOperandFracHTML(B,L)}` +
-    ` ＝ ${rawOperandFracHTML(rawN,L)}` +
+    ` ＝ ${rawFracHTML(rawN,L)}` +
     `${reductionText}`
   );
 }
@@ -1784,13 +1860,13 @@ function productDetailLines(factors){
   ){
     return [
       `${signText} 先約分：${data.notes.join("；")}。` +
-      `${original} ＝ ${reduced} ＝ ${operandHTML(data.result)}。`
+      `${original} ＝ ${reduced} ＝ ${ratHTML(data.result)}。`
     ];
   }
 
   return [
     `${signText} 沒有可先約分的公因數，直接相乘：` +
-    `${original} ＝ ${operandHTML(data.result)}。`
+    `${original} ＝ ${ratHTML(data.result)}。`
   ];
 }
 function multiplyDetailLines(a,b){
@@ -1831,7 +1907,7 @@ function multiplyDetailLines(a,b){
     ` ＝ ${operandHTML(a)} × ${operandHTML(reciprocal)}` +
     `${cancelText}` +
     ` ＝ ${reduced}` +
-    ` ＝ ${operandHTML(data.result)}。`
+    ` ＝ ${ratHTML(data.result)}。`
   ];
 }
 function makeChoiceQ(
@@ -1922,14 +1998,12 @@ function comparisonDetailLine(a,b,sign){
     );
 
   const A=
-    a.n*
-    (
+    a.n*(
       L/a.d
     );
 
   const B=
-    b.n*
-    (
+    b.n*(
       L/b.d
     );
 
@@ -1937,10 +2011,9 @@ function comparisonDetailLine(a,b,sign){
     `分母 ${a.d}、${b.d} 的最小公倍數是 <b>${L}</b>：` +
     `${operandHTML(a)} ＝ ${rawOperandFracHTML(A,L)}，` +
     `${operandHTML(b)} ＝ ${rawOperandFracHTML(B,L)}，` +
-    `所以 ${rawOperandFracHTML(A,L)} ${sign} ${rawOperandFracHTML(B,L)}。`
+    `所以 ${rawFracHTML(A,L)} ${sign} ${rawFracHTML(B,L)}。`
   );
 }
-
 function makeEquivalent(){
   const t=
     ri(
@@ -2681,36 +2754,419 @@ function makeMixed(){
       )
   };
 }function makeApplication(){
-  const t=ri(0,2);
-  if(t===0){
-    const a=smallRat(false),b=smallRat(false),ans=rabs(rsub(a,b));
-    return {kind:"rational",html:`<div class="math-expr">數線上 A 點坐標為 ${mixedOperandHTML(a)}，B 點坐標為 ${mixedOperandHTML(b)}。求線段 ${segmentHTML("AB")} 的長度。</div>`,answer:ans,
-      explanation:calcBox(`數線上 A、B 兩點的距離，就是線段 ${segmentHTML("AB")} 的長度，可用兩點坐標相減後取絕對值。`,[
-        `${segmentHTML("AB")}＝|${operandHTML(a)} − ${operandHTML(b)}|`,
-        `＝|${operandHTML(rsub(a,b))}|＝${operandHTML(ans)}`
-      ],ratHTML(ans))};
-  }
-  if(t===1){
-    const a=smallRat(false),c=smallRat(false),ans=rdiv(radd(a,c),R(2));
-    return {kind:"rational",html:`<div class="math-expr">A、C 在數線上的坐標分別為 ${mixedOperandHTML(a)}、${mixedOperandHTML(c)}，B 是線段 ${segmentHTML("AC")} 的中點。求 B 的坐標。</div>`,answer:ans,
-      explanation:calcBox(`B 是線段 ${segmentHTML("AC")} 的中點，所以 B 的坐標等於 A、C 兩端點坐標的平均。`,[
-        `B＝${groupedBinaryHTML(a,"+",c)} ÷ 2 ＝ ${operandHTML(radd(a,c))} × ${operandHTML(R(1,2))}`,
-        ...productDetailLines(
+  const t=
+    ri(
+      0,
+      5
+    );
+
+  /*
+  ==================================================
+  1｜數線兩點距離
+  ==================================================
+  */
+  if(
+    t===0
+  ){
+    let a=
+      smallRat(
+        false
+      );
+
+    let b=
+      smallRat(
+        false
+      );
+
+    while(
+      ratEq(
+        a,
+        b
+      )
+    ){
+      b=
+        smallRat(
+          false
+        );
+    }
+
+    const difference=
+      rsub(
+        a,
+        b
+      );
+
+    const ans=
+      rabs(
+        difference
+      );
+
+    const L=
+      ilcm(
+        a.d,
+        b.d
+      );
+
+    const A=
+      a.n*
+      (
+        L/a.d
+      );
+
+    const B=
+      b.n*
+      (
+        L/b.d
+      );
+
+    return {
+      kind:
+        "rational",
+
+      html:
+        `<div class="math-expr">數線上 A 點坐標為 ${mixedOperandHTML(a)}，B 點坐標為 ${mixedOperandHTML(b)}。求線段 ${segmentHTML("AB")} 的長度。</div>`,
+
+      answer:
+        ans,
+
+      explanation:
+        calcBox(
+          `數線上兩點的距離是坐標差的絕對值；先算 A、B 的坐標差，再取絕對值。`,
           [
-            radd(a,c),
-            R(1,2)
-          ]
+            `${segmentHTML("AB")}＝|A 的坐標 − B 的坐標|＝|${operandHTML(a)} − ${operandHTML(b)}|。`,
+            `先算絕對值裡面：分母 ${a.d}、${b.d} 的最小公倍數是 ${L}，` +
+              `${operandHTML(a)} − ${operandHTML(b)}` +
+              ` ＝ ${rawOperandFracHTML(A,L)} − ${rawOperandFracHTML(B,L)}` +
+              ` ＝ ${operandHTML(difference)}。`,
+            `距離一定是非負數：|${operandHTML(difference)}|＝${ratHTML(ans)}。`
+          ],
+          ratHTML(
+            ans
+          ),
+          "距離要取絕對值，所以最後答案不會是負數。"
         )
-      ],ratHTML(ans))};
+    };
   }
-  const parts=shuffle([R(1,3),R(1,4),R(1,6)]),sum=radd(radd(parts[0],parts[1]),parts[2]),ans=rsub(R(1),sum);
-  return {kind:"rational",html:`<div class="math-expr">一筆財產中，三人分別取得 ${operandHTML(parts[0])}、${operandHTML(parts[1])}、${operandHTML(parts[2])}，其餘捐作公益。公益部分占全部的幾分之幾？</div>`,answer:ans,
-    explanation:calcBox("把全部看成 1，先算已分配的比例，再用 1 減去。",[
-      `已分配：${operandHTML(parts[0])}+${operandHTML(parts[1])}+${operandHTML(parts[2])}＝${operandHTML(sum)}`,
-      `公益：1−${operandHTML(sum)}＝${operandHTML(ans)}`
-    ],ratHTML(ans))};
-}
-function makeQuestion(mode,i=0){
+
+
+  /*
+  ==================================================
+  2｜中點
+  ==================================================
+  */
+  if(
+    t===1
+  ){
+    const a=
+      smallRat(
+        false
+      );
+
+    const c=
+      smallRat(
+        false
+      );
+
+    const sum=
+      radd(
+        a,
+        c
+      );
+
+    const ans=
+      rdiv(
+        sum,
+        R(
+          2
+        )
+      );
+
+    return {
+      kind:
+        "rational",
+
+      html:
+        `<div class="math-expr">A、C 在數線上的坐標分別為 ${mixedOperandHTML(a)}、${mixedOperandHTML(c)}，B 是線段 ${segmentHTML("AC")} 的中點。求 B 的坐標。</div>`,
+
+      answer:
+        ans,
+
+      explanation:
+        calcBox(
+          `中點坐標等於兩端點坐標的平均。`,
+          [
+            `先相加：${addSubCompactHTML(a,c,"+")}`,
+            `再除以 2：${operandHTML(sum)} ÷ 2 ＝ ${ratHTML(ans)}。`
+          ],
+          ratHTML(
+            ans
+          )
+        )
+    };
+  }
+
+
+  /*
+  ==================================================
+  3｜「全部為 1，求剩餘」生活題
+  題目文字多樣化，不固定只問財產／公益。
+  ==================================================
+  */
+  if(
+    t===2
+  ){
+    const sets=[
+      [R(1,4),R(1,6),R(1,3)],
+      [R(1,5),R(1,4),R(1,10)],
+      [R(1,3),R(1,6),R(1,8)],
+      [R(2,5),R(1,4),R(1,10)]
+    ];
+
+    const parts=
+      pick(
+        sets
+      );
+
+    const sum=
+      radd(
+        radd(
+          parts[0],
+          parts[1]
+        ),
+        parts[2]
+      );
+
+    const ans=
+      rsub(
+        R(1),
+        sum
+      );
+
+    const contexts=[
+      `一筆獎金中，甲、乙、丙分別分得 ${ratHTML(parts[0])}、${ratHTML(parts[1])}、${ratHTML(parts[2])}，剩下的存入班級基金。基金占全部獎金的幾分之幾？`,
+      `一本書，小安三天分別讀了全書的 ${ratHTML(parts[0])}、${ratHTML(parts[1])}、${ratHTML(parts[2])}。還剩下全書的幾分之幾沒有讀？`,
+      `一桶水，上午用掉 ${ratHTML(parts[0])}、中午用掉 ${ratHTML(parts[1])}、下午用掉 ${ratHTML(parts[2])}（皆以原有水量為 1）。還剩下原有水量的幾分之幾？`,
+      `一塊土地分成幾個用途，其中 ${ratHTML(parts[0])} 種花、${ratHTML(parts[1])} 種菜、${ratHTML(parts[2])} 作為步道，其餘保留。保留部分占全部的幾分之幾？`,
+      `一場活動的時間中，開場占 ${ratHTML(parts[0])}、遊戲占 ${ratHTML(parts[1])}、分享占 ${ratHTML(parts[2])}，其餘為整理時間。整理時間占全部的幾分之幾？`
+    ];
+
+    return {
+      kind:
+        "rational",
+
+      html:
+        `<div class="math-expr">${pick(contexts)}</div>`,
+
+      answer:
+        ans,
+
+      explanation:
+        calcBox(
+          "把全部看成 1，先算已使用（或已分配）的比例，再用 1 減去。",
+          [
+            `已使用比例：${ratHTML(parts[0])} + ${ratHTML(parts[1])} + ${ratHTML(parts[2])} ＝ ${ratHTML(sum)}。`,
+            `剩餘比例：1 − ${ratHTML(sum)} ＝ ${ratHTML(ans)}。`
+          ],
+          ratHTML(
+            ans
+          )
+        )
+    };
+  }
+
+
+  /*
+  ==================================================
+  4｜溫度變化：正負分數生活應用
+  ==================================================
+  */
+  if(
+    t===3
+  ){
+    const start=
+      pick(
+        [
+          R(-3,4),
+          R(-5,6),
+          R(-7,8),
+          R(1,3)
+        ]
+      );
+
+    const rise=
+      pick(
+        [
+          R(2,3),
+          R(5,6),
+          R(3,4)
+        ]
+      );
+
+    const fall=
+      pick(
+        [
+          R(1,2),
+          R(1,3),
+          R(2,5)
+        ]
+      );
+
+    const afterRise=
+      radd(
+        start,
+        rise
+      );
+
+    const ans=
+      rsub(
+        afterRise,
+        fall
+      );
+
+    return {
+      kind:
+        "rational",
+
+      html:
+        `<div class="math-expr">某地早晨氣溫為 ${mixedOperandHTML(start)}°C，中午上升 ${ratHTML(rise)}°C，傍晚又下降 ${ratHTML(fall)}°C。傍晚氣溫是多少 °C？</div>`,
+
+      answer:
+        ans,
+
+      explanation:
+        calcBox(
+          "上升用加法，下降用減法，依發生順序計算。",
+          [
+            `中午：${addSubCompactHTML(start,rise,"+")}`,
+            `傍晚：${addSubCompactHTML(afterRise,fall,"-")}`
+          ],
+          ratHTML(
+            ans
+          )
+        )
+    };
+  }
+
+
+  /*
+  ==================================================
+  5｜長度／材料剩餘
+  ==================================================
+  */
+  if(
+    t===4
+  ){
+    const original=
+      pick(
+        [
+          R(7,4),
+          R(11,6),
+          R(9,5),
+          R(13,8)
+        ]
+      );
+
+    const used=
+      pick(
+        [
+          R(2,3),
+          R(3,4),
+          R(5,8),
+          R(4,5)
+        ]
+      );
+
+    const ans=
+      rsub(
+        original,
+        used
+      );
+
+    return {
+      kind:
+        "rational",
+
+      html:
+        `<div class="math-expr">一條緞帶原長 ${mixedHTML(original)} 公尺，做作品用掉 ${ratHTML(used)} 公尺。還剩多少公尺？</div>`,
+
+      answer:
+        ans,
+
+      explanation:
+        calcBox(
+          "剩下的長度＝原來的長度−用掉的長度。",
+          [
+            addSubCompactHTML(
+              original,
+              used,
+              "-"
+            )
+          ],
+          ratHTML(
+            ans
+          )
+        )
+    };
+  }
+
+
+  /*
+  ==================================================
+  6｜路程／運動量累積
+  ==================================================
+  */
+  const first=
+    pick(
+      [
+        R(3,5),
+        R(5,6),
+        R(7,8),
+        R(4,7)
+      ]
+    );
+
+  const second=
+    pick(
+      [
+        R(2,3),
+        R(3,4),
+        R(5,8),
+        R(6,7)
+      ]
+    );
+
+  const ans=
+    radd(
+      first,
+      second
+    );
+
+  return {
+    kind:
+      "rational",
+
+    html:
+      `<div class="math-expr">小晴上午健走 ${ratHTML(first)} 公里，下午又健走 ${ratHTML(second)} 公里。今天一共健走多少公里？</div>`,
+
+    answer:
+      ans,
+
+    explanation:
+      calcBox(
+        "求一天的總路程，把上午與下午的路程相加。",
+        [
+          addSubCompactHTML(
+            first,
+            second,
+            "+"
+          )
+        ],
+        ratHTML(
+          ans
+        )
+      )
+  };
+}function makeQuestion(mode,i=0){
   if(mode==="equivalent")return makeEquivalent();
   if(mode==="addSubtract")return makeAddSubtract();
   if(mode==="multiplyDivide")return Math.random()<.22?makeReciprocal():makeMultiplyDivide();
@@ -2888,6 +3344,8 @@ function resetAnswerUI(){
 
   $("fraction-sign").value="1";
   $("fraction-sign").disabled=false;
+  $("fraction-whole").value="";
+  $("fraction-whole").disabled=false;
   $("fraction-numerator").value="";
   $("fraction-denominator").value="";
   $("fraction-numerator").disabled=false;
@@ -2983,74 +3441,177 @@ function escapeSystemText(value){
 function getAnswer(q){
   if(q.kind==="choice"){
     if(selectedChoice===null){
-      return {ok:false,msg:"請先選擇一個答案。"};
+      return {
+        ok:false,
+        msg:"請先選擇一個答案。"
+      };
     }
 
-    const display=q.choices[selectedChoice].replace(/<[^>]+>/g,"");
+    const display=
+      q.choices[
+        selectedChoice
+      ].replace(
+        /<[^>]+>/g,
+        ""
+      );
 
     return {
       ok:true,
-      correct:selectedChoice===q.answerIndex,
+      correct:
+        selectedChoice===
+        q.answerIndex,
       display,
-      systemDisplay:display
+      systemDisplay:
+        display
     };
   }
 
-  if(q.kind==="rational" && q.answer?.d!==1){
-    const selectedSign=Number($("fraction-sign").value);
-    const numeratorRaw=$("fraction-numerator").value.trim();
-    const denominatorRaw=$("fraction-denominator").value.trim();
 
-    if(!numeratorRaw || !denominatorRaw){
+  if(
+    q.kind==="rational" &&
+    q.answer?.d!==1
+  ){
+    const selectedSign=
+      Number(
+        $("fraction-sign").value
+      );
+
+    const wholeRaw=
+      $("fraction-whole").value.trim();
+
+    const numeratorRaw=
+      $("fraction-numerator").value.trim();
+
+    const denominatorRaw=
+      $("fraction-denominator").value.trim();
+
+    if(
+      !numeratorRaw ||
+      !denominatorRaw
+    ){
       return {
         ok:false,
-        msg:"請在上格填分子、下格填分母。"
+        msg:"請填分子與分母；若要用帶分數，再填整數部分。"
       };
     }
 
-    /*
-    分子接受：
-    5
-    -5
-
-    若分子本身直接輸入負號，
-    系統以分子負號為準；
-    否則使用左側正負號選單。
-    */
-    if(!/^-?\d+$/.test(numeratorRaw) || !/^\d+$/.test(denominatorRaw)){
+    if(
+      wholeRaw &&
+      !/^\d+$/.test(
+        wholeRaw
+      )
+    ){
       return {
         ok:false,
-        msg:"分子、分母必須是整數格式；例如負五分之三可填分子 -5、分母 3，或使用左側負號。"
+        msg:"帶分數的整數部分請填 0 或正整數；負號請使用左側負號。"
       };
     }
 
-    const typedNumerator=Number(numeratorRaw);
-    const denominator=Number(denominatorRaw);
+    if(
+      !/^-?\d+$/.test(
+        numeratorRaw
+      ) ||
+      !/^\d+$/.test(
+        denominatorRaw
+      )
+    ){
+      return {
+        ok:false,
+        msg:"分子、分母必須是整數格式。"
+      };
+    }
 
-    if(denominator===0){
+    const whole=
+      wholeRaw
+        ? Number(
+            wholeRaw
+          )
+        : 0;
+
+    const typedNumerator=
+      Number(
+        numeratorRaw
+      );
+
+    const denominator=
+      Number(
+        denominatorRaw
+      );
+
+    if(
+      denominator===0
+    ){
       return {
         ok:false,
         msg:"分母不能是 0。"
       };
     }
 
+    /*
+    使用帶分數時，
+    分數部分必須是真分數。
+    */
+    if(
+      wholeRaw &&
+      Math.abs(
+        typedNumerator
+      )>=
+      denominator
+    ){
+      return {
+        ok:false,
+        msg:"帶分數的分子要小於分母。"
+      };
+    }
+
+    /*
+    帶分數時負號統一放在左側，
+    避免「−1 又輸入 −2/3」造成語意混亂。
+    */
+    if(
+      wholeRaw &&
+      typedNumerator<0
+    ){
+      return {
+        ok:false,
+        msg:"使用帶分數時，分子請填正數；負數請用左側負號。"
+      };
+    }
+
     const hasExplicitNegative=
+      !wholeRaw &&
       numeratorRaw.startsWith("-") &&
       typedNumerator!==0;
 
+    const magnitudeNumerator=
+      whole*
+      denominator+
+      Math.abs(
+        typedNumerator
+      );
+
     const rawNumerator=
       hasExplicitNegative
-        ? -Math.abs(typedNumerator)
-        : selectedSign*Math.abs(typedNumerator);
+        ? -magnitudeNumerator
+        : selectedSign*
+          magnitudeNumerator;
 
-    /*
-    systemDisplay 保留學生實際輸入的分子、分母，
-    不先約分，讓學生清楚看到系統到底讀到了什麼。
-    */
-    const systemDisplay=rawOperandFracHTML(
-      rawNumerator,
-      denominator
-    );
+    const systemDisplay=
+      whole>0
+        ? mixedAnswerHTML(
+            rawNumerator<0
+              ? -1
+              : 1,
+            whole,
+            Math.abs(
+              typedNumerator
+            ),
+            denominator
+          )
+        : rawFracHTML(
+            rawNumerator,
+            denominator
+          );
 
     const commonDivisor=
       igcd(
@@ -3058,11 +3619,14 @@ function getAnswer(q){
         denominator
       );
 
-    if(commonDivisor!==1){
+    if(
+      commonDivisor!==1
+    ){
       return {
         ok:false,
         formatOk:true,
-        display:systemDisplay,
+        display:
+          systemDisplay,
         displayHTML:true,
         systemDisplay,
         systemDisplayHTML:true,
@@ -3072,52 +3636,91 @@ function getAnswer(q){
       };
     }
 
-    const value=R(rawNumerator,denominator);
+    const value=
+      R(
+        rawNumerator,
+        denominator
+      );
 
     return {
       ok:true,
-      correct:ratEq(value,q.answer),
-      display:ratHTML(value),
+      correct:
+        ratEq(
+          value,
+          q.answer
+        ),
+      display:
+        systemDisplay,
       displayHTML:true,
       systemDisplay,
       systemDisplayHTML:true
     };
   }
 
-  const raw=$("number-input").value.trim();
+
+  const raw=
+    $("number-input").value.trim();
 
   if(!raw){
-    return {ok:false,msg:"請先輸入答案。"};
+    return {
+      ok:false,
+      msg:"請先輸入答案。"
+    };
   }
 
-  if(!/^[+-]?\d+$/.test(raw)){
+  if(
+    !/^[+-]?\d+$/.test(
+      raw
+    )
+  ){
     return {
       ok:false,
       msg:"答案必須是整數格式，例如 -5、0、12。"
     };
   }
 
-  const value=Number(raw);
-  const display=String(value).replace("-","−");
+  const value=
+    Number(
+      raw
+    );
 
-  if(q.kind==="integer"){
+  const display=
+    String(
+      value
+    ).replace(
+      "-",
+      "−"
+    );
+
+  if(
+    q.kind==="integer"
+  ){
     return {
       ok:true,
-      correct:value===q.answer,
+      correct:
+        value===
+        q.answer,
       display,
-      systemDisplay:display
+      systemDisplay:
+        display
     };
   }
 
   return {
     ok:true,
-    correct:ratEq(R(value,1),q.answer),
+    correct:
+      ratEq(
+        R(
+          value,
+          1
+        ),
+        q.answer
+      ),
     display,
-    systemDisplay:display
+    systemDisplay:
+      display
   };
-}
-
-function clearSystemRead(){
+}function clearSystemRead(){
   const row=$("system-read-row");
   const value=$("system-read-value");
 
@@ -3166,7 +3769,9 @@ function showSystemReadWarning(text){
 ==================================================
 */
 function updateSystemRead(){
-  if(locked){
+  if(
+    locked
+  ){
     return;
   }
 
@@ -3175,18 +3780,26 @@ function updateSystemRead(){
       ? questions[0]
       : questions[index];
 
-  if(!q || q.kind==="choice"){
+  if(
+    !q ||
+    q.kind==="choice"
+  ){
     clearSystemRead();
     return;
   }
 
-  /*
-  只有真正需要分子／分母輸入的題目才顯示。
-  */
-  if(!(q.kind==="rational" && q.answer?.d!==1)){
+  if(
+    !(
+      q.kind==="rational" &&
+      q.answer?.d!==1
+    )
+  ){
     clearSystemRead();
     return;
   }
+
+  const wholeRaw=
+    $("fraction-whole").value.trim();
 
   const numeratorRaw=
     $("fraction-numerator").value.trim();
@@ -3194,26 +3807,19 @@ function updateSystemRead(){
   const denominatorRaw=
     $("fraction-denominator").value.trim();
 
-  /*
-  尚未填完整時先不顯示，
-  與範例畫面一致，不增加干擾。
-  */
-  if(!numeratorRaw || !denominatorRaw){
+  if(
+    !numeratorRaw ||
+    !denominatorRaw
+  ){
     clearSystemRead();
     return;
   }
 
-  /*
-  分子可接受：
-  5
-  -5
-
-  分母必須是正整數格式，
-  且不可為 0。
-  */
   if(
-    !/^-?\d+$/.test(numeratorRaw) ||
-    !/^\d+$/.test(denominatorRaw)
+    wholeRaw &&
+    !/^\d+$/.test(
+      wholeRaw
+    )
   ){
     showSystemReadWarning(
       "目前格式無法判讀"
@@ -3221,16 +3827,50 @@ function updateSystemRead(){
     return;
   }
 
+  if(
+    !/^-?\d+$/.test(
+      numeratorRaw
+    ) ||
+    !/^\d+$/.test(
+      denominatorRaw
+    )
+  ){
+    showSystemReadWarning(
+      "目前格式無法判讀"
+    );
+    return;
+  }
+
+  const whole=
+    wholeRaw
+      ? Number(
+          wholeRaw
+        )
+      : 0;
+
   const typedNumerator=
-    Number(numeratorRaw);
+    Number(
+      numeratorRaw
+    );
 
   const denominator=
-    Number(denominatorRaw);
+    Number(
+      denominatorRaw
+    );
 
   if(
-    !Number.isFinite(typedNumerator) ||
-    !Number.isFinite(denominator) ||
-    denominator===0
+    denominator===0 ||
+    (
+      wholeRaw &&
+      Math.abs(
+        typedNumerator
+      )>=
+      denominator
+    ) ||
+    (
+      wholeRaw &&
+      typedNumerator<0
+    )
   ){
     showSystemReadWarning(
       "目前格式無法判讀"
@@ -3243,36 +3883,51 @@ function updateSystemRead(){
       $("fraction-sign").value
     );
 
-  /*
-  若學生直接在分子輸入 -5，
-  以輸入的負號為準；
-  否則才套用左側正負號選單。
-  */
   const hasExplicitNegative=
+    !wholeRaw &&
     numeratorRaw.startsWith("-") &&
     typedNumerator!==0;
 
   const rawNumerator=
     hasExplicitNegative
-      ? -Math.abs(typedNumerator)
-      : selectedSign*Math.abs(typedNumerator);
+      ? -Math.abs(
+          typedNumerator
+        )
+      : selectedSign*
+        (
+          whole*
+          denominator+
+          Math.abs(
+            typedNumerator
+          )
+        );
 
-  /*
-  使用 rawFracHTML，
-  保留學生實際輸入的分子、分母，
-  不先自動約分。
-  例如輸入 -10 / 6，
-  系統判讀就顯示 -10/6。
-  */
+  if(
+    whole>0
+  ){
+    showSystemReadHTML(
+      mixedAnswerHTML(
+        rawNumerator<0
+          ? -1
+          : 1,
+        whole,
+        Math.abs(
+          typedNumerator
+        ),
+        denominator
+      )
+    );
+
+    return;
+  }
+
   showSystemReadHTML(
     rawFracHTML(
       rawNumerator,
       denominator
     )
   );
-}
-
-function submitAnswer(){
+}function submitAnswer(){
   if(locked)return;
   const q=modeId==="speed"?questions[0]:questions[index], a=getAnswer(q);
   if(!a.ok){
@@ -3286,6 +3941,7 @@ function submitAnswer(){
   locked=true;
   $("number-input").disabled=true;
   $("fraction-sign").disabled=true;
+  $("fraction-whole").disabled=true;
   $("fraction-numerator").disabled=true;
   $("fraction-denominator").disabled=true;
   if(a.correct){correct++;combo++;maxCombo=Math.max(maxCombo,combo);playGameSound("playCorrect")}
@@ -3368,12 +4024,12 @@ $("result-mode-button").addEventListener("click",()=>showScreen("start-screen"))
 $("review-again-button").addEventListener("click",()=>startGame(modeId));
 $("review-result-button").addEventListener("click",()=>showScreen("result-screen"));
 
-["number-input","fraction-numerator","fraction-denominator"].forEach(id=>{
+["number-input","fraction-whole","fraction-numerator","fraction-denominator"].forEach(id=>{
   $(id).addEventListener("keydown",e=>{
     if(e.key==="Enter"&&!locked)submitAnswer();
   });
 });
-["fraction-numerator","fraction-denominator"].forEach(id=>{
+["fraction-whole","fraction-numerator","fraction-denominator"].forEach(id=>{
   $(id)?.addEventListener("input",()=>{
     if(!locked)updateSystemRead();
   });
