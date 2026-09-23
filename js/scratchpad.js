@@ -3,8 +3,8 @@
 生活有解．心中有數｜共用計算紙
 檔案：js/scratchpad.js
 
-版本：4.3
-手機／平板縮放安全關閉＋書寫平滑化版
+版本：4.4
+同頁面保留畫筆偏好＋手機／平板縮放安全關閉＋書寫平滑化版
 ==================================================
 
 本版修正：
@@ -27,6 +27,15 @@
    - 不禁止瀏覽器縮放，不增加底部關閉鍵。
    - 不支援 Visual Viewport 的瀏覽器自動沿用原本標題列位置。
 11. 保留既有工具、Undo / Redo、清除、下載等功能。
+12. 同一個頁面工作階段內保留使用者最後的畫筆偏好：
+   - 進入下一題時，畫布仍會清空。
+   - Undo / Redo 仍會重設為新題目。
+   - 畫筆顏色維持上一題最後選擇。
+   - 畫筆粗細維持上一題最後選擇。
+   - 新題目會回到畫筆工具，避免上一題若停在橡皮擦，
+     下一題誤把內容擦掉。
+   - 關閉／重新整理頁面後，才重新使用預設顏色與粗細。
+   - 不使用 localStorage，不會跨頁永久保存偏好。
 ==================================================
 */
 
@@ -997,10 +1006,7 @@
       await this.setupCanvas(
         false,
         saved
-      );
-
-
-      this.saveCurrentQuestionImage();
+      );this.saveCurrentQuestionImage();
 
 
       this.updateToolbarState();
@@ -1997,10 +2003,7 @@
 
 
       this.redoStack =
-        [];
-
-
-      this.updateToolbarState();
+        [];this.updateToolbarState();
 
     }
 
@@ -2292,16 +2295,19 @@
         [];
 
 
+      /*
+      新題目仍回到畫筆工具，
+      但保留使用者在本頁面最後選擇的
+      畫筆顏色與粗細。
+
+      currentColor / currentSize
+      只會在元件第一次建立時使用預設值；
+      重新整理或重新進入頁面後才會恢復預設。
+      */
+
+
       this.tool =
         "pen";
-
-
-      this.currentColor =
-        this.defaultColor;
-
-
-      this.currentSize =
-        this.defaultSize;
 
 
       this.saveHistory(
@@ -2995,10 +3001,7 @@
         Number(
           viewport.offsetTop
         ) ||
-        0;
-
-
-      const needsViewportSafety =
+        0;const needsViewportSafety =
         viewportScale >
           1.01 ||
         Math.abs(
@@ -3997,10 +4000,7 @@
 
         return;
 
-      }
-
-
-      if (
+      }if (
         event.key ===
           "Escape"
       ) {
