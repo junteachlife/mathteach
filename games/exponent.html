@@ -310,13 +310,20 @@
 
     .choice-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns:
+        repeat(
+          var(--choice-count, 3),
+          minmax(0, 1fr)
+        );
       gap: 12px;
+      width: 100%;
+      align-items: stretch;
     }
 
     .choice-button {
+      min-width: 0;
       min-height: 68px;
-      padding: 12px;
+      padding: 12px 8px;
       border: 2px solid #cbd5e1;
       border-radius: 16px;
       background: #fff;
@@ -324,6 +331,9 @@
       font-size: 17px;
       font-weight: 800;
       line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       cursor: pointer;
       transition: .14s ease;
     }
@@ -874,7 +884,14 @@
       .game-header { padding: 22px 16px 16px; }
       .mode-grid { grid-template-columns: 1fr; }
       .quiz-topbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .choice-grid { grid-template-columns: 1fr; }
+      .choice-grid {
+        gap: 8px;
+      }
+      .choice-button {
+        min-height: 60px;
+        padding: 10px 5px;
+        font-size: 15px;
+      }
       .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .question-card { padding: 20px 12px; }
     }
@@ -1139,9 +1156,14 @@ function ratHTML(x){
   const sign=a.n<0?"−":"",n=Math.abs(a.n);
   return `${sign}<span class="math-frac"><span class="top">${n}</span><span class="bottom">${a.d}</span></span>`;
 }
+function mathGroupHTML(content,level=1){
+  if(level<=1)return `(${content})`;
+  if(level===2)return `[${content}]`;
+  return `{${content}}`;
+}
 function operandRatHTML(x){
   const a=R(x.n,x.d),html=ratHTML(a);
-  return a.n<0?`(${html})`:html;
+  return a.n<0?mathGroupHTML(html,1):html;
 }
 function signedIntHTML(n){
   const html=String(n).replace("-","−");
@@ -1159,9 +1181,16 @@ function parseRational(raw){
 function ipow(a,n){let v=1;for(let i=0;i<n;i++)v*=a;return v}
 function rpow(a,n){return R(ipow(a.n,n),ipow(a.d,n))}
 function sup(n){return `<span class="math-sup">${n}</span>`}
-function intBaseHTML(b){return b<0?`(${String(b).replace("-","−")})`:String(b)}
+function intBaseHTML(b){return b<0?mathGroupHTML(String(b).replace("-","−"),1):String(b)}
 function pInt(b,e){return `${intBaseHTML(b)}${sup(e)}`}
-function pRat(a,e){return `(${ratHTML(a)})${sup(e)}`}
+function groupedPowerHTML(b,e){
+  const level=b<0?2:1;
+  return mathGroupHTML(
+    pInt(b,e),
+    level
+  );
+}
+function pRat(a,e){return `${mathGroupHTML(ratHTML(a),1)}${sup(e)}`}
 function calcBox(rule,lines,answer){
   return `<div class="rule-box"><b>觀念：</b>${rule}</div>
   <div class="calculation-box">${lines.map(x=>`<div class="step-line">${x}</div>`).join("")}</div>
@@ -1226,9 +1255,9 @@ function makeSameBaseDivide(){
 }
 function makePowerOfPower(){
   const b=nonzeroBase(),m=ri(1,4),n=ri(2,5),ans=m*n;
-  return {kind:"integer",html:`<div class="math-expr">(${pInt(b,m)})${sup(n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,answer:ans,
+  return {kind:"integer",html:`<div class="math-expr">${groupedPowerHTML(b,m)}${sup(n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,answer:ans,
     explanation:calcBox("冪的乘方：底數不變，兩個指數相乘。",[
-      `(${pInt(b,m)})${sup(n)} ＝ ${intBaseHTML(b)}${sup(`${m}×${n}`)}`,
+      `${groupedPowerHTML(b,m)}${sup(n)} ＝ ${intBaseHTML(b)}${sup(`${m}×${n}`)}`,
       `＝ ${pInt(b,ans)}`
     ],String(ans))};
 }
@@ -1278,9 +1307,9 @@ function makeCombined(){
       ],signedIntHTML(ans))};
   }
   const b=pick([2,3,5]),m=ri(1,3),n=ri(2,3),k=ri(1,m*n),ans=ipow(b,m*n-k);
-  return {kind:"integer",html:`<div class="math-expr">計算：(${pInt(b,m)})${sup(n)} ÷ ${pInt(b,k)}</div>`,answer:ans,
+  return {kind:"integer",html:`<div class="math-expr">計算：${groupedPowerHTML(b,m)}${sup(n)} ÷ ${pInt(b,k)}</div>`,answer:ans,
     explanation:calcBox("先做冪的乘方，再做同底數相除。",[
-      `(${pInt(b,m)})${sup(n)} ＝ ${pInt(b,m*n)}`,
+      `${groupedPowerHTML(b,m)}${sup(n)} ＝ ${pInt(b,m*n)}`,
       `${pInt(b,m*n)} ÷ ${pInt(b,k)} ＝ ${pInt(b,m*n-k)}`,
       `＝ ${ans}`
     ],String(ans))};
@@ -1456,6 +1485,10 @@ function resetAnswerUI(){
 function renderAnswerUI(q){
   if(q.kind==="choice"){
     $("choiceMount").classList.remove("hidden");
+    $("choiceMount").style.setProperty(
+      "--choice-count",
+      String(Math.max(1,q.choices.length))
+    );
     q.choices.forEach((label,i)=>{
       const b=document.createElement("button");
       b.type="button";b.className="choice-button";b.innerHTML=label;
