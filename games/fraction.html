@@ -1470,32 +1470,87 @@ function expansionDetailHTML(a,targetDenominator){
   `;
 }
 
-function addSubDetailLines(a,b,op){
-  const L=ilcm(a.d,b.d);
-  const A=a.n*(L/a.d);
-  const B=b.n*(L/b.d);
-  const rawN=op==="+"?A+B:A-B;
-  const symbol=op==="+"?"+":"−";
+function addSubCompactHTML(a,b,op){
+  const L=
+    ilcm(
+      a.d,
+      b.d
+    );
 
-  const lines=[];
+  const A=
+    a.n*(
+      L/a.d
+    );
 
-  if(a.d!==L || b.d!==L){
-    lines.push(
-      `通分：${expansionDetailHTML(a,L)}；${expansionDetailHTML(b,L)}`
+  const B=
+    b.n*(
+      L/b.d
+    );
+
+  const rawN=
+    op==="+"
+      ? A+B
+      : A-B;
+
+  const symbol=
+    op==="+"
+      ? "+"
+      : "−";
+
+  const g=
+    igcd(
+      rawN,
+      L
+    );
+
+  const reduced=
+    R(
+      rawN,
+      L
+    );
+
+  const reductionText=
+    g>1
+      ? ` ＝ ${ratHTML(reduced)}（分子、分母同除以 ${g}）`
+      : "";
+
+  /*
+  同分母時不必再說最小公倍數。
+  */
+  if(
+    a.d===b.d
+  ){
+    return (
+      `同分母直接計算：` +
+      `${operandHTML(a)} ${symbol} ${operandHTML(b)}` +
+      ` ＝ ${rawFracHTML(A,L)} ${symbol} ${rawFracHTML(B,L)}` +
+      ` ＝ ${rawFracHTML(rawN,L)}` +
+      `${reductionText}`
     );
   }
 
-  lines.push(
-    `計算：${rawFracHTML(A,L)} ${symbol} ${rawFracHTML(B,L)} ＝ ${rawFracHTML(rawN,L)}。`
+  /*
+  異分母時：
+  一次把最小公倍數、通分、加減放在同一個步驟。
+  */
+  return (
+    `分母 ${a.d}、${b.d} 的最小公倍數是 <b>${L}</b>：` +
+    `${operandHTML(a)} ${symbol} ${operandHTML(b)}` +
+    ` ＝ ${rawFracHTML(A,L)} ${symbol} ${rawFracHTML(B,L)}` +
+    ` ＝ ${rawFracHTML(rawN,L)}` +
+    `${reductionText}`
   );
-
-  lines.push(
-    ...reductionDetailLines(rawN,L)
-  );
-
-  return lines;
 }
-function multiplyDetailLines(a,b){
+
+function addSubDetailLines(a,b,op){
+  return [
+    addSubCompactHTML(
+      a,
+      b,
+      op
+    )
+  ];
+}function multiplyDetailLines(a,b){
   const rawN=a.n*b.n;
   const rawD=a.d*b.d;
   const negativeCount=(a.n<0?1:0)+(b.n<0?1:0);
@@ -1534,10 +1589,14 @@ function makeChoiceQ(html,items,correctIndex,explanation,note=""){
 }
 function addSubExplain(a,b,op,ans){
   return calcBox(
-    "先通分，再做分子加減；最後若還能約分，再化成最簡分數。",
-    addSubDetailLines(a,b,op),
+    "異分母先找最小公倍數，一次完成通分與加減；同分母則直接算分子。",
+    addSubDetailLines(
+      a,
+      b,
+      op
+    ),
     ratHTML(ans),
-    "分數加減不能直接把分母相加減。"
+    "分數加減時，分母不同要先通分，不能直接把分母相加減。"
   );
 }
 function mulExplain(a,b,ans){
@@ -1557,12 +1616,16 @@ function divExplain(a,b,ans){
   );
 }
 function makeEquivalent(){
-  const t=ri(0,3);
+  const t=
+    ri(
+      0,
+      3
+    );
 
   /*
   建立真正的真分數：
-  |分子| < 分母，且已是最簡分數。
-  因此不會出現 5/5、-7/7 這類其實等於 ±1 的題目。
+  |分子| < 分母，而且已經是最簡分數。
+  避免出現 5/5、-7/7 這類等於 ±1 的題目。
   */
   function makeProperSimpleBase(
     negativeRate=.80
@@ -1577,9 +1640,17 @@ function makeEquivalent(){
     let n=1;
 
     do{
-      n=ri(1,d-1);
+      n=
+        ri(
+          1,
+          d-1
+        );
+
     }while(
-      igcd(n,d)!==1
+      igcd(
+        n,
+        d
+      )!==1
     );
 
     const sign=
@@ -1587,18 +1658,32 @@ function makeEquivalent(){
         ? -1
         : 1;
 
-    return R(sign*n,d);
+    return R(
+      sign*n,
+      d
+    );
   }
 
+
   /*
+  ==================================================
   A｜化成最簡分數
+  ==================================================
   */
-  if(t===0){
+  if(
+    t===0
+  ){
     const base=
-      makeProperSimpleBase(.82);
+      makeProperSimpleBase(
+        .82
+      );
 
     const factor=
-      pick([2,3,4,5]);
+      pick(
+        [
+          2,3,4,5
+        ]
+      );
 
     const rawN=
       base.n*factor;
@@ -1607,48 +1692,81 @@ function makeEquivalent(){
       base.d*factor;
 
     return {
-      kind:"rational",
+      kind:
+        "rational",
+
       html:
         `<div class="math-expr">將 ${rawOperandFracHTML(rawN,rawD)} 化為最簡分數。</div>`,
-      answer:base,
-      requireSimple:true,
-      note:"本題指定「最簡分數」，需完成約分。",
-      explanation:calcBox(
-        "分子、分母同除以公因數，即可化成最簡分數。",
-        [
-          ...reductionDetailLines(
-            rawN,
-            rawD
-          )
-        ],
-        ratHTML(base),
-        "約分時，分子與分母要同除以相同的數。"
-      )
+
+      answer:
+        base,
+
+      requireSimple:
+        true,
+
+      note:
+        "本題指定「最簡分數」，需完成約分。",
+
+      explanation:
+        calcBox(
+          "分子、分母同除以公因數，即可化成最簡分數。",
+          [
+            ...reductionDetailLines(
+              rawN,
+              rawD
+            )
+          ],
+          ratHTML(
+            base
+          ),
+          "約分時，分子與分母要同除以相同的數。"
+        )
     };
   }
 
+
   /*
+  ==================================================
   B｜大小比較
+  ==================================================
   */
-  if(t===1){
+  if(
+    t===1
+  ){
     let a=
-      makeProperSimpleBase(.78);
+      makeProperSimpleBase(
+        .78
+      );
 
     let b=
-      makeProperSimpleBase(.78);
+      makeProperSimpleBase(
+        .78
+      );
 
     while(
-      ratEq(a,b)
+      ratEq(
+        a,
+        b
+      )
     ){
       b=
-        makeProperSimpleBase(.78);
+        makeProperSimpleBase(
+          .78
+        );
     }
 
     const c=
-      ratCmp(a,b);
+      ratCmp(
+        a,
+        b
+      );
 
     const signs=
-      ["＜","＝","＞"];
+      [
+        "＜",
+        "＝",
+        "＞"
+      ];
 
     const correct=
       c<0
@@ -1671,149 +1789,291 @@ function makeEquivalent(){
     );
   }
 
+
   /*
-  C｜負號位置
-  題目一定是真分數，不出現 -5/5 這種題目。
+  ==================================================
+  C｜負號位置＋擴分／約分混合判讀
+  ==================================================
+
+  這一類不再只測：
+  -3/8 ＝ 3/-8
+
+  也會混入：
+  -3/8 ＝ -6/16
+  -6/16 ＝ -3/8
+
+  學生必須同時理解：
+  1. 負號位置
+  2. 擴分
+  3. 約分
   */
-  if(t===3){
+  if(
+    t===3
+  ){
     const base=
-      makeProperSimpleBase(1);
+      makeProperSimpleBase(
+        1
+      );
 
     const n=
-      Math.abs(base.n);
+      Math.abs(
+        base.n
+      );
 
     const d=
       base.d;
 
-    const negativeFront=
+    const factor=
+      pick(
+        [
+          2,3,4
+        ]
+      );
+
+    const simpleNegative=
       rawFracHTML(
         -n,
         d
       );
 
-    const negativeDenominator=
+    const signMoved=
       literalFracHTML(
         n,
         -d
       );
 
-    const outsideNegative=
-      `−(${rawFracHTML(n,d)})`;
+    const expandedNegative=
+      literalFracHTML(
+        -n*factor,
+        d*factor
+      );
+
+    const expandedSignMoved=
+      literalFracHTML(
+        n*factor,
+        -d*factor
+      );
+
+    const positiveWrong=
+      rawFracHTML(
+        n,
+        d
+      );
+
+    /*
+    一半題目從最簡分數出發，
+    要學生辨認負號與擴分。
+
+    另一半從可約分的分數出發，
+    要學生看出約分後的值。
+    */
+    const useExpandedQuestion=
+      Math.random()<.50;
+
+    if(
+      !useExpandedQuestion
+    ){
+      const equalExpanded=
+        Math.random()<.50
+          ? expandedNegative
+          : expandedSignMoved;
+
+      return makeChoiceQ(
+        `<div class="math-expr">下列何者與 ${simpleNegative} <b>不相等</b>？</div>`,
+        [
+          signMoved,
+          equalExpanded,
+          positiveWrong
+        ],
+        2,
+        calcBox(
+          "除了看負號位置，也要檢查分子、分母是否同乘相同的數。",
+          [
+            `${signMoved} 與 ${simpleNegative} 的負號位置不同，但值相同；${equalExpanded} 可約分回 ${simpleNegative}。`,
+            `${positiveWrong} 是正數，所以與 ${simpleNegative} 不相等。`
+          ],
+          positiveWrong
+        )
+      );
+    }
+
+
+    /*
+    題目本身使用擴分後的負分數，
+    讓學生實際判斷約分。
+    */
+    const questionExpanded=
+      Math.random()<.50
+        ? expandedNegative
+        : expandedSignMoved;
 
     return makeChoiceQ(
-      `<div class="math-expr">下列何者與 ${negativeFront} <b>不相等</b>？</div>`,
+      `<div class="math-expr">下列何者與 ${questionExpanded} <b>不相等</b>？</div>`,
       [
-        rawFracHTML(n,d),
-        negativeDenominator,
-        outsideNegative
+        simpleNegative,
+        signMoved,
+        positiveWrong
       ],
-      0,
+      2,
       calcBox(
-        "負號可以放在整個分數前、分子或分母；只有一個負號時，分數的值為負數。",
+        "先把題目的分子、分母約分，再判斷負號位置。",
         [
-          `${negativeFront} ＝ ${negativeDenominator} ＝ ${outsideNegative}；${rawFracHTML(n,d)} 是正數，所以不相等。`
+          `${questionExpanded} 約分後是 ${simpleNegative}；${signMoved} 只是把負號移到分母，數值仍相同。`,
+          `${positiveWrong} 是正數，所以與題目不相等。`
         ],
-        rawFracHTML(n,d)
+        positiveWrong
       )
     );
   }
 
+
   /*
+  ==================================================
   D｜等值分數單選題
+  ==================================================
 
-  題目例如：
-  -3/8
+  正確答案可能來自：
+  1. 負號位置改變
+  2. 擴分
+  3. 約分
 
-  正確選項可能是：
-  3/-8
-  或
-  -6/16
-
-  但每題仍只有一個正確選項。
+  每題仍只有一個正確答案。
   */
-  const a=
-    makeProperSimpleBase(.85);
+  const base=
+    makeProperSimpleBase(
+      .85
+    );
 
   const factor=
-    pick([2,3,4,5]);
+    pick(
+      [
+        2,3,4,5
+      ]
+    );
 
+  const useExpandedQuestion=
+    Math.random()<.45;
+
+  /*
+  --------------------------------------------------
+  D-1｜題目是可約分的分數
+  --------------------------------------------------
+  */
+  if(
+    useExpandedQuestion
+  ){
+    const questionN=
+      base.n*factor;
+
+    const questionD=
+      base.d*factor;
+
+    const questionHTML=
+      literalFracHTML(
+        questionN,
+        questionD
+      );
+
+    const correctHTML=
+      Math.random()<.45 &&
+      base.n<0
+
+        ? literalFracHTML(
+            Math.abs(base.n),
+            -base.d
+          )
+
+        : rawFracHTML(
+            base.n,
+            base.d
+          );
+
+    const wrong1=
+      rawFracHTML(
+        Math.abs(base.n),
+        base.d
+      );
+
+    const wrong2=
+      literalFracHTML(
+        base.n,
+        base.d*factor
+      );
+
+    return makeChoiceQ(
+      `<div class="math-expr">下列哪一個分數與 ${questionHTML} 等值？</div>`,
+      [
+        correctHTML,
+        wrong1,
+        wrong2
+      ],
+      0,
+      calcBox(
+        "先約分，再比較各選項的值。",
+        [
+          `${questionHTML} 約分後是 ${operandHTML(base)}，所以正確選項是 ${correctHTML}。`
+        ],
+        correctHTML
+      )
+    );
+  }
+
+
+  /*
+  --------------------------------------------------
+  D-2｜題目是最簡分數
+  正解可能是負號移位或擴分
+  --------------------------------------------------
+  */
   let correctHTML="";
   let explanationLine="";
 
   if(
-    a.n<0 &&
-    Math.random()<.50
+    base.n<0 &&
+    Math.random()<.40
   ){
     correctHTML=
       literalFracHTML(
-        Math.abs(a.n),
-        -a.d
+        Math.abs(base.n),
+        -base.d
       );
 
     explanationLine=
-      `${operandHTML(a)} 與 ${correctHTML} 都只有一個負號，所以兩者的值相等。`;
+      `${operandHTML(base)} 與 ${correctHTML} 都只有一個負號，所以兩者相等。`;
 
   }else{
     correctHTML=
       literalFracHTML(
-        a.n*factor,
-        a.d*factor
+        base.n*factor,
+        base.d*factor
       );
 
     explanationLine=
-      `${operandHTML(a)} 的分子、分母同乘 ${factor}，得到 ${correctHTML}。`;
+      `${operandHTML(base)} 的分子、分母同乘 ${factor}，得到 ${correctHTML}。`;
   }
 
-  /*
-  錯誤選項：
-  只改分子、或只改分母。
-  */
   const wrong1=
     literalFracHTML(
-      a.n*factor,
-      a.d
+      base.n*factor,
+      base.d
     );
 
   const wrong2=
     literalFracHTML(
-      a.n,
-      a.d*factor
-    );
-
-  const optionObjects=
-    shuffle(
-      [
-        {
-          html:correctHTML,
-          correct:true
-        },
-        {
-          html:wrong1,
-          correct:false
-        },
-        {
-          html:wrong2,
-          correct:false
-        }
-      ]
-    );
-
-  const choices=
-    optionObjects.map(
-      item=>item.html
-    );
-
-  const correctIndex=
-    optionObjects.findIndex(
-      item=>item.correct
+      base.n,
+      base.d*factor
     );
 
   return makeChoiceQ(
-    `<div class="math-expr">下列哪一個分數與 ${operandHTML(a)} 等值？</div>`,
-    choices,
-    correctIndex,
+    `<div class="math-expr">下列哪一個分數與 ${operandHTML(base)} 等值？</div>`,
+    [
+      correctHTML,
+      wrong1,
+      wrong2
+    ],
+    0,
     calcBox(
-      "等值分數可把分子、分母同乘或同除以相同的非零數；負號放在分子、分母或分數前，數值也相同。",
+      "等值分數可由負號位置、擴分或約分判斷；分子、分母同乘或同除以相同的非零數，分數值不變。",
       [
         explanationLine
       ],
@@ -1827,11 +2087,11 @@ function makeAddSubtract(speed=false){
     const d=pick([5,7,11]),a=R(nzNum(d-1),d),c=R(nzNum(d-1),d),b=smallRat(),ans=radd(radd(a,c),b),ac=radd(a,c);
     return {kind:"rational",html:`<div class="math-expr">計算：${operandHTML(a)} + ${operandHTML(b)} + ${operandHTML(c)}</div>`,answer:ans,
       explanation:calcBox(
-        "先把容易相加的分數放在一起，再完成剩下的加法。",
+        "先把容易相加的分數放在一起，再用同分母或最小公倍數直接計算。",
         [
           `交換順序：${operandHTML(a)} + ${operandHTML(c)} + ${operandHTML(b)}。`,
-          `先算 ${groupedBinaryHTML(a,"+",c)} ＝ ${operandHTML(ac)}。`,
-          `再算 ${operandHTML(ac)} + ${operandHTML(b)} ＝ ${ratHTML(ans)}。`
+          addSubCompactHTML(a,c,"+"),
+          addSubCompactHTML(ac,b,"+")
         ],
         ratHTML(ans),
         "交換順序時，原本的正負號不能改變。"
@@ -1841,11 +2101,10 @@ function makeAddSubtract(speed=false){
     const a=smallRat(false),b=smallRat(),c=smallRat(),inside=radd(b,c),ans=rsub(a,inside);
     return {kind:"rational",html:`<div class="math-expr">計算：${mixedOperandHTML(a)} − ${groupedBinaryHTML(b,"+",c)}</div>`,answer:ans,
       explanation:calcBox(
-        "先算括號內，再做外面的減法。",
+        "先算括號內，再做外面的減法；分母不同時直接用最小公倍數同步通分。",
         [
-          `括號內：${groupedBinaryHTML(b,"+",c)} ＝ ${operandHTML(inside)}。`,
-          `原式變成 ${operandHTML(a)} − ${operandHTML(inside)}。`,
-          `計算後得到 ${ratHTML(ans)}。`
+          `括號內：${addSubCompactHTML(b,c,"+")}`,
+          `再算外面：${addSubCompactHTML(a,inside,"-")}`
         ],
         ratHTML(ans),
         "先完成括號，再處理外面的運算。"
@@ -1905,8 +2164,8 @@ function makeMixed(){
         [
           `先算乘法 ${operandHTML(a)} × ${operandHTML(b)}：`,
           ...multiplyDetailLines(a,b),
-          `乘法得到 ${operandHTML(rmul(a,b))}，接著算 ${operandHTML(rmul(a,b))} + ${operandHTML(c)}。`,
-          ...addSubDetailLines(rmul(a,b),c,"+")
+          `乘法得到 ${operandHTML(rmul(a,b))}。`,
+          addSubCompactHTML(rmul(a,b),c,"+")
         ],
         ratHTML(ans),
         "不要從左到右全部直接算；沒有括號時，乘除要優先於加減。"
@@ -1918,9 +2177,8 @@ function makeMixed(){
       explanation:calcBox(
         "有括號先算括號內。括號內完成後，再做除法；除法要改成乘以倒數，最後約成最簡分數。",
         [
-          `先算括號內 ${groupedBinaryHTML(a,"−",b)}：`,
-          ...addSubDetailLines(a,b,"-"),
-          `括號內得到 ${operandHTML(inside)}，接著計算 ${operandHTML(inside)} ÷ ${operandHTML(c)}。`,
+          `括號內：${addSubCompactHTML(a,b,"-")}`,
+          `括號內得到 ${operandHTML(inside)}，再做除法：`,
           ...divideDetailLines(inside,c)
         ],
         ratHTML(ans),
@@ -1934,8 +2192,8 @@ function makeMixed(){
       [
         `先算 ${operandHTML(a)} ÷ ${operandHTML(b)}：`,
         ...divideDetailLines(a,b),
-        `除法得到 ${operandHTML(first)}，接著計算 ${operandHTML(first)} − ${operandHTML(c)}。`,
-        ...addSubDetailLines(first,c,"-")
+        `除法得到 ${operandHTML(first)}。`,
+        addSubCompactHTML(first,c,"-")
       ],
       ratHTML(ans),
       "除法一定先完成，不能先做後面的減法。"
