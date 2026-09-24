@@ -445,6 +445,11 @@ button{
 }
 
 
+.game-button.restart{
+  background:#16a34a;
+}
+
+
 button:disabled{
 
   opacity:.48;
@@ -587,9 +592,13 @@ button:disabled{
 
   display:flex;
 
-  justify-content:flex-end;
+  justify-content:center;
 
-  margin-bottom:10px;
+  align-items:center;
+
+  margin:
+    14px 0
+    10px;
 }
 
 
@@ -653,7 +662,7 @@ button:disabled{
 
 .question-content{
 
-  min-height:108px;
+  min-height:96px;
 
   text-align:center;
 
@@ -661,14 +670,14 @@ button:disabled{
 
   font-size:
     clamp(
-      22px,
-      3.3vw,
-      31px
+      21px,
+      2.8vw,
+      28px
     );
 
   font-weight:900;
 
-  line-height:1.75;
+  line-height:1.5;
 }
 
 
@@ -678,11 +687,53 @@ button:disabled{
 
   display:flex;
 
-  flex-direction:column;
+  flex-direction:row;
+
+  flex-wrap:wrap;
+
+  justify-content:center;
 
   align-items:center;
 
-  gap:12px;
+  gap:8px 10px;
+}
+
+
+/*
+==================================================
+題目緊湊排列
+
+原本「已知／條件一／條件二／求……」
+每一段都固定獨占一行。
+
+現在改成：
+畫面放得下就同一行；
+真的太長時才自然換到下一行。
+==================================================
+*/
+
+.question-stack
+.important-line,
+
+.question-stack
+.condition-pill{
+
+  flex:
+    0 0 auto;
+
+  width:auto;
+
+  max-width:100%;
+
+  margin:0;
+}
+
+
+.question-stack
+.condition-pill{
+
+  padding:
+    7px 11px;
 }
 
 
@@ -1413,6 +1464,21 @@ button:disabled{
   }
 
 
+  .question-stack{
+
+    gap:
+      7px 8px;
+  }
+
+
+  .question-stack
+  .condition-pill{
+
+    padding:
+      7px 9px;
+  }
+
+
   .choice-grid{
     grid-template-columns:1fr;
   }
@@ -1826,13 +1892,6 @@ button:disabled{
 </div>
 
 
-<div class="scratchpad-row">
-
-<div id="scratchpad-mobile-button"></div>
-
-</div>
-
-
 <div class="question-card">
 
 <div
@@ -1846,6 +1905,20 @@ button:disabled{
   id="question-content"
   class="question-content"
 ></div>
+
+</div>
+
+
+<!--
+==================================================
+計算紙按鈕
+固定放在「題目」與「答案格」之間
+==================================================
+-->
+
+<div class="scratchpad-row">
+
+<div id="scratchpad-mobile-button"></div>
 
 </div>
 
@@ -1887,11 +1960,19 @@ button:disabled{
 </button>
 
 <button
+  id="restart-button"
+  class="game-button restart"
+  type="button"
+>
+🔄 重新測驗
+</button>
+
+<button
   id="quit-button"
   class="game-button secondary"
   type="button"
 >
-選擇模式
+重選模式
 </button>
 
 </div>
@@ -4789,7 +4870,7 @@ function playGameSound(
 ==================================================
 */
 
-function moveScratchpadButtonToTop(){
+function moveScratchpadButtonToQuizGap(){
 
   const mount =
     $(
@@ -4820,7 +4901,7 @@ function moveScratchpadButtonToTop(){
 
 function ensureScratchpadButton(){
 
-  moveScratchpadButtonToTop();
+  moveScratchpadButtonToQuizGap();
 
 
   let count =
@@ -4833,7 +4914,7 @@ function ensureScratchpadButton(){
 
         count++;
 
-        moveScratchpadButtonToTop();
+        moveScratchpadButtonToQuizGap();
 
 
         if(
@@ -4898,13 +4979,13 @@ function showOnly(
 
 
     setTimeout(
-      moveScratchpadButtonToTop,
+      moveScratchpadButtonToQuizGap,
       0
     );
 
 
     setTimeout(
-      moveScratchpadButtonToTop,
+      moveScratchpadButtonToQuizGap,
       100
     );
 
@@ -6763,6 +6844,20 @@ $(
   .addEventListener(
     "click",
     nextQuestion
+  );
+
+
+$(
+  "restart-button"
+)
+  .addEventListener(
+    "click",
+    () => {
+
+      startGame(
+        mode
+      );
+    }
   );
 
 
