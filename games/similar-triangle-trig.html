@@ -297,6 +297,82 @@ button:disabled{opacity:.48;cursor:not-allowed}
   .ratio-colon{font-size:22px}
 }
 
+
+/*
+==================================================
+幾何圖形題
+==================================================
+*/
+.geo-diagram{
+  width:min(100%,780px);
+  margin:10px auto 3px;
+  padding:10px 8px 7px;
+  border:1px solid var(--primary-border);
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff,var(--primary-light));
+}
+.geo-diagram svg{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:310px;
+  margin:0 auto;
+}
+.geo-diagram .shape{
+  fill:rgba(15,118,110,.035);
+  stroke:var(--primary-dark);
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .helper{
+  fill:none;
+  stroke:var(--accent);
+  stroke-width:2.4;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .parallel{
+  fill:none;
+  stroke:#d97706;
+  stroke-width:3;
+  stroke-dasharray:7 5;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .point{
+  fill:#0f172a;
+  font-size:16px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+}
+.geo-diagram .side-label{
+  fill:#334155;
+  font-size:14px;
+  font-weight:800;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+}
+.geo-diagram .angle-label{
+  fill:#be185d;
+  font-size:13px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+}
+.diagram-caption{
+  margin-top:3px;
+  color:#64748b;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+}
+.mastery-badge{
+  display:inline-block;
+  margin-right:6px;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#fff7ed;
+  color:#c2410c;
+  font-size:.72em;
+  font-weight:900;
+  vertical-align:middle;
+}
 </style>
 </head>
 <body>
@@ -307,7 +383,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
 <header class="game-header">
   <h1 class="game-title">📐 1-4 相似三角形應用與三角比大挑戰</h1>
   <p class="game-subtitle">相似三角形比例關係、簡易測量、特殊直角三角形，以及 sin、cos、tan 與生活應用。</p>
-  <div class="concept-strip"><span class="concept-chip">📐 相似比例</span><span class="concept-chip">🌳 簡易測量</span><span class="concept-chip">📏 特殊直角三角形</span><span class="concept-chip">sin cos tan</span><span class="concept-chip">🚲 坡度應用</span></div>
+  <div class="concept-strip"><span class="concept-chip">📐 相似比例</span><span class="concept-chip">🌳 簡易測量</span><span class="concept-chip">📏 特殊直角三角形</span><span class="concept-chip">sin cos tan</span><span class="concept-chip">🚲 坡度應用</span><span class="concept-chip">🖼️ 圖形題</span><span class="concept-chip">🔥 精熟題</span></div>
 </header>
 
 <section id="start-screen" class="screen">
@@ -321,7 +397,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">對應高的比等於對應邊長比；面積比等於對應邊長比的平方。</p>
+  <p class="mode-description">對應高、邊長比與面積平方比，加入反推與圖形精熟題。</p>
   <button class="mode-button" data-mode="similarityRelations" type="button">
     開始挑戰
   </button>
@@ -335,7 +411,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">利用相似三角形測量湖寬、樹高、距離與生活中的無法直接量測長度。</p>
+  <p class="mode-description">湖寬、樹高、影長與生活測量，加入示意圖與多步驟精熟題。</p>
   <button class="mode-button" data-mode="measurement" type="button">
     開始挑戰
   </button>
@@ -349,7 +425,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">30°–60°–90° 與 45°–45°–90° 的固定邊長比。</p>
+  <p class="mode-description">30°–60°–90° 與 45°–45°–90°，加入圖形判讀、反推與精熟題。</p>
   <button class="mode-button" data-mode="specialRight" type="button">
     開始挑戰
   </button>
@@ -363,7 +439,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">sin、cos、tan 的對邊／鄰邊／斜邊定義與 30°、45°、60° 特殊角值。</p>
+  <p class="mode-description">sin、cos、tan 定義、特殊角值、3-4-5 圖形題與精熟轉換。</p>
   <button class="mode-button" data-mode="trigRatio" type="button">
     開始挑戰
   </button>
@@ -377,7 +453,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">坡度、斜坡、高度與距離，用三角比或比例建立算式。</p>
+  <p class="mode-description">坡度、斜坡、高度、距離與角度應用，加入圖形與多步驟題。</p>
   <button class="mode-button" data-mode="trigApplication" type="button">
     開始挑戰
   </button>
@@ -391,7 +467,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">綜合模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">相似比例、面積平方比、測量、特殊直角三角形與三角比混合應用。</p>
+  <p class="mode-description">相似比例、測量、特殊直角三角形、三角比圖形題與精熟應用混合。</p>
   <button class="mode-button" data-mode="comprehensive" type="button">
     開始綜合挑戰
   </button>
@@ -622,136 +698,322 @@ Game-specific question generators
 */
 
 
-function radicalHTML(coef,rad){
-  if(coef===0)return "0";
-  if(coef===1)return `√${rad}`;
-  return `${coef}√${rad}`;
+
+function diagramWrap(svg,caption="示意圖（不按比例）"){
+  return `<div class="geo-diagram">${svg}<div class="diagram-caption">${caption}</div></div>`;
 }
+
+function similarHeightDiagram({smallBase="",largeBase="",smallHeight="",largeHeight=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 650 280" role="img" aria-label="兩個相似三角形與對應高示意圖">
+      <polygon class="shape" points="130,45 45,225 255,225"></polygon>
+      <line class="helper" x1="130" y1="45" x2="130" y2="225"></line>
+      <polygon class="shape" points="460,25 330,225 620,225"></polygon>
+      <line class="helper" x1="460" y1="25" x2="460" y2="225"></line>
+      <text class="point" x="124" y="35">A</text>
+      <text class="point" x="28" y="245">B</text>
+      <text class="point" x="260" y="245">C</text>
+      <text class="point" x="118" y="245">D</text>
+      <text class="point" x="454" y="17">P</text>
+      <text class="point" x="312" y="245">Q</text>
+      <text class="point" x="625" y="245">R</text>
+      <text class="point" x="448" y="245">S</text>
+      ${smallBase?`<text class="side-label" x="140" y="216">${smallBase}</text>`:""}
+      ${largeBase?`<text class="side-label" x="475" y="216">${largeBase}</text>`:""}
+      ${smallHeight?`<text class="side-label" x="138" y="137">${smallHeight}</text>`:""}
+      ${largeHeight?`<text class="side-label" x="468" y="128">${largeHeight}</text>`:""}
+    </svg>
+  `);
+}
+
+function parallelMeasureDiagram({CM="",CA="",MN="",AB=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 300" role="img" aria-label="平行線相似測量示意圖">
+      <polygon class="shape" points="95,250 525,250 95,35"></polygon>
+      <line class="parallel" x1="95" y1="150" x2="295" y2="150"></line>
+      <text class="point" x="76" y="270">C</text>
+      <text class="point" x="532" y="270">A</text>
+      <text class="point" x="74" y="29">B</text>
+      <text class="point" x="76" y="146">M</text>
+      <text class="point" x="300" y="146">N</text>
+      ${CM?`<text class="side-label" x="82" y="205">${CM}</text>`:""}
+      ${CA?`<text class="side-label" x="305" y="242">${CA}</text>`:""}
+      ${MN?`<text class="side-label" x="188" y="143">${MN}</text>`:""}
+      ${AB?`<text class="side-label" x="500" y="135">${AB}</text>`:""}
+    </svg>
+  `);
+}
+
+function shadowDiagram({person="",personShadow="",treeShadow="",tree=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 700 270" role="img" aria-label="影長測量示意圖">
+      <line class="shape" x1="35" y1="225" x2="665" y2="225"></line>
+      <line class="shape" x1="130" y1="225" x2="130" y2="125"></line>
+      <line class="helper" x1="130" y1="125" x2="260" y2="225"></line>
+      <line class="shape" x1="430" y1="225" x2="430" y2="45"></line>
+      <line class="helper" x1="430" y1="45" x2="635" y2="225"></line>
+      <text class="side-label" x="100" y="171">${person}</text>
+      <text class="side-label" x="180" y="217">${personShadow}</text>
+      <text class="side-label" x="395" y="135">${tree}</text>
+      <text class="side-label" x="525" y="217">${treeShadow}</text>
+      <text class="point" x="112" y="243">人</text>
+      <text class="point" x="414" y="243">樹</text>
+    </svg>
+  `);
+}
+
+function rightTriangleDiagram({angle="",opposite="",adjacent="",hypotenuse=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 600 285" role="img" aria-label="直角三角形示意圖">
+      <polygon class="shape" points="90,235 510,235 90,45"></polygon>
+      <polyline class="helper" points="90,215 110,215 110,235"></polyline>
+      <text class="point" x="72" y="258">A</text>
+      <text class="point" x="516" y="258">B</text>
+      <text class="point" x="70" y="38">C</text>
+      ${angle?`<text class="angle-label" x="450" y="219">${angle}</text>`:""}
+      ${opposite?`<text class="side-label" x="63" y="142">${opposite}</text>`:""}
+      ${adjacent?`<text class="side-label" x="287" y="227">${adjacent}</text>`:""}
+      ${hypotenuse?`<text class="side-label" x="300" y="127">${hypotenuse}</text>`:""}
+    </svg>
+  `);
+}
+
+function primitivePair(){
+  let a,b;
+  do{
+    a=rand(1,6);
+    b=rand(2,8);
+  }while(a===b || gcd(a,b)!==1);
+  return [a,b];
+}
+
 function qHeightRatio(){
-  const [a,b]=(()=>{let x,y;do{x=rand(1,6);y=rand(2,8)}while(x===y||gcd(x,y)!==1);return[x,y]})();
+  const [a,b]=primitivePair();
   return ratioQuestion({
     family:"height-ratio",label:"相似三角形對應高",
-    html:`<div class="question-flow"><span class="qline">△ABC∼△A'B'C'，若 ${seg("BC")}：${seg("B'C'")}＝${a}：${b}，則對應高 ${seg("AD")}：${seg("A'D'")}＝？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">△ABC 與 △PQR 相似。若對應底邊 BC：QR＝${a}：${b}，則對應高 AD：PS＝？</span></div>`,
     answer:[a,b],
-    explanation:explanation(ratioHTML([a,b]),"相似三角形的對應高比＝對應邊長比。",
-      [`${seg("AD")}：${seg("A'D'")}＝${seg("BC")}：${seg("B'C'")}＝${a}：${b}。`])
+    explanation:explanation(ratioHTML([a,b]),"相似三角形的對應高比等於對應邊長比。",
+      [`AD：PS＝BC：QR＝${a}：${b}。`])
+  });
+}
+
+function qHeightDiagram(){
+  const [a,b]=primitivePair();
+  const unit=rand(2,6);
+  const smallHeight=a*unit,largeHeight=b*unit;
+  return numberQuestion({
+    family:"height-diagram",label:"🖼️ 對應高圖形題",
+    html:`<div class="question-flow"><span class="qline">圖中兩三角形相似，對應底邊長比為 ${a}：${b}，小三角形的對應高為 ${smallHeight}。求大三角形的對應高。</span></div>${similarHeightDiagram({smallBase:String(a),largeBase:String(b),smallHeight:String(smallHeight),largeHeight:"？"})}`,
+    answer:largeHeight,
+    explanation:explanation(String(largeHeight),"對應高和對應邊使用同一個相似倍率。",
+      [`${smallHeight}：大高＝${a}：${b}，所以大高＝${largeHeight}。`])
   });
 }
 
 function qAreaSquareRatio(){
-  const a=rand(1,5),b=rand(2,6);
-  if(a===b)return qAreaSquareRatio();
-  const g=gcd(a,b),x=a/g,y=b/g;
+  const [a,b]=primitivePair();
   return ratioQuestion({
     family:"area-square",label:"相似三角形面積比",
-    html:`<div class="question-flow"><span class="qline">兩個相似三角形的對應邊長比為 ${x}：${y}，求面積比。</span></div>`,
-    answer:[x*x,y*y],
-    explanation:explanation(ratioHTML([x*x,y*y]),"相似三角形面積比＝對應邊長比的平方。",
-      [`面積比＝${x}${sup(2)}：${y}${sup(2)}＝${x*x}：${y*y}。`])
+    html:`<div class="question-flow"><span class="qline">兩個相似三角形的對應邊長比為 ${a}：${b}，求面積比。</span></div>`,
+    answer:[a*a,b*b],
+    explanation:explanation(ratioHTML([a*a,b*b]),"相似三角形面積比＝對應邊長比的平方。",
+      [`面積比＝${a}${sup(2)}：${b}${sup(2)}＝${a*a}：${b*b}。`])
   });
 }
 
 function qAreaFromSmall(){
-  const a=rand(1,4), b=a+rand(1,4), unit=rand(2,8);
-  const small=a*a*unit, large=b*b*unit;
+  const a=rand(1,4),b=a+rand(1,4),unit=rand(2,8);
+  const small=a*a*unit,large=b*b*unit;
   return numberQuestion({
     family:"area-value",label:"由相似比求面積",
-    html:`<div class="question-flow"><span class="qline">△ADE∼△ABC，對應邊 ${seg("AD")}：${seg("AB")}＝${a}：${b}，若 △ADE 面積為 ${small}，求 △ABC 面積。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">△ADE 與 △ABC 相似，對應邊 AD：AB＝${a}：${b}。若 △ADE 面積為 ${small}，求 △ABC 面積。</span></div>`,
     answer:large,
     explanation:explanation(String(large),"先平方邊長比，得到面積比。",
-      [`△ADE：△ABC＝${a*a}：${b*b}。`,`所以 △ABC 面積＝${small}×${b*b}÷${a*a}＝${large}。`])
+      [`△ADE：△ABC 面積比＝${a*a}：${b*b}。`,`△ABC 面積＝${large}。`])
+  });
+}
+
+function qAreaMasteryReverse(){
+  const [a,b]=primitivePair();
+  return ratioQuestion({
+    family:"area-mastery-reverse",label:"🔥 精熟題｜由面積比反推邊長比",
+    html:`<div class="question-flow"><span class="qline">兩個相似三角形的面積比為 ${a*a}：${b*b}，求對應邊長比。</span></div>`,
+    answer:[a,b],
+    explanation:explanation(ratioHTML([a,b]),"面積比是邊長比的平方，所以兩項分別開平方。",
+      [`√${a*a}：√${b*b}＝${a}：${b}。`])
+  });
+}
+
+function qSimilarityMasteryTwoStep(){
+  const [a,b]=primitivePair();
+  const unit=rand(2,6);
+  const h1=a*unit,h2=b*unit;
+  const area1=a*a*unit,area2=b*b*unit;
+  return numberQuestion({
+    family:"similarity-mastery-two-step",label:"🔥 精熟題｜高比與面積比",
+    html:`<div class="question-flow"><span class="qline">兩個相似三角形的對應高為 ${h1}、${h2}，較小三角形面積為 ${area1}。求較大三角形面積。</span></div>`,
+    answer:area2,
+    explanation:explanation(String(area2),"先由對應高求邊長比，再平方得到面積比。",
+      [`邊長比＝高比＝${a}：${b}。`,`面積比＝${a*a}：${b*b}，所以較大面積＝${area2}。`])
   });
 }
 
 function qLakeWidth(){
   const scale=pick([2,3,4]);
-  const CM=rand(5,15), CA=CM*scale, MN=rand(4,12), AB=MN*scale;
+  const CM=rand(5,15),CA=CM*scale,MN=rand(4,12),AB=MN*scale;
   return numberQuestion({
     family:"lake",label:"簡易測量距離",
-    html:`<div class="question-flow"><span class="qline">在測量湖寬時，M、N 分別在 ${seg("CA")}、${seg("CB")} 上，且 ${seg("MN")}∥${seg("AB")}。若 ${seg("CM")}＝${CM}、${seg("CA")}＝${CA}、${seg("MN")}＝${MN} 公尺，求 ${seg("AB")}。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">M、N 分別在 CA、CB 上，且 MN 平行 AB。若 CM＝${CM}、CA＝${CA}、MN＝${MN} 公尺，求 AB。</span></div>`,
     answer:AB,
-    explanation:explanation(`${AB} 公尺`,"MN∥AB，所以小三角形與大三角形相似。",
-      [`${seg("CM")}：${seg("CA")}＝${seg("MN")}：${seg("AB")}＝1：${scale}。`,
-       `${seg("AB")}＝${MN}×${scale}＝${AB} 公尺。`])
+    explanation:explanation(`${AB} 公尺`,"MN 平行 AB，所以小三角形與大三角形相似。",
+      [`CM：CA＝MN：AB＝1：${scale}。`,`AB＝${AB} 公尺。`])
+  });
+}
+
+function qLakeDiagram(){
+  const scale=pick([2,3,4]);
+  const CM=rand(4,10),CA=CM*scale,MN=rand(3,9),AB=MN*scale;
+  return numberQuestion({
+    family:"lake-diagram",label:"🖼️ 簡易測量圖形題",
+    html:`<div class="question-flow"><span class="qline">依圖，MN 平行 AB。CM＝${CM}、CA＝${CA}、MN＝${MN} 公尺，求 AB。</span></div>${parallelMeasureDiagram({CM:String(CM),CA:String(CA),MN:String(MN),AB:"？"})}`,
+    answer:AB,
+    explanation:explanation(`${AB} 公尺`,"平行線讓兩個三角形形成相似關係。",
+      [`CM：CA＝MN：AB＝${CM}：${CA}，可得 AB＝${AB} 公尺。`])
   });
 }
 
 function qTreeHeight(){
-  const eye=1, stick=pick([1.5,1.8,2.0]), near=2, gap=pick([4,5,6]);
-  const rise=stick-eye;
-  const top=(rise*(near+gap)/near)+eye;
-  const ans=Math.round(top*10)/10;
+  const eye=1.5,near=2,gap=pick([4,6,8]),stickTop=pick([0.5,1]);
+  const stick=eye+stickTop;
+  const topAbove=stickTop*(near+gap)/near;
+  const ans=Math.round((topAbove+eye)*10)/10;
   return numberQuestion({
     family:"tree",label:"測量樹高",
-    html:`<div class="question-flow"><span class="qline">觀測點眼睛離地 ${eye} 公尺，前方 ${near} 公尺處豎立 ${stick} 公尺木棍，木棍再到樹的水平距離為 ${gap} 公尺；視線中木棍頂端與樹梢重合。求樹高。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">觀測者眼睛離地 ${eye} 公尺，前方 ${near} 公尺處豎立 ${stick} 公尺木棍，木棍到樹的水平距離為 ${gap} 公尺；視線中木棍頂端與樹梢重合。求樹高。</span></div>`,
     answer:ans,tolerance:0.05,
-    explanation:explanation(`${ans} 公尺`,"先扣掉眼睛高度，再利用兩個相似直角三角形。",
-      [`木棍高出視線水平線 ${stick-eye} 公尺，水平距離為 ${near} 公尺。`,
-       `樹梢高出同一水平線＝${stick-eye}×${near+gap}÷${near}＝${Math.round((top-eye)*10)/10} 公尺，再加眼睛高度 ${eye} 公尺，得 ${ans} 公尺。`])
+    explanation:explanation(`${ans} 公尺`,"先扣掉眼睛高度，再利用視線形成的相似三角形。",
+      [`木棍高出眼睛 ${stickTop} 公尺。`,`樹梢高出眼睛＝${topAbove} 公尺，再加眼睛高度，得 ${ans} 公尺。`])
   });
 }
 
 function qShadowMeasure(){
-  const person=pick([1.5,1.6,1.8]), ps=pick([1,1.2,1.5]), ts=pick([5,6,7.5]);
+  const person=pick([1.5,1.6,1.8]),ps=pick([1,1.2,1.5]),ts=pick([5,6,7.5]);
   const ans=Math.round(person*ts/ps*10)/10;
   return numberQuestion({
     family:"shadow",label:"影長測量",
-    html:`<div class="question-flow"><span class="qline">同一時間，身高 ${person} 公尺的人影長 ${ps} 公尺；一棵樹影長 ${ts} 公尺。假設日光方向相同，求樹高。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">同一時間，身高 ${person} 公尺的人影長 ${ps} 公尺；一棵樹影長 ${ts} 公尺。求樹高。</span></div>`,
     answer:ans,tolerance:0.05,
     explanation:explanation(`${ans} 公尺`,"同一時間太陽仰角相同，形成相似三角形。",
-      [`樹高：${ts}＝${person}：${ps}，所以樹高＝${person}×${ts}÷${ps}＝${ans} 公尺。`])
+      [`樹高：${ts}＝${person}：${ps}，所以樹高＝${ans} 公尺。`])
+  });
+}
+
+function qShadowDiagram(){
+  const person=1.5,ps=1,ts=6,ans=9;
+  return numberQuestion({
+    family:"shadow-diagram",label:"🖼️ 影長測量圖形題",
+    html:`<div class="question-flow"><span class="qline">同一時間，圖中人的身高為 ${person} 公尺、影長 ${ps} 公尺；樹影長 ${ts} 公尺。求樹高。</span></div>${shadowDiagram({person:`${person} m`,personShadow:`${ps} m`,treeShadow:`${ts} m`,tree:"？"})}`,
+    answer:ans,
+    explanation:explanation(`${ans} 公尺`,"人的三角形與樹的三角形相似。",
+      [`樹高＝${person}×${ts}÷${ps}＝${ans} 公尺。`])
+  });
+}
+
+function qMeasurementMastery(){
+  const smallHeight=pick([1.2,1.5,1.8]),smallShadow=pick([0.8,1,1.2]),bigShadow=pick([7.2,8.4,9.6]);
+  const ans=Math.round(smallHeight*bigShadow/smallShadow*10)/10;
+  return numberQuestion({
+    family:"measurement-mastery",label:"🔥 精熟題｜比例測量",
+    html:`<div class="question-flow"><span class="qline">同一時刻，一根高 ${smallHeight} 公尺的標竿影長 ${smallShadow} 公尺；建築物影長 ${bigShadow} 公尺。求建築物高度。</span></div>`,
+    answer:ans,tolerance:0.05,
+    explanation:explanation(`${ans} 公尺`,"建立高度：影長的相同比例。",
+      [`建築高度＝${smallHeight}×${bigShadow}÷${smallShadow}＝${ans} 公尺。`])
   });
 }
 
 function qSpecial3060(){
   const k=rand(2,8);
-  const ask=pick(["hyp","long"]);
-  if(ask==="hyp"){
+  if(Math.random()<.5){
     return numberQuestion({
       family:"3060",label:"30°–60°–90° 三角形",
       html:`<div class="question-flow"><span class="qline">直角三角形中，30° 的對邊長為 ${k}，求斜邊長。</span></div>`,
       answer:2*k,
       explanation:explanation(String(2*k),"30°–60°–90° 三邊比為 1：√3：2。",
-        [`30° 對邊是 1 份，斜邊是 2 份，所以斜邊＝${2*k}。`])
+        [`斜邊＝${2*k}。`])
     });
   }
-  const correct=radicalHTML(k,3);
+  const correct=`${k}√3`;
   return choiceQuestion({
     family:"3060",label:"30°–60°–90° 三角形",
     html:`<div class="question-flow"><span class="qline">直角三角形中，30° 的對邊長為 ${k}，求 30° 的鄰邊長。</span></div>`,
-    choices:[
-      {value:"c",html:correct},
-      {value:"a",html:`${2*k}`},
-      {value:"b",html:radicalHTML(k,2)}
-    ],answer:"c",
+    choices:[{value:"c",html:correct},{value:"a",html:`${2*k}`},{value:"b",html:`${k}√2`}],
+    answer:"c",
     explanation:explanation(correct,"30°–60°–90° 三邊比為 1：√3：2。",
-      [`30° 對邊是 ${k}，所以鄰邊＝${k}√3。`])
+      [`鄰邊＝${k}√3。`])
+  });
+}
+
+function qSpecial3060Diagram(){
+  const k=rand(2,7),hyp=2*k;
+  return numberQuestion({
+    family:"3060-diagram",label:"🖼️ 30°–60°–90° 圖形題",
+    html:`<div class="question-flow"><span class="qline">圖中 ∠B＝30°，AC＝${k}。求斜邊 BC。</span></div>${rightTriangleDiagram({angle:"30°",opposite:String(k),hypotenuse:"？"})}`,
+    answer:hyp,
+    explanation:explanation(String(hyp),"30° 的對邊：斜邊＝1：2。",
+      [`斜邊＝${hyp}。`])
   });
 }
 
 function qSpecial4545(){
-  const k=rand(2,9);
-  const correct=radicalHTML(k,2);
+  const k=rand(2,9),correct=`${k}√2`;
   return choiceQuestion({
     family:"4545",label:"45°–45°–90° 三角形",
     html:`<div class="question-flow"><span class="qline">等腰直角三角形的一股長為 ${k}，求斜邊長。</span></div>`,
-    choices:[
-      {value:"c",html:correct},
-      {value:"a",html:`${2*k}`},
-      {value:"b",html:radicalHTML(k,3)}
-    ],answer:"c",
+    choices:[{value:"c",html:correct},{value:"a",html:`${2*k}`},{value:"b",html:`${k}√3`}],
+    answer:"c",
     explanation:explanation(correct,"45°–45°–90° 三邊比為 1：1：√2。",
       [`斜邊＝${k}√2。`])
   });
 }
 
+function qSpecial4545Diagram(){
+  const k=rand(2,8),correct=`${k}√2`;
+  return choiceQuestion({
+    family:"4545-diagram",label:"🖼️ 45°–45°–90° 圖形題",
+    html:`<div class="question-flow"><span class="qline">圖中 ∠B＝45°，AC＝${k}。求斜邊 BC。</span></div>${rightTriangleDiagram({angle:"45°",opposite:String(k),hypotenuse:"？"})}`,
+    choices:[{value:"c",html:correct},{value:"a",html:String(2*k)},{value:"b",html:`${k}√3`}],
+    answer:"c",
+    explanation:explanation(correct,"45°–45°–90° 三邊比為 1：1：√2。",
+      [`斜邊＝${k}√2。`])
+  });
+}
+
+function qSpecialMasteryReverse(){
+  const k=rand(2,8),hyp=2*k;
+  return numberQuestion({
+    family:"special-mastery-reverse",label:"🔥 精熟題｜由斜邊反推短股",
+    html:`<div class="question-flow"><span class="qline">一個 30°–60°–90° 直角三角形的斜邊長為 ${hyp}。求 30° 的對邊長。</span></div>`,
+    answer:k,
+    explanation:explanation(String(k),"30° 對邊：斜邊＝1：2。",
+      [`30° 對邊＝${hyp}÷2＝${k}。`])
+  });
+}
+
+function qSpecialMasteryLongLeg(){
+  const k=rand(2,7),correct=`${k}√3`;
+  return choiceQuestion({
+    family:"special-mastery-long-leg",label:"🔥 精熟題｜由短股求長股",
+    html:`<div class="question-flow"><span class="qline">一個 30°–60°–90° 三角形的短股為 ${k}。下列何者是長股？</span></div>`,
+    choices:[{value:"c",html:correct},{value:"a",html:String(2*k)},{value:"b",html:`${k}√2`}],
+    answer:"c",
+    explanation:explanation(correct,"短股：長股：斜邊＝1：√3：2。",[])
+  });
+}
+
 function qTrigDefinition(){
   const fn=pick(["sin","cos","tan"]);
-  const desc={
-    sin:"對邊／斜邊",
-    cos:"鄰邊／斜邊",
-    tan:"對邊／鄰邊"
-  }[fn];
+  const desc={sin:"對邊／斜邊",cos:"鄰邊／斜邊",tan:"對邊／鄰邊"}[fn];
   return choiceQuestion({
     family:"trig-def",label:"三角比定義",
     html:`<div class="question-flow"><span class="qline">在直角三角形中，以銳角 A 為基準，${fn} A 等於下列哪一個比？</span></div>`,
@@ -764,104 +1026,156 @@ function qTrigDefinition(){
   });
 }
 
+function qTrigDiagram(){
+  const fn=pick(["sin","cos","tan"]);
+  const values={sin:R(3,5),cos:R(4,5),tan:R(3,4)};
+  return rationalQuestion({
+    family:"trig-diagram",label:"🖼️ 三角比圖形題",
+    html:`<div class="question-flow"><span class="qline">圖中 ∠A＝90°，以 ∠B 為基準，AC＝3、AB＝4、BC＝5。求 ${fn} B。</span></div>${rightTriangleDiagram({angle:"∠B",opposite:"3",adjacent:"4",hypotenuse:"5"})}`,
+    answer:values[fn],
+    explanation:explanation(ratHTML(values[fn]),`先以 ∠B 為基準找出對邊、鄰邊、斜邊，再使用 ${fn} 的定義。`,
+      [fn==="sin"?`sin B＝${fracHTML(3,5)}。`:fn==="cos"?`cos B＝${fracHTML(4,5)}。`:`tan B＝${fracHTML(3,4)}。`])
+  });
+}
+
 const SPECIAL_TRIG=[
   {fn:"sin",angle:30,html:fracHTML(1,2)},
   {fn:"cos",angle:60,html:fracHTML(1,2)},
   {fn:"tan",angle:45,html:"1"},
-  {fn:"sin",angle:45,html:`${fracHTML("√2",2)}`},
-  {fn:"cos",angle:45,html:`${fracHTML("√2",2)}`},
-  {fn:"cos",angle:30,html:`${fracHTML("√3",2)}`},
-  {fn:"sin",angle:60,html:`${fracHTML("√3",2)}`},
-  {fn:"tan",angle:30,html:`${fracHTML("√3",3)}`},
+  {fn:"sin",angle:45,html:fracHTML("√2",2)},
+  {fn:"cos",angle:45,html:fracHTML("√2",2)},
+  {fn:"cos",angle:30,html:fracHTML("√3",2)},
+  {fn:"sin",angle:60,html:fracHTML("√3",2)},
+  {fn:"tan",angle:30,html:fracHTML("√3",3)},
   {fn:"tan",angle:60,html:"√3"}
 ];
 
 function qTrigSpecial(){
   const item=pick(SPECIAL_TRIG);
-  const wrongs=shuffle(["1",fracHTML(1,2),fracHTML("√2",2),fracHTML("√3",2),"√3",fracHTML("√3",3)])
-    .filter(x=>x!==item.html).slice(0,2);
+  const pool=["1",fracHTML(1,2),fracHTML("√2",2),fracHTML("√3",2),"√3",fracHTML("√3",3)];
+  const wrongs=shuffle(pool.filter(x=>x!==item.html)).slice(0,2);
   return choiceQuestion({
     family:"trig-special",label:"特殊角三角比",
     html:`<div class="question-flow"><span class="qline">求 ${item.fn} ${item.angle}° 的值。</span></div>`,
-    choices:[
-      {value:"c",html:item.html},
-      {value:"w1",html:wrongs[0]},
-      {value:"w2",html:wrongs[1]}
-    ],answer:"c",
+    choices:[{value:"c",html:item.html},{value:"w1",html:wrongs[0]},{value:"w2",html:wrongs[1]}],
+    answer:"c",
     explanation:explanation(item.html,`利用 ${item.angle}° 特殊直角三角形的固定邊長比。`,[])
   });
 }
 
 function qTrigFromSides(){
   const fn=pick(["sin","cos","tan"]);
-  const values={
-    sin:R(3,5),
-    cos:R(4,5),
-    tan:R(3,4)
-  };
-  const labels={sin:"sin A",cos:"cos A",tan:"tan A"};
+  const values={sin:R(3,5),cos:R(4,5),tan:R(3,4)};
   return rationalQuestion({
     family:"trig-sides",label:"由邊長求三角比",
-    html:`<div class="question-flow"><span class="qline">直角三角形 ABC 中，∠C＝90°，以 ∠A 為基準，對邊 ${seg("BC")}＝3、鄰邊 ${seg("AC")}＝4、斜邊 ${seg("AB")}＝5。求 ${labels[fn]}。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">直角三角形中，以銳角 A 為基準，對邊長 3、鄰邊長 4、斜邊長 5。求 ${fn} A。</span></div>`,
     answer:values[fn],
-    explanation:explanation(ratHTML(values[fn]),`${labels[fn]} 依定義選擇對應兩邊。`,
-      [fn==="sin"?`${labels[fn]}＝${seg("BC")}÷${seg("AB")}＝${fracHTML(3,5)}。`
-       :fn==="cos"?`${labels[fn]}＝${seg("AC")}÷${seg("AB")}＝${fracHTML(4,5)}。`
-       :`${labels[fn]}＝${seg("BC")}÷${seg("AC")}＝${fracHTML(3,4)}。`])
+    explanation:explanation(ratHTML(values[fn]),`依 ${fn} A 的定義取需要的兩條邊。`,
+      [fn==="sin"?`sin A＝${fracHTML(3,5)}。`:fn==="cos"?`cos A＝${fracHTML(4,5)}。`:`tan A＝${fracHTML(3,4)}。`])
+  });
+}
+
+function qTrigMasteryFromTan(){
+  const ask=pick(["sin","cos"]);
+  const ans=ask==="sin"?R(3,5):R(4,5);
+  return rationalQuestion({
+    family:"trig-mastery-from-tan",label:"🔥 精熟題｜由 tan 反推其他三角比",
+    html:`<div class="question-flow"><span class="qline">銳角 A 滿足 tan A＝${fracHTML(3,4)}。把對邊、鄰邊視為 3、4，可得斜邊 5。求 ${ask} A。</span></div>`,
+    answer:ans,
+    explanation:explanation(ratHTML(ans),"tan A＝3：4，可先建立 3-4-5 直角三角形。",
+      [ask==="sin"?`sin A＝${fracHTML(3,5)}。`:`cos A＝${fracHTML(4,5)}。`])
   });
 }
 
 function qSlope(){
-  const run=pick([20,30,40,50]), percent=pick([5,8,10,12]), rise=run*percent/100;
+  const run=pick([20,30,40,50]),percent=pick([5,8,10,12]),rise=run*percent/100;
   return numberQuestion({
     family:"slope",label:"坡度百分比",
     html:`<div class="question-flow"><span class="qline">一段坡道水平距離為 ${run} 公尺，平均坡度為 ${percent}％。求鉛直上升高度。</span></div>`,
     answer:rise,tolerance:0.001,
     explanation:explanation(`${rise} 公尺`,"坡度百分比＝鉛直上升高度÷水平距離×100％。",
-      [`上升高度＝${run}×${percent}÷100＝${rise} 公尺。`])
+      [`上升高度＝${rise} 公尺。`])
+  });
+}
+
+function qSlopeDiagram(){
+  const run=20,rise=3,percent=15;
+  return numberQuestion({
+    family:"slope-diagram",label:"🖼️ 坡度圖形題",
+    html:`<div class="question-flow"><span class="qline">圖中水平距離為 ${run} 公尺、上升高度為 ${rise} 公尺。求坡度百分比。</span></div>${rightTriangleDiagram({angle:"坡角",opposite:`${rise} m`,adjacent:`${run} m`,hypotenuse:"坡道"})}`,
+    answer:percent,
+    explanation:explanation(`${percent}％`,"坡度百分比＝上升高度÷水平距離×100％。",
+      [`坡度＝${rise}÷${run}×100％＝${percent}％。`])
   });
 }
 
 function qTrigHeight(){
-  const hyp=2*rand(4,12);
-  const ans=hyp/2;
+  const hyp=2*rand(4,12),ans=hyp/2;
   return numberQuestion({
     family:"trig-height",label:"三角比求高度",
     html:`<div class="question-flow"><span class="qline">一條長 ${hyp} 公尺的斜坡與水平面夾角為 30°。求斜坡頂端的鉛直高度。</span></div>`,
     answer:ans,
-    explanation:explanation(`${ans} 公尺`,"高度是 30° 的對邊，斜坡長是斜邊，所以用 sin 30°。",
-      [`高度＝${hyp}×sin 30°＝${hyp}×${fracHTML(1,2)}＝${ans} 公尺。`])
+    explanation:explanation(`${ans} 公尺`,"高度是 30° 的對邊，斜坡長是斜邊，所以使用 sin 30°。",
+      [`高度＝${hyp}×${fracHTML(1,2)}＝${ans} 公尺。`])
   });
 }
 
 function qTrigApprox(){
-  const h=15;
-  const sin20=0.342;
-  const ans=Math.round(h/sin20);
+  const h=15,sin20=0.342,ans=Math.round(h/sin20);
   return numberQuestion({
     family:"trig-approx",label:"三角比近似值應用",
     html:`<div class="question-flow"><span class="qline">斜坡與水平面夾角為 20°，鉛直高度差為 ${h} 公分。已知 sin 20°≈${sin20}，斜坡長約多少公分？（四捨五入到整數）</span></div>`,
     answer:ans,tolerance:0.5,
     explanation:explanation(`約 ${ans} 公分`,"sin 20°＝對邊÷斜邊。",
-      [`${sin20}≈${h}÷斜坡長，所以斜坡長≈${h}÷${sin20}≈${ans} 公分。`])
+      [`斜坡長≈${h}÷${sin20}≈${ans} 公分。`])
+  });
+}
+
+function qTrigApplicationMastery(){
+  const distance=pick([8,10,12,15]),eye=1.5,ans=distance+eye;
+  return numberQuestion({
+    family:"trig-app-mastery",label:"🔥 精熟題｜仰角測高",
+    html:`<div class="question-flow"><span class="qline">觀測者眼睛離地 ${eye} 公尺，與旗桿底端的水平距離為 ${distance} 公尺，仰望旗桿頂端的仰角為 45°。求旗桿高度。</span></div>`,
+    answer:ans,tolerance:0.001,
+    explanation:explanation(`${ans} 公尺`,"45° 時 tan 45°＝1，所以頂端高出眼睛的高度等於水平距離。",
+      [`高出眼睛的高度＝${distance} 公尺。`,`旗桿高度＝${distance}＋${eye}＝${ans} 公尺。`])
   });
 }
 
 function createQuestions(selected){
   const maps={
-    similarityRelations:()=>shuffle([qHeightRatio(),qHeightRatio(),qAreaSquareRatio(),qAreaSquareRatio(),qAreaSquareRatio(),qAreaFromSmall(),qAreaFromSmall(),qHeightRatio(),qAreaFromSmall(),qAreaSquareRatio()]),
-    measurement:()=>shuffle([qLakeWidth(),qLakeWidth(),qLakeWidth(),qTreeHeight(),qTreeHeight(),qShadowMeasure(),qShadowMeasure(),qLakeWidth(),qTreeHeight(),qShadowMeasure()]),
-    specialRight:()=>shuffle([qSpecial3060(),qSpecial3060(),qSpecial3060(),qSpecial3060(),qSpecial4545(),qSpecial4545(),qSpecial4545(),qSpecial4545(),qSpecial3060(),qSpecial4545()]),
-    trigRatio:()=>shuffle([qTrigDefinition(),qTrigDefinition(),qTrigDefinition(),qTrigSpecial(),qTrigSpecial(),qTrigSpecial(),qTrigSpecial(),qTrigFromSides(),qTrigFromSides(),qTrigFromSides()]),
-    trigApplication:()=>shuffle([qSlope(),qSlope(),qSlope(),qTrigHeight(),qTrigHeight(),qTrigHeight(),qTrigApprox(),qTrigApprox(),qSlope(),qTrigHeight()])
+    similarityRelations:()=>shuffle([
+      qHeightRatio(),qHeightRatio(),qHeightDiagram(),qHeightDiagram(),
+      qAreaSquareRatio(),qAreaSquareRatio(),qAreaFromSmall(),
+      qAreaMasteryReverse(),qAreaMasteryReverse(),qSimilarityMasteryTwoStep()
+    ]),
+    measurement:()=>shuffle([
+      qLakeWidth(),qLakeDiagram(),qLakeDiagram(),qTreeHeight(),qTreeHeight(),
+      qShadowMeasure(),qShadowDiagram(),qShadowDiagram(),
+      qMeasurementMastery(),qMeasurementMastery()
+    ]),
+    specialRight:()=>shuffle([
+      qSpecial3060(),qSpecial3060(),qSpecial3060Diagram(),qSpecial3060Diagram(),
+      qSpecial4545(),qSpecial4545(),qSpecial4545Diagram(),
+      qSpecialMasteryReverse(),qSpecialMasteryReverse(),qSpecialMasteryLongLeg()
+    ]),
+    trigRatio:()=>shuffle([
+      qTrigDefinition(),qTrigDefinition(),qTrigDiagram(),qTrigDiagram(),
+      qTrigSpecial(),qTrigSpecial(),qTrigFromSides(),qTrigFromSides(),
+      qTrigMasteryFromTan(),qTrigMasteryFromTan()
+    ]),
+    trigApplication:()=>shuffle([
+      qSlope(),qSlope(),qSlopeDiagram(),qSlopeDiagram(),qTrigHeight(),qTrigHeight(),
+      qTrigApprox(),qTrigApprox(),qTrigApplicationMastery(),qTrigApplicationMastery()
+    ])
   };
   if(selected!=="comprehensive")return maps[selected]();
   return shuffle([
-    qHeightRatio(),qAreaFromSmall(),
-    qLakeWidth(),qTreeHeight(),
-    qSpecial3060(),qSpecial4545(),
-    qTrigDefinition(),qTrigSpecial(),qTrigFromSides(),
-    qSlope()
+    qHeightDiagram(),qAreaMasteryReverse(),
+    qLakeDiagram(),qMeasurementMastery(),
+    qSpecial3060Diagram(),qSpecialMasteryReverse(),
+    qTrigDiagram(),qTrigMasteryFromTan(),
+    qSlopeDiagram(),qTrigApplicationMastery()
   ]);
 }
 
