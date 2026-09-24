@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>九上 1-4 相似三角形應用與三角比大挑戰｜生活有解．心中有數</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%0A%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'14'%20fill%3D'%23c2410c'%2F%3E%0A%3Ctext%20x%3D'32'%20y%3D'38'%20text-anchor%3D'middle'%20font-family%3D'Arial,sans-serif'%0A%20font-size%3D'18'%20font-weight%3D'700'%20fill%3D'white'%3E1-4%3C%2Ftext%3E%0A%3C%2Fsvg%3E">
+<link rel="stylesheet" href="../css/scratchpad.css">
+<style>
+
+*{box-sizing:border-box}
+:root{
+  --primary:#c2410c;
+  --primary-dark:#9a3412;
+  --primary-light:#fff7ed;
+  --primary-border:#fdba74;
+  --accent:#0f766e;
+  --purple:#7c3aed;
+  --orange:#d97706;
+  --green:#16a34a;
+  --text:#1e293b;
+  --muted:#64748b;
+  --success:#15803d;
+  --danger:#dc2626;
+  --warning:#b45309;
+}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; padding:16px;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 7% 7%,rgba(96,165,250,.16),transparent 28%),
+    radial-gradient(circle at 94% 5%,rgba(245,158,11,.10),transparent 30%),
+    linear-gradient(135deg,#f8fafc,#fff 52%,#f8fafc);
+}
+button,input,select{font-family:inherit}
+button{touch-action:manipulation}
+.hidden{display:none!important}
+.page-shell{width:min(100%,1080px);margin:0 auto}
+#commonHeaderMount{margin-bottom:14px}
+.game-card{
+  overflow:hidden;border:1px solid #d8dee8;border-top:8px solid var(--primary);
+  border-radius:26px;background:#fff;box-shadow:0 18px 45px rgba(15,23,42,.12)
+}
+.game-header{
+  padding:27px 20px 20px;text-align:center;
+  background:linear-gradient(180deg,var(--primary-light),#fff)
+}
+.game-title{
+  margin:0;color:var(--primary-dark);font-size:clamp(29px,4.8vw,43px);line-height:1.22
+}
+.game-subtitle{
+  max-width:900px;margin:11px auto 0;color:var(--muted);
+  font-weight:700;line-height:1.75
+}
+.concept-strip{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:14px}
+.concept-chip{
+  padding:7px 12px;border:1px solid var(--primary-border);border-radius:999px;
+  background:#fff;color:var(--primary-dark);font-size:14px;font-weight:900
+}
+.screen{padding:22px}
+.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.mode-card{
+  display:flex;flex-direction:column;min-height:222px;padding:20px;
+  border:2px solid #d9e0e9;border-radius:20px;background:#fff;
+  box-shadow:0 8px 22px rgba(15,23,42,.05);transition:.15s ease
+}
+.mode-card:hover{
+  transform:translateY(-2px);border-color:var(--primary-border);
+  box-shadow:0 12px 28px rgba(15,23,42,.09)
+}
+.mode-card.final{
+  border-color:#f59e0b;background:linear-gradient(180deg,#fffbeb,#fff)
+}
+.mode-icon{font-size:33px}
+.mode-title{margin:9px 0 6px;color:var(--primary-dark);font-size:21px;font-weight:900}
+.mode-meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.mode-tag{
+  padding:4px 8px;border-radius:999px;background:#f1f5f9;
+  color:#475569;font-size:12px;font-weight:900
+}
+.mode-description{flex:1;margin:0 0 15px;color:var(--muted);line-height:1.65}
+.mode-button,.game-button{
+  min-height:48px;padding:11px 17px;border:none;border-radius:14px;
+  color:#fff;font-size:16px;font-weight:900;cursor:pointer
+}
+.mode-button,.game-button.primary{background:var(--primary)}
+.mode-card.final .mode-button{background:var(--orange)}
+.game-button.secondary{background:#475569}
+.game-button.orange{background:var(--orange)}
+.game-button.purple{background:var(--purple)}
+.game-button.restart{background:var(--green)}
+button:disabled{opacity:.48;cursor:not-allowed}
+.quiz-top{
+  display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start
+}
+.mode-name{color:var(--primary-dark);font-size:20px;font-weight:900}
+.question-number{margin-top:4px;color:var(--muted);font-size:14px;font-weight:800}
+.quiz-stats{display:grid;grid-template-columns:repeat(4,auto);gap:8px}
+.stat-pill{
+  min-width:86px;padding:8px 10px;border:1px solid #e2e8f0;border-radius:12px;
+  background:#f8fafc;text-align:center;color:#475569;font-size:12px;font-weight:800
+}
+.stat-pill strong{display:block;margin-top:2px;color:#0f172a;font-size:18px}
+.progress-track{
+  height:10px;margin:16px 0 20px;overflow:hidden;border-radius:999px;background:#e2e8f0
+}
+.progress-bar{
+  width:0;height:100%;background:linear-gradient(90deg,var(--primary-border),var(--primary));
+  transition:width .2s ease
+}
+.question-card{
+  overflow:hidden;padding:22px 18px;border:2px solid var(--primary-border);
+  border-radius:20px;background:linear-gradient(180deg,var(--primary-light),#fff)
+}
+.question-label{
+  margin-bottom:10px;color:var(--primary-dark);font-size:14px;font-weight:900
+}
+.question-content{
+  min-height:92px;display:flex;align-items:center;justify-content:center;
+  text-align:center;color:#0f172a;font-size:clamp(20px,2.75vw,28px);
+  font-weight:900;line-height:1.5
+}
+.question-flow{
+  width:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  gap:7px 10px
+}
+.qline{
+  display:inline-flex;align-items:center;justify-content:center;gap:.2em;
+  max-width:100%;white-space:normal
+}
+.math{
+  font-family:"Cambria Math","Times New Roman","Microsoft JhengHei",sans-serif
+}
+.seg{
+  display:inline-block;text-decoration:overline;text-decoration-thickness:1.4px;
+  text-decoration-skip-ink:none
+}
+.nowrap{white-space:nowrap}
+.math-frac{
+  display:inline-flex;flex-direction:column;align-items:stretch;justify-content:center;
+  min-width:1.45em;margin:0 .10em;vertical-align:middle;line-height:1.02
+}
+.math-frac .top{
+  min-width:1.45em;padding:0 .15em .07em;border-bottom:2px solid currentColor;text-align:center
+}
+.math-frac .bottom{min-width:1.45em;padding:.07em .15em 0;text-align:center}
+.math-sup{font-size:.68em;vertical-align:super;margin-left:.03em}
+.scratchpad-row{
+  display:flex;justify-content:center;align-items:center;margin:14px 0 10px
+}
+#scratchpad-mobile-button #scratchpadOpenButton,
+#scratchpad-mobile-button .scratchpad-open-button{
+  position:static!important;inset:auto!important;transform:none!important;
+  margin:0!important;z-index:auto!important
+}
+.answer-area{
+  margin-top:0;padding:18px;border:1px solid #dbe5ef;border-radius:18px;background:#f8fafc
+}
+.answer-title{
+  margin-bottom:12px;text-align:center;color:var(--primary-dark);font-weight:900
+}
+.number-answer{
+  display:block;width:min(100%,340px);margin:0 auto;padding:13px 15px;
+  border:2px solid #94a3b8;border-radius:14px;background:#fff;
+  color:#0f172a;text-align:center;font-size:24px;font-weight:900;outline:none
+}
+.number-answer:focus,.ratio-input:focus,.fraction-whole:focus,
+.fraction-entry input:focus,.fraction-sign:focus{
+  border-color:var(--primary);box-shadow:0 0 0 4px rgba(59,130,246,.12)
+}
+.ratio-answer{
+  display:flex;justify-content:center;align-items:center;flex-wrap:nowrap;
+  gap:9px;width:100%;overflow-x:auto;padding:3px 2px;-webkit-overflow-scrolling:touch
+}
+.ratio-input{
+  flex:0 0 100px;width:100px;padding:12px 9px;border:2px solid #94a3b8;
+  border-radius:13px;background:#fff;text-align:center;font-size:22px;font-weight:900;outline:none
+}
+.ratio-colon{flex:0 0 auto;color:var(--primary-dark);font-size:27px;font-weight:900}
+.answer-help{
+  margin-top:9px;color:var(--muted);text-align:center;font-size:13px;font-weight:800;line-height:1.65
+}
+.fraction-answer{
+  display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap
+}
+.fraction-sign{
+  width:68px;height:52px;border:2px solid #94a3b8;border-radius:12px;
+  background:#fff;font-size:21px;font-weight:900;text-align:center;outline:none
+}
+.fraction-whole-wrap{display:flex;flex-direction:column;align-items:center;gap:3px}
+.fraction-whole-label{color:var(--muted);font-size:11px;font-weight:800}
+.fraction-whole{
+  width:84px;height:52px;padding:4px 7px;border:2px solid #94a3b8;
+  border-radius:12px;background:#fff;font-size:22px;font-weight:900;text-align:center;outline:none
+}
+.fraction-entry{
+  display:grid;grid-template-rows:46px 3px 46px;width:106px;align-items:center
+}
+.fraction-entry input{
+  width:100%;height:46px;border:2px solid #94a3b8;border-radius:11px;
+  background:#fff;font-size:22px;font-weight:900;text-align:center;outline:none
+}
+.fraction-line{height:3px;background:#334155;border-radius:999px}
+.system-read{
+  margin:12px auto 0;text-align:center;color:#475569;font-weight:800;line-height:1.7
+}
+.system-read strong{color:var(--primary-dark);font-size:18px}
+.choice-grid{
+  display:flex;flex-wrap:nowrap;gap:10px;overflow-x:auto;width:100%;
+  padding:2px 1px 5px;-webkit-overflow-scrolling:touch
+}
+.choice-button{
+  flex:1 0 165px;min-height:62px;padding:11px 12px;overflow-x:auto;
+  border:2px solid #cbd5e1;border-radius:14px;background:#fff;color:#1e293b;
+  font-size:17px;font-weight:900;line-height:1.55;cursor:pointer;white-space:nowrap
+}
+.choice-button:hover{border-color:var(--primary)}
+.choice-button.selected{
+  border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark)
+}
+.feedback{
+  margin-top:15px;padding:12px 14px;border-radius:13px;font-weight:900;line-height:1.7
+}
+.feedback:empty{display:none}
+.feedback.correct{background:#dcfce7;color:#166534}
+.feedback.wrong{background:#fee2e2;color:#991b1b}
+.feedback.warning{background:#fef3c7;color:#92400e}
+.explanation{
+  margin-top:15px;padding:17px;border:2px solid var(--primary-border);
+  border-radius:18px;background:#f8fafc;line-height:1.75
+}
+.explanation-title{
+  margin-bottom:12px;color:var(--primary-dark);font-size:19px;font-weight:900
+}
+.explanation-question{
+  margin-bottom:12px;padding:12px;border:1px solid #dbe5ef;border-radius:13px;
+  background:#fff;font-size:17px;font-weight:800;line-height:1.6
+}
+.explanation-think{
+  margin-bottom:10px;padding:10px 12px;border:1px solid #fed7aa;border-radius:12px;
+  background:#fff7ed;color:#9a3412
+}
+.explanation-step{
+  margin:8px 0;padding:10px 12px;border-left:4px solid var(--primary);
+  border-radius:0 11px 11px 0;background:#fff
+}
+.explanation-tip{
+  margin-top:10px;padding:10px 12px;border-radius:12px;background:#fff1f2;color:#9f1239
+}
+.explanation-answer{
+  margin-top:10px;padding:10px 12px;border:1px solid #bbf7d0;
+  border-radius:12px;background:#f0fdf4;color:#166534;font-weight:900
+}
+.button-row{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:17px
+}
+.result-panel{text-align:center}
+.result-score{margin:15px 0 5px;color:var(--orange);font-size:54px;font-weight:900}
+.result-stars{font-size:30px}
+.result-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:19px auto
+}
+.result-stat{
+  padding:13px 9px;border:1px solid #e2e8f0;border-radius:15px;
+  background:#f8fafc;color:#64748b;font-weight:800
+}
+.result-stat span{color:#0f172a;font-size:24px;font-weight:900}
+.save-status{min-height:25px;margin:9px 0;font-weight:800}
+.review-list{display:grid;gap:14px;margin-top:14px}
+.review-card{
+  padding:15px;border:1px solid #dbeafe;border-radius:16px;background:#fff
+}
+.review-card.correct-review{border-left:6px solid #22c55e}
+.review-card.wrong-review{border-left:6px solid #ef4444}
+.review-title{margin-bottom:8px;font-size:17px;font-weight:900}
+.review-question{margin:8px 0 11px;color:#0f172a;font-size:17px;font-weight:800;line-height:1.65}
+.review-answer-line{margin:5px 0;color:#475569;line-height:1.65}
+@media(max-width:760px){
+  body{padding:8px}.screen{padding:14px}.game-header{padding:21px 12px 16px}
+  .mode-grid{grid-template-columns:1fr}.mode-card{min-height:0}
+  .quiz-top{grid-template-columns:1fr}
+  .quiz-stats{grid-template-columns:repeat(4,1fr)}
+  .stat-pill{min-width:0;padding:7px 4px}
+  .question-card{padding:16px 8px}
+  .question-content{font-size:20px}
+  .choice-button{flex-basis:150px;font-size:16px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .game-button{flex:1 1 155px}
+  .ratio-input{flex-basis:82px;width:82px}
+}
+@media(max-width:460px){
+  .quiz-stats{grid-template-columns:repeat(2,1fr)}
+  .result-score{font-size:45px}
+  .ratio-input{flex-basis:72px;width:72px;font-size:19px}
+  .ratio-colon{font-size:22px}
+}
+
+</style>
+</head>
+<body>
+<div class="page-shell">
+<div id="commonHeaderMount"></div>
+
+<main class="game-card">
+<header class="game-header">
+  <h1 class="game-title">📐 1-4 相似三角形應用與三角比大挑戰</h1>
+  <p class="game-subtitle">相似三角形比例關係、簡易測量、特殊直角三角形，以及 sin、cos、tan 與生活應用。</p>
+  <div class="concept-strip"><span class="concept-chip">📐 相似比例</span><span class="concept-chip">🌳 簡易測量</span><span class="concept-chip">📏 特殊直角三角形</span><span class="concept-chip">sin cos tan</span><span class="concept-chip">🚲 坡度應用</span></div>
+</header>
+
+<section id="start-screen" class="screen">
+  <h2>選擇挑戰模式</h2>
+  <div class="mode-grid">
+    
+<article class="mode-card">
+  <div class="mode-icon">📐</div>
+  <div class="mode-title">相似三角形比例關係</div>
+  <div class="mode-meta">
+    <span class="mode-tag">核心模式</span>
+    <span class="mode-tag">10 題</span>
+  </div>
+  <p class="mode-description">對應高的比等於對應邊長比；面積比等於對應邊長比的平方。</p>
+  <button class="mode-button" data-mode="similarityRelations" type="button">
+    開始挑戰
+  </button>
+</article>
+
+
+<article class="mode-card">
+  <div class="mode-icon">🌳</div>
+  <div class="mode-title">簡易測量</div>
+  <div class="mode-meta">
+    <span class="mode-tag">核心模式</span>
+    <span class="mode-tag">10 題</span>
+  </div>
+  <p class="mode-description">利用相似三角形測量湖寬、樹高、距離與生活中的無法直接量測長度。</p>
+  <button class="mode-button" data-mode="measurement" type="button">
+    開始挑戰
+  </button>
+</article>
+
+
+<article class="mode-card">
+  <div class="mode-icon">📏</div>
+  <div class="mode-title">特殊直角三角形</div>
+  <div class="mode-meta">
+    <span class="mode-tag">核心模式</span>
+    <span class="mode-tag">10 題</span>
+  </div>
+  <p class="mode-description">30°–60°–90° 與 45°–45°–90° 的固定邊長比。</p>
+  <button class="mode-button" data-mode="specialRight" type="button">
+    開始挑戰
+  </button>
+</article>
+
+
+<article class="mode-card">
+  <div class="mode-icon">sin</div>
+  <div class="mode-title">三角比</div>
+  <div class="mode-meta">
+    <span class="mode-tag">核心模式</span>
+    <span class="mode-tag">10 題</span>
+  </div>
+  <p class="mode-description">sin、cos、tan 的對邊／鄰邊／斜邊定義與 30°、45°、60° 特殊角值。</p>
+  <button class="mode-button" data-mode="trigRatio" type="button">
+    開始挑戰
+  </button>
+</article>
+
+
+<article class="mode-card">
+  <div class="mode-icon">🚲</div>
+  <div class="mode-title">三角比應用</div>
+  <div class="mode-meta">
+    <span class="mode-tag">核心模式</span>
+    <span class="mode-tag">10 題</span>
+  </div>
+  <p class="mode-description">坡度、斜坡、高度與距離，用三角比或比例建立算式。</p>
+  <button class="mode-button" data-mode="trigApplication" type="button">
+    開始挑戰
+  </button>
+</article>
+
+
+<article class="mode-card final">
+  <div class="mode-icon">🏆</div>
+  <div class="mode-title">1-4 綜合挑戰</div>
+  <div class="mode-meta">
+    <span class="mode-tag">綜合模式</span>
+    <span class="mode-tag">10 題</span>
+  </div>
+  <p class="mode-description">相似比例、面積平方比、測量、特殊直角三角形與三角比混合應用。</p>
+  <button class="mode-button" data-mode="comprehensive" type="button">
+    開始綜合挑戰
+  </button>
+</article>
+
+  </div>
+</section>
+
+<section id="quiz-screen" class="screen hidden">
+  <div class="quiz-top">
+    <div>
+      <div id="mode-name" class="mode-name">—</div>
+      <div id="question-number" class="question-number">—</div>
+    </div>
+    <div class="quiz-stats">
+      <div class="stat-pill">分數<strong id="live-score">0</strong></div>
+      <div class="stat-pill">答對<strong id="correct-count">0</strong></div>
+      <div class="stat-pill">連擊<strong id="combo-count">0</strong></div>
+      <div class="stat-pill">時間<strong id="timer-display">00:00</strong></div>
+    </div>
+  </div>
+
+  <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+
+  <div class="question-card">
+    <div id="question-label" class="question-label">題目</div>
+    <div id="question-content" class="question-content"></div>
+  </div>
+
+  <div class="scratchpad-row"><div id="scratchpad-mobile-button"></div></div>
+
+  <div id="answer-area" class="answer-area"></div>
+  <div id="feedback" class="feedback"></div>
+  <div id="explanation" class="explanation hidden"></div>
+
+  <div class="button-row">
+    <button id="submit-button" class="game-button primary" type="button">送出答案（Enter）</button>
+    <button id="next-button" class="game-button purple hidden" type="button">下一題（Enter）</button>
+    <button id="restart-button" class="game-button restart" type="button">🔄 重新測驗</button>
+    <button id="quit-button" class="game-button secondary" type="button">重選模式</button>
+  </div>
+</section>
+
+<section id="result-screen" class="screen hidden">
+  <div class="result-panel">
+    <h2>🏅 本次挑戰結果</h2>
+    <div id="final-score" class="result-score">0 分</div>
+    <div id="final-stars" class="result-stars">★★☆☆☆</div>
+    <p id="final-comment"></p>
+    <div class="result-grid">
+      <div class="result-stat">答對<br><span id="final-correct">0</span> 題</div>
+      <div class="result-stat">答錯<br><span id="final-wrong">0</span> 題</div>
+      <div class="result-stat">最高連擊<br><span id="final-combo">0</span></div>
+      <div class="result-stat">作答時間<br><span id="final-time">00:00</span></div>
+    </div>
+    <div id="save-status" class="save-status"></div>
+    <div class="button-row">
+      <button id="again-button" class="game-button purple" type="button">🔄 再玩一次</button>
+      <button id="review-button" class="game-button orange" type="button">📖 查看本次詳解</button>
+      <button id="result-mode-button" class="game-button secondary" type="button">重選模式</button>
+    </div>
+  </div>
+</section>
+
+<section id="review-screen" class="screen hidden">
+  <h2>📖 本次詳解</h2>
+  <p style="color:#64748b;font-weight:700;">答對、答錯都會保留解析；步驟以國中生容易閱讀的方式呈現。</p>
+  <div id="review-list" class="review-list"></div>
+  <div class="button-row">
+    <button id="review-again-button" class="game-button purple" type="button">🔄 再玩一次</button>
+    <button id="review-result-button" class="game-button secondary" type="button">回到測驗結果</button>
+  </div>
+</section>
+</main>
+</div>
+
+<script src="../js/common-header.js"></script>
+<script src="../js/scratchpad.js"></script>
+<script src="../js/scratchpad-template.js"></script>
+<script src="../js/sound-manager.js?v=1"></script>
+<script type="module">
+
+"use strict";
+
+/*
+==================================================
+Stable game identity + future RPG bridge
+==================================================
+*/
+
+const GAME_ID = "similar-triangle-trig";
+const CHAPTER = "1-4";
+const GAME_TITLE = "相似三角形應用與三角比大挑戰";
+
+const MODES = {"similarityRelations":{"id":"similarityRelations","name":"📐 相似三角形比例關係","count":10,"difficultyWeight":1.05},"measurement":{"id":"measurement","name":"🌳 簡易測量","count":10,"difficultyWeight":1.12},"specialRight":{"id":"specialRight","name":"📏 特殊直角三角形","count":10,"difficultyWeight":1.08},"trigRatio":{"id":"trigRatio","name":"sin 三角比","count":10,"difficultyWeight":1.16},"trigApplication":{"id":"trigApplication","name":"🚲 三角比應用","count":10,"difficultyWeight":1.22},"comprehensive":{"id":"comprehensive","name":"🏆 1-4 綜合挑戰","count":10,"difficultyWeight":1.36}};
+
+window.MathGameSessionMeta = {
+  gameId: GAME_ID,
+  chapter: CHAPTER,
+  title: GAME_TITLE,
+  modes: MODES
+};
+
+const $ = id => document.getElementById(id);
+
+let modeId = "similarityRelations";
+let questions = [];
+let index = 0;
+let correct = 0;
+let wrong = 0;
+let combo = 0;
+let maxCombo = 0;
+let records = [];
+let answered = false;
+let selectedChoice = null;
+let startTime = 0;
+let elapsed = 0;
+let timerId = null;
+let scoreSaved = false;
+let rpgEmitted = false;
+let attemptId = "";
+
+function rand(min,max){
+  return Math.floor(Math.random()*(max-min+1))+min;
+}
+function pick(arr){ return arr[rand(0,arr.length-1)]; }
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=rand(0,i);
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function escapeHTML(value){
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+function gcd(a,b){
+  a=Math.abs(Number(a)); b=Math.abs(Number(b));
+  while(b!==0){ const t=a%b; a=b; b=t; }
+  return a||1;
+}
+function gcdAll(values){
+  return values.reduce((g,v)=>gcd(g,v),0)||1;
+}
+function lcm(a,b){ return Math.abs(a*b)/gcd(a,b); }
+function seg(name){ return `<span class="seg math">${escapeHTML(name)}</span>`; }
+function sup(v){ return `<span class="math-sup">${escapeHTML(v)}</span>`; }
+function fracHTML(n,d){
+  if(Number(d)===1) return escapeHTML(n);
+  return `<span class="math-frac"><span class="top">${escapeHTML(n)}</span><span class="bottom">${escapeHTML(d)}</span></span>`;
+}
+function ratioHTML(values){
+  return `<span class="math nowrap">${values.join("：")}</span>`;
+}
+function simplifyRatio(values){
+  const nums=values.map(Number);
+  const g=gcdAll(nums);
+  return nums.map(v=>v/g);
+}
+function R(n,d=1){
+  n=Number(n); d=Number(d);
+  if(d===0) throw new Error("denominator 0");
+  if(d<0){n=-n;d=-d}
+  const g=gcd(n,d);
+  return {n:n/g,d:d/g};
+}
+function ratEq(a,b){ return a.n===b.n && a.d===b.d; }
+function ratHTML(r){
+  const a=R(r.n,r.d);
+  if(a.d===1) return String(a.n).replace("-","−");
+  const sign=a.n<0?"−":"";
+  return `${sign}${fracHTML(Math.abs(a.n),a.d)}`;
+}
+function rawFracHTML(n,d){
+  if(d<0){n=-n;d=-d}
+  if(d===1) return String(n).replace("-","−");
+  const sign=n<0?"−":"";
+  return `${sign}${fracHTML(Math.abs(n),d)}`;
+}
+function mixedAnswerHTML(sign,whole,n,d){
+  const prefix=Number(sign)<0?"−":"";
+  const w=Math.max(0,Number(whole)||0);
+  if(w<=0) return `${prefix}${fracHTML(Math.abs(n),d)}`;
+  return `${prefix}${w}${fracHTML(Math.abs(n),d)}`;
+}
+function formatTime(seconds){
+  const m=Math.floor(seconds/60);
+  const s=seconds%60;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function parseNumber(raw){
+  const s=String(raw).trim().replace(/，/g,"").replace(/－/g,"-");
+  if(!/^[-+]?\d+(?:\.\d+)?$/.test(s)) return null;
+  const v=Number(s);
+  return Number.isFinite(v)?v:null;
+}
+function sameNumber(a,b,tol=1e-9){
+  return Math.abs(Number(a)-Number(b))<=tol;
+}
+
+function explanation(answer,think,steps,tip=""){
+  return {answer,think,steps,tip};
+}
+
+function numberQuestion({label,html,answer,explanation:exp,family,tolerance=1e-9}){
+  return {type:"number",label,html,answer:Number(answer),explanation:exp,family,tolerance};
+}
+function rationalQuestion({label,html,answer,explanation:exp,family}){
+  return {type:"rational",label,html,answer:R(answer.n,answer.d),explanation:exp,family};
+}
+function ratioQuestion({label,html,answer,explanation:exp,family}){
+  return {type:"ratio",label,html,answer:simplifyRatio(answer),explanation:exp,family};
+}
+function choiceQuestion({label,html,choices,answer,explanation:exp,family}){
+  return {type:"choice",label,html,choices,answer:String(answer),explanation:exp,family};
+}
+
+/*
+==================================================
+Game-specific question generators
+==================================================
+*/
+
+
+function radicalHTML(coef,rad){
+  if(coef===0)return "0";
+  if(coef===1)return `√${rad}`;
+  return `${coef}√${rad}`;
+}
+function qHeightRatio(){
+  const [a,b]=(()=>{let x,y;do{x=rand(1,6);y=rand(2,8)}while(x===y||gcd(x,y)!==1);return[x,y]})();
+  return ratioQuestion({
+    family:"height-ratio",label:"相似三角形對應高",
+    html:`<div class="question-flow"><span class="qline">△ABC∼△A'B'C'，若 ${seg("BC")}：${seg("B'C'")}＝${a}：${b}，則對應高 ${seg("AD")}：${seg("A'D'")}＝？</span></div>`,
+    answer:[a,b],
+    explanation:explanation(ratioHTML([a,b]),"相似三角形的對應高比＝對應邊長比。",
+      [`${seg("AD")}：${seg("A'D'")}＝${seg("BC")}：${seg("B'C'")}＝${a}：${b}。`])
+  });
+}
+
+function qAreaSquareRatio(){
+  const a=rand(1,5),b=rand(2,6);
+  if(a===b)return qAreaSquareRatio();
+  const g=gcd(a,b),x=a/g,y=b/g;
+  return ratioQuestion({
+    family:"area-square",label:"相似三角形面積比",
+    html:`<div class="question-flow"><span class="qline">兩個相似三角形的對應邊長比為 ${x}：${y}，求面積比。</span></div>`,
+    answer:[x*x,y*y],
+    explanation:explanation(ratioHTML([x*x,y*y]),"相似三角形面積比＝對應邊長比的平方。",
+      [`面積比＝${x}${sup(2)}：${y}${sup(2)}＝${x*x}：${y*y}。`])
+  });
+}
+
+function qAreaFromSmall(){
+  const a=rand(1,4), b=a+rand(1,4), unit=rand(2,8);
+  const small=a*a*unit, large=b*b*unit;
+  return numberQuestion({
+    family:"area-value",label:"由相似比求面積",
+    html:`<div class="question-flow"><span class="qline">△ADE∼△ABC，對應邊 ${seg("AD")}：${seg("AB")}＝${a}：${b}，若 △ADE 面積為 ${small}，求 △ABC 面積。</span></div>`,
+    answer:large,
+    explanation:explanation(String(large),"先平方邊長比，得到面積比。",
+      [`△ADE：△ABC＝${a*a}：${b*b}。`,`所以 △ABC 面積＝${small}×${b*b}÷${a*a}＝${large}。`])
+  });
+}
+
+function qLakeWidth(){
+  const scale=pick([2,3,4]);
+  const CM=rand(5,15), CA=CM*scale, MN=rand(4,12), AB=MN*scale;
+  return numberQuestion({
+    family:"lake",label:"簡易測量距離",
+    html:`<div class="question-flow"><span class="qline">在測量湖寬時，M、N 分別在 ${seg("CA")}、${seg("CB")} 上，且 ${seg("MN")}∥${seg("AB")}。若 ${seg("CM")}＝${CM}、${seg("CA")}＝${CA}、${seg("MN")}＝${MN} 公尺，求 ${seg("AB")}。</span></div>`,
+    answer:AB,
+    explanation:explanation(`${AB} 公尺`,"MN∥AB，所以小三角形與大三角形相似。",
+      [`${seg("CM")}：${seg("CA")}＝${seg("MN")}：${seg("AB")}＝1：${scale}。`,
+       `${seg("AB")}＝${MN}×${scale}＝${AB} 公尺。`])
+  });
+}
+
+function qTreeHeight(){
+  const eye=1, stick=pick([1.5,1.8,2.0]), near=2, gap=pick([4,5,6]);
+  const rise=stick-eye;
+  const top=(rise*(near+gap)/near)+eye;
+  const ans=Math.round(top*10)/10;
+  return numberQuestion({
+    family:"tree",label:"測量樹高",
+    html:`<div class="question-flow"><span class="qline">觀測點眼睛離地 ${eye} 公尺，前方 ${near} 公尺處豎立 ${stick} 公尺木棍，木棍再到樹的水平距離為 ${gap} 公尺；視線中木棍頂端與樹梢重合。求樹高。</span></div>`,
+    answer:ans,tolerance:0.05,
+    explanation:explanation(`${ans} 公尺`,"先扣掉眼睛高度，再利用兩個相似直角三角形。",
+      [`木棍高出視線水平線 ${stick-eye} 公尺，水平距離為 ${near} 公尺。`,
+       `樹梢高出同一水平線＝${stick-eye}×${near+gap}÷${near}＝${Math.round((top-eye)*10)/10} 公尺，再加眼睛高度 ${eye} 公尺，得 ${ans} 公尺。`])
+  });
+}
+
+function qShadowMeasure(){
+  const person=pick([1.5,1.6,1.8]), ps=pick([1,1.2,1.5]), ts=pick([5,6,7.5]);
+  const ans=Math.round(person*ts/ps*10)/10;
+  return numberQuestion({
+    family:"shadow",label:"影長測量",
+    html:`<div class="question-flow"><span class="qline">同一時間，身高 ${person} 公尺的人影長 ${ps} 公尺；一棵樹影長 ${ts} 公尺。假設日光方向相同，求樹高。</span></div>`,
+    answer:ans,tolerance:0.05,
+    explanation:explanation(`${ans} 公尺`,"同一時間太陽仰角相同，形成相似三角形。",
+      [`樹高：${ts}＝${person}：${ps}，所以樹高＝${person}×${ts}÷${ps}＝${ans} 公尺。`])
+  });
+}
+
+function qSpecial3060(){
+  const k=rand(2,8);
+  const ask=pick(["hyp","long"]);
+  if(ask==="hyp"){
+    return numberQuestion({
+      family:"3060",label:"30°–60°–90° 三角形",
+      html:`<div class="question-flow"><span class="qline">直角三角形中，30° 的對邊長為 ${k}，求斜邊長。</span></div>`,
+      answer:2*k,
+      explanation:explanation(String(2*k),"30°–60°–90° 三邊比為 1：√3：2。",
+        [`30° 對邊是 1 份，斜邊是 2 份，所以斜邊＝${2*k}。`])
+    });
+  }
+  const correct=radicalHTML(k,3);
+  return choiceQuestion({
+    family:"3060",label:"30°–60°–90° 三角形",
+    html:`<div class="question-flow"><span class="qline">直角三角形中，30° 的對邊長為 ${k}，求 30° 的鄰邊長。</span></div>`,
+    choices:[
+      {value:"c",html:correct},
+      {value:"a",html:`${2*k}`},
+      {value:"b",html:radicalHTML(k,2)}
+    ],answer:"c",
+    explanation:explanation(correct,"30°–60°–90° 三邊比為 1：√3：2。",
+      [`30° 對邊是 ${k}，所以鄰邊＝${k}√3。`])
+  });
+}
+
+function qSpecial4545(){
+  const k=rand(2,9);
+  const correct=radicalHTML(k,2);
+  return choiceQuestion({
+    family:"4545",label:"45°–45°–90° 三角形",
+    html:`<div class="question-flow"><span class="qline">等腰直角三角形的一股長為 ${k}，求斜邊長。</span></div>`,
+    choices:[
+      {value:"c",html:correct},
+      {value:"a",html:`${2*k}`},
+      {value:"b",html:radicalHTML(k,3)}
+    ],answer:"c",
+    explanation:explanation(correct,"45°–45°–90° 三邊比為 1：1：√2。",
+      [`斜邊＝${k}√2。`])
+  });
+}
+
+function qTrigDefinition(){
+  const fn=pick(["sin","cos","tan"]);
+  const desc={
+    sin:"對邊／斜邊",
+    cos:"鄰邊／斜邊",
+    tan:"對邊／鄰邊"
+  }[fn];
+  return choiceQuestion({
+    family:"trig-def",label:"三角比定義",
+    html:`<div class="question-flow"><span class="qline">在直角三角形中，以銳角 A 為基準，${fn} A 等於下列哪一個比？</span></div>`,
+    choices:[
+      {value:"sin",text:"對邊／斜邊"},
+      {value:"cos",text:"鄰邊／斜邊"},
+      {value:"tan",text:"對邊／鄰邊"}
+    ],answer:fn,
+    explanation:explanation(desc,`${fn} A 的定義就是「${desc}」。`,[])
+  });
+}
+
+const SPECIAL_TRIG=[
+  {fn:"sin",angle:30,html:fracHTML(1,2)},
+  {fn:"cos",angle:60,html:fracHTML(1,2)},
+  {fn:"tan",angle:45,html:"1"},
+  {fn:"sin",angle:45,html:`${fracHTML("√2",2)}`},
+  {fn:"cos",angle:45,html:`${fracHTML("√2",2)}`},
+  {fn:"cos",angle:30,html:`${fracHTML("√3",2)}`},
+  {fn:"sin",angle:60,html:`${fracHTML("√3",2)}`},
+  {fn:"tan",angle:30,html:`${fracHTML("√3",3)}`},
+  {fn:"tan",angle:60,html:"√3"}
+];
+
+function qTrigSpecial(){
+  const item=pick(SPECIAL_TRIG);
+  const wrongs=shuffle(["1",fracHTML(1,2),fracHTML("√2",2),fracHTML("√3",2),"√3",fracHTML("√3",3)])
+    .filter(x=>x!==item.html).slice(0,2);
+  return choiceQuestion({
+    family:"trig-special",label:"特殊角三角比",
+    html:`<div class="question-flow"><span class="qline">求 ${item.fn} ${item.angle}° 的值。</span></div>`,
+    choices:[
+      {value:"c",html:item.html},
+      {value:"w1",html:wrongs[0]},
+      {value:"w2",html:wrongs[1]}
+    ],answer:"c",
+    explanation:explanation(item.html,`利用 ${item.angle}° 特殊直角三角形的固定邊長比。`,[])
+  });
+}
+
+function qTrigFromSides(){
+  const fn=pick(["sin","cos","tan"]);
+  const values={
+    sin:R(3,5),
+    cos:R(4,5),
+    tan:R(3,4)
+  };
+  const labels={sin:"sin A",cos:"cos A",tan:"tan A"};
+  return rationalQuestion({
+    family:"trig-sides",label:"由邊長求三角比",
+    html:`<div class="question-flow"><span class="qline">直角三角形 ABC 中，∠C＝90°，以 ∠A 為基準，對邊 ${seg("BC")}＝3、鄰邊 ${seg("AC")}＝4、斜邊 ${seg("AB")}＝5。求 ${labels[fn]}。</span></div>`,
+    answer:values[fn],
+    explanation:explanation(ratHTML(values[fn]),`${labels[fn]} 依定義選擇對應兩邊。`,
+      [fn==="sin"?`${labels[fn]}＝${seg("BC")}÷${seg("AB")}＝${fracHTML(3,5)}。`
+       :fn==="cos"?`${labels[fn]}＝${seg("AC")}÷${seg("AB")}＝${fracHTML(4,5)}。`
+       :`${labels[fn]}＝${seg("BC")}÷${seg("AC")}＝${fracHTML(3,4)}。`])
+  });
+}
+
+function qSlope(){
+  const run=pick([20,30,40,50]), percent=pick([5,8,10,12]), rise=run*percent/100;
+  return numberQuestion({
+    family:"slope",label:"坡度百分比",
+    html:`<div class="question-flow"><span class="qline">一段坡道水平距離為 ${run} 公尺，平均坡度為 ${percent}％。求鉛直上升高度。</span></div>`,
+    answer:rise,tolerance:0.001,
+    explanation:explanation(`${rise} 公尺`,"坡度百分比＝鉛直上升高度÷水平距離×100％。",
+      [`上升高度＝${run}×${percent}÷100＝${rise} 公尺。`])
+  });
+}
+
+function qTrigHeight(){
+  const hyp=2*rand(4,12);
+  const ans=hyp/2;
+  return numberQuestion({
+    family:"trig-height",label:"三角比求高度",
+    html:`<div class="question-flow"><span class="qline">一條長 ${hyp} 公尺的斜坡與水平面夾角為 30°。求斜坡頂端的鉛直高度。</span></div>`,
+    answer:ans,
+    explanation:explanation(`${ans} 公尺`,"高度是 30° 的對邊，斜坡長是斜邊，所以用 sin 30°。",
+      [`高度＝${hyp}×sin 30°＝${hyp}×${fracHTML(1,2)}＝${ans} 公尺。`])
+  });
+}
+
+function qTrigApprox(){
+  const h=15;
+  const sin20=0.342;
+  const ans=Math.round(h/sin20);
+  return numberQuestion({
+    family:"trig-approx",label:"三角比近似值應用",
+    html:`<div class="question-flow"><span class="qline">斜坡與水平面夾角為 20°，鉛直高度差為 ${h} 公分。已知 sin 20°≈${sin20}，斜坡長約多少公分？（四捨五入到整數）</span></div>`,
+    answer:ans,tolerance:0.5,
+    explanation:explanation(`約 ${ans} 公分`,"sin 20°＝對邊÷斜邊。",
+      [`${sin20}≈${h}÷斜坡長，所以斜坡長≈${h}÷${sin20}≈${ans} 公分。`])
+  });
+}
+
+function createQuestions(selected){
+  const maps={
+    similarityRelations:()=>shuffle([qHeightRatio(),qHeightRatio(),qAreaSquareRatio(),qAreaSquareRatio(),qAreaSquareRatio(),qAreaFromSmall(),qAreaFromSmall(),qHeightRatio(),qAreaFromSmall(),qAreaSquareRatio()]),
+    measurement:()=>shuffle([qLakeWidth(),qLakeWidth(),qLakeWidth(),qTreeHeight(),qTreeHeight(),qShadowMeasure(),qShadowMeasure(),qLakeWidth(),qTreeHeight(),qShadowMeasure()]),
+    specialRight:()=>shuffle([qSpecial3060(),qSpecial3060(),qSpecial3060(),qSpecial3060(),qSpecial4545(),qSpecial4545(),qSpecial4545(),qSpecial4545(),qSpecial3060(),qSpecial4545()]),
+    trigRatio:()=>shuffle([qTrigDefinition(),qTrigDefinition(),qTrigDefinition(),qTrigSpecial(),qTrigSpecial(),qTrigSpecial(),qTrigSpecial(),qTrigFromSides(),qTrigFromSides(),qTrigFromSides()]),
+    trigApplication:()=>shuffle([qSlope(),qSlope(),qSlope(),qTrigHeight(),qTrigHeight(),qTrigHeight(),qTrigApprox(),qTrigApprox(),qSlope(),qTrigHeight()])
+  };
+  if(selected!=="comprehensive")return maps[selected]();
+  return shuffle([
+    qHeightRatio(),qAreaFromSmall(),
+    qLakeWidth(),qTreeHeight(),
+    qSpecial3060(),qSpecial4545(),
+    qTrigDefinition(),qTrigSpecial(),qTrigFromSides(),
+    qSlope()
+  ]);
+}
+
+
+/*
+==================================================
+Sound
+==================================================
+*/
+
+function playGameSound(method){
+  try{
+    const manager=window.MathGameSound||window.GameSound;
+    if(manager && typeof manager[method]==="function"){
+      Promise.resolve(manager[method]()).catch(()=>{});
+    }
+  }catch(error){
+    console.warn("音效播放失敗：",error);
+  }
+}
+
+/*
+==================================================
+Scratchpad
+==================================================
+*/
+
+function moveScratchpadButtonToQuizGap(){
+  const mount=$("scratchpad-mobile-button");
+  const button=$("scratchpadOpenButton");
+  if(mount && button && !mount.contains(button)) mount.appendChild(button);
+}
+function ensureScratchpadButton(){
+  moveScratchpadButtonToQuizGap();
+  let count=0;
+  const retry=setInterval(()=>{
+    count++;
+    moveScratchpadButtonToQuizGap();
+    if($("scratchpadOpenButton") || count>=30) clearInterval(retry);
+  },60);
+}
+
+/*
+==================================================
+Screen
+==================================================
+*/
+
+function showOnly(id){
+  ["start-screen","quiz-screen","result-screen","review-screen"].forEach(screen=>{
+    $(screen).classList.toggle("hidden",screen!==id);
+  });
+  if(id==="quiz-screen"){
+    window.showGameScratchpadButton?.();
+    setTimeout(moveScratchpadButtonToQuizGap,0);
+    setTimeout(moveScratchpadButtonToQuizGap,100);
+  }else{
+    window.hideGameScratchpadButton?.();
+  }
+}
+
+/*
+==================================================
+Answer UI
+==================================================
+*/
+
+function renderRatioAnswer(count){
+  const inputs=[];
+  for(let i=0;i<count;i++){
+    inputs.push(`<input class="ratio-input" data-ratio-input="${i}" type="text"
+      inputmode="numeric" autocomplete="off" placeholder="數字"
+      aria-label="比例第 ${i+1} 項">`);
+  }
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <div class="ratio-answer">
+      ${inputs.join('<span class="ratio-colon">：</span>')}
+    </div>
+    <div class="answer-help">請輸入<strong>最簡整數比</strong>；等值但未化簡時不算答錯，會請你重新整理。</div>
+  `;
+  setTimeout(()=>document.querySelector("[data-ratio-input='0']")?.focus(),0);
+}
+function renderNumberAnswer(){
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <input id="number-answer" class="number-answer" type="text" inputmode="decimal"
+      autocomplete="off" placeholder="請輸入答案" aria-label="你的答案">
+  `;
+  setTimeout(()=>$("number-answer")?.focus(),0);
+}
+function renderRationalAnswer(){
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <div class="fraction-answer">
+      <select id="fraction-sign" class="fraction-sign" aria-label="正負號">
+        <option value="1">＋</option>
+        <option value="-1">−</option>
+      </select>
+      <div class="fraction-whole-wrap">
+        <span class="fraction-whole-label">整數部分</span>
+        <input id="fraction-whole" class="fraction-whole" type="text"
+          inputmode="numeric" autocomplete="off" placeholder="可留空"
+          aria-label="帶分數整數部分">
+      </div>
+      <div class="fraction-entry" aria-label="分數">
+        <input id="fraction-numerator" type="text" inputmode="numeric"
+          autocomplete="off" placeholder="分子" aria-label="分子">
+        <div class="fraction-line"></div>
+        <input id="fraction-denominator" type="text" inputmode="numeric"
+          autocomplete="off" placeholder="分母" aria-label="分母">
+      </div>
+    </div>
+    <div class="answer-help">可填最簡分數或帶分數；整數部分不需要時留空。分數部分需化成最簡。</div>
+    <div id="system-read" class="system-read hidden"></div>
+  `;
+  ["fraction-sign","fraction-whole","fraction-numerator","fraction-denominator"].forEach(id=>{
+    $(id)?.addEventListener("input",updateSystemRead);
+    $(id)?.addEventListener("change",updateSystemRead);
+  });
+  $("fraction-whole")?.addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&!answered){e.preventDefault();$("fraction-numerator")?.focus()}
+  });
+  $("fraction-numerator")?.addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&!answered){e.preventDefault();$("fraction-denominator")?.focus()}
+  });
+  setTimeout(()=>$("fraction-numerator")?.focus(),0);
+}
+function renderChoices(question){
+  selectedChoice=null;
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <div class="choice-grid">
+      ${shuffle(question.choices).map(choice=>`
+        <button class="choice-button" type="button" data-choice="${escapeHTML(choice.value)}">
+          ${choice.html??escapeHTML(choice.text??choice.value)}
+        </button>
+      `).join("")}
+    </div>
+  `;
+  $("answer-area").querySelectorAll("[data-choice]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      if(answered)return;
+      selectedChoice=button.dataset.choice;
+      $("answer-area").querySelectorAll(".choice-button").forEach(x=>x.classList.remove("selected"));
+      button.classList.add("selected");
+    });
+  });
+}
+function renderAnswerArea(question){
+  if(question.type==="ratio"){renderRatioAnswer(question.answer.length);return}
+  if(question.type==="number"){renderNumberAnswer();return}
+  if(question.type==="rational"){renderRationalAnswer();return}
+  renderChoices(question);
+}
+
+function clearSystemRead(){
+  const box=$("system-read");
+  if(!box)return;
+  box.classList.add("hidden");
+  box.innerHTML="";
+}
+function showSystemRead(html){
+  const box=$("system-read");
+  if(!box)return;
+  box.innerHTML=`系統判讀：<strong>${html}</strong>`;
+  box.classList.remove("hidden");
+}
+function updateSystemRead(){
+  if(answered)return;
+  const q=questions[index];
+  if(!q || q.type!=="rational"){clearSystemRead();return}
+  const wholeRaw=$("fraction-whole")?.value.trim()??"";
+  const nr=$("fraction-numerator")?.value.trim()??"";
+  const dr=$("fraction-denominator")?.value.trim()??"";
+  if(!nr || !dr){clearSystemRead();return}
+  if(wholeRaw && !/^\d+$/.test(wholeRaw)){clearSystemRead();return}
+  if(!/^-?\d+$/.test(nr) || !/^\d+$/.test(dr)){clearSystemRead();return}
+  const d=Number(dr), typedN=Number(nr), whole=wholeRaw?Number(wholeRaw):0;
+  if(d===0 || (wholeRaw && (typedN<0 || Math.abs(typedN)>=d))){clearSystemRead();return}
+  const sign=Number($("fraction-sign")?.value??1);
+  const explicitNegative=!wholeRaw && nr.startsWith("-") && typedN!==0;
+  const rawN=explicitNegative?-Math.abs(typedN):sign*(whole*d+Math.abs(typedN));
+  if(whole>0){
+    showSystemRead(mixedAnswerHTML(rawN<0?-1:1,whole,Math.abs(typedN),d));
+  }else{
+    showSystemRead(rawFracHTML(rawN,d));
+  }
+}
+
+/*
+==================================================
+Read / judge answer
+==================================================
+*/
+
+function analyzeRatioAnswer(rawValues,answer){
+  const parsed=rawValues.map(v=>parseNumber(v));
+  if(parsed.some(v=>v===null)) return {valid:false,message:"請輸入有效的數字。"};
+  if(parsed.some(v=>v<=0)) return {valid:false,message:"比例各項請輸入正數。"};
+  let equivalent=true;
+  for(let i=1;i<parsed.length;i++){
+    if(Math.abs(parsed[i]*answer[0]-parsed[0]*answer[i])>1e-8){equivalent=false;break}
+  }
+  if(!equivalent) return {valid:true,equivalent:false,simplest:false};
+  const integerFormat=rawValues.every(v=>/^\+?\d+$/.test(String(v).trim()));
+  if(!integerFormat) return {valid:true,equivalent:true,simplest:false,reason:"not-integer"};
+  const ints=rawValues.map(v=>Number(String(v).trim()));
+  const g=gcdAll(ints);
+  if(g!==1) return {valid:true,equivalent:true,simplest:false,reason:"not-simplest",divisor:g};
+  return {valid:true,equivalent:true,simplest:true,values:ints};
+}
+
+function readRationalAnswer(){
+  const sign=Number($("fraction-sign")?.value??1);
+  const wholeRaw=$("fraction-whole")?.value.trim()??"";
+  const nr=$("fraction-numerator")?.value.trim()??"";
+  const dr=$("fraction-denominator")?.value.trim()??"";
+  if(!nr || !dr) return {valid:false,message:"請填分子與分母；若要用帶分數，再填整數部分。"};
+  if(wholeRaw && !/^\d+$/.test(wholeRaw)) return {valid:false,message:"整數部分請填 0 或正整數。"};
+  if(!/^-?\d+$/.test(nr) || !/^\d+$/.test(dr)) return {valid:false,message:"分子、分母必須是整數格式。"};
+  const whole=wholeRaw?Number(wholeRaw):0;
+  const typedN=Number(nr), d=Number(dr);
+  if(d===0) return {valid:false,message:"分母不能是 0。"};
+  if(wholeRaw && Math.abs(typedN)>=d) return {valid:false,message:"帶分數的分子要小於分母。"};
+  if(wholeRaw && typedN<0) return {valid:false,message:"使用帶分數時，負號請使用左側負號。"};
+  const explicitNegative=!wholeRaw && nr.startsWith("-") && typedN!==0;
+  const rawN=explicitNegative?-Math.abs(typedN):sign*(whole*d+Math.abs(typedN));
+  const display=whole>0
+    ? mixedAnswerHTML(rawN<0?-1:1,whole,Math.abs(typedN),d)
+    : rawFracHTML(rawN,d);
+  if(gcd(rawN,d)!==1){
+    return {valid:true,needsSimplify:true,display,displayHTML:true,
+      message:"這個答案還不是最簡分數，請修正。"};
+  }
+  return {valid:true,value:R(rawN,d),display,displayHTML:true};
+}
+
+function readAnswer(question){
+  if(question.type==="ratio"){
+    const raw=[...document.querySelectorAll("[data-ratio-input]")].map(x=>x.value.trim());
+    if(raw.some(v=>!v)) return {valid:false,message:"請把比例的每一項都填完整。"};
+    const analysis=analyzeRatioAnswer(raw,question.answer);
+    return {valid:analysis.valid,value:raw,display:raw.join("："),
+      displayHTML:escapeHTML(raw.join("：")),ratioAnalysis:analysis,message:analysis.message};
+  }
+  if(question.type==="number"){
+    const raw=$("number-answer")?.value.trim()??"";
+    const value=parseNumber(raw);
+    if(value===null) return {valid:false,message:"請輸入有效的數字答案。"};
+    return {valid:true,value,display:raw,displayHTML:escapeHTML(raw)};
+  }
+  if(question.type==="rational"){
+    return readRationalAnswer();
+  }
+  if(selectedChoice===null) return {valid:false,message:"請先選擇一個答案。"};
+  const selected=question.choices.find(c=>String(c.value)===String(selectedChoice));
+  return {valid:true,value:selectedChoice,
+    display:selected?.text??selectedChoice,
+    displayHTML:selected?.html??escapeHTML(selected?.text??selectedChoice)};
+}
+function isCorrectAnswer(question,answer){
+  if(question.type==="ratio"){
+    return answer.ratioAnalysis?.equivalent===true && answer.ratioAnalysis?.simplest===true;
+  }
+  if(question.type==="number"){
+    return sameNumber(answer.value,question.answer,question.tolerance??1e-9);
+  }
+  if(question.type==="rational"){
+    return ratEq(answer.value,question.answer);
+  }
+  return String(answer.value)===String(question.answer);
+}
+function correctAnswerHTML(question){
+  if(question.type==="ratio") return ratioHTML(question.answer);
+  if(question.type==="number") return escapeHTML(question.answer);
+  if(question.type==="rational") return ratHTML(question.answer);
+  const c=question.choices.find(x=>String(x.value)===String(question.answer));
+  return c?.html??escapeHTML(c?.text??c?.value??"");
+}
+function disableAnswerArea(){
+  $("answer-area").querySelectorAll("input,button,select").forEach(el=>el.disabled=true);
+}
+
+/*
+==================================================
+Explanation
+==================================================
+*/
+
+function explanationHTML(question){
+  const e=question.explanation;
+  return `
+    <div class="explanation-title">📘 完整詳解</div>
+    <div class="explanation-question">${question.html}</div>
+    <div class="explanation-think"><strong>先想一想｜</strong>${e.think}</div>
+    ${e.steps.map((step,i)=>`<div class="explanation-step"><strong>步驟 ${i+1}｜</strong>${step}</div>`).join("")}
+    ${e.tip?`<div class="explanation-tip"><strong>⚠️ 常見提醒｜</strong>${e.tip}</div>`:""}
+    <div class="explanation-answer">✅ 最後答案：${e.answer}</div>
+  `;
+}
+
+/*
+==================================================
+Question display
+==================================================
+*/
+
+function displayQuestion(){
+  answered=false;
+  selectedChoice=null;
+  const q=questions[index];
+  $("mode-name").textContent=MODES[modeId].name;
+  $("question-number").textContent=`第 ${index+1} 題／共 ${questions.length} 題`;
+  $("live-score").textContent=index===0?"0":Math.round(correct/index*100);
+  $("correct-count").textContent=correct;
+  $("combo-count").textContent=combo;
+  $("progress-bar").style.width=`${index/questions.length*100}%`;
+  $("question-label").textContent=q.label;
+  $("question-content").innerHTML=q.html;
+  $("feedback").className="feedback";
+  $("feedback").innerHTML="";
+  $("explanation").innerHTML="";
+  $("explanation").classList.add("hidden");
+  $("submit-button").classList.remove("hidden");
+  $("next-button").classList.add("hidden");
+  renderAnswerArea(q);
+  window.resetGameScratchpad?.();
+}
+
+/*
+==================================================
+Submit
+==================================================
+*/
+
+function submitAnswer(){
+  if(answered)return;
+  const q=questions[index];
+  const answer=readAnswer(q);
+
+  if(!answer.valid){
+    $("feedback").className="feedback warning";
+    $("feedback").textContent=answer.message;
+    return;
+  }
+
+  if(q.type==="ratio" && answer.ratioAnalysis?.equivalent===true && answer.ratioAnalysis?.simplest===false){
+    $("feedback").className="feedback warning";
+    $("feedback").innerHTML="👍 比例關係正確，但答案還不是最簡整數比，請化簡後重新送出。";
+    return;
+  }
+
+  if(q.type==="rational" && answer.needsSimplify){
+    $("feedback").className="feedback warning";
+    $("feedback").innerHTML="⚠️ 這個答案還不是最簡分數，請修正。這次不算答錯。";
+    return;
+  }
+
+  answered=true;
+  disableAnswerArea();
+  const ok=isCorrectAnswer(q,answer);
+
+  if(ok){
+    correct++; combo++; maxCombo=Math.max(maxCombo,combo);
+    $("feedback").className="feedback correct";
+    $("feedback").innerHTML="✨ 回答正確！";
+    playGameSound("playCorrect");
+  }else{
+    wrong++; combo=0;
+    $("feedback").className="feedback wrong";
+    $("feedback").innerHTML=`❌ 答案不正確。正確答案：<strong>${correctAnswerHTML(q)}</strong>`;
+    playGameSound("playWrong");
+  }
+
+  records.push({
+    number:index+1,question:q,userAnswer:answer.display,
+    userAnswerHTML:answer.displayHTML??escapeHTML(answer.display),correct:ok
+  });
+
+  $("live-score").textContent=Math.round(correct/(index+1)*100);
+  $("correct-count").textContent=correct;
+  $("combo-count").textContent=combo;
+  $("explanation").innerHTML=explanationHTML(q);
+  $("explanation").classList.remove("hidden");
+  $("submit-button").classList.add("hidden");
+  $("next-button").classList.remove("hidden");
+  $("next-button").textContent=
+    index===questions.length-1?"查看測驗結果（Enter）":"下一題（Enter）";
+  $("next-button").focus();
+}
+
+function nextQuestion(){
+  if(!answered)return;
+  index++;
+  if(index<questions.length) displayQuestion();
+  else showResult();
+}
+
+/*
+==================================================
+Timer / start
+==================================================
+*/
+
+function stopTimer(){
+  if(timerId!==null){clearInterval(timerId);timerId=null}
+  if(startTime) elapsed=Math.floor((Date.now()-startTime)/1000);
+}
+function startTimer(){
+  if(timerId!==null) clearInterval(timerId);
+  startTime=Date.now(); elapsed=0;
+  $("timer-display").textContent="00:00";
+  timerId=setInterval(()=>{
+    elapsed=Math.floor((Date.now()-startTime)/1000);
+    $("timer-display").textContent=formatTime(elapsed);
+  },500);
+}
+function startGame(selectedMode){
+  if(timerId!==null){clearInterval(timerId);timerId=null}
+  modeId=selectedMode;
+  questions=createQuestions(modeId);
+  index=0;correct=0;wrong=0;combo=0;maxCombo=0;records=[];
+  answered=false;selectedChoice=null;scoreSaved=false;rpgEmitted=false;elapsed=0;
+  attemptId=(globalThis.crypto?.randomUUID?.()??`${Date.now()}-${Math.random().toString(36).slice(2)}`);
+  $("save-status").textContent="";
+  showOnly("quiz-screen");
+  displayQuestion();
+  startTimer();
+  playGameSound("playStart");
+}
+
+/*
+==================================================
+Result + RPG bridge
+==================================================
+*/
+
+function rating(score){
+  if(score>=90)return {stars:"★★★★★",comment:"掌握得很好！可以直接挑戰綜合題。"};
+  if(score>=80)return {stars:"★★★★☆",comment:"表現很好，再留意比例對應與條件判讀。"};
+  if(score>=60)return {stars:"★★★☆☆",comment:"核心觀念已建立，建議從本次詳解找出易錯題型。"};
+  return {stars:"★★☆☆☆",comment:"建議先回核心模式，把基本關係練熟後再挑戰綜合題。"};
+}
+
+function emitRpgSession(score){
+  if(rpgEmitted)return;
+  rpgEmitted=true;
+  const detail={
+    gameId:GAME_ID,
+    modeId,
+    chapter:CHAPTER,
+    score,
+    correct,
+    wrong,
+    total:questions.length,
+    playTime:elapsed,
+    accuracy:score,
+    maxCombo,
+    attemptId,
+    difficultyWeight:MODES[modeId]?.difficultyWeight??1
+  };
+  window.dispatchEvent(new CustomEvent("mathgame:session-complete",{detail}));
+  if(window.MathGameProgress?.completeLearningSession){
+    Promise.resolve(window.MathGameProgress.completeLearningSession(detail)).catch(()=>{});
+  }
+}
+
+async function showResult(){
+  stopTimer();
+  const score=Math.round(correct/questions.length*1000)/10;
+  const r=rating(score);
+  $("progress-bar").style.width="100%";
+  showOnly("result-screen");
+  $("final-score").textContent=`${Number.isInteger(score)?score:score.toFixed(1)} 分`;
+  $("final-stars").textContent=r.stars;
+  $("final-comment").textContent=r.comment;
+  $("final-correct").textContent=correct;
+  $("final-wrong").textContent=wrong;
+  $("final-combo").textContent=maxCombo;
+  $("final-time").textContent=formatTime(elapsed);
+  playGameSound("playComplete");
+  emitRpgSession(score);
+  await saveCurrentScore(score);
+}
+
+async function saveCurrentScore(score){
+  if(scoreSaved)return;
+  scoreSaved=true;
+  const status=$("save-status");
+  status.textContent="☁️ 正在儲存本次成績……";
+  status.style.color="#1d4ed8";
+  try{
+    const scoreModule=await import("../js/scores.js?v=7");
+    if(typeof scoreModule.saveGameScore!=="function")throw new Error("找不到 saveGameScore");
+    const result=await scoreModule.saveGameScore({
+      game:GAME_ID,
+      mode:modeId,
+      score,
+      correctCount:correct,
+      wrongCount:wrong,
+      maxCombo,
+      playTime:elapsed,
+      totalQuestions:questions.length,
+      accuracy:score
+    });
+    if(result?.success){
+      status.textContent="✅ 本次成績已儲存。";status.style.color="#15803d";return;
+    }
+    if(result?.reason==="not-logged-in"){
+      status.textContent="ℹ️ 尚未登入，因此本次成績沒有儲存。";status.style.color="#b45309";return;
+    }
+    status.textContent="⚠️ 成績暫時無法儲存。";status.style.color="#b91c1c";
+  }catch(error){
+    console.error(`${GAME_TITLE} 成績儲存失敗：`,error);
+    status.textContent="⚠️ 本次遊戲已完成，但成績暫時無法儲存。";
+    status.style.color="#b91c1c";
+  }
+}
+
+/*
+==================================================
+Review
+==================================================
+*/
+
+function showReview(){
+  $("review-list").innerHTML=records.map(record=>`
+    <article class="review-card ${record.correct?"correct-review":"wrong-review"}">
+      <div class="review-title">第 ${record.number} 題 ${record.correct?"✅":"❌"}</div>
+      <div class="review-question">${record.question.html}</div>
+      <div class="review-answer-line">你的答案：<strong>${record.userAnswerHTML}</strong></div>
+      <div class="review-answer-line">正確答案：<strong>${correctAnswerHTML(record.question)}</strong></div>
+      <div class="explanation">${explanationHTML(record.question)}</div>
+    </article>
+  `).join("");
+  showOnly("review-screen");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/*
+==================================================
+Events
+==================================================
+*/
+
+document.querySelectorAll("[data-mode]").forEach(button=>{
+  button.addEventListener("click",()=>startGame(button.dataset.mode));
+});
+$("submit-button").addEventListener("click",submitAnswer);
+$("next-button").addEventListener("click",nextQuestion);
+$("restart-button").addEventListener("click",()=>startGame(modeId));
+$("quit-button").addEventListener("click",()=>{
+  if(timerId!==null){clearInterval(timerId);timerId=null}
+  showOnly("start-screen");
+});
+$("again-button").addEventListener("click",()=>startGame(modeId));
+$("result-mode-button").addEventListener("click",()=>showOnly("start-screen"));
+$("review-button").addEventListener("click",showReview);
+$("review-again-button").addEventListener("click",()=>startGame(modeId));
+$("review-result-button").addEventListener("click",()=>showOnly("result-screen"));
+
+document.addEventListener("keydown",event=>{
+  if(event.key!=="Enter" || $("quiz-screen").classList.contains("hidden"))return;
+  const active=document.activeElement;
+  if(active?.tagName==="BUTTON" && active.classList.contains("choice-button"))return;
+  if(active?.id==="fraction-whole" || active?.id==="fraction-numerator")return;
+  event.preventDefault();
+  if(answered)nextQuestion(); else submitAnswer();
+});
+
+window.addEventListener("DOMContentLoaded",()=>{
+  if(window.MathGameCommonHeader){
+    window.MathGameCommonHeader.init({mountId:"commonHeaderMount",basePath:"../"});
+  }
+  ensureScratchpadButton();
+});
+
+showOnly("start-screen");
+
+</script>
+</body>
+</html>
