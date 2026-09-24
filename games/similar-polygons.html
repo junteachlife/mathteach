@@ -297,6 +297,83 @@ button:disabled{opacity:.48;cursor:not-allowed}
   .ratio-colon{font-size:22px}
 }
 
+
+/*
+==================================================
+1-3 幾何圖形題
+==================================================
+*/
+.geo-diagram{
+  width:min(100%,760px);
+  margin:10px auto 2px;
+  padding:10px 8px 7px;
+  border:1px solid #ddd6fe;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff,#faf5ff);
+}
+
+.geo-diagram svg{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:285px;
+  margin:0 auto;
+}
+
+.geo-diagram .shape{
+  fill:rgba(124,58,237,.045);
+  stroke:#5b21b6;
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+
+.geo-diagram .mark{
+  fill:none;
+  stroke:#db2777;
+  stroke-width:2.2;
+  vector-effect:non-scaling-stroke;
+}
+
+.geo-diagram .point{
+  fill:#111827;
+  font-size:16px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+}
+
+.geo-diagram .side-label{
+  fill:#334155;
+  font-size:14px;
+  font-weight:800;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+}
+
+.geo-diagram .angle-label{
+  fill:#be185d;
+  font-size:13px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+}
+
+.diagram-caption{
+  margin-top:3px;
+  color:#64748b;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+}
+
+.mastery-badge{
+  display:inline-block;
+  margin-right:6px;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#fff7ed;
+  color:#c2410c;
+  font-size:.72em;
+  font-weight:900;
+  vertical-align:middle;
+}
 </style>
 </head>
 <body>
@@ -307,7 +384,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
 <header class="game-header">
   <h1 class="game-title">🔷 1-3 相似多邊形大挑戰</h1>
   <p class="game-subtitle">從圖形縮放與相似多邊形，到三角形的 AA、SAS、SSS 相似性質。</p>
-  <div class="concept-strip"><span class="concept-chip">🔍 縮放</span><span class="concept-chip">⬡ 相似多邊形</span><span class="concept-chip">∠ AA</span><span class="concept-chip">📏 SAS</span><span class="concept-chip">△ SSS</span></div>
+  <div class="concept-strip"><span class="concept-chip">🔍 縮放</span><span class="concept-chip">⬡ 相似多邊形</span><span class="concept-chip">∠ AA</span><span class="concept-chip">📏 SAS</span><span class="concept-chip">△ SSS</span><span class="concept-chip">🖼️ 圖形題</span><span class="concept-chip">🔥 精熟題</span></div>
 </header>
 
 <section id="start-screen" class="screen">
@@ -321,7 +398,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">縮放倍率、對應邊長與角度不變，建立縮放圖形的核心概念。</p>
+  <p class="mode-description">縮放倍率、對應邊長與角度不變；加入圖形判讀與精熟題。</p>
   <button class="mode-button" data-mode="scaling" type="button">
     開始挑戰
   </button>
@@ -335,7 +412,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">判斷多邊形是否相似，並練習對應角、對應邊與比例。</p>
+  <p class="mode-description">判斷多邊形是否相似，練習對應角、對應邊、比例與圖形題。</p>
   <button class="mode-button" data-mode="polygonSimilarity" type="button">
     開始挑戰
   </button>
@@ -349,7 +426,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">利用兩組對應角相等判斷三角形相似，再求對應邊。</p>
+  <p class="mode-description">利用兩組對應角相等判斷相似，加入平行線、圖形題與精熟求值。</p>
   <button class="mode-button" data-mode="aaSimilarity" type="button">
     開始挑戰
   </button>
@@ -363,7 +440,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">一組夾角相等，且夾角兩側的對應邊成比例。</p>
+  <p class="mode-description">一組夾角相等且夾角兩側對應邊成比例；加入圖形與精熟判讀。</p>
   <button class="mode-button" data-mode="sasSimilarity" type="button">
     開始挑戰
   </button>
@@ -377,7 +454,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">利用三組對應邊成比例判斷相似，並求未知對應邊。</p>
+  <p class="mode-description">利用三組對應邊成比例判斷相似，加入圖形、未知數與精熟題。</p>
   <button class="mode-button" data-mode="sssSimilarity" type="button">
     開始挑戰
   </button>
@@ -391,7 +468,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">綜合模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">縮放、相似多邊形、AA／SAS／SSS 混合判讀與求值。</p>
+  <p class="mode-description">縮放、相似多邊形、AA／SAS／SSS、圖形判讀與精熟題混合挑戰。</p>
   <button class="mode-button" data-mode="comprehensive" type="button">
     開始綜合挑戰
   </button>
@@ -622,16 +699,152 @@ Game-specific question generators
 */
 
 
+
+/*
+==================================================
+1-3 題庫顯示工具
+==================================================
+*/
+
+function correspondenceTextABCDEF(){
+  return "A 點對應 D 點，B 點對應 E 點，C 點對應 F 點";
+}
+
+function correspondenceTextABCDPQRS(){
+  return "A 點對應 P 點，B 點對應 Q 點，C 點對應 R 點，D 點對應 S 點";
+}
+
+function diagramWrap(svg,caption="示意圖（不按比例）"){
+  return `
+    <div class="geo-diagram">
+      ${svg}
+      <div class="diagram-caption">${caption}</div>
+    </div>
+  `;
+}
+
+function trianglePairDiagram({
+  leftNames=["A","B","C"],
+  rightNames=["D","E","F"],
+  leftSides={},
+  rightSides={},
+  leftAngles={},
+  rightAngles={}
+}={}){
+  const [A,B,C]=leftNames;
+  const [D,E,F]=rightNames;
+
+  return diagramWrap(`
+    <svg viewBox="0 0 620 230" role="img" aria-label="兩個三角形示意圖">
+      <polygon class="shape" points="105,30 35,185 235,185"></polygon>
+      <polygon class="shape" points="430,24 330,185 585,185"></polygon>
+
+      <text class="point" x="101" y="22">${A}</text>
+      <text class="point" x="18" y="205">${B}</text>
+      <text class="point" x="238" y="205">${C}</text>
+
+      <text class="point" x="426" y="17">${D}</text>
+      <text class="point" x="309" y="205">${E}</text>
+      <text class="point" x="589" y="205">${F}</text>
+
+      ${leftSides.AB?`<text class="side-label" x="50" y="103">${leftSides.AB}</text>`:""}
+      ${leftSides.AC?`<text class="side-label" x="181" y="102">${leftSides.AC}</text>`:""}
+      ${leftSides.BC?`<text class="side-label" x="125" y="178">${leftSides.BC}</text>`:""}
+
+      ${rightSides.DE?`<text class="side-label" x="347" y="102">${rightSides.DE}</text>`:""}
+      ${rightSides.DF?`<text class="side-label" x="520" y="101">${rightSides.DF}</text>`:""}
+      ${rightSides.EF?`<text class="side-label" x="455" y="178">${rightSides.EF}</text>`:""}
+
+      ${leftAngles.A?`<text class="angle-label" x="112" y="52">${leftAngles.A}</text>`:""}
+      ${leftAngles.B?`<text class="angle-label" x="48" y="174">${leftAngles.B}</text>`:""}
+      ${leftAngles.C?`<text class="angle-label" x="201" y="174">${leftAngles.C}</text>`:""}
+
+      ${rightAngles.D?`<text class="angle-label" x="438" y="48">${rightAngles.D}</text>`:""}
+      ${rightAngles.E?`<text class="angle-label" x="348" y="174">${rightAngles.E}</text>`:""}
+      ${rightAngles.F?`<text class="angle-label" x="543" y="174">${rightAngles.F}</text>`:""}
+    </svg>
+  `);
+}
+
+function quadrilateralPairDiagram({
+  leftSides={},
+  rightSides={}
+}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 650 245" role="img" aria-label="兩個相似四邊形示意圖">
+      <polygon class="shape" points="45,55 205,38 240,175 78,195"></polygon>
+      <polygon class="shape" points="355,40 575,18 625,188 392,215"></polygon>
+
+      <text class="point" x="30" y="50">A</text>
+      <text class="point" x="207" y="32">B</text>
+      <text class="point" x="245" y="183">C</text>
+      <text class="point" x="61" y="214">D</text>
+
+      <text class="point" x="339" y="37">P</text>
+      <text class="point" x="579" y="18">Q</text>
+      <text class="point" x="630" y="196">R</text>
+      <text class="point" x="377" y="233">S</text>
+
+      ${leftSides.AB?`<text class="side-label" x="116" y="37">${leftSides.AB}</text>`:""}
+      ${leftSides.BC?`<text class="side-label" x="220" y="109">${leftSides.BC}</text>`:""}
+      ${leftSides.CD?`<text class="side-label" x="145" y="202">${leftSides.CD}</text>`:""}
+      ${leftSides.DA?`<text class="side-label" x="49" y="128">${leftSides.DA}</text>`:""}
+
+      ${rightSides.PQ?`<text class="side-label" x="462" y="22">${rightSides.PQ}</text>`:""}
+      ${rightSides.QR?`<text class="side-label" x="598" y="105">${rightSides.QR}</text>`:""}
+      ${rightSides.RS?`<text class="side-label" x="497" y="221">${rightSides.RS}</text>`:""}
+      ${rightSides.SP?`<text class="side-label" x="365" y="130">${rightSides.SP}</text>`:""}
+    </svg>
+  `);
+}
+
+/*
+==================================================
+模式一｜圖形縮放
+==================================================
+*/
+
 function qScaleLength(){
   const base=rand(2,15);
   const k=pick([2,3,4,0.5,1.5]);
   const ans=base*k;
+
   return numberQuestion({
-    family:"scale-length",label:"線段縮放",
+    family:"scale-length",
+    label:"線段縮放",
     html:`<div class="question-flow"><span class="qline">${seg("AB")}＝${base}，以 O 為縮放中心將 ${seg("AB")} 縮放 ${k} 倍得到 ${seg("A'B'")}。求 ${seg("A'B'")}。</span></div>`,
     answer:ans,
-    explanation:explanation(String(ans),"縮放後的線段長＝原線段長×縮放倍率。",
-      [`${seg("A'B'")}＝${base}×${k}＝${ans}。`])
+    explanation:explanation(
+      String(ans),
+      "縮放後的長度＝原來長度×縮放倍率。",
+      [`${seg("A'B'")}＝${base}×${k}＝${ans}。`]
+    )
+  });
+}
+
+function qScaleDiagram(){
+  const k=pick([2,3,4]);
+  const small=rand(2,7);
+  const large=small*k;
+
+  return numberQuestion({
+    family:"scale-diagram",
+    label:"🖼️ 圖形縮放",
+    html:`
+      <div class="question-flow">
+        <span class="qline">右圖是左圖的縮放圖形。已知對應邊 AB＝${small}、DE＝${large}，求縮放倍率。</span>
+      </div>
+      ${trianglePairDiagram({
+        leftSides:{AB:String(small)},
+        rightSides:{DE:String(large)}
+      })}
+    `,
+    answer:k,
+    explanation:explanation(
+      String(k),
+      "縮放倍率＝縮放後對應邊÷原圖對應邊。",
+      [`縮放倍率＝${large}÷${small}＝${k}。`]
+    )
   });
 }
 
@@ -639,203 +852,791 @@ function qScaleAngle(){
   const n=pick([5,6,8]);
   const angle=(n-2)*180/n;
   const k=pick([2,3,0.5]);
+
   return choiceQuestion({
-    family:"scale-angle",label:"縮放後的角度",
+    family:"scale-angle",
+    label:"縮放後的角度",
     html:`<div class="question-flow"><span class="qline">正 ${n} 邊形縮放 ${k} 倍後，每一個內角會變成多少度？</span></div>`,
     choices:[
       {value:String(angle),text:`${angle}°`},
       {value:String(angle*k),text:`${angle*k}°`},
       {value:String(Math.round(angle/k)),text:`${Math.round(angle/k)}°`}
-    ],answer:String(angle),
-    explanation:explanation(`${angle}°`,"縮放只改變長度，不改變對應角。",
-      [`正 ${n} 邊形原本每一個內角是 ${angle}°，縮放後仍是 ${angle}°。`])
+    ],
+    answer:String(angle),
+    explanation:explanation(
+      `${angle}°`,
+      "縮放只改變長度，不改變對應角。",
+      [`正 ${n} 邊形原本每一個內角是 ${angle}°，縮放後仍是 ${angle}°。`]
+    )
   });
 }
 
 function qScaleProperty(){
   return choiceQuestion({
-    family:"scale-property",label:"縮放性質",
+    family:"scale-property",
+    label:"縮放性質",
     html:`<div class="question-flow"><span class="qline">將一個三角形縮放 k 倍（k＞0）後，下列何者一定正確？</span></div>`,
     choices:[
       {value:"a",text:"對應角相等，對應邊長變成 k 倍"},
       {value:"b",text:"對應角也變成 k 倍"},
       {value:"c",text:"每一邊都保持原長"},
       {value:"d",text:"圖形一定旋轉 90°"}
-    ],answer:"a",
-    explanation:explanation("對應角相等，對應邊長變成 k 倍",
-      "縮放圖形保持形狀，改變大小。",[])
+    ],
+    answer:"a",
+    explanation:explanation(
+      "對應角相等，對應邊長變成 k 倍",
+      "縮放圖形保持形狀，只改變大小。",
+      []
+    )
   });
 }
 
+function qScaleMasteryReverse(){
+  const k=pick([2,3,4,5]);
+  const original=rand(3,10);
+  const scaled=original*k;
+
+  return numberQuestion({
+    family:"scale-mastery-reverse",
+    label:"🔥 精熟題｜反推原長",
+    html:`
+      <div class="question-flow">
+        <span class="qline">某圖形縮放 ${k} 倍後，一組對應邊長變成 ${scaled}。求原來這條邊的長度。</span>
+      </div>
+      ${trianglePairDiagram({
+        leftSides:{AB:"？"},
+        rightSides:{DE:String(scaled)}
+      })}
+    `,
+    answer:original,
+    explanation:explanation(
+      String(original),
+      "知道縮放後長度時，用縮放後長度÷縮放倍率。",
+      [`原長＝${scaled}÷${k}＝${original}。`]
+    )
+  });
+}
+
+function qScaleMasteryPerimeter(){
+  const k=pick([2,3,4]);
+  const perimeter=rand(12,30);
+  const ans=perimeter*k;
+
+  return numberQuestion({
+    family:"scale-mastery-perimeter",
+    label:"🔥 精熟題｜周長縮放",
+    html:`<div class="question-flow"><span class="qline">一個多邊形周長為 ${perimeter}，將整個圖形縮放 ${k} 倍後，新圖形周長是多少？</span></div>`,
+    answer:ans,
+    explanation:explanation(
+      String(ans),
+      "所有邊都放大同一倍率，因此周長也乘相同倍率。",
+      [`新周長＝${perimeter}×${k}＝${ans}。`]
+    )
+  });
+}
+
+/*
+==================================================
+模式二｜相似多邊形
+==================================================
+*/
+
 function qPolygonSide(){
   const k=pick([2,3,4]);
-  const AB=rand(3,12), BC=rand(3,12);
-  const PQ=AB*k, QR=BC*k;
+  const AB=rand(3,10);
+  const BC=rand(4,12);
+  const PQ=AB*k;
+  const QR=BC*k;
+
   return numberQuestion({
-    family:"polygon-side",label:"相似多邊形對應邊",
-    html:`<div class="question-flow"><span class="qline">四邊形 ABCD∼四邊形 PQRS，A、B、C、D 依序對應 P、Q、R、S。若 ${seg("AB")}＝${AB}、${seg("BC")}＝${BC}、${seg("PQ")}＝${PQ}，求 ${seg("QR")}。</span></div>`,
+    family:"polygon-side",
+    label:"相似多邊形對應邊",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 與四邊形 PQRS 相似，${correspondenceTextABCDPQRS()}。若 ${seg("AB")}＝${AB}、${seg("BC")}＝${BC}、${seg("PQ")}＝${PQ}，求 ${seg("QR")}。</span></div>`,
     answer:QR,
-    explanation:explanation(String(QR),"相似多邊形的對應邊成比例。",
-      [`${seg("PQ")}：${seg("AB")}＝${PQ}：${AB}＝${k}：1，所以 ${seg("QR")}＝${BC}×${k}＝${QR}。`])
+    explanation:explanation(
+      String(QR),
+      "先由 AB 與 PQ 找相似倍率，再套到 BC 與 QR。",
+      [
+        `相似倍率＝${PQ}÷${AB}＝${k}。`,
+        `${seg("QR")}＝${BC}×${k}＝${QR}。`
+      ]
+    )
+  });
+}
+
+function qPolygonDiagramSide(){
+  const k=pick([2,3,4]);
+  const AB=rand(3,8);
+  const BC=rand(4,10);
+  const PQ=AB*k;
+  const QR=BC*k;
+
+  return numberQuestion({
+    family:"polygon-diagram-side",
+    label:"🖼️ 相似多邊形圖形題",
+    html:`
+      <div class="question-flow">
+        <span class="qline">下列兩個四邊形相似，${correspondenceTextABCDPQRS()}。求 QR。</span>
+      </div>
+      ${quadrilateralPairDiagram({
+        leftSides:{AB:String(AB),BC:String(BC)},
+        rightSides:{PQ:String(PQ),QR:"？"}
+      })}
+    `,
+    answer:QR,
+    explanation:explanation(
+      String(QR),
+      "由 AB 對應 PQ，可先求放大倍率。",
+      [
+        `倍率＝${PQ}÷${AB}＝${k}。`,
+        `BC 對應 QR，所以 QR＝${BC}×${k}＝${QR}。`
+      ]
+    )
   });
 }
 
 function qPolygonAngle(){
-  const B=rand(65,105),C=rand(65,105),D=rand(65,105);
+  const B=rand(65,105);
+  const C=rand(65,105);
+  const D=rand(65,105);
   const A=360-B-C-D;
   if(A<=20 || A>=150) return qPolygonAngle();
+
   return numberQuestion({
-    family:"polygon-angle",label:"相似多邊形對應角",
-    html:`<div class="question-flow"><span class="qline">四邊形 ABCD∼PQRS，A、B、C、D 依序對應 P、Q、R、S。若 ∠Q＝${B}°、∠R＝${C}°、∠S＝${D}°，求 ∠A。</span></div>`,
+    family:"polygon-angle",
+    label:"相似多邊形對應角",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 與四邊形 PQRS 相似，${correspondenceTextABCDPQRS()}。若 ∠Q＝${B}°、∠R＝${C}°、∠S＝${D}°，求 ∠A。</span></div>`,
     answer:A,
-    explanation:explanation(`${A}°`,"先利用四邊形內角和求 ∠P，再用對應角相等。",
-      [`∠P＝360°－（${B}°＋${C}°＋${D}°）＝${A}°。`,`∠A＝∠P，所以 ∠A＝${A}°。`])
+    explanation:explanation(
+      `${A}°`,
+      "A 點對應 P 點，所以 ∠A＝∠P；先求 ∠P。",
+      [
+        `∠P＝360°－（${B}°＋${C}°＋${D}°）＝${A}°。`,
+        `因此 ∠A＝${A}°。`
+      ]
+    )
   });
 }
 
 function qPolygonJudge(){
   const type=rand(0,2);
+
   if(type===0){
     return choiceQuestion({
-      family:"polygon-judge",label:"相似多邊形判別",
-      html:`<div class="question-flow"><span class="qline">兩個四邊形的四組對應角都相等，但對應邊長比分別出現 2：3 與 3：5。這兩個四邊形是否一定相似？</span></div>`,
-      choices:[{value:"yes",text:"相似"},{value:"no",text:"不相似"}],answer:"no",
-      explanation:explanation("不相似","多邊形相似要同時滿足對應角相等、對應邊成比例。",
-        ["對應邊比例不一致，所以不能判定相似。"])
+      family:"polygon-judge",
+      label:"相似多邊形判別",
+      html:`<div class="question-flow"><span class="qline">兩個四邊形的四組對應角都相等，但不同對應邊的長度比分別為 2：3 與 3：5。這兩個四邊形是否一定相似？</span></div>`,
+      choices:[
+        {value:"yes",text:"一定相似"},
+        {value:"no",text:"不一定相似"}
+      ],
+      answer:"no",
+      explanation:explanation(
+        "不一定相似",
+        "多邊形相似除了對應角相等，所有對應邊還要成同一比例。",
+        ["題目中的對應邊比例不一致，因此不能判定相似。"]
+      )
     });
   }
+
   if(type===1){
     return choiceQuestion({
-      family:"polygon-judge",label:"相似多邊形判別",
-      html:`<div class="question-flow"><span class="qline">兩個長方形的長寬分別為 3、2 與 6、4。這兩個長方形是否相似？</span></div>`,
-      choices:[{value:"yes",text:"相似"},{value:"no",text:"不相似"}],answer:"yes",
-      explanation:explanation("相似","對應角皆為 90°，且 3：6＝2：4＝1：2。",[])
+      family:"polygon-judge",
+      label:"相似多邊形判別",
+      html:`<div class="question-flow"><span class="qline">兩個長方形的長、寬分別為 3、2 與 6、4。這兩個長方形是否相似？</span></div>`,
+      choices:[
+        {value:"yes",text:"相似"},
+        {value:"no",text:"不相似"}
+      ],
+      answer:"yes",
+      explanation:explanation(
+        "相似",
+        "長方形對應角都相等，再檢查長與寬是否同倍率。",
+        ["3：6＝2：4＝1：2，因此相似。"]
+      )
     });
   }
+
   return choiceQuestion({
-    family:"polygon-judge",label:"相似多邊形判別",
+    family:"polygon-judge",
+    label:"相似多邊形判別",
     html:`<div class="question-flow"><span class="qline">兩個任意菱形的四邊都各自等長，因此兩個任意菱形一定相似嗎？</span></div>`,
-    choices:[{value:"yes",text:"一定相似"},{value:"no",text:"不一定"}],answer:"no",
-    explanation:explanation("不一定","菱形雖然對應邊可以成比例，但對應角不一定相等。",[])
+    choices:[
+      {value:"yes",text:"一定相似"},
+      {value:"no",text:"不一定"}
+    ],
+    answer:"no",
+    explanation:explanation(
+      "不一定",
+      "菱形雖然每一邊等長，但不同菱形的角度可能不同。",
+      []
+    )
   });
 }
 
+function qPolygonMasteryRatio(){
+  const k=pick([2,3,4,5]);
+  const AB=pick([3,4,5,6]);
+  const BC=rand(7,13);
+  const PQ=AB*k;
+  const QR=BC*k;
+
+  return numberQuestion({
+    family:"polygon-mastery-ratio",
+    label:"🔥 精熟題｜對應邊兩步驟",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 與四邊形 PQRS 相似，${correspondenceTextABCDPQRS()}。已知 ${seg("AB")}＝${AB}、${seg("BC")}＝${BC}、${seg("PQ")}＝${PQ}，求 ${seg("QR")}。</span></div>`,
+    answer:QR,
+    explanation:explanation(
+      String(QR),
+      "先由一組已知對應邊求倍率，再轉到另一組對應邊。",
+      [
+        `倍率＝${PQ}÷${AB}＝${k}。`,
+        `${seg("QR")}＝${BC}×${k}＝${QR}。`
+      ],
+      "不要把 AB 對到 QR；先依題目文字找正確對應點。"
+    )
+  });
+}
+
+function qPolygonMasteryPerimeter(){
+  const k=pick([2,3,4]);
+  const p1=rand(18,40);
+  const p2=p1*k;
+
+  return numberQuestion({
+    family:"polygon-mastery-perimeter",
+    label:"🔥 精熟題｜相似周長",
+    html:`<div class="question-flow"><span class="qline">兩個相似五邊形的對應邊長比為 1：${k}。若較小五邊形周長為 ${p1}，求較大五邊形周長。</span></div>`,
+    answer:p2,
+    explanation:explanation(
+      String(p2),
+      "相似多邊形的周長比等於對應邊長比。",
+      [`較大周長＝${p1}×${k}＝${p2}。`]
+    )
+  });
+}
+
+/*
+==================================================
+模式三｜AA 相似
+==================================================
+*/
+
 function qAAJudge(){
-  const A=rand(30,70),B=rand(40,90);
-  if(A+B>=170)return qAAJudge();
+  const A=rand(30,70);
+  const B=rand(40,90);
+  if(A+B>=170) return qAAJudge();
+
   return choiceQuestion({
-    family:"aa-judge",label:"AA 相似判別",
+    family:"aa-judge",
+    label:"AA 相似判別",
     html:`<div class="question-flow"><span class="qline">△ABC 中 ∠A＝${A}°、∠B＝${B}°；△DEF 中 ∠D＝${A}°、∠E＝${B}°。可用哪個性質判定兩三角形相似？</span></div>`,
     choices:[
       {value:"AA",text:"AA"},
       {value:"SAS",text:"SAS"},
       {value:"SSS",text:"SSS"}
-    ],answer:"AA",
-    explanation:explanation("AA","已有兩組對應角相等，直接使用 AA 相似性質。",[])
+    ],
+    answer:"AA",
+    explanation:explanation(
+      "AA",
+      "已有兩組對應角相等。",
+      ["因此可直接使用 AA 相似性質。"]
+    )
+  });
+}
+
+function qAADiagram(){
+  const k=pick([2,3]);
+  const AB=rand(3,7);
+  const BC=rand(4,8);
+  const DE=AB*k;
+  const EF=BC*k;
+
+  return numberQuestion({
+    family:"aa-diagram",
+    label:"🖼️ AA 圖形題",
+    html:`
+      <div class="question-flow">
+        <span class="qline">圖中 ∠A＝∠D、∠B＝∠E，因此兩三角形相似。${correspondenceTextABCDEF()}。求 EF。</span>
+      </div>
+      ${trianglePairDiagram({
+        leftSides:{AB:String(AB),BC:String(BC)},
+        rightSides:{DE:String(DE),EF:"？"},
+        leftAngles:{A:"●",B:"▲"},
+        rightAngles:{D:"●",E:"▲"}
+      })}
+    `,
+    answer:EF,
+    explanation:explanation(
+      String(EF),
+      "兩組角相等，所以使用 AA；再用對應邊比例。",
+      [
+        `倍率＝${DE}÷${AB}＝${k}。`,
+        `EF＝${BC}×${k}＝${EF}。`
+      ]
+    )
   });
 }
 
 function qAALength(){
   const k=pick([2,3,4]);
-  const AD=rand(2,8), AB=AD*k, DE=rand(2,8), BC=DE*k;
+  const AD=rand(2,8);
+  const AB=AD*k;
+  const DE=rand(2,8);
+  const BC=DE*k;
+
   return numberQuestion({
-    family:"aa-length",label:"AA 相似求邊長",
+    family:"aa-length",
+    label:"AA 相似求邊長",
     html:`<div class="question-flow"><span class="qline">在 △ABC 中，D、E 分別在 ${seg("AB")}、${seg("AC")} 上，且 ${seg("DE")}∥${seg("BC")}。若 ${seg("AD")}＝${AD}、${seg("AB")}＝${AB}、${seg("DE")}＝${DE}，求 ${seg("BC")}。</span></div>`,
     answer:BC,
-    explanation:explanation(String(BC),"DE∥BC，可由兩組角相等得到 △ADE∼△ABC。",
-      [`${seg("DE")}：${seg("BC")}＝${seg("AD")}：${seg("AB")}＝${AD}：${AB}＝1：${k}。`,
-       `所以 ${seg("BC")}＝${DE}×${k}＝${BC}。`])
+    explanation:explanation(
+      String(BC),
+      "DE 與 BC 平行，可得到兩組對應角相等，所以 △ADE 與 △ABC 相似。",
+      [
+        `AD：AB＝${AD}：${AB}＝1：${k}。`,
+        `因此 BC＝${DE}×${k}＝${BC}。`
+      ]
+    )
   });
 }
 
-function qSASJudge(){
-  const a=rand(2,7), b=rand(2,7), k=pick([2,3]);
+function qAAMasterySplit(){
+  const k=pick([2,3,4]);
+  const AD=rand(2,6);
+  const AB=AD*k;
+  const DB=AB-AD;
+  const AE=rand(2,6);
+  const AC=AE*k;
+  const EC=AC-AE;
+
+  return numberQuestion({
+    family:"aa-mastery-split",
+    label:"🔥 精熟題｜AA 分段求長",
+    html:`<div class="question-flow"><span class="qline">在 △ABC 中，D、E 分別在 ${seg("AB")}、${seg("AC")} 上，${seg("DE")}∥${seg("BC")}。已知 ${seg("AD")}＝${AD}、${seg("DB")}＝${DB}、${seg("AE")}＝${AE}，求 ${seg("EC")}。</span></div>`,
+    answer:EC,
+    explanation:explanation(
+      String(EC),
+      "先把 AB 算出來，再利用 △ADE 與 △ABC 相似。",
+      [
+        `AB＝${AD}＋${DB}＝${AB}，所以相似倍率＝${AB}÷${AD}＝${k}。`,
+        `AC＝${AE}×${k}＝${AC}，因此 EC＝${AC}－${AE}＝${EC}。`
+      ]
+    )
+  });
+}
+
+function qAAMasteryCorrespondence(){
   return choiceQuestion({
-    family:"sas-judge",label:"SAS 相似判別",
+    family:"aa-mastery-correspondence",
+    label:"🔥 精熟題｜找對應點",
+    html:`<div class="question-flow"><span class="qline">已知 △ABC 與 △DEF 相似，∠A＝∠D、∠B＝∠F。下列哪一組「對應點文字描述」正確？</span></div>`,
+    choices:[
+      {value:"a",text:"A 點對應 D 點，B 點對應 F 點，C 點對應 E 點"},
+      {value:"b",text:"A 點對應 E 點，B 點對應 D 點，C 點對應 F 點"},
+      {value:"c",text:"A 點對應 F 點，B 點對應 E 點，C 點對應 D 點"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "A 點對應 D 點，B 點對應 F 點，C 點對應 E 點",
+      "先依已知相等角找對應點；剩下的點自然互相對應。",
+      []
+    )
+  });
+}
+
+/*
+==================================================
+模式四｜SAS 相似
+==================================================
+*/
+
+function qSASJudge(){
+  const a=rand(2,7);
+  const b=rand(2,7);
+  const k=pick([2,3]);
+
+  return choiceQuestion({
+    family:"sas-judge",
+    label:"SAS 相似判別",
     html:`<div class="question-flow"><span class="qline">△ABC 與 △DEF 中，∠A＝∠D，${seg("AB")}＝${a}、${seg("AC")}＝${b}、${seg("DE")}＝${a*k}、${seg("DF")}＝${b*k}。可用哪個性質判定相似？</span></div>`,
     choices:[
       {value:"AA",text:"AA"},
       {value:"SAS",text:"SAS"},
       {value:"SSS",text:"SSS"}
-    ],answer:"SAS",
-    explanation:explanation("SAS","夾角相等，且夾此角的兩組對應邊成比例。",
-      [`${a}：${a*k}＝${b}：${b*k}＝1：${k}，所以使用 SAS。`])
+    ],
+    answer:"SAS",
+    explanation:explanation(
+      "SAS",
+      "夾角相等，且夾角兩側的兩組對應邊成比例。",
+      [`${a}：${a*k}＝${b}：${b*k}＝1：${k}。`]
+    )
+  });
+}
+
+function qSASDiagram(){
+  const k=pick([2,3]);
+  const AB=rand(3,7);
+  const AC=rand(4,8);
+  const DE=AB*k;
+  const DF=AC*k;
+  const BC=rand(4,9);
+  const EF=BC*k;
+
+  return numberQuestion({
+    family:"sas-diagram",
+    label:"🖼️ SAS 圖形題",
+    html:`
+      <div class="question-flow">
+        <span class="qline">圖中 ∠A＝∠D，且夾角兩側的對應邊成比例。${correspondenceTextABCDEF()}。若 BC＝${BC}，求 EF。</span>
+      </div>
+      ${trianglePairDiagram({
+        leftSides:{AB:String(AB),AC:String(AC),BC:String(BC)},
+        rightSides:{DE:String(DE),DF:String(DF),EF:"？"},
+        leftAngles:{A:"●"},
+        rightAngles:{D:"●"}
+      })}
+    `,
+    answer:EF,
+    explanation:explanation(
+      String(EF),
+      "由夾角相等與兩側邊成比例，可用 SAS 判定相似。",
+      [
+        `倍率＝${DE}÷${AB}＝${k}。`,
+        `EF＝${BC}×${k}＝${EF}。`
+      ]
+    )
   });
 }
 
 function qSASLength(){
   const k=pick([2,3,4]);
-  const small=rand(2,8), large=small*k, third=rand(2,8), ans=third*k;
+  const small=rand(2,8);
+  const large=small*k;
+  const third=rand(2,8);
+  const ans=third*k;
+
   return numberQuestion({
-    family:"sas-length",label:"SAS 相似求邊長",
-    html:`<div class="question-flow"><span class="qline">△ABC∼△DEF，A↔D、B↔E、C↔F。若 ${seg("AB")}＝${small}、${seg("DE")}＝${large}、${seg("BC")}＝${third}，求 ${seg("EF")}。</span></div>`,
+    family:"sas-length",
+    label:"SAS 相似求邊長",
+    html:`<div class="question-flow"><span class="qline">△ABC 與 △DEF 相似，${correspondenceTextABCDEF()}。若 ${seg("AB")}＝${small}、${seg("DE")}＝${large}、${seg("BC")}＝${third}，求 ${seg("EF")}。</span></div>`,
     answer:ans,
-    explanation:explanation(String(ans),"相似後對應邊倍率相同。",
-      [`倍率＝${large}÷${small}＝${k}，所以 ${seg("EF")}＝${third}×${k}＝${ans}。`])
+    explanation:explanation(
+      String(ans),
+      "由一組已知對應邊求倍率，再求另一組對應邊。",
+      [
+        `倍率＝${large}÷${small}＝${k}。`,
+        `${seg("EF")}＝${third}×${k}＝${ans}。`
+      ]
+    )
   });
 }
 
-function qSSSJudge(){
-  const a=rand(2,6),b=rand(3,8),c=rand(4,9),k=pick([2,3]);
+function qSASMasteryX(){
+  const a=pick([3,4,5]);
+  const b=pick([4,6,8]);
+  const k=pick([2,3]);
+  const DE=a*k;
+  const DF=b*k;
+  const shift=rand(2,6);
+  const x=DE-shift;
+
+  return numberQuestion({
+    family:"sas-mastery-x",
+    label:"🔥 精熟題｜SAS 未知數",
+    html:`<div class="question-flow"><span class="qline">△ABC 與 △DEF 中，∠A＝∠D，${seg("AB")}＝${a}、${seg("AC")}＝${b}、${seg("DF")}＝${DF}、${seg("DE")}＝x＋${shift}。若可用 SAS 判定兩三角形相似，求 x。</span></div>`,
+    answer:x,
+    explanation:explanation(
+      String(x),
+      "SAS 要讓夾角兩側的對應邊成同一比例。",
+      [
+        `AC：DF＝${b}：${DF}＝1：${k}，所以 DE 應為 ${a}×${k}＝${DE}。`,
+        `x＋${shift}＝${DE}，所以 x＝${x}。`
+      ]
+    )
+  });
+}
+
+function qSASMasteryTrap(){
   return choiceQuestion({
-    family:"sss-judge",label:"SSS 相似判別",
+    family:"sas-mastery-trap",
+    label:"🔥 精熟題｜SAS 條件陷阱",
+    html:`<div class="question-flow"><span class="qline">兩三角形有兩組對應邊成比例，且另有一組對應角相等，但這個角不是兩組已知邊的夾角。能直接用 SAS 判定相似嗎？</span></div>`,
+    choices:[
+      {value:"yes",text:"可以"},
+      {value:"no",text:"不可以"}
+    ],
+    answer:"no",
+    explanation:explanation(
+      "不可以",
+      "SAS 中相等的角必須是兩組已知比例邊的夾角。",
+      [],
+      "兩邊成比例＋非夾角相等，不是 SAS 的充分條件。"
+    )
+  });
+}
+
+/*
+==================================================
+模式五｜SSS 相似
+==================================================
+*/
+
+function qSSSJudge(){
+  const a=rand(2,6);
+  const b=rand(3,8);
+  const c=rand(4,9);
+  const k=pick([2,3]);
+
+  return choiceQuestion({
+    family:"sss-judge",
+    label:"SSS 相似判別",
     html:`<div class="question-flow"><span class="qline">兩三角形三邊分別為 ${a}、${b}、${c} 與 ${a*k}、${b*k}、${c*k}。可用哪個性質判定相似？</span></div>`,
     choices:[
       {value:"AA",text:"AA"},
       {value:"SAS",text:"SAS"},
       {value:"SSS",text:"SSS"}
-    ],answer:"SSS",
-    explanation:explanation("SSS","三組對應邊的比都相同。",
-      [`${a}：${a*k}＝${b}：${b*k}＝${c}：${c*k}＝1：${k}。`])
+    ],
+    answer:"SSS",
+    explanation:explanation(
+      "SSS",
+      "三組對應邊都成同一比例。",
+      [`${a}：${a*k}＝${b}：${b*k}＝${c}：${c*k}＝1：${k}。`]
+    )
+  });
+}
+
+function qSSSDiagram(){
+  const k=pick([2,3]);
+  const AB=rand(3,7);
+  const AC=rand(4,8);
+  const BC=rand(5,9);
+  const DE=AB*k;
+  const DF=AC*k;
+  const EF=BC*k;
+
+  return numberQuestion({
+    family:"sss-diagram",
+    label:"🖼️ SSS 圖形題",
+    html:`
+      <div class="question-flow">
+        <span class="qline">下列兩三角形以 SSS 判定相似，${correspondenceTextABCDEF()}。求 EF。</span>
+      </div>
+      ${trianglePairDiagram({
+        leftSides:{AB:String(AB),AC:String(AC),BC:String(BC)},
+        rightSides:{DE:String(DE),DF:String(DF),EF:"？"}
+      })}
+    `,
+    answer:EF,
+    explanation:explanation(
+      String(EF),
+      "先由任一組對應邊找倍率。",
+      [
+        `倍率＝${DE}÷${AB}＝${k}。`,
+        `EF＝${BC}×${k}＝${EF}。`
+      ]
+    )
   });
 }
 
 function qSSSLength(){
   const k=pick([2,3,4]);
-  const AB=rand(2,8), BC=rand(3,9), DE=AB*k, EF=BC*k;
+  const AB=rand(2,8);
+  const BC=rand(3,9);
+  const DE=AB*k;
+  const EF=BC*k;
+
   return numberQuestion({
-    family:"sss-length",label:"SSS 相似求邊長",
-    html:`<div class="question-flow"><span class="qline">△ABC∼△DEF，A↔D、B↔E、C↔F。若 ${seg("AB")}＝${AB}、${seg("DE")}＝${DE}、${seg("BC")}＝${BC}，求 ${seg("EF")}。</span></div>`,
+    family:"sss-length",
+    label:"SSS 相似求邊長",
+    html:`<div class="question-flow"><span class="qline">△ABC 與 △DEF 相似，${correspondenceTextABCDEF()}。若 ${seg("AB")}＝${AB}、${seg("DE")}＝${DE}、${seg("BC")}＝${BC}，求 ${seg("EF")}。</span></div>`,
     answer:EF,
-    explanation:explanation(String(EF),"先找相似倍率，再求對應邊。",
-      [`相似倍率＝${DE}÷${AB}＝${k}，所以 ${seg("EF")}＝${BC}×${k}＝${EF}。`])
+    explanation:explanation(
+      String(EF),
+      "先找相似倍率，再求對應邊。",
+      [
+        `倍率＝${DE}÷${AB}＝${k}。`,
+        `${seg("EF")}＝${BC}×${k}＝${EF}。`
+      ]
+    )
   });
 }
+
+function qSSSMasteryX(){
+  const small=[4,6,8];
+  const k=pick([2,3]);
+  const large=small.map(v=>v*k);
+  const shift=rand(3,8);
+  const x=large[2]-shift;
+
+  return numberQuestion({
+    family:"sss-mastery-x",
+    label:"🔥 精熟題｜SSS 未知數",
+    html:`<div class="question-flow"><span class="qline">兩三角形三邊分別為 4、6、8 與 ${large[0]}、${large[1]}、x＋${shift}。若兩三角形以 SSS 判定相似，求 x。</span></div>`,
+    answer:x,
+    explanation:explanation(
+      String(x),
+      "前兩組邊先決定相似倍率，再套到第三組。",
+      [
+        `倍率＝${large[0]}÷4＝${k}。`,
+        `第三邊應為 8×${k}＝${large[2]}，所以 x＋${shift}＝${large[2]}，x＝${x}。`
+      ]
+    )
+  });
+}
+
+function qSSSMasteryCorrespondence(){
+  return choiceQuestion({
+    family:"sss-mastery-correspondence",
+    label:"🔥 精熟題｜SSS 對應判讀",
+    html:`
+      <div class="question-flow">
+        <span class="qline">圖中兩三角形相似。左圖最短邊 AB 對應右圖最短邊 DE，左圖最長邊 AC 對應右圖最長邊 DF。下列哪一組點的對應描述正確？</span>
+      </div>
+      ${trianglePairDiagram({
+        leftSides:{AB:"3",BC:"4",AC:"5"},
+        rightSides:{DE:"6",EF:"8",DF:"10"}
+      })}
+    `,
+    choices:[
+      {value:"a",text:"A 點對應 D 點，B 點對應 E 點，C 點對應 F 點"},
+      {value:"b",text:"A 點對應 E 點，B 點對應 D 點，C 點對應 F 點"},
+      {value:"c",text:"A 點對應 F 點，B 點對應 E 點，C 點對應 D 點"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "A 點對應 D 點，B 點對應 E 點，C 點對應 F 點",
+      "先用最短邊、最長邊找對應邊，再由共同端點確認對應點。",
+      []
+    )
+  });
+}
+
+/*
+==================================================
+共通精熟判讀
+==================================================
+*/
 
 function qMixedProperty(){
   const type=pick(["AA","SAS","SSS"]);
   const desc={
     AA:"兩組對應角相等",
-    SAS:"一組夾角相等，且夾角兩側對應邊成比例",
+    SAS:"一組夾角相等，且夾角兩側的對應邊成比例",
     SSS:"三組對應邊成比例"
   }[type];
+
   return choiceQuestion({
-    family:"property",label:"選擇相似性質",
-    html:`<div class="question-flow"><span class="qline">若已知「${desc}」，應使用哪一個相似性質？</span></div>`,
+    family:"property",
+    label:"精熟判讀｜選擇相似性質",
+    html:`<div class="question-flow"><span class="qline">若已知「${desc}」，應使用哪一個三角形相似性質？</span></div>`,
     choices:[
       {value:"AA",text:"AA"},
       {value:"SAS",text:"SAS"},
       {value:"SSS",text:"SSS"}
-    ],answer:type,
-    explanation:explanation(type,`這正是 ${type} 相似性質的條件。`,[])
+    ],
+    answer:type,
+    explanation:explanation(
+      type,
+      `這正是 ${type} 相似性質的條件。`,
+      []
+    )
   });
 }
 
+/*
+==================================================
+每模式固定 10 題
+各模式都安排：
+- 基礎題
+- 圖形題
+- 精熟題
+==================================================
+*/
+
 function createQuestions(selected){
   const maps={
-    scaling:()=>shuffle([qScaleLength(),qScaleLength(),qScaleLength(),qScaleAngle(),qScaleAngle(),qScaleProperty(),qScaleProperty(),qScaleLength(),qScaleAngle(),qScaleLength()]),
-    polygonSimilarity:()=>shuffle([qPolygonSide(),qPolygonSide(),qPolygonSide(),qPolygonAngle(),qPolygonAngle(),qPolygonJudge(),qPolygonJudge(),qPolygonJudge(),qPolygonSide(),qPolygonAngle()]),
-    aaSimilarity:()=>shuffle([qAAJudge(),qAAJudge(),qAALength(),qAALength(),qAALength(),qAAJudge(),qAALength(),qAAJudge(),qAALength(),qAALength()]),
-    sasSimilarity:()=>shuffle([qSASJudge(),qSASJudge(),qSASJudge(),qSASLength(),qSASLength(),qSASLength(),qSASJudge(),qSASLength(),qSASJudge(),qSASLength()]),
-    sssSimilarity:()=>shuffle([qSSSJudge(),qSSSJudge(),qSSSJudge(),qSSSLength(),qSSSLength(),qSSSLength(),qSSSJudge(),qSSSLength(),qSSSJudge(),qSSSLength()])
+    scaling:()=>shuffle([
+      qScaleLength(),
+      qScaleLength(),
+      qScaleDiagram(),
+      qScaleDiagram(),
+      qScaleAngle(),
+      qScaleProperty(),
+      qScaleProperty(),
+      qScaleMasteryReverse(),
+      qScaleMasteryPerimeter(),
+      qScaleMasteryReverse()
+    ]),
+
+    polygonSimilarity:()=>shuffle([
+      qPolygonSide(),
+      qPolygonSide(),
+      qPolygonDiagramSide(),
+      qPolygonDiagramSide(),
+      qPolygonAngle(),
+      qPolygonJudge(),
+      qPolygonJudge(),
+      qPolygonMasteryRatio(),
+      qPolygonMasteryPerimeter(),
+      qPolygonMasteryRatio()
+    ]),
+
+    aaSimilarity:()=>shuffle([
+      qAAJudge(),
+      qAAJudge(),
+      qAALength(),
+      qAALength(),
+      qAADiagram(),
+      qAADiagram(),
+      qAAMasterySplit(),
+      qAAMasterySplit(),
+      qAAMasteryCorrespondence(),
+      qMixedProperty()
+    ]),
+
+    sasSimilarity:()=>shuffle([
+      qSASJudge(),
+      qSASJudge(),
+      qSASLength(),
+      qSASLength(),
+      qSASDiagram(),
+      qSASDiagram(),
+      qSASMasteryX(),
+      qSASMasteryX(),
+      qSASMasteryTrap(),
+      qMixedProperty()
+    ]),
+
+    sssSimilarity:()=>shuffle([
+      qSSSJudge(),
+      qSSSJudge(),
+      qSSSLength(),
+      qSSSLength(),
+      qSSSDiagram(),
+      qSSSDiagram(),
+      qSSSMasteryX(),
+      qSSSMasteryX(),
+      qSSSMasteryCorrespondence(),
+      qMixedProperty()
+    ])
   };
-  if(selected!=="comprehensive")return maps[selected]();
+
+  if(selected!=="comprehensive"){
+    return maps[selected]();
+  }
+
   return shuffle([
-    qScaleLength(),qScaleAngle(),
-    qPolygonJudge(),qPolygonSide(),
-    qAAJudge(),qAALength(),
-    qSASJudge(),qSASLength(),
-    qSSSJudge(),qMixedProperty()
+    qScaleDiagram(),
+    qScaleMasteryPerimeter(),
+    qPolygonDiagramSide(),
+    qPolygonMasteryRatio(),
+    qAADiagram(),
+    qAAMasterySplit(),
+    qSASDiagram(),
+    qSASMasteryTrap(),
+    qSSSDiagram(),
+    qSSSMasteryX()
   ]);
 }
 
