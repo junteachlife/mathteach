@@ -118,24 +118,58 @@ button:disabled{opacity:.48;cursor:not-allowed}
   margin-bottom:10px;color:var(--primary-dark);font-size:14px;font-weight:900
 }
 .question-content{
-  min-height:92px;display:flex;align-items:center;justify-content:center;
-  text-align:center;color:#0f172a;font-size:clamp(20px,2.75vw,28px);
-  font-weight:900;line-height:1.5
+  min-height:92px;
+  display:block;
+  text-align:left;
+  color:#0f172a;
+  font-size:clamp(20px,2.75vw,28px);
+  font-weight:900;
+  line-height:1.55
 }
+
+/*
+==================================================
+題目換行規則
+
+1. 不再把文字拆成 flex 小區塊，避免出現奇怪空隙／亂碼感。
+2. 能一行顯示就維持一行。
+3. 真的需要換行時，第二行仍從同一個左邊界開始。
+==================================================
+*/
 .question-flow{
-  width:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
-  gap:7px 10px
+  display:block;
+  width:min(100%,980px);
+  max-width:100%;
+  margin:0 auto;
+  text-align:left;
 }
+
 .qline{
-  display:inline-flex;align-items:center;justify-content:center;gap:.2em;
-  max-width:100%;white-space:normal
+  display:inline;
+  max-width:100%;
+  white-space:normal;
+  text-align:left;
+  overflow-wrap:break-word;
+  word-break:normal;
 }
+
 .math{
   font-family:"Cambria Math","Times New Roman","Microsoft JhengHei",sans-serif
 }
+
+/*
+線段符號統一使用上方橫線。
+改用 border-top，比 text-decoration:overline 在不同瀏覽器更穩定。
+*/
 .seg{
-  display:inline-block;text-decoration:overline;text-decoration-thickness:1.4px;
-  text-decoration-skip-ink:none
+  display:inline-block;
+  position:relative;
+  white-space:nowrap;
+  border-top:2px solid currentColor;
+  padding-top:.04em;
+  line-height:1.02;
+  text-decoration:none;
+  vertical-align:baseline;
 }
 .nowrap{white-space:nowrap}
 .math-frac{
@@ -339,21 +373,33 @@ button:disabled{opacity:.48;cursor:not-allowed}
 }
 .geo-diagram .point{
   fill:#0f172a;
-  font-size:16px;
+  font-size:19px;
   font-weight:900;
   font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:4px;
+  stroke-linejoin:round;
 }
 .geo-diagram .side-label{
-  fill:#334155;
-  font-size:14px;
-  font-weight:800;
-  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
-}
-.geo-diagram .angle-label{
-  fill:#be185d;
-  font-size:13px;
+  fill:#0f172a;
+  font-size:20px;
   font-weight:900;
   font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:5px;
+  stroke-linejoin:round;
+}
+.geo-diagram .angle-label{
+  fill:#be123c;
+  font-size:18px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:4px;
+  stroke-linejoin:round;
 }
 .diagram-caption{
   margin-top:3px;
@@ -791,10 +837,10 @@ function qHeightRatio(){
   const [a,b]=primitivePair();
   return ratioQuestion({
     family:"height-ratio",label:"相似三角形對應高",
-    html:`<div class="question-flow"><span class="qline">△ABC 與 △PQR 相似。若對應底邊 BC：QR＝${a}：${b}，則對應高 AD：PS＝？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">△ABC 與 △PQR 相似。若對應底邊 ${seg("BC")}：${seg("QR")}＝${a}：${b}，則對應高 ${seg("AD")}：${seg("PS")}＝？</span></div>`,
     answer:[a,b],
     explanation:explanation(ratioHTML([a,b]),"相似三角形的對應高比等於對應邊長比。",
-      [`AD：PS＝BC：QR＝${a}：${b}。`])
+      [`${seg("AD")}：${seg("PS")}＝${seg("BC")}：${seg("QR")}＝${a}：${b}。`])
   });
 }
 
@@ -827,7 +873,7 @@ function qAreaFromSmall(){
   const small=a*a*unit,large=b*b*unit;
   return numberQuestion({
     family:"area-value",label:"由相似比求面積",
-    html:`<div class="question-flow"><span class="qline">△ADE 與 △ABC 相似，對應邊 AD：AB＝${a}：${b}。若 △ADE 面積為 ${small}，求 △ABC 面積。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">△ADE 與 △ABC 相似，對應邊 ${seg("AD")}：${seg("AB")}＝${a}：${b}。若 △ADE 面積為 ${small}，求 △ABC 面積。</span></div>`,
     answer:large,
     explanation:explanation(String(large),"先平方邊長比，得到面積比。",
       [`△ADE：△ABC 面積比＝${a*a}：${b*b}。`,`△ABC 面積＝${large}。`])
@@ -864,10 +910,10 @@ function qLakeWidth(){
   const CM=rand(5,15),CA=CM*scale,MN=rand(4,12),AB=MN*scale;
   return numberQuestion({
     family:"lake",label:"簡易測量距離",
-    html:`<div class="question-flow"><span class="qline">M、N 分別在 CA、CB 上，且 MN 平行 AB。若 CM＝${CM}、CA＝${CA}、MN＝${MN} 公尺，求 AB。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">M、N 分別在 ${seg("CA")}、${seg("CB")} 上，且 ${seg("MN")}∥${seg("AB")}。若 ${seg("CM")}＝${CM}、${seg("CA")}＝${CA}、${seg("MN")}＝${MN} 公尺，求 ${seg("AB")}。</span></div>`,
     answer:AB,
-    explanation:explanation(`${AB} 公尺`,"MN 平行 AB，所以小三角形與大三角形相似。",
-      [`CM：CA＝MN：AB＝1：${scale}。`,`AB＝${AB} 公尺。`])
+    explanation:explanation(`${AB} 公尺`,`${seg("MN")}∥${seg("AB")}，所以小三角形與大三角形相似。`,
+      [`${seg("CM")}：${seg("CA")}＝${seg("MN")}：${seg("AB")}＝1：${scale}。`,`${seg("AB")}＝${AB} 公尺。`])
   });
 }
 
@@ -876,10 +922,10 @@ function qLakeDiagram(){
   const CM=rand(4,10),CA=CM*scale,MN=rand(3,9),AB=MN*scale;
   return numberQuestion({
     family:"lake-diagram",label:"🖼️ 簡易測量圖形題",
-    html:`<div class="question-flow"><span class="qline">依圖，MN 平行 AB。CM＝${CM}、CA＝${CA}、MN＝${MN} 公尺，求 AB。</span></div>${parallelMeasureDiagram({CM:String(CM),CA:String(CA),MN:String(MN),AB:"？"})}`,
+    html:`<div class="question-flow"><span class="qline">依圖，${seg("MN")}∥${seg("AB")}。${seg("CM")}＝${CM}、${seg("CA")}＝${CA}、${seg("MN")}＝${MN} 公尺，求 ${seg("AB")}。</span></div>${parallelMeasureDiagram({CM:String(CM),CA:String(CA),MN:String(MN),AB:"？"})}`,
     answer:AB,
     explanation:explanation(`${AB} 公尺`,"平行線讓兩個三角形形成相似關係。",
-      [`CM：CA＝MN：AB＝${CM}：${CA}，可得 AB＝${AB} 公尺。`])
+      [`${seg("CM")}：${seg("CA")}＝${seg("MN")}：${seg("AB")}＝${CM}：${CA}，可得 ${seg("AB")}＝${AB} 公尺。`])
   });
 }
 
@@ -958,7 +1004,7 @@ function qSpecial3060Diagram(){
   const k=rand(2,7),hyp=2*k;
   return numberQuestion({
     family:"3060-diagram",label:"🖼️ 30°–60°–90° 圖形題",
-    html:`<div class="question-flow"><span class="qline">圖中 ∠B＝30°，AC＝${k}。求斜邊 BC。</span></div>${rightTriangleDiagram({angle:"30°",opposite:String(k),hypotenuse:"？"})}`,
+    html:`<div class="question-flow"><span class="qline">圖中 ∠B＝30°，${seg("AC")}＝${k}。求斜邊 ${seg("BC")}。</span></div>${rightTriangleDiagram({angle:"30°",opposite:String(k),hypotenuse:"？"})}`,
     answer:hyp,
     explanation:explanation(String(hyp),"30° 的對邊：斜邊＝1：2。",
       [`斜邊＝${hyp}。`])
@@ -981,7 +1027,7 @@ function qSpecial4545Diagram(){
   const k=rand(2,8),correct=`${k}√2`;
   return choiceQuestion({
     family:"4545-diagram",label:"🖼️ 45°–45°–90° 圖形題",
-    html:`<div class="question-flow"><span class="qline">圖中 ∠B＝45°，AC＝${k}。求斜邊 BC。</span></div>${rightTriangleDiagram({angle:"45°",opposite:String(k),hypotenuse:"？"})}`,
+    html:`<div class="question-flow"><span class="qline">圖中 ∠B＝45°，${seg("AC")}＝${k}。求斜邊 ${seg("BC")}。</span></div>${rightTriangleDiagram({angle:"45°",opposite:String(k),hypotenuse:"？"})}`,
     choices:[{value:"c",html:correct},{value:"a",html:String(2*k)},{value:"b",html:`${k}√3`}],
     answer:"c",
     explanation:explanation(correct,"45°–45°–90° 三邊比為 1：1：√2。",
@@ -1031,7 +1077,7 @@ function qTrigDiagram(){
   const values={sin:R(3,5),cos:R(4,5),tan:R(3,4)};
   return rationalQuestion({
     family:"trig-diagram",label:"🖼️ 三角比圖形題",
-    html:`<div class="question-flow"><span class="qline">圖中 ∠A＝90°，以 ∠B 為基準，AC＝3、AB＝4、BC＝5。求 ${fn} B。</span></div>${rightTriangleDiagram({angle:"∠B",opposite:"3",adjacent:"4",hypotenuse:"5"})}`,
+    html:`<div class="question-flow"><span class="qline">圖中 ∠A＝90°，以 ∠B 為基準，${seg("AC")}＝3、${seg("AB")}＝4、${seg("BC")}＝5。求 ${fn} B。</span></div>${rightTriangleDiagram({angle:"∠B",opposite:"3",adjacent:"4",hypotenuse:"5"})}`,
     answer:values[fn],
     explanation:explanation(ratHTML(values[fn]),`先以 ∠B 為基準找出對邊、鄰邊、斜邊，再使用 ${fn} 的定義。`,
       [fn==="sin"?`sin B＝${fracHTML(3,5)}。`:fn==="cos"?`cos B＝${fracHTML(4,5)}。`:`tan B＝${fracHTML(3,4)}。`])
