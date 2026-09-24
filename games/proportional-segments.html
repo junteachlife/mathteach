@@ -297,6 +297,82 @@ button:disabled{opacity:.48;cursor:not-allowed}
   .ratio-colon{font-size:22px}
 }
 
+
+/*
+==================================================
+幾何圖形題
+==================================================
+*/
+.geo-diagram{
+  width:min(100%,780px);
+  margin:10px auto 3px;
+  padding:10px 8px 7px;
+  border:1px solid var(--primary-border);
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff,var(--primary-light));
+}
+.geo-diagram svg{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:310px;
+  margin:0 auto;
+}
+.geo-diagram .shape{
+  fill:rgba(15,118,110,.035);
+  stroke:var(--primary-dark);
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .helper{
+  fill:none;
+  stroke:var(--accent);
+  stroke-width:2.4;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .parallel{
+  fill:none;
+  stroke:#d97706;
+  stroke-width:3;
+  stroke-dasharray:7 5;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .point{
+  fill:#0f172a;
+  font-size:16px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+}
+.geo-diagram .side-label{
+  fill:#334155;
+  font-size:14px;
+  font-weight:800;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+}
+.geo-diagram .angle-label{
+  fill:#be185d;
+  font-size:13px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+}
+.diagram-caption{
+  margin-top:3px;
+  color:#64748b;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+}
+.mastery-badge{
+  display:inline-block;
+  margin-right:6px;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#fff7ed;
+  color:#c2410c;
+  font-size:.72em;
+  font-weight:900;
+  vertical-align:middle;
+}
 </style>
 </head>
 <body>
@@ -307,7 +383,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
 <header class="game-header">
   <h1 class="game-title">📐 1-2 比例線段大挑戰</h1>
   <p class="game-subtitle">等高三角形面積比、平行線截比例線段、平行判別與三角形中點連線段。</p>
-  <div class="concept-strip"><span class="concept-chip">📐 面積比</span><span class="concept-chip">∥ 比例線段</span><span class="concept-chip">✅ 判別平行</span><span class="concept-chip">✂️ 中點連線</span></div>
+  <div class="concept-strip"><span class="concept-chip">📐 面積比</span><span class="concept-chip">∥ 比例線段</span><span class="concept-chip">✅ 判別平行</span><span class="concept-chip">✂️ 中點連線</span><span class="concept-chip">🖼️ 圖形題</span><span class="concept-chip">🔥 精熟題</span></div>
 </header>
 
 <section id="start-screen" class="screen">
@@ -321,7 +397,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">練習等高／同高三角形：面積比等於對應底邊長的比。</p>
+  <p class="mode-description">等高三角形面積比、已知面積反推、總面積分配，加入圖形與精熟題。</p>
   <button class="mode-button" data-mode="areaRatio" type="button">
     開始挑戰
   </button>
@@ -335,7 +411,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">由平行關係建立 AP：PB＝AQ：QC、AP：AB＝AQ：AC 等比例。</p>
+  <p class="mode-description">由平行關係建立多種比例，加入圖形判讀、分數答案與未知數精熟題。</p>
   <button class="mode-button" data-mode="parallelSegments" type="button">
     開始挑戰
   </button>
@@ -349,7 +425,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">判斷哪些比例條件足以推出平行，也辨認『看起來像但不能判定』的陷阱。</p>
+  <p class="mode-description">判斷哪些比例條件能推出平行，加入圖形題、條件選擇與易錯陷阱。</p>
   <button class="mode-button" data-mode="parallelJudge" type="button">
     開始挑戰
   </button>
@@ -363,7 +439,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">核心模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">三角形兩邊中點連線必平行第三邊，且長度為第三邊的一半。</p>
+  <p class="mode-description">中點連線、反推邊長、中位三角形周長與兩層中點的精熟應用。</p>
   <button class="mode-button" data-mode="midpoint" type="button">
     開始挑戰
   </button>
@@ -377,7 +453,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
     <span class="mode-tag">綜合模式</span>
     <span class="mode-tag">10 題</span>
   </div>
-  <p class="mode-description">混合面積比、比例線段、平行判別、中點與多步驟應用。</p>
+  <p class="mode-description">混合圖形判讀、比例線段、平行判別、中點與多步驟精熟題。</p>
   <button class="mode-button" data-mode="comprehensive" type="button">
     開始綜合挑戰
   </button>
@@ -608,9 +684,94 @@ Game-specific question generators
 */
 
 
+
+function diagramWrap(svg,caption="示意圖（不按比例）"){
+  return `<div class="geo-diagram">${svg}<div class="diagram-caption">${caption}</div></div>`;
+}
+
+function areaSplitDiagram({BD="",DC="",leftArea="",rightArea=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 560 250" role="img" aria-label="等高三角形面積比分割圖">
+      <polygon class="shape" points="280,28 45,205 515,205"></polygon>
+      <line class="helper" x1="280" y1="28" x2="275" y2="205"></line>
+      <text class="point" x="273" y="20">A</text>
+      <text class="point" x="28" y="225">B</text>
+      <text class="point" x="268" y="225">D</text>
+      <text class="point" x="522" y="225">C</text>
+      ${BD?`<text class="side-label" x="145" y="198">${BD}</text>`:""}
+      ${DC?`<text class="side-label" x="390" y="198">${DC}</text>`:""}
+      ${leftArea?`<text class="side-label" x="165" y="130">面積 ${leftArea}</text>`:""}
+      ${rightArea?`<text class="side-label" x="350" y="130">面積 ${rightArea}</text>`:""}
+    </svg>
+  `);
+}
+
+function parallelTriangleDiagram({AP="",PB="",AQ="",QC="",PQ="",BC=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 580 300" role="img" aria-label="三角形內平行線比例線段圖">
+      <polygon class="shape" points="290,26 55,258 525,258"></polygon>
+      <line class="parallel" x1="181" y1="136" x2="400" y2="136"></line>
+      <text class="point" x="284" y="19">A</text>
+      <text class="point" x="38" y="279">B</text>
+      <text class="point" x="530" y="279">C</text>
+      <text class="point" x="160" y="132">P</text>
+      <text class="point" x="407" y="132">Q</text>
+      ${AP?`<text class="side-label" x="215" y="78">${AP}</text>`:""}
+      ${PB?`<text class="side-label" x="104" y="199">${PB}</text>`:""}
+      ${AQ?`<text class="side-label" x="363" y="78">${AQ}</text>`:""}
+      ${QC?`<text class="side-label" x="456" y="200">${QC}</text>`:""}
+      ${PQ?`<text class="side-label" x="278" y="128">${PQ}</text>`:""}
+      ${BC?`<text class="side-label" x="278" y="250">${BC}</text>`:""}
+    </svg>
+  `);
+}
+
+function parallelStripDiagram({AB="",BC="",DE="",EF=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 300" role="img" aria-label="三條平行線截兩條截線圖">
+      <line class="parallel" x1="60" y1="58" x2="560" y2="58"></line>
+      <line class="parallel" x1="60" y1="150" x2="560" y2="150"></line>
+      <line class="parallel" x1="60" y1="242" x2="560" y2="242"></line>
+      <line class="shape" x1="165" y1="28" x2="280" y2="275"></line>
+      <line class="shape" x1="455" y1="28" x2="350" y2="275"></line>
+      <text class="point" x="168" y="52">A</text>
+      <text class="point" x="209" y="145">B</text>
+      <text class="point" x="254" y="237">C</text>
+      <text class="point" x="446" y="52">D</text>
+      <text class="point" x="405" y="145">E</text>
+      <text class="point" x="365" y="237">F</text>
+      ${AB?`<text class="side-label" x="173" y="100">${AB}</text>`:""}
+      ${BC?`<text class="side-label" x="220" y="197">${BC}</text>`:""}
+      ${DE?`<text class="side-label" x="430" y="100">${DE}</text>`:""}
+      ${EF?`<text class="side-label" x="389" y="197">${EF}</text>`:""}
+    </svg>
+  `);
+}
+
+function midpointDiagram({BC="",DE=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 580 300" role="img" aria-label="三角形中點連線段圖">
+      <polygon class="shape" points="290,26 55,258 525,258"></polygon>
+      <line class="helper" x1="173" y1="142" x2="407" y2="142"></line>
+      <text class="point" x="284" y="19">A</text>
+      <text class="point" x="38" y="279">B</text>
+      <text class="point" x="530" y="279">C</text>
+      <text class="point" x="153" y="139">D</text>
+      <text class="point" x="415" y="139">E</text>
+      <text class="side-label" x="96" y="205">中點</text>
+      <text class="side-label" x="448" y="205">中點</text>
+      ${DE?`<text class="side-label" x="280" y="136">${DE}</text>`:""}
+      ${BC?`<text class="side-label" x="280" y="250">${BC}</text>`:""}
+    </svg>
+  `);
+}
+
 function primitivePair(){
   let a,b;
-  do{a=rand(2,8);b=rand(2,8)}while(a===b || gcd(a,b)!==1);
+  do{
+    a=rand(2,8);
+    b=rand(2,8);
+  }while(a===b || gcd(a,b)!==1);
   return [a,b];
 }
 
@@ -618,30 +779,49 @@ function qAreaRatioBasic(){
   const [a,b]=primitivePair();
   return ratioQuestion({
     family:"area-basic",label:"等高三角形面積比",
-    html:`<div class="question-flow"><span class="qline">在 △ABC 中，D 在 ${seg("AC")} 上，${seg("AD")}：${seg("DC")}＝${a}：${b}。求 △ABD 面積：△CBD 面積。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">在 △ABC 中，D 在 ${seg("BC")} 上，${seg("BD")}：${seg("DC")}＝${a}：${b}。求 △ABD 面積：△ACD 面積。</span></div>`,
     answer:[a,b],
-    explanation:explanation(
-      ratioHTML([a,b]),
-      "△ABD 與 △CBD 的高相同，所以直接比較底邊 AD、DC。",
-      [`△ABD 面積：△CBD 面積＝${seg("AD")}：${seg("DC")}＝${a}：${b}。`],
-      "等高三角形比較面積時，不需要另外算高。"
-    )
+    explanation:explanation(ratioHTML([a,b]),"△ABD 與 △ACD 從 A 到 BC 的高相同，所以面積比等於底邊 BD：DC。",
+      [`△ABD 面積：△ACD 面積＝${seg("BD")}：${seg("DC")}＝${a}：${b}。`])
+  });
+}
+
+function qAreaDiagram(){
+  const [a,b]=primitivePair();
+  return ratioQuestion({
+    family:"area-diagram",label:"🖼️ 等高三角形圖形題",
+    html:`<div class="question-flow"><span class="qline">圖中 D 在 BC 上，BD：DC＝${a}：${b}。求 △ABD 面積：△ACD 面積。</span></div>${areaSplitDiagram({BD:String(a),DC:String(b)})}`,
+    answer:[a,b],
+    explanation:explanation(ratioHTML([a,b]),"兩個三角形共用從 A 到 BC 的高，所以直接比較底邊。",
+      [`面積比＝BD：DC＝${a}：${b}。`])
   });
 }
 
 function qAreaKnown(){
   const [a,b]=primitivePair();
   const unit=rand(2,9);
-  const known=a*unit, ans=b*unit;
+  const known=a*unit;
+  const ans=b*unit;
   return numberQuestion({
     family:"area-known",label:"由面積比求面積",
-    html:`<div class="question-flow"><span class="qline">D 在 ${seg("BC")} 上，${seg("BD")}：${seg("DC")}＝${a}：${b}，△ABD 面積為 ${known}。求 △ADC 面積。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">D 在 ${seg("BC")} 上，${seg("BD")}：${seg("DC")}＝${a}：${b}，△ABD 面積為 ${known}。求 △ACD 面積。</span></div>`,
     answer:ans,
-    explanation:explanation(
-      String(ans),
-      "△ABD 與 △ADC 同高，面積比就是 BD：DC。",
-      [`${known}：△ADC＝${a}：${b}，所以 △ADC＝${known}×${b}÷${a}＝${ans}。`]
-    )
+    explanation:explanation(String(ans),"△ABD 與 △ACD 同高，面積比就是 BD：DC。",
+      [`${known}：△ACD＝${a}：${b}，所以 △ACD＝${known}×${b}÷${a}＝${ans}。`])
+  });
+}
+
+function qAreaMasteryTotal(){
+  const [a,b]=primitivePair();
+  const unit=rand(3,9);
+  const total=(a+b)*unit;
+  const ans=a*unit;
+  return numberQuestion({
+    family:"area-mastery-total",label:"🔥 精熟題｜由總面積反推",
+    html:`<div class="question-flow"><span class="qline">D 在 BC 上，BD：DC＝${a}：${b}，△ABC 面積為 ${total}。求 △ABD 面積。</span></div>${areaSplitDiagram({BD:String(a),DC:String(b)})}`,
+    answer:ans,
+    explanation:explanation(String(ans),"△ABD、△ACD 同高，所以總面積也依 ${a}：${b} 分配。",
+      [`全部共有 ${a+b} 份，每份面積＝${total}÷${a+b}＝${unit}。`,`△ABD 有 ${a} 份，所以面積＝${ans}。`])
   });
 }
 
@@ -651,113 +831,127 @@ function qAreaTwoStep(){
   const k=rand(1,5);
   const bde=a*d*k;
   const cde=b*d*k;
-  const cae=b*c*k;
+  const ace=b*c*k;
   return numberQuestion({
-    family:"area-two-step",label:"面積比兩步驟",
-    html:`<div class="question-flow"><span class="qline">D 在 ${seg("BC")} 上、E 在 ${seg("AD")} 上，${seg("BD")}：${seg("DC")}＝${a}：${b}，${seg("AE")}：${seg("ED")}＝${c}：${d}，△BDE 面積為 ${bde}。求 △CAE 面積。</span></div>`,
-    answer:cae,
-    explanation:explanation(
-      String(cae),
-      "先用 △BDE、△CDE 的同高關係，再用 △CAE、△CDE 的同高關係。",
-      [
-        `△BDE：△CDE＝${a}：${b}，所以 △CDE＝${bde}×${b}÷${a}＝${cde}。`,
-        `△CAE：△CDE＝${c}：${d}，所以 △CAE＝${cde}×${c}÷${d}＝${cae}。`
-      ]
-    )
+    family:"area-two-step",label:"🔥 精熟題｜面積比兩步驟",
+    html:`<div class="question-flow"><span class="qline">D 在 ${seg("BC")} 上、E 在 ${seg("AD")} 上，${seg("BD")}：${seg("DC")}＝${a}：${b}，${seg("AE")}：${seg("ED")}＝${c}：${d}，△BDE 面積為 ${bde}。求 △ACE 面積。</span></div>`,
+    answer:ace,
+    explanation:explanation(String(ace),"先利用 △BDE、△CDE 同高，再利用 △ACE、△CDE 同高。",
+      [`△CDE＝${bde}×${b}÷${a}＝${cde}。`,`△ACE＝${cde}×${c}÷${d}＝${ace}。`])
   });
 }
 
 function qParallelSegment(){
   const [a,b]=primitivePair();
-  const k=rand(2,7), h=rand(2,7);
-  const AP=a*k, PB=b*k, AQ=a*h, QC=b*h;
-  const ask=pick(["QC","PB"]);
-  if(ask==="QC"){
-    return numberQuestion({
-      family:"parallel-basic",label:"平行線截比例線段",
-      html:`<div class="question-flow"><span class="qline">在 △ABC 中，P、Q 分別在 ${seg("AB")}、${seg("AC")} 上，且 ${seg("PQ")}∥${seg("BC")}。若 ${seg("AP")}＝${AP}、${seg("PB")}＝${PB}、${seg("AQ")}＝${AQ}，求 ${seg("QC")}。</span></div>`,
-      answer:QC,
-      explanation:explanation(String(QC),"PQ∥BC，所以 AP：PB＝AQ：QC。",
-        [`${AP}：${PB}＝${AQ}：${seg("QC")}，可得 ${seg("QC")}＝${QC}。`])
-    });
-  }
+  const k=rand(2,7),h=rand(2,7);
+  const AP=a*k,PB=b*k,AQ=a*h,QC=b*h;
   return numberQuestion({
     family:"parallel-basic",label:"平行線截比例線段",
-    html:`<div class="question-flow"><span class="qline">在 △ABC 中，P、Q 分別在 ${seg("AB")}、${seg("AC")} 上，且 ${seg("PQ")}∥${seg("BC")}。若 ${seg("AQ")}＝${AQ}、${seg("QC")}＝${QC}、${seg("AP")}＝${AP}，求 ${seg("PB")}。</span></div>`,
-    answer:PB,
-    explanation:explanation(String(PB),"PQ∥BC，所以 AP：PB＝AQ：QC。",
-      [`${AP}：${seg("PB")}＝${AQ}：${QC}，可得 ${seg("PB")}＝${PB}。`])
+    html:`<div class="question-flow"><span class="qline">在 △ABC 中，P、Q 分別在 ${seg("AB")}、${seg("AC")} 上，且 ${seg("PQ")}∥${seg("BC")}。若 ${seg("AP")}＝${AP}、${seg("PB")}＝${PB}、${seg("AQ")}＝${AQ}，求 ${seg("QC")}。</span></div>`,
+    answer:QC,
+    explanation:explanation(String(QC),"PQ 與 BC 平行，所以 AP：PB＝AQ：QC。",
+      [`${AP}：${PB}＝${AQ}：${seg("QC")}，可得 ${seg("QC")}＝${QC}。`])
+  });
+}
+
+function qParallelDiagram(){
+  const [a,b]=primitivePair();
+  const k=rand(2,6),h=rand(2,6);
+  const AP=a*k,PB=b*k,AQ=a*h,QC=b*h;
+  return numberQuestion({
+    family:"parallel-diagram",label:"🖼️ 平行線比例圖形題",
+    html:`<div class="question-flow"><span class="qline">圖中 PQ 平行 BC。已知 AP＝${AP}、PB＝${PB}、AQ＝${AQ}，求 QC。</span></div>${parallelTriangleDiagram({AP:String(AP),PB:String(PB),AQ:String(AQ),QC:"？"})}`,
+    answer:QC,
+    explanation:explanation(String(QC),"由 PQ 平行 BC，可直接使用兩側分段比例。",
+      [`AP：PB＝AQ：QC，所以 ${AP}：${PB}＝${AQ}：QC，得 QC＝${QC}。`])
   });
 }
 
 function qParallelWhole(){
   const [a,b]=primitivePair();
   const scale=rand(2,7);
-  const AP=a*scale, AB=(a+b)*scale;
+  const AP=a*scale,AB=(a+b)*scale;
   const side=rand(4,12);
-  const PQ=a*side;
-  const BC=(a+b)*side;
+  const PQ=a*side,BC=(a+b)*side;
   return numberQuestion({
     family:"parallel-whole",label:"平行線與整邊比例",
     html:`<div class="question-flow"><span class="qline">在 △ABC 中，${seg("PQ")}∥${seg("BC")}，${seg("AP")}＝${AP}、${seg("AB")}＝${AB}、${seg("PQ")}＝${PQ}。求 ${seg("BC")}。</span></div>`,
     answer:BC,
-    explanation:explanation(
-      String(BC),
-      "PQ∥BC，所以 PQ：BC＝AP：AB。",
-      [`${PQ}：${seg("BC")}＝${AP}：${AB}＝${a}：${a+b}，因此 ${seg("BC")}＝${BC}。`]
-    )
+    explanation:explanation(String(BC),"PQ 與 BC 平行，所以 PQ：BC＝AP：AB。",
+      [`${PQ}：${seg("BC")}＝${AP}：${AB}＝${a}：${a+b}，因此 ${seg("BC")}＝${BC}。`])
   });
 }
 
 function qParallelRational(){
   const [a,b]=primitivePair();
   const AQ=rand(2,9);
-  const num=AQ*b, den=a;
-  const ans=R(num,den);
+  const ans=R(AQ*b,a);
   return rationalQuestion({
     family:"parallel-rational",label:"比例線段分數答案",
     html:`<div class="question-flow"><span class="qline">在 △ABC 中，${seg("PQ")}∥${seg("BC")}，且 ${seg("AP")}：${seg("PB")}＝${a}：${b}、${seg("AQ")}＝${AQ}。求 ${seg("QC")}。</span></div>`,
     answer:ans,
-    explanation:explanation(
-      ratHTML(ans),
-      "由平行線截比例線段，AP：PB＝AQ：QC。",
-      [`${a}：${b}＝${AQ}：${seg("QC")}，所以 ${seg("QC")}＝${AQ}×${b}÷${a}＝${ratHTML(ans)}。`]
-    )
+    explanation:explanation(ratHTML(ans),"由平行線截比例線段，AP：PB＝AQ：QC。",
+      [`${a}：${b}＝${AQ}：${seg("QC")}，所以 ${seg("QC")}＝${ratHTML(ans)}。`])
   });
 }
 
-function makeLinearParallel(){
+function qParallelMasteryWholePart(){
+  const [a,b]=primitivePair();
+  const unit=rand(2,7);
+  const AP=a*unit,AB=(a+b)*unit;
+  const otherUnit=rand(2,6);
+  const AQ=a*otherUnit,AC=(a+b)*otherUnit;
+  return numberQuestion({
+    family:"parallel-mastery-whole-part",label:"🔥 精熟題｜部分與整邊",
+    html:`<div class="question-flow"><span class="qline">在 △ABC 中，${seg("PQ")}∥${seg("BC")}。若 ${seg("AP")}＝${AP}、${seg("AB")}＝${AB}、${seg("AC")}＝${AC}，求 ${seg("AQ")}。</span></div>`,
+    answer:AQ,
+    explanation:explanation(String(AQ),"用 AP：AB＝AQ：AC，比先拆成 PB、QC 更快。",
+      [`${AP}：${AB}＝${seg("AQ")}：${AC}，所以 ${seg("AQ")}＝${AQ}。`])
+  });
+}
+
+function qParallelMasteryX(){
   let a,b,x0,u,v;
   for(let tries=0;tries<100;tries++){
     [a,b]=primitivePair();
-    x0=rand(3,16); u=rand(1,8);
+    x0=rand(3,16);u=rand(1,8);
     const target=b*(x0+u)/a;
     v=target-2*x0;
-    if(Number.isInteger(v) && v>0 && v<20)break;
+    if(Number.isInteger(v)&&v>0&&v<20)break;
   }
-  if(!Number.isInteger(v) || v<=0){a=5;b=9;x0=15;u=5;v=6}
+  if(!Number.isInteger(v)||v<=0){a=5;b=9;x0=15;u=5;v=6}
   return numberQuestion({
-    family:"multi-parallel",label:"多條平行線比例",
-    html:`<div class="question-flow"><span class="qline">L₁∥L₂∥L₃，兩截線上的對應線段滿足 ${seg("AB")}：${seg("BC")}＝${a}：${b}。若 ${seg("DE")}＝x＋${u}、${seg("EF")}＝2x＋${v}，求 x。</span></div>`,
+    family:"parallel-mastery-x",label:"🔥 精熟題｜多條平行線未知數",
+    html:`<div class="question-flow"><span class="qline">三條直線互相平行，兩條截線上的對應線段滿足 AB：BC＝${a}：${b}。若 DE＝x＋${u}、EF＝2x＋${v}，求 x。</span></div>${parallelStripDiagram({AB:String(a),BC:String(b),DE:`x＋${u}`,EF:`2x＋${v}`})}`,
     answer:x0,
-    explanation:explanation(
-      String(x0),
-      "多條平行線截兩條截線時，對應線段成比例。",
-      [`${a}：${b}＝（x＋${u}）：（2x＋${v}），解得 x＝${x0}。`]
-    )
+    explanation:explanation(String(x0),"多條平行線截兩條截線時，對應線段成比例。",
+      [`${a}：${b}＝（x＋${u}）：（2x＋${v}），解得 x＝${x0}。`])
   });
 }
 
 function qJudgeTrue(){
   const [a,b]=primitivePair();
-  const k=rand(2,6), h=rand(2,6);
+  const k=rand(2,6),h=rand(2,6);
   const AP=a*k,PB=b*k,AQ=a*h,QC=b*h;
   return choiceQuestion({
     family:"judge-true",label:"由比例判別平行",
-    html:`<div class="question-flow"><span class="qline">P、Q 分別在 ${seg("AB")}、${seg("AC")} 上，${seg("AP")}＝${AP}、${seg("PB")}＝${PB}、${seg("AQ")}＝${AQ}、${seg("QC")}＝${QC}。能否判定 ${seg("PQ")}∥${seg("BC")}？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">P、Q 分別在 ${seg("AB")}、${seg("AC")} 上，AP＝${AP}、PB＝${PB}、AQ＝${AQ}、QC＝${QC}。能否判定 ${seg("PQ")}∥${seg("BC")}？</span></div>`,
     choices:[{value:"yes",text:"可以"},{value:"no",text:"不可以"}],answer:"yes",
     explanation:explanation("可以","檢查 AP：PB 與 AQ：QC 是否相等。",
-      [`${AP}：${PB}＝${a}：${b}，${AQ}：${QC}＝${a}：${b}，所以 ${seg("PQ")}∥${seg("BC")}。`])
+      [`${AP}：${PB}＝${a}：${b}，${AQ}：${QC}＝${a}：${b}，所以可以判定平行。`])
+  });
+}
+
+function qJudgeDiagram(){
+  const [a,b]=primitivePair();
+  const k=rand(2,5),h=rand(2,5);
+  const AP=a*k,PB=b*k,AQ=a*h,QC=b*h;
+  return choiceQuestion({
+    family:"judge-diagram",label:"🖼️ 圖形判別平行",
+    html:`<div class="question-flow"><span class="qline">依圖上數據，能否判定 PQ 平行 BC？</span></div>${parallelTriangleDiagram({AP:String(AP),PB:String(PB),AQ:String(AQ),QC:String(QC)})}`,
+    choices:[{value:"yes",text:"可以"},{value:"no",text:"不可以"}],answer:"yes",
+    explanation:explanation("可以","若兩側對應分段的比相等，就可反推內部線段平行第三邊。",
+      [`AP：PB＝${AP}：${PB}＝${a}：${b}；AQ：QC＝${AQ}：${QC}＝${a}：${b}。`])
   });
 }
 
@@ -766,26 +960,39 @@ function qJudgeFalse(){
   const AP=a*2,PB=b*2,AQ=a*3,QC=b*3+1;
   return choiceQuestion({
     family:"judge-false",label:"由比例判別平行",
-    html:`<div class="question-flow"><span class="qline">P、Q 分別在 ${seg("AB")}、${seg("AC")} 上，${seg("AP")}：${seg("PB")}＝${AP}：${PB}，${seg("AQ")}：${seg("QC")}＝${AQ}：${QC}。能否由這些資料判定 ${seg("PQ")}∥${seg("BC")}？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">P、Q 分別在 ${seg("AB")}、${seg("AC")} 上，AP：PB＝${AP}：${PB}，AQ：QC＝${AQ}：${QC}。能否判定 ${seg("PQ")}∥${seg("BC")}？</span></div>`,
     choices:[{value:"yes",text:"可以"},{value:"no",text:"不可以"}],answer:"no",
-    explanation:explanation("不可以","要能判定平行，對應的兩個比例必須相等。",
-      [`${AP}：${PB}＝${a}：${b}，但 ${AQ}：${QC} 不等於 ${a}：${b}，因此不能判定平行。`])
+    explanation:explanation("不可以","要能判定平行，對應比例必須相等。",
+      [`AP：PB＝${a}：${b}，但 AQ：QC 不等於 ${a}：${b}。`])
   });
 }
 
 function qJudgeTrap(){
   return choiceQuestion({
-    family:"judge-trap",label:"平行判別陷阱",
-    html:`<div class="question-flow"><span class="qline">P、R 分別在 ${seg("AB")}、${seg("AC")} 上。若 ${seg("AP")}：${seg("AB")}＝${seg("PR")}：${seg("BC")}，是否一定可推出 ${seg("PR")}∥${seg("BC")}？</span></div>`,
+    family:"judge-trap",label:"🔥 精熟題｜平行判別陷阱",
+    html:`<div class="question-flow"><span class="qline">P、R 分別在 ${seg("AB")}、${seg("AC")} 上。若 AP：AB＝PR：BC，是否一定可推出 ${seg("PR")}∥${seg("BC")}？</span></div>`,
     choices:[{value:"yes",text:"一定可以"},{value:"no",text:"不一定"}],answer:"no",
-    explanation:explanation("不一定","這個條件只比較一條內部線段和第三邊，並不是課本列出的三種充分判別條件。",
-      [`只有 AP：PB＝AQ：QC、AP：AB＝AQ：AC、PB：AB＝QC：AC 這類兩側比例相等時，才能推出平行。`],
-      "看到『某內部線段：第三邊』等於『側邊的一部分：整邊』，不要直接反推平行。")
+    explanation:explanation("不一定","這不是用兩側線段建立出的比例條件，不能只看到比例相等就反推平行。",[],
+      "判別平行時，要確認使用的是三角形兩側對應線段的比例。")
+  });
+}
+
+function qJudgeConditionChoice(){
+  return choiceQuestion({
+    family:"judge-condition-choice",label:"🔥 精熟題｜選擇充分條件",
+    html:`<div class="question-flow"><span class="qline">P、Q 分別在 ${seg("AB")}、${seg("AC")} 上。下列哪一個條件足以判定 ${seg("PQ")}∥${seg("BC")}？</span></div>`,
+    choices:[
+      {value:"a",text:"AP：PB＝AQ：QC"},
+      {value:"b",text:"AP＝AQ"},
+      {value:"c",text:"PB＝QC"},
+      {value:"d",text:"PQ：BC＝AP：AQ"}
+    ],answer:"a",
+    explanation:explanation("AP：PB＝AQ：QC","兩側分段比例相等，是可反推平行的充分條件。",[])
   });
 }
 
 function qMidpointLength(){
-  const BC=2*rand(3,14), DE=BC/2;
+  const BC=2*rand(3,14),DE=BC/2;
   return numberQuestion({
     family:"midpoint-length",label:"三角形中點連線段",
     html:`<div class="question-flow"><span class="qline">在 △ABC 中，D、E 分別為 ${seg("AB")}、${seg("AC")} 的中點，若 ${seg("BC")}＝${BC}，求 ${seg("DE")}。</span></div>`,
@@ -795,28 +1002,48 @@ function qMidpointLength(){
   });
 }
 
-function qMidpointNested(){
-  const FG=rand(2,8), DE=2*FG, BC=2*DE;
+function qMidpointDiagram(){
+  const BC=2*rand(4,12),DE=BC/2;
   return numberQuestion({
-    family:"midpoint-nested",label:"中點連線段兩層應用",
+    family:"midpoint-diagram",label:"🖼️ 中點連線圖形題",
+    html:`<div class="question-flow"><span class="qline">圖中 D、E 分別為 AB、AC 的中點，BC＝${BC}。求 DE。</span></div>${midpointDiagram({BC:String(BC),DE:"？"})}`,
+    answer:DE,
+    explanation:explanation(String(DE),"三角形兩邊中點連線平行第三邊，且長度為第三邊的一半。",
+      [`DE＝${BC}÷2＝${DE}。`])
+  });
+}
+
+function qMidpointNested(){
+  const FG=rand(2,8),DE=2*FG,BC=2*DE;
+  return numberQuestion({
+    family:"midpoint-nested",label:"🔥 精熟題｜兩層中點",
     html:`<div class="question-flow"><span class="qline">D、E 分別為 ${seg("AB")}、${seg("AC")} 的中點；F、G 又分別為 ${seg("AD")}、${seg("AE")} 的中點。若 ${seg("FG")}＝${FG}，求 ${seg("DE")}＋${seg("BC")}。</span></div>`,
     answer:DE+BC,
     explanation:explanation(String(DE+BC),"由內往外，每一層中點連線都是外層第三邊的一半。",
-      [`${seg("DE")}＝2×${FG}＝${DE}，${seg("BC")}＝2×${DE}＝${BC}。`,
-       `所以 ${seg("DE")}＋${seg("BC")}＝${DE+BC}。`])
+      [`${seg("DE")}＝${DE}，${seg("BC")}＝${BC}。`,`所以 ${seg("DE")}＋${seg("BC")}＝${DE+BC}。`])
   });
 }
 
 function qMidpointPerimeter(){
   const a=rand(6,16),b=rand(6,16),c=rand(6,16);
-  const ans=(a+b+c)/2;
   const r=R(a+b+c,2);
-  const qhtml=`<div class="question-flow"><span class="qline">D、E、F 分別為 △ABC 三邊中點，若 ${seg("AB")}＝${a}、${seg("BC")}＝${b}、${seg("AC")}＝${c}，求 △DEF 的周長。</span></div>`;
-  const exp=explanation(ratHTML(r),"中位三角形每一邊都是原三角形對應邊的一半。",
+  const html=`<div class="question-flow"><span class="qline">D、E、F 分別為 △ABC 三邊中點，若 ${seg("AB")}＝${a}、${seg("BC")}＝${b}、${seg("AC")}＝${c}，求 △DEF 的周長。</span></div>`;
+  const exp=explanation(ratHTML(r),"中位三角形每一邊都是原三角形對應邊的一半，所以周長也是一半。",
     [`△DEF 周長＝${fracHTML(1,2)}×（${a}＋${b}＋${c}）＝${ratHTML(r)}。`]);
   return r.d===1
-    ? numberQuestion({family:"midpoint-perimeter",label:"中位三角形周長",html:qhtml,answer:r.n,explanation:exp})
-    : rationalQuestion({family:"midpoint-perimeter",label:"中位三角形周長",html:qhtml,answer:r,explanation:exp});
+    ? numberQuestion({family:"midpoint-perimeter",label:"中位三角形周長",html,answer:r.n,explanation:exp})
+    : rationalQuestion({family:"midpoint-perimeter",label:"中位三角形周長",html,answer:r,explanation:exp});
+}
+
+function qMidpointMasteryPerimeter(){
+  const perimeter=2*rand(15,30),ans=perimeter/2;
+  return numberQuestion({
+    family:"midpoint-mastery-perimeter",label:"🔥 精熟題｜由原周長求中位三角形",
+    html:`<div class="question-flow"><span class="qline">△ABC 的周長為 ${perimeter}，D、E、F 分別為三邊中點。求 △DEF 的周長。</span></div>`,
+    answer:ans,
+    explanation:explanation(String(ans),"中位三角形三邊都是原三角形對應邊的一半，因此周長也是一半。",
+      [`△DEF 周長＝${perimeter}÷2＝${ans}。`])
+  });
 }
 
 function qMidpointProperty(){
@@ -824,45 +1051,45 @@ function qMidpointProperty(){
     family:"midpoint-property",label:"中點連線段性質",
     html:`<div class="question-flow"><span class="qline">在 △ABC 中，D、E 分別為 ${seg("AB")}、${seg("AC")} 的中點。下列何者一定正確？</span></div>`,
     choices:[
-      {value:"a",html:`${seg("DE")}∥${seg("BC")} 且 ${seg("DE")}＝${fracHTML(1,2)}${seg("BC")}`},
+      {value:"a",html:`${seg("DE")}∥${seg("BC")}，且 ${seg("DE")} 的長度是 ${seg("BC")} 的一半`},
       {value:"b",html:`${seg("DE")}⊥${seg("BC")}`},
-      {value:"c",html:`${seg("DE")}＝2${seg("BC")}`},
-      {value:"d",html:`${seg("DE")} 與 ${seg("BC")} 長度相等`}
+      {value:"c",html:`${seg("DE")} 的長度是 ${seg("BC")} 的 2 倍`},
+      {value:"d",html:`${seg("DE")} 與 ${seg("BC")} 長度一定相等`}
     ],answer:"a",
-    explanation:explanation(`${seg("DE")}∥${seg("BC")} 且 ${seg("DE")}＝${fracHTML(1,2)}${seg("BC")}`,
-      "直接套用三角形兩邊中點連線段性質。",[])
+    explanation:explanation(`${seg("DE")}∥${seg("BC")}，且 DE＝BC 的一半`,
+      "直接使用三角形中點連線段性質。",[])
   });
 }
 
 function createQuestions(selected){
   const map={
     areaRatio:()=>shuffle([
-      qAreaRatioBasic(),qAreaRatioBasic(),qAreaRatioBasic(),
-      qAreaKnown(),qAreaKnown(),qAreaKnown(),
-      qAreaTwoStep(),qAreaTwoStep(),qAreaRatioBasic(),qAreaKnown()
+      qAreaRatioBasic(),qAreaRatioBasic(),qAreaDiagram(),qAreaDiagram(),
+      qAreaKnown(),qAreaKnown(),qAreaMasteryTotal(),qAreaMasteryTotal(),
+      qAreaTwoStep(),qAreaTwoStep()
     ]),
     parallelSegments:()=>shuffle([
-      qParallelSegment(),qParallelSegment(),qParallelSegment(),
-      qParallelWhole(),qParallelWhole(),qParallelWhole(),
-      qParallelRational(),qParallelRational(),makeLinearParallel(),makeLinearParallel()
+      qParallelSegment(),qParallelSegment(),qParallelDiagram(),qParallelDiagram(),
+      qParallelWhole(),qParallelRational(),qParallelRational(),
+      qParallelMasteryWholePart(),qParallelMasteryX(),qParallelMasteryX()
     ]),
     parallelJudge:()=>shuffle([
-      qJudgeTrue(),qJudgeTrue(),qJudgeTrue(),qJudgeFalse(),qJudgeFalse(),
-      qJudgeFalse(),qJudgeTrap(),qJudgeTrap(),qJudgeTrue(),qJudgeFalse()
+      qJudgeTrue(),qJudgeTrue(),qJudgeDiagram(),qJudgeDiagram(),
+      qJudgeFalse(),qJudgeFalse(),qJudgeTrap(),qJudgeTrap(),
+      qJudgeConditionChoice(),qJudgeConditionChoice()
     ]),
     midpoint:()=>shuffle([
-      qMidpointLength(),qMidpointLength(),qMidpointLength(),
-      qMidpointNested(),qMidpointNested(),
-      qMidpointPerimeter(),qMidpointPerimeter(),
-      qMidpointProperty(),qMidpointProperty(),qMidpointLength()
+      qMidpointLength(),qMidpointLength(),qMidpointDiagram(),qMidpointDiagram(),
+      qMidpointProperty(),qMidpointPerimeter(),qMidpointPerimeter(),
+      qMidpointMasteryPerimeter(),qMidpointNested(),qMidpointNested()
     ])
   };
-  if(selected!=="comprehensive") return map[selected]();
+  if(selected!=="comprehensive")return map[selected]();
   return shuffle([
-    qAreaTwoStep(),qAreaKnown(),
-    qParallelSegment(),qParallelRational(),makeLinearParallel(),
-    qJudgeTrue(),qJudgeTrap(),
-    qMidpointLength(),qMidpointNested(),qMidpointPerimeter()
+    qAreaDiagram(),qAreaMasteryTotal(),qAreaTwoStep(),
+    qParallelDiagram(),qParallelRational(),qParallelMasteryX(),
+    qJudgeDiagram(),qJudgeConditionChoice(),
+    qMidpointDiagram(),qMidpointNested()
   ]);
 }
 
