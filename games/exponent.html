@@ -1016,7 +1016,17 @@
     .law-chip{display:inline-block;padding:.18rem .55rem;border-radius:999px;background:var(--primary-light);color:var(--primary-dark);font-weight:800;margin:.12rem}
     .answer-hint{color:var(--muted);font-size:.92rem;margin-top:.45rem}
 
-  </style>
+  
+    /*
+    指數填空題盡量維持單行。
+    平板／電腦不再因程式中的 <br> 強制換行；
+    只有螢幕真的不足時才自然換行。
+    */
+    .math-expr{
+      overflow-wrap:normal;
+    }
+
+</style>
 </head>
 
 <body>
@@ -1065,7 +1075,7 @@
         </button>
         <button class="mode-card comprehensive" type="button" data-mode="comprehensive">
           <h2>🏆 綜合指數律挑戰</h2>
-          <p>同一題混合同底數相乘、相除、冪的乘方與積的乘方，練習判斷該用哪一種指數律。</p>
+          <p>同一題混合同底數相乘、相除、冪的乘方、積的乘方與換底，練習判斷並連續運用多種指數律。</p>
           <div class="mode-meta"><span class="mode-badge">10 題</span></div>
         </button>
       </div>
@@ -1592,7 +1602,7 @@ function makeFractionPower(){
   return {
     kind:"rational",
     html:
-      `<div class="math-expr">計算：${pRat(a,e)}</div>`,
+      `<div class="math-expr">計算：${pRat(a,e)} ＝？</div>`,
     answer:ans,
     explanation:calcBox(
       "分數的次方：分子、分母同時取相同次方；負底數再判斷指數奇偶。",
@@ -1721,7 +1731,7 @@ function makeIndexFirst(){
   return {
     kind:"integer",
     html:
-      `<div class="math-expr">計算：${pRat(a,e)} × ${factor}</div>`,
+      `<div class="math-expr">計算：${pRat(a,e)} × ${factor} ＝？</div>`,
     answer:ans,
     explanation:calcBox(
       "先算次方，再做乘法。",
@@ -1762,7 +1772,7 @@ function makeSameBaseMultiply(){
   return {
     kind:"integer",
     html:
-      `<div class="math-expr">${pIntQuestion(b,m)} × ${pIntQuestion(b,n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,
+      `<div class="math-expr">${pIntQuestion(b,m)} × ${pIntQuestion(b,n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span>，□＝？</div>`,
     answer:ans,
     explanation:calcBox(
       "同底數相乘：底數不變，指數相加。",
@@ -1777,7 +1787,7 @@ function makeSameBaseMultiply(){
 }
 function makeZeroExponent(){
   const b=nonzeroBase();
-  return {kind:"integer",html:`<div class="math-expr">計算：${pInt(b,0)}</div>`,answer:1,
+  return {kind:"integer",html:`<div class="math-expr">計算：${pInt(b,0)} ＝？</div>`,answer:1,
     explanation:calcBox("任何非 0 的數的 0 次方都等於 1。",[
       `${intBaseHTML(b)} ≠ 0，所以 ${pInt(b,0)} ＝ 1。`
     ],"1")};
@@ -1818,7 +1828,7 @@ function makeSameBaseDivide(){
   return {
     kind:"integer",
     html:
-      `<div class="math-expr">${pIntQuestion(b,m)} ÷ ${pIntQuestion(b,n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,
+      `<div class="math-expr">${pIntQuestion(b,m)} ÷ ${pIntQuestion(b,n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span>，□＝？</div>`,
     answer:ans,
     explanation:calcBox(
       "同底數相除：底數不變，指數相減。",
@@ -1855,7 +1865,7 @@ function makePowerOfPower(){
   return {
     kind:"integer",
     html:
-      `<div class="math-expr">${groupedPowerQuestionHTML(b,m)}${sup(n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,
+      `<div class="math-expr">${groupedPowerQuestionHTML(b,m)}${sup(n)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span>，□＝？</div>`,
     answer:ans,
     explanation:calcBox(
       "冪的乘方：底數不變，內外指數相乘。",
@@ -1944,7 +1954,7 @@ function makePowerOfProduct(){
     return {
       kind:"rational",
       html:
-        `<div class="math-expr">計算：${pRat(a,e)}</div>`,
+        `<div class="math-expr">計算：${pRat(a,e)} ＝？</div>`,
       answer:ans,
       explanation:calcBox(
         "分數的次方：分子、分母同時取相同次方。",
@@ -1982,7 +1992,7 @@ function makePowerOfProduct(){
   return {
     kind:"integer",
     html:
-      `<div class="math-expr">利用指數律計算：${pInt(a,e)} × ${pInt(b,e)}</div>`,
+      `<div class="math-expr">計算：${pInt(a,e)} × ${pInt(b,e)} ＝？</div>`,
     answer:ans,
     explanation:calcBox(
       "指數相同時，可以先把底數相乘，再取相同次方。",
@@ -1997,7 +2007,7 @@ function makeCombined(){
   const t=
     ri(
       0,
-      3
+      4
     );
 
   /*
@@ -2049,7 +2059,7 @@ function makeCombined(){
     return {
       kind:"integer",
       html:
-        `<div class="math-expr">${groupedPowerQuestionHTML(b,m)}${sup(n)} × ${pIntQuestion(b,p)} ÷ ${pIntQuestion(b,q)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span><br>□＝？</div>`,
+        `<div class="math-expr">${groupedPowerQuestionHTML(b,m)}${sup(n)} × ${pIntQuestion(b,p)} ÷ ${pIntQuestion(b,q)} ＝ ${intBaseHTML(b)}<span class="math-sup">□</span>，□＝？</div>`,
       answer:ans,
       explanation:calcBox(
         "先做冪的乘方，再把同底數的乘除合併。",
@@ -2113,10 +2123,10 @@ function makeCombined(){
     return {
       kind:"integer",
       html:
-        `<div class="math-expr">${pIntQuestion(a,m)} × ${pIntQuestion(b,m)} × ${pIntQuestion(base,p)} ÷ ${pIntQuestion(base,q)} ＝ ${base}<span class="math-sup">□</span><br>□＝？</div>`,
+        `<div class="math-expr">${pIntQuestion(a,m)} × ${pIntQuestion(b,m)} × ${pIntQuestion(base,p)} ÷ ${pIntQuestion(base,q)} ＝ ${base}<span class="math-sup">□</span>，□＝？</div>`,
       answer:ans,
       explanation:calcBox(
-        "先用積的乘方把相同指數的兩個因數合併，再做同底數乘除。",
+        "先用積的乘方把相同指數的因數合併，再做同底數乘除。",
         [
           `${pInt(a,m)} × ${pInt(b,m)} ＝ ${mathGroupHTML(`${a}×${b}`,1)}${sup(m)} ＝ ${pInt(base,m)}；所以指數為 ${m} + ${p} − ${q} ＝ ${ans}。`
         ],
@@ -2196,7 +2206,7 @@ function makeCombined(){
     return {
       kind:"integer",
       html:
-        `<div class="math-expr">${outerPower} × ${pIntQuestion(base,p)} ÷ ${pIntQuestion(base,q)} ＝ ${base}<span class="math-sup">□</span><br>□＝？</div>`,
+        `<div class="math-expr">${outerPower} × ${pIntQuestion(base,p)} ÷ ${pIntQuestion(base,q)} ＝ ${base}<span class="math-sup">□</span>，□＝？</div>`,
       answer:ans,
       explanation:calcBox(
         "先做冪的乘方，再把括號內乘積視為同一底數，最後合併乘除。",
@@ -2211,7 +2221,82 @@ function makeCombined(){
 
   /*
   ==================================================
-  D｜同底數相除＋積的乘方
+  D｜進階換底：
+  b^p × (b^m)^n = (b^2)^□
+
+  例如：
+  3² × (3²)³ = 9^□
+  ==================================================
+  */
+  if(
+    t===3
+  ){
+    const b=
+      pick(
+        [2,3,5]
+      );
+
+    const m=
+      ri(
+        2,
+        3
+      );
+
+    const n=
+      ri(
+        2,
+        4
+      );
+
+    const powerProduct=
+      m*n;
+
+    /*
+    要讓 p + m×n 為偶數，
+    才能化成 (b²)^整數。
+    */
+    const pCandidates=
+      powerProduct%2===0
+        ? [2,4,6]
+        : [1,3,5];
+
+    const p=
+      pick(
+        pCandidates
+      );
+
+    const totalExponent=
+      p+
+      powerProduct;
+
+    const targetBase=
+      b*b;
+
+    const ans=
+      totalExponent/2;
+
+    return {
+      kind:"integer",
+      html:
+        `<div class="math-expr">${pIntQuestion(b,p)} × ${groupedPowerQuestionHTML(b,m)}${sup(n)} ＝ ${targetBase}<span class="math-sup">□</span>，□＝？</div>`,
+      answer:ans,
+      explanation:calcBox(
+        `先把左邊全部化成底數 ${b} 的冪，再把 ${targetBase} 看成 ${pInt(b,2)}。`,
+        [
+          `${groupedPowerHTML(b,m)}${sup(n)} ＝ ${pInt(b,powerProduct)}，所以左邊 ＝ ${pInt(b,totalExponent)}。`,
+          `${targetBase}${sup("□")} ＝ ${pInt(b,`2×□`)}，因此 2 × □ ＝ ${totalExponent}，□ ＝ ${ans}。`
+        ],
+        String(ans),
+        `換底時要先看出 ${targetBase} ＝ ${pInt(b,2)}。`
+      )
+    };
+  }
+
+
+  /*
+  ==================================================
+  E｜同底數相除＋積的乘方
+  這一類答案是實際數值，所以題目明確寫「計算：…＝？」
   ==================================================
   */
   const a=
@@ -2260,7 +2345,7 @@ function makeCombined(){
   return {
     kind:"integer",
     html:
-      `<div class="math-expr">${pIntQuestion(a,m)} ÷ ${pIntQuestion(a,n)} × ${pIntQuestion(b,c)}</div>`,
+      `<div class="math-expr">計算：${pIntQuestion(a,m)} ÷ ${pIntQuestion(a,n)} × ${pIntQuestion(b,c)} ＝？</div>`,
     answer:ans,
     explanation:calcBox(
       "先做同底數相除，再把相同指數的兩個因數合併。",
@@ -2271,44 +2356,7 @@ function makeCombined(){
       String(ans)
     )
   };
-}function makeQuestion(mode,i=0){
-  if(mode==="fractionPower"){const r=Math.random();return r<.20?makeSignParity():r<.45?makeIndexFirst():makeFractionPower();}
-  if(mode==="sameBaseMultiply")return makeSameBaseMultiply();
-  if(mode==="sameBaseDivide")return makeSameBaseDivide();
-  if(mode==="powerOfPower")return makePowerOfPower();
-  if(mode==="powerOfProduct")return makePowerOfProduct();
-  if(mode==="speed")return pick([makeSameBaseMultiply,makeSameBaseDivide,makePowerOfPower])();
-  if(mode==="comprehensive"){
-    /*
-    第 1、4、7、10 題固定為「綜合指數律」，
-    同一題整合 2～4 種指數律；
-    其餘題目穿插各模式複習。
-    */
-    if(i%3===0){
-      return makeCombined();
-    }
-
-    const makers=[
-      makeFractionPower,
-      makeSameBaseMultiply,
-      makeSameBaseDivide,
-      makePowerOfPower,
-      makePowerOfProduct
-    ];
-
-    return makers[
-      (i-1)%makers.length
-    ]();
-  }
-  return makeSameBaseMultiply();
 }
-
-
-/* =========================
-   共用遊戲執行核心
-   ========================= */
-const $ = id => document.getElementById(id);
-const screens = ["start-screen","quiz-screen","result-screen","review-screen"];
 function mountScratchpadButton(){
   const mount=$("scratchpad-mobile-button"),button=$("scratchpadOpenButton");
   if(!mount||!button)return false;if(button.parentElement!==mount)mount.appendChild(button);return true;
