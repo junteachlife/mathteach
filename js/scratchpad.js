@@ -2,8 +2,8 @@
 ==================================================
 生活有解．心中有數｜共用計算紙
 檔案：js/scratchpad.js
-版本：4.5
-電腦／平板／手機低延遲書寫優化版
+版本：4.6
+低延遲書寫＋Visual Viewport 固定工具列版
 ==================================================
 
 延續 v4.4：
@@ -22,7 +22,14 @@ v4.5 效能優化：
 6. 橡皮擦「是否全空白」改在 idle / 延後時間檢查。
 7. DPR：手機最高 2、平板最高 2.5、桌機最高 3。
 8. 支援 desynchronized Canvas（瀏覽器支援時）。
-9. exportData 版本同步為 4.5。
+9. exportData 版本同步為 4.6。
+10. Visual Viewport 固定工具列：
+   - 正常 100% 顯示時維持原本工具列版面。
+   - 放大、縮小或拖動畫面後，工具列會跟著目前真正可視區移動。
+   - 關閉 × 與工具列都持續留在目前可視範圍的上方。
+   - 可視寬度不足時，工具列改到 × 下方。
+   - 工具列保持單列，可左右滑動使用全部工具。
+   - 不修改任何既有工具與書寫功能。
 ==================================================
 */
 
@@ -831,6 +838,189 @@ v4.5 效能優化：
       this.closeButton.style.bottom = "";
     }
 
+    /*
+    ==================================================
+    Visual Viewport 安全工具列
+    ==================================================
+
+    正常 100% 顯示時：
+      完全沿用原本工具列位置與排版。
+
+    放大、縮小或拖動畫面後：
+      1. 工具列跟著 Visual Viewport 移動。
+      2. 關閉 × 維持在目前可視區右上角。
+      3. 空間足夠時，工具列與 × 同一排。
+      4. 可視範圍太窄時，工具列移到 × 下方。
+      5. 工具列維持單列，可左右滑動。
+    ==================================================
+    */
+
+    resetToolbarViewportPosition() {
+      if (!this.toolbar) return;
+
+      this.toolbar.classList.remove(
+        "scratchpad-toolbar--viewport-safe"
+      );
+
+      this.toolbar.style.left = "";
+      this.toolbar.style.top = "";
+      this.toolbar.style.right = "";
+      this.toolbar.style.bottom = "";
+      this.toolbar.style.width = "";
+      this.toolbar.style.maxWidth = "";
+      this.toolbar.style.maxHeight = "";
+    }
+
+    updateToolbarViewportPosition() {
+      if (!this.toolbar || !this.panel || !this.isOpen) {
+        this.resetToolbarViewportPosition();
+        return;
+      }
+
+      const viewport = window.visualViewport;
+
+      if (!viewport) {
+        this.resetToolbarViewportPosition();
+        return;
+      }
+
+      const viewportScale = Number(viewport.scale) || 1;
+      const viewportOffsetLeft = Number(viewport.offsetLeft) || 0;
+      const viewportOffsetTop = Number(viewport.offsetTop) || 0;
+
+      const needsViewportSafety =
+        viewportScale > 1.01 ||
+        Math.abs(viewportOffsetLeft) > 0.5 ||
+        Math.abs(viewportOffsetTop) > 0.5;
+
+      if (!needsViewportSafety) {
+        this.resetToolbarViewportPosition();
+        return;
+      }
+
+      const margin = this.getVisualViewportSafeMargin();
+
+      const panelWidth =
+        this.panel.clientWidth ||
+        document.documentElement.clientWidth ||
+        window.innerWidth ||
+        viewport.width;
+
+      const visualLeft = Math.max(
+        0,
+        viewportOffsetLeft
+      );
+
+      const visualTop = Math.max(
+        0,
+        viewportOffsetTop
+      );
+
+      const visualWidth = Math.max(
+        1,
+        Number(viewport.width) ||
+          panelWidth
+      );
+
+      const closeWidth =
+        this.closeButton?.offsetWidth ||
+        44;
+
+      const closeHeight =
+        this.closeButton?.offsetHeight ||
+        44;
+
+      const gap = 8;
+
+      /*
+      優先讓工具列和 × 位於同一排。
+      若目前真正可視寬度太窄，
+      工具列自動移到 × 下方。
+      */
+      const sameRowWidth =
+        visualWidth -
+        margin * 3 -
+        closeWidth;
+
+      let left =
+        visualLeft +
+        margin;
+
+      let top =
+        visualTop +
+        margin;
+
+      let width =
+        sameRowWidth;
+
+      if (sameRowWidth < 150) {
+        top =
+          visualTop +
+          margin +
+          closeHeight +
+          gap;
+
+        width =
+          visualWidth -
+          margin * 2;
+      }
+
+      width =
+        Math.max(
+          1,
+          width
+        );
+
+      /*
+      防止瀏覽器在極端 pinch zoom 時
+      回報些微超出 layout viewport 的數值。
+      */
+      left =
+        Math.max(
+          0,
+          left
+        );
+
+      const maxWidth =
+        Math.max(
+          1,
+          panelWidth -
+          left -
+          margin
+        );
+
+      width =
+        Math.min(
+          width,
+          maxWidth
+        );
+
+      this.toolbar.classList.add(
+        "scratchpad-toolbar--viewport-safe"
+      );
+
+      this.toolbar.style.left =
+        `${Math.round(left * 100) / 100}px`;
+
+      this.toolbar.style.top =
+        `${Math.round(top * 100) / 100}px`;
+
+      this.toolbar.style.right =
+        "auto";
+
+      this.toolbar.style.bottom =
+        "auto";
+
+      this.toolbar.style.width =
+        `${Math.round(width * 100) / 100}px`;
+
+      this.toolbar.style.maxWidth =
+        `${Math.round(width * 100) / 100}px`;
+
+      this.toolbar.style.maxHeight =
+        "58px";
+    }
+
     updateCloseButtonViewportPosition() {
       if (!this.closeButton || !this.panel || !this.isOpen) {
         this.resetCloseButtonViewportPosition();
@@ -895,6 +1085,7 @@ v4.5 效能優化：
       this.addEvent(this.closeButton, "click", () => this.close());
       this.applyResponsivePanelSize();
       this.updateCloseButtonViewportPosition();
+      this.updateToolbarViewportPosition();
     }
 
     lockBackgroundPage() {
@@ -925,6 +1116,7 @@ v4.5 效能優化：
       this.panel.hidden = false;
       this.panel.classList.add("scratchpad-panel--open", "scratchpad-panel--fullscreen");
       this.updateCloseButtonViewportPosition();
+      this.updateToolbarViewportPosition();
       this.panel.setAttribute("aria-modal", "true");
 
       if (this.openButton) this.openButton.setAttribute("aria-expanded", "true");
@@ -932,6 +1124,8 @@ v4.5 效能優化：
       requestAnimationFrame(() => {
         requestAnimationFrame(async () => {
           this.updateCloseButtonViewportPosition();
+          this.updateToolbarViewportPosition();
+      this.updateToolbarViewportPosition();
 
           try {
             const saved = this.currentQuestionImage;
@@ -976,6 +1170,7 @@ v4.5 效能優化：
 
       this.panel.classList.remove("scratchpad-panel--open", "scratchpad-panel--fullscreen");
       this.resetCloseButtonViewportPosition();
+      this.resetToolbarViewportPosition();
       this.panel.hidden = true;
       this.panel.setAttribute("aria-modal", "false");
 
@@ -1009,6 +1204,7 @@ v4.5 效能優化：
     initializeResizeListener() {
       const resizeHandler = () => {
         this.updateCloseButtonViewportPosition();
+      this.updateToolbarViewportPosition();
         clearTimeout(this.resizeTimer);
 
         this.resizeTimer = setTimeout(async () => {
@@ -1016,6 +1212,9 @@ v4.5 效能優化：
           try {
             await this.resizeCanvasPreserveContent();
             this.updateCloseButtonViewportPosition();
+            this.updateToolbarViewportPosition();
+          this.updateToolbarViewportPosition();
+      this.updateToolbarViewportPosition();
           } catch (error) {
             console.warn("計算紙重新調整尺寸失敗：", error);
           }
@@ -1025,6 +1224,7 @@ v4.5 效能優化：
       const visualViewportScrollHandler = () => {
         if (!this.isOpen) return;
         this.updateCloseButtonViewportPosition();
+      this.updateToolbarViewportPosition();
       };
 
       this.addEvent(window, "resize", resizeHandler);
@@ -1187,7 +1387,7 @@ v4.5 效能優化：
 
     exportData() {
       return {
-        version: "4.5",
+        version: "4.6",
         createdAt: new Date().toISOString(),
         image: this.getImageDataURL("image/png"),
         state: this.getFullState()
