@@ -2495,7 +2495,7 @@
 
     import {
       getGamesBySemester
-    } from "./js/game-config.js?v=9.2";
+    } from "./js/game-config.js?v=9.3";
 
 
     import {
@@ -3420,6 +3420,9 @@
         id:
           "continued-ratio",
 
+        section:
+          "1-1",
+
         name:
           "連比大挑戰",
 
@@ -3460,6 +3463,9 @@
 
         id:
           "proportional-segments",
+
+        section:
+          "1-2",
 
         name:
           "比例線段大挑戰",
@@ -3502,6 +3508,9 @@
         id:
           "similar-polygons",
 
+        section:
+          "1-3",
+
         name:
           "相似多邊形大挑戰",
 
@@ -3542,6 +3551,9 @@
 
         id:
           "similar-triangle-trig",
+
+        section:
+          "1-4",
 
         name:
           "相似三角形應用與三角比大挑戰",
@@ -3584,6 +3596,9 @@
         id:
           "trigonometric-ratio",
 
+        section:
+          "1-4",
+
         name:
           "三角比大挑戰",
 
@@ -3624,6 +3639,9 @@
 
         id:
           "point-line-circle",
+
+        section:
+          "2-1",
 
         name:
           "點、線、圓大挑戰",
@@ -3666,6 +3684,9 @@
         id:
           "central-inscribed-angle",
 
+        section:
+          "2-2",
+
         name:
           "圓心角與圓周角大挑戰",
 
@@ -3706,6 +3727,9 @@
 
         id:
           "geometric-proof",
+
+        section:
+          "3-1",
 
         name:
           "推理證明大挑戰",
@@ -3748,6 +3772,9 @@
         id:
           "triangle-circumcenter",
 
+        section:
+          "3-2",
+
         name:
           "三角形外心大挑戰",
 
@@ -3789,6 +3816,9 @@
         id:
           "triangle-incenter",
 
+        section:
+          "3-2",
+
         name:
           "三角形內心大挑戰",
 
@@ -3829,6 +3859,9 @@
 
         id:
           "triangle-centroid",
+
+        section:
+          "3-2",
 
         name:
           "三角形重心大挑戰",
@@ -4240,9 +4273,28 @@
         );
 
 
-      title.textContent =
+      const gameTitle =
         game.name ||
         "數學遊戲";
+
+
+      const sectionLabel =
+        String(
+          game.section ||
+          ""
+        )
+          .trim();
+
+
+      title.textContent =
+        sectionLabel &&
+        !gameTitle.startsWith(
+          sectionLabel
+        )
+
+          ? `${sectionLabel} ${gameTitle}`
+
+          : gameTitle;
 
 
       heading.append(
