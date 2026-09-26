@@ -4,7 +4,7 @@
 檔案：css/scratchpad.css
 
 版本：4.3
-全螢幕半透明＋縮放安全關閉與固定工具列版
+完整樣式保留＋Visual Viewport 固定工具列修正版
 ==================================================
 
 本版調整：
@@ -18,11 +18,10 @@
    - 不禁止使用者縮放。
 4. 所有原有工具與功能不變。
 5. PNG 下載白底處理由 scratchpad.js 負責。
-6. 新增 Visual Viewport 固定工具列：
-   - 正常 100% 顯示時完全維持原本工具列。
-   - 放大、縮小或拖動畫面後，工具列固定在目前可視區上方。
-   - 與右上角 × 關閉按鈕同時保持可見。
-   - 寬度不足時工具列可左右滑動，不改任何工具功能。
+6. 固定工具列只增加定位樣式：
+   - 原有工具列與所有響應式樣式完整保留。
+   - 正常 100% 顯示完全不變。
+   - 放大／拖動畫面時才套用固定定位。
 ==================================================
 */
 
@@ -1003,16 +1002,859 @@ body.scratchpad-page-locked {
     34px;
 
   min-width:
+34px;
 
+  height:
+    34px;
+
+  padding:
+    0;
+
+  border-width:
+    3px;
+
+  border-radius:
+    50%;
+}
+
+
+.scratchpad-color-button--black {
+
+  background:
+    #111827;
+}
+
+
+.scratchpad-color-button--blue {
+
+  background:
+    #2563eb;
+}
+
+
+.scratchpad-color-button--red {
+
+  background:
+    #dc2626;
+}
+
+
+.scratchpad-color-button--green {
+
+  background:
+    #16a34a;
+}
+
+
+.scratchpad-color-button.scratchpad-tool-button--active {
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      245,
+      158,
+      11,
+      .40
+    );
+}
+
+
+.scratchpad-size-button {
+
+  width:
+    36px;
+
+  min-width:
+    36px;
+
+  height:
+    36px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    0;
+}
+
+
+.scratchpad-size-dot {
+
+  display:
+    block;
+
+  border-radius:
+    999px;
+
+  background:
+    #111827;
+}
+
+
+.scratchpad-size-dot--small {
+
+  width:
+    5px;
+
+  height:
+    5px;
+}
+
+
+.scratchpad-size-dot--medium {
+
+  width:
+    9px;
+
+  height:
+    9px;
+}
+
+
+.scratchpad-size-dot--large {
+
+  width:
+    14px;
+
+  height:
+    14px;
+}
+
+
+.scratchpad-canvas-container {
+
+  position:
+    relative;
+
+  min-height:
+    0;
+
+  flex:
+    1 1 auto;
+
+  overflow:
+    hidden;
+
+  padding:
+    10px
+
+    max(
+      10px,
+      env(
+        safe-area-inset-right
+      )
+    )
+
+    max(
+      10px,
+      env(
+        safe-area-inset-bottom
+      )
+    )
+
+    max(
+      10px,
+      env(
+        safe-area-inset-left
+      )
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .03
+    );
+}
+
+
+.scratchpad-canvas {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  min-height:
+    100%;
+
+  border:
+    1px solid
+    rgba(
+      148,
+      163,
+      184,
+      .46
+    );
+
+  border-radius:
+    12px;
+
+  background-color:
+    rgba(
+      255,
+      255,
+      255,
+      .44
+    );
+
+  background-image:
+
+    linear-gradient(
+      rgba(
+        100,
+        116,
+        139,
+        .075
+      )
+      1px,
+      transparent
+      1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(
+        100,
+        116,
+        139,
+        .075
+      )
+      1px,
+      transparent
+      1px
+    );
+
+  background-size:
+    24px 24px;
+
+  touch-action:
+    none;
+
+  cursor:
+    crosshair;
+
+  user-select:
+    none;
+
+  -webkit-user-select:
+    none;
+
+  -webkit-touch-callout:
+    none;
+}
+
+
+.scratchpad-canvas:hover {
+
+  border-color:
+    rgba(
+      217,
+      119,
+      6,
+      .80
+    );
+}
+
+
+.scratchpad-canvas--drawing {
+
+  cursor:
+    crosshair;
+}
+
+
+.scratchpad-canvas--eraser {
+
+  cursor:
+    cell;
+}
+
+
+.scratchpad-canvas-hint {
+
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  top:
+    50%;
+
+  z-index:
+    2;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  padding:
+    8px 12px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .68
+    );
+
+  color:
+    #94a3b8;
+
+  font-size:
+    15px;
+
+  font-weight:
+    800;
+
+  pointer-events:
+    none;
+
+  white-space:
+    nowrap;
+}
+
+
+.scratchpad-canvas-hint[hidden] {
+
+  display:
+    none !important;
+}
+
+
+.scratchpad-resize-handle {
+
+  display:
+    none !important;
+}
+
+
+.scratchpad-panel--dragging,
+.scratchpad-panel--resizing {
+
+  cursor:
+    default !important;
+}
+
+
+.scratchpad-panel--fullscreen {
+
+  position:
+    fixed !important;
+
+  inset:
+    0 !important;
+
+  width:
+    100vw !important;
+
+  width:
+    100dvw !important;
+
+  height:
+    100vh !important;
+
+  height:
+    100dvh !important;
+}
+
+
+@media (
+  max-width:
+    1024px
+) {
+
+  .scratchpad-header {
+
+    min-height:
+      58px;
+
+    padding-top:
+      max(
+        8px,
+        env(
+          safe-area-inset-top
+        )
+      );
+
+    padding-bottom:
+      8px;
+  }
+
+
+  .scratchpad-header__title {
+
+    font-size:
+      17px;
+  }
+
+
+  .scratchpad-header__subtitle {
+
+    font-size:
+      11px;
+  }
+
+
+  .scratchpad-toolbar {
+
+    justify-content:
+      flex-start;
+
+    padding:
+      7px 8px;
+
+    gap:
+      5px 7px;
+
+    max-height:
+      118px;
+  }
+
+
+  .scratchpad-tool-group {
+
+    gap:
+      4px;
+
+    padding:
+      2px 4px;
+  }
+
+
+  .scratchpad-tool-button {
+
+    min-height:
+      34px;
+
+    padding:
+      6px 8px;
+
+    font-size:
+      12px;
+  }
+
+
+  .scratchpad-color-button {
+
+    width:
+      32px;
+
+    min-width:
+      32px;
+
+    height:
+      32px;
+  }
+
+
+  .scratchpad-size-button {
+
+    width:
+      34px;
+
+    min-width:
+      34px;
+
+    height:
+      34px;
+  }
+
+
+  .scratchpad-canvas-container {
+
+    padding:
+      8px;
+  }
+
+}
+
+
+@media (
+  max-width:
+    640px
+) {
+
+  .scratchpad-header {
+
+    min-height:
+      54px;
+
+    gap:
+      8px;
+
+    padding:
+
+      max(
+        7px,
+        env(
+          safe-area-inset-top
+        )
+      )
+
+      max(
+        8px,
+        env(
+          safe-area-inset-right
+        )
+      )
+
+      7px
+
+      max(
+        10px,
+        env(
+          safe-area-inset-left
+        )
+      );
+  }
+
+
+  .scratchpad-header__icon {
+
+    font-size:
+      21px;
+  }
+
+
+  .scratchpad-header__title {
+
+    font-size:
+      16px;
+  }
+
+
+  .scratchpad-header__subtitle {
+
+    display:
+      none;
+  }
+
+
+  .scratchpad-close-button {
+
+    width:
+      40px;
+
+    height:
+      40px;
+
+    flex-basis:
+      40px;
+
+    font-size:
+      25px;
+  }
+
+
+  .scratchpad-toolbar {
+
+    justify-content:
+      flex-start;
+
+    gap:
+      4px;
+
+    padding:
+      6px;
+
+    max-height:
+      120px;
+  }
+
+
+  .scratchpad-tool-group {
+
+    min-height:
+      32px;
+
+    gap:
+      3px;
+
+    padding:
+      2px 3px;
+  }
+
+
+  .scratchpad-tool-group__label {
+
+    font-size:
+      10px;
+  }
+
+
+  .scratchpad-tool-button,
+  .scratchpad-color-button,
+  .scratchpad-size-button {
+
+    min-height:
+      31px;
+
+    font-size:
+      11px;
+  }
+
+
+  .scratchpad-tool-button {
+
+    padding:
+      5px 6px;
+  }
+
+
+  .scratchpad-tool-button__text {
+
+    display:
+      none;
+  }
+
+
+  .scratchpad-color-button {
+
+    width:
+      29px;
+
+    min-width:
+      29px;
+
+    height:
+      29px;
+  }
+
+
+  .scratchpad-size-button {
+
+    width:
+      31px;
+
+    min-width:
+      31px;
+
+    height:
+      31px;
+  }
+
+
+  .scratchpad-canvas-container {
+
+    padding:
+      6px
+
+      max(
+        6px,
+        env(
+          safe-area-inset-right
+        )
+      )
+
+      max(
+        6px,
+        env(
+          safe-area-inset-bottom
+        )
+      )
+
+      max(
+        6px,
+        env(
+          safe-area-inset-left
+        )
+      );
+  }
+
+
+  .scratchpad-canvas {
+
+    border-radius:
+      8px;
+
+    background-size:
+      22px 22px;
+  }
+
+
+  .scratchpad-canvas-hint {
+
+    font-size:
+      13px;
+
+    padding:
+      6px 9px;
+  }
+
+}
+
+
+@media (
+  max-width:
+    380px
+) {
+
+  .scratchpad-tool-group__label {
+
+    display:
+      none;
+  }
+
+
+  .scratchpad-toolbar {
+
+    max-height:
+      112px;
+  }
+
+}
+
+
+@media (
+  max-height:
+    560px
+) {
+
+  .scratchpad-header {
+
+    min-height:
+      46px;
+
+    padding-top:
+      5px;
+
+    padding-bottom:
+      5px;
+  }
+
+
+  .scratchpad-header__subtitle {
+
+    display:
+      none;
+  }
+
+
+  .scratchpad-toolbar {
+
+    max-height:
+      82px;
+
+    padding:
+      4px 6px;
+  }
+
+
+  .scratchpad-tool-group {
+
+    min-height:
+      29px;
+  }
+
+
+  .scratchpad-tool-button,
+  .scratchpad-color-button,
+  .scratchpad-size-button {
+
+    min-height:
+      28px;
+  }
+
+
+  .scratchpad-color-button {
+
+    width:
+      27px;
+
+    min-width:
+      27px;
+
+    height:
+      27px;
+  }
+
+
+  .scratchpad-size-button {
+
+    width:
+      29px;
+
+    min-width:
+      29px;
+
+    height:
+      29px;
+  }
+
+}
+
+
+@media (
+  prefers-color-scheme:
+    dark
+) {
+
+  .scratchpad-panel {
+
+    color:
+      #1f2937;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .16
+      );
+  }
+
+
+  .scratchpad-canvas {
+
+    background-color:
+      rgba(
+        255,
+        255,
+        255,
+        .44
+      );
+  }
+
+}
+
+
+@media print {
+
+  .scratchpad-open-button,
+  .scratchpad-panel {
+
+    display:
+      none !important;
+  }
+
+}
 
 /*
 ==================================================
-Visual Viewport 安全工具列
+Visual Viewport 固定工具列
 
-只有 scratchpad.js 在偵測到 pinch zoom
-或 Visual Viewport 位移時才會加入此 class。
-
-因此正常 100% 畫面完全維持原本工具列。
+只負責固定定位。
+刻意不覆蓋 flex-wrap、overflow-y、
+工具群、按鈕、顏色、粗細與手機響應式設定。
 ==================================================
 */
 
@@ -1027,23 +1869,8 @@ Visual Viewport 安全工具列
   flex:
     none !important;
 
-  flex-wrap:
-    nowrap !important;
-
-  justify-content:
-    flex-start !important;
-
-  align-items:
-    center !important;
-
-  gap:
-    5px 7px !important;
-
-  min-height:
-    48px;
-
-  padding:
-    5px 7px !important;
+  margin:
+    0 !important;
 
   border:
     1px solid
@@ -1051,11 +1878,11 @@ Visual Viewport 安全工具列
       180,
       83,
       9,
-      .34
-    ) !important;
+      .30
+    );
 
   border-radius:
-    13px;
+    12px;
 
   background:
     rgba(
@@ -1071,84 +1898,12 @@ Visual Viewport 安全工具列
       15,
       23,
       42,
-      .20
+      .18
     );
-
-  overflow-x:
-    auto !important;
-
-  overflow-y:
-    hidden !important;
-
-  overscroll-behavior-x:
-    contain;
-
-  overscroll-behavior-y:
-    none;
-
-  scrollbar-width:
-    thin;
-
-  -webkit-overflow-scrolling:
-    touch;
-
-  touch-action:
-    pan-x !important;
 
   pointer-events:
     auto !important;
-}
 
-
-.scratchpad-toolbar--viewport-safe
-.scratchpad-tool-group {
-
-  flex:
-    0 0 auto !important;
-
-  min-width:
-    max-content;
-}
-
-
-.scratchpad-toolbar--viewport-safe
-.scratchpad-tool-button,
-
-.scratchpad-toolbar--viewport-safe
-.scratchpad-color-button,
-
-.scratchpad-toolbar--viewport-safe
-.scratchpad-size-button {
-
-  flex:
-    0 0 auto;
-}
-
-
-.scratchpad-toolbar--viewport-safe::-webkit-scrollbar {
-
-  height:
-    5px;
-}
-
-
-.scratchpad-toolbar--viewport-safe::-webkit-scrollbar-thumb {
-
-  border-radius:
-    999px;
-
-  background:
-    rgba(
-      120,
-      53,
-      15,
-      .34
-    );
-}
-
-
-.scratchpad-toolbar--viewport-safe::-webkit-scrollbar-track {
-
-  background:
-    transparent;
+  overscroll-behavior:
+    contain;
 }
