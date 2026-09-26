@@ -3,8 +3,8 @@
 生活有解．心中有數｜共用計算紙
 檔案：js/scratchpad.js
 
-版本：4.7
-v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
+版本：4.8
+完整功能保留＋手機書寫低延遲優化版
 ==================================================
 
 本版修正：
@@ -46,6 +46,13 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
    - 正常 100% 顯示時完全維持原有工具列。
    - 放大／縮小／拖動畫面後，工具列固定在目前可視區上方。
    - 工具列仍保留原本換行、捲動與全部按鈕，不改工具功能。
+16. v4.8 手機書寫順暢度優化：
+   - 同一個 pointermove 的高密度觸控點合併成一次 Path / Stroke。
+   - 同一個 pointermove 只取得一次 Canvas 位置，不重複觸發版面計算。
+   - 每次抬筆只產生一次 PNG 快照，Undo 與本題保存共用同一份。
+   - 一般畫筆抬筆後不再立刻掃描整張 Canvas 像素。
+   - 手指平滑係數微調為 0.90，降低筆跡追不上手指的感覺。
+   - Undo / Redo、清除、下載、橡皮擦、顏色、粗細、縮放固定工具列等功能不變。
 ==================================================
 */
 
@@ -1094,7 +1101,9 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
     */
 
 
-    saveCurrentQuestionImage() {
+    saveCurrentQuestionImage(
+      snapshotOverride = null
+    ) {
 
 
       if (
@@ -1110,6 +1119,7 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
       try {
 
         this.currentQuestionImage =
+          snapshotOverride ||
           this.canvas.toDataURL(
             "image/png"
           );
@@ -1268,11 +1278,13 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
 
 
     getPointerPosition(
-      event
+      event,
+      rectOverride = null
     ) {
 
 
       const rect =
+        rectOverride ||
         this.canvas
           .getBoundingClientRect();
 
@@ -1377,7 +1389,7 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
         "touch"
       ) {
 
-        return 0.86;
+        return 0.90;
 
       }
 
@@ -1624,6 +1636,212 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
 
     /*
     ==================================================
+    批次繪製同一個 pointermove 的取樣點
+    ==================================================
+
+    手機瀏覽器可能在一個 pointermove 裡提供多個
+    getCoalescedEvents() 取樣點。
+
+    舊版：
+      每一個取樣點都 beginPath() / stroke() 一次。
+
+    v4.8：
+      同一批取樣點只 beginPath() 一次、stroke() 一次，
+      但仍逐點使用原本的 quadraticCurveTo() 平滑演算法。
+
+    因此：
+      - 筆跡形狀與原本邏輯一致。
+      - 手機主執行緒工作量明顯降低。
+      - 不改 Undo / Redo 與其他工具。
+    ==================================================
+    */
+
+
+    drawSmoothSamples(
+      samples,
+      rect,
+      fallbackPointerType =
+        this.activePointerType
+    ) {
+
+
+      if (
+        !this.ctx ||
+        !samples ||
+        !samples.length
+      ) {
+
+        return;
+
+      }
+
+
+      this.applyDrawingStyle();
+
+
+      this.ctx.beginPath();
+
+
+      this.ctx.moveTo(
+        this.lastMidX,
+        this.lastMidY
+      );
+
+
+      let drewAny =
+        false;
+
+
+      for (
+        const sample of
+        samples
+      ) {
+
+
+        if (
+          sample.pointerId !==
+            undefined &&
+          sample.pointerId !==
+            this.drawingPointerId
+        ) {
+
+          continue;
+
+        }
+
+
+        const rawPoint =
+          this.getPointerPosition(
+            sample,
+            rect
+          );
+
+
+        const pointerType =
+          sample.pointerType ||
+          fallbackPointerType ||
+          this.activePointerType;
+
+
+        const smoothing =
+          this.getPointerSmoothing(
+            pointerType
+          );
+
+
+        const point = {
+
+          x:
+            this.lastX +
+            (
+              rawPoint.x -
+              this.lastX
+            ) *
+            smoothing,
+
+          y:
+            this.lastY +
+            (
+              rawPoint.y -
+              this.lastY
+            ) *
+            smoothing
+
+        };
+
+
+        const dx =
+          point.x -
+          this.lastX;
+
+
+        const dy =
+          point.y -
+          this.lastY;
+
+
+        const distanceSquared =
+          dx * dx +
+          dy * dy;
+
+
+        if (
+          distanceSquared <
+          0.015
+        ) {
+
+          continue;
+
+        }
+
+
+        const midX =
+          (
+            this.lastX +
+            point.x
+          ) /
+          2;
+
+
+        const midY =
+          (
+            this.lastY +
+            point.y
+          ) /
+          2;
+
+
+        this.ctx.quadraticCurveTo(
+          this.lastX,
+          this.lastY,
+          midX,
+          midY
+        );
+
+
+        this.lastMidX =
+          midX;
+
+
+        this.lastMidY =
+          midY;
+
+
+        this.lastX =
+          point.x;
+
+
+        this.lastY =
+          point.y;
+
+
+        drewAny =
+          true;
+
+      }
+
+
+      if (
+        drewAny
+      ) {
+
+        this.ctx.stroke();
+
+
+        this.hasDrawnInCurrentStroke =
+          true;
+
+      } else {
+
+        this.ctx.closePath();
+
+      }
+
+    }
+
+
+    /*
+    ==================================================
     開始畫
     ==================================================
     */
@@ -1750,35 +1968,27 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
         );
 
 
-      samples.forEach(
-        sample => {
+      /*
+      同一個 pointermove 只取一次 Canvas 位置。
+      */
 
 
-          if (
-            sample.pointerId !==
-              undefined &&
-            sample.pointerId !==
-              this.drawingPointerId
-          ) {
-
-            return;
-          }
+      const rect =
+        this.canvas
+          .getBoundingClientRect();
 
 
-          const point =
-            this.getPointerPosition(
-              sample
-            );
+      /*
+      同一批 coalesced events
+      合併成一次 Path / Stroke。
+      */
 
 
-          this.drawSmoothPoint(
-            point,
-            sample.pointerType ||
-              event.pointerType ||
-              this.activePointerType
-          );
-
-        }
+      this.drawSmoothSamples(
+        samples,
+        rect,
+        event.pointerType ||
+          this.activePointerType
       );
 
     }
@@ -1953,15 +2163,61 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
         null;
 
 
+      let knownBlank =
+        null;
+
+
       if (
         this.hasDrawnInCurrentStroke
       ) {
 
 
-        this.saveHistory();
+        /*
+        每次抬筆只 PNG 編碼一次。
+        同一份快照同時給 Undo 歷史與本題保存。
+        */
 
 
-        this.saveCurrentQuestionImage();
+        const snapshot =
+          this.getSnapshot();
+
+
+        if (
+          snapshot
+        ) {
+
+          this.saveHistory(
+            false,
+            snapshot,
+            true
+          );
+
+
+          this.saveCurrentQuestionImage(
+            snapshot
+          );
+
+        }
+
+
+        /*
+        畫筆完成一筆後，一定不是空白。
+        直接告知工具列，不再同步掃描整張 Canvas。
+
+        橡皮擦仍沿用原本 isBlank() 精確判斷，
+        確保全部擦空後清除／下載按鈕狀態正確。
+        */
+
+
+        if (
+          this.tool ===
+          "pen"
+        ) {
+
+          knownBlank =
+            false;
+
+        }
 
       }
 
@@ -1974,7 +2230,9 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
         "mouse";
 
 
-      this.updateToolbarState();
+      this.updateToolbarState(
+        knownBlank
+      );
 
     }
 
@@ -2022,7 +2280,9 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
 
 
     saveHistory(
-      force = false
+      force = false,
+      snapshotOverride = null,
+      skipToolbarUpdate = false
     ) {
 
 
@@ -2036,6 +2296,7 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
 
 
       const snapshot =
+        snapshotOverride ||
         this.getSnapshot();
 
 
@@ -2076,7 +2337,16 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
 
 
       this.redoStack =
-        [];this.updateToolbarState();
+        [];
+
+
+      if (
+        !skipToolbarUpdate
+      ) {
+
+        this.updateToolbarState();
+
+      }
 
     }
 
@@ -2609,7 +2879,9 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
     */
 
 
-    updateToolbarState() {
+    updateToolbarState(
+      knownBlank = null
+    ) {
 
 
       if (
@@ -2768,7 +3040,12 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
 
 
       const blank =
-        this.isBlank();
+        typeof knownBlank ===
+          "boolean"
+
+          ? knownBlank
+
+          : this.isBlank();
 
 
       if (
@@ -4906,7 +5183,7 @@ v4.4 完整功能保留＋固定工具列＋裝置效能優化修正版
       return {
 
         version:
-          "4.7",
+          "4.8",
 
         createdAt:
           new Date()
