@@ -664,7 +664,7 @@ button:disabled{
 
   min-height:96px;
 
-  text-align:center;
+  text-align:left;
 
   color:#0f172a;
 
@@ -677,7 +677,7 @@ button:disabled{
 
   font-weight:900;
 
-  line-height:1.5;
+  line-height:1.55;
 }
 
 
@@ -691,100 +691,102 @@ button:disabled{
 
   flex-wrap:wrap;
 
-  justify-content:center;
+  justify-content:flex-start;
 
   align-items:center;
 
   gap:8px 10px;
+
+  text-align:left;
 }
 
 
 /*
 ==================================================
-題目緊湊排列
+題目文字與換行規則
 
-原本「已知／條件一／條件二／求……」
-每一段都固定獨占一行。
-
-現在改成：
-畫面放得下就同一行；
-真的太長時才自然換到下一行。
+1. 所有換行都從同一個左邊界開始。
+2. 重要條件視為完整單位，不拆成兩行。
+3. 標點符號和重要條件放在同一組，避免標點掉到下一行。
+4. 條件真的太寬時，條件本身可水平滑動。
 ==================================================
 */
 
-.question-stack
-.important-line,
 
-.question-stack
-.condition-pill{
+.question-sentence{
 
   flex:
-    0 0 auto;
+    1 1 100%;
+
+  min-width:0;
+
+  width:100%;
+
+  margin:0;
+
+  padding:
+    2px 0;
+
+  text-align:left;
+
+  white-space:normal;
+
+  overflow-wrap:normal;
+
+  word-break:normal;
+}
+
+
+.keep-unit{
+
+  display:inline-block;
+
+  max-width:100%;
+
+  white-space:nowrap;
+
+  vertical-align:middle;
+}
+
+
+.important-line{
+
+  display:inline-block;
 
   width:auto;
 
   max-width:100%;
 
   margin:0;
-}
-
-
-.question-stack
-.condition-pill{
 
   padding:
-    7px 11px;
+    4px 0;
+
+  text-align:left;
+
+  white-space:normal;
+
+  vertical-align:middle;
 }
 
 
-/*
-==================================================
-重要條件
+.condition-pill{
 
-★ 不允許條件被切成兩行。
-★ 螢幕太窄時改用區塊內橫向滑動。
-==================================================
-*/
+  display:inline-flex;
 
-.important-line{
+  align-items:center;
 
-  display:block;
+  justify-content:center;
 
   width:max-content;
 
   max-width:100%;
 
   margin:
-    2px auto;
+    2px 2px;
 
   padding:
-    4px 8px;
-
-  overflow-x:auto;
-
-  overflow-y:hidden;
-
-  white-space:nowrap;
-
-  -webkit-overflow-scrolling:touch;
-
-  scrollbar-width:thin;
-}
-
-
-.condition-pill{
-
-  display:block;
-
-  width:max-content;
-
-  max-width:100%;
-
-  margin:
-    0 auto;
-
-  padding:
-    10px 16px;
+    8px 12px;
 
   overflow-x:auto;
 
@@ -799,6 +801,8 @@ button:disabled{
   background:#fff;
 
   white-space:nowrap;
+
+  vertical-align:middle;
 
   -webkit-overflow-scrolling:touch;
 
@@ -825,8 +829,12 @@ button:disabled{
 ==================================================
 堆疊分數
 
-★ 可接受 x、y、z 等文字，
-  不會再出現 NaN。
+畫面上的分數統一使用：
+分子
+──
+分母
+
+不使用 x/y 斜線表示。
 ==================================================
 */
 
@@ -848,6 +856,8 @@ button:disabled{
   vertical-align:middle;
 
   line-height:1.02;
+
+  white-space:nowrap;
 }
 
 
@@ -1148,6 +1158,8 @@ button:disabled{
 
   margin-top:16px;
 
+  text-align:left;
+
   padding:18px;
 
   border:
@@ -1194,6 +1206,8 @@ button:disabled{
 
 
 .explanation-step{
+
+  text-align:left;
 
   margin:
     7px 0;
@@ -1471,7 +1485,6 @@ button:disabled{
   }
 
 
-  .question-stack
   .condition-pill{
 
     padding:
@@ -2542,6 +2555,18 @@ function ratioHTML(
 ==================================================
 */
 
+function keepMathHTML(
+  content
+){
+
+  return `
+    <span class="keep-unit math">
+      ${content}
+    </span>
+  `;
+}
+
+
 function fractionHTML(
   numerator,
   denominator
@@ -3171,28 +3196,27 @@ function makeMergeCommonY(){
       "兩個比合成連比",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          已知
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：y＝${a*k}：${b*k}
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            <span class="condition-pill math">
+              y：z＝${b*h}：${c*h}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
         </div>
-
-        <div class="condition-pill math">
-          x：y＝${a*k}：${b*k}
-        </div>
-
-        <div class="condition-pill math">
-          y：z＝${b*h}：${c*h}
-        </div>
-
-        <div class="important-line">
-          求
-          <span class="math">
-            x：y：z
-          </span>。
-        </div>
-
       </div>
     `,
 
@@ -3307,25 +3331,27 @@ function makeMergeCommonZ(){
       "共同項不是中間文字",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          已知
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：z＝${a*k}：${c*k}
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            <span class="condition-pill math">
+              y：z＝${b*h}：${c*h}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
         </div>
-
-        <div class="condition-pill math">
-          x：z＝${a*k}：${c*k}
-        </div>
-
-        <div class="condition-pill math">
-          y：z＝${b*h}：${c*h}
-        </div>
-
-        <div class="important-line">
-          求 x：y：z。
-        </div>
-
       </div>
     `,
 
@@ -3403,53 +3429,33 @@ function makeMergeFraction(){
       "分數的連比",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          已知
-        </div>
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：y＝
+              ${reducedFractionHTML(a,d1)}
+              ：
+              ${reducedFractionHTML(b,d1)}
+            </span>，
+          </span>
 
-        <div class="condition-pill math">
+          <span class="keep-unit">
+            <span class="condition-pill math">
+              y：z＝
+              ${reducedFractionHTML(b,d2)}
+              ：
+              ${reducedFractionHTML(c,d2)}
+            </span>。
+          </span>
 
-          x：y＝
-
-          ${reducedFractionHTML(
-            a,
-            d1
-          )}
-
-          ：
-
-          ${reducedFractionHTML(
-            b,
-            d1
-          )}
-
-        </div>
-
-        <div class="condition-pill math">
-
-          y：z＝
-
-          ${reducedFractionHTML(
-            b,
-            d2
-          )}
-
-          ：
-
-          ${reducedFractionHTML(
-            c,
-            d2
-          )}
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
 
         </div>
-
-        <div class="important-line">
-          求 x：y：z。
-        </div>
-
       </div>
     `,
 
@@ -3577,25 +3583,27 @@ function makeMergeDecimal(){
       "小數的連比",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          已知
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：y＝${A}：${B1}
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            <span class="condition-pill math">
+              y：z＝${B2}：${C}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
         </div>
-
-        <div class="condition-pill math">
-          x：y＝${A}：${B1}
-        </div>
-
-        <div class="condition-pill math">
-          y：z＝${B2}：${C}
-        </div>
-
-        <div class="important-line">
-          求 x：y：z。
-        </div>
-
       </div>
     `,
 
@@ -3663,25 +3671,31 @@ function makeMergeEquation(){
       "由等式求連比",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          已知 x、y、z 皆不為 0
+          <span class="keep-unit">
+            已知 x、y、z 皆不為 0，
+          </span>
+
+          <span class="keep-unit">
+            且
+            <span class="condition-pill math">
+              ${b}x＝${a}y
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            <span class="condition-pill math">
+              ${c}y＝${b}z
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
         </div>
-
-        <div class="condition-pill math">
-          ${b}x＝${a}y
-        </div>
-
-        <div class="condition-pill math">
-          ${c}y＝${b}z
-        </div>
-
-        <div class="important-line">
-          求 x：y：z。
-        </div>
-
       </div>
     `,
 
@@ -3778,21 +3792,19 @@ function makeEquivalentForm(){
       "連比例式的等價表示",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          已知
-        </div>
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：y：z＝${a}：${b}：${c}
+            </span>。
+          </span>
 
-        <div class="condition-pill math">
-          x：y：z＝${a}：${b}：${c}
-        </div>
-
-        <div class="important-line">
           下列哪一個表示方式正確？
-        </div>
 
+        </div>
       </div>
     `,
 
@@ -3968,11 +3980,19 @@ function makeEquivalentForm(){
 
           `則 x＝${a}r、y＝${b}r、z＝${c}r。`,
 
-          `所以 ${fractionHTML("x",a)}＝${fractionHTML("y",b)}＝${fractionHTML("z",c)}＝r。`
+          `所以 ${keepMathHTML(
+            `${fractionHTML("x",a)}＝${fractionHTML("y",b)}＝${fractionHTML("z",c)}＝r`
+          )}。`
         ],
 
         why:
-          "x：y：z＝a：b：c 與 x/a＝y/b＝z/c 是同一個連比例關係。",
+          `
+          x：y：z＝a：b：c 與
+          ${keepMathHTML(
+            `${fractionHTML("x","a")}＝${fractionHTML("y","b")}＝${fractionHTML("z","c")}`
+          )}
+          是同一個連比例關係。
+        `,
 
         mistake:
           "分母必須和各自對應的連比數字一致。"
@@ -4083,29 +4103,28 @@ function makeLinearApplication(){
       "連比例式求值",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          已知
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：y：z＝${a}：${b}：${c}
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            且
+            <span class="condition-pill math">
+              ${px}＋${qy}＋${sz}＝${total}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">${target}</span>＝？
+          </span>
+
         </div>
-
-        <div class="condition-pill math">
-          x：y：z＝${a}：${b}：${c}
-        </div>
-
-        <div class="important-line">
-          且
-        </div>
-
-        <div class="condition-pill math">
-          ${px}＋${qy}＋${sz}＝${total}
-        </div>
-
-        <div class="important-line">
-          求 ${target}。
-        </div>
-
       </div>
     `,
 
@@ -4205,21 +4224,26 @@ function makeDistribution(){
       "按比例分配",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          甲、乙、丙三人依下列比例分配 ${total} 元
+          甲、乙、丙三人依
+
+          <span class="condition-pill math">
+            甲：乙：丙＝${a}：${b}：${c}
+          </span>
+
+          的比例分配
+
+          <span class="keep-unit">
+            ${total} 元。
+          </span>
+
+          <span class="keep-unit">
+            ${names[targetIndex]} 可以分得多少元？
+          </span>
+
         </div>
-
-        <div class="condition-pill math">
-          甲：乙：丙＝${a}：${b}：${c}
-        </div>
-
-        <div class="important-line">
-          ${names[targetIndex]} 可以分得多少元？
-        </div>
-
       </div>
     `,
 
@@ -4294,21 +4318,24 @@ function makeRecipe(){
       "生活中的連比例式",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          茶、牛奶、糖水依下列比例調配
+          茶、牛奶、糖水依
+
+          <span class="condition-pill math">
+            茶：牛奶：糖水＝${a}：${b}：${c}
+          </span>
+
+          的比例調配。
+
+          <span class="keep-unit">
+            若共調配 ${total} 毫升，
+          </span>
+
+          需要多少毫升的茶？
+
         </div>
-
-        <div class="condition-pill math">
-          茶：牛奶：糖水＝${a}：${b}：${c}
-        </div>
-
-        <div class="important-line">
-          若共調配 ${total} 毫升，需要多少毫升的茶？
-        </div>
-
       </div>
     `,
 
@@ -4425,21 +4452,25 @@ function makeEqualProduct(){
       "ax＝by＝cz",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          已知 x、y、z 皆不為 0
+          <span class="keep-unit">
+            已知 x、y、z 皆不為 0，
+          </span>
+
+          <span class="keep-unit">
+            且
+            <span class="condition-pill math">
+              ${a}x＝${b}y＝${c}z
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
         </div>
-
-        <div class="condition-pill math">
-          ${a}x＝${b}y＝${c}z
-        </div>
-
-        <div class="important-line">
-          求 x：y：z。
-        </div>
-
       </div>
     `,
 
@@ -4461,7 +4492,9 @@ function makeEqualProduct(){
 
         steps:[
 
-          `x：y：z＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}。`,
+          `${keepMathHTML(
+            `x：y：z＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}`
+          )}。`,
 
           "將三個分數同乘適當的公倍數。",
 
@@ -4508,25 +4541,23 @@ function makeTriangleAreaInverse(){
       "等面積三角形",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          三個三角形的面積相等
+          三個三角形的面積相等，
+
+          <span class="keep-unit">
+            底邊長比為
+            <span class="condition-pill math">
+              ${a}：${b}：${c}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求對應高的比＝？
+          </span>
+
         </div>
-
-        <div class="important-line">
-          底邊長比為
-        </div>
-
-        <div class="condition-pill math">
-          ${a}：${b}：${c}
-        </div>
-
-        <div class="important-line">
-          求對應高的比。
-        </div>
-
       </div>
     `,
 
@@ -4548,7 +4579,9 @@ function makeTriangleAreaInverse(){
 
         steps:[
 
-          `高的比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}。`,
+          `${keepMathHTML(
+            `高的比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}`
+          )}。`,
 
           "將分數化成整數比。",
 
@@ -4595,25 +4628,23 @@ function makeRectangleInverse(){
       "等面積長方形",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          三個長方形面積相等
+          三個長方形的面積相等，
+
+          <span class="keep-unit">
+            長的比為
+            <span class="condition-pill math">
+              ${a}：${b}：${c}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求寬的比＝？
+          </span>
+
         </div>
-
-        <div class="important-line">
-          長的比為
-        </div>
-
-        <div class="condition-pill math">
-          ${a}：${b}：${c}
-        </div>
-
-        <div class="important-line">
-          求寬的比。
-        </div>
-
       </div>
     `,
 
@@ -4635,7 +4666,9 @@ function makeRectangleInverse(){
 
         steps:[
 
-          `寬的比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}。`,
+          `${keepMathHTML(
+            `寬的比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}`
+          )}。`,
 
           "化成最簡整數比。",
 
@@ -4682,21 +4715,22 @@ function makeRateTimeInverse(){
       "相同工作量",
 
     html:`
-
       <div class="question-stack">
+        <div class="question-sentence">
 
-        <div class="important-line">
-          甲、乙、丙三臺機器每小時產量比為
+          甲、乙、丙三臺機器的每小時產量比為
+
+          <span class="condition-pill math">
+            ${a}：${b}：${c}
+          </span>。
+
+          若完成相同數量的產品，
+
+          <span class="keep-unit">
+            求所需時間比＝？
+          </span>
+
         </div>
-
-        <div class="condition-pill math">
-          ${a}：${b}：${c}
-        </div>
-
-        <div class="important-line">
-          若完成相同數量的產品，所需時間比為何？
-        </div>
-
       </div>
     `,
 
@@ -4718,7 +4752,9 @@ function makeRateTimeInverse(){
 
         steps:[
 
-          `時間比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}。`,
+          `${keepMathHTML(
+            `時間比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}`
+          )}。`,
 
           "將分數化成最簡整數比。",
 
