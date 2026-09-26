@@ -39,7 +39,6 @@ v4.5 效能優化：
   class Scratchpad {
     constructor(options = {}) {
       this.options = options;
-
       this.canvasId = options.canvasId || "scratchpadCanvas";
       this.panelId = options.panelId || "scratchpadPanel";
       this.headerId = options.headerId || "scratchpadHeader";
@@ -186,7 +185,6 @@ v4.5 效能優化：
         return false;
       }
     }
-
     isDesktopResizeView() { return false; }
     getViewportMargin() { return 0; }
 
@@ -207,7 +205,6 @@ v4.5 效能優化：
     updateResponsiveMode() {
       this.applyResponsivePanelSize();
     }
-
     getPixelRatio() {
       const rawRatio = Math.max(1, Number(window.devicePixelRatio) || 1);
       const isTouch = this.isTouchDevice();
@@ -291,7 +288,6 @@ v4.5 效能優化：
 
     async resizeCanvasPreserveContent() {
       if (!this.canvas) return;
-
       let saved = this.currentQuestionImage;
       if (this.isDrawing || this.blankStateUnknown) {
         const fresh = this.getSnapshot();
@@ -396,7 +392,6 @@ v4.5 效能優化：
       if (dx * dx + dy * dy < 0.015) return null;
       return point;
     }
-
     drawSampleBatch(samples, rect, fallbackPointerType) {
       if (!this.ctx || !Array.isArray(samples) || !samples.length) return false;
 
@@ -438,7 +433,6 @@ v4.5 效能優化：
       } else {
         this.ctx.closePath();
       }
-
       return drewAny;
     }
 
@@ -564,7 +558,6 @@ v4.5 效能優化：
 
       const snapshot = snapshotOverride || this.getSnapshot();
       if (!snapshot) return;
-
       if (!force && this.undoStack[this.undoStack.length - 1] === snapshot) return;
 
       this.undoStack.push(snapshot);
@@ -711,7 +704,6 @@ v4.5 效能優化：
       this.clearCanvasPixels();
       this.undoStack = [];
       this.redoStack = [];
-
       /* 保留 currentColor / currentSize，只回到畫筆工具。 */
       this.tool = "pen";
 
@@ -837,7 +829,6 @@ v4.5 效能優化：
       this.closeButton.style.right = "";
       this.closeButton.style.bottom = "";
     }
-
     /*
     ==================================================
     Visual Viewport 安全工具列
@@ -921,7 +912,6 @@ v4.5 效能優化：
         Number(viewport.width) ||
           panelWidth
       );
-
       const closeWidth =
         this.closeButton?.offsetWidth ||
         44;
@@ -1026,7 +1016,6 @@ v4.5 效能優化：
         this.resetCloseButtonViewportPosition();
         return;
       }
-
       const viewport = window.visualViewport;
       if (!viewport) {
         this.resetCloseButtonViewportPosition();
@@ -1173,7 +1162,6 @@ v4.5 效能優化：
       this.resetToolbarViewportPosition();
       this.panel.hidden = true;
       this.panel.setAttribute("aria-modal", "false");
-
       if (this.openButton) this.openButton.setAttribute("aria-expanded", "false");
 
       this.unlockBackgroundPage();
