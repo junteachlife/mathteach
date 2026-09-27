@@ -172,6 +172,30 @@ button:disabled{opacity:.48;cursor:not-allowed}
   vertical-align:baseline;
 }
 
+
+/*
+==================================================
+課本風格平行符號
+
+原本 Unicode「∥」在部分手機字型會太接近垂直線。
+改成兩條斜線「//」的視覺樣式，更接近課本常見寫法。
+==================================================
+*/
+.parallel-symbol{
+  display:inline-block;
+  margin:0 .12em;
+  font-family:"Arial","Noto Sans","Microsoft JhengHei",sans-serif;
+  font-weight:900;
+  font-size:1.02em;
+  letter-spacing:-.12em;
+  line-height:1;
+  transform:skewX(-7deg);
+  transform-origin:center;
+  vertical-align:.02em;
+  white-space:nowrap;
+}
+
+
 /*
 重要資訊保持在同一組：
 例如 BC線段＝5、∠A＝30°、AB：BC＝2：3、PQ∥BC。
@@ -441,7 +465,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
 <header class="game-header">
   <h1 class="game-title">📐 1-2 比例線段大挑戰</h1>
   <p class="game-subtitle">等高三角形面積比、平行線截比例線段、平行判別與三角形中點連線段。</p>
-  <div class="concept-strip"><span class="concept-chip">📐 面積比</span><span class="concept-chip">∥ 比例線段</span><span class="concept-chip">✅ 判別平行</span><span class="concept-chip">✂️ 中點連線</span><span class="concept-chip">🖼️ 圖形題</span><span class="concept-chip">🔥 精熟題</span></div>
+  <div class="concept-strip"><span class="concept-chip">📐 面積比</span><span class="concept-chip"><span class="parallel-symbol" aria-label="平行">//</span> 比例線段</span><span class="concept-chip">✅ 判別平行</span><span class="concept-chip">✂️ 中點連線</span><span class="concept-chip">🖼️ 圖形題</span><span class="concept-chip">🔥 精熟題</span></div>
 </header>
 
 <section id="start-screen" class="screen">
@@ -1861,7 +1885,9 @@ function renderChoices(question){
     <div class="choice-grid">
       ${shuffle(question.choices).map(choice=>`
         <button class="choice-button" type="button" data-choice="${escapeHTML(choice.value)}">
-          ${choice.html??escapeHTML(choice.text??choice.value)}
+          ${protectImportantUnits(
+            choice.html??escapeHTML(choice.text??choice.value)
+          )}
         </button>
       `).join("")}
     </div>
@@ -2074,6 +2100,16 @@ function protectImportantUnits(input){
   html=html.replace(
     /\b([xyz])＝([−-]?\d+(?:\.\d+)?)/g,
     '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  /*
+  最後才把 ∥ 轉成課本風格的雙斜線。
+  這樣前面的 keep-unit 比對仍可正常辨識
+  「線段＋平行＋線段」為同一組重要資訊。
+  */
+  html=html.replace(
+    /∥/g,
+    '<span class="parallel-symbol" aria-label="平行">//</span>'
   );
 
   return html;
