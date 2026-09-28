@@ -3,8 +3,8 @@
 生活有解．心中有數｜遊戲排行榜
 檔案位置：js/leaderboard.js
 
-版本：8.4
-2026-09-24 九上 1-2／1-3／1-4 模式同步版
+版本：8.5
+2026-09-28 九上 3-1／3-2 模式同步版
 ==================================================
 
 本版重點：
@@ -20,7 +20,8 @@
    只修改排行榜中文名稱
 8. 每個排行榜最多 20 名
 9. Firestore 讀取失敗時不會再被後續畫面覆蓋
-10. 九上 1-2／1-3／1-4 直接依 game-config.js 的正式 GAME_ID / modeId 建榜
+10. 九上 1-2／1-3／1-4／2-1／2-2／3-1／3-2 直接依 game-config.js 的正式 GAME_ID / modeId 建榜
+11. 九上 3-1 geometric-proof、3-2 triangle-centers 不新增硬編碼，完全沿用 game-config.js 模式設定
 ==================================================
 */
 
@@ -35,7 +36,7 @@ import {
   getGamesBySemester,
   getGameConfig,
   getGameName
-} from "./game-config.js?v=6.8";
+} from "./game-config.js?v=7.1";
 
 
 import {
@@ -2566,7 +2567,7 @@ try {
 
 
   console.log(
-    "leaderboard.js v8.3 已成功載入"
+    "leaderboard.js v8.5 已成功載入"
   );
 
 
