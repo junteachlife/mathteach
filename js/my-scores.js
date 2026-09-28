@@ -3,7 +3,7 @@
 生活有解．心中有數｜我的成績
 檔案位置：js/my-scores.js
 
-版本：3.2
+版本：3.3
 學期分類＋模式統計正式版
 ==================================================
 
@@ -37,6 +37,10 @@
    依 game-config.js 的 semester 自動判斷
 
 7. 相容新版七上 GAME_ID
+
+8. 九上 3-1 geometric-proof、3-2 triangle-centers
+   直接依 game-config.js 的正式 GAME_ID / modeId 顯示
+   不新增硬編碼，不搬動既有 Firestore 成績
 ==================================================
 */
 
@@ -51,7 +55,7 @@ import {
   getGameConfig,
   getGameName,
   getModeName
-} from "./game-config.js?v=6.8";
+} from "./game-config.js?v=7.1";
 
 
 import {
@@ -2997,5 +3001,5 @@ function showError(
 
 
 console.log(
-  "my-scores.js v3.2 已成功載入"
+  "my-scores.js v3.3 已成功載入"
 );
