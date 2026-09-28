@@ -1,0 +1,3100 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>九上 2-2 圓心角與圓周角大挑戰｜生活有解．心中有數</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'14'%20fill%3D'%23c2410c'%2F%3E%3Ctext%20x%3D'32'%20y%3D'39'%20text-anchor%3D'middle'%20font-family%3D'Arial,sans-serif'%20font-size%3D'18'%20font-weight%3D'700'%20fill%3D'white'%3E2-2%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link rel="stylesheet" href="../css/scratchpad.css">
+<style>
+
+*{box-sizing:border-box}
+:root{
+  --primary:#c2410c;
+  --primary-dark:#9a3412;
+  --primary-light:#fff7ed;
+  --primary-border:#fdba74;
+  --accent:#0ea5e9;
+  --purple:#7c3aed;
+  --orange:#d97706;
+  --green:#16a34a;
+  --text:#1e293b;
+  --muted:#64748b;
+  --success:#15803d;
+  --danger:#dc2626;
+  --warning:#b45309;
+}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; padding:16px;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 7% 7%,rgba(96,165,250,.16),transparent 28%),
+    radial-gradient(circle at 94% 5%,rgba(245,158,11,.10),transparent 30%),
+    linear-gradient(135deg,#f8fafc,#fff 52%,#f8fafc);
+}
+button,input,select{font-family:inherit}
+button{touch-action:manipulation}
+.hidden{display:none!important}
+.page-shell{width:min(100%,1080px);margin:0 auto}
+#commonHeaderMount{margin-bottom:14px}
+.game-card{
+  overflow:hidden;border:1px solid #d8dee8;border-top:8px solid var(--primary);
+  border-radius:26px;background:#fff;box-shadow:0 18px 45px rgba(15,23,42,.12)
+}
+.game-header{
+  padding:27px 20px 20px;text-align:center;
+  background:linear-gradient(180deg,var(--primary-light),#fff)
+}
+.game-title{
+  margin:0;color:var(--primary-dark);font-size:clamp(29px,4.8vw,43px);line-height:1.22
+}
+.game-subtitle{
+  max-width:900px;margin:11px auto 0;color:var(--muted);
+  font-weight:700;line-height:1.75
+}
+.concept-strip{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:14px}
+.concept-chip{
+  padding:7px 12px;border:1px solid var(--primary-border);border-radius:999px;
+  background:#fff;color:var(--primary-dark);font-size:14px;font-weight:900
+}
+.screen{padding:22px}
+.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.mode-card{
+  display:flex;flex-direction:column;min-height:222px;padding:20px;
+  border:2px solid #d9e0e9;border-radius:20px;background:#fff;
+  box-shadow:0 8px 22px rgba(15,23,42,.05);transition:.15s ease
+}
+.mode-card:hover{
+  transform:translateY(-2px);border-color:var(--primary-border);
+  box-shadow:0 12px 28px rgba(15,23,42,.09)
+}
+.mode-card.final{
+  border-color:#f59e0b;background:linear-gradient(180deg,#fffbeb,#fff)
+}
+.mode-icon{font-size:33px}
+.mode-title{margin:9px 0 6px;color:var(--primary-dark);font-size:21px;font-weight:900}
+.mode-meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.mode-tag{
+  padding:4px 8px;border-radius:999px;background:#f1f5f9;
+  color:#475569;font-size:12px;font-weight:900
+}
+.mode-description{flex:1;margin:0 0 15px;color:var(--muted);line-height:1.65}
+.mode-button,.game-button{
+  min-height:48px;padding:11px 17px;border:none;border-radius:14px;
+  color:#fff;font-size:16px;font-weight:900;cursor:pointer
+}
+.mode-button,.game-button.primary{background:var(--primary)}
+.mode-card.final .mode-button{background:var(--orange)}
+.game-button.secondary{background:#475569}
+.game-button.orange{background:var(--orange)}
+.game-button.purple{background:var(--purple)}
+.game-button.restart{background:var(--green)}
+button:disabled{opacity:.48;cursor:not-allowed}
+.quiz-top{
+  display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start
+}
+.mode-name{color:var(--primary-dark);font-size:20px;font-weight:900}
+.question-number{margin-top:4px;color:var(--muted);font-size:14px;font-weight:800}
+.quiz-stats{display:grid;grid-template-columns:repeat(4,auto);gap:8px}
+.stat-pill{
+  min-width:86px;padding:8px 10px;border:1px solid #e2e8f0;border-radius:12px;
+  background:#f8fafc;text-align:center;color:#475569;font-size:12px;font-weight:800
+}
+.stat-pill strong{display:block;margin-top:2px;color:#0f172a;font-size:18px}
+.progress-track{
+  height:10px;margin:16px 0 20px;overflow:hidden;border-radius:999px;background:#e2e8f0
+}
+.progress-bar{
+  width:0;height:100%;background:linear-gradient(90deg,var(--primary-border),var(--primary));
+  transition:width .2s ease
+}
+.question-card{
+  overflow:hidden;padding:22px 18px;border:2px solid var(--primary-border);
+  border-radius:20px;background:linear-gradient(180deg,var(--primary-light),#fff)
+}
+.question-label{
+  margin-bottom:10px;color:var(--primary-dark);font-size:14px;font-weight:900
+}
+.question-content{
+  min-height:92px;
+  display:block;
+  text-align:left;
+  color:#0f172a;
+  font-size:clamp(20px,2.75vw,28px);
+  font-weight:900;
+  line-height:1.55;
+}
+
+/*
+==================================================
+題目換行規則
+
+- 能一行顯示就維持一行。
+- 需要換行時，每一行都從同一個左邊界開始。
+- 不再用 inline-flex 拆成許多小區塊，避免跨行後置中。
+==================================================
+*/
+.question-flow{
+  display:block;
+  width:100%;
+  max-width:100%;
+  margin:0;
+  text-align:left;
+}
+
+.qline{
+  display:inline;
+  max-width:100%;
+  white-space:normal;
+  text-align:left;
+  overflow-wrap:normal;
+  word-break:normal;
+}
+
+.math{
+  font-family:"Cambria Math","Times New Roman","Microsoft JhengHei",sans-serif
+}
+
+/*
+線段符號：上方橫線。
+使用 border-top，避免不同瀏覽器的 overline 高度不一致。
+*/
+.seg{
+  display:inline-block;
+  position:relative;
+  white-space:nowrap;
+  border-top:2px solid currentColor;
+  padding-top:.04em;
+  line-height:1.02;
+  text-decoration:none;
+  vertical-align:baseline;
+}
+
+
+/*
+==================================================
+課本風格平行符號
+
+原本 Unicode「∥」在部分手機字型會太接近垂直線。
+改成兩條斜線「//」的視覺樣式，更接近課本常見寫法。
+==================================================
+*/
+.parallel-symbol{
+  display:inline-block;
+  margin:0 .12em;
+  font-family:"Arial","Noto Sans","Microsoft JhengHei",sans-serif;
+  font-weight:900;
+  font-size:1.02em;
+  letter-spacing:-.12em;
+  line-height:1;
+  transform:skewX(-7deg);
+  transform-origin:center;
+  vertical-align:.02em;
+  white-space:nowrap;
+}
+
+
+/*
+==================================================
+圓弧符號
+==================================================
+*/
+.arc{
+  display:inline-block;
+  position:relative;
+  min-width:1.35em;
+  padding-top:.18em;
+  text-align:center;
+  white-space:nowrap;
+  line-height:1;
+  vertical-align:baseline;
+}
+.arc::before{
+  content:"⌒";
+  position:absolute;
+  left:50%;
+  top:-.58em;
+  transform:translateX(-50%) scaleX(1.12);
+  font-size:.92em;
+  font-weight:900;
+  line-height:1;
+}
+
+/*
+==================================================
+π 型答案
+==================================================
+*/
+.pi-answer-row{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.pi-fixed{
+  font-family:"Cambria Math","Times New Roman",serif;
+  font-size:34px;
+  font-weight:900;
+  color:var(--primary-dark);
+  line-height:1;
+}
+
+/*
+==================================================
+圓形圖形題
+==================================================
+*/
+.geo-diagram .circle-shape{
+  fill:rgba(32,93,155,.045);
+  stroke:var(--primary-dark);
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .radius-line,
+.geo-diagram .chord-line{
+  fill:none;
+  stroke:var(--primary-dark);
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .tangent-line{
+  fill:none;
+  stroke:#c2410c;
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .distance-line{
+  fill:none;
+  stroke:var(--accent);
+  stroke-width:3;
+  stroke-dasharray:7 5;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .arc-line{
+  fill:none;
+  stroke:#e11d48;
+  stroke-width:5;
+  stroke-linecap:round;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .right-mark{
+  fill:none;
+  stroke:#dc2626;
+  stroke-width:2.8;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .center-dot,
+.geo-diagram .point-dot{
+  fill:#0f172a;
+}
+.geo-diagram .relation-label{
+  fill:#9a3412;
+  font-size:21px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:5px;
+  stroke-linejoin:round;
+}
+
+
+/*
+重要資訊保持在同一組：
+例如 BC線段＝5、∠A＝30°、AB：BC＝2：3、PQ∥BC。
+瀏覽器換行時只能整組移到下一行，不會把「BC」和「＝5」拆開。
+*/
+.keep-unit{
+  display:inline-block;
+  white-space:nowrap;
+  max-width:100%;
+  vertical-align:baseline;
+}
+.nowrap{white-space:nowrap}
+.math-frac{
+  display:inline-flex;flex-direction:column;align-items:stretch;justify-content:center;
+  min-width:1.45em;margin:0 .10em;vertical-align:middle;line-height:1.02
+}
+.math-frac .top{
+  min-width:1.45em;padding:0 .15em .07em;border-bottom:2px solid currentColor;text-align:center
+}
+.math-frac .bottom{min-width:1.45em;padding:.07em .15em 0;text-align:center}
+.math-sup{font-size:.68em;vertical-align:super;margin-left:.03em}
+.scratchpad-row{
+  display:flex;justify-content:center;align-items:center;margin:14px 0 10px
+}
+#scratchpad-mobile-button #scratchpadOpenButton,
+#scratchpad-mobile-button .scratchpad-open-button{
+  position:static!important;inset:auto!important;transform:none!important;
+  margin:0!important;z-index:auto!important
+}
+.answer-area{
+  margin-top:0;padding:18px;border:1px solid #dbe5ef;border-radius:18px;background:#f8fafc
+}
+.answer-title{
+  margin-bottom:12px;text-align:center;color:var(--primary-dark);font-weight:900
+}
+.number-answer{
+  display:block;width:min(100%,340px);margin:0 auto;padding:13px 15px;
+  border:2px solid #94a3b8;border-radius:14px;background:#fff;
+  color:#0f172a;text-align:center;font-size:24px;font-weight:900;outline:none
+}
+.number-answer:focus,.ratio-input:focus,.fraction-whole:focus,
+.fraction-entry input:focus,.fraction-sign:focus{
+  border-color:var(--primary);box-shadow:0 0 0 4px rgba(59,130,246,.12)
+}
+.ratio-answer{
+  display:flex;justify-content:center;align-items:center;flex-wrap:nowrap;
+  gap:9px;width:100%;overflow-x:auto;padding:3px 2px;-webkit-overflow-scrolling:touch
+}
+.ratio-input{
+  flex:0 0 100px;width:100px;padding:12px 9px;border:2px solid #94a3b8;
+  border-radius:13px;background:#fff;text-align:center;font-size:22px;font-weight:900;outline:none
+}
+.ratio-colon{flex:0 0 auto;color:var(--primary-dark);font-size:27px;font-weight:900}
+.answer-help{
+  margin-top:9px;color:var(--muted);text-align:center;font-size:13px;font-weight:800;line-height:1.65
+}
+.fraction-answer{
+  display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap
+}
+.fraction-sign{
+  width:68px;height:52px;border:2px solid #94a3b8;border-radius:12px;
+  background:#fff;font-size:21px;font-weight:900;text-align:center;outline:none
+}
+.fraction-whole-wrap{display:flex;flex-direction:column;align-items:center;gap:3px}
+.fraction-whole-label{color:var(--muted);font-size:11px;font-weight:800}
+.fraction-whole{
+  width:84px;height:52px;padding:4px 7px;border:2px solid #94a3b8;
+  border-radius:12px;background:#fff;font-size:22px;font-weight:900;text-align:center;outline:none
+}
+.fraction-entry{
+  display:grid;grid-template-rows:46px 3px 46px;width:106px;align-items:center
+}
+.fraction-entry input{
+  width:100%;height:46px;border:2px solid #94a3b8;border-radius:11px;
+  background:#fff;font-size:22px;font-weight:900;text-align:center;outline:none
+}
+.fraction-line{height:3px;background:#334155;border-radius:999px}
+.system-read{
+  margin:12px auto 0;text-align:center;color:#475569;font-weight:800;line-height:1.7
+}
+.system-read strong{color:var(--primary-dark);font-size:18px}
+.choice-grid{
+  display:flex;flex-wrap:nowrap;gap:10px;overflow-x:auto;width:100%;
+  padding:2px 1px 5px;-webkit-overflow-scrolling:touch
+}
+.choice-button{
+  flex:1 0 165px;min-height:62px;padding:11px 12px;overflow-x:auto;
+  border:2px solid #cbd5e1;border-radius:14px;background:#fff;color:#1e293b;
+  font-size:17px;font-weight:900;line-height:1.55;cursor:pointer;white-space:nowrap
+}
+.choice-button:hover{border-color:var(--primary)}
+.choice-button.selected{
+  border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark)
+}
+.feedback{
+  margin-top:15px;padding:12px 14px;border-radius:13px;font-weight:900;line-height:1.7
+}
+.feedback:empty{display:none}
+.feedback.correct{background:#dcfce7;color:#166534}
+.feedback.wrong{background:#fee2e2;color:#991b1b}
+.feedback.warning{background:#fef3c7;color:#92400e}
+.explanation{
+  margin-top:15px;padding:17px;border:2px solid var(--primary-border);
+  border-radius:18px;background:#f8fafc;line-height:1.75
+}
+.explanation-title{
+  margin-bottom:12px;color:var(--primary-dark);font-size:19px;font-weight:900
+}
+.explanation-question{
+  margin-bottom:12px;padding:12px;border:1px solid #dbe5ef;border-radius:13px;
+  background:#fff;font-size:17px;font-weight:800;line-height:1.6
+}
+.explanation-think{
+  margin-bottom:10px;padding:10px 12px;border:1px solid #fed7aa;border-radius:12px;
+  background:#fff7ed;color:#9a3412
+}
+.explanation-step{
+  margin:8px 0;padding:10px 12px;border-left:4px solid var(--primary);
+  border-radius:0 11px 11px 0;background:#fff
+}
+.explanation-tip{
+  margin-top:10px;padding:10px 12px;border-radius:12px;background:#fff1f2;color:#9f1239
+}
+.explanation-answer{
+  margin-top:10px;padding:10px 12px;border:1px solid #bbf7d0;
+  border-radius:12px;background:#f0fdf4;color:#166534;font-weight:900
+}
+.button-row{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:17px
+}
+.result-panel{text-align:center}
+.result-score{margin:15px 0 5px;color:var(--orange);font-size:54px;font-weight:900}
+.result-stars{font-size:30px}
+.result-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:19px auto
+}
+.result-stat{
+  padding:13px 9px;border:1px solid #e2e8f0;border-radius:15px;
+  background:#f8fafc;color:#64748b;font-weight:800
+}
+.result-stat span{color:#0f172a;font-size:24px;font-weight:900}
+.save-status{min-height:25px;margin:9px 0;font-weight:800}
+.review-list{display:grid;gap:14px;margin-top:14px}
+.review-card{
+  padding:15px;border:1px solid #dbeafe;border-radius:16px;background:#fff
+}
+.review-card.correct-review{border-left:6px solid #22c55e}
+.review-card.wrong-review{border-left:6px solid #ef4444}
+.review-title{margin-bottom:8px;font-size:17px;font-weight:900}
+.review-question{margin:8px 0 11px;color:#0f172a;font-size:17px;font-weight:800;line-height:1.65}
+.review-answer-line{margin:5px 0;color:#475569;line-height:1.65}
+@media(max-width:760px){
+  body{padding:8px}.screen{padding:14px}.game-header{padding:21px 12px 16px}
+  .mode-grid{grid-template-columns:1fr}.mode-card{min-height:0}
+  .quiz-top{grid-template-columns:1fr}
+  .quiz-stats{grid-template-columns:repeat(4,1fr)}
+  .stat-pill{min-width:0;padding:7px 4px}
+  .question-card{padding:16px 8px}
+  .question-content{font-size:20px}
+  .choice-button{flex-basis:150px;font-size:16px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .game-button{flex:1 1 155px}
+  .ratio-input{flex-basis:82px;width:82px}
+}
+@media(max-width:460px){
+  .quiz-stats{grid-template-columns:repeat(2,1fr)}
+  .result-score{font-size:45px}
+  .ratio-input{flex-basis:72px;width:72px;font-size:19px}
+  .ratio-colon{font-size:22px}
+}
+
+
+/*
+==================================================
+幾何圖形題
+==================================================
+*/
+.geo-diagram{
+  width:min(100%,780px);
+  margin:10px auto 3px;
+  padding:10px 8px 7px;
+  border:1px solid var(--primary-border);
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff,var(--primary-light));
+}
+.geo-diagram svg{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:310px;
+  margin:0 auto;
+}
+.geo-diagram .shape{
+  fill:rgba(15,118,110,.035);
+  stroke:var(--primary-dark);
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .helper{
+  fill:none;
+  stroke:var(--accent);
+  stroke-width:2.4;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .parallel{
+  fill:none;
+  stroke:#d97706;
+  stroke-width:3;
+  stroke-dasharray:7 5;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .point{
+  fill:#0f172a;
+  font-size:19px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:4px;
+  stroke-linejoin:round;
+}
+.geo-diagram .side-label{
+  fill:#0f172a;
+  font-size:22px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:5px;
+  stroke-linejoin:round;
+}
+.geo-diagram .angle-label{
+  fill:#be123c;
+  font-size:18px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:4px;
+  stroke-linejoin:round;
+}
+.diagram-caption{
+  margin-top:3px;
+  color:#64748b;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+}
+.mastery-badge{
+  display:inline-block;
+  margin-right:6px;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#fff7ed;
+  color:#c2410c;
+  font-size:.72em;
+  font-weight:900;
+  vertical-align:middle;
+}
+</style>
+</head>
+<body>
+<div class="page-shell">
+<div id="commonHeaderMount"></div>
+
+<main class="game-card">
+<header class="game-header">
+  <h1 class="game-title">🟠 2-2 圓心角與圓周角大挑戰</h1>
+  <p class="game-subtitle">圓心角、弧與弦、半徑與弧長、圓周角、直徑與平行線截弧，以及圓內接四邊形。</p>
+  <div class="concept-strip">
+    <span class="concept-chip">🎯 圓心角與弧</span>
+    <span class="concept-chip">🟣 半徑與弧長</span>
+    <span class="concept-chip">📐 圓周角</span>
+    <span class="concept-chip">⭕ 半圓直角</span>
+    <span class="concept-chip"><span class="parallel-symbol" aria-label="平行">//</span> 平行線截弧</span>
+    <span class="concept-chip">◇ 圓內接四邊形</span>
+    <span class="concept-chip">🖼️ 圖形題</span>
+    <span class="concept-chip">🔥 精熟題</span>
+  </div>
+</header>
+
+<section id="start-screen" class="screen">
+  <h2>選擇挑戰模式</h2>
+  <div class="mode-grid">
+
+    <article class="mode-card">
+      <div class="mode-icon">🎯</div>
+      <div class="mode-title">圓心角、弧與弦</div>
+      <div class="mode-meta">
+        <span class="mode-tag">核心模式</span>
+        <span class="mode-tag">10 題</span>
+      </div>
+      <p class="mode-description">圓心角＝所對弧度數、等弧、等弦與正多邊形分圓。</p>
+      <button class="mode-button" data-mode="centralArc" type="button">開始挑戰</button>
+    </article>
+
+    <article class="mode-card">
+      <div class="mode-icon">🟣</div>
+      <div class="mode-title">半徑、弧長與弦</div>
+      <div class="mode-meta">
+        <span class="mode-tag">核心模式</span>
+        <span class="mode-tag">10 題</span>
+      </div>
+      <p class="mode-description">相同圓心角下，弧長比與弦長比等於半徑比，加入分數與 π 題。</p>
+      <button class="mode-button" data-mode="arcRadius" type="button">開始挑戰</button>
+    </article>
+
+    <article class="mode-card">
+      <div class="mode-icon">📐</div>
+      <div class="mode-title">圓周角與弧</div>
+      <div class="mode-meta">
+        <span class="mode-tag">核心模式</span>
+        <span class="mode-tag">10 題</span>
+      </div>
+      <p class="mode-description">圓周角是所對弧的一半，同弧所對圓周角相等，並練習反求弧。</p>
+      <button class="mode-button" data-mode="inscribedAngle" type="button">開始挑戰</button>
+    </article>
+
+    <article class="mode-card">
+      <div class="mode-icon">⭕</div>
+      <div class="mode-title">直徑與平行線截弧</div>
+      <div class="mode-meta">
+        <span class="mode-tag">核心模式</span>
+        <span class="mode-tag">10 題</span>
+      </div>
+      <p class="mode-description">半圓所對圓周角是直角，以及兩條平行線在圓上截出的兩弧相等。</p>
+      <button class="mode-button" data-mode="diameterParallel" type="button">開始挑戰</button>
+    </article>
+
+    <article class="mode-card">
+      <div class="mode-icon">◇</div>
+      <div class="mode-title">圓內接四邊形</div>
+      <div class="mode-meta">
+        <span class="mode-tag">核心模式</span>
+        <span class="mode-tag">10 題</span>
+      </div>
+      <p class="mode-description">對角互補、外角等於其相鄰內角的對角，加入代數與綜合角度題。</p>
+      <button class="mode-button" data-mode="cyclicQuadrilateral" type="button">開始挑戰</button>
+    </article>
+
+    <article class="mode-card final">
+      <div class="mode-icon">🏆</div>
+      <div class="mode-title">2-2 綜合挑戰</div>
+      <div class="mode-meta">
+        <span class="mode-tag">綜合模式</span>
+        <span class="mode-tag">10 題</span>
+      </div>
+      <p class="mode-description">圓心角、弧、圓周角、半圓、平行截弧與圓內接四邊形混合精熟題。</p>
+      <button class="mode-button" data-mode="comprehensive" type="button">開始綜合挑戰</button>
+    </article>
+
+  </div>
+</section>
+
+<section id="quiz-screen" class="screen hidden">
+  <div class="quiz-top">
+    <div>
+      <div id="mode-name" class="mode-name">—</div>
+      <div id="question-number" class="question-number">—</div>
+    </div>
+    <div class="quiz-stats">
+      <div class="stat-pill">分數<strong id="live-score">0</strong></div>
+      <div class="stat-pill">答對<strong id="correct-count">0</strong></div>
+      <div class="stat-pill">連擊<strong id="combo-count">0</strong></div>
+      <div class="stat-pill">時間<strong id="timer-display">00:00</strong></div>
+    </div>
+  </div>
+
+  <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+
+  <div class="question-card">
+    <div id="question-label" class="question-label">題目</div>
+    <div id="question-content" class="question-content"></div>
+  </div>
+
+  <div class="scratchpad-row"><div id="scratchpad-mobile-button"></div></div>
+
+  <div id="answer-area" class="answer-area"></div>
+  <div id="feedback" class="feedback"></div>
+  <div id="explanation" class="explanation hidden"></div>
+
+  <div class="button-row">
+    <button id="submit-button" class="game-button primary" type="button">送出答案（Enter）</button>
+    <button id="next-button" class="game-button purple hidden" type="button">下一題（Enter）</button>
+    <button id="restart-button" class="game-button restart" type="button">🔄 重新測驗</button>
+    <button id="quit-button" class="game-button secondary" type="button">重選模式</button>
+  </div>
+</section>
+
+<section id="result-screen" class="screen hidden">
+  <div class="result-panel">
+    <h2>🏅 本次挑戰結果</h2>
+    <div id="final-score" class="result-score">0 分</div>
+    <div id="final-stars" class="result-stars">★★☆☆☆</div>
+    <p id="final-comment"></p>
+    <div class="result-grid">
+      <div class="result-stat">答對<br><span id="final-correct">0</span> 題</div>
+      <div class="result-stat">答錯<br><span id="final-wrong">0</span> 題</div>
+      <div class="result-stat">最高連擊<br><span id="final-combo">0</span></div>
+      <div class="result-stat">作答時間<br><span id="final-time">00:00</span></div>
+    </div>
+    <div id="save-status" class="save-status"></div>
+    <div class="button-row">
+      <button id="again-button" class="game-button purple" type="button">🔄 再玩一次</button>
+      <button id="review-button" class="game-button orange" type="button">📖 查看本次詳解</button>
+      <button id="result-mode-button" class="game-button secondary" type="button">重選模式</button>
+    </div>
+  </div>
+</section>
+
+<section id="review-screen" class="screen hidden">
+  <h2>📖 本次詳解</h2>
+  <p style="color:#64748b;font-weight:700;">答對、答錯都會保留解析；步驟以國中生容易閱讀的方式呈現。</p>
+  <div id="review-list" class="review-list"></div>
+  <div class="button-row">
+    <button id="review-again-button" class="game-button purple" type="button">🔄 再玩一次</button>
+    <button id="review-result-button" class="game-button secondary" type="button">回到測驗結果</button>
+  </div>
+</section>
+</main>
+</div>
+
+<script src="../js/common-header.js"></script>
+<script src="../js/scratchpad.js"></script>
+<script src="../js/scratchpad-template.js"></script>
+<script src="../js/sound-manager.js?v=1"></script>
+<script type="module">
+
+"use strict";
+
+/*
+==================================================
+Stable game identity + future RPG bridge
+==================================================
+*/
+
+const GAME_ID = "central-inscribed-angle";
+const CHAPTER = "2-2";
+const GAME_TITLE = "圓心角與圓周角大挑戰";
+
+const MODES = {
+  centralArc:{
+    id:"centralArc",
+    name:"🎯 圓心角、弧與弦",
+    count:10,
+    difficultyWeight:1.02
+  },
+  arcRadius:{
+    id:"arcRadius",
+    name:"🟣 半徑、弧長與弦",
+    count:10,
+    difficultyWeight:1.08
+  },
+  inscribedAngle:{
+    id:"inscribedAngle",
+    name:"📐 圓周角與弧",
+    count:10,
+    difficultyWeight:1.10
+  },
+  diameterParallel:{
+    id:"diameterParallel",
+    name:"⭕ 直徑與平行線截弧",
+    count:10,
+    difficultyWeight:1.12
+  },
+  cyclicQuadrilateral:{
+    id:"cyclicQuadrilateral",
+    name:"◇ 圓內接四邊形",
+    count:10,
+    difficultyWeight:1.14
+  },
+  comprehensive:{
+    id:"comprehensive",
+    name:"🏆 2-2 綜合挑戰",
+    count:10,
+    difficultyWeight:1.32
+  }
+};
+
+window.MathGameSessionMeta = {
+  gameId: GAME_ID,
+  chapter: CHAPTER,
+  title: GAME_TITLE,
+  modes: MODES
+};
+
+const $ = id => document.getElementById(id);
+
+let modeId = "centralArc";
+let questions = [];
+let index = 0;
+let correct = 0;
+let wrong = 0;
+let combo = 0;
+let maxCombo = 0;
+let records = [];
+let answered = false;
+let selectedChoice = null;
+let startTime = 0;
+let elapsed = 0;
+let timerId = null;
+let scoreSaved = false;
+let rpgEmitted = false;
+let attemptId = "";
+
+function rand(min,max){
+  return Math.floor(Math.random()*(max-min+1))+min;
+}
+function pick(arr){ return arr[rand(0,arr.length-1)]; }
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=rand(0,i);
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function escapeHTML(value){
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+function gcd(a,b){
+  a=Math.abs(Number(a)); b=Math.abs(Number(b));
+  while(b!==0){ const t=a%b; a=b; b=t; }
+  return a||1;
+}
+function gcdAll(values){
+  return values.reduce((g,v)=>gcd(g,v),0)||1;
+}
+function lcm(a,b){ return Math.abs(a*b)/gcd(a,b); }
+
+function seg(name){
+  return `<span class="seg math">${escapeHTML(name)}</span>`;
+}
+function arc(name){
+  return `<span class="arc math">${escapeHTML(name)}</span>`;
+}
+function keep(content){
+  return `<span class="keep-unit">${content}</span>`;
+}
+function sup(v){
+  return `<span class="math-sup">${escapeHTML(v)}</span>`;
+}
+function fracHTML(n,d){
+  if(Number(d)===1) return escapeHTML(n);
+  return `<span class="math-frac"><span class="top">${escapeHTML(n)}</span><span class="bottom">${escapeHTML(d)}</span></span>`;
+}
+function ratioHTML(values){
+  return `<span class="math nowrap">${values.join("：")}</span>`;
+}
+function simplifyRatio(values){
+  const nums=values.map(Number);
+  const g=gcdAll(nums);
+  return nums.map(v=>v/g);
+}
+function R(n,d=1){
+  n=Number(n);
+  d=Number(d);
+  if(d===0) throw new Error("denominator 0");
+  if(d<0){n=-n;d=-d}
+  const g=gcd(n,d);
+  return {n:n/g,d:d/g};
+}
+function ratEq(a,b){
+  return a.n===b.n && a.d===b.d;
+}
+function ratHTML(r){
+  const a=R(r.n,r.d);
+  if(a.d===1) return String(a.n).replace("-","−");
+  const sign=a.n<0?"−":"";
+  return `${sign}${fracHTML(Math.abs(a.n),a.d)}`;
+}
+function rawFracHTML(n,d){
+  if(d<0){n=-n;d=-d}
+  if(d===1) return String(n).replace("-","−");
+  const sign=n<0?"−":"";
+  return `${sign}${fracHTML(Math.abs(n),d)}`;
+}
+function mixedAnswerHTML(sign,whole,n,d){
+  const prefix=Number(sign)<0?"−":"";
+  const w=Math.max(0,Number(whole)||0);
+  if(w<=0) return `${prefix}${fracHTML(Math.abs(n),d)}`;
+  return `${prefix}${w}${fracHTML(Math.abs(n),d)}`;
+}
+function piHTML(r){
+  const a=R(r.n,r.d);
+  if(a.n===0) return "0";
+  const sign=a.n<0?"−":"";
+  const absN=Math.abs(a.n);
+  if(a.d===1){
+    if(absN===1) return `${sign}π`;
+    return `${sign}${absN}π`;
+  }
+  return `${sign}${fracHTML(absN,a.d)}π`;
+}
+function radicalHTML(coef,radicand){
+  const c=Number(coef);
+  const prefix=c===1?"":String(c);
+  return `<span class="math nowrap">${prefix}√${escapeHTML(radicand)}</span>`;
+}
+function formatTime(seconds){
+  const m=Math.floor(seconds/60);
+  const s=seconds%60;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function parseNumber(raw){
+  const s=String(raw).trim().replace(/，/g,"").replace(/－/g,"-");
+  if(!/^[-+]?\d+(?:\.\d+)?$/.test(s)) return null;
+  const v=Number(s);
+  return Number.isFinite(v)?v:null;
+}
+function sameNumber(a,b,tol=1e-9){
+  return Math.abs(Number(a)-Number(b))<=tol;
+}
+
+function explanation(answer,think,steps,tip=""){
+  return {answer,think,steps,tip};
+}
+
+function numberQuestion({label,html,answer,explanation:exp,family,tolerance=1e-9}){
+  return {type:"number",label,html,answer:Number(answer),explanation:exp,family,tolerance};
+}
+function rationalQuestion({label,html,answer,explanation:exp,family}){
+  return {type:"rational",label,html,answer:R(answer.n,answer.d),explanation:exp,family};
+}
+function exactValueQuestion({label,html,answer,explanation:exp,family}){
+  const r=(answer && typeof answer==="object" && "n" in answer)
+    ? R(answer.n,answer.d)
+    : R(answer,1);
+
+  return r.d===1
+    ? numberQuestion({label,html,answer:r.n,explanation:exp,family})
+    : rationalQuestion({label,html,answer:r,explanation:exp,family});
+}
+function piQuestion({label,html,answer,explanation:exp,family}){
+  return {type:"pi",label,html,answer:R(answer.n,answer.d),explanation:exp,family};
+}
+function ratioQuestion({label,html,answer,explanation:exp,family}){
+  return {type:"ratio",label,html,answer:simplifyRatio(answer),explanation:exp,family};
+}
+function choiceQuestion({label,html,choices,answer,explanation:exp,family}){
+  return {type:"choice",label,html,choices,answer:String(answer),explanation:exp,family};
+}
+
+/*
+==================================================
+Game-specific question generators
+==================================================
+*/
+
+function diagramWrap(svg,caption="示意圖（不按比例）"){
+  return `<div class="geo-diagram">${svg}<div class="diagram-caption">${caption}</div></div>`;
+}
+
+function polar(cx,cy,r,deg){
+  const rad=(deg-90)*Math.PI/180;
+  return {
+    x:cx+r*Math.cos(rad),
+    y:cy+r*Math.sin(rad)
+  };
+}
+
+function centralAngleDiagram({angle="",arcText=""}={}){
+  const a=polar(310,165,120,-62);
+  const b=polar(310,165,120,58);
+
+  return diagramWrap(`
+    <svg viewBox="0 0 620 340" role="img" aria-label="圓心角與弧圖">
+      <circle class="circle-shape" cx="310" cy="165" r="120"></circle>
+      <line class="radius-line" x1="310" y1="165" x2="${a.x}" y2="${a.y}"></line>
+      <line class="radius-line" x1="310" y1="165" x2="${b.x}" y2="${b.y}"></line>
+      <path class="arc-line" d="M ${a.x} ${a.y} A 120 120 0 0 1 ${b.x} ${b.y}"></path>
+      <circle class="center-dot" cx="310" cy="165" r="4"></circle>
+      <text class="point" x="292" y="190">O</text>
+      <text class="point" x="${a.x-18}" y="${a.y-6}">A</text>
+      <text class="point" x="${b.x+8}" y="${b.y-6}">B</text>
+      ${angle?`<text class="angle-label" x="294" y="118">${angle}°</text>`:""}
+      ${arcText?`<text class="relation-label" x="270" y="42">${arcText}</text>`:""}
+    </svg>
+  `);
+}
+
+function equalChordDiagram(){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 340" role="img" aria-label="同圓等弦等圓心角圖">
+      <circle class="circle-shape" cx="310" cy="165" r="122"></circle>
+      <line class="chord-line" x1="205" y1="100" x2="305" y2="46"></line>
+      <line class="chord-line" x1="418" y1="104" x2="488" y2="194"></line>
+      <line class="radius-line" x1="310" y1="165" x2="205" y2="100"></line>
+      <line class="radius-line" x1="310" y1="165" x2="305" y2="46"></line>
+      <line class="radius-line" x1="310" y1="165" x2="418" y2="104"></line>
+      <line class="radius-line" x1="310" y1="165" x2="488" y2="194"></line>
+      <text class="point" x="188" y="98">A</text>
+      <text class="point" x="300" y="35">B</text>
+      <text class="point" x="420" y="92">C</text>
+      <text class="point" x="494" y="203">D</text>
+      <text class="point" x="293" y="189">O</text>
+    </svg>
+  `);
+}
+
+function concentricDiagram({r1="",r2="",angle=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 650 350" role="img" aria-label="同心圓相同圓心角圖">
+      <circle class="circle-shape" cx="320" cy="180" r="130"></circle>
+      <circle class="circle-shape" cx="320" cy="180" r="78"></circle>
+      <line class="radius-line" x1="320" y1="180" x2="425" y2="104"></line>
+      <line class="radius-line" x1="320" y1="180" x2="430" y2="248"></line>
+      <text class="point" x="302" y="205">O</text>
+      ${angle?`<text class="angle-label" x="344" y="167">${angle}°</text>`:""}
+      ${r1?`<text class="side-label" x="383" y="122">R＝${r1}</text>`:""}
+      ${r2?`<text class="side-label" x="354" y="151">r＝${r2}</text>`:""}
+    </svg>
+  `);
+}
+
+function inscribedAngleDiagram({arcDeg="",angle=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 350" role="img" aria-label="圓周角與所對弧圖">
+      <circle class="circle-shape" cx="310" cy="175" r="125"></circle>
+      <line class="chord-line" x1="210" y1="250" x2="395" y2="80"></line>
+      <line class="chord-line" x1="210" y1="250" x2="455" y2="225"></line>
+      <path class="arc-line" d="M 395 80 A 125 125 0 0 1 455 225"></path>
+      <text class="point" x="193" y="272">C</text>
+      <text class="point" x="389" y="66">A</text>
+      <text class="point" x="461" y="234">B</text>
+      ${angle?`<text class="angle-label" x="232" y="235">${angle}°</text>`:""}
+      ${arcDeg?`<text class="relation-label" x="430" y="125">${arcDeg}°</text>`:""}
+    </svg>
+  `);
+}
+
+function diameterDiagram({angleA="",angleB="",sideAC="",sideBC="",diameter=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 650 350" role="img" aria-label="半圓所對圓周角圖">
+      <circle class="circle-shape" cx="320" cy="175" r="125"></circle>
+      <line class="chord-line" x1="195" y1="175" x2="445" y2="175"></line>
+      <line class="chord-line" x1="195" y1="175" x2="355" y2="58"></line>
+      <line class="chord-line" x1="355" y1="58" x2="445" y2="175"></line>
+      <path class="right-mark" d="M 355 58 L 366 73 L 351 84"></path>
+      <text class="point" x="178" y="182">A</text>
+      <text class="point" x="450" y="182">B</text>
+      <text class="point" x="351" y="46">C</text>
+      <text class="point" x="304" y="199">O</text>
+      ${angleA?`<text class="angle-label" x="218" y="163">${angleA}°</text>`:""}
+      ${angleB?`<text class="angle-label" x="408" y="161">${angleB}°</text>`:""}
+      ${sideAC?`<text class="side-label" x="255" y="103">AC＝${sideAC}</text>`:""}
+      ${sideBC?`<text class="side-label" x="385" y="108">BC＝${sideBC}</text>`:""}
+      ${diameter?`<text class="side-label" x="290" y="169">AB＝${diameter}</text>`:""}
+    </svg>
+  `);
+}
+
+function parallelChordDiagram({topArc="",bottomArc="",sideArc=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 650 360" role="img" aria-label="平行線截等弧圖">
+      <circle class="circle-shape" cx="325" cy="180" r="132"></circle>
+      <line class="chord-line" x1="215" y1="115" x2="438" y2="115"></line>
+      <line class="chord-line" x1="190" y1="235" x2="460" y2="235"></line>
+      <text class="point" x="198" y="109">A</text>
+      <text class="point" x="444" y="109">B</text>
+      <text class="point" x="172" y="250">C</text>
+      <text class="point" x="466" y="250">D</text>
+      ${topArc?`<text class="relation-label" x="292" y="56">${topArc}</text>`:""}
+      ${bottomArc?`<text class="relation-label" x="292" y="322">${bottomArc}</text>`:""}
+      ${sideArc?`<text class="relation-label" x="478" y="186">${sideArc}</text>`:""}
+    </svg>
+  `);
+}
+
+function cyclicQuadDiagram({A="",B="",C="",D=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 650 360" role="img" aria-label="圓內接四邊形圖">
+      <circle class="circle-shape" cx="325" cy="180" r="132"></circle>
+      <polygon class="shape" points="230,88 420,100 455,245 205,255"></polygon>
+      <text class="point" x="215" y="80">A</text>
+      <text class="point" x="425" y="91">B</text>
+      <text class="point" x="462" y="260">C</text>
+      <text class="point" x="184" y="270">D</text>
+      ${A?`<text class="angle-label" x="245" y="111">${A}°</text>`:""}
+      ${B?`<text class="angle-label" x="390" y="121">${B}°</text>`:""}
+      ${C?`<text class="angle-label" x="420" y="232">${C}°</text>`:""}
+      ${D?`<text class="angle-label" x="223" y="235">${D}°</text>`:""}
+    </svg>
+  `);
+}
+
+function lineArcPairDiagram(){
+  return diagramWrap(`
+    <svg viewBox="0 0 650 360" role="img" aria-label="圓內兩平行弦與弧圖">
+      <circle class="circle-shape" cx="325" cy="180" r="132"></circle>
+      <line class="chord-line" x1="220" y1="112" x2="432" y2="112"></line>
+      <line class="chord-line" x1="195" y1="240" x2="458" y2="240"></line>
+      <text class="point" x="204" y="105">A</text>
+      <text class="point" x="438" y="105">B</text>
+      <text class="point" x="179" y="255">C</text>
+      <text class="point" x="464" y="255">D</text>
+    </svg>
+  `);
+}
+
+function angleRational(value){
+  const r=R(value.n,value.d);
+  return r.d===1?`${r.n}°`:`${ratHTML(r)}°`;
+}
+
+function exactAngleQuestion(args){
+  const r=(args.answer && typeof args.answer==="object")
+    ? R(args.answer.n,args.answer.d)
+    : R(args.answer,1);
+
+  return r.d===1
+    ? numberQuestion({...args,answer:r.n})
+    : rationalQuestion({...args,answer:r});
+}
+
+/*
+==================================================
+模式一｜圓心角、弧與弦
+==================================================
+*/
+
+function qCentralToArc(){
+  const angle=pick([40,45,60,72,80,90,120,135,150]);
+
+  return numberQuestion({
+    family:"central-to-arc",
+    label:"圓心角與弧的度數",
+    html:`<div class="question-flow"><span class="qline">在圓 O 中，${keep(`∠AOB＝${angle}°`)}。求 ${arc("AB")} 的度數。</span></div>${centralAngleDiagram({angle:String(angle),arcText:"？"})}`,
+    answer:angle,
+    explanation:explanation(
+      `${angle}°`,
+      "弧的度數就是它所對圓心角的度數。",
+      [`${arc("AB")} 的度數＝∠AOB＝${angle}°。`]
+    )
+  });
+}
+
+function qArcToCentral(){
+  const arcDeg=pick([30,50,60,75,90,110,140,160]);
+
+  return numberQuestion({
+    family:"arc-to-central",
+    label:"由弧求圓心角",
+    html:`<div class="question-flow"><span class="qline">在圓 O 中，${arc("AB")} 的度數為 ${arcDeg}°。求 ∠AOB 的度數。</span></div>${centralAngleDiagram({arcText:`${arcDeg}°`})}`,
+    answer:arcDeg,
+    explanation:explanation(
+      `${arcDeg}°`,
+      "圓心角的度數等於它所對弧的度數。",
+      [`∠AOB＝${arc("AB")}＝${arcDeg}°。`]
+    )
+  });
+}
+
+function qRegularPolygonArc(){
+  const n=pick([5,6,8,10,12]);
+  const arcDeg=360/n;
+
+  return numberQuestion({
+    family:"central-regular",
+    label:"正多邊形分圓",
+    html:`<div class="question-flow"><span class="qline">正 ${n} 邊形 ABC… 的所有頂點都在圓 O 上。求相鄰兩頂點 A、B 之間的劣弧 ${arc("AB")} 度數。</span></div>`,
+    answer:arcDeg,
+    explanation:explanation(
+      `${arcDeg}°`,
+      `正 ${n} 邊形把整個圓平均分成 ${n} 份。`,
+      [
+        `${arc("AB")}＝360°÷${n}＝${arcDeg}°。`
+      ]
+    )
+  });
+}
+
+function qEqualChordCentral(){
+  const angle=pick([45,60,72,90,120]);
+
+  return numberQuestion({
+    family:"central-equal-chord",
+    label:"🖼️ 等弦對等圓心角",
+    html:`<div class="question-flow"><span class="qline">${seg("AB")}、${seg("CD")} 為同一圓上的兩弦，且 ${keep(`${seg("AB")}＝${seg("CD")}`)}。若 ${keep(`∠AOB＝${angle}°`)}，求 ∠COD。</span></div>${equalChordDiagram()}`,
+    answer:angle,
+    explanation:explanation(
+      `${angle}°`,
+      "在同圓或等圓中，等弦所對的圓心角相等。",
+      [
+        `${seg("AB")}＝${seg("CD")}，所以 ∠AOB＝∠COD。`,
+        `因此 ∠COD＝${angle}°。`
+      ]
+    )
+  });
+}
+
+function qEqualArcChord(){
+  return choiceQuestion({
+    family:"central-equal-arc-chord",
+    label:"等弧與等弦",
+    html:`<div class="question-flow"><span class="qline">在同一圓中，若 ${keep(`${arc("AB")}＝${arc("CD")}`)}，下列何者一定正確？</span></div>`,
+    choices:[
+      {value:"a",html:`${seg("AB")}＝${seg("CD")}`},
+      {value:"b",html:`${seg("AB")}＞${seg("CD")}`},
+      {value:"c",html:`${seg("AB")}＜${seg("CD")}`},
+      {value:"d",text:"無法判斷"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      `${seg("AB")}＝${seg("CD")}`,
+      "同圓或等圓中，等弧對等弦。",
+      [`因此 ${arc("AB")}＝${arc("CD")} 可推出 ${seg("AB")}＝${seg("CD")}。`]
+    )
+  });
+}
+
+function qArcRatioPartition(){
+  const ratios=pick([
+    [1,3,1,3],
+    [2,3,4,3],
+    [1,2,3,4],
+    [2,2,3,5]
+  ]);
+  const sum=ratios.reduce((a,b)=>a+b,0);
+  const index=rand(0,3);
+  const ans=R(360*ratios[index],sum);
+
+  return exactAngleQuestion({
+    family:"central-arc-ratio",
+    label:"🔥 精熟題｜弧的比例分配",
+    html:`<div class="question-flow"><span class="qline">圓 O 被 A、B、C、D 四點分成四段弧，且 ${arc("AB")}：${arc("BC")}：${arc("CD")}：${arc("DA")}＝${ratioHTML(ratios)}。求第 ${index+1} 段弧的度數。</span></div>`,
+    answer:ans,
+    explanation:explanation(
+      angleRational(ans),
+      "整個圓的弧度數總和為 360°，依比例分配。",
+      [
+        `總份數＝${sum}。`,
+        `第 ${index+1} 段弧＝360°×${fracHTML(ratios[index],sum)}＝${angleRational(ans)}。`
+      ]
+    )
+  });
+}
+
+function qMajorArcFromMinor(){
+  const minor=pick([60,80,100,120,140]);
+  const major=360-minor;
+
+  return numberQuestion({
+    family:"central-major-arc",
+    label:"優弧與劣弧",
+    html:`<div class="question-flow"><span class="qline">圓 O 中，劣弧 ${arc("AB")} 的度數為 ${minor}°。求優弧 ACB 的度數。</span></div>`,
+    answer:major,
+    explanation:explanation(
+      `${major}°`,
+      "同一對端點的劣弧與優弧合計為整個圓的 360°。",
+      [`優弧 ACB＝360°－${minor}°＝${major}°。`]
+    )
+  });
+}
+
+function qCentralConcept(){
+  return choiceQuestion({
+    family:"central-concept",
+    label:"觀念判斷",
+    html:`<div class="question-flow"><span class="qline">下列關於同圓或等圓的敘述，何者正確？</span></div>`,
+    choices:[
+      {value:"a",text:"等圓心角所對的弧度數相等"},
+      {value:"b",text:"弧度數相等時，弦長一定不相等"},
+      {value:"c",text:"弦越短，所對圓心角一定越大"},
+      {value:"d",text:"圓心角與所對弧度數互不相關"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "等圓心角所對的弧度數相等",
+      "圓心角的度數就是所對弧的度數。",
+      []
+    )
+  });
+}
+
+function qCentralDoubleArc(){
+  const a=pick([40,50,60,70,80]);
+  const b=pick([30,45,60,90]);
+  const total=a+b;
+
+  return numberQuestion({
+    family:"central-sum-arcs",
+    label:"相鄰弧的度數",
+    html:`<div class="question-flow"><span class="qline">圓 O 上 A、B、C 三點依序排列，已知 ${arc("AB")}＝${a}°、${arc("BC")}＝${b}°。求 ${arc("ABC")} 的度數。</span></div>`,
+    answer:total,
+    explanation:explanation(
+      `${total}°`,
+      "相鄰兩段弧可以直接相加。",
+      [`${arc("ABC")}＝${a}°＋${b}°＝${total}°。`]
+    )
+  });
+}
+
+/*
+==================================================
+模式二｜半徑、弧長與弦
+==================================================
+*/
+
+function qArcLengthRatioRadius(){
+  const r1=pick([4,5,6,8,10,12]);
+  const r2=pick([3,7,9,11,15]);
+
+  if(r1===r2) return qArcLengthRatioRadius();
+
+  return ratioQuestion({
+    family:"radius-arc-ratio",
+    label:"相同圓心角的弧長比",
+    html:`<div class="question-flow"><span class="qline">兩個圓的圓心角相等，半徑分別為 ${r1}、${r2}。求所對兩弧的弧長比。</span></div>${concentricDiagram({r1:String(r1),r2:String(r2)})}`,
+    answer:[r1,r2],
+    explanation:explanation(
+      ratioHTML(simplifyRatio([r1,r2])),
+      "圓心角相等時，弧長中的角度比例相同，所以弧長比等於半徑比。",
+      [`弧長比＝半徑比＝${r1}：${r2}＝${ratioHTML(simplifyRatio([r1,r2]))}。`]
+    )
+  });
+}
+
+function qArcLengthFindRadius(){
+  const r1=pick([5,8,10,12,15]);
+  const r2=pick([6,9,14,18]);
+  const unit=pick([2,3,4]);
+  const l1=r1*unit;
+  const l2=r2*unit;
+
+  return exactValueQuestion({
+    family:"radius-find",
+    label:"由弧長比求半徑",
+    html:`<div class="question-flow"><span class="qline">兩圓的圓心角相等。圓 O₁ 的對應弧長為 ${l1}，半徑為 ${r1}；圓 O₂ 的對應弧長為 ${l2}。求圓 O₂ 的半徑。</span></div>`,
+    answer:R(r2,1),
+    explanation:explanation(
+      String(r2),
+      "相同圓心角下，弧長比＝半徑比。",
+      [
+        `${l1}：${l2}＝${r1}：r₂。`,
+        `由內項乘積＝外項乘積，解得 r₂＝${r2}。`
+      ]
+    )
+  });
+}
+
+function qArcLengthPiOtherCircle(){
+  const angle=pick([60,72,90,120,135]);
+  const r1=pick([10,12,15,18,20]);
+  const r2=pick([6,8,9,12,15]);
+
+  if(r1===r2) return qArcLengthPiOtherCircle();
+
+  const l1=R(2*r1*angle,360);
+  const l2=R(2*r2*angle,360);
+
+  return piQuestion({
+    family:"radius-pi",
+    label:"π 型弧長",
+    html:`<div class="question-flow"><span class="qline">兩個同心圓的圓心角都為 ${angle}°。大圓半徑為 ${r1}，小圓半徑為 ${r2}。求小圓所對弧長。</span></div>${concentricDiagram({r1:String(r1),r2:String(r2),angle:String(angle)})}`,
+    answer:l2,
+    explanation:explanation(
+      piHTML(l2),
+      "可以直接用弧長公式，也可以使用弧長比＝半徑比。",
+      [
+        `小圓弧長＝2π×${r2}×${fracHTML(angle,360)}。`,
+        `化簡得 ${piHTML(l2)}。`
+      ]
+    )
+  });
+}
+
+function qChordRatioRadius(){
+  const r1=pick([5,6,8,10,12]);
+  const r2=pick([3,4,7,9,15]);
+
+  if(r1===r2) return qChordRatioRadius();
+
+  return ratioQuestion({
+    family:"radius-chord-ratio",
+    label:"相同圓心角的弦長比",
+    html:`<div class="question-flow"><span class="qline">兩個圓的圓心角相等，所對弦分別為 ${seg("AB")}、${seg("CD")}，兩圓半徑分別為 ${r1}、${r2}。求 ${seg("AB")}：${seg("CD")}。</span></div>`,
+    answer:[r1,r2],
+    explanation:explanation(
+      ratioHTML(simplifyRatio([r1,r2])),
+      "圓心角相等時，兩個等腰三角形相似，因此弦長比等於半徑比。",
+      [`${seg("AB")}：${seg("CD")}＝${r1}：${r2}＝${ratioHTML(simplifyRatio([r1,r2]))}。`]
+    )
+  });
+}
+
+function qSameAngleArcDegree(){
+  const angle=pick([45,60,72,90,120]);
+
+  return numberQuestion({
+    family:"radius-degree-same",
+    label:"不同半徑的弧度數",
+    html:`<div class="question-flow"><span class="qline">兩個半徑不同的圓，其圓心角都為 ${angle}°。其中一個圓較大。求兩圓所對弧的度數。</span></div>`,
+    answer:angle,
+    explanation:explanation(
+      `${angle}°`,
+      "弧的度數只看所對圓心角，不受半徑大小影響。",
+      [`兩弧的度數都等於圓心角，所以都是 ${angle}°。`]
+    )
+  });
+}
+
+function qRadiusConcept(){
+  return choiceQuestion({
+    family:"radius-concept",
+    label:"觀念判斷",
+    html:`<div class="question-flow"><span class="qline">兩個圓的圓心角相等，但半徑不同。下列敘述何者正確？</span></div>`,
+    choices:[
+      {value:"a",text:"兩弧度數相等，但弧長不一定相等"},
+      {value:"b",text:"兩弧長一定相等"},
+      {value:"c",text:"兩弧度數一定不同"},
+      {value:"d",text:"弦長與半徑無關"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "兩弧度數相等，但弧長不一定相等",
+      "弧度數由圓心角決定；弧長還受到半徑影響。",
+      []
+    )
+  });
+}
+
+function qRadiusFromPiArc(){
+  const angle=pick([60,90,120,180]);
+  const r=pick([6,8,9,10,12,15]);
+  const coef=R(2*r*angle,360);
+
+  return numberQuestion({
+    family:"radius-from-pi-arc",
+    label:"由弧長求半徑",
+    html:`<div class="question-flow"><span class="qline">某圓的圓心角為 ${angle}°，所對弧長為 ${keep(piHTML(coef))}。求圓的半徑。</span></div>`,
+    answer:r,
+    explanation:explanation(
+      String(r),
+      "代入弧長公式反求半徑。",
+      [
+        `${piHTML(coef)}＝2πr×${fracHTML(angle,360)}。`,
+        `約去 π 後，解得 r＝${r}。`
+      ]
+    )
+  });
+}
+
+function qArcLengthRatioGiven(){
+  const r1=15;
+  const r2=9;
+  const angle=135;
+  const l1=R(2*r1*angle,360);
+  const l2=R(2*r2*angle,360);
+
+  return ratioQuestion({
+    family:"radius-appendix",
+    label:"🔥 精熟題｜不同圓的弧長比",
+    html:`<div class="question-flow"><span class="qline">圓 O₁ 半徑為 ${r1}、圓 O₂ 半徑為 ${r2}，且兩圓心角都為 ${angle}°。求兩弧長的比。</span></div>`,
+    answer:[l1.n*l2.d,l2.n*l1.d],
+    explanation:explanation(
+      "5：3",
+      "圓心角相同，因此弧長比直接等於半徑比。",
+      [`弧長比＝${r1}：${r2}＝5：3。`]
+    )
+  });
+}
+
+function qArcRadiusFraction(){
+  const r1=5;
+  const l1=8;
+  const l2=6;
+  const ans=R(r1*l2,l1);
+
+  return rationalQuestion({
+    family:"radius-fraction",
+    label:"🔥 精熟題｜分數半徑",
+    html:`<div class="question-flow"><span class="qline">兩圓的圓心角相等。圓 O₁ 半徑為 ${r1}，對應弧長為 ${l1}；圓 O₂ 對應弧長為 ${l2}。求圓 O₂ 的半徑。</span></div>`,
+    answer:ans,
+    explanation:explanation(
+      ratHTML(ans),
+      "相同圓心角下，弧長比＝半徑比。",
+      [
+        `${l1}：${l2}＝${r1}：r₂。`,
+        `r₂＝${fracHTML(`${r1}×${l2}`,l1)}＝${ratHTML(ans)}。`
+      ],
+      "答案不是整數時，使用分數答案格作答。"
+    )
+  });
+}
+
+function qArcRadiusConcentricDiagram(){
+  const r1=12;
+  const r2=8;
+  const angle=90;
+  const l2=R(2*r2*angle,360);
+
+  return piQuestion({
+    family:"radius-diagram",
+    label:"🖼️ 同心圓圖形題",
+    html:`<div class="question-flow"><span class="qline">如圖，兩同心圓半徑分別為 ${r1}、${r2}，共同圓心角為 ${angle}°。求小圓對應弧長。</span></div>${concentricDiagram({r1:String(r1),r2:String(r2),angle:String(angle)})}`,
+    answer:l2,
+    explanation:explanation(
+      piHTML(l2),
+      "直接套用小圓的弧長公式。",
+      [`弧長＝2π×${r2}×${fracHTML(angle,360)}＝${piHTML(l2)}。`]
+    )
+  });
+}
+
+/*
+==================================================
+模式三｜圓周角與弧
+==================================================
+*/
+
+function qArcToInscribed(){
+  const arcDeg=pick([60,70,80,90,100,120,150,180]);
+  const ans=R(arcDeg,2);
+
+  return exactAngleQuestion({
+    family:"inscribed-from-arc",
+    label:"由弧求圓周角",
+    html:`<div class="question-flow"><span class="qline">在圓 O 中，${arc("AB")} 的度數為 ${arcDeg}°，C 點在圓上。求 ∠ACB 的度數。</span></div>${inscribedAngleDiagram({arcDeg:String(arcDeg)})}`,
+    answer:ans,
+    explanation:explanation(
+      angleRational(ans),
+      "一弧所對的圓周角等於該弧度數的一半。",
+      [
+        `∠ACB＝${fracHTML(1,2)}×${arcDeg}°＝${angleRational(ans)}。`
+      ]
+    )
+  });
+}
+
+function qInscribedToArc(){
+  const angle=pick([25,30,35,40,45,50,60,70]);
+  const arcDeg=2*angle;
+
+  return numberQuestion({
+    family:"inscribed-to-arc",
+    label:"由圓周角求弧",
+    html:`<div class="question-flow"><span class="qline">A、B、C 都在圓 O 上，${keep(`∠ACB＝${angle}°`)}。求 ∠ACB 所對劣弧 ${arc("AB")} 的度數。</span></div>${inscribedAngleDiagram({angle:String(angle),arcDeg:"？"})}`,
+    answer:arcDeg,
+    explanation:explanation(
+      `${arcDeg}°`,
+      "弧度數是所對圓周角的 2 倍。",
+      [
+        `${arc("AB")}＝2×∠ACB＝2×${angle}°＝${arcDeg}°。`
+      ]
+    )
+  });
+}
+
+function qSameArcAngles(){
+  const angle=pick([28,35,40,45,50,60]);
+
+  return numberQuestion({
+    family:"inscribed-same-arc",
+    label:"同弧所對圓周角",
+    html:`<div class="question-flow"><span class="qline">A、B、C、D 都在同一圓上，∠ACB 與 ∠ADB 都對同一弧 ${arc("AB")}。若 ${keep(`∠ACB＝${angle}°`)}，求 ∠ADB。</span></div>`,
+    answer:angle,
+    explanation:explanation(
+      `${angle}°`,
+      "同一個圓中，同一弧所對的所有圓周角都相等。",
+      [`∠ADB＝∠ACB＝${angle}°。`]
+    )
+  });
+}
+
+function qInscribedMajorArc(){
+  const angle=pick([60,70,80,100,110]);
+  const arcDeg=2*angle;
+
+  return numberQuestion({
+    family:"inscribed-major",
+    label:"優弧所對圓周角",
+    html:`<div class="question-flow"><span class="qline">某圓周角為 ${angle}°。求它所對弧的度數。</span></div>`,
+    answer:arcDeg,
+    explanation:explanation(
+      `${arcDeg}°`,
+      "圓周角乘以 2，就是所對弧的度數。",
+      [`所對弧＝2×${angle}°＝${arcDeg}°。`]
+    )
+  });
+}
+
+function qEighthCircle(){
+  const covered=pick([1,3,5,7]);
+  const arcDeg=360*covered/8;
+  const ans=R(arcDeg,2);
+
+  return exactAngleQuestion({
+    family:"inscribed-eighth",
+    label:"🔥 精熟題｜八等分圓",
+    html:`<div class="question-flow"><span class="qline">圓周被 8 個等分點分成 8 段等弧。某圓周角所對的弧包含 ${covered} 段等弧。求此圓周角。</span></div>`,
+    answer:ans,
+    explanation:explanation(
+      angleRational(ans),
+      `每一段弧為 360°÷8＝45°。`,
+      [
+        `所對弧＝${covered}×45°＝${arcDeg}°。`,
+        `圓周角＝${fracHTML(1,2)}×${arcDeg}°＝${angleRational(ans)}。`
+      ]
+    )
+  });
+}
+
+function qTwoInscribedSum(){
+  const af=pick([50,60,70]);
+  const cd=pick([100,120,130]);
+  const ans=R(360-af-cd,2);
+
+  return exactAngleQuestion({
+    family:"inscribed-sum",
+    label:"🔥 精熟題｜兩圓周角和",
+    html:`<div class="question-flow"><span class="qline">圓上 A、B、C、D、E、F 六點依序排列。已知 ${arc("AF")}＝${af}°、${arc("CD")}＝${cd}°。若 ∠B、∠E 分別對其餘兩組弧，求 ∠B＋∠E。</span></div>`,
+    answer:ans,
+    explanation:explanation(
+      angleRational(ans),
+      "兩個圓周角各等於其所對弧的一半，把兩個角的弧合併後一起計算。",
+      [
+        `∠B＋∠E＝${fracHTML(1,2)}×（360°－${af}°－${cd}°）。`,
+        `＝${angleRational(ans)}。`
+      ]
+    )
+  });
+}
+
+function qInscribedConcept(){
+  return choiceQuestion({
+    family:"inscribed-concept",
+    label:"圓周角觀念",
+    html:`<div class="question-flow"><span class="qline">一個圓周角所對的弧度數為 x°。這個圓周角的度數為何？</span></div>`,
+    choices:[
+      {value:"a",html:`${fracHTML("x",2)}°`},
+      {value:"b",html:`2x°`},
+      {value:"c",html:`x°`},
+      {value:"d",html:`360°－x°`}
+    ],
+    answer:"a",
+    explanation:explanation(
+      `${fracHTML("x",2)}°`,
+      "圓周角等於所對弧度數的一半。",
+      []
+    )
+  });
+}
+
+function qInscribedDiagram(){
+  const arcDeg=pick([80,100,120,140]);
+  const ans=R(arcDeg,2);
+
+  return exactAngleQuestion({
+    family:"inscribed-diagram",
+    label:"🖼️ 圓周角圖形題",
+    html:`<div class="question-flow"><span class="qline">如圖，${arc("AB")} 的度數為 ${arcDeg}°。求 ∠ACB。</span></div>${inscribedAngleDiagram({arcDeg:String(arcDeg),angle:"？"})}`,
+    answer:ans,
+    explanation:explanation(
+      angleRational(ans),
+      "圓周角等於所對弧的一半。",
+      [`∠ACB＝${fracHTML(1,2)}×${arcDeg}°＝${angleRational(ans)}。`]
+    )
+  });
+}
+
+function qArcRotationStyle(){
+  const ac=60;
+  const cb=54;
+  const abPrime=ac+cb;
+  const bbPrime=360-2*abPrime;
+  const angle=R(bbPrime,2);
+
+  return exactAngleQuestion({
+    family:"inscribed-rotation",
+    label:"🔥 精熟題｜弧的組合",
+    html:`<div class="question-flow"><span class="qline">圓上固定 A 點，已知 ${arc("AC")}＝${ac}°、${arc("CB")}＝${cb}°。若旋轉後得到另一弧 ${arc("AB′")}＝${arc("ACB")}，求弧 ${arc("BB′")} 所對的圓周角 ∠BAB′。</span></div>`,
+    answer:angle,
+    explanation:explanation(
+      angleRational(angle),
+      "先求 AB′ 的弧度數，再扣掉兩段相等弧，最後除以 2。",
+      [
+        `${arc("AB′")}＝${ac}°＋${cb}°＝${abPrime}°。`,
+        `${arc("BB′")}＝360°－${abPrime}°－${abPrime}°＝${bbPrime}°。`,
+        `∠BAB′＝${fracHTML(1,2)}×${bbPrime}°＝${angleRational(angle)}。`
+      ]
+    )
+  });
+}
+
+/*
+==================================================
+模式四｜直徑與平行線截弧
+==================================================
+*/
+
+function qDiameterRightAngle(){
+  return numberQuestion({
+    family:"diameter-right",
+    label:"半圓所對圓周角",
+    html:`<div class="question-flow"><span class="qline">${seg("AB")} 是圓 O 的直徑，C 點在圓上。求 ∠ACB。</span></div>${diameterDiagram()}`,
+    answer:90,
+    explanation:explanation(
+      "90°",
+      "半圓所對的圓周角是直角。",
+      [`因為 ${seg("AB")} 是直徑，所以 ∠ACB＝90°。`]
+    )
+  });
+}
+
+function qDiameterTriangleAngle(){
+  const A=pick([25,30,35,40,45,50,55,60]);
+  const C=90-A;
+
+  return numberQuestion({
+    family:"diameter-triangle-angle",
+    label:"直徑形成直角三角形",
+    html:`<div class="question-flow"><span class="qline">${seg("AB")} 為圓 O 的直徑，C 點在圓上。若 ${keep(`∠CAB＝${A}°`)}，求 ∠ABC。</span></div>${diameterDiagram({angleA:String(A),angleB:"？"})}`,
+    answer:C,
+    explanation:explanation(
+      `${C}°`,
+      "∠ACB＝90°，再使用三角形內角和。",
+      [
+        `∠ACB＝90°。`,
+        `∠ABC＝180°－90°－${A}°＝${C}°。`
+      ]
+    )
+  });
+}
+
+function qDiameterPythagorean(){
+  const [a,b,c]=pick([
+    [12,16,20],
+    [9,12,15],
+    [8,15,17],
+    [7,24,25]
+  ]);
+
+  return numberQuestion({
+    family:"diameter-pythagorean",
+    label:"🔥 精熟題｜直徑與畢氏定理",
+    html:`<div class="question-flow"><span class="qline">${seg("AB")} 為圓 O 的直徑，C 點在圓上。若 ${keep(`${seg("AB")}＝${c}`)}、${keep(`${seg("AC")}＝${a}`)}，求 ${seg("BC")}。</span></div>${diameterDiagram({diameter:String(c),sideAC:String(a),sideBC:"？"})}`,
+    answer:b,
+    explanation:explanation(
+      String(b),
+      "直徑所對圓周角是 90°，所以 △ABC 是直角三角形。",
+      [
+        `${seg("BC")}＝√（${c}${sup(2)}－${a}${sup(2)}）＝${b}。`
+      ]
+    )
+  });
+}
+
+function qParallelEqualArcs(){
+  const x=pick([40,50,60,70,80]);
+
+  return numberQuestion({
+    family:"parallel-equal-arcs",
+    label:"平行線截等弧",
+    html:`<div class="question-flow"><span class="qline">圓 O 內兩弦 ${seg("AB")}、${seg("CD")} 互相平行。若其中一側所截弧 ${arc("AC")}＝${x}°，求另一側所截弧 ${arc("BD")}。</span></div>${parallelChordDiagram({sideArc:`AC＝${x}°`})}`,
+    answer:x,
+    explanation:explanation(
+      `${x}°`,
+      "兩條平行線在圓上所截出的兩弧度數相等。",
+      [`因此 ${arc("BD")}＝${arc("AC")}＝${x}°。`]
+    )
+  });
+}
+
+function qParallelFindSideArc(){
+  const top=pick([70,90,110]);
+  const bottom=pick([110,130,150]);
+  const side=R(360-top-bottom,2);
+
+  return exactAngleQuestion({
+    family:"parallel-find-side",
+    label:"🖼️ 平行弦求側弧",
+    html:`<div class="question-flow"><span class="qline">圓 O 內，${seg("AB")} // ${seg("CD")}。已知 ${arc("AB")}＝${top}°、${arc("CD")}＝${bottom}°。求 ${arc("AC")} 的度數。</span></div>${parallelChordDiagram({topArc:`AB＝${top}°`,bottomArc:`CD＝${bottom}°`,sideArc:"AC＝？"})}`,
+    answer:side,
+    explanation:explanation(
+      angleRational(side),
+      `因為 ${seg("AB")} // ${seg("CD")}，所以兩側弧 ${arc("AC")}、${arc("BD")} 相等。`,
+      [
+        `${arc("AC")}＋${arc("BD")}＝360°－${top}°－${bottom}°。`,
+        `兩弧相等，所以 ${arc("AC")}＝${fracHTML(`360－${top}－${bottom}`,2)}°＝${angleRational(side)}。`
+      ]
+    )
+  });
+}
+
+function qParallelAngleApplication(){
+  const side=pick([40,50,60,70]);
+  const angle=R(side,2);
+
+  return exactAngleQuestion({
+    family:"parallel-angle",
+    label:"平行截弧與圓周角",
+    html:`<div class="question-flow"><span class="qline">圓 O 內，${seg("AB")} // ${seg("CD")}。若 ${arc("AC")}＝${side}°，求對弧 ${arc("BD")} 的圓周角。</span></div>`,
+    answer:angle,
+    explanation:explanation(
+      angleRational(angle),
+      "先利用平行線截等弧，再使用圓周角等於所對弧的一半。",
+      [
+        `${arc("BD")}＝${arc("AC")}＝${side}°。`,
+        `所求圓周角＝${fracHTML(1,2)}×${side}°＝${angleRational(angle)}。`
+      ]
+    )
+  });
+}
+
+function qSemicircleRecognition(){
+  return choiceQuestion({
+    family:"diameter-recognition",
+    label:"半圓判別",
+    html:`<div class="question-flow"><span class="qline">一個圓弧的兩端點 A、B，另有 C 點在該弧上。若 ${keep("∠ACB＝90°")}，可推得哪一個結論？</span></div>`,
+    choices:[
+      {value:"a",html:`${seg("AB")} 是此圓的直徑`},
+      {value:"b",html:`${seg("AB")} 是任意弦`},
+      {value:"c",html:`${arc("AB")}＝90°`},
+      {value:"d",text:"無法判斷"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      `${seg("AB")} 是直徑`,
+      "90° 的圓周角所對弧為 180°，因此 AB 是直徑。",
+      []
+    )
+  });
+}
+
+function qParallelConcept(){
+  return choiceQuestion({
+    family:"parallel-concept",
+    label:"平行線截弧觀念",
+    html:`<div class="question-flow"><span class="qline">兩條平行弦在同一圓上截出兩側弧。下列何者一定正確？</span></div>`,
+    choices:[
+      {value:"a",text:"兩側所截弧度數相等"},
+      {value:"b",text:"兩條弦一定等長"},
+      {value:"c",text:"兩弦一定都是直徑"},
+      {value:"d",text:"兩側所截弧長一定不同"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "兩側所截弧度數相等",
+      "平行線截等弧是本節的重要性質。",
+      []
+    )
+  });
+}
+
+function qDiameterArcSum(){
+  const x=pick([30,40,50,60,70]);
+  const other=180-x;
+
+  return numberQuestion({
+    family:"diameter-arc-sum",
+    label:"半圓上的兩段弧",
+    html:`<div class="question-flow"><span class="qline">${seg("AB")} 為直徑，C 點位於同一個半圓上。若 ${arc("AC")}＝${x}°，求 ${arc("CB")}。</span></div>`,
+    answer:other,
+    explanation:explanation(
+      `${other}°`,
+      "半圓弧的度數為 180°。",
+      [`${arc("CB")}＝180°－${x}°＝${other}°。`]
+    )
+  });
+}
+
+function qDiameterParallelMixed(){
+  const a=48;
+  const b=84;
+
+  return numberQuestion({
+    family:"diameter-parallel-mixed",
+    label:"🔥 精熟題｜直徑與平行弦",
+    html:`<div class="question-flow"><span class="qline">圓 O 中，${seg("CD")} 為直徑，且 ${seg("AB")} // ${seg("CD")}。若 ${arc("AD")}＝${a}°，則 ${arc("BC")}＝${a}°。求上方弧 ${arc("AB")} 的度數。</span></div>`,
+    answer:b,
+    explanation:explanation(
+      `${b}°`,
+      `因為 ${seg("AB")} // ${seg("CD")}，所以 ${arc("AD")}＝${arc("BC")}＝${a}°。`,
+      [
+        `直徑 ${seg("CD")} 對應上半圓弧共 180°。`,
+        `${arc("AB")}＝180°－${a}°－${a}°＝${b}°。`
+      ]
+    )
+  });
+}
+
+/*
+==================================================
+模式五｜圓內接四邊形
+==================================================
+*/
+
+function qCyclicOpposite(){
+  const A=pick([55,65,70,75,80,95,105,110,115]);
+  const C=180-A;
+
+  return numberQuestion({
+    family:"cyclic-opposite",
+    label:"圓內接四邊形對角互補",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 為圓 O 的內接四邊形。若 ${keep(`∠A＝${A}°`)}，求 ∠C。</span></div>${cyclicQuadDiagram({A:String(A),C:"？"})}`,
+    answer:C,
+    explanation:explanation(
+      `${C}°`,
+      "圓內接四邊形的對角互補。",
+      [
+        `∠A＋∠C＝180°。`,
+        `∠C＝180°－${A}°＝${C}°。`
+      ]
+    )
+  });
+}
+
+function qCyclicExterior(){
+  const A=pick([60,70,80,95,105,120]);
+
+  return numberQuestion({
+    family:"cyclic-exterior",
+    label:"圓內接四邊形外角",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 為圓 O 的內接四邊形，∠1 是 C 點的一個外角。若 ${keep(`∠A＝${A}°`)}，求 ∠1。</span></div>`,
+    answer:A,
+    explanation:explanation(
+      `${A}°`,
+      "圓內接四邊形的一個外角，等於其相鄰內角的對角。",
+      [`因此 ∠1＝∠A＝${A}°。`]
+    )
+  });
+}
+
+function qCyclicAlgebra(){
+  const x=pick([20,25,30,35,40]);
+  const A=2*x+10;
+  const C=180-A;
+
+  return numberQuestion({
+    family:"cyclic-algebra",
+    label:"代數角度",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 為圓內接四邊形。若 ∠A＝2x＋10°、∠C＝${C}°，求 x。</span></div>`,
+    answer:x,
+    explanation:explanation(
+      String(x),
+      "對角互補，所以 ∠A＋∠C＝180°。",
+      [
+        `（2x＋10）＋${C}＝180。`,
+        `2x＝${2*x}，所以 x＝${x}。`
+      ]
+    )
+  });
+}
+
+function qCyclicRatioAngles(){
+  const a=pick([2,3,4,5]);
+  const b=pick([3,4,5,6]);
+  const total=a+b;
+  const A=R(180*a,total);
+  const C=R(180*b,total);
+
+  return exactAngleQuestion({
+    family:"cyclic-ratio",
+    label:"🔥 精熟題｜對角比",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 為圓內接四邊形，且 ∠A：∠C＝${a}：${b}。求 ∠A。</span></div>`,
+    answer:A,
+    explanation:explanation(
+      angleRational(A),
+      "圓內接四邊形的對角和為 180°，再按比例分配。",
+      [
+        `總份數＝${total}。`,
+        `∠A＝180°×${fracHTML(a,total)}＝${angleRational(A)}。`
+      ]
+    )
+  });
+}
+
+function qCyclicGivenTwo(){
+  const B=pick([70,80,90,100,110]);
+  const D=180-B;
+
+  return numberQuestion({
+    family:"cyclic-given-two",
+    label:"另一組對角",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 為圓內接四邊形。若 ${keep(`∠B＝${B}°`)}，求 ∠D。</span></div>${cyclicQuadDiagram({B:String(B),D:"？"})}`,
+    answer:D,
+    explanation:explanation(
+      `${D}°`,
+      "∠B 與 ∠D 是一組對角。",
+      [`∠D＝180°－${B}°＝${D}°。`]
+    )
+  });
+}
+
+function qCyclicTrap(){
+  return choiceQuestion({
+    family:"cyclic-trap",
+    label:"觀念判斷",
+    html:`<div class="question-flow"><span class="qline">關於圓內接四邊形 ABCD，下列何者一定正確？</span></div>`,
+    choices:[
+      {value:"a",text:"∠A＋∠C＝180°"},
+      {value:"b",text:"∠A＝∠C"},
+      {value:"c",text:"四邊一定等長"},
+      {value:"d",text:"兩條對角線一定互相垂直"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "∠A＋∠C＝180°",
+      "圓內接四邊形的核心性質是對角互補。",
+      []
+    )
+  });
+}
+
+function qCyclicExternalReverse(){
+  const ext=pick([70,80,95,100,110]);
+
+  return numberQuestion({
+    family:"cyclic-exterior-reverse",
+    label:"由外角求對角",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 為圓內接四邊形，C 點外角為 ${ext}°。求與它相對的內角 ∠A。</span></div>`,
+    answer:ext,
+    explanation:explanation(
+      `${ext}°`,
+      "圓內接四邊形的外角等於其相鄰內角的對角。",
+      [`因此 ∠A＝${ext}°。`]
+    )
+  });
+}
+
+function qCyclicTriangleMixed(){
+  const A=55;
+  const P=25;
+  const BCD=180-A;
+  const Q=BCD-A-P;
+
+  return numberQuestion({
+    family:"cyclic-triangle-mixed",
+    label:"🔥 精熟題｜圓內接四邊形綜合",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 為圓內接四邊形。若 ${keep(`∠A＝${A}°`)}、另一外部三角形中的角 ${keep(`∠P＝${P}°`)}，且由圖形關係可得 ∠PCQ＝∠BCD、∠PDQ＝∠A＋∠Q。求 ∠Q。</span></div>`,
+    answer:Q,
+    explanation:explanation(
+      `${Q}°`,
+      "先用圓內接四邊形求 ∠BCD，再使用外部三角形的角度關係。",
+      [
+        `∠BCD＝180°－${A}°＝${BCD}°。`,
+        `${BCD}°＝${A}°＋∠Q＋${P}°。`,
+        `∠Q＝${Q}°。`
+      ]
+    )
+  });
+}
+
+function qCyclicDiagram(){
+  const A=pick([65,75,85,95,105]);
+  const C=180-A;
+
+  return numberQuestion({
+    family:"cyclic-diagram",
+    label:"🖼️ 圓內接四邊形圖形題",
+    html:`<div class="question-flow"><span class="qline">如圖，四邊形 ABCD 為圓 O 的內接四邊形，${keep(`∠A＝${A}°`)}。求 ∠C。</span></div>${cyclicQuadDiagram({A:String(A),C:"？"})}`,
+    answer:C,
+    explanation:explanation(
+      `${C}°`,
+      "對角互補。",
+      [`∠C＝180°－${A}°＝${C}°。`]
+    )
+  });
+}
+
+function qCyclicCanCircumscribe(){
+  return choiceQuestion({
+    family:"cyclic-converse",
+    label:"🔥 精熟題｜對角互補的四邊形",
+    html:`<div class="question-flow"><span class="qline">四邊形 ABCD 的一組對角互補。依本節補給站的結論，下列敘述何者正確？</span></div>`,
+    choices:[
+      {value:"a",text:"此四邊形可以有外接圓"},
+      {value:"b",text:"此四邊形一定是正方形"},
+      {value:"c",text:"此四邊形一定沒有外接圓"},
+      {value:"d",text:"此四邊形四邊一定等長"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "此四邊形可以有外接圓",
+      "教材補充說明：對角互補的四邊形可有外接圓。",
+      []
+    )
+  });
+}
+
+function createQuestions(selected){
+  const map={
+    centralArc:()=>shuffle([
+      qCentralToArc(),
+      qCentralToArc(),
+      qArcToCentral(),
+      qRegularPolygonArc(),
+      qEqualChordCentral(),
+      qEqualArcChord(),
+      qArcRatioPartition(),
+      qMajorArcFromMinor(),
+      qCentralConcept(),
+      qCentralDoubleArc()
+    ]),
+
+    arcRadius:()=>shuffle([
+      qArcLengthRatioRadius(),
+      qArcLengthRatioRadius(),
+      qArcLengthFindRadius(),
+      qArcLengthPiOtherCircle(),
+      qChordRatioRadius(),
+      qSameAngleArcDegree(),
+      qRadiusConcept(),
+      qRadiusFromPiArc(),
+      qArcRadiusFraction(),
+      qArcRadiusConcentricDiagram()
+    ]),
+
+    inscribedAngle:()=>shuffle([
+      qArcToInscribed(),
+      qArcToInscribed(),
+      qInscribedToArc(),
+      qSameArcAngles(),
+      qInscribedMajorArc(),
+      qEighthCircle(),
+      qTwoInscribedSum(),
+      qInscribedConcept(),
+      qInscribedDiagram(),
+      qArcRotationStyle()
+    ]),
+
+    diameterParallel:()=>shuffle([
+      qDiameterRightAngle(),
+      qDiameterRightAngle(),
+      qDiameterTriangleAngle(),
+      qDiameterPythagorean(),
+      qParallelEqualArcs(),
+      qParallelFindSideArc(),
+      qParallelAngleApplication(),
+      qSemicircleRecognition(),
+      qParallelConcept(),
+      qDiameterParallelMixed()
+    ]),
+
+    cyclicQuadrilateral:()=>shuffle([
+      qCyclicOpposite(),
+      qCyclicOpposite(),
+      qCyclicExterior(),
+      qCyclicAlgebra(),
+      qCyclicRatioAngles(),
+      qCyclicGivenTwo(),
+      qCyclicTrap(),
+      qCyclicExternalReverse(),
+      qCyclicDiagram(),
+      qCyclicCanCircumscribe()
+    ])
+  };
+
+  if(selected!=="comprehensive"){
+    return map[selected]();
+  }
+
+  return shuffle([
+    qCentralToArc(),
+    qArcRatioPartition(),
+    qArcLengthPiOtherCircle(),
+    qArcRadiusFraction(),
+    qInscribedDiagram(),
+    qTwoInscribedSum(),
+    qDiameterTriangleAngle(),
+    qParallelFindSideArc(),
+    qCyclicDiagram(),
+    qCyclicRatioAngles()
+  ]);
+}
+
+/*
+==================================================
+Sound
+==================================================
+*/
+
+function playGameSound(method){
+  try{
+    const manager=window.MathGameSound||window.GameSound;
+    if(manager && typeof manager[method]==="function"){
+      Promise.resolve(manager[method]()).catch(()=>{});
+    }
+  }catch(error){
+    console.warn("音效播放失敗：",error);
+  }
+}
+
+/*
+==================================================
+Scratchpad
+==================================================
+*/
+
+function moveScratchpadButtonToQuizGap(){
+  const mount=$("scratchpad-mobile-button");
+  const button=$("scratchpadOpenButton");
+  if(mount && button && !mount.contains(button)) mount.appendChild(button);
+}
+function ensureScratchpadButton(){
+  moveScratchpadButtonToQuizGap();
+  let count=0;
+  const retry=setInterval(()=>{
+    count++;
+    moveScratchpadButtonToQuizGap();
+    if($("scratchpadOpenButton") || count>=30) clearInterval(retry);
+  },60);
+}
+
+/*
+==================================================
+Screen
+==================================================
+*/
+
+function showOnly(id){
+  ["start-screen","quiz-screen","result-screen","review-screen"].forEach(screen=>{
+    $(screen).classList.toggle("hidden",screen!==id);
+  });
+  if(id==="quiz-screen"){
+    window.showGameScratchpadButton?.();
+    setTimeout(moveScratchpadButtonToQuizGap,0);
+    setTimeout(moveScratchpadButtonToQuizGap,100);
+  }else{
+    window.hideGameScratchpadButton?.();
+  }
+}
+
+/*
+==================================================
+Answer UI
+==================================================
+*/
+
+function renderRatioAnswer(count){
+  const inputs=[];
+  for(let i=0;i<count;i++){
+    inputs.push(`<input class="ratio-input" data-ratio-input="${i}" type="text"
+      inputmode="numeric" autocomplete="off" placeholder="數字"
+      aria-label="比例第 ${i+1} 項">`);
+  }
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <div class="ratio-answer">
+      ${inputs.join('<span class="ratio-colon">：</span>')}
+    </div>
+    <div class="answer-help">請輸入<strong>最簡整數比</strong>；等值但未化簡時不算答錯，會請你重新整理。</div>
+  `;
+  setTimeout(()=>document.querySelector("[data-ratio-input='0']")?.focus(),0);
+}
+function renderNumberAnswer(){
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <input id="number-answer" class="number-answer" type="text" inputmode="decimal"
+      autocomplete="off" placeholder="請輸入答案" aria-label="你的答案">
+  `;
+  setTimeout(()=>$("number-answer")?.focus(),0);
+}
+function renderRationalAnswer(){
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <div class="fraction-answer">
+      <select id="fraction-sign" class="fraction-sign" aria-label="正負號">
+        <option value="1">＋</option>
+        <option value="-1">−</option>
+      </select>
+      <div class="fraction-whole-wrap">
+        <span class="fraction-whole-label">整數部分</span>
+        <input id="fraction-whole" class="fraction-whole" type="text"
+          inputmode="numeric" autocomplete="off" placeholder="可留空"
+          aria-label="帶分數整數部分">
+      </div>
+      <div class="fraction-entry" aria-label="分數">
+        <input id="fraction-numerator" type="text" inputmode="numeric"
+          autocomplete="off" placeholder="分子" aria-label="分子">
+        <div class="fraction-line"></div>
+        <input id="fraction-denominator" type="text" inputmode="numeric"
+          autocomplete="off" placeholder="分母" aria-label="分母">
+      </div>
+    </div>
+    <div class="answer-help">可填最簡分數或帶分數；整數部分不需要時留空。分數部分需化成最簡。</div>
+    <div id="system-read" class="system-read hidden"></div>
+  `;
+  ["fraction-sign","fraction-whole","fraction-numerator","fraction-denominator"].forEach(id=>{
+    $(id)?.addEventListener("input",updateSystemRead);
+    $(id)?.addEventListener("change",updateSystemRead);
+  });
+  $("fraction-whole")?.addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&!answered){e.preventDefault();$("fraction-numerator")?.focus()}
+  });
+  $("fraction-numerator")?.addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&!answered){e.preventDefault();$("fraction-denominator")?.focus()}
+  });
+  setTimeout(()=>$("fraction-numerator")?.focus(),0);
+}
+
+function renderPiAnswer(){
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請輸入 π 的係數</div>
+    <div class="pi-answer-row">
+      <select id="fraction-sign" class="fraction-sign" aria-label="正負號">
+        <option value="1">＋</option>
+        <option value="-1">−</option>
+      </select>
+
+      <div class="fraction-whole-wrap">
+        <span class="fraction-whole-label">整數／帶分數整數部分</span>
+        <input id="fraction-whole" class="fraction-whole" type="text"
+          inputmode="numeric" autocomplete="off" placeholder="可留空"
+          aria-label="π 係數整數部分">
+      </div>
+
+      <div class="fraction-entry" aria-label="π 係數分數">
+        <input id="fraction-numerator" type="text" inputmode="numeric"
+          autocomplete="off" placeholder="分子" aria-label="π 係數分子">
+        <div class="fraction-line"></div>
+        <input id="fraction-denominator" type="text" inputmode="numeric"
+          autocomplete="off" placeholder="分母" aria-label="π 係數分母">
+      </div>
+
+      <span class="pi-fixed">π</span>
+    </div>
+
+    <div class="answer-help">
+      例如 6π：整數部分填 6；${fracHTML(15,2)}π：可填分子 15、分母 2，
+      或填 7 與 ${fracHTML(1,2)}。不需要輸入 π。
+    </div>
+
+    <div id="system-read" class="system-read hidden"></div>
+  `;
+
+  ["fraction-sign","fraction-whole","fraction-numerator","fraction-denominator"].forEach(id=>{
+    $(id)?.addEventListener("input",updateSystemRead);
+    $(id)?.addEventListener("change",updateSystemRead);
+  });
+
+  setTimeout(()=>$("fraction-whole")?.focus(),0);
+}
+
+function renderChoices(question){
+  selectedChoice=null;
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <div class="choice-grid">
+      ${shuffle(question.choices).map(choice=>`
+        <button class="choice-button" type="button" data-choice="${escapeHTML(choice.value)}">
+          ${protectImportantUnits(
+            choice.html??escapeHTML(choice.text??choice.value)
+          )}
+        </button>
+      `).join("")}
+    </div>
+  `;
+  $("answer-area").querySelectorAll("[data-choice]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      if(answered)return;
+      selectedChoice=button.dataset.choice;
+      $("answer-area").querySelectorAll(".choice-button").forEach(x=>x.classList.remove("selected"));
+      button.classList.add("selected");
+    });
+  });
+}
+function renderAnswerArea(question){
+  if(question.type==="ratio"){renderRatioAnswer(question.answer.length);return}
+  if(question.type==="number"){renderNumberAnswer();return}
+  if(question.type==="rational"){renderRationalAnswer();return}
+  if(question.type==="pi"){renderPiAnswer();return}
+  renderChoices(question);
+}
+
+function clearSystemRead(){
+  const box=$("system-read");
+  if(!box)return;
+  box.classList.add("hidden");
+  box.innerHTML="";
+}
+function showSystemRead(html){
+  const box=$("system-read");
+  if(!box)return;
+  box.innerHTML=`系統判讀：<strong>${html}</strong>`;
+  box.classList.remove("hidden");
+}
+function updateSystemRead(){
+  if(answered)return;
+
+  const q=questions[index];
+
+  if(
+    !q ||
+    (
+      q.type!=="rational" &&
+      q.type!=="pi"
+    )
+  ){
+    clearSystemRead();
+    return;
+  }
+
+  const wholeRaw=$("fraction-whole")?.value.trim()??"";
+  const nr=$("fraction-numerator")?.value.trim()??"";
+  const dr=$("fraction-denominator")?.value.trim()??"";
+
+  /*
+  π 型答案允許直接只填整數係數，例如 6π → 整數部分填 6。
+  */
+  if(
+    q.type==="pi" &&
+    wholeRaw &&
+    !nr &&
+    !dr
+  ){
+    if(!/^\d+$/.test(wholeRaw)){
+      clearSystemRead();
+      return;
+    }
+
+    const sign=Number($("fraction-sign")?.value??1);
+    const value=R(
+      sign*Number(wholeRaw),
+      1
+    );
+
+    showSystemRead(
+      piHTML(value)
+    );
+
+    return;
+  }
+
+  if(!nr || !dr){
+    clearSystemRead();
+    return;
+  }
+
+  if(wholeRaw && !/^\d+$/.test(wholeRaw)){
+    clearSystemRead();
+    return;
+  }
+
+  if(!/^-?\d+$/.test(nr) || !/^\d+$/.test(dr)){
+    clearSystemRead();
+    return;
+  }
+
+  const d=Number(dr);
+  const typedN=Number(nr);
+  const whole=wholeRaw?Number(wholeRaw):0;
+
+  if(
+    d===0 ||
+    (
+      wholeRaw &&
+      (
+        typedN<0 ||
+        Math.abs(typedN)>=d
+      )
+    )
+  ){
+    clearSystemRead();
+    return;
+  }
+
+  const sign=Number($("fraction-sign")?.value??1);
+
+  const explicitNegative=
+    !wholeRaw &&
+    nr.startsWith("-") &&
+    typedN!==0;
+
+  const rawN=
+    explicitNegative
+      ? -Math.abs(typedN)
+      : sign*(whole*d+Math.abs(typedN));
+
+  const value=R(rawN,d);
+
+  if(q.type==="pi"){
+    showSystemRead(
+      piHTML(value)
+    );
+  }else if(whole>0){
+    showSystemRead(
+      mixedAnswerHTML(
+        rawN<0?-1:1,
+        whole,
+        Math.abs(typedN),
+        d
+      )
+    );
+  }else{
+    showSystemRead(
+      rawFracHTML(rawN,d)
+    );
+  }
+}
+
+/*
+==================================================
+Read / judge answer
+==================================================
+*/
+
+function analyzeRatioAnswer(rawValues,answer){
+  const parsed=rawValues.map(v=>parseNumber(v));
+  if(parsed.some(v=>v===null)) return {valid:false,message:"請輸入有效的數字。"};
+  if(parsed.some(v=>v<=0)) return {valid:false,message:"比例各項請輸入正數。"};
+  let equivalent=true;
+  for(let i=1;i<parsed.length;i++){
+    if(Math.abs(parsed[i]*answer[0]-parsed[0]*answer[i])>1e-8){equivalent=false;break}
+  }
+  if(!equivalent) return {valid:true,equivalent:false,simplest:false};
+  const integerFormat=rawValues.every(v=>/^\+?\d+$/.test(String(v).trim()));
+  if(!integerFormat) return {valid:true,equivalent:true,simplest:false,reason:"not-integer"};
+  const ints=rawValues.map(v=>Number(String(v).trim()));
+  const g=gcdAll(ints);
+  if(g!==1) return {valid:true,equivalent:true,simplest:false,reason:"not-simplest",divisor:g};
+  return {valid:true,equivalent:true,simplest:true,values:ints};
+}
+
+function readRationalAnswer(){
+  const sign=Number($("fraction-sign")?.value??1);
+  const wholeRaw=$("fraction-whole")?.value.trim()??"";
+  const nr=$("fraction-numerator")?.value.trim()??"";
+  const dr=$("fraction-denominator")?.value.trim()??"";
+  if(!nr || !dr) return {valid:false,message:"請填分子與分母；若要用帶分數，再填整數部分。"};
+  if(wholeRaw && !/^\d+$/.test(wholeRaw)) return {valid:false,message:"整數部分請填 0 或正整數。"};
+  if(!/^-?\d+$/.test(nr) || !/^\d+$/.test(dr)) return {valid:false,message:"分子、分母必須是整數格式。"};
+  const whole=wholeRaw?Number(wholeRaw):0;
+  const typedN=Number(nr), d=Number(dr);
+  if(d===0) return {valid:false,message:"分母不能是 0。"};
+  if(wholeRaw && Math.abs(typedN)>=d) return {valid:false,message:"帶分數的分子要小於分母。"};
+  if(wholeRaw && typedN<0) return {valid:false,message:"使用帶分數時，負號請使用左側負號。"};
+  const explicitNegative=!wholeRaw && nr.startsWith("-") && typedN!==0;
+  const rawN=explicitNegative?-Math.abs(typedN):sign*(whole*d+Math.abs(typedN));
+  const display=whole>0
+    ? mixedAnswerHTML(rawN<0?-1:1,whole,Math.abs(typedN),d)
+    : rawFracHTML(rawN,d);
+  if(gcd(rawN,d)!==1){
+    return {valid:true,needsSimplify:true,display,displayHTML:true,
+      message:"這個答案還不是最簡分數，請修正。"};
+  }
+  return {valid:true,value:R(rawN,d),display,displayHTML:true};
+}
+
+
+function readPiAnswer(){
+  const sign=Number($("fraction-sign")?.value??1);
+  const wholeRaw=$("fraction-whole")?.value.trim()??"";
+  const nr=$("fraction-numerator")?.value.trim()??"";
+  const dr=$("fraction-denominator")?.value.trim()??"";
+
+  if(
+    wholeRaw &&
+    !nr &&
+    !dr
+  ){
+    if(!/^\d+$/.test(wholeRaw)){
+      return {
+        valid:false,
+        message:"π 的整數係數請填 0 或正整數。"
+      };
+    }
+
+    const value=R(
+      sign*Number(wholeRaw),
+      1
+    );
+
+    return {
+      valid:true,
+      value,
+      display:piHTML(value),
+      displayHTML:true
+    };
+  }
+
+  if(!nr || !dr){
+    return {
+      valid:false,
+      message:"若答案是整數倍 π，請在整數部分填係數；若是分數倍 π，請填完整分子與分母。"
+    };
+  }
+
+  if(wholeRaw && !/^\d+$/.test(wholeRaw)){
+    return {
+      valid:false,
+      message:"整數部分請填 0 或正整數。"
+    };
+  }
+
+  if(!/^-?\d+$/.test(nr) || !/^\d+$/.test(dr)){
+    return {
+      valid:false,
+      message:"分子、分母必須是整數格式。"
+    };
+  }
+
+  const whole=wholeRaw?Number(wholeRaw):0;
+  const typedN=Number(nr);
+  const d=Number(dr);
+
+  if(d===0){
+    return {
+      valid:false,
+      message:"分母不能是 0。"
+    };
+  }
+
+  if(
+    wholeRaw &&
+    Math.abs(typedN)>=d
+  ){
+    return {
+      valid:false,
+      message:"帶分數的分子要小於分母。"
+    };
+  }
+
+  if(
+    wholeRaw &&
+    typedN<0
+  ){
+    return {
+      valid:false,
+      message:"使用帶分數時，負號請使用左側負號。"
+    };
+  }
+
+  const explicitNegative=
+    !wholeRaw &&
+    nr.startsWith("-") &&
+    typedN!==0;
+
+  const rawN=
+    explicitNegative
+      ? -Math.abs(typedN)
+      : sign*(whole*d+Math.abs(typedN));
+
+  const value=R(rawN,d);
+
+  if(gcd(rawN,d)!==1){
+    return {
+      valid:true,
+      needsSimplify:true,
+      value,
+      display:piHTML(value),
+      displayHTML:true,
+      message:"π 的係數還不是最簡分數。"
+    };
+  }
+
+  return {
+    valid:true,
+    value,
+    display:piHTML(value),
+    displayHTML:true
+  };
+}
+
+function readAnswer(question){
+  if(question.type==="ratio"){
+    const raw=[...document.querySelectorAll("[data-ratio-input]")].map(x=>x.value.trim());
+    if(raw.some(v=>!v)) return {valid:false,message:"請把比例的每一項都填完整。"};
+    const analysis=analyzeRatioAnswer(raw,question.answer);
+    return {valid:analysis.valid,value:raw,display:raw.join("："),
+      displayHTML:escapeHTML(raw.join("：")),ratioAnalysis:analysis,message:analysis.message};
+  }
+  if(question.type==="number"){
+    const raw=$("number-answer")?.value.trim()??"";
+    const value=parseNumber(raw);
+    if(value===null) return {valid:false,message:"請輸入有效的數字答案。"};
+    return {valid:true,value,display:raw,displayHTML:escapeHTML(raw)};
+  }
+  if(question.type==="rational"){
+    return readRationalAnswer();
+  }
+  if(question.type==="pi"){
+    return readPiAnswer();
+  }
+  if(selectedChoice===null) return {valid:false,message:"請先選擇一個答案。"};
+  const selected=question.choices.find(c=>String(c.value)===String(selectedChoice));
+  return {valid:true,value:selectedChoice,
+    display:selected?.text??selectedChoice,
+    displayHTML:selected?.html??escapeHTML(selected?.text??selectedChoice)};
+}
+function isCorrectAnswer(question,answer){
+  if(question.type==="ratio"){
+    return answer.ratioAnalysis?.equivalent===true && answer.ratioAnalysis?.simplest===true;
+  }
+  if(question.type==="number"){
+    return sameNumber(answer.value,question.answer,question.tolerance??1e-9);
+  }
+  if(question.type==="rational"){
+    return ratEq(answer.value,question.answer);
+  }
+  if(question.type==="pi"){
+    return ratEq(answer.value,question.answer);
+  }
+  return String(answer.value)===String(question.answer);
+}
+function correctAnswerHTML(question){
+  if(question.type==="ratio") return ratioHTML(question.answer);
+  if(question.type==="number") return escapeHTML(question.answer);
+  if(question.type==="rational") return ratHTML(question.answer);
+  if(question.type==="pi") return piHTML(question.answer);
+  const c=question.choices.find(x=>String(x.value)===String(question.answer));
+  return c?.html??escapeHTML(c?.text??c?.value??"");
+}
+function disableAnswerArea(){
+  $("answer-area").querySelectorAll("input,button,select").forEach(el=>el.disabled=true);
+}
+
+/*
+==================================================
+Explanation
+==================================================
+*/
+
+
+/*
+==================================================
+重要資訊不拆行
+
+例：
+  BC線段＝5
+  AP：PB＝3：4
+  PQ∥BC
+  ∠A＝30°
+
+這些資訊若剛好碰到行尾，會整組移到下一行，
+不會出現「BC」留在上一行、「＝5」掉到下一行的情況。
+==================================================
+*/
+function protectImportantUnits(input){
+  let html=String(input??"");
+
+  const segTag=
+    String.raw`<span class="seg math">[^<]+<\/span>`;
+
+  const arcTag=
+    String.raw`<span class="arc math">[^<]+<\/span>`;
+
+  // 線段比例。
+  html=html.replace(
+    new RegExp(
+      `(${segTag})：(${segTag})＝([^，。；、<\\s]+)`,
+      "g"
+    ),
+    '<span class="keep-unit">$1：$2＝$3</span>'
+  );
+
+  // 平行、垂直。
+  html=html.replace(
+    new RegExp(
+      `(${segTag})(∥|⊥)(${segTag}|[A-Za-z])`,
+      "g"
+    ),
+    '<span class="keep-unit">$1$2$3</span>'
+  );
+
+  // 單一線段已知量。
+  html=html.replace(
+    new RegExp(
+      `(${segTag})＝([^，。；、<\\s]+)(\\s*(?:公尺|公分|公里|m|cm))?`,
+      "g"
+    ),
+    '<span class="keep-unit">$1＝$2$3</span>'
+  );
+
+  // 弧的度數／長度。
+  html=html.replace(
+    new RegExp(
+      `(${arcTag})＝([^，。；、<\\s]+)`,
+      "g"
+    ),
+    '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  // 角度條件。
+  html=html.replace(
+    /(∠[A-Za-zA-Z'′0-9]+)＝(∠[A-Za-zA-Z'′0-9]+|[−-]?\d+(?:\.\d+)?°)/g,
+    '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  // r、d、x 等短條件。
+  html=html.replace(
+    /\b([rdxyz])＝([−-]?\d+(?:\.\d+)?)/g,
+    '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  // 課本風格平行符號。
+  html=html.replace(
+    /∥/g,
+    '<span class="parallel-symbol" aria-label="平行">//</span>'
+  );
+
+  return html;
+}
+
+function explanationHTML(question){
+  const e=question.explanation;
+  return `
+    <div class="explanation-title">📘 完整詳解</div>
+    <div class="explanation-question">${protectImportantUnits(question.html)}</div>
+    <div class="explanation-think"><strong>先想一想｜</strong>${protectImportantUnits(e.think)}</div>
+    ${e.steps.map((step,i)=>`<div class="explanation-step"><strong>步驟 ${i+1}｜</strong>${protectImportantUnits(step)}</div>`).join("")}
+    ${e.tip?`<div class="explanation-tip"><strong>⚠️ 常見提醒｜</strong>${protectImportantUnits(e.tip)}</div>`:""}
+    <div class="explanation-answer">✅ 最後答案：${protectImportantUnits(e.answer)}</div>
+  `;
+}
+
+/*
+==================================================
+Question display
+==================================================
+*/
+
+function displayQuestion(){
+  answered=false;
+  selectedChoice=null;
+  const q=questions[index];
+  $("mode-name").textContent=MODES[modeId].name;
+  $("question-number").textContent=`第 ${index+1} 題／共 ${questions.length} 題`;
+  $("live-score").textContent=index===0?"0":Math.round(correct/index*100);
+  $("correct-count").textContent=correct;
+  $("combo-count").textContent=combo;
+  $("progress-bar").style.width=`${index/questions.length*100}%`;
+  $("question-label").textContent=q.label;
+  $("question-content").innerHTML=protectImportantUnits(q.html);
+  $("feedback").className="feedback";
+  $("feedback").innerHTML="";
+  $("explanation").innerHTML="";
+  $("explanation").classList.add("hidden");
+  $("submit-button").classList.remove("hidden");
+  $("next-button").classList.add("hidden");
+  renderAnswerArea(q);
+  window.resetGameScratchpad?.();
+}
+
+/*
+==================================================
+Submit
+==================================================
+*/
+
+function submitAnswer(){
+  if(answered)return;
+  const q=questions[index];
+  const answer=readAnswer(q);
+
+  if(!answer.valid){
+    $("feedback").className="feedback warning";
+    $("feedback").textContent=answer.message;
+    return;
+  }
+
+  if(q.type==="ratio" && answer.ratioAnalysis?.equivalent===true && answer.ratioAnalysis?.simplest===false){
+    $("feedback").className="feedback warning";
+    $("feedback").innerHTML="👍 比例關係正確，但答案還不是最簡整數比，請化簡後重新送出。";
+    return;
+  }
+
+  if((q.type==="rational" || q.type==="pi") && answer.needsSimplify){
+    $("feedback").className="feedback warning";
+    $("feedback").innerHTML="⚠️ 這個答案還不是最簡形式，請化簡後重新送出。這次不算答錯。";
+    return;
+  }
+
+  answered=true;
+  disableAnswerArea();
+  const ok=isCorrectAnswer(q,answer);
+
+  if(ok){
+    correct++; combo++; maxCombo=Math.max(maxCombo,combo);
+    $("feedback").className="feedback correct";
+    $("feedback").innerHTML="✨ 回答正確！";
+    playGameSound("playCorrect");
+  }else{
+    wrong++; combo=0;
+    $("feedback").className="feedback wrong";
+    $("feedback").innerHTML=`❌ 答案不正確。正確答案：<strong>${correctAnswerHTML(q)}</strong>`;
+    playGameSound("playWrong");
+  }
+
+  records.push({
+    number:index+1,question:q,userAnswer:answer.display,
+    userAnswerHTML:answer.displayHTML??escapeHTML(answer.display),correct:ok
+  });
+
+  $("live-score").textContent=Math.round(correct/(index+1)*100);
+  $("correct-count").textContent=correct;
+  $("combo-count").textContent=combo;
+  $("explanation").innerHTML=explanationHTML(q);
+  $("explanation").classList.remove("hidden");
+  $("submit-button").classList.add("hidden");
+  $("next-button").classList.remove("hidden");
+  $("next-button").textContent=
+    index===questions.length-1?"查看測驗結果（Enter）":"下一題（Enter）";
+  $("next-button").focus();
+}
+
+function nextQuestion(){
+  if(!answered)return;
+  index++;
+  if(index<questions.length) displayQuestion();
+  else showResult();
+}
+
+/*
+==================================================
+Timer / start
+==================================================
+*/
+
+function stopTimer(){
+  if(timerId!==null){clearInterval(timerId);timerId=null}
+  if(startTime) elapsed=Math.floor((Date.now()-startTime)/1000);
+}
+function startTimer(){
+  if(timerId!==null) clearInterval(timerId);
+  startTime=Date.now(); elapsed=0;
+  $("timer-display").textContent="00:00";
+  timerId=setInterval(()=>{
+    elapsed=Math.floor((Date.now()-startTime)/1000);
+    $("timer-display").textContent=formatTime(elapsed);
+  },500);
+}
+function startGame(selectedMode){
+  if(timerId!==null){clearInterval(timerId);timerId=null}
+  modeId=selectedMode;
+  questions=createQuestions(modeId);
+  index=0;correct=0;wrong=0;combo=0;maxCombo=0;records=[];
+  answered=false;selectedChoice=null;scoreSaved=false;rpgEmitted=false;elapsed=0;
+  attemptId=(globalThis.crypto?.randomUUID?.()??`${Date.now()}-${Math.random().toString(36).slice(2)}`);
+  $("save-status").textContent="";
+  showOnly("quiz-screen");
+  displayQuestion();
+  startTimer();
+  playGameSound("playStart");
+}
+
+/*
+==================================================
+Result + RPG bridge
+==================================================
+*/
+
+function rating(score){
+  if(score>=90)return {stars:"★★★★★",comment:"掌握得很好！可以直接挑戰 2-2 綜合題。"};
+  if(score>=80)return {stars:"★★★★☆",comment:"表現很好，再留意弧、圓心角、圓周角與內接四邊形的對應關係。"};
+  if(score>=60)return {stars:"★★★☆☆",comment:"核心觀念已建立，建議從詳解確認自己最容易混淆的是弧還是角。"};
+  return {stars:"★★☆☆☆",comment:"建議先回核心模式，把圓心角、圓周角與弧的基本關係練熟。"};
+}
+
+function emitRpgSession(score){
+  if(rpgEmitted)return;
+  rpgEmitted=true;
+  const detail={
+    gameId:GAME_ID,
+    modeId,
+    chapter:CHAPTER,
+    score,
+    correct,
+    wrong,
+    total:questions.length,
+    playTime:elapsed,
+    accuracy:score,
+    maxCombo,
+    attemptId,
+    difficultyWeight:MODES[modeId]?.difficultyWeight??1
+  };
+  window.dispatchEvent(new CustomEvent("mathgame:session-complete",{detail}));
+  if(window.MathGameProgress?.completeLearningSession){
+    Promise.resolve(window.MathGameProgress.completeLearningSession(detail)).catch(()=>{});
+  }
+}
+
+async function showResult(){
+  stopTimer();
+  const score=Math.round(correct/questions.length*1000)/10;
+  const r=rating(score);
+  $("progress-bar").style.width="100%";
+  showOnly("result-screen");
+  $("final-score").textContent=`${Number.isInteger(score)?score:score.toFixed(1)} 分`;
+  $("final-stars").textContent=r.stars;
+  $("final-comment").textContent=r.comment;
+  $("final-correct").textContent=correct;
+  $("final-wrong").textContent=wrong;
+  $("final-combo").textContent=maxCombo;
+  $("final-time").textContent=formatTime(elapsed);
+  playGameSound("playComplete");
+  emitRpgSession(score);
+  await saveCurrentScore(score);
+}
+
+async function saveCurrentScore(score){
+  if(scoreSaved)return;
+  scoreSaved=true;
+  const status=$("save-status");
+  status.textContent="☁️ 正在儲存本次成績……";
+  status.style.color="#1d4ed8";
+  try{
+    const scoreModule=await import("../js/scores.js?v=7");
+    if(typeof scoreModule.saveGameScore!=="function")throw new Error("找不到 saveGameScore");
+    const result=await scoreModule.saveGameScore({
+      game:GAME_ID,
+      mode:modeId,
+      score,
+      correctCount:correct,
+      wrongCount:wrong,
+      maxCombo,
+      playTime:elapsed,
+      totalQuestions:questions.length,
+      accuracy:score
+    });
+    if(result?.success){
+      status.textContent="✅ 本次成績已儲存。";status.style.color="#15803d";return;
+    }
+    if(result?.reason==="not-logged-in"){
+      status.textContent="ℹ️ 尚未登入，因此本次成績沒有儲存。";status.style.color="#b45309";return;
+    }
+    status.textContent="⚠️ 成績暫時無法儲存。";status.style.color="#b91c1c";
+  }catch(error){
+    console.error(`${GAME_TITLE} 成績儲存失敗：`,error);
+    status.textContent="⚠️ 本次遊戲已完成，但成績暫時無法儲存。";
+    status.style.color="#b91c1c";
+  }
+}
+
+/*
+==================================================
+Review
+==================================================
+*/
+
+function showReview(){
+  $("review-list").innerHTML=records.map(record=>`
+    <article class="review-card ${record.correct?"correct-review":"wrong-review"}">
+      <div class="review-title">第 ${record.number} 題 ${record.correct?"✅":"❌"}</div>
+      <div class="review-question">${record.question.html}</div>
+      <div class="review-answer-line">你的答案：<strong>${record.userAnswerHTML}</strong></div>
+      <div class="review-answer-line">正確答案：<strong>${correctAnswerHTML(record.question)}</strong></div>
+      <div class="explanation">${explanationHTML(record.question)}</div>
+    </article>
+  `).join("");
+  showOnly("review-screen");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/*
+==================================================
+Events
+==================================================
+*/
+
+document.querySelectorAll("[data-mode]").forEach(button=>{
+  button.addEventListener("click",()=>startGame(button.dataset.mode));
+});
+$("submit-button").addEventListener("click",submitAnswer);
+$("next-button").addEventListener("click",nextQuestion);
+$("restart-button").addEventListener("click",()=>startGame(modeId));
+$("quit-button").addEventListener("click",()=>{
+  if(timerId!==null){clearInterval(timerId);timerId=null}
+  showOnly("start-screen");
+});
+$("again-button").addEventListener("click",()=>startGame(modeId));
+$("result-mode-button").addEventListener("click",()=>showOnly("start-screen"));
+$("review-button").addEventListener("click",showReview);
+$("review-again-button").addEventListener("click",()=>startGame(modeId));
+$("review-result-button").addEventListener("click",()=>showOnly("result-screen"));
+
+document.addEventListener("keydown",event=>{
+  if(event.key!=="Enter" || $("quiz-screen").classList.contains("hidden"))return;
+  const active=document.activeElement;
+  if(active?.tagName==="BUTTON" && active.classList.contains("choice-button"))return;
+  if(
+    active?.id==="fraction-whole" ||
+    active?.id==="fraction-numerator"
+  )return;
+  event.preventDefault();
+  if(answered)nextQuestion(); else submitAnswer();
+});
+
+window.addEventListener("DOMContentLoaded",()=>{
+  if(window.MathGameCommonHeader){
+    window.MathGameCommonHeader.init({mountId:"commonHeaderMount",basePath:"../"});
+  }
+  ensureScratchpadButton();
+});
+
+showOnly("start-screen");
+
+</script>
+</body>
+</html>
