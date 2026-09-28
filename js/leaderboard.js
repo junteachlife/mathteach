@@ -3,8 +3,8 @@
 生活有解．心中有數｜遊戲排行榜
 檔案位置：js/leaderboard.js
 
-版本：8.5
-2026-09-28 九上 3-1／3-2 模式同步版
+版本：8.6
+2026-09-28 八上 4-1／4-2／4-3／第5章重製同步版
 ==================================================
 
 本版重點：
@@ -36,7 +36,7 @@ import {
   getGamesBySemester,
   getGameConfig,
   getGameName
-} from "./game-config.js?v=7.1";
+} from "./game-config.js?v=9.4";
 
 
 import {
@@ -2567,7 +2567,7 @@ try {
 
 
   console.log(
-    "leaderboard.js v8.5 已成功載入"
+    "leaderboard.js v8.6 已成功載入"
   );
 
 
