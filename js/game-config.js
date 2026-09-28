@@ -3,8 +3,8 @@
 數學遊戲樂園：遊戲共用設定
 檔案位置：js/game-config.js
 
-版本：7.1
-八年級上學期 9 款遊戲正式啟用版
+版本：9.4
+八年級上學期第 4、5 章重製同步版
 ＋一元二次方程式
 ＋排行榜 / 我的成績相容修正版
 ＋九上 1-2／1-3／1-4 正式上線
@@ -1596,110 +1596,63 @@ export const GAME_CONFIG = {
 
 
 
-  /*
-  ==================================================
-  一元二次方程式大挑戰
+  /* ==================================================
+  八上 4-1～第 5 章重製遊戲
+  ================================================== */
 
-  ★ 正式上架
-  ★ GAME_ID 必須為 quadraticEquation
-  ★ mode 必須與 quadratic-equation.html 完全一致：
+  "quadratic-factorization": {
+    id:"quadratic-factorization", section:"4-1",
+    name:"4-1 因式分解法解一元二次方程式大挑戰", shortName:"因式分解法解一元二次方程式",
+    semester:"grade8-first", grade:8, order:9, icon:"✂️",
+    file:"games/quadratic-factorization.html",
+    description:"練習一元二次方程式的意義與根、零乘積性質、提公因式、乘法公式與十字交乘求解。",
+    finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{equationRoot:"標準式與根",zeroProduct:"零乘積與已分解方程式",commonFactor:"提公因式求解",identityFactor:"乘法公式因式分解",crossFactor:"十字交乘求解",comprehensive:"4-1 綜合挑戰"},
+    theme:{primary:"#00897B",dark:"#00695C",light:"#E0F2F1",border:"#80CBC4"}
+  },
 
-  basic
-  factor
-  completeSquare
-  formula
-  application
-  mixed
-  ==================================================
-  */
+  "quadratic-completing-formula": {
+    id:"quadratic-completing-formula", section:"4-2",
+    name:"4-2 配方法與公式解大挑戰", shortName:"配方法與公式解",
+    semester:"grade8-first", grade:8, order:10, icon:"🧮",
+    file:"games/quadratic-completing-formula.html",
+    description:"練習平方根解法、配成完全平方式、配方法、一元二次方程式公式解與判別式。",
+    finished:true, difficulty:3, recommended:true, isNew:true, ranking:{type:"speed"},
+    modes:{squareRoot:"平方根解法",completeSquareForm:"配成完全平方式",completeSquareSolve:"配方法解方程式",formulaSolve:"一元二次方程式公式解",discriminant:"判別式與根的情形",comprehensive:"4-2 綜合挑戰"},
+    theme:{primary:"#1565C0",dark:"#0D47A1",light:"#E3F2FD",border:"#90CAF9"}
+  },
 
+  "quadratic-applications": {
+    id:"quadratic-applications", section:"4-3",
+    name:"4-3 一元二次方程式應用問題大挑戰", shortName:"一元二次方程式應用",
+    semester:"grade8-first", grade:8, order:11, icon:"🌍",
+    file:"games/quadratic-applications.html",
+    description:"練習由題意列方程式、整數與年齡、面積與路寬、售價收入，以及合理根與近似值。",
+    finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{equationModel:"由題意列方程式",integerAge:"整數與年齡問題",geometry:"面積與路寬問題",priceRevenue:"售價、數量與收入",validityApprox:"合理根與近似值",comprehensive:"4-3 綜合挑戰"},
+    theme:{primary:"#C2410C",dark:"#9A3412",light:"#FFF7ED",border:"#FDBA74"}
+  },
 
+  "statistics-data-processing": {
+    id:"statistics-data-processing", section:"5",
+    name:"5 統計資料處理大挑戰", shortName:"統計資料處理",
+    semester:"grade8-first", grade:8, order:12, icon:"📊",
+    file:"games/statistics-data-processing.html",
+    description:"練習相對次數分配、組中點、累積次數、累積相對次數，以及折線圖判讀與比較。",
+    finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{relativeFrequency:"相對次數分配表",relativeGraph:"相對次數折線圖",cumulativeFrequency:"累積次數分配",cumulativeRelative:"累積相對次數分配",graphInterpretation:"統計圖表判讀與比較",comprehensive:"第 5 章綜合挑戰"},
+    theme:{primary:"#00838F",dark:"#006064",light:"#E0F7FA",border:"#80DEEA"}
+  },
+
+  /* 舊版一元二次方程式 GAME_ID：僅保留舊 Firestore 紀錄辨識，不顯示在首頁。 */
   quadraticEquation: {
-
-    id:
-      "quadraticEquation",section:"4-1～4-2",
-
-    name:
-      "一元二次方程式大挑戰",
-
-    shortName:
-      "一元二次方程式",
-
-    semester:
-      "grade8-first",
-
-    grade:
-      8,
-
-    order:
-      9,
-
-    icon:
-      "x²",
-
-    file:
-      "games/quadratic-equation.html",
-
-    description:
-      "練習基礎概念、因式分解法、平方根與配方法、公式解與判別式、一元二次方程式應用問題，以及全章綜合挑戰。",
-
-    finished:
-      true,
-
-    difficulty:
-      3,
-
-    recommended:
-      true,
-
-    isNew:
-      true,
-
-    ranking: {
-
-      type:
-        "speed"
-
-    },
-
-    modes: {
-
-      basic:
-        "模式一｜基礎概念",
-
-      factor:
-        "模式二｜因式分解法",
-
-      completeSquare:
-        "模式三｜平方根與配方法",
-
-      formula:
-        "模式四｜公式解與判別式",
-
-      application:
-        "模式五｜一元二次應用問題",
-
-      mixed:
-        "模式六｜全章綜合挑戰"
-
-    },
-
-    theme: {
-
-      primary:
-        "#1565C0",
-
-      dark:
-        "#0D47A1",
-
-      light:
-        "#E3F2FD",
-
-      border:
-        "#90CAF9"
-
-    }
-
+    id:"quadraticEquation", section:"4",
+    name:"舊版 一元二次方程式大挑戰", shortName:"舊版一元二次方程式",
+    semester:"grade8-first", grade:8, order:99, icon:"x²",
+    file:"games/quadratic-equation.html", description:"舊版歷史成績相容用。",
+    finished:false, archived:true, difficulty:3, recommended:false, isNew:false, ranking:{type:"speed"},
+    modes:{basic:"基礎概念",factor:"因式分解法",completeSquare:"平方根與配方法",formula:"公式解與判別式",application:"一元二次應用問題",mixed:"全章綜合挑戰"},
+    theme:{primary:"#64748B",dark:"#475569",light:"#F1F5F9",border:"#CBD5E1"}
   }
 
 };
@@ -1971,7 +1924,9 @@ export function getGamesBySemester(
     .filter(
       game =>
         game.semester ===
-        semester
+          semester &&
+        game.archived !==
+          true
     )
     .sort(
       (
@@ -2004,7 +1959,9 @@ export function getFinishedGames() {
     .filter(
       game =>
         game.finished ===
-        true
+          true &&
+        game.archived !==
+          true
     )
     .sort(
       (
