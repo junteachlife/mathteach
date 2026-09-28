@@ -1,0 +1,3048 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>九上 3-2 三角形的外心、內心與重心大挑戰｜生活有解．心中有數</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'14'%20fill%3D'%230f766e'%2F%3E%3Ctext%20x%3D'32'%20y%3D'39'%20text-anchor%3D'middle'%20font-family%3D'Arial,sans-serif'%20font-size%3D'18'%20font-weight%3D'700'%20fill%3D'white'%3E3-2%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link rel="stylesheet" href="../css/scratchpad.css">
+<style>
+
+*{box-sizing:border-box}
+:root{
+  --primary:#0f766e;
+  --primary-dark:#115e59;
+  --primary-light:#ecfdf5;
+  --primary-border:#5eead4;
+  --accent:#0ea5e9;
+  --purple:#7c3aed;
+  --orange:#d97706;
+  --green:#16a34a;
+  --text:#1e293b;
+  --muted:#64748b;
+  --success:#15803d;
+  --danger:#dc2626;
+  --warning:#b45309;
+}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; padding:16px;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 7% 7%,rgba(96,165,250,.16),transparent 28%),
+    radial-gradient(circle at 94% 5%,rgba(245,158,11,.10),transparent 30%),
+    linear-gradient(135deg,#f8fafc,#fff 52%,#f8fafc);
+}
+button,input,select{font-family:inherit}
+button{touch-action:manipulation}
+.hidden{display:none!important}
+.page-shell{width:min(100%,1080px);margin:0 auto}
+#commonHeaderMount{margin-bottom:14px}
+.game-card{
+  overflow:hidden;border:1px solid #d8dee8;border-top:8px solid var(--primary);
+  border-radius:26px;background:#fff;box-shadow:0 18px 45px rgba(15,23,42,.12)
+}
+.game-header{
+  padding:27px 20px 20px;text-align:center;
+  background:linear-gradient(180deg,var(--primary-light),#fff)
+}
+.game-title{
+  margin:0;color:var(--primary-dark);font-size:clamp(29px,4.8vw,43px);line-height:1.22
+}
+.game-subtitle{
+  max-width:900px;margin:11px auto 0;color:var(--muted);
+  font-weight:700;line-height:1.75
+}
+.concept-strip{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:14px}
+.concept-chip{
+  padding:7px 12px;border:1px solid var(--primary-border);border-radius:999px;
+  background:#fff;color:var(--primary-dark);font-size:14px;font-weight:900
+}
+.screen{padding:22px}
+.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.mode-card{
+  display:flex;flex-direction:column;min-height:222px;padding:20px;
+  border:2px solid #d9e0e9;border-radius:20px;background:#fff;
+  box-shadow:0 8px 22px rgba(15,23,42,.05);transition:.15s ease
+}
+.mode-card:hover{
+  transform:translateY(-2px);border-color:var(--primary-border);
+  box-shadow:0 12px 28px rgba(15,23,42,.09)
+}
+.mode-card.final{
+  border-color:#f59e0b;background:linear-gradient(180deg,#fffbeb,#fff)
+}
+.mode-icon{font-size:33px}
+.mode-title{margin:9px 0 6px;color:var(--primary-dark);font-size:21px;font-weight:900}
+.mode-meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.mode-tag{
+  padding:4px 8px;border-radius:999px;background:#f1f5f9;
+  color:#475569;font-size:12px;font-weight:900
+}
+.mode-description{flex:1;margin:0 0 15px;color:var(--muted);line-height:1.65}
+.mode-button,.game-button{
+  min-height:48px;padding:11px 17px;border:none;border-radius:14px;
+  color:#fff;font-size:16px;font-weight:900;cursor:pointer
+}
+.mode-button,.game-button.primary{background:var(--primary)}
+.mode-card.final .mode-button{background:var(--orange)}
+.game-button.secondary{background:#475569}
+.game-button.orange{background:var(--orange)}
+.game-button.purple{background:var(--purple)}
+.game-button.restart{background:var(--green)}
+button:disabled{opacity:.48;cursor:not-allowed}
+.quiz-top{
+  display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start
+}
+.mode-name{color:var(--primary-dark);font-size:20px;font-weight:900}
+.question-number{margin-top:4px;color:var(--muted);font-size:14px;font-weight:800}
+.quiz-stats{display:grid;grid-template-columns:repeat(4,auto);gap:8px}
+.stat-pill{
+  min-width:86px;padding:8px 10px;border:1px solid #e2e8f0;border-radius:12px;
+  background:#f8fafc;text-align:center;color:#475569;font-size:12px;font-weight:800
+}
+.stat-pill strong{display:block;margin-top:2px;color:#0f172a;font-size:18px}
+.progress-track{
+  height:10px;margin:16px 0 20px;overflow:hidden;border-radius:999px;background:#e2e8f0
+}
+.progress-bar{
+  width:0;height:100%;background:linear-gradient(90deg,var(--primary-border),var(--primary));
+  transition:width .2s ease
+}
+.question-card{
+  overflow:hidden;padding:22px 18px;border:2px solid var(--primary-border);
+  border-radius:20px;background:linear-gradient(180deg,var(--primary-light),#fff)
+}
+.question-label{
+  margin-bottom:10px;color:var(--primary-dark);font-size:14px;font-weight:900
+}
+.question-content{
+  min-height:92px;
+  display:block;
+  text-align:left;
+  color:#0f172a;
+  font-size:clamp(20px,2.75vw,28px);
+  font-weight:900;
+  line-height:1.55;
+}
+
+/*
+==================================================
+題目換行規則
+
+- 能一行顯示就維持一行。
+- 需要換行時，每一行都從同一個左邊界開始。
+- 不再用 inline-flex 拆成許多小區塊，避免跨行後置中。
+==================================================
+*/
+.question-flow{
+  display:block;
+  width:100%;
+  max-width:100%;
+  margin:0;
+  text-align:left;
+}
+
+.qline{
+  display:inline;
+  max-width:100%;
+  white-space:normal;
+  text-align:left;
+  overflow-wrap:normal;
+  word-break:normal;
+}
+
+.math{
+  font-family:"Cambria Math","Times New Roman","Microsoft JhengHei",sans-serif
+}
+
+/*
+線段符號：上方橫線。
+使用 border-top，避免不同瀏覽器的 overline 高度不一致。
+*/
+.seg{
+  display:inline-block;
+  position:relative;
+  white-space:nowrap;
+  border-top:2px solid currentColor;
+  padding-top:.04em;
+  line-height:1.02;
+  text-decoration:none;
+  vertical-align:baseline;
+}
+
+
+/*
+==================================================
+課本風格平行符號
+
+原本 Unicode「∥」在部分手機字型會太接近垂直線。
+改成兩條斜線「//」的視覺樣式，更接近課本常見寫法。
+==================================================
+*/
+.parallel-symbol{
+  display:inline-block;
+  margin:0 .12em;
+  font-family:"Arial","Noto Sans","Microsoft JhengHei",sans-serif;
+  font-weight:900;
+  font-size:1.02em;
+  letter-spacing:-.12em;
+  line-height:1;
+  transform:skewX(-7deg);
+  transform-origin:center;
+  vertical-align:.02em;
+  white-space:nowrap;
+}
+
+
+/*
+==================================================
+圓弧符號
+==================================================
+*/
+.arc{
+  display:inline-block;
+  position:relative;
+  min-width:1.35em;
+  padding-top:.18em;
+  text-align:center;
+  white-space:nowrap;
+  line-height:1;
+  vertical-align:baseline;
+}
+.arc::before{
+  content:"⌒";
+  position:absolute;
+  left:50%;
+  top:-.58em;
+  transform:translateX(-50%) scaleX(1.12);
+  font-size:.92em;
+  font-weight:900;
+  line-height:1;
+}
+
+/*
+==================================================
+π 型答案
+==================================================
+*/
+.pi-answer-row{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.pi-fixed{
+  font-family:"Cambria Math","Times New Roman",serif;
+  font-size:34px;
+  font-weight:900;
+  color:var(--primary-dark);
+  line-height:1;
+}
+
+/*
+==================================================
+圓形圖形題
+==================================================
+*/
+.geo-diagram .circle-shape{
+  fill:rgba(32,93,155,.045);
+  stroke:var(--primary-dark);
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .radius-line,
+.geo-diagram .chord-line{
+  fill:none;
+  stroke:var(--primary-dark);
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .tangent-line{
+  fill:none;
+  stroke:#c2410c;
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .distance-line{
+  fill:none;
+  stroke:var(--accent);
+  stroke-width:3;
+  stroke-dasharray:7 5;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .arc-line{
+  fill:none;
+  stroke:#e11d48;
+  stroke-width:5;
+  stroke-linecap:round;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .right-mark{
+  fill:none;
+  stroke:#dc2626;
+  stroke-width:2.8;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .center-dot,
+.geo-diagram .point-dot{
+  fill:#0f172a;
+}
+.geo-diagram .relation-label{
+  fill:#9a3412;
+  font-size:21px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:5px;
+  stroke-linejoin:round;
+}
+
+
+/*
+==================================================
+3-2 三角形三心專用圖形
+==================================================
+*/
+.center-line{
+  fill:none;
+  stroke:#7c3aed;
+  stroke-width:3;
+  stroke-dasharray:7 5;
+  vector-effect:non-scaling-stroke;
+}
+.median-line{
+  fill:none;
+  stroke:#0f766e;
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.bisector-line{
+  fill:none;
+  stroke:#e11d48;
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.incircle{
+  fill:rgba(15,118,110,.05);
+  stroke:#0f766e;
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.circumcircle{
+  fill:none;
+  stroke:#2563eb;
+  stroke-width:2.5;
+  stroke-dasharray:8 5;
+  vector-effect:non-scaling-stroke;
+}
+.center-label{
+  fill:#be123c;
+  font-size:23px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#fff;
+  stroke-width:5px;
+}
+.area-fill-a{fill:rgba(14,165,233,.12)}
+.area-fill-b{fill:rgba(16,185,129,.12)}
+.area-fill-c{fill:rgba(245,158,11,.12)}
+
+
+/*
+重要資訊保持在同一組：
+例如 BC線段＝5、∠A＝30°、AB：BC＝2：3、PQ∥BC。
+瀏覽器換行時只能整組移到下一行，不會把「BC」和「＝5」拆開。
+*/
+.keep-unit{
+  display:inline-block;
+  white-space:nowrap;
+  max-width:100%;
+  vertical-align:baseline;
+}
+.nowrap{white-space:nowrap}
+.math-frac{
+  display:inline-flex;flex-direction:column;align-items:stretch;justify-content:center;
+  min-width:1.45em;margin:0 .10em;vertical-align:middle;line-height:1.02
+}
+.math-frac .top{
+  min-width:1.45em;padding:0 .15em .07em;border-bottom:2px solid currentColor;text-align:center
+}
+.math-frac .bottom{min-width:1.45em;padding:.07em .15em 0;text-align:center}
+.math-sup{font-size:.68em;vertical-align:super;margin-left:.03em}
+.scratchpad-row{
+  display:flex;justify-content:center;align-items:center;margin:14px 0 10px
+}
+#scratchpad-mobile-button #scratchpadOpenButton,
+#scratchpad-mobile-button .scratchpad-open-button{
+  position:static!important;inset:auto!important;transform:none!important;
+  margin:0!important;z-index:auto!important
+}
+.answer-area{
+  margin-top:0;padding:18px;border:1px solid #dbe5ef;border-radius:18px;background:#f8fafc
+}
+.answer-title{
+  margin-bottom:12px;text-align:center;color:var(--primary-dark);font-weight:900
+}
+.number-answer{
+  display:block;width:min(100%,340px);margin:0 auto;padding:13px 15px;
+  border:2px solid #94a3b8;border-radius:14px;background:#fff;
+  color:#0f172a;text-align:center;font-size:24px;font-weight:900;outline:none
+}
+.number-answer:focus,.ratio-input:focus,.fraction-whole:focus,
+.fraction-entry input:focus,.fraction-sign:focus{
+  border-color:var(--primary);box-shadow:0 0 0 4px rgba(59,130,246,.12)
+}
+.ratio-answer{
+  display:flex;justify-content:center;align-items:center;flex-wrap:nowrap;
+  gap:9px;width:100%;overflow-x:auto;padding:3px 2px;-webkit-overflow-scrolling:touch
+}
+.ratio-input{
+  flex:0 0 100px;width:100px;padding:12px 9px;border:2px solid #94a3b8;
+  border-radius:13px;background:#fff;text-align:center;font-size:22px;font-weight:900;outline:none
+}
+.ratio-colon{flex:0 0 auto;color:var(--primary-dark);font-size:27px;font-weight:900}
+.answer-help{
+  margin-top:9px;color:var(--muted);text-align:center;font-size:13px;font-weight:800;line-height:1.65
+}
+.fraction-answer{
+  display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap
+}
+.fraction-sign{
+  width:68px;height:52px;border:2px solid #94a3b8;border-radius:12px;
+  background:#fff;font-size:21px;font-weight:900;text-align:center;outline:none
+}
+.fraction-whole-wrap{display:flex;flex-direction:column;align-items:center;gap:3px}
+.fraction-whole-label{color:var(--muted);font-size:11px;font-weight:800}
+.fraction-whole{
+  width:84px;height:52px;padding:4px 7px;border:2px solid #94a3b8;
+  border-radius:12px;background:#fff;font-size:22px;font-weight:900;text-align:center;outline:none
+}
+.fraction-entry{
+  display:grid;grid-template-rows:46px 3px 46px;width:106px;align-items:center
+}
+.fraction-entry input{
+  width:100%;height:46px;border:2px solid #94a3b8;border-radius:11px;
+  background:#fff;font-size:22px;font-weight:900;text-align:center;outline:none
+}
+.fraction-line{height:3px;background:#334155;border-radius:999px}
+.system-read{
+  margin:12px auto 0;text-align:center;color:#475569;font-weight:800;line-height:1.7
+}
+.system-read strong{color:var(--primary-dark);font-size:18px}
+.choice-grid{
+  display:flex;flex-wrap:nowrap;gap:10px;overflow-x:auto;width:100%;
+  padding:2px 1px 5px;-webkit-overflow-scrolling:touch
+}
+.choice-button{
+  flex:1 0 165px;min-height:62px;padding:11px 12px;overflow-x:auto;
+  border:2px solid #cbd5e1;border-radius:14px;background:#fff;color:#1e293b;
+  font-size:17px;font-weight:900;line-height:1.55;cursor:pointer;white-space:nowrap
+}
+.choice-button:hover{border-color:var(--primary)}
+.choice-button.selected{
+  border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark)
+}
+.feedback{
+  margin-top:15px;padding:12px 14px;border-radius:13px;font-weight:900;line-height:1.7
+}
+.feedback:empty{display:none}
+.feedback.correct{background:#dcfce7;color:#166534}
+.feedback.wrong{background:#fee2e2;color:#991b1b}
+.feedback.warning{background:#fef3c7;color:#92400e}
+.explanation{
+  margin-top:15px;padding:17px;border:2px solid var(--primary-border);
+  border-radius:18px;background:#f8fafc;line-height:1.75
+}
+.explanation-title{
+  margin-bottom:12px;color:var(--primary-dark);font-size:19px;font-weight:900
+}
+.explanation-question{
+  margin-bottom:12px;padding:12px;border:1px solid #dbe5ef;border-radius:13px;
+  background:#fff;font-size:17px;font-weight:800;line-height:1.6
+}
+.explanation-think{
+  margin-bottom:10px;padding:10px 12px;border:1px solid #fed7aa;border-radius:12px;
+  background:#fff7ed;color:#9a3412
+}
+.explanation-step{
+  margin:8px 0;padding:10px 12px;border-left:4px solid var(--primary);
+  border-radius:0 11px 11px 0;background:#fff
+}
+.explanation-tip{
+  margin-top:10px;padding:10px 12px;border-radius:12px;background:#fff1f2;color:#9f1239
+}
+.explanation-answer{
+  margin-top:10px;padding:10px 12px;border:1px solid #bbf7d0;
+  border-radius:12px;background:#f0fdf4;color:#166534;font-weight:900
+}
+.button-row{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:17px
+}
+.result-panel{text-align:center}
+.result-score{margin:15px 0 5px;color:var(--orange);font-size:54px;font-weight:900}
+.result-stars{font-size:30px}
+.result-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:19px auto
+}
+.result-stat{
+  padding:13px 9px;border:1px solid #e2e8f0;border-radius:15px;
+  background:#f8fafc;color:#64748b;font-weight:800
+}
+.result-stat span{color:#0f172a;font-size:24px;font-weight:900}
+.save-status{min-height:25px;margin:9px 0;font-weight:800}
+.review-list{display:grid;gap:14px;margin-top:14px}
+.review-card{
+  padding:15px;border:1px solid #dbeafe;border-radius:16px;background:#fff
+}
+.review-card.correct-review{border-left:6px solid #22c55e}
+.review-card.wrong-review{border-left:6px solid #ef4444}
+.review-title{margin-bottom:8px;font-size:17px;font-weight:900}
+.review-question{margin:8px 0 11px;color:#0f172a;font-size:17px;font-weight:800;line-height:1.65}
+.review-answer-line{margin:5px 0;color:#475569;line-height:1.65}
+@media(max-width:760px){
+  body{padding:8px}.screen{padding:14px}.game-header{padding:21px 12px 16px}
+  .mode-grid{grid-template-columns:1fr}.mode-card{min-height:0}
+  .quiz-top{grid-template-columns:1fr}
+  .quiz-stats{grid-template-columns:repeat(4,1fr)}
+  .stat-pill{min-width:0;padding:7px 4px}
+  .question-card{padding:16px 8px}
+  .question-content{font-size:20px}
+  .choice-button{flex-basis:150px;font-size:16px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .game-button{flex:1 1 155px}
+  .ratio-input{flex-basis:82px;width:82px}
+}
+@media(max-width:460px){
+  .quiz-stats{grid-template-columns:repeat(2,1fr)}
+  .result-score{font-size:45px}
+  .ratio-input{flex-basis:72px;width:72px;font-size:19px}
+  .ratio-colon{font-size:22px}
+}
+
+
+/*
+==================================================
+幾何圖形題
+==================================================
+*/
+.geo-diagram{
+  width:min(100%,780px);
+  margin:10px auto 3px;
+  padding:10px 8px 7px;
+  border:1px solid var(--primary-border);
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff,var(--primary-light));
+}
+.geo-diagram svg{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:310px;
+  margin:0 auto;
+}
+.geo-diagram .shape{
+  fill:rgba(15,118,110,.035);
+  stroke:var(--primary-dark);
+  stroke-width:3;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .helper{
+  fill:none;
+  stroke:var(--accent);
+  stroke-width:2.4;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .parallel{
+  fill:none;
+  stroke:#d97706;
+  stroke-width:3;
+  stroke-dasharray:7 5;
+  vector-effect:non-scaling-stroke;
+}
+.geo-diagram .point{
+  fill:#0f172a;
+  font-size:19px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:4px;
+  stroke-linejoin:round;
+}
+.geo-diagram .side-label{
+  fill:#0f172a;
+  font-size:22px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:5px;
+  stroke-linejoin:round;
+}
+.geo-diagram .angle-label{
+  fill:#be123c;
+  font-size:18px;
+  font-weight:900;
+  font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke;
+  stroke:#ffffff;
+  stroke-width:4px;
+  stroke-linejoin:round;
+}
+.diagram-caption{
+  margin-top:3px;
+  color:#64748b;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+}
+.mastery-badge{
+  display:inline-block;
+  margin-right:6px;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#fff7ed;
+  color:#c2410c;
+  font-size:.72em;
+  font-weight:900;
+  vertical-align:middle;
+}
+</style>
+</head>
+<body>
+<div class="page-shell">
+<div id="commonHeaderMount"></div>
+
+<main class="game-card">
+<header class="game-header">
+  <h1 class="game-title">🎯 3-2 三角形的外心、內心與重心大挑戰</h1>
+  <p class="game-subtitle">外心與外接圓、內心與內切圓、重心比例，以及三心的面積與應用。</p>
+  <div class="concept-strip">
+    <span class="concept-chip">🎯 外心</span>
+    <span class="concept-chip">❤️ 內心</span>
+    <span class="concept-chip">⭕ 內切圓</span>
+    <span class="concept-chip">⚖️ 重心比例</span>
+    <span class="concept-chip">📐 重心面積</span>
+    <span class="concept-chip">🖼️ 圖形題</span>
+    <span class="concept-chip">🔥 精熟題</span>
+  </div>
+</header>
+
+<section id="start-screen" class="screen">
+  <h2>選擇挑戰模式</h2>
+  <div class="mode-grid">
+
+    <article class="mode-card">
+      <div class="mode-icon">🎯</div>
+      <div class="mode-title">外心與外接圓</div>
+      <div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div>
+      <p class="mode-description">三邊中垂線、外心位置、直角三角形外接圓、外心半徑與角度應用。</p>
+      <button class="mode-button" data-mode="circumcenter" type="button">開始挑戰</button>
+    </article>
+
+    <article class="mode-card">
+      <div class="mode-icon">❤️</div>
+      <div class="mode-title">內心與角度</div>
+      <div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div>
+      <p class="mode-description">三內角平分線、到三邊等距、內心角度與內心分割面積比。</p>
+      <button class="mode-button" data-mode="incenter" type="button">開始挑戰</button>
+    </article>
+
+    <article class="mode-card">
+      <div class="mode-icon">⭕</div>
+      <div class="mode-title">內切圓半徑與面積</div>
+      <div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div>
+      <p class="mode-description">三角形面積＝1/2×內切圓半徑×周長，以及直角三角形內切圓公式。</p>
+      <button class="mode-button" data-mode="incircle" type="button">開始挑戰</button>
+    </article>
+
+    <article class="mode-card">
+      <div class="mode-icon">⚖️</div>
+      <div class="mode-title">重心比例</div>
+      <div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div>
+      <p class="mode-description">三中線交點、頂點到重心與重心到中點的 2：1，以及巢狀重心。</p>
+      <button class="mode-button" data-mode="centroidRatio" type="button">開始挑戰</button>
+    </article>
+
+    <article class="mode-card">
+      <div class="mode-icon">📐</div>
+      <div class="mode-title">重心與面積</div>
+      <div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div>
+      <p class="mode-description">三等分與六等分面積、直角三角形、等腰三角形與區域面積應用。</p>
+      <button class="mode-button" data-mode="centroidArea" type="button">開始挑戰</button>
+    </article>
+
+    <article class="mode-card final">
+      <div class="mode-icon">🏆</div>
+      <div class="mode-title">3-2 綜合挑戰</div>
+      <div class="mode-meta"><span class="mode-tag">綜合模式</span><span class="mode-tag">10 題</span></div>
+      <p class="mode-description">外心、內心、內切圓與重心混合，加入教材精熟與會考仿題方向。</p>
+      <button class="mode-button" data-mode="comprehensive" type="button">開始綜合挑戰</button>
+    </article>
+
+  </div>
+</section>
+
+<section id="quiz-screen" class="screen hidden">
+  <div class="quiz-top">
+    <div>
+      <div id="mode-name" class="mode-name">—</div>
+      <div id="question-number" class="question-number">—</div>
+    </div>
+    <div class="quiz-stats">
+      <div class="stat-pill">分數<strong id="live-score">0</strong></div>
+      <div class="stat-pill">答對<strong id="correct-count">0</strong></div>
+      <div class="stat-pill">連擊<strong id="combo-count">0</strong></div>
+      <div class="stat-pill">時間<strong id="timer-display">00:00</strong></div>
+    </div>
+  </div>
+
+  <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+
+  <div class="question-card">
+    <div id="question-label" class="question-label">題目</div>
+    <div id="question-content" class="question-content"></div>
+  </div>
+
+  <div class="scratchpad-row"><div id="scratchpad-mobile-button"></div></div>
+
+  <div id="answer-area" class="answer-area"></div>
+  <div id="feedback" class="feedback"></div>
+  <div id="explanation" class="explanation hidden"></div>
+
+  <div class="button-row">
+    <button id="submit-button" class="game-button primary" type="button">送出答案（Enter）</button>
+    <button id="next-button" class="game-button purple hidden" type="button">下一題（Enter）</button>
+    <button id="restart-button" class="game-button restart" type="button">🔄 重新測驗</button>
+    <button id="quit-button" class="game-button secondary" type="button">重選模式</button>
+  </div>
+</section>
+
+<section id="result-screen" class="screen hidden">
+  <div class="result-panel">
+    <h2>🏅 本次挑戰結果</h2>
+    <div id="final-score" class="result-score">0 分</div>
+    <div id="final-stars" class="result-stars">★★☆☆☆</div>
+    <p id="final-comment"></p>
+    <div class="result-grid">
+      <div class="result-stat">答對<br><span id="final-correct">0</span> 題</div>
+      <div class="result-stat">答錯<br><span id="final-wrong">0</span> 題</div>
+      <div class="result-stat">最高連擊<br><span id="final-combo">0</span></div>
+      <div class="result-stat">作答時間<br><span id="final-time">00:00</span></div>
+    </div>
+    <div id="save-status" class="save-status"></div>
+    <div class="button-row">
+      <button id="again-button" class="game-button purple" type="button">🔄 再玩一次</button>
+      <button id="review-button" class="game-button orange" type="button">📖 查看本次詳解</button>
+      <button id="result-mode-button" class="game-button secondary" type="button">重選模式</button>
+    </div>
+  </div>
+</section>
+
+<section id="review-screen" class="screen hidden">
+  <h2>📖 本次詳解</h2>
+  <p style="color:#64748b;font-weight:700;">答對、答錯都會保留解析；步驟以國中生容易閱讀的方式呈現。</p>
+  <div id="review-list" class="review-list"></div>
+  <div class="button-row">
+    <button id="review-again-button" class="game-button purple" type="button">🔄 再玩一次</button>
+    <button id="review-result-button" class="game-button secondary" type="button">回到測驗結果</button>
+  </div>
+</section>
+</main>
+</div>
+
+<script src="../js/common-header.js"></script>
+<script src="../js/scratchpad.js"></script>
+<script src="../js/scratchpad-template.js"></script>
+<script src="../js/sound-manager.js?v=1"></script>
+<script type="module">
+
+"use strict";
+
+/*
+==================================================
+Stable game identity + future RPG bridge
+==================================================
+*/
+
+const GAME_ID = "triangle-centers";
+const CHAPTER = "3-2";
+const GAME_TITLE = "三角形的外心、內心與重心大挑戰";
+
+const MODES = {
+  circumcenter:{id:"circumcenter",name:"🎯 外心與外接圓",count:10,difficultyWeight:1.10},
+  incenter:{id:"incenter",name:"❤️ 內心與角度",count:10,difficultyWeight:1.10},
+  incircle:{id:"incircle",name:"⭕ 內切圓半徑與面積",count:10,difficultyWeight:1.16},
+  centroidRatio:{id:"centroidRatio",name:"⚖️ 重心比例",count:10,difficultyWeight:1.08},
+  centroidArea:{id:"centroidArea",name:"📐 重心與面積",count:10,difficultyWeight:1.16},
+  comprehensive:{id:"comprehensive",name:"🏆 3-2 綜合挑戰",count:10,difficultyWeight:1.34}
+};
+
+window.MathGameSessionMeta = {
+  gameId: GAME_ID,
+  chapter: CHAPTER,
+  title: GAME_TITLE,
+  modes: MODES
+};
+
+const $ = id => document.getElementById(id);
+
+let modeId = "circumcenter";
+let questions = [];
+let index = 0;
+let correct = 0;
+let wrong = 0;
+let combo = 0;
+let maxCombo = 0;
+let records = [];
+let answered = false;
+let selectedChoice = null;
+let startTime = 0;
+let elapsed = 0;
+let timerId = null;
+let scoreSaved = false;
+let rpgEmitted = false;
+let attemptId = "";
+
+function rand(min,max){
+  return Math.floor(Math.random()*(max-min+1))+min;
+}
+function pick(arr){ return arr[rand(0,arr.length-1)]; }
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=rand(0,i);
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function escapeHTML(value){
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+function gcd(a,b){
+  a=Math.abs(Number(a)); b=Math.abs(Number(b));
+  while(b!==0){ const t=a%b; a=b; b=t; }
+  return a||1;
+}
+function gcdAll(values){
+  return values.reduce((g,v)=>gcd(g,v),0)||1;
+}
+function lcm(a,b){ return Math.abs(a*b)/gcd(a,b); }
+
+function seg(name){
+  return `<span class="seg math">${escapeHTML(name)}</span>`;
+}
+function arc(name){
+  return `<span class="arc math">${escapeHTML(name)}</span>`;
+}
+function keep(content){
+  return `<span class="keep-unit">${content}</span>`;
+}
+function sup(v){
+  return `<span class="math-sup">${escapeHTML(v)}</span>`;
+}
+function fracHTML(n,d){
+  if(Number(d)===1) return escapeHTML(n);
+  return `<span class="math-frac"><span class="top">${escapeHTML(n)}</span><span class="bottom">${escapeHTML(d)}</span></span>`;
+}
+function ratioHTML(values){
+  return `<span class="math nowrap">${values.join("：")}</span>`;
+}
+function simplifyRatio(values){
+  const nums=values.map(Number);
+  const g=gcdAll(nums);
+  return nums.map(v=>v/g);
+}
+function R(n,d=1){
+  n=Number(n);
+  d=Number(d);
+  if(d===0) throw new Error("denominator 0");
+  if(d<0){n=-n;d=-d}
+  const g=gcd(n,d);
+  return {n:n/g,d:d/g};
+}
+function ratEq(a,b){
+  return a.n===b.n && a.d===b.d;
+}
+function ratHTML(r){
+  const a=R(r.n,r.d);
+  if(a.d===1) return String(a.n).replace("-","−");
+  const sign=a.n<0?"−":"";
+  return `${sign}${fracHTML(Math.abs(a.n),a.d)}`;
+}
+function rawFracHTML(n,d){
+  if(d<0){n=-n;d=-d}
+  if(d===1) return String(n).replace("-","−");
+  const sign=n<0?"−":"";
+  return `${sign}${fracHTML(Math.abs(n),d)}`;
+}
+function mixedAnswerHTML(sign,whole,n,d){
+  const prefix=Number(sign)<0?"−":"";
+  const w=Math.max(0,Number(whole)||0);
+  if(w<=0) return `${prefix}${fracHTML(Math.abs(n),d)}`;
+  return `${prefix}${w}${fracHTML(Math.abs(n),d)}`;
+}
+function piHTML(r){
+  const a=R(r.n,r.d);
+  if(a.n===0) return "0";
+  const sign=a.n<0?"−":"";
+  const absN=Math.abs(a.n);
+  if(a.d===1){
+    if(absN===1) return `${sign}π`;
+    return `${sign}${absN}π`;
+  }
+  return `${sign}${fracHTML(absN,a.d)}π`;
+}
+function radicalHTML(coef,radicand){
+  const c=Number(coef);
+  const prefix=c===1?"":String(c);
+  return `<span class="math nowrap">${prefix}√${escapeHTML(radicand)}</span>`;
+}
+function formatTime(seconds){
+  const m=Math.floor(seconds/60);
+  const s=seconds%60;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function parseNumber(raw){
+  const s=String(raw).trim().replace(/，/g,"").replace(/－/g,"-");
+  if(!/^[-+]?\d+(?:\.\d+)?$/.test(s)) return null;
+  const v=Number(s);
+  return Number.isFinite(v)?v:null;
+}
+function sameNumber(a,b,tol=1e-9){
+  return Math.abs(Number(a)-Number(b))<=tol;
+}
+
+function explanation(answer,think,steps,tip=""){
+  return {answer,think,steps,tip};
+}
+
+function numberQuestion({label,html,answer,explanation:exp,family,tolerance=1e-9}){
+  return {type:"number",label,html,answer:Number(answer),explanation:exp,family,tolerance};
+}
+function rationalQuestion({label,html,answer,explanation:exp,family}){
+  return {type:"rational",label,html,answer:R(answer.n,answer.d),explanation:exp,family};
+}
+function exactValueQuestion({label,html,answer,explanation:exp,family}){
+  const r=(answer && typeof answer==="object" && "n" in answer)
+    ? R(answer.n,answer.d)
+    : R(answer,1);
+
+  return r.d===1
+    ? numberQuestion({label,html,answer:r.n,explanation:exp,family})
+    : rationalQuestion({label,html,answer:r,explanation:exp,family});
+}
+function piQuestion({label,html,answer,explanation:exp,family}){
+  return {type:"pi",label,html,answer:R(answer.n,answer.d),explanation:exp,family};
+}
+function ratioQuestion({label,html,answer,explanation:exp,family}){
+  return {type:"ratio",label,html,answer:simplifyRatio(answer),explanation:exp,family};
+}
+function choiceQuestion({label,html,choices,answer,explanation:exp,family}){
+  return {type:"choice",label,html,choices,answer:String(answer),explanation:exp,family};
+}
+
+/*
+==================================================
+Game-specific question generators
+==================================================
+*/
+
+function diagramWrap(svg,caption="示意圖（不按比例）"){
+  return `<div class="geo-diagram">${svg}<div class="diagram-caption">${caption}</div></div>`;
+}
+
+function triangleBaseDiagram(){
+  return `
+    <polygon class="shape" points="310,45 100,300 520,300"></polygon>
+    <text class="point" x="300" y="34">A</text>
+    <text class="point" x="82" y="322">B</text>
+    <text class="point" x="525" y="322">C</text>
+  `;
+}
+
+function circumcenterDiagram({type="acute",radius=""}={}){
+  let ox=310, oy=195;
+  if(type==="right"){ox=310;oy=300}
+  if(type==="obtuse"){ox=310;oy=355}
+
+  return diagramWrap(`
+    <svg viewBox="0 0 620 390" role="img" aria-label="三角形外心示意圖">
+      ${triangleBaseDiagram()}
+      <circle class="circumcircle" cx="${ox}" cy="${oy}" r="${type==="right"?210:190}"></circle>
+      <circle class="point-dot" cx="${ox}" cy="${oy}" r="5"></circle>
+      <text class="center-label" x="${ox+10}" y="${oy-10}">O</text>
+      <line class="center-line" x1="${ox}" y1="${oy}" x2="310" y2="45"></line>
+      <line class="center-line" x1="${ox}" y1="${oy}" x2="100" y2="300"></line>
+      <line class="center-line" x1="${ox}" y1="${oy}" x2="520" y2="300"></line>
+      ${radius?`<text class="relation-label" x="${ox+20}" y="${oy+35}">R＝${radius}</text>`:""}
+    </svg>
+  `);
+}
+
+function rightCircumcenterDiagram({a="",b="",c="",r=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 350" role="img" aria-label="直角三角形外心圖">
+      <polygon class="shape" points="145,285 145,85 505,285"></polygon>
+      <path class="right-mark" d="M145 285 L145 264 L166 264"></path>
+      <circle class="point-dot" cx="325" cy="185" r="5"></circle>
+      <text class="point" x="129" y="310">A</text>
+      <text class="point" x="128" y="76">B</text>
+      <text class="point" x="512" y="310">C</text>
+      <text class="center-label" x="335" y="180">O</text>
+      ${a?`<text class="side-label" x="90" y="190">AB＝${a}</text>`:""}
+      ${b?`<text class="side-label" x="300" y="315">AC＝${b}</text>`:""}
+      ${c?`<text class="side-label" x="340" y="180">BC＝${c}</text>`:""}
+      ${r?`<text class="relation-label" x="345" y="213">R＝${r}</text>`:""}
+    </svg>
+  `);
+}
+
+function isoscelesCircumDiagram({side="",base="",height="",radius=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 370" role="img" aria-label="等腰三角形外心圖">
+      <polygon class="shape" points="310,40 105,310 515,310"></polygon>
+      <line class="center-line" x1="310" y1="40" x2="310" y2="310"></line>
+      <circle class="point-dot" cx="310" cy="175" r="5"></circle>
+      <text class="point" x="300" y="30">A</text>
+      <text class="point" x="86" y="332">B</text>
+      <text class="point" x="520" y="332">C</text>
+      <text class="point" x="300" y="333">D</text>
+      <text class="center-label" x="320" y="170">O</text>
+      ${side?`<text class="side-label" x="180" y="175">AB＝AC＝${side}</text>`:""}
+      ${base?`<text class="side-label" x="270" y="302">BC＝${base}</text>`:""}
+      ${height?`<text class="side-label" x="322" y="245">AD＝${height}</text>`:""}
+      ${radius?`<text class="relation-label" x="330" y="110">R＝${radius}</text>`:""}
+    </svg>
+  `);
+}
+
+function incenterDiagram({r="",angleA="",angleB="",angleC=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 370" role="img" aria-label="三角形內心與內切圓圖">
+      ${triangleBaseDiagram()}
+      <circle class="incircle" cx="310" cy="220" r="68"></circle>
+      <circle class="point-dot" cx="310" cy="220" r="5"></circle>
+      <line class="bisector-line" x1="310" y1="45" x2="310" y2="220"></line>
+      <line class="bisector-line" x1="100" y1="300" x2="310" y2="220"></line>
+      <line class="bisector-line" x1="520" y1="300" x2="310" y2="220"></line>
+      <line class="distance-line" x1="310" y1="220" x2="310" y2="300"></line>
+      <text class="center-label" x="322" y="216">I</text>
+      ${r?`<text class="relation-label" x="325" y="270">r＝${r}</text>`:""}
+      ${angleA?`<text class="angle-label" x="292" y="88">${angleA}°</text>`:""}
+      ${angleB?`<text class="angle-label" x="135" y="275">${angleB}°</text>`:""}
+      ${angleC?`<text class="angle-label" x="465" y="275">${angleC}°</text>`:""}
+    </svg>
+  `);
+}
+
+function centroidDiagram({median="",ag="",gd=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 370" role="img" aria-label="三角形重心圖">
+      ${triangleBaseDiagram()}
+      <line class="median-line" x1="310" y1="45" x2="310" y2="300"></line>
+      <line class="median-line" x1="100" y1="300" x2="415" y2="172"></line>
+      <line class="median-line" x1="520" y1="300" x2="205" y2="172"></line>
+      <circle class="point-dot" cx="310" cy="215" r="5"></circle>
+      <text class="point" x="300" y="325">D</text>
+      <text class="point" x="410" y="166">E</text>
+      <text class="point" x="190" y="166">F</text>
+      <text class="center-label" x="322" y="213">G</text>
+      ${median?`<text class="relation-label" x="326" y="125">AD＝${median}</text>`:""}
+      ${ag?`<text class="relation-label" x="326" y="150">AG＝${ag}</text>`:""}
+      ${gd?`<text class="relation-label" x="326" y="270">GD＝${gd}</text>`:""}
+    </svg>
+  `);
+}
+
+function centroidAreaDiagram(){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 370" role="img" aria-label="重心分割三角形面積圖">
+      <polygon class="shape" points="310,45 100,300 520,300"></polygon>
+      <polygon class="area-fill-a" points="310,45 100,300 310,215"></polygon>
+      <polygon class="area-fill-b" points="100,300 520,300 310,215"></polygon>
+      <polygon class="area-fill-c" points="520,300 310,45 310,215"></polygon>
+      <line class="median-line" x1="310" y1="45" x2="310" y2="300"></line>
+      <line class="median-line" x1="100" y1="300" x2="415" y2="172"></line>
+      <line class="median-line" x1="520" y1="300" x2="205" y2="172"></line>
+      <circle class="point-dot" cx="310" cy="215" r="5"></circle>
+      <text class="point" x="300" y="34">A</text>
+      <text class="point" x="82" y="322">B</text>
+      <text class="point" x="525" y="322">C</text>
+      <text class="center-label" x="322" y="212">G</text>
+    </svg>
+  `);
+}
+
+const RIGHT_TRIPLES = [
+  [3,4,5],[5,12,13],[6,8,10],[8,15,17],[7,24,25],[9,12,15],[12,16,20]
+];
+
+function pickRightTriple(){
+  return pick(RIGHT_TRIPLES);
+}
+
+/*
+==================================================
+模式一｜外心與外接圓
+==================================================
+*/
+
+function qCircumEquidistant(){
+  const r=rand(4,12);
+  return numberQuestion({
+    family:"circum-equal-distance",
+    label:"外心基本性質",
+    html:`<div class="question-flow"><span class="qline">O 點為 △ABC 的外心，若 ${keep(`${seg("OA")}＝${r}`)}，求 ${seg("OB")}＋${seg("OC")}。</span></div>${circumcenterDiagram({radius:String(r)})}`,
+    answer:2*r,
+    explanation:explanation(
+      String(2*r),
+      "三角形的外心到三個頂點距離相等。",
+      [
+        `${seg("OA")}＝${seg("OB")}＝${seg("OC")}＝${r}。`,
+        `${seg("OB")}＋${seg("OC")}＝${r}＋${r}＝${2*r}。`
+      ]
+    )
+  });
+}
+
+function qCircumLocation(){
+  const type=pick(["acute","right","obtuse"]);
+  const text={
+    acute:"三角形內部",
+    right:"斜邊中點",
+    obtuse:"三角形外部"
+  }[type];
+
+  return choiceQuestion({
+    family:"circum-location",
+    label:"🖼️ 外心位置",
+    html:`<div class="question-flow"><span class="qline">若 △ABC 為${type==="acute"?"銳角":type==="right"?"直角":"鈍角"}三角形，外心的位置在哪裡？</span></div>${circumcenterDiagram({type})}`,
+    choices:[
+      {value:"inside",text:"三角形內部"},
+      {value:"mid",text:"斜邊中點"},
+      {value:"outside",text:"三角形外部"},
+      {value:"vertex",text:"固定在某一頂點"}
+    ],
+    answer:type==="acute"?"inside":type==="right"?"mid":"outside",
+    explanation:explanation(
+      text,
+      type==="acute"
+        ?"銳角三角形的三邊中垂線交點落在三角形內部。"
+        :type==="right"
+          ?"直角三角形的外心在斜邊中點。"
+          :"鈍角三角形的外心落在三角形外部。",
+      []
+    )
+  });
+}
+
+function qRightCircumRadius(){
+  const [a,b,c]=pickRightTriple();
+  const ans=R(c,2);
+
+  return exactValueQuestion({
+    family:"circum-right-radius",
+    label:"直角三角形外接圓半徑",
+    html:`<div class="question-flow"><span class="qline">△ABC 為直角三角形，兩股長分別為 ${a}、${b}。求外接圓半徑。</span></div>${rightCircumcenterDiagram({a:String(a),b:String(b),c:String(c),r:"？"})}`,
+    answer:ans,
+    explanation:explanation(
+      ratHTML(ans),
+      "直角三角形的外心在斜邊中點，因此外接圓半徑是斜邊的一半。",
+      [
+        `斜邊＝√（${a}${sup(2)}＋${b}${sup(2)}）＝${c}。`,
+        `半徑＝${fracHTML(c,2)}＝${ratHTML(ans)}。`
+      ]
+    )
+  });
+}
+
+function qRightCircumArea(){
+  const a=12,b=16,c=20,r=10;
+  return piQuestion({
+    family:"circum-right-area",
+    label:"外接圓面積",
+    html:`<div class="question-flow"><span class="qline">在直角 △ABC 中，兩股長為 ${a}、${b}。求 △ABC 外接圓的面積。</span></div>${rightCircumcenterDiagram({a:String(a),b:String(b),c:String(c),r:String(r)})}`,
+    answer:R(r*r,1),
+    explanation:explanation(
+      `${r*r}π`,
+      "先用畢氏定理求斜邊，再取一半為外接圓半徑。",
+      [
+        `斜邊＝${c}，所以 R＝${c}÷2＝${r}。`,
+        `外接圓面積＝π×${r}${sup(2)}＝${r*r}π。`
+      ]
+    )
+  });
+}
+
+function qCircumTriangle817(){
+  return choiceQuestion({
+    family:"circum-location-817",
+    label:"附錄題型｜外心位置",
+    html:`<div class="question-flow"><span class="qline">一個三角形三邊長為 8、15、17。此三角形的外心位於哪裡？</span></div>`,
+    choices:[
+      {value:"inside",text:"三角形內部"},
+      {value:"long",text:"最長邊上"},
+      {value:"outside",text:"三角形外部"},
+      {value:"short",text:"最短邊上"}
+    ],
+    answer:"long",
+    explanation:explanation(
+      "最長邊上",
+      `8${sup(2)}＋15${sup(2)}＝17${sup(2)}，所以它是直角三角形。`,
+      ["直角三角形的外心在斜邊中點，也就是在最長邊 17 上。"]
+    )
+  });
+}
+
+function qCircumCentralAngle(){
+  const A=pick([46,50,60,67,70,80]);
+  const ans=2*A;
+  return numberQuestion({
+    family:"circum-central-angle",
+    label:"外心與圓心角",
+    html:`<div class="question-flow"><span class="qline">O 點為 △ABC 的外心，若 ${keep(`∠BAC＝${A}°`)}，求 ∠BOC 的度數。</span></div>`,
+    answer:ans,
+    explanation:explanation(
+      `${ans}°`,
+      "∠BAC 是外接圓上的圓周角，∠BOC 是對同一弧 BC 的圓心角。",
+      [`∠BOC＝2∠BAC＝2×${A}°＝${ans}°。`]
+    )
+  });
+}
+
+function qCircumAngleFromTwo(){
+  const A=46,B=79,C=55,ans=110;
+  return numberQuestion({
+    family:"circum-angle-two",
+    label:"兩步驟角度",
+    html:`<div class="question-flow"><span class="qline">O 點為銳角 △ABC 的外心，${keep("∠BAC＝46°")}、${keep("∠ABC＝79°")}。求 ∠AOB。</span></div>`,
+    answer:ans,
+    explanation:explanation(
+      `${ans}°`,
+      "先求 ∠ACB，再利用圓心角是同弧圓周角的 2 倍。",
+      [
+        `∠ACB＝180°－46°－79°＝${C}°。`,
+        `∠AOB＝2×${C}°＝${ans}°。`
+      ]
+    )
+  });
+}
+
+function qCircumIsoscelesRadius(){
+  return rationalQuestion({
+    family:"circum-isosceles-radius",
+    label:"🔥 精熟題｜等腰三角形外接圓",
+    html:`<div class="question-flow"><span class="qline">在 △ABC 中，${seg("AB")}＝${seg("AC")}＝10、${seg("BC")}＝12，AD 為 ${seg("BC")} 上的高，O 為外心。求外接圓半徑。</span></div>${isoscelesCircumDiagram({side:"10",base:"12",height:"8",radius:"？"})}`,
+    answer:R(25,4),
+    explanation:explanation(
+      fracHTML(25,4),
+      "等腰三角形的高通過外心。先求 AD＝8，再設 OA＝OB＝x。",
+      [
+        `${seg("BD")}＝6，${seg("AD")}＝√（10${sup(2)}－6${sup(2)}）＝8。`,
+        `設 ${seg("OA")}＝${seg("OB")}＝x，則 ${seg("OD")}＝8－x。`,
+        `x${sup(2)}＝（8－x）${sup(2)}＋6${sup(2)}。`,
+        `解得 x＝${fracHTML(25,4)}。`
+      ]
+    )
+  });
+}
+
+function qCircumAltitudeAdvanced(){
+  return rationalQuestion({
+    family:"circum-altitude-advanced",
+    label:"🔥 精熟題｜已知外接圓直徑",
+    html:`<div class="question-flow"><span class="qline">等腰 △ABC 中，${seg("AB")}＝${seg("AC")}＝10，外接圓直徑為 12，AD 為 ${seg("BC")} 上的高。求 ${seg("AD")}。</span></div>`,
+    answer:R(25,3),
+    explanation:explanation(
+      fracHTML(25,3),
+      "外接圓半徑為 6。令 AD＝x，外心 O 在 AD 上。",
+      [
+        `若 OA＝OB＝6，則 OD＝x－6。`,
+        `在 △OBD 中，BD${sup(2)}＝6${sup(2)}－（x－6）${sup(2)}。`,
+        `在 △ABD 中，BD${sup(2)}＝10${sup(2)}－x${sup(2)}。`,
+        `聯立得到 12x＝100，所以 x＝${fracHTML(25,3)}。`
+      ]
+    )
+  });
+}
+
+function qCircumDefinition(){
+  return choiceQuestion({
+    family:"circum-definition",
+    label:"外心定義",
+    html:`<div class="question-flow"><span class="qline">三角形的外心是下列哪三條線的交點？</span></div>`,
+    choices:[
+      {value:"a",text:"三邊的中垂線"},
+      {value:"b",text:"三個內角平分線"},
+      {value:"c",text:"三條中線"},
+      {value:"d",text:"三條任意高"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "三邊的中垂線",
+      "外心到三個頂點距離相等，正是利用中垂線性質。",
+      []
+    )
+  });
+}
+
+/*
+==================================================
+模式二｜內心與角度
+==================================================
+*/
+
+function qIncenterDefinition(){
+  return choiceQuestion({
+    family:"incenter-definition",
+    label:"內心定義",
+    html:`<div class="question-flow"><span class="qline">三角形的內心是下列哪三條線的交點？</span></div>${incenterDiagram()}`,
+    choices:[
+      {value:"a",text:"三個內角的角平分線"},
+      {value:"b",text:"三邊的中垂線"},
+      {value:"c",text:"三條中線"},
+      {value:"d",text:"三條邊本身"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "三個內角的角平分線",
+      "內心到三邊的距離相等，因此可以作為內切圓圓心。",
+      []
+    )
+  });
+}
+
+function qIncenterDistance(){
+  const r=rand(3,9);
+  return numberQuestion({
+    family:"incenter-distance",
+    label:"內心到三邊等距",
+    html:`<div class="question-flow"><span class="qline">I 為 △ABC 的內心，ID、IE、IF 分別垂直三邊。若 ${keep(`${seg("ID")}＝${r}`)}，求 ${seg("IE")}＋${seg("IF")}。</span></div>${incenterDiagram({r:String(r)})}`,
+    answer:2*r,
+    explanation:explanation(
+      String(2*r),
+      "內心到三邊的距離相等。",
+      [
+        `${seg("ID")}＝${seg("IE")}＝${seg("IF")}＝${r}。`,
+        `所以 ${seg("IE")}＋${seg("IF")}＝${2*r}。`
+      ]
+    )
+  });
+}
+
+function qIncenterLocation(){
+  return choiceQuestion({
+    family:"incenter-location",
+    label:"內心位置",
+    html:`<div class="question-flow"><span class="qline">對任意非退化三角形，下列哪一個敘述一定正確？</span></div>`,
+    choices:[
+      {value:"a",text:"內心一定在三角形內部"},
+      {value:"b",text:"內心可能在三角形外部"},
+      {value:"c",text:"內心一定在最長邊中點"},
+      {value:"d",text:"只有銳角三角形才有內心"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "內心一定在三角形內部",
+      "銳角、直角、鈍角三角形都有內切圓，內心都位於三角形內部。",
+      []
+    )
+  });
+}
+
+function qIncenterAngle(){
+  const B=70,C=40,A=70;
+  const ans=125;
+  return numberQuestion({
+    family:"incenter-angle",
+    label:"🖼️ 內心與角度",
+    html:`<div class="question-flow"><span class="qline">I 為 △ABC 的內心，${keep("∠ABC＝70°")}、${keep("∠ACB＝40°")}。求 ∠BIC。</span></div>${incenterDiagram({angleB:"70",angleC:"40"})}`,
+    answer:ans,
+    explanation:explanation(
+      `${ans}°`,
+      "BI、CI 分別平分 ∠B、∠C。",
+      [
+        `∠IBC＝35°，∠ICB＝20°。`,
+        `∠BIC＝180°－35°－20°＝125°。`
+      ]
+    )
+  });
+}
+
+function qIncenterReverseAngle(){
+  const bic=pick([120,125,130,135,140]);
+  const A=2*(bic-90);
+  return numberQuestion({
+    family:"incenter-reverse",
+    label:"由內心角反求頂角",
+    html:`<div class="question-flow"><span class="qline">I 為 △ABC 的內心，若 ${keep(`∠BIC＝${bic}°`)}，求 ∠A。</span></div>`,
+    answer:A,
+    explanation:explanation(
+      `${A}°`,
+      "內心角可寫成 ∠BIC＝90°＋1/2∠A。",
+      [
+        `${bic}＝90＋${fracHTML(1,2)}∠A。`,
+        `所以 ∠A＝${A}°。`
+      ]
+    )
+  });
+}
+
+function qIncenterAreaRatio(){
+  return ratioQuestion({
+    family:"incenter-area-ratio",
+    label:"內心分割面積比",
+    html:`<div class="question-flow"><span class="qline">I 為 △ABC 的內心，${seg("AB")}＝12、${seg("BC")}＝14、${seg("CA")}＝16。求 △AIB 面積：△BIC 面積：△CIA 面積。</span></div>`,
+    answer:[12,14,16],
+    explanation:explanation(
+      "6：7：8",
+      "三個小三角形對應三邊的高都等於內切圓半徑，因此面積比等於底邊比。",
+      ["面積比＝AB：BC：CA＝12：14：16＝6：7：8。"]
+    )
+  });
+}
+
+function qIncenterAreaToSides(){
+  return ratioQuestion({
+    family:"incenter-area-to-side",
+    label:"由面積比反推邊比",
+    html:`<div class="question-flow"><span class="qline">I 為 △ABC 的內心。若 △AIB 面積＝24、△AIC 面積＝15、△BIC 面積＝21，求 ${seg("AB")}：${seg("AC")}：${seg("BC")}。</span></div>`,
+    answer:[24,15,21],
+    explanation:explanation(
+      "8：5：7",
+      "內心到三邊距離相同，所以三個小三角形面積比等於對應底邊比。",
+      [`${seg("AB")}：${seg("AC")}：${seg("BC")}＝24：15：21＝8：5：7。`]
+    )
+  });
+}
+
+function qIncenterIsoscelesRight(){
+  return choiceQuestion({
+    family:"incenter-isosceles-right",
+    label:"等腰直角三角形",
+    html:`<div class="question-flow"><span class="qline">△ABC 為等腰直角三角形，∠C＝90°，I 為內心。求 △AIB 面積：△BIC 面積：△CIA 面積。</span></div>`,
+    choices:[
+      {value:"a",html:`√2：1：1`},
+      {value:"b",text:"1：1：1"},
+      {value:"c",text:"2：1：1"},
+      {value:"d",html:`1：√2：1`}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "√2：1：1",
+      "面積比＝AB：BC：CA。",
+      ["等腰直角三角形的斜邊：股：股＝√2：1：1。"]
+    )
+  });
+}
+
+function qIncenterADE(){
+  return rationalQuestion({
+    family:"incenter-ade",
+    label:"🔥 精熟題｜面積分割求內切圓半徑",
+    html:`<div class="question-flow"><span class="qline">I 為 △ABC 的內心，一直線過 I 並交 ${seg("AB")}、${seg("AC")} 於 D、E。若 ${seg("AD")}＝${seg("DE")}＝13、${seg("AE")}＝10，且 △ADE 面積為 60，求 △ABC 的內切圓半徑。</span></div>`,
+    answer:R(120,23),
+    explanation:explanation(
+      fracHTML(120,23),
+      "I 到 AB、AC 的距離都等於內切圓半徑 r。",
+      [
+        `△ADE 面積＝△ADI 面積＋△AEI 面積。`,
+        `60＝${fracHTML(1,2)}×13×r＋${fracHTML(1,2)}×10×r。`,
+        `60＝${fracHTML(23,2)}r，所以 r＝${fracHTML(120,23)}。`
+      ]
+    )
+  });
+}
+
+function qIncenterProperty(){
+  return choiceQuestion({
+    family:"incenter-property",
+    label:"內心性質判斷",
+    html:`<div class="question-flow"><span class="qline">I 為 △ABC 的內心。下列何者一定正確？</span></div>`,
+    choices:[
+      {value:"a",text:"I 到三邊的距離相等"},
+      {value:"b",text:"I 到三頂點距離相等"},
+      {value:"c",text:"I 一定在最長邊上"},
+      {value:"d",text:"I 一定是某邊中點"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "I 到三邊的距離相等",
+      "到三頂點距離相等的是外心；到三邊距離相等的是內心。",
+      []
+    )
+  });
+}
+
+/*
+==================================================
+模式三｜內切圓半徑與面積
+==================================================
+*/
+
+function qIncircleAreaFormula(){
+  const sides=[13,14,15];
+  const perimeter=42;
+  const r=4;
+  const area=84;
+  return numberQuestion({
+    family:"incircle-area-formula",
+    label:"內切圓半徑與三角形面積",
+    html:`<div class="question-flow"><span class="qline">△ABC 三邊長為 13、14、15，內切圓半徑為 4。求 △ABC 面積。</span></div>${incenterDiagram({r:"4"})}`,
+    answer:area,
+    explanation:explanation(
+      String(area),
+      "三角形面積＝1/2×內切圓半徑×周長。",
+      [
+        `周長＝13＋14＋15＝${perimeter}。`,
+        `面積＝${fracHTML(1,2)}×4×${perimeter}＝${area}。`
+      ]
+    )
+  });
+}
+
+function qIncircleRadiusFromArea(){
+  const sides=[25,29,36];
+  const perimeter=90;
+  const area=360;
+  const r=8;
+  return numberQuestion({
+    family:"incircle-radius-area",
+    label:"由面積求內切圓半徑",
+    html:`<div class="question-flow"><span class="qline">△ABC 面積為 ${area}，三邊長為 25、29、36。求內切圓半徑。</span></div>`,
+    answer:r,
+    explanation:explanation(
+      String(r),
+      "利用 K＝1/2 rS。",
+      [
+        `周長 S＝25＋29＋36＝${perimeter}。`,
+        `${area}＝${fracHTML(1,2)}×r×${perimeter}。`,
+        `解得 r＝${r}。`
+      ]
+    )
+  });
+}
+
+function qRightIncircle(){
+  const [a,b,c]=pickRightTriple();
+  const r=R(a+b-c,2);
+  return exactValueQuestion({
+    family:"incircle-right",
+    label:"直角三角形內切圓半徑",
+    html:`<div class="question-flow"><span class="qline">直角三角形兩股長為 ${a}、${b}，斜邊長為 ${c}。求內切圓半徑。</span></div>`,
+    answer:r,
+    explanation:explanation(
+      ratHTML(r),
+      "直角三角形內切圓半徑 r＝（兩股和－斜邊）÷2。",
+      [
+        `r＝${fracHTML(`${a}＋${b}－${c}`,2)}＝${ratHTML(r)}。`
+      ]
+    )
+  });
+}
+
+function qIncircleArea(){
+  const r=pick([2,3,4,5,6]);
+  return piQuestion({
+    family:"incircle-circle-area",
+    label:"內切圓面積",
+    html:`<div class="question-flow"><span class="qline">某三角形的內切圓半徑為 ${r}。求內切圓面積。</span></div>`,
+    answer:R(r*r,1),
+    explanation:explanation(
+      `${r*r}π`,
+      "圓面積＝πr²。",
+      [`π×${r}${sup(2)}＝${r*r}π。`]
+    )
+  });
+}
+
+function qIsoscelesIncircle(){
+  return numberQuestion({
+    family:"incircle-isosceles",
+    label:"🖼️ 等腰三角形內切圓",
+    html:`<div class="question-flow"><span class="qline">等腰 △ABC 中，${seg("AB")}＝${seg("AC")}＝10、${seg("BC")}＝12。求內切圓半徑。</span></div>${incenterDiagram()}`,
+    answer:3,
+    explanation:explanation(
+      "3",
+      "先求高，再求三角形面積與周長。",
+      [
+        `底邊一半為 6，高＝√（10${sup(2)}－6${sup(2)}）＝8。`,
+        `面積＝${fracHTML(1,2)}×12×8＝48。`,
+        `周長＝10＋10＋12＝32。`,
+        `48＝${fracHTML(1,2)}×r×32，解得 r＝3。`
+      ]
+    )
+  });
+}
+
+function qCoordinateIncenter(){
+  return rationalQuestion({
+    family:"incircle-coordinate",
+    label:"🔥 坐標平面內心",
+    html:`<div class="question-flow"><span class="qline">坐標平面上 A（0，12）、B（－5，0）、C（5，0）。D 為 △ABC 的內心。由對稱性可知 D 在 y 軸上，求 D 的 y 坐標。</span></div>`,
+    answer:R(10,3),
+    explanation:explanation(
+      fracHTML(10,3),
+      "D 的 y 坐標就是內切圓半徑。",
+      [
+        `${seg("AB")}＝${seg("AC")}＝13，${seg("BC")}＝10。`,
+        `△ABC 面積＝${fracHTML(1,2)}×10×12＝60。`,
+        `60＝${fracHTML(1,2)}×r×（13＋10＋13）＝18r。`,
+        `r＝${fracHTML(10,3)}。`
+      ]
+    )
+  });
+}
+
+function qIncirclePerimeter(){
+  const r=4,area=84;
+  const perimeter=42;
+  return numberQuestion({
+    family:"incircle-perimeter",
+    label:"由面積與半徑求周長",
+    html:`<div class="question-flow"><span class="qline">某三角形面積為 ${area}，內切圓半徑為 ${r}。求三角形周長。</span></div>`,
+    answer:perimeter,
+    explanation:explanation(
+      String(perimeter),
+      "K＝1/2 rS。",
+      [
+        `${area}＝${fracHTML(1,2)}×${r}×S。`,
+        `解得 S＝${perimeter}。`
+      ]
+    )
+  });
+}
+
+function qIncircleAreaGivenPerimeter(){
+  const r=3,S=32,area=48;
+  return numberQuestion({
+    family:"incircle-area-given-perimeter",
+    label:"由周長與半徑求面積",
+    html:`<div class="question-flow"><span class="qline">某三角形周長為 ${S}，內切圓半徑為 ${r}。求三角形面積。</span></div>`,
+    answer:area,
+    explanation:explanation(
+      String(area),
+      "直接代入 K＝1/2 rS。",
+      [`面積＝${fracHTML(1,2)}×${r}×${S}＝${area}。`]
+    )
+  });
+}
+
+function qRightIncircleRelation(){
+  return choiceQuestion({
+    family:"incircle-right-relation",
+    label:"直角三角形內切圓性質",
+    html:`<div class="question-flow"><span class="qline">直角三角形兩股長為 a、b，斜邊長為 c，內切圓半徑為 r。下列哪個關係正確？</span></div>`,
+    choices:[
+      {value:"a",text:"a＋b＝c＋2r"},
+      {value:"b",text:"a＋b＝c＋r"},
+      {value:"c",text:"a＋b＋c＝r"},
+      {value:"d",text:"a＋b＝2c＋r"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "a＋b＝c＋2r",
+      "直角頂點附近的兩段切線長都等於 r。",
+      ["整理可得 r＝（a＋b－c）÷2。"]
+    )
+  });
+}
+
+function qIncircleRightArea(){
+  return piQuestion({
+    family:"incircle-right-area",
+    label:"附錄題型｜直角三角形內切圓面積",
+    html:`<div class="question-flow"><span class="qline">直角三角形兩股長為 5、12。求內切圓面積。</span></div>`,
+    answer:R(4,1),
+    explanation:explanation(
+      "4π",
+      "斜邊為 13，內切圓半徑為（5＋12－13）÷2＝2。",
+      ["內切圓面積＝π×2²＝4π。"]
+    )
+  });
+}
+
+/*
+==================================================
+模式四｜重心比例
+==================================================
+*/
+
+function qCentroidDefinition(){
+  return choiceQuestion({
+    family:"centroid-definition",
+    label:"重心定義",
+    html:`<div class="question-flow"><span class="qline">三角形的重心是下列哪三條線的交點？</span></div>${centroidDiagram()}`,
+    choices:[
+      {value:"a",text:"三條中線"},
+      {value:"b",text:"三邊中垂線"},
+      {value:"c",text:"三內角平分線"},
+      {value:"d",text:"三條任意垂線"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "三條中線",
+      "中線是頂點連到對邊中點的線段，三條中線交於重心。",
+      []
+    )
+  });
+}
+
+function qCentroidRatio(){
+  return ratioQuestion({
+    family:"centroid-ratio",
+    label:"重心分中線比例",
+    html:`<div class="question-flow"><span class="qline">G 為 △ABC 的重心，AD 是中線。求 ${seg("AG")}：${seg("GD")}。</span></div>${centroidDiagram()}`,
+    answer:[2,1],
+    explanation:explanation(
+      "2：1",
+      "重心把每一條中線分成「頂點到重心：重心到中點＝2：1」。",
+      []
+    )
+  });
+}
+
+function qCentroidAD9(){
+  return numberQuestion({
+    family:"centroid-ad9",
+    label:"由中線求頂點到重心",
+    html:`<div class="question-flow"><span class="qline">G 為 △ABC 的重心，D 為 ${seg("BC")} 中點，若 ${keep(`${seg("AD")}＝9`)}，求 ${seg("AG")}。</span></div>${centroidDiagram({median:"9"})}`,
+    answer:6,
+    explanation:explanation(
+      "6",
+      `${seg("AG")}＝${fracHTML(2,3)}${seg("AD")}。`,
+      [`${seg("AG")}＝${fracHTML(2,3)}×9＝6。`]
+    )
+  });
+}
+
+function qCentroidSumMedians(){
+  return numberQuestion({
+    family:"centroid-sum-medians",
+    label:"附錄題型｜三條中線",
+    html:`<div class="question-flow"><span class="qline">△ABC 三條中線 AD、BE、CF 交於 G。若 ${seg("GD")}＋${seg("GE")}＋${seg("GF")}＝15，求 ${seg("AD")}＋${seg("BE")}＋${seg("CF")}。</span></div>`,
+    answer:45,
+    explanation:explanation(
+      "45",
+      "每條中線上，重心到中點是整條中線的 1/3。",
+      [
+        `${seg("AD")}＝3${seg("GD")}，${seg("BE")}＝3${seg("GE")}，${seg("CF")}＝3${seg("GF")}。`,
+        `三條中線和＝3×15＝45。`
+      ]
+    )
+  });
+}
+
+function qCentroidTwoMedians(){
+  return numberQuestion({
+    family:"centroid-two-medians",
+    label:"兩條中線的重心",
+    html:`<div class="question-flow"><span class="qline">在 △PQR 中，PN、RM 為中線並交於 G。若 ${seg("GM")}＋${seg("GN")}＝5，求 ${seg("PN")}＋${seg("RM")}。</span></div>`,
+    answer:15,
+    explanation:explanation(
+      "15",
+      "GM、GN 都是各自中線靠近中點的 1/3。",
+      [
+        `${seg("PN")}＝3${seg("GN")}，${seg("RM")}＝3${seg("GM")}。`,
+        `所以 ${seg("PN")}＋${seg("RM")}＝3（${seg("GN")}＋${seg("GM")}）＝15。`
+      ]
+    )
+  });
+}
+
+function qCentroidNested(){
+  return numberQuestion({
+    family:"centroid-nested",
+    label:"🔥 巢狀重心",
+    html:`<div class="question-flow"><span class="qline">G 為 △ABC 的重心，D 為 ${seg("BC")} 中點；J 又為 △GBC 的重心。若 ${keep(`${seg("AG")}＝24`)}，求 ${seg("GJ")}。</span></div>`,
+    answer:8,
+    explanation:explanation(
+      "8",
+      "先由 AG：GD＝2：1 求 GD，再對 △GBC 使用重心比例。",
+      [
+        `${seg("GD")}＝24÷2＝12。`,
+        `J 為 △GBC 重心，所以 ${seg("GJ")}＝${fracHTML(2,3)}${seg("GD")}＝8。`
+      ]
+    )
+  });
+}
+
+function qCentroidRightGO(){
+  return rationalQuestion({
+    family:"centroid-right-go",
+    label:"直角三角形重心",
+    html:`<div class="question-flow"><span class="qline">在直角 △ABC 中，兩股長為 6、8，O 為斜邊中點，兩條中線交於 G。求 ${seg("GO")}。</span></div>`,
+    answer:R(5,3),
+    explanation:explanation(
+      fracHTML(5,3),
+      "斜邊長為 10，所以中線 BO＝5；G 把中線 BO 分成 2：1。",
+      [
+        `${seg("GO")}＝${fracHTML(1,3)}${seg("BO")}＝${fracHTML(1,3)}×5＝${fracHTML(5,3)}。`
+      ]
+    )
+  });
+}
+
+function qCentroidEquilateral(){
+  return choiceQuestion({
+    family:"centroid-equilateral",
+    label:"附錄精熟｜正三角形重心",
+    html:`<div class="question-flow"><span class="qline">正三角形 ABC 的重心為 G，若 ${keep(`${seg("AG")}＝4`)}，求 △ABC 的周長。</span></div>`,
+    choices:[
+      {value:"a",html:`8√3`},
+      {value:"b",html:`9√3`},
+      {value:"c",html:`10√3`},
+      {value:"d",html:`12√3`}
+    ],
+    answer:"d",
+    explanation:explanation(
+      "12√3",
+      "重心把中線分成 2：1，所以整條高 AD＝6。",
+      [
+        `正三角形高＝${fracHTML("√3",2)}×邊長。`,
+        `6＝${fracHTML("√3",2)}s，所以 s＝4√3。`,
+        `周長＝12√3。`
+      ]
+    )
+  });
+}
+
+function qCentroidParallelHeight(){
+  return ratioQuestion({
+    family:"centroid-parallel-height",
+    label:"重心與平行高度",
+    html:`<div class="question-flow"><span class="qline">G 為 △ABC 的重心，D 為 ${seg("AC")} 中點。過 G、D 分別作 GG′、DD′ 垂直 ${seg("BC")}。求 ${seg("GG′")}：${seg("DD′")}。</span></div>`,
+    answer:[2,3],
+    explanation:explanation(
+      "2：3",
+      "G 在中線 BD 上，BG：BD＝2：3；又 GG′ // DD′。",
+      ["由相似三角形可得 GG′：DD′＝BG：BD＝2：3。"]
+    )
+  });
+}
+
+function qCentroidLocation(){
+  return choiceQuestion({
+    family:"centroid-location",
+    label:"重心位置與意義",
+    html:`<div class="question-flow"><span class="qline">對材質均勻的三角形薄板，下列哪個點是其平衡點，且一定在三角形內部？</span></div>`,
+    choices:[
+      {value:"g",text:"重心"},
+      {value:"o",text:"外心"},
+      {value:"i",text:"只可能是內心"},
+      {value:"v",text:"任一頂點"}
+    ],
+    answer:"g",
+    explanation:explanation(
+      "重心",
+      "重心是三條中線交點，也是均勻三角形薄板的平衡點。",
+      []
+    )
+  });
+}
+
+/*
+==================================================
+模式五｜重心與面積
+==================================================
+*/
+
+function qCentroidThirdArea(){
+  const total=pick([30,45,60,72,90]);
+  return numberQuestion({
+    family:"centroid-third-area",
+    label:"重心三等分面積",
+    html:`<div class="question-flow"><span class="qline">G 為 △ABC 的重心。若 △ABC 面積為 ${total}，求 △AGB 的面積。</span></div>${centroidAreaDiagram()}`,
+    answer:total/3,
+    explanation:explanation(
+      String(total/3),
+      "三條中線把三角形分成三個以 G 為頂點、以原三邊為底的大三角形，面積都為全體的 1/3。",
+      [`△AGB 面積＝${fracHTML(1,3)}×${total}＝${total/3}。`]
+    )
+  });
+}
+
+function qCentroidSixthArea(){
+  const total=pick([36,48,60,72,90]);
+  return numberQuestion({
+    family:"centroid-sixth-area",
+    label:"六個小三角形面積",
+    html:`<div class="question-flow"><span class="qline">△ABC 的三條中線交於 G，並形成 6 個小三角形。若 △ABC 面積為 ${total}，求其中任一個小三角形的面積。</span></div>${centroidAreaDiagram()}`,
+    answer:total/6,
+    explanation:explanation(
+      String(total/6),
+      "三條中線會把三角形分成 6 個等面積小三角形。",
+      [`每個小三角形面積＝${fracHTML(1,6)}×${total}＝${total/6}。`]
+    )
+  });
+}
+
+function qCentroidRightArea(){
+  return numberQuestion({
+    family:"centroid-right-area",
+    label:"直角三角形重心面積",
+    html:`<div class="question-flow"><span class="qline">直角 △ABC 的兩股長為 5、12，G 為重心。求 △GCA 的面積。</span></div>`,
+    answer:10,
+    explanation:explanation(
+      "10",
+      "△ABC 面積為 1/2×5×12＝30，重心連到三頂點後形成三個等面積三角形。",
+      [`△GCA 面積＝${fracHTML(1,3)}×30＝10。`]
+    )
+  });
+}
+
+function qCentroidQuadrilateral(){
+  return numberQuestion({
+    family:"centroid-quadrilateral",
+    label:"四邊形區域面積",
+    html:`<div class="question-flow"><span class="qline">在直角 △ABC 中，∠A＝90°，${seg("AB")}＝8、${seg("AC")}＝6。D、E 分別為 ${seg("BC")}、${seg("AC")} 中點，G 為重心。求教材圖形中的四邊形 CEGD 面積。</span></div>`,
+    answer:8,
+    explanation:explanation(
+      "8",
+      "△ABC 面積＝24；四邊形 CEGD 由兩個六等分小區域組成。",
+      [
+        `每個六等分區域＝${fracHTML(1,6)}×24＝4。`,
+        `四邊形 CEGD 面積＝2×4＝8。`
+      ]
+    )
+  });
+}
+
+function qCentroidIsoscelesArea(){
+  return numberQuestion({
+    family:"centroid-isosceles-area",
+    label:"🔥 等腰三角形重心面積",
+    html:`<div class="question-flow"><span class="qline">等腰 △ABC 中，${seg("AB")}＝${seg("AC")}＝20、${seg("BC")}＝32，G 為重心。求 △ACG 的面積。</span></div>`,
+    answer:64,
+    explanation:explanation(
+      "64",
+      "先求高，再求全三角形面積。",
+      [
+        `底邊一半為 16，高＝√（20${sup(2)}－16${sup(2)}）＝12。`,
+        `△ABC 面積＝${fracHTML(1,2)}×32×12＝192。`,
+        `△ACG 面積＝${fracHTML(1,3)}×192＝64。`
+      ]
+    )
+  });
+}
+
+function qCentroidCake(){
+  return choiceQuestion({
+    family:"centroid-cake",
+    label:"生活情境｜公平分蛋糕",
+    html:`<div class="question-flow"><span class="qline">要把一塊材質均勻的三角形蛋糕分成三塊等面積，哪一組線最適合作為分割依據？</span></div>`,
+    choices:[
+      {value:"a",text:"三條中線"},
+      {value:"b",text:"三邊中垂線"},
+      {value:"c",text:"三內角平分線"},
+      {value:"d",text:"任意三條線"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "三條中線",
+      "三條中線交於重心，連接重心與三頂點可把三角形分成三個等面積區域。",
+      []
+    )
+  });
+}
+
+function qCentroidAreaFromSmall(){
+  return numberQuestion({
+    family:"centroid-area-from-small",
+    label:"由小三角形反求總面積",
+    html:`<div class="question-flow"><span class="qline">△ABC 的三條中線交於 G，F 為 ${seg("AB")} 中點。若 △AFG 面積為 7，求 △ABC 面積。</span></div>`,
+    answer:42,
+    explanation:explanation(
+      "42",
+      "△AFG 是六個等面積小三角形之一。",
+      [`△ABC 面積＝6×7＝42。`]
+    )
+  });
+}
+
+function qCentroidAreaThree(){
+  return ratioQuestion({
+    family:"centroid-area-ratio",
+    label:"三個大三角形面積比",
+    html:`<div class="question-flow"><span class="qline">G 為 △ABC 的重心。求 △AGB 面積：△BGC 面積：△CGA 面積。</span></div>`,
+    answer:[1,1,1],
+    explanation:explanation(
+      "1：1：1",
+      "三條中線交於重心時，三個以 G 為共同頂點、原三邊為底的三角形面積相等。",
+      []
+    )
+  });
+}
+
+function qCentroidRegion20(){
+  return numberQuestion({
+    family:"centroid-region20",
+    label:"教材題型｜兩個六分之一區域",
+    html:`<div class="question-flow"><span class="qline">在直角 △ABC 中，${seg("AB")}＝8、${seg("AC")}＝15，兩條中線交於 G。某四邊形由兩個「全三角形的六分之一」區域組成，求此四邊形面積。</span></div>`,
+    answer:20,
+    explanation:explanation(
+      "20",
+      [
+        `△ABC 面積＝${fracHTML(1,2)}×8×15＝60。`,
+        `兩個六分之一區域合計＝${fracHTML(2,6)}×60＝20。`
+      ].join(" "),
+      []
+    )
+  });
+}
+
+function qCentroidAreaConcept(){
+  return choiceQuestion({
+    family:"centroid-area-concept",
+    label:"重心面積觀念",
+    html:`<div class="question-flow"><span class="qline">G 為 △ABC 的重心。下列何者一定正確？</span></div>`,
+    choices:[
+      {value:"a",text:"△AGB、△BGC、△CGA 面積相等"},
+      {value:"b",text:"△AGB、△BGC、△CGA 三邊長都相等"},
+      {value:"c",text:"G 到三邊距離都相等"},
+      {value:"d",text:"G 到三頂點距離都相等"}
+    ],
+    answer:"a",
+    explanation:explanation(
+      "三個面積相等",
+      "重心的面積性質是三個大三角形各占原三角形的 1/3。",
+      []
+    )
+  });
+}
+
+function qCentroidFromCEF(){
+  return numberQuestion({
+    family:"centroid-from-cef",
+    label:"🔥 由重心小區域反推",
+    html:`<div class="question-flow"><span class="qline">在教材綜合題型中，F 為某三角形的重心關係點，且 △CEF 面積為 8；由圖中等面積關係可知 △ABC 面積為 △CEF 的 3 倍。求 △ABC 面積。</span></div>`,
+    answer:24,
+    explanation:explanation(
+      "24",
+      "使用題圖建立的重心面積比例。",
+      [`△ABC 面積＝3×8＝24。`]
+    )
+  });
+}
+
+function createQuestions(selected){
+  const map={
+    circumcenter:()=>shuffle([
+      qCircumEquidistant(),
+      qCircumLocation(),
+      qRightCircumRadius(),
+      qRightCircumArea(),
+      qCircumTriangle817(),
+      qCircumCentralAngle(),
+      qCircumAngleFromTwo(),
+      qCircumIsoscelesRadius(),
+      qCircumAltitudeAdvanced(),
+      qCircumDefinition()
+    ]),
+
+    incenter:()=>shuffle([
+      qIncenterDefinition(),
+      qIncenterDistance(),
+      qIncenterLocation(),
+      qIncenterAngle(),
+      qIncenterReverseAngle(),
+      qIncenterAreaRatio(),
+      qIncenterAreaToSides(),
+      qIncenterIsoscelesRight(),
+      qIncenterADE(),
+      qIncenterProperty()
+    ]),
+
+    incircle:()=>shuffle([
+      qIncircleAreaFormula(),
+      qIncircleRadiusFromArea(),
+      qRightIncircle(),
+      qIncircleArea(),
+      qIsoscelesIncircle(),
+      qCoordinateIncenter(),
+      qIncirclePerimeter(),
+      qIncircleAreaGivenPerimeter(),
+      qRightIncircleRelation(),
+      qIncircleRightArea()
+    ]),
+
+    centroidRatio:()=>shuffle([
+      qCentroidDefinition(),
+      qCentroidRatio(),
+      qCentroidAD9(),
+      qCentroidSumMedians(),
+      qCentroidTwoMedians(),
+      qCentroidNested(),
+      qCentroidRightGO(),
+      qCentroidEquilateral(),
+      qCentroidParallelHeight(),
+      qCentroidLocation()
+    ]),
+
+    centroidArea:()=>shuffle([
+      qCentroidThirdArea(),
+      qCentroidSixthArea(),
+      qCentroidRightArea(),
+      qCentroidQuadrilateral(),
+      qCentroidIsoscelesArea(),
+      qCentroidCake(),
+      qCentroidAreaFromSmall(),
+      qCentroidAreaThree(),
+      qCentroidRegion20(),
+      qCentroidAreaConcept()
+    ])
+  };
+
+  if(selected!=="comprehensive"){
+    return map[selected]();
+  }
+
+  return shuffle([
+    qCircumLocation(),
+    qRightCircumArea(),
+    qCircumIsoscelesRadius(),
+    qIncenterAngle(),
+    qIncenterAreaRatio(),
+    qCoordinateIncenter(),
+    qRightIncircle(),
+    qCentroidNested(),
+    qCentroidRightGO(),
+    qCentroidIsoscelesArea()
+  ]);
+}
+
+/*
+==================================================
+Sound
+==================================================
+*/
+
+function playGameSound(method){
+  try{
+    const manager=window.MathGameSound||window.GameSound;
+    if(manager && typeof manager[method]==="function"){
+      Promise.resolve(manager[method]()).catch(()=>{});
+    }
+  }catch(error){
+    console.warn("音效播放失敗：",error);
+  }
+}
+
+/*
+==================================================
+Scratchpad
+==================================================
+*/
+
+function moveScratchpadButtonToQuizGap(){
+  const mount=$("scratchpad-mobile-button");
+  const button=$("scratchpadOpenButton");
+  if(mount && button && !mount.contains(button)) mount.appendChild(button);
+}
+function ensureScratchpadButton(){
+  moveScratchpadButtonToQuizGap();
+  let count=0;
+  const retry=setInterval(()=>{
+    count++;
+    moveScratchpadButtonToQuizGap();
+    if($("scratchpadOpenButton") || count>=30) clearInterval(retry);
+  },60);
+}
+
+/*
+==================================================
+Screen
+==================================================
+*/
+
+function showOnly(id){
+  ["start-screen","quiz-screen","result-screen","review-screen"].forEach(screen=>{
+    $(screen).classList.toggle("hidden",screen!==id);
+  });
+  if(id==="quiz-screen"){
+    window.showGameScratchpadButton?.();
+    setTimeout(moveScratchpadButtonToQuizGap,0);
+    setTimeout(moveScratchpadButtonToQuizGap,100);
+  }else{
+    window.hideGameScratchpadButton?.();
+  }
+}
+
+/*
+==================================================
+Answer UI
+==================================================
+*/
+
+function renderRatioAnswer(count){
+  const inputs=[];
+  for(let i=0;i<count;i++){
+    inputs.push(`<input class="ratio-input" data-ratio-input="${i}" type="text"
+      inputmode="numeric" autocomplete="off" placeholder="數字"
+      aria-label="比例第 ${i+1} 項">`);
+  }
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <div class="ratio-answer">
+      ${inputs.join('<span class="ratio-colon">：</span>')}
+    </div>
+    <div class="answer-help">請輸入<strong>最簡整數比</strong>；等值但未化簡時不算答錯，會請你重新整理。</div>
+  `;
+  setTimeout(()=>document.querySelector("[data-ratio-input='0']")?.focus(),0);
+}
+function renderNumberAnswer(){
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <input id="number-answer" class="number-answer" type="text" inputmode="decimal"
+      autocomplete="off" placeholder="請輸入答案" aria-label="你的答案">
+  `;
+  setTimeout(()=>$("number-answer")?.focus(),0);
+}
+function renderRationalAnswer(){
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <div class="fraction-answer">
+      <select id="fraction-sign" class="fraction-sign" aria-label="正負號">
+        <option value="1">＋</option>
+        <option value="-1">−</option>
+      </select>
+      <div class="fraction-whole-wrap">
+        <span class="fraction-whole-label">整數部分</span>
+        <input id="fraction-whole" class="fraction-whole" type="text"
+          inputmode="numeric" autocomplete="off" placeholder="可留空"
+          aria-label="帶分數整數部分">
+      </div>
+      <div class="fraction-entry" aria-label="分數">
+        <input id="fraction-numerator" type="text" inputmode="numeric"
+          autocomplete="off" placeholder="分子" aria-label="分子">
+        <div class="fraction-line"></div>
+        <input id="fraction-denominator" type="text" inputmode="numeric"
+          autocomplete="off" placeholder="分母" aria-label="分母">
+      </div>
+    </div>
+    <div class="answer-help">可填最簡分數或帶分數；整數部分不需要時留空。分數部分需化成最簡。</div>
+    <div id="system-read" class="system-read hidden"></div>
+  `;
+  ["fraction-sign","fraction-whole","fraction-numerator","fraction-denominator"].forEach(id=>{
+    $(id)?.addEventListener("input",updateSystemRead);
+    $(id)?.addEventListener("change",updateSystemRead);
+  });
+  $("fraction-whole")?.addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&!answered){e.preventDefault();$("fraction-numerator")?.focus()}
+  });
+  $("fraction-numerator")?.addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&!answered){e.preventDefault();$("fraction-denominator")?.focus()}
+  });
+  setTimeout(()=>$("fraction-numerator")?.focus(),0);
+}
+
+function renderPiAnswer(){
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請輸入 π 的係數</div>
+    <div class="pi-answer-row">
+      <select id="fraction-sign" class="fraction-sign" aria-label="正負號">
+        <option value="1">＋</option>
+        <option value="-1">−</option>
+      </select>
+
+      <div class="fraction-whole-wrap">
+        <span class="fraction-whole-label">整數／帶分數整數部分</span>
+        <input id="fraction-whole" class="fraction-whole" type="text"
+          inputmode="numeric" autocomplete="off" placeholder="可留空"
+          aria-label="π 係數整數部分">
+      </div>
+
+      <div class="fraction-entry" aria-label="π 係數分數">
+        <input id="fraction-numerator" type="text" inputmode="numeric"
+          autocomplete="off" placeholder="分子" aria-label="π 係數分子">
+        <div class="fraction-line"></div>
+        <input id="fraction-denominator" type="text" inputmode="numeric"
+          autocomplete="off" placeholder="分母" aria-label="π 係數分母">
+      </div>
+
+      <span class="pi-fixed">π</span>
+    </div>
+
+    <div class="answer-help">
+      例如 6π：整數部分填 6；${fracHTML(15,2)}π：可填分子 15、分母 2，
+      或填 7 與 ${fracHTML(1,2)}。不需要輸入 π。
+    </div>
+
+    <div id="system-read" class="system-read hidden"></div>
+  `;
+
+  ["fraction-sign","fraction-whole","fraction-numerator","fraction-denominator"].forEach(id=>{
+    $(id)?.addEventListener("input",updateSystemRead);
+    $(id)?.addEventListener("change",updateSystemRead);
+  });
+
+  setTimeout(()=>$("fraction-whole")?.focus(),0);
+}
+
+function renderChoices(question){
+  selectedChoice=null;
+  $("answer-area").innerHTML=`
+    <div class="answer-title">請作答</div>
+    <div class="choice-grid">
+      ${shuffle(question.choices).map(choice=>`
+        <button class="choice-button" type="button" data-choice="${escapeHTML(choice.value)}">
+          ${protectImportantUnits(
+            choice.html??escapeHTML(choice.text??choice.value)
+          )}
+        </button>
+      `).join("")}
+    </div>
+  `;
+  $("answer-area").querySelectorAll("[data-choice]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      if(answered)return;
+      selectedChoice=button.dataset.choice;
+      $("answer-area").querySelectorAll(".choice-button").forEach(x=>x.classList.remove("selected"));
+      button.classList.add("selected");
+    });
+  });
+}
+function renderAnswerArea(question){
+  if(question.type==="ratio"){renderRatioAnswer(question.answer.length);return}
+  if(question.type==="number"){renderNumberAnswer();return}
+  if(question.type==="rational"){renderRationalAnswer();return}
+  if(question.type==="pi"){renderPiAnswer();return}
+  renderChoices(question);
+}
+
+function clearSystemRead(){
+  const box=$("system-read");
+  if(!box)return;
+  box.classList.add("hidden");
+  box.innerHTML="";
+}
+function showSystemRead(html){
+  const box=$("system-read");
+  if(!box)return;
+  box.innerHTML=`系統判讀：<strong>${html}</strong>`;
+  box.classList.remove("hidden");
+}
+function updateSystemRead(){
+  if(answered)return;
+
+  const q=questions[index];
+
+  if(
+    !q ||
+    (
+      q.type!=="rational" &&
+      q.type!=="pi"
+    )
+  ){
+    clearSystemRead();
+    return;
+  }
+
+  const wholeRaw=$("fraction-whole")?.value.trim()??"";
+  const nr=$("fraction-numerator")?.value.trim()??"";
+  const dr=$("fraction-denominator")?.value.trim()??"";
+
+  /*
+  π 型答案允許直接只填整數係數，例如 6π → 整數部分填 6。
+  */
+  if(
+    q.type==="pi" &&
+    wholeRaw &&
+    !nr &&
+    !dr
+  ){
+    if(!/^\d+$/.test(wholeRaw)){
+      clearSystemRead();
+      return;
+    }
+
+    const sign=Number($("fraction-sign")?.value??1);
+    const value=R(
+      sign*Number(wholeRaw),
+      1
+    );
+
+    showSystemRead(
+      piHTML(value)
+    );
+
+    return;
+  }
+
+  if(!nr || !dr){
+    clearSystemRead();
+    return;
+  }
+
+  if(wholeRaw && !/^\d+$/.test(wholeRaw)){
+    clearSystemRead();
+    return;
+  }
+
+  if(!/^-?\d+$/.test(nr) || !/^\d+$/.test(dr)){
+    clearSystemRead();
+    return;
+  }
+
+  const d=Number(dr);
+  const typedN=Number(nr);
+  const whole=wholeRaw?Number(wholeRaw):0;
+
+  if(
+    d===0 ||
+    (
+      wholeRaw &&
+      (
+        typedN<0 ||
+        Math.abs(typedN)>=d
+      )
+    )
+  ){
+    clearSystemRead();
+    return;
+  }
+
+  const sign=Number($("fraction-sign")?.value??1);
+
+  const explicitNegative=
+    !wholeRaw &&
+    nr.startsWith("-") &&
+    typedN!==0;
+
+  const rawN=
+    explicitNegative
+      ? -Math.abs(typedN)
+      : sign*(whole*d+Math.abs(typedN));
+
+  const value=R(rawN,d);
+
+  if(q.type==="pi"){
+    showSystemRead(
+      piHTML(value)
+    );
+  }else if(whole>0){
+    showSystemRead(
+      mixedAnswerHTML(
+        rawN<0?-1:1,
+        whole,
+        Math.abs(typedN),
+        d
+      )
+    );
+  }else{
+    showSystemRead(
+      rawFracHTML(rawN,d)
+    );
+  }
+}
+
+/*
+==================================================
+Read / judge answer
+==================================================
+*/
+
+function analyzeRatioAnswer(rawValues,answer){
+  const parsed=rawValues.map(v=>parseNumber(v));
+  if(parsed.some(v=>v===null)) return {valid:false,message:"請輸入有效的數字。"};
+  if(parsed.some(v=>v<=0)) return {valid:false,message:"比例各項請輸入正數。"};
+  let equivalent=true;
+  for(let i=1;i<parsed.length;i++){
+    if(Math.abs(parsed[i]*answer[0]-parsed[0]*answer[i])>1e-8){equivalent=false;break}
+  }
+  if(!equivalent) return {valid:true,equivalent:false,simplest:false};
+  const integerFormat=rawValues.every(v=>/^\+?\d+$/.test(String(v).trim()));
+  if(!integerFormat) return {valid:true,equivalent:true,simplest:false,reason:"not-integer"};
+  const ints=rawValues.map(v=>Number(String(v).trim()));
+  const g=gcdAll(ints);
+  if(g!==1) return {valid:true,equivalent:true,simplest:false,reason:"not-simplest",divisor:g};
+  return {valid:true,equivalent:true,simplest:true,values:ints};
+}
+
+function readRationalAnswer(){
+  const sign=Number($("fraction-sign")?.value??1);
+  const wholeRaw=$("fraction-whole")?.value.trim()??"";
+  const nr=$("fraction-numerator")?.value.trim()??"";
+  const dr=$("fraction-denominator")?.value.trim()??"";
+  if(!nr || !dr) return {valid:false,message:"請填分子與分母；若要用帶分數，再填整數部分。"};
+  if(wholeRaw && !/^\d+$/.test(wholeRaw)) return {valid:false,message:"整數部分請填 0 或正整數。"};
+  if(!/^-?\d+$/.test(nr) || !/^\d+$/.test(dr)) return {valid:false,message:"分子、分母必須是整數格式。"};
+  const whole=wholeRaw?Number(wholeRaw):0;
+  const typedN=Number(nr), d=Number(dr);
+  if(d===0) return {valid:false,message:"分母不能是 0。"};
+  if(wholeRaw && Math.abs(typedN)>=d) return {valid:false,message:"帶分數的分子要小於分母。"};
+  if(wholeRaw && typedN<0) return {valid:false,message:"使用帶分數時，負號請使用左側負號。"};
+  const explicitNegative=!wholeRaw && nr.startsWith("-") && typedN!==0;
+  const rawN=explicitNegative?-Math.abs(typedN):sign*(whole*d+Math.abs(typedN));
+  const display=whole>0
+    ? mixedAnswerHTML(rawN<0?-1:1,whole,Math.abs(typedN),d)
+    : rawFracHTML(rawN,d);
+  if(gcd(rawN,d)!==1){
+    return {valid:true,needsSimplify:true,display,displayHTML:true,
+      message:"這個答案還不是最簡分數，請修正。"};
+  }
+  return {valid:true,value:R(rawN,d),display,displayHTML:true};
+}
+
+
+function readPiAnswer(){
+  const sign=Number($("fraction-sign")?.value??1);
+  const wholeRaw=$("fraction-whole")?.value.trim()??"";
+  const nr=$("fraction-numerator")?.value.trim()??"";
+  const dr=$("fraction-denominator")?.value.trim()??"";
+
+  if(
+    wholeRaw &&
+    !nr &&
+    !dr
+  ){
+    if(!/^\d+$/.test(wholeRaw)){
+      return {
+        valid:false,
+        message:"π 的整數係數請填 0 或正整數。"
+      };
+    }
+
+    const value=R(
+      sign*Number(wholeRaw),
+      1
+    );
+
+    return {
+      valid:true,
+      value,
+      display:piHTML(value),
+      displayHTML:true
+    };
+  }
+
+  if(!nr || !dr){
+    return {
+      valid:false,
+      message:"若答案是整數倍 π，請在整數部分填係數；若是分數倍 π，請填完整分子與分母。"
+    };
+  }
+
+  if(wholeRaw && !/^\d+$/.test(wholeRaw)){
+    return {
+      valid:false,
+      message:"整數部分請填 0 或正整數。"
+    };
+  }
+
+  if(!/^-?\d+$/.test(nr) || !/^\d+$/.test(dr)){
+    return {
+      valid:false,
+      message:"分子、分母必須是整數格式。"
+    };
+  }
+
+  const whole=wholeRaw?Number(wholeRaw):0;
+  const typedN=Number(nr);
+  const d=Number(dr);
+
+  if(d===0){
+    return {
+      valid:false,
+      message:"分母不能是 0。"
+    };
+  }
+
+  if(
+    wholeRaw &&
+    Math.abs(typedN)>=d
+  ){
+    return {
+      valid:false,
+      message:"帶分數的分子要小於分母。"
+    };
+  }
+
+  if(
+    wholeRaw &&
+    typedN<0
+  ){
+    return {
+      valid:false,
+      message:"使用帶分數時，負號請使用左側負號。"
+    };
+  }
+
+  const explicitNegative=
+    !wholeRaw &&
+    nr.startsWith("-") &&
+    typedN!==0;
+
+  const rawN=
+    explicitNegative
+      ? -Math.abs(typedN)
+      : sign*(whole*d+Math.abs(typedN));
+
+  const value=R(rawN,d);
+
+  if(gcd(rawN,d)!==1){
+    return {
+      valid:true,
+      needsSimplify:true,
+      value,
+      display:piHTML(value),
+      displayHTML:true,
+      message:"π 的係數還不是最簡分數。"
+    };
+  }
+
+  return {
+    valid:true,
+    value,
+    display:piHTML(value),
+    displayHTML:true
+  };
+}
+
+function readAnswer(question){
+  if(question.type==="ratio"){
+    const raw=[...document.querySelectorAll("[data-ratio-input]")].map(x=>x.value.trim());
+    if(raw.some(v=>!v)) return {valid:false,message:"請把比例的每一項都填完整。"};
+    const analysis=analyzeRatioAnswer(raw,question.answer);
+    return {valid:analysis.valid,value:raw,display:raw.join("："),
+      displayHTML:escapeHTML(raw.join("：")),ratioAnalysis:analysis,message:analysis.message};
+  }
+  if(question.type==="number"){
+    const raw=$("number-answer")?.value.trim()??"";
+    const value=parseNumber(raw);
+    if(value===null) return {valid:false,message:"請輸入有效的數字答案。"};
+    return {valid:true,value,display:raw,displayHTML:escapeHTML(raw)};
+  }
+  if(question.type==="rational"){
+    return readRationalAnswer();
+  }
+  if(question.type==="pi"){
+    return readPiAnswer();
+  }
+  if(selectedChoice===null) return {valid:false,message:"請先選擇一個答案。"};
+  const selected=question.choices.find(c=>String(c.value)===String(selectedChoice));
+  return {valid:true,value:selectedChoice,
+    display:selected?.text??selectedChoice,
+    displayHTML:selected?.html??escapeHTML(selected?.text??selectedChoice)};
+}
+function isCorrectAnswer(question,answer){
+  if(question.type==="ratio"){
+    return answer.ratioAnalysis?.equivalent===true && answer.ratioAnalysis?.simplest===true;
+  }
+  if(question.type==="number"){
+    return sameNumber(answer.value,question.answer,question.tolerance??1e-9);
+  }
+  if(question.type==="rational"){
+    return ratEq(answer.value,question.answer);
+  }
+  if(question.type==="pi"){
+    return ratEq(answer.value,question.answer);
+  }
+  return String(answer.value)===String(question.answer);
+}
+function correctAnswerHTML(question){
+  if(question.type==="ratio") return ratioHTML(question.answer);
+  if(question.type==="number") return escapeHTML(question.answer);
+  if(question.type==="rational") return ratHTML(question.answer);
+  if(question.type==="pi") return piHTML(question.answer);
+  const c=question.choices.find(x=>String(x.value)===String(question.answer));
+  return c?.html??escapeHTML(c?.text??c?.value??"");
+}
+function disableAnswerArea(){
+  $("answer-area").querySelectorAll("input,button,select").forEach(el=>el.disabled=true);
+}
+
+/*
+==================================================
+Explanation
+==================================================
+*/
+
+
+/*
+==================================================
+重要資訊不拆行
+
+例：
+  BC線段＝5
+  AP：PB＝3：4
+  PQ∥BC
+  ∠A＝30°
+
+這些資訊若剛好碰到行尾，會整組移到下一行，
+不會出現「BC」留在上一行、「＝5」掉到下一行的情況。
+==================================================
+*/
+function protectImportantUnits(input){
+  let html=String(input??"");
+
+  const segTag=
+    String.raw`<span class="seg math">[^<]+<\/span>`;
+
+  const arcTag=
+    String.raw`<span class="arc math">[^<]+<\/span>`;
+
+  // 線段比例。
+  html=html.replace(
+    new RegExp(
+      `(${segTag})：(${segTag})＝([^，。；、<\\s]+)`,
+      "g"
+    ),
+    '<span class="keep-unit">$1：$2＝$3</span>'
+  );
+
+  // 平行、垂直。
+  html=html.replace(
+    new RegExp(
+      `(${segTag})(∥|⊥)(${segTag}|[A-Za-z])`,
+      "g"
+    ),
+    '<span class="keep-unit">$1$2$3</span>'
+  );
+
+  // 單一線段已知量。
+  html=html.replace(
+    new RegExp(
+      `(${segTag})＝([^，。；、<\\s]+)(\\s*(?:公尺|公分|公里|m|cm))?`,
+      "g"
+    ),
+    '<span class="keep-unit">$1＝$2$3</span>'
+  );
+
+  // 弧的度數／長度。
+  html=html.replace(
+    new RegExp(
+      `(${arcTag})＝([^，。；、<\\s]+)`,
+      "g"
+    ),
+    '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  // 角度條件。
+  html=html.replace(
+    /(∠[A-Za-zA-Z'′0-9]+)＝(∠[A-Za-zA-Z'′0-9]+|[−-]?\d+(?:\.\d+)?°)/g,
+    '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  // r、d、x 等短條件。
+  html=html.replace(
+    /\b([rdxyz])＝([−-]?\d+(?:\.\d+)?)/g,
+    '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  // 課本風格平行符號。
+  html=html.replace(
+    /∥/g,
+    '<span class="parallel-symbol" aria-label="平行">//</span>'
+  );
+
+  return html;
+}
+
+function explanationHTML(question){
+  const e=question.explanation;
+  return `
+    <div class="explanation-title">📘 完整詳解</div>
+    <div class="explanation-question">${protectImportantUnits(question.html)}</div>
+    <div class="explanation-think"><strong>先想一想｜</strong>${protectImportantUnits(e.think)}</div>
+    ${e.steps.map((step,i)=>`<div class="explanation-step"><strong>步驟 ${i+1}｜</strong>${protectImportantUnits(step)}</div>`).join("")}
+    ${e.tip?`<div class="explanation-tip"><strong>⚠️ 常見提醒｜</strong>${protectImportantUnits(e.tip)}</div>`:""}
+    <div class="explanation-answer">✅ 最後答案：${protectImportantUnits(e.answer)}</div>
+  `;
+}
+
+/*
+==================================================
+Question display
+==================================================
+*/
+
+function displayQuestion(){
+  answered=false;
+  selectedChoice=null;
+  const q=questions[index];
+  $("mode-name").textContent=MODES[modeId].name;
+  $("question-number").textContent=`第 ${index+1} 題／共 ${questions.length} 題`;
+  $("live-score").textContent=index===0?"0":Math.round(correct/index*100);
+  $("correct-count").textContent=correct;
+  $("combo-count").textContent=combo;
+  $("progress-bar").style.width=`${index/questions.length*100}%`;
+  $("question-label").textContent=q.label;
+  $("question-content").innerHTML=protectImportantUnits(q.html);
+  $("feedback").className="feedback";
+  $("feedback").innerHTML="";
+  $("explanation").innerHTML="";
+  $("explanation").classList.add("hidden");
+  $("submit-button").classList.remove("hidden");
+  $("next-button").classList.add("hidden");
+  renderAnswerArea(q);
+  window.resetGameScratchpad?.();
+}
+
+/*
+==================================================
+Submit
+==================================================
+*/
+
+function submitAnswer(){
+  if(answered)return;
+  const q=questions[index];
+  const answer=readAnswer(q);
+
+  if(!answer.valid){
+    $("feedback").className="feedback warning";
+    $("feedback").textContent=answer.message;
+    return;
+  }
+
+  if(q.type==="ratio" && answer.ratioAnalysis?.equivalent===true && answer.ratioAnalysis?.simplest===false){
+    $("feedback").className="feedback warning";
+    $("feedback").innerHTML="👍 比例關係正確，但答案還不是最簡整數比，請化簡後重新送出。";
+    return;
+  }
+
+  if((q.type==="rational" || q.type==="pi") && answer.needsSimplify){
+    $("feedback").className="feedback warning";
+    $("feedback").innerHTML="⚠️ 這個答案還不是最簡形式，請化簡後重新送出。這次不算答錯。";
+    return;
+  }
+
+  answered=true;
+  disableAnswerArea();
+  const ok=isCorrectAnswer(q,answer);
+
+  if(ok){
+    correct++; combo++; maxCombo=Math.max(maxCombo,combo);
+    $("feedback").className="feedback correct";
+    $("feedback").innerHTML="✨ 回答正確！";
+    playGameSound("playCorrect");
+  }else{
+    wrong++; combo=0;
+    $("feedback").className="feedback wrong";
+    $("feedback").innerHTML=`❌ 答案不正確。正確答案：<strong>${correctAnswerHTML(q)}</strong>`;
+    playGameSound("playWrong");
+  }
+
+  records.push({
+    number:index+1,question:q,userAnswer:answer.display,
+    userAnswerHTML:answer.displayHTML??escapeHTML(answer.display),correct:ok
+  });
+
+  $("live-score").textContent=Math.round(correct/(index+1)*100);
+  $("correct-count").textContent=correct;
+  $("combo-count").textContent=combo;
+  $("explanation").innerHTML=explanationHTML(q);
+  $("explanation").classList.remove("hidden");
+  $("submit-button").classList.add("hidden");
+  $("next-button").classList.remove("hidden");
+  $("next-button").textContent=
+    index===questions.length-1?"查看測驗結果（Enter）":"下一題（Enter）";
+  $("next-button").focus();
+}
+
+function nextQuestion(){
+  if(!answered)return;
+  index++;
+  if(index<questions.length) displayQuestion();
+  else showResult();
+}
+
+/*
+==================================================
+Timer / start
+==================================================
+*/
+
+function stopTimer(){
+  if(timerId!==null){clearInterval(timerId);timerId=null}
+  if(startTime) elapsed=Math.floor((Date.now()-startTime)/1000);
+}
+function startTimer(){
+  if(timerId!==null) clearInterval(timerId);
+  startTime=Date.now(); elapsed=0;
+  $("timer-display").textContent="00:00";
+  timerId=setInterval(()=>{
+    elapsed=Math.floor((Date.now()-startTime)/1000);
+    $("timer-display").textContent=formatTime(elapsed);
+  },500);
+}
+function startGame(selectedMode){
+  if(timerId!==null){clearInterval(timerId);timerId=null}
+  modeId=selectedMode;
+  questions=createQuestions(modeId);
+  index=0;correct=0;wrong=0;combo=0;maxCombo=0;records=[];
+  answered=false;selectedChoice=null;scoreSaved=false;rpgEmitted=false;elapsed=0;
+  attemptId=(globalThis.crypto?.randomUUID?.()??`${Date.now()}-${Math.random().toString(36).slice(2)}`);
+  $("save-status").textContent="";
+  showOnly("quiz-screen");
+  displayQuestion();
+  startTimer();
+  playGameSound("playStart");
+}
+
+/*
+==================================================
+Result + RPG bridge
+==================================================
+*/
+
+function rating(score){
+  if(score>=90)return {stars:"★★★★★",comment:"三角形三心掌握得很好，可以直接挑戰 3-2 綜合題。"};
+  if(score>=80)return {stars:"★★★★☆",comment:"表現很好，再留意外心是到頂點等距、內心是到三邊等距、重心是中線 2：1。"};
+  if(score>=60)return {stars:"★★★☆☆",comment:"核心觀念已建立，建議從詳解確認外心、內心、重心的性質不要互相混淆。"};
+  return {stars:"★★☆☆☆",comment:"建議先分別練外心、內心與重心核心模式，再進入綜合題。"};
+}
+
+function emitRpgSession(score){
+  if(rpgEmitted)return;
+  rpgEmitted=true;
+  const detail={
+    gameId:GAME_ID,
+    modeId,
+    chapter:CHAPTER,
+    score,
+    correct,
+    wrong,
+    total:questions.length,
+    playTime:elapsed,
+    accuracy:score,
+    maxCombo,
+    attemptId,
+    difficultyWeight:MODES[modeId]?.difficultyWeight??1
+  };
+  window.dispatchEvent(new CustomEvent("mathgame:session-complete",{detail}));
+  if(window.MathGameProgress?.completeLearningSession){
+    Promise.resolve(window.MathGameProgress.completeLearningSession(detail)).catch(()=>{});
+  }
+}
+
+async function showResult(){
+  stopTimer();
+  const score=Math.round(correct/questions.length*1000)/10;
+  const r=rating(score);
+  $("progress-bar").style.width="100%";
+  showOnly("result-screen");
+  $("final-score").textContent=`${Number.isInteger(score)?score:score.toFixed(1)} 分`;
+  $("final-stars").textContent=r.stars;
+  $("final-comment").textContent=r.comment;
+  $("final-correct").textContent=correct;
+  $("final-wrong").textContent=wrong;
+  $("final-combo").textContent=maxCombo;
+  $("final-time").textContent=formatTime(elapsed);
+  playGameSound("playComplete");
+  emitRpgSession(score);
+  await saveCurrentScore(score);
+}
+
+async function saveCurrentScore(score){
+  if(scoreSaved)return;
+  scoreSaved=true;
+  const status=$("save-status");
+  status.textContent="☁️ 正在儲存本次成績……";
+  status.style.color="#1d4ed8";
+  try{
+    const scoreModule=await import("../js/scores.js?v=7");
+    if(typeof scoreModule.saveGameScore!=="function")throw new Error("找不到 saveGameScore");
+    const result=await scoreModule.saveGameScore({
+      game:GAME_ID,
+      mode:modeId,
+      score,
+      correctCount:correct,
+      wrongCount:wrong,
+      maxCombo,
+      playTime:elapsed,
+      totalQuestions:questions.length,
+      accuracy:score
+    });
+    if(result?.success){
+      status.textContent="✅ 本次成績已儲存。";status.style.color="#15803d";return;
+    }
+    if(result?.reason==="not-logged-in"){
+      status.textContent="ℹ️ 尚未登入，因此本次成績沒有儲存。";status.style.color="#b45309";return;
+    }
+    status.textContent="⚠️ 成績暫時無法儲存。";status.style.color="#b91c1c";
+  }catch(error){
+    console.error(`${GAME_TITLE} 成績儲存失敗：`,error);
+    status.textContent="⚠️ 本次遊戲已完成，但成績暫時無法儲存。";
+    status.style.color="#b91c1c";
+  }
+}
+
+/*
+==================================================
+Review
+==================================================
+*/
+
+function showReview(){
+  $("review-list").innerHTML=records.map(record=>`
+    <article class="review-card ${record.correct?"correct-review":"wrong-review"}">
+      <div class="review-title">第 ${record.number} 題 ${record.correct?"✅":"❌"}</div>
+      <div class="review-question">${record.question.html}</div>
+      <div class="review-answer-line">你的答案：<strong>${record.userAnswerHTML}</strong></div>
+      <div class="review-answer-line">正確答案：<strong>${correctAnswerHTML(record.question)}</strong></div>
+      <div class="explanation">${explanationHTML(record.question)}</div>
+    </article>
+  `).join("");
+  showOnly("review-screen");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/*
+==================================================
+Events
+==================================================
+*/
+
+document.querySelectorAll("[data-mode]").forEach(button=>{
+  button.addEventListener("click",()=>startGame(button.dataset.mode));
+});
+$("submit-button").addEventListener("click",submitAnswer);
+$("next-button").addEventListener("click",nextQuestion);
+$("restart-button").addEventListener("click",()=>startGame(modeId));
+$("quit-button").addEventListener("click",()=>{
+  if(timerId!==null){clearInterval(timerId);timerId=null}
+  showOnly("start-screen");
+});
+$("again-button").addEventListener("click",()=>startGame(modeId));
+$("result-mode-button").addEventListener("click",()=>showOnly("start-screen"));
+$("review-button").addEventListener("click",showReview);
+$("review-again-button").addEventListener("click",()=>startGame(modeId));
+$("review-result-button").addEventListener("click",()=>showOnly("result-screen"));
+
+document.addEventListener("keydown",event=>{
+  if(event.key!=="Enter" || $("quiz-screen").classList.contains("hidden"))return;
+  const active=document.activeElement;
+  if(active?.tagName==="BUTTON" && active.classList.contains("choice-button"))return;
+  if(
+    active?.id==="fraction-whole" ||
+    active?.id==="fraction-numerator"
+  )return;
+  event.preventDefault();
+  if(answered)nextQuestion(); else submitAnswer();
+});
+
+window.addEventListener("DOMContentLoaded",()=>{
+  if(window.MathGameCommonHeader){
+    window.MathGameCommonHeader.init({mountId:"commonHeaderMount",basePath:"../"});
+  }
+  ensureScratchpadButton();
+});
+
+showOnly("start-screen");
+
+</script>
+</body>
+</html>
