@@ -3,7 +3,7 @@
 數學遊戲樂園：遊戲共用設定
 檔案位置：js/game-config.js
 
-版本：6.9
+版本：7.0
 八年級上學期 9 款遊戲正式啟用版
 ＋一元二次方程式
 ＋排行榜 / 我的成績相容修正版
@@ -38,8 +38,8 @@ export const GAME_CONFIG = {
   "proportional-segments": {id:"proportional-segments",section:"1-2",name:"1-2 比例線段大挑戰",shortName:"比例線段",semester:"grade9-first",grade:9,order:2,icon:"📐",file:"games/proportional-segments.html",description:"九上 1-2：等高三角形面積比、平行線截比例線段、平行判別與中點連線段。",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{areaRatio:"等高三角形面積比",parallelSegments:"平行線截比例線段",parallelJudge:"比例線段判別平行",midpoint:"中點連線段",comprehensive:"1-2 綜合挑戰"},theme:{primary:"#0f766e",dark:"#115e59",light:"#ecfdf5",border:"#5eead4"}},
   "similar-polygons": {id:"similar-polygons",section:"1-3",name:"1-3 相似多邊形大挑戰",shortName:"相似多邊形",semester:"grade9-first",grade:9,order:3,icon:"🔷",file:"games/similar-polygons.html",description:"九上 1-3：圖形縮放、相似多邊形，以及 AA／SAS／SSS 三角形相似性質。",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{scaling:"圖形縮放",polygonSimilarity:"相似多邊形",aaSimilarity:"AA 相似",sasSimilarity:"SAS 相似",sssSimilarity:"SSS 相似",comprehensive:"1-3 綜合挑戰"},theme:{primary:"#7c3aed",dark:"#5b21b6",light:"#f5f3ff",border:"#c4b5fd"}},
   "similar-triangle-trig": {id:"similar-triangle-trig",section:"1-4",name:"1-4 相似三角形應用與三角比大挑戰",shortName:"相似三角形與三角比",semester:"grade9-first",grade:9,order:4,icon:"📐",file:"games/similar-triangle-trig.html",description:"九上 1-4：相似三角形比例、簡易測量、特殊直角三角形與 sin／cos／tan 應用。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{similarityRelations:"相似三角形比例關係",measurement:"簡易測量",specialRight:"特殊直角三角形",trigRatio:"三角比",trigApplication:"三角比應用",comprehensive:"1-4 綜合挑戰"},theme:{primary:"#c2410c",dark:"#9a3412",light:"#fff7ed",border:"#fdba74"}},
-  "point-line-circle": {id:"point-line-circle",section:"2-1",name:"2-1 點、線、圓大挑戰",shortName:"點、線、圓",semester:"grade9-first",grade:9,order:5,icon:"⭕",file:"games/point-line-circle.html",description:"九上第2章：點、線、圓",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{sector:"弧長與扇形面積",point:"點與圓的位置",line:"直線與圓的位置",chord:"弦心距與切線",mixed:"綜合挑戰"},theme:{primary:"#205d9b",dark:"#163f70",light:"#e8f2ff",border:"#91b8e1"}},
-  "central-inscribed-angle": {id:"central-inscribed-angle",section:"2-2",name:"2-2 圓心角與圓周角大挑戰",shortName:"圓心角與圓周角",semester:"grade9-first",grade:9,order:6,icon:"🟠",file:"games/central-inscribed-angle.html",description:"九上第2章：圓心角與圓周角",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{arc:"弧與圓心角",inscribed:"圓周角",diameter:"半圓與直角",cyclic:"圓內接四邊形",mixed:"綜合挑戰"},theme:{primary:"#205d9b",dark:"#163f70",light:"#e8f2ff",border:"#91b8e1"}},
+  "point-line-circle": {id:"point-line-circle",section:"2-1",name:"2-1 點、線、圓大挑戰",shortName:"點、線、圓",semester:"grade9-first",grade:9,order:5,icon:"⭕",file:"games/point-line-circle.html",description:"九上 2-1：圓弧長與扇形、點與圓、直線與圓、切線與切線段、弦與弦心距。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{sectorArc:"圓弧長與扇形",pointCircle:"點與圓的位置",lineCircle:"直線與圓的位置",tangent:"切線與切線段",chordDistance:"弦與弦心距",comprehensive:"2-1 綜合挑戰"},theme:{primary:"#205d9b",dark:"#163f70",light:"#e8f2ff",border:"#91b8e1"}},
+  "central-inscribed-angle": {id:"central-inscribed-angle",section:"2-2",name:"2-2 圓心角與圓周角大挑戰",shortName:"圓心角與圓周角",semester:"grade9-first",grade:9,order:6,icon:"🟠",file:"games/central-inscribed-angle.html",description:"九上 2-2：圓心角、弧與弦、半徑與弧長、圓周角、直徑與平行線截弧、圓內接四邊形。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{centralArc:"圓心角、弧與弦",arcRadius:"半徑、弧長與弦",inscribedAngle:"圓周角與弧",diameterParallel:"直徑與平行線截弧",cyclicQuadrilateral:"圓內接四邊形",comprehensive:"2-2 綜合挑戰"},theme:{primary:"#c2410c",dark:"#9a3412",light:"#fff7ed",border:"#fdba74"}},
 
 
 
