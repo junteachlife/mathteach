@@ -3,7 +3,7 @@
 數學遊戲樂園：遊戲共用設定
 檔案位置：js/game-config.js
 
-版本：7.0
+版本：7.1
 八年級上學期 9 款遊戲正式啟用版
 ＋一元二次方程式
 ＋排行榜 / 我的成績相容修正版
@@ -40,6 +40,8 @@ export const GAME_CONFIG = {
   "similar-triangle-trig": {id:"similar-triangle-trig",section:"1-4",name:"1-4 相似三角形應用與三角比大挑戰",shortName:"相似三角形與三角比",semester:"grade9-first",grade:9,order:4,icon:"📐",file:"games/similar-triangle-trig.html",description:"九上 1-4：相似三角形比例、簡易測量、特殊直角三角形與 sin／cos／tan 應用。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{similarityRelations:"相似三角形比例關係",measurement:"簡易測量",specialRight:"特殊直角三角形",trigRatio:"三角比",trigApplication:"三角比應用",comprehensive:"1-4 綜合挑戰"},theme:{primary:"#c2410c",dark:"#9a3412",light:"#fff7ed",border:"#fdba74"}},
   "point-line-circle": {id:"point-line-circle",section:"2-1",name:"2-1 點、線、圓大挑戰",shortName:"點、線、圓",semester:"grade9-first",grade:9,order:5,icon:"⭕",file:"games/point-line-circle.html",description:"九上 2-1：圓弧長與扇形、點與圓、直線與圓、切線與切線段、弦與弦心距。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{sectorArc:"圓弧長與扇形",pointCircle:"點與圓的位置",lineCircle:"直線與圓的位置",tangent:"切線與切線段",chordDistance:"弦與弦心距",comprehensive:"2-1 綜合挑戰"},theme:{primary:"#205d9b",dark:"#163f70",light:"#e8f2ff",border:"#91b8e1"}},
   "central-inscribed-angle": {id:"central-inscribed-angle",section:"2-2",name:"2-2 圓心角與圓周角大挑戰",shortName:"圓心角與圓周角",semester:"grade9-first",grade:9,order:6,icon:"🟠",file:"games/central-inscribed-angle.html",description:"九上 2-2：圓心角、弧與弦、半徑與弧長、圓周角、直徑與平行線截弧、圓內接四邊形。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{centralArc:"圓心角、弧與弦",arcRadius:"半徑、弧長與弦",inscribedAngle:"圓周角與弧",diameterParallel:"直徑與平行線截弧",cyclicQuadrilateral:"圓內接四邊形",comprehensive:"2-2 綜合挑戰"},theme:{primary:"#c2410c",dark:"#9a3412",light:"#fff7ed",border:"#fdba74"}},
+  "geometric-proof": {id:"geometric-proof",section:"3-1",name:"3-1 推理證明大挑戰",shortName:"推理證明",semester:"grade9-first",grade:9,order:7,icon:"🧠",file:"games/geometric-proof.html",description:"九上 3-1：證明結構、幾何推理、輔助線、奇偶數與代數證明。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{proofStructure:"證明結構與理由",geometryProof:"幾何推理證明",auxiliaryLine:"輔助線與思路分析",parityProof:"奇偶數證明",algebraProof:"代數推理與因數倍數",comprehensive:"3-1 綜合挑戰"},theme:{primary:"#7c3aed",dark:"#5b21b6",light:"#f5f3ff",border:"#c4b5fd"}},
+  "triangle-centers": {id:"triangle-centers",section:"3-2",name:"3-2 三角形的外心、內心與重心大挑戰",shortName:"三角形三心",semester:"grade9-first",grade:9,order:8,icon:"🎯",file:"games/triangle-centers.html",description:"九上 3-2：外心與外接圓、內心與內切圓、重心比例與重心面積應用。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{circumcenter:"外心與外接圓",incenter:"內心與角度",incircle:"內切圓半徑與面積",centroidRatio:"重心比例",centroidArea:"重心與面積",comprehensive:"3-2 綜合挑戰"},theme:{primary:"#0f766e",dark:"#115e59",light:"#ecfdf5",border:"#5eead4"}},
 
 
 
