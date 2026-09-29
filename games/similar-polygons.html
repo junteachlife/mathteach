@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<!--
+2026-09-29 題目顯示全面修正：
+1. 換行左對齊＋左右對齊
+2. 重要數字條件不拆行
+3. 線段統一上方橫線
+4. 圖形標示放大並加白色遮線描邊
+5. 題目字串完整性檢查
+-->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>九上 1-3 相似多邊形大挑戰｜生活有解．心中有數</title>
@@ -118,24 +126,97 @@ button:disabled{opacity:.48;cursor:not-allowed}
   margin-bottom:10px;color:var(--primary-dark);font-size:14px;font-weight:900
 }
 .question-content{
-  min-height:92px;display:flex;align-items:center;justify-content:center;
-  text-align:center;color:#0f172a;font-size:clamp(20px,2.75vw,28px);
-  font-weight:900;line-height:1.5
+  min-height:92px;
+  display:block;
+  color:#0f172a;
+  font-size:clamp(20px,2.75vw,28px);
+  font-weight:900;
+  line-height:1.62;
+  text-align:justify;
+  text-align-last:left;
+  text-justify:inter-character;
+  overflow-wrap:normal;
+  word-break:normal;
 }
+
+/*
+==================================================
+題目換行規則
+
+- 能一行顯示就維持一行。
+- 需要換行時，每一行都從同一個左邊界開始。
+- 不再用 inline-flex 拆成許多小區塊，避免跨行後置中。
+==================================================
+*/
 .question-flow{
-  width:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
-  gap:7px 10px
+  display:block;
+  width:100%;
+  max-width:100%;
+  margin:0;
+  text-align:justify;
+  text-align-last:left;
+  text-justify:inter-character;
 }
+
 .qline{
-  display:inline-flex;align-items:center;justify-content:center;gap:.2em;
-  max-width:100%;white-space:normal
+  display:block;
+  width:100%;
+  max-width:100%;
+  white-space:normal;
+  text-align:justify;
+  text-align-last:left;
+  text-justify:inter-character;
+  overflow-wrap:normal;
+  word-break:normal;
 }
+
 .math{
   font-family:"Cambria Math","Times New Roman","Microsoft JhengHei",sans-serif
 }
+
+/*
+線段符號：上方橫線。
+使用 border-top，避免不同瀏覽器的 overline 高度不一致。
+*/
 .seg{
-  display:inline-block;text-decoration:overline;text-decoration-thickness:1.4px;
-  text-decoration-skip-ink:none
+  display:inline-block;
+  position:relative;
+  white-space:nowrap;
+  padding:.12em .035em 0;
+  line-height:1;
+  text-decoration:none;
+  vertical-align:.02em;
+}
+.seg::before{
+  content:"";
+  position:absolute;
+  left:-.02em;
+  right:-.02em;
+  top:.015em;
+  border-top:2.25px solid currentColor;
+  border-radius:999px;
+  pointer-events:none;
+}
+.parallel-symbol{
+  display:inline-block;
+  margin:0 .14em;
+  font-family:"Cambria Math","Times New Roman",serif;
+  font-weight:900;
+  letter-spacing:-.08em;
+  transform:skewX(-12deg);
+}
+
+/*
+重要資訊保持在同一組：
+例如 BC線段＝5、∠A＝30°、AB：BC＝2：3、PQ∥BC。
+瀏覽器換行時只能整組移到下一行，不會把「BC」和「＝5」拆開。
+*/
+.keep-unit{
+  display:inline-block;
+  white-space:nowrap;
+  max-width:100%;
+  vertical-align:baseline;
+  text-align:left;
 }
 .nowrap{white-space:nowrap}
 .math-frac{
@@ -316,7 +397,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
   display:block;
   width:100%;
   height:auto;
-  max-height:285px;
+  max-height:320px;
   margin:0 auto;
 }
 
@@ -335,24 +416,36 @@ button:disabled{opacity:.48;cursor:not-allowed}
 }
 
 .geo-diagram .point{
-  fill:#111827;
-  font-size:16px;
+  fill:#0f172a;
+  font-size:21px;
   font-weight:900;
   font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke fill;
+  stroke:#ffffff;
+  stroke-width:6px;
+  stroke-linejoin:round;
 }
 
 .geo-diagram .side-label{
-  fill:#334155;
-  font-size:14px;
-  font-weight:800;
+  fill:#0f172a;
+  font-size:23px;
+  font-weight:900;
   font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke fill;
+  stroke:#ffffff;
+  stroke-width:8px;
+  stroke-linejoin:round;
 }
 
 .geo-diagram .angle-label{
-  fill:#be185d;
-  font-size:13px;
+  fill:#be123c;
+  font-size:21px;
   font-weight:900;
   font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
+  paint-order:stroke fill;
+  stroke:#ffffff;
+  stroke-width:6px;
+  stroke-linejoin:round;
 }
 
 .diagram-caption{
@@ -832,7 +925,7 @@ function qScaleDiagram(){
     label:"🖼️ 圖形縮放",
     html:`
       <div class="question-flow">
-        <span class="qline">右圖是左圖的縮放圖形。已知對應邊 AB＝${small}、DE＝${large}，求縮放倍率。</span>
+        <span class="qline">右圖是左圖的縮放圖形。已知對應邊 ${seg("AB")}＝${small}、${seg("DE")}＝${large}，求縮放倍率。</span>
       </div>
       ${trianglePairDiagram({
         leftSides:{AB:String(small)},
@@ -976,7 +1069,7 @@ function qPolygonDiagramSide(){
     label:"🖼️ 相似多邊形圖形題",
     html:`
       <div class="question-flow">
-        <span class="qline">下列兩個四邊形相似，${correspondenceTextABCDPQRS()}。求 QR。</span>
+        <span class="qline">下列兩個四邊形相似，${correspondenceTextABCDPQRS()}。求 ${seg("QR")}。</span>
       </div>
       ${quadrilateralPairDiagram({
         leftSides:{AB:String(AB),BC:String(BC)},
@@ -988,8 +1081,8 @@ function qPolygonDiagramSide(){
       String(QR),
       "由 AB 對應 PQ，可先求放大倍率。",
       [
-        `倍率＝${PQ}÷${AB}＝${k}。`,
-        `BC 對應 QR，所以 QR＝${BC}×${k}＝${QR}。`
+        `${seg("PQ")}÷${seg("AB")}＝${PQ}÷${AB}＝${k}。`,
+        `${seg("BC")} 對應 ${seg("QR")}，所以 ${seg("QR")}＝${BC}×${k}＝${QR}。`
       ]
     )
   });
@@ -1090,7 +1183,7 @@ function qPolygonMasteryRatio(){
       String(QR),
       "先由一組已知對應邊求倍率，再轉到另一組對應邊。",
       [
-        `倍率＝${PQ}÷${AB}＝${k}。`,
+        `${seg("PQ")}÷${seg("AB")}＝${PQ}÷${AB}＝${k}。`,
         `${seg("QR")}＝${BC}×${k}＝${QR}。`
       ],
       "不要把 AB 對到 QR；先依題目文字找正確對應點。"
@@ -1157,7 +1250,7 @@ function qAADiagram(){
     label:"🖼️ AA 圖形題",
     html:`
       <div class="question-flow">
-        <span class="qline">圖中 ∠A＝∠D、∠B＝∠E，因此兩三角形相似。${correspondenceTextABCDEF()}。求 EF。</span>
+        <span class="qline">圖中 ∠A＝∠D、∠B＝∠E，因此兩三角形相似。${correspondenceTextABCDEF()}。求 ${seg("EF")}。</span>
       </div>
       ${trianglePairDiagram({
         leftSides:{AB:String(AB),BC:String(BC)},
@@ -1171,8 +1264,8 @@ function qAADiagram(){
       String(EF),
       "兩組角相等，所以使用 AA；再用對應邊比例。",
       [
-        `倍率＝${DE}÷${AB}＝${k}。`,
-        `EF＝${BC}×${k}＝${EF}。`
+        `${seg("DE")}÷${seg("AB")}＝${DE}÷${AB}＝${k}。`,
+        `${seg("EF")}＝${BC}×${k}＝${EF}。`
       ]
     )
   });
@@ -1288,7 +1381,7 @@ function qSASDiagram(){
     label:"🖼️ SAS 圖形題",
     html:`
       <div class="question-flow">
-        <span class="qline">圖中 ∠A＝∠D，且夾角兩側的對應邊成比例。${correspondenceTextABCDEF()}。若 BC＝${BC}，求 EF。</span>
+        <span class="qline">圖中 ∠A＝∠D，且夾角兩側的對應邊成比例。${correspondenceTextABCDEF()}。若 ${seg("BC")}＝${BC}，求 ${seg("EF")}。</span>
       </div>
       ${trianglePairDiagram({
         leftSides:{AB:String(AB),AC:String(AC),BC:String(BC)},
@@ -1302,8 +1395,8 @@ function qSASDiagram(){
       String(EF),
       "由夾角相等與兩側邊成比例，可用 SAS 判定相似。",
       [
-        `倍率＝${DE}÷${AB}＝${k}。`,
-        `EF＝${BC}×${k}＝${EF}。`
+        `${seg("DE")}÷${seg("AB")}＝${DE}÷${AB}＝${k}。`,
+        `${seg("EF")}＝${BC}×${k}＝${EF}。`
       ]
     )
   });
@@ -1420,7 +1513,7 @@ function qSSSDiagram(){
     label:"🖼️ SSS 圖形題",
     html:`
       <div class="question-flow">
-        <span class="qline">下列兩三角形以 SSS 判定相似，${correspondenceTextABCDEF()}。求 EF。</span>
+        <span class="qline">下列兩三角形以 SSS 判定相似，${correspondenceTextABCDEF()}。求 ${seg("EF")}。</span>
       </div>
       ${trianglePairDiagram({
         leftSides:{AB:String(AB),AC:String(AC),BC:String(BC)},
@@ -1432,8 +1525,8 @@ function qSSSDiagram(){
       String(EF),
       "先由任一組對應邊找倍率。",
       [
-        `倍率＝${DE}÷${AB}＝${k}。`,
-        `EF＝${BC}×${k}＝${EF}。`
+        `${seg("DE")}÷${seg("AB")}＝${DE}÷${AB}＝${k}。`,
+        `${seg("EF")}＝${BC}×${k}＝${EF}。`
       ]
     )
   });
@@ -1455,7 +1548,7 @@ function qSSSLength(){
       String(EF),
       "先找相似倍率，再求對應邊。",
       [
-        `倍率＝${DE}÷${AB}＝${k}。`,
+        `${seg("DE")}÷${seg("AB")}＝${DE}÷${AB}＝${k}。`,
         `${seg("EF")}＝${BC}×${k}＝${EF}。`
       ]
     )
@@ -1491,7 +1584,7 @@ function qSSSMasteryCorrespondence(){
     label:"🔥 精熟題｜SSS 對應判讀",
     html:`
       <div class="question-flow">
-        <span class="qline">圖中兩三角形相似。左圖最短邊 AB 對應右圖最短邊 DE，左圖最長邊 AC 對應右圖最長邊 DF。下列哪一組點的對應描述正確？</span>
+        <span class="qline">圖中兩三角形相似。左圖最短邊 ${seg("AB")} 對應右圖最短邊 ${seg("DE")}，左圖最長邊 ${seg("AC")} 對應右圖最長邊 ${seg("DF")}。下列哪一組點的對應描述正確？</span>
       </div>
       ${trianglePairDiagram({
         leftSides:{AB:"3",BC:"4",AC:"5"},
@@ -1623,7 +1716,7 @@ function createQuestions(selected){
   };
 
   if(selected!=="comprehensive"){
-    return maps[selected]();
+    return maps[selected]().map(validateQuestionIntegrity);
   }
 
   return shuffle([
@@ -1637,7 +1730,7 @@ function createQuestions(selected){
     qSASMasteryTrap(),
     qSSSDiagram(),
     qSSSMasteryX()
-  ]);
+  ]).map(validateQuestionIntegrity);
 }
 
 
@@ -1927,15 +2020,159 @@ Explanation
 ==================================================
 */
 
+
+/*
+==================================================
+重要資訊不拆行
+
+例：
+  BC線段＝5
+  AP：PB＝3：4
+  PQ∥BC
+  ∠A＝30°
+
+這些資訊若剛好碰到行尾，會整組移到下一行，
+不會出現「BC」留在上一行、「＝5」掉到下一行的情況。
+==================================================
+*/
+function protectImportantUnits(input){
+  let html=String(input??"");
+
+  /*
+  --------------------------------------------------
+  1. 統一線段符號
+  --------------------------------------------------
+  題目或詳解中只要是「AB、BC、PQ……」這類線段名稱，
+  統一轉成上方橫線的數學表示。
+  已經由 seg() 產生的標記先暫存，避免重複包裹。
+  */
+  const savedSegments=[];
+  html=html.replace(
+    /<span class="seg math">[^<]+<\/span>/g,
+    match=>{
+      const key=`@@SEG_${savedSegments.length}@@`;
+      savedSegments.push(match);
+      return key;
+    }
+  );
+
+  const segmentNames=[
+    "A'B'","A′B′","AB","AC","AD","AE","BC","BD","BE","CD","CE","DB","DE","DF","EC","EF",
+    "PQ","PR","PS","QR","QS","RS","SP","CA","CB","CM","CN","MN"
+  ];
+  const segmentPattern=new RegExp(
+    `(^|[^A-Za-z0-9'′])(${segmentNames.map(x=>x.replace(/[.*+?^${}()|[\\]\\\\]/g,"\\$&")).join("|")})(?=$|[^A-Za-z0-9'′])`,
+    "g"
+  );
+  html=html.replace(
+    segmentPattern,
+    (_,prefix,name)=>`${prefix}<span class="seg math">${escapeHTML(name)}</span>`
+  );
+
+  html=html.replace(
+    /@@SEG_(\d+)@@/g,
+    (_,i)=>savedSegments[Number(i)]??""
+  );
+
+  const segTag=String.raw`<span class="seg math">[^<]+<\/span>`;
+
+  /*
+  --------------------------------------------------
+  2. 重要條件整組不拆行
+  --------------------------------------------------
+  */
+
+  // 線段比，例如 AB：BC＝2：3。
+  html=html.replace(
+    new RegExp(`(${segTag})：(${segTag})＝([^，。；、<\\s]+)`,"g"),
+    '<span class="keep-unit">$1：$2＝$3</span>'
+  );
+
+  // 平行、垂直：畫面統一使用教材式雙斜線 // 與 ⊥。
+  html=html.replace(
+    new RegExp(`(${segTag})∥(${segTag})`,"g"),
+    '<span class="keep-unit">$1<span class="parallel-symbol">//</span>$2</span>'
+  );
+  html=html.replace(
+    new RegExp(`(${segTag})⊥(${segTag})`,"g"),
+    '<span class="keep-unit">$1⊥$2</span>'
+  );
+
+  // 單一線段的重要已知量，例如 BC＝5、DE＝x＋3、AB＝？。
+  // 允許簡單整數、小數、根號、x±常數與問號，不把數字條件拆到下一行。
+  html=html.replace(
+    new RegExp(`(${segTag})＝((?:[−-]?\\d+(?:\\.\\d+)?|[xyzXYZ](?:[＋+−-]\\d+)?|√\\d+|？))(\\s*(?:公尺|公分|公里|m|cm))?`,"g"),
+    '<span class="keep-unit">$1＝$2$3</span>'
+  );
+
+  // 角度條件，例如 ∠A＝30°、∠A＝∠D。
+  html=html.replace(
+    /(∠[A-Za-z'′]+)＝(∠[A-Za-z'′]+|[−-]?\d+(?:\.\d+)?°)/g,
+    '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  // 三角比數值，例如 sin 20°≈0.342、tan A＝3/4（純文字型）。
+  html=html.replace(
+    /((?:sin|cos|tan)\s*(?:[A-Za-z]|\d+(?:\.\d+)?°)\s*(?:＝|≈)\s*[−-]?\d+(?:\.\d+)?)/g,
+    '<span class="keep-unit">$1</span>'
+  );
+
+  // 數值＋單位，例如 1.5 公尺、30 公分、15％。
+  html=html.replace(
+    /([−-]?\d+(?:\.\d+)?\s*(?:公尺|公分|公里|％|%|m|cm))/g,
+    '<span class="keep-unit">$1</span>'
+  );
+
+  // 純數值比，例如 2：3、3：5。
+  html=html.replace(
+    /([−-]?\d+(?:\.\d+)?：[−-]?\d+(?:\.\d+)?)/g,
+    '<span class="keep-unit">$1</span>'
+  );
+
+  // 一般短數值條件，例如 x＝5。
+  html=html.replace(
+    /\b([xyz])＝([−-]?\d+(?:\.\d+)?)/g,
+    '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  return html;
+}
+
+/*
+==================================================
+題目字串完整性檢查
+
+避免「�、undefined、NaN、[object Object]」等內容直接出現在題目。
+若未來新增題型時出現異常，console 會立即指出是哪一題。
+==================================================
+*/
+function validateQuestionIntegrity(question){
+  const parts=[
+    question?.html,
+    question?.label,
+    question?.explanation?.answer,
+    question?.explanation?.think,
+    ...(question?.explanation?.steps??[]),
+    question?.explanation?.tip
+  ];
+  const text=parts.filter(Boolean).join(" ");
+  const badTokens=["�","undefined","NaN","[object Object]"];
+  const bad=badTokens.find(token=>text.includes(token));
+  if(bad){
+    console.error("題目內容異常：",bad,question);
+  }
+  return question;
+}
+
 function explanationHTML(question){
   const e=question.explanation;
   return `
     <div class="explanation-title">📘 完整詳解</div>
-    <div class="explanation-question">${question.html}</div>
-    <div class="explanation-think"><strong>先想一想｜</strong>${e.think}</div>
-    ${e.steps.map((step,i)=>`<div class="explanation-step"><strong>步驟 ${i+1}｜</strong>${step}</div>`).join("")}
-    ${e.tip?`<div class="explanation-tip"><strong>⚠️ 常見提醒｜</strong>${e.tip}</div>`:""}
-    <div class="explanation-answer">✅ 最後答案：${e.answer}</div>
+    <div class="explanation-question">${protectImportantUnits(question.html)}</div>
+    <div class="explanation-think"><strong>先想一想｜</strong>${protectImportantUnits(e.think)}</div>
+    ${e.steps.map((step,i)=>`<div class="explanation-step"><strong>步驟 ${i+1}｜</strong>${protectImportantUnits(step)}</div>`).join("")}
+    ${e.tip?`<div class="explanation-tip"><strong>⚠️ 常見提醒｜</strong>${protectImportantUnits(e.tip)}</div>`:""}
+    <div class="explanation-answer">✅ 最後答案：${protectImportantUnits(e.answer)}</div>
   `;
 }
 
@@ -1956,7 +2193,7 @@ function displayQuestion(){
   $("combo-count").textContent=combo;
   $("progress-bar").style.width=`${index/questions.length*100}%`;
   $("question-label").textContent=q.label;
-  $("question-content").innerHTML=q.html;
+  $("question-content").innerHTML=protectImportantUnits(q.html);
   $("feedback").className="feedback";
   $("feedback").innerHTML="";
   $("explanation").innerHTML="";
