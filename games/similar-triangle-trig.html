@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<!--
+2026-09-29 題目顯示全面修正：
+1. 換行左對齊＋左右對齊
+2. 重要數字條件不拆行
+3. 線段統一上方橫線
+4. 圖形標示放大並加白色遮線描邊
+5. 題目字串完整性檢查
+-->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>九上 1-4 相似三角形應用與三角比大挑戰｜生活有解．心中有數</title>
@@ -120,36 +128,45 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .question-content{
   min-height:92px;
   display:block;
-  text-align:left;
   color:#0f172a;
   font-size:clamp(20px,2.75vw,28px);
   font-weight:900;
-  line-height:1.55
+  line-height:1.62;
+  text-align:justify;
+  text-align-last:left;
+  text-justify:inter-character;
+  overflow-wrap:normal;
+  word-break:normal;
 }
 
 /*
 ==================================================
 題目換行規則
 
-1. 不再把文字拆成 flex 小區塊，避免出現奇怪空隙／亂碼感。
-2. 能一行顯示就維持一行。
-3. 真的需要換行時，第二行仍從同一個左邊界開始。
+- 能一行顯示就維持一行。
+- 需要換行時，每一行都從同一個左邊界開始。
+- 不再用 inline-flex 拆成許多小區塊，避免跨行後置中。
 ==================================================
 */
 .question-flow{
   display:block;
-  width:min(100%,980px);
+  width:100%;
   max-width:100%;
-  margin:0 auto;
-  text-align:left;
+  margin:0;
+  text-align:justify;
+  text-align-last:left;
+  text-justify:inter-character;
 }
 
 .qline{
-  display:inline;
+  display:block;
+  width:100%;
   max-width:100%;
   white-space:normal;
-  text-align:left;
-  overflow-wrap:break-word;
+  text-align:justify;
+  text-align-last:left;
+  text-justify:inter-character;
+  overflow-wrap:normal;
   word-break:normal;
 }
 
@@ -158,18 +175,48 @@ button:disabled{opacity:.48;cursor:not-allowed}
 }
 
 /*
-線段符號統一使用上方橫線。
-改用 border-top，比 text-decoration:overline 在不同瀏覽器更穩定。
+線段符號：上方橫線。
+使用 border-top，避免不同瀏覽器的 overline 高度不一致。
 */
 .seg{
   display:inline-block;
   position:relative;
   white-space:nowrap;
-  border-top:2px solid currentColor;
-  padding-top:.04em;
-  line-height:1.02;
+  padding:.12em .035em 0;
+  line-height:1;
   text-decoration:none;
+  vertical-align:.02em;
+}
+.seg::before{
+  content:"";
+  position:absolute;
+  left:-.02em;
+  right:-.02em;
+  top:.015em;
+  border-top:2.25px solid currentColor;
+  border-radius:999px;
+  pointer-events:none;
+}
+.parallel-symbol{
+  display:inline-block;
+  margin:0 .14em;
+  font-family:"Cambria Math","Times New Roman",serif;
+  font-weight:900;
+  letter-spacing:-.08em;
+  transform:skewX(-12deg);
+}
+
+/*
+重要資訊保持在同一組：
+例如 BC線段＝5、∠A＝30°、AB：BC＝2：3、PQ∥BC。
+瀏覽器換行時只能整組移到下一行，不會把「BC」和「＝5」拆開。
+*/
+.keep-unit{
+  display:inline-block;
+  white-space:nowrap;
+  max-width:100%;
   vertical-align:baseline;
+  text-align:left;
 }
 .nowrap{white-space:nowrap}
 .math-frac{
@@ -349,7 +396,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
   display:block;
   width:100%;
   height:auto;
-  max-height:310px;
+  max-height:330px;
   margin:0 auto;
 }
 .geo-diagram .shape{
@@ -373,32 +420,32 @@ button:disabled{opacity:.48;cursor:not-allowed}
 }
 .geo-diagram .point{
   fill:#0f172a;
-  font-size:19px;
+  font-size:21px;
   font-weight:900;
   font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
-  paint-order:stroke;
+  paint-order:stroke fill;
   stroke:#ffffff;
-  stroke-width:4px;
+  stroke-width:6px;
   stroke-linejoin:round;
 }
 .geo-diagram .side-label{
   fill:#0f172a;
-  font-size:20px;
+  font-size:23px;
   font-weight:900;
   font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
-  paint-order:stroke;
+  paint-order:stroke fill;
   stroke:#ffffff;
-  stroke-width:5px;
+  stroke-width:8px;
   stroke-linejoin:round;
 }
 .geo-diagram .angle-label{
   fill:#be123c;
-  font-size:18px;
+  font-size:21px;
   font-weight:900;
   font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;
-  paint-order:stroke;
+  paint-order:stroke fill;
   stroke:#ffffff;
-  stroke-width:4px;
+  stroke-width:6px;
   stroke-linejoin:round;
 }
 .diagram-caption{
@@ -1126,7 +1173,7 @@ function qTrigMasteryFromTan(){
   const ans=ask==="sin"?R(3,5):R(4,5);
   return rationalQuestion({
     family:"trig-mastery-from-tan",label:"🔥 精熟題｜由 tan 反推其他三角比",
-    html:`<div class="question-flow"><span class="qline">銳角 A 滿足 tan A＝${fracHTML(3,4)}。把對邊、鄰邊視為 3、4，可得斜邊 5。求 ${ask} A。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">銳角 A 滿足 <span class="keep-unit">tan A＝${fracHTML(3,4)}</span>。把對邊、鄰邊視為 3、4，可得斜邊 5。求 ${ask} A。</span></div>`,
     answer:ans,
     explanation:explanation(ratHTML(ans),"tan A＝3：4，可先建立 3-4-5 直角三角形。",
       [ask==="sin"?`sin A＝${fracHTML(3,5)}。`:`cos A＝${fracHTML(4,5)}。`])
@@ -1170,7 +1217,7 @@ function qTrigApprox(){
   const h=15,sin20=0.342,ans=Math.round(h/sin20);
   return numberQuestion({
     family:"trig-approx",label:"三角比近似值應用",
-    html:`<div class="question-flow"><span class="qline">斜坡與水平面夾角為 20°，鉛直高度差為 ${h} 公分。已知 sin 20°≈${sin20}，斜坡長約多少公分？（四捨五入到整數）</span></div>`,
+    html:`<div class="question-flow"><span class="qline">斜坡與水平面夾角為 20°，鉛直高度差為 ${h} 公分。已知 <span class="keep-unit">sin 20°≈${sin20}</span>，斜坡長約多少公分？（四捨五入到整數）</span></div>`,
     answer:ans,tolerance:0.5,
     explanation:explanation(`約 ${ans} 公分`,"sin 20°＝對邊÷斜邊。",
       [`斜坡長≈${h}÷${sin20}≈${ans} 公分。`])
@@ -1215,14 +1262,14 @@ function createQuestions(selected){
       qTrigApprox(),qTrigApprox(),qTrigApplicationMastery(),qTrigApplicationMastery()
     ])
   };
-  if(selected!=="comprehensive")return maps[selected]();
+  if(selected!=="comprehensive")return maps[selected]().map(validateQuestionIntegrity);
   return shuffle([
     qHeightDiagram(),qAreaMasteryReverse(),
     qLakeDiagram(),qMeasurementMastery(),
     qSpecial3060Diagram(),qSpecialMasteryReverse(),
     qTrigDiagram(),qTrigMasteryFromTan(),
     qSlopeDiagram(),qTrigApplicationMastery()
-  ]);
+  ]).map(validateQuestionIntegrity);
 }
 
 
@@ -1512,15 +1559,159 @@ Explanation
 ==================================================
 */
 
+
+/*
+==================================================
+重要資訊不拆行
+
+例：
+  BC線段＝5
+  AP：PB＝3：4
+  PQ∥BC
+  ∠A＝30°
+
+這些資訊若剛好碰到行尾，會整組移到下一行，
+不會出現「BC」留在上一行、「＝5」掉到下一行的情況。
+==================================================
+*/
+function protectImportantUnits(input){
+  let html=String(input??"");
+
+  /*
+  --------------------------------------------------
+  1. 統一線段符號
+  --------------------------------------------------
+  題目或詳解中只要是「AB、BC、PQ……」這類線段名稱，
+  統一轉成上方橫線的數學表示。
+  已經由 seg() 產生的標記先暫存，避免重複包裹。
+  */
+  const savedSegments=[];
+  html=html.replace(
+    /<span class="seg math">[^<]+<\/span>/g,
+    match=>{
+      const key=`@@SEG_${savedSegments.length}@@`;
+      savedSegments.push(match);
+      return key;
+    }
+  );
+
+  const segmentNames=[
+    "A'B'","A′B′","AB","AC","AD","AE","BC","BD","BE","CD","CE","DB","DE","DF","EC","EF",
+    "PQ","PR","PS","QR","QS","RS","SP","CA","CB","CM","CN","MN"
+  ];
+  const segmentPattern=new RegExp(
+    `(^|[^A-Za-z0-9'′])(${segmentNames.map(x=>x.replace(/[.*+?^${}()|[\\]\\\\]/g,"\\$&")).join("|")})(?=$|[^A-Za-z0-9'′])`,
+    "g"
+  );
+  html=html.replace(
+    segmentPattern,
+    (_,prefix,name)=>`${prefix}<span class="seg math">${escapeHTML(name)}</span>`
+  );
+
+  html=html.replace(
+    /@@SEG_(\d+)@@/g,
+    (_,i)=>savedSegments[Number(i)]??""
+  );
+
+  const segTag=String.raw`<span class="seg math">[^<]+<\/span>`;
+
+  /*
+  --------------------------------------------------
+  2. 重要條件整組不拆行
+  --------------------------------------------------
+  */
+
+  // 線段比，例如 AB：BC＝2：3。
+  html=html.replace(
+    new RegExp(`(${segTag})：(${segTag})＝([^，。；、<\\s]+)`,"g"),
+    '<span class="keep-unit">$1：$2＝$3</span>'
+  );
+
+  // 平行、垂直：畫面統一使用教材式雙斜線 // 與 ⊥。
+  html=html.replace(
+    new RegExp(`(${segTag})∥(${segTag})`,"g"),
+    '<span class="keep-unit">$1<span class="parallel-symbol">//</span>$2</span>'
+  );
+  html=html.replace(
+    new RegExp(`(${segTag})⊥(${segTag})`,"g"),
+    '<span class="keep-unit">$1⊥$2</span>'
+  );
+
+  // 單一線段的重要已知量，例如 BC＝5、DE＝x＋3、AB＝？。
+  // 允許簡單整數、小數、根號、x±常數與問號，不把數字條件拆到下一行。
+  html=html.replace(
+    new RegExp(`(${segTag})＝((?:[−-]?\\d+(?:\\.\\d+)?|[xyzXYZ](?:[＋+−-]\\d+)?|√\\d+|？))(\\s*(?:公尺|公分|公里|m|cm))?`,"g"),
+    '<span class="keep-unit">$1＝$2$3</span>'
+  );
+
+  // 角度條件，例如 ∠A＝30°、∠A＝∠D。
+  html=html.replace(
+    /(∠[A-Za-z'′]+)＝(∠[A-Za-z'′]+|[−-]?\d+(?:\.\d+)?°)/g,
+    '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  // 三角比數值，例如 sin 20°≈0.342、tan A＝3/4（純文字型）。
+  html=html.replace(
+    /((?:sin|cos|tan)\s*(?:[A-Za-z]|\d+(?:\.\d+)?°)\s*(?:＝|≈)\s*[−-]?\d+(?:\.\d+)?)/g,
+    '<span class="keep-unit">$1</span>'
+  );
+
+  // 數值＋單位，例如 1.5 公尺、30 公分、15％。
+  html=html.replace(
+    /([−-]?\d+(?:\.\d+)?\s*(?:公尺|公分|公里|％|%|m|cm))/g,
+    '<span class="keep-unit">$1</span>'
+  );
+
+  // 純數值比，例如 2：3、3：5。
+  html=html.replace(
+    /([−-]?\d+(?:\.\d+)?：[−-]?\d+(?:\.\d+)?)/g,
+    '<span class="keep-unit">$1</span>'
+  );
+
+  // 一般短數值條件，例如 x＝5。
+  html=html.replace(
+    /\b([xyz])＝([−-]?\d+(?:\.\d+)?)/g,
+    '<span class="keep-unit">$1＝$2</span>'
+  );
+
+  return html;
+}
+
+/*
+==================================================
+題目字串完整性檢查
+
+避免「�、undefined、NaN、[object Object]」等內容直接出現在題目。
+若未來新增題型時出現異常，console 會立即指出是哪一題。
+==================================================
+*/
+function validateQuestionIntegrity(question){
+  const parts=[
+    question?.html,
+    question?.label,
+    question?.explanation?.answer,
+    question?.explanation?.think,
+    ...(question?.explanation?.steps??[]),
+    question?.explanation?.tip
+  ];
+  const text=parts.filter(Boolean).join(" ");
+  const badTokens=["�","undefined","NaN","[object Object]"];
+  const bad=badTokens.find(token=>text.includes(token));
+  if(bad){
+    console.error("題目內容異常：",bad,question);
+  }
+  return question;
+}
+
 function explanationHTML(question){
   const e=question.explanation;
   return `
     <div class="explanation-title">📘 完整詳解</div>
-    <div class="explanation-question">${question.html}</div>
-    <div class="explanation-think"><strong>先想一想｜</strong>${e.think}</div>
-    ${e.steps.map((step,i)=>`<div class="explanation-step"><strong>步驟 ${i+1}｜</strong>${step}</div>`).join("")}
-    ${e.tip?`<div class="explanation-tip"><strong>⚠️ 常見提醒｜</strong>${e.tip}</div>`:""}
-    <div class="explanation-answer">✅ 最後答案：${e.answer}</div>
+    <div class="explanation-question">${protectImportantUnits(question.html)}</div>
+    <div class="explanation-think"><strong>先想一想｜</strong>${protectImportantUnits(e.think)}</div>
+    ${e.steps.map((step,i)=>`<div class="explanation-step"><strong>步驟 ${i+1}｜</strong>${protectImportantUnits(step)}</div>`).join("")}
+    ${e.tip?`<div class="explanation-tip"><strong>⚠️ 常見提醒｜</strong>${protectImportantUnits(e.tip)}</div>`:""}
+    <div class="explanation-answer">✅ 最後答案：${protectImportantUnits(e.answer)}</div>
   `;
 }
 
@@ -1541,7 +1732,7 @@ function displayQuestion(){
   $("combo-count").textContent=combo;
   $("progress-bar").style.width=`${index/questions.length*100}%`;
   $("question-label").textContent=q.label;
-  $("question-content").innerHTML=q.html;
+  $("question-content").innerHTML=protectImportantUnits(q.html);
   $("feedback").className="feedback";
   $("feedback").innerHTML="";
   $("explanation").innerHTML="";
