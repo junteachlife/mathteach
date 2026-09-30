@@ -96,6 +96,40 @@
       margin-bottom: 14px;
     }
 
+    /*
+    ==================================================
+    返回目前學期
+    ==================================================
+    */
+
+    .semester-return-row {
+      display: flex;
+      justify-content: flex-end;
+      margin: -2px 0 14px;
+    }
+
+    .semester-return-button {
+      min-height: 44px;
+      padding: 9px 16px;
+      border: 2px solid #7b1fa2;
+      border-radius: 12px;
+      background: #fff;
+      color: #6a1b9a;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #e1bee7;
+    }
+
+    .semester-return-button:hover {
+      background: #f3e5f5;
+    }
+
+    .semester-return-button:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #e1bee7;
+    }
+
     .game-card {
 
       overflow: hidden;
@@ -1811,7 +1845,7 @@
       display: grid;
 
       grid-template-columns:
-        88px
+        minmax(150px, max-content)
         auto;
 
       align-items: end;
@@ -1836,7 +1870,7 @@
       display: grid;
 
       grid-template-columns:
-        88px
+        minmax(150px, max-content)
         auto;
 
       align-items: start;
@@ -2118,6 +2152,17 @@
         padding: 8px;
       }
 
+      .semester-return-row {
+        justify-content: stretch;
+        margin-bottom: 12px;
+      }
+
+      .semester-return-button {
+        width: 100%;
+        min-height: 46px;
+        font-size: 15px;
+      }
+
       .screen {
 
         padding:
@@ -2188,7 +2233,7 @@
       .ld-main {
 
         grid-template-columns:
-          78px
+          minmax(125px, max-content)
           auto;
       }
 
@@ -2243,6 +2288,18 @@
 <div class="page-shell">
 
   <div id="commonHeaderMount"></div>
+
+  <div class="semester-return-row">
+
+    <button
+      id="semester-return-button"
+      class="semester-return-button"
+      type="button"
+    >
+      ↩️ 重回八年級上學期
+    </button>
+
+  </div>
 
   <main class="game-card">
 
@@ -2356,12 +2413,12 @@
           </h2>
 
           <p>
-            練習多項式除法、缺項補 0，以及求商式與餘式。
+             練習二次至四次多項式除法，除式最高可到三次式，並包含缺項補 0、整除與商式、餘式。
           </p>
 
           <div class="mode-example">
-            答錯時會顯示完整的直式除法
-          </div>
+             最高挑戰：四次式 ÷ 三次式；答錯時會顯示完整直式除法
+           </div>
 
         </button>
 
@@ -4339,8 +4396,13 @@ function divisionStepExplanationHTML(
 
                   </span>
 
-                  缺少的次方要用係數 0 補起來，
-                  例如缺一次項就寫成
+                  缺少的次方要用係數 0 補起來。
+                  例如四次式若缺三次項，
+                  要寫成
+                  <strong>0x³</strong>；
+                  缺二次項則寫
+                  <strong>0x²</strong>；
+                  缺一次項寫
                   <strong>0x</strong>。
                   <br><br>
                 `
@@ -5232,6 +5294,326 @@ function randomPrimitivePolynomial(
         )
     }
   ];
+}
+
+
+
+/*
+==================================================
+多項式除法｜次數控制工具
+
+本遊戲的多項式除法最高支援：
+被除式四次、除式三次。
+
+為了讓題目難度真的能涵蓋 2÷1、3÷1、3÷2、
+4÷1、4÷2、4÷3，而不是只靠隨機碰到高次，
+這裡明確控制被除式、除式與商式的次數。
+==================================================
+*/
+
+const DIVISION_DEGREE_PAIRS = [
+
+  {
+    dividendDegree: 2,
+    divisorDegree: 1
+  },
+
+  {
+    dividendDegree: 3,
+    divisorDegree: 1
+  },
+
+  {
+    dividendDegree: 3,
+    divisorDegree: 2
+  },
+
+  {
+    dividendDegree: 4,
+    divisorDegree: 1
+  },
+
+  {
+    dividendDegree: 4,
+    divisorDegree: 2
+  },
+
+  {
+    dividendDegree: 4,
+    divisorDegree: 3
+  }
+
+];
+
+
+function randomPrimitivePolynomialOfDegree(
+  degree,
+  minTerms = 2,
+  maxTerms = null,
+  coefficientMin = -5,
+  coefficientMax = 5
+) {
+
+  const safeDegree =
+    Math.max(
+      1,
+      Math.min(
+        4,
+        Number(
+          degree
+        ) ||
+        1
+      )
+    );
+
+
+  const upperTerms =
+
+    maxTerms ===
+    null
+
+      ? safeDegree + 1
+
+      : Math.min(
+          safeDegree + 1,
+          Math.max(
+            2,
+            Number(
+              maxTerms
+            ) ||
+            2
+          )
+        );
+
+
+  const lowerTerms =
+    Math.min(
+      upperTerms,
+      Math.max(
+        2,
+        Number(
+          minTerms
+        ) ||
+        2
+      )
+    );
+
+
+  for (
+    let attempt =
+      0;
+
+    attempt <
+    800;
+
+    attempt++
+  ) {
+
+    const targetCount =
+      rand(
+        lowerTerms,
+        upperTerms
+      );
+
+
+    const requiredExponents =
+
+      safeDegree ===
+      1
+
+        ? [
+            1,
+            0
+          ]
+
+        : [
+            safeDegree,
+            0
+          ];
+
+
+    const middleExponents =
+      shuffle(
+        Array.from(
+          {
+            length:
+              Math.max(
+                0,
+                safeDegree -
+                1
+              )
+          },
+
+          (
+            _,
+            i
+          ) =>
+            safeDegree -
+            1 -
+            i
+        )
+      );
+
+
+    const exponents =
+      [
+        ...requiredExponents,
+        ...middleExponents
+          .slice(
+            0,
+            Math.max(
+              0,
+              targetCount -
+              requiredExponents.length
+            )
+          )
+      ];
+
+
+    const polynomial =
+      normalizePolynomial(
+
+        exponents.map(
+          exponent => ({
+
+            exponent,
+
+            coefficient:
+              F(
+                nonZeroRand(
+                  coefficientMin,
+                  coefficientMax
+                )
+              )
+          })
+        )
+      );
+
+
+    if (
+      degreeOf(
+        polynomial
+      ) !==
+      safeDegree
+    ) {
+
+      continue;
+    }
+
+
+    if (
+      !isPrimitiveIntegerPolynomial(
+        polynomial
+      )
+    ) {
+
+      continue;
+    }
+
+
+    return polynomial;
+  }
+
+
+  return normalizePolynomial(
+    [
+
+      {
+        exponent:
+          safeDegree,
+
+        coefficient:
+          F(
+            1
+          )
+      },
+
+      {
+        exponent: 0,
+
+        coefficient:
+          F(
+            1
+          )
+      }
+    ]
+  );
+}
+
+
+function hasMissingPolynomialTerm(
+  polynomial
+) {
+
+  const normalized =
+    normalizePolynomial(
+      polynomial
+    );
+
+
+  const degree =
+    degreeOf(
+      normalized
+    );
+
+
+  if (
+    !Number.isFinite(
+      degree
+    ) ||
+    degree <=
+    1
+  ) {
+
+    return false;
+  }
+
+
+  for (
+    let exponent =
+      degree -
+      1;
+
+    exponent >=
+    1;
+
+    exponent--
+  ) {
+
+    if (
+      !polynomialTermAtExponent(
+        normalized,
+        exponent
+      )
+    ) {
+
+      return true;
+    }
+  }
+
+
+  return false;
+}
+
+
+function divisionDegreeText(
+  dividendDegree,
+  divisorDegree
+) {
+
+  const names = {
+    1: "一次式",
+    2: "二次式",
+    3: "三次式",
+    4: "四次式"
+  };
+
+
+  return (
+    `${names[dividendDegree] || `${dividendDegree} 次式`}` +
+    " ÷ " +
+    `${names[divisorDegree] || `${divisorDegree} 次式`}`
+  );
 }
 
 
@@ -6629,37 +7011,104 @@ function makeMode2() {
 ==================================================
 */
 
-function generateExactDivision() {
+function generateExactDivision(
+  options =
+    {}
+) {
+
+  const selectedPair =
+
+    options.dividendDegree &&
+    options.divisorDegree
+
+      ? {
+          dividendDegree:
+            Number(
+              options.dividendDegree
+            ),
+
+          divisorDegree:
+            Number(
+              options.divisorDegree
+            )
+        }
+
+      : pick(
+          DIVISION_DEGREE_PAIRS
+        );
+
+
+  const dividendDegree =
+    Math.max(
+      2,
+      Math.min(
+        4,
+        selectedPair.dividendDegree
+      )
+    );
+
+
+  const divisorDegree =
+    Math.max(
+      1,
+      Math.min(
+        3,
+        selectedPair.divisorDegree
+      )
+    );
+
+
+  const quotientDegree =
+    dividendDegree -
+    divisorDegree;
+
+
+  if (
+    quotientDegree <
+    1
+  ) {
+
+    throw new Error(
+      "多項式除法的被除式次數必須高於除式次數。"
+    );
+  }
+
 
   for (
     let attempt =
       0;
 
     attempt <
-    700;
+    900;
 
     attempt++
   ) {
 
     const divisor =
-      randomPrimitivePolynomial(
-        0,
-        1,
+      randomPrimitivePolynomialOfDegree(
+        divisorDegree,
         2,
-        2,
-        -6,
-        6
+        Math.min(
+          divisorDegree +
+          1,
+          4
+        ),
+        -4,
+        4
       );
 
 
     const quotient =
-      randomPrimitivePolynomial(
-        0,
-        1,
+      randomPrimitivePolynomialOfDegree(
+        quotientDegree,
         2,
-        2,
-        -5,
-        5
+        Math.min(
+          quotientDegree +
+          1,
+          4
+        ),
+        -4,
+        4
       );
 
 
@@ -6671,8 +7120,10 @@ function generateExactDivision() {
 
 
     if (
-      dividend.length !==
-      3
+      degreeOf(
+        dividend
+      ) !==
+      dividendDegree
     ) {
 
       continue;
@@ -6695,39 +7146,67 @@ function generateExactDivision() {
 
       divisor,
 
-      quotient
+      quotient,
+
+      dividendDegree,
+
+      divisorDegree,
+
+      quotientDegree
     };
   }
 
 
   const divisor =
-    [
+    normalizePolynomial(
+      [
 
-      {
-        exponent: 1,
-        coefficient: F(1)
-      },
+        {
+          exponent:
+            divisorDegree,
 
-      {
-        exponent: 0,
-        coefficient: F(1)
-      }
-    ];
+          coefficient:
+            F(
+              1
+            )
+        },
+
+        {
+          exponent: 0,
+
+          coefficient:
+            F(
+              1
+            )
+        }
+      ]
+    );
 
 
   const quotient =
-    [
+    normalizePolynomial(
+      [
 
-      {
-        exponent: 1,
-        coefficient: F(2)
-      },
+        {
+          exponent:
+            quotientDegree,
 
-      {
-        exponent: 0,
-        coefficient: F(1)
-      }
-    ];
+          coefficient:
+            F(
+              1
+            )
+        },
+
+        {
+          exponent: 0,
+
+          coefficient:
+            F(
+              -1
+            )
+        }
+      ]
+    );
 
 
   return {
@@ -6740,15 +7219,25 @@ function generateExactDivision() {
       multiplyTwoPolynomials(
         divisor,
         quotient
-      )
+      ),
+
+    dividendDegree,
+
+    divisorDegree,
+
+    quotientDegree
   };
 }
 
-
-function makeExactDivisionQuestion() {
+function makeExactDivisionQuestion(
+  options =
+    {}
+) {
 
   const data =
-    generateExactDivision();
+    generateExactDivision(
+      options
+    );
 
 
   const dividendDegree =
@@ -6788,10 +7277,14 @@ function makeExactDivisionQuestion() {
 
       </span>
 
-      若缺一次項，就要補成
-      <strong>0x</strong>；
-      缺二次項則補成
-      <strong>0x²</strong>。
+      從最高次項一路檢查到常數項，
+      缺少哪一個次方就補上對應的 0 項。
+      例如缺三次項要補
+      <strong>0x³</strong>，
+      缺二次項補
+      <strong>0x²</strong>，
+      缺一次項補
+      <strong>0x</strong>。
       `,
 
       `
@@ -6829,7 +7322,10 @@ function makeExactDivisionQuestion() {
       `
     ],
 
-    "請計算多項式的商",
+    `請計算多項式的商｜${divisionDegreeText(
+      data.dividendDegree,
+      data.divisorDegree
+    )}`,
 
     {
 
@@ -6861,83 +7357,131 @@ function makeExactDivisionQuestion() {
 
 
 function makeDivisionWithRemainder(
-  missingTerm =
-    false
+  settings =
+    {}
 ) {
+
+  const normalizedSettings =
+
+    typeof settings ===
+    "boolean"
+
+      ? {
+          missingTerm:
+            settings
+        }
+
+      : (
+          settings ||
+          {}
+        );
+
+
+  const missingTerm =
+    normalizedSettings.missingTerm ===
+    true;
+
+
+  const selectedPair =
+
+    normalizedSettings.dividendDegree &&
+    normalizedSettings.divisorDegree
+
+      ? {
+          dividendDegree:
+            Number(
+              normalizedSettings.dividendDegree
+            ),
+
+          divisorDegree:
+            Number(
+              normalizedSettings.divisorDegree
+            )
+        }
+
+      : pick(
+          DIVISION_DEGREE_PAIRS
+        );
+
+
+  const dividendDegree =
+    Math.max(
+      2,
+      Math.min(
+        4,
+        selectedPair.dividendDegree
+      )
+    );
+
+
+  const divisorDegree =
+    Math.max(
+      1,
+      Math.min(
+        3,
+        selectedPair.divisorDegree
+      )
+    );
+
+
+  const quotientDegree =
+    dividendDegree -
+    divisorDegree;
+
+
+  if (
+    quotientDegree <
+    1
+  ) {
+
+    throw new Error(
+      "多項式除法的被除式次數必須高於除式次數。"
+    );
+  }
+
 
   for (
     let attempt =
       0;
 
     attempt <
-    800;
+    1600;
 
     attempt++
   ) {
 
-    const divisorConstant =
-      nonZeroRand(
-        -6,
-        6
-      );
-
-
     const divisor =
-      [
-
-        {
-          exponent: 1,
-          coefficient: F(1)
-        },
-
-        {
-          exponent: 0,
-          coefficient: F(divisorConstant)
-        }
-      ];
-
-
-    const quotientLeading =
-      nonZeroRand(
-        -5,
-        5
+      randomPrimitivePolynomialOfDegree(
+        divisorDegree,
+        2,
+        Math.min(
+          divisorDegree +
+          1,
+          4
+        ),
+        -4,
+        4
       );
-
-
-    const quotientConstant =
-
-      missingTerm
-
-        ? -quotientLeading *
-          divisorConstant
-
-        : nonZeroRand(
-            -7,
-            7
-          );
 
 
     const quotient =
-      normalizePolynomial(
-        [
-
-          {
-            exponent: 1,
-            coefficient: F(quotientLeading)
-          },
-
-          {
-            exponent: 0,
-            coefficient: F(quotientConstant)
-          }
-        ]
+      randomPrimitivePolynomialOfDegree(
+        quotientDegree,
+        2,
+        Math.min(
+          quotientDegree +
+          1,
+          4
+        ),
+        -4,
+        4
       );
 
 
     const remainder =
       nonZeroRand(
-        -10,
-        10
+        -9,
+        9
       );
 
 
@@ -6954,7 +7498,19 @@ function makeDivisionWithRemainder(
 
 
     if (
-      !isPrimitiveIntegerPolynomial(
+      degreeOf(
+        dividend
+      ) !==
+      dividendDegree
+    ) {
+
+      continue;
+    }
+
+
+    if (
+      missingTerm &&
+      !hasMissingPolynomialTerm(
         dividend
       )
     ) {
@@ -6963,7 +7519,7 @@ function makeDivisionWithRemainder(
     }
 
 
-    const dividendDegree =
+    const dividendDegreeActual =
       degreeOf(
         dividend
       );
@@ -6994,35 +7550,38 @@ function makeDivisionWithRemainder(
       [
 
         `
-        先依降冪排列並把缺項補 0：
+         先依降冪排列並把缺項補 0：
 
-        <span class="explanation-math">
+         <span class="explanation-math">
 
-          ${polynomialWithZerosHTML(
-            dividend,
-            dividendDegree
+           ${polynomialWithZerosHTML(
+             dividend,
+             dividendDegreeActual
           )}
 
-        </span>
+         </span>
         `,
 
         missingTerm
 
           ? `
-            本題被除式缺少一次項，
-            所以在直式中必須明確寫成
-            <strong>0x</strong>，
-            不能直接把常數項移到 x 的位置。
+             本題被除式有缺項，
+             直式中必須把缺少的次方明確補成 0。
+             例如缺 x² 就寫
+             <strong>0x²</strong>，
+             缺 x 就寫
+             <strong>0x</strong>，
+             這樣每個同次方才會上下對齊。
           `
 
           : `
-            接著從最高次項開始做直式除法。
+             接著從最高次項開始做直式除法。
           `,
 
         `
         每一輪：
 
-        <span class="explanation-math">
+         <span class="explanation-math">
 
           首項相除
           →
@@ -7032,57 +7591,207 @@ function makeDivisionWithRemainder(
           →
           相減
 
-        </span>
+         </span>
         `,
 
         `
-        當最後餘下的次數低於除式的次數，
-        就不能再除，這一部分就是餘式。
+         當最後餘下的次數低於除式的次數，
+         就不能再除，這一部分就是餘式。
+         本題的餘式設定為常數，
+         因此仍符合「餘式次數低於除式次數」。
         `,
 
         `
         因此：
 
-        <span class="explanation-math">
+         <span class="explanation-math">
 
           商式＝
-          ${polynomialHTML(
-            quotient
+           ${polynomialHTML(
+             quotient
           )}
 
           ，餘式＝
-          ${remainder}
+           ${remainder}
 
-        </span>
+         </span>
         `
       ],
 
-      "請填寫商式與餘式",
+      `請填寫商式與餘式｜${divisionDegreeText(
+        dividendDegree,
+        divisorDegree
+      )}`,
 
       {
 
-        method:
-          "先降冪排列並補齊缺項，再進行直式除法。缺一次項要寫 0x，不能只在心裡知道它是 0。",
+         method:
+           "先降冪排列並補齊缺項，再進行直式除法。由最高次項開始，重複「首項相除、寫商、乘回、相減」。",
 
-        pitfall:
-          missingTerm
-            ? "缺一次項時一定要補 0x，否則後面的常數項會對錯欄位。"
-            : "乘回後做的是相減，負號與同次方對齊是最容易出錯的地方。",
+         pitfall:
+           missingTerm
+             ? "被除式有缺項時一定要補 0，否則後面的項會對錯欄位；另外乘回後做的是相減，要特別注意正負號。"
+             : "高次多項式直式除法最重要的是同次方上下對齊；乘回後做的是相減，正負號不能漏掉。",
 
-        summary:
-          `商式＝${polynomialHTML(
-            quotient
+         summary:
+           `商式＝${polynomialHTML(
+             quotient
           )}，餘式＝${remainder}`
       }
     );
   }
 
 
-  throw new Error(
-    "無法建立餘式題"
+  /*
+  若隨機題在指定次數內沒有成功，
+  使用保證會有缺項的結構作為安全備援。
+  */
+
+  const divisor =
+    normalizePolynomial(
+      [
+
+        {
+          exponent:
+            divisorDegree,
+
+          coefficient:
+            F(
+              1
+            )
+        },
+
+        {
+          exponent: 0,
+
+          coefficient:
+            F(
+              nonZeroRand(
+                1,
+                4
+              )
+            )
+        }
+      ]
+    );
+
+
+  const quotient =
+    normalizePolynomial(
+      [
+
+        {
+          exponent:
+            quotientDegree,
+
+          coefficient:
+            F(
+              nonZeroRand(
+                1,
+                3
+              )
+            )
+        },
+
+        {
+          exponent: 0,
+
+          coefficient:
+            F(
+              nonZeroRand(
+                -4,
+                4
+              )
+            )
+        }
+      ]
+    );
+
+
+  const remainder =
+    nonZeroRand(
+      -9,
+      9
+    );
+
+
+  const dividend =
+    addConstantToPolynomial(
+
+      multiplyTwoPolynomials(
+        divisor,
+        quotient
+      ),
+
+      remainder
+    );
+
+
+  return divisionQuestion(
+
+    `
+      ${bracketPolynomial(
+        dividend
+      )}
+
+      ÷
+
+      ${bracketPolynomial(
+        divisor
+      )}
+    `,
+
+    dividend,
+
+    divisor,
+
+    quotient,
+
+    remainder,
+
+    [
+
+      `
+      先依降冪排列並把所有缺項補 0。
+      `,
+
+      `
+      由最高次項開始，
+      重複「首項相除、寫商、乘回、相減」。
+      `,
+
+      `
+      當餘下多項式的次數低於除式時停止。
+      `,
+
+      `
+      商式＝${polynomialHTML(
+        quotient
+      )}，
+      餘式＝${remainder}
+      `
+    ],
+
+    `請填寫商式與餘式｜${divisionDegreeText(
+      dividendDegree,
+      divisorDegree
+    )}`,
+
+    {
+
+      method:
+        "高次多項式除法與二次式除以一次式的原理完全相同，只是需要多做幾輪，並持續保持同次方上下對齊。",
+
+      pitfall:
+        "不要因為次數變高就跳過缺項；缺少的 x³、x² 或 x 項都要視為係數 0。",
+
+      summary:
+        `商式＝${polynomialHTML(
+          quotient
+        )}，餘式＝${remainder}`
+    }
   );
 }
-
 
 /*
 ==================================================
@@ -7095,36 +7804,96 @@ function makeMode3() {
   return shuffle(
     [
 
-      makeExactDivisionQuestion(),
-      makeExactDivisionQuestion(),
-      makeExactDivisionQuestion(),
-      makeExactDivisionQuestion(),
+      /*
+      基礎：二次 ÷ 一次
+      */
+      makeExactDivisionQuestion(
+        {
+          dividendDegree: 2,
+          divisorDegree: 1
+        }
+      ),
 
+      /*
+      三次題
+      */
+      makeExactDivisionQuestion(
+        {
+          dividendDegree: 3,
+          divisorDegree: 1
+        }
+      ),
+
+      makeExactDivisionQuestion(
+        {
+          dividendDegree: 3,
+          divisorDegree: 2
+        }
+      ),
+
+      /*
+      四次題
+      */
+      makeExactDivisionQuestion(
+        {
+          dividendDegree: 4,
+          divisorDegree: 1
+        }
+      ),
+
+      makeExactDivisionQuestion(
+        {
+          dividendDegree: 4,
+          divisorDegree: 2
+        }
+      ),
+
+      makeExactDivisionQuestion(
+        {
+          dividendDegree: 4,
+          divisorDegree: 3
+        }
+      ),
+
+      /*
+      商式＋餘式
+      餘式維持常數，
+      所以原本的作答元件完全不用更動。
+      */
       makeDivisionWithRemainder(
-        false
+        {
+          dividendDegree: 3,
+          divisorDegree: 2,
+          missingTerm: false
+        }
       ),
 
       makeDivisionWithRemainder(
-        false
+        {
+          dividendDegree: 4,
+          divisorDegree: 2,
+          missingTerm: false
+        }
       ),
 
       makeDivisionWithRemainder(
-        false
+        {
+          dividendDegree: 4,
+          divisorDegree: 3,
+          missingTerm: true
+        }
       ),
 
       makeDivisionWithRemainder(
-        true
-      ),
-
-      makeDivisionWithRemainder(
-        true
-      ),
-
-      makeExactDivisionQuestion()
+        {
+          dividendDegree: 2,
+          divisorDegree: 1,
+          missingTerm: true
+        }
+      )
     ]
   );
 }
-
 
 /*
 ==================================================
@@ -7449,14 +8218,27 @@ function makeMode4() {
 
       makeDifferenceSquares(),
 
-      makeExactDivisionQuestion(),
-
-      makeDivisionWithRemainder(
-        false
+      makeExactDivisionQuestion(
+        {
+          dividendDegree: 4,
+          divisorDegree: 3
+        }
       ),
 
       makeDivisionWithRemainder(
-        true
+        {
+          dividendDegree: 3,
+          divisorDegree: 2,
+          missingTerm: false
+        }
+      ),
+
+      makeDivisionWithRemainder(
+        {
+          dividendDegree: 4,
+          divisorDegree: 2,
+          missingTerm: true
+        }
       ),
 
       makeFindDividendQuestion()
@@ -10162,6 +10944,129 @@ function showReview() {
 
 /*
 ==================================================
+重新測驗確認
+
+桌機、平板、手機皆使用瀏覽器原生確認視窗。
+只有按下「確定」才重新開始目前模式。
+==================================================
+*/
+
+function confirmRestartTest() {
+
+  return window.confirm(
+    "確定要重新測驗嗎？\n目前的作答進度將會重新開始。"
+  );
+}
+
+
+function restartCurrentModeWithConfirmation() {
+
+  if (
+    !confirmRestartTest()
+  ) {
+
+    return;
+  }
+
+
+  startGame(
+    mode
+  );
+}
+
+
+/*
+==================================================
+返回八年級上學期
+
+平常由八上首頁進入遊戲時，使用上一頁即可回到原本已選好的
+「八年級上學期」卡牌介面，也能保留瀏覽器 BFCache 的狀態。
+若沒有可返回的站內來源，則退回網站首頁。
+==================================================
+*/
+
+function returnToGrade8FirstSemester() {
+
+  const referrer =
+    String(
+      document.referrer ||
+      ""
+    );
+
+
+  let cameFromHomePage =
+    false;
+
+
+  try {
+
+    if (
+      referrer
+    ) {
+
+      const referrerURL =
+        new URL(
+          referrer
+        );
+
+
+      const sameOrigin =
+        referrerURL.origin ===
+        window.location.origin;
+
+
+      const path =
+        referrerURL.pathname
+          .replace(
+            /\/+$/,
+            ""
+          );
+
+
+      const isHomePath =
+        path ===
+          "" ||
+        path.endsWith(
+          "/index.html"
+        ) ||
+        path.endsWith(
+          "/mathteach"
+        );
+
+
+      cameFromHomePage =
+        sameOrigin &&
+        isHomePath;
+    }
+
+  } catch (
+    error
+  ) {
+
+    cameFromHomePage =
+      false;
+  }
+
+
+  if (
+    cameFromHomePage &&
+    window.history.length >
+      1
+  ) {
+
+    window.history.back();
+
+    return;
+  }
+
+
+  window.location.href =
+    "../index.html";
+}
+
+
+/*
+==================================================
 事件
 ==================================================
 */
@@ -10187,6 +11092,13 @@ document
   );
 
 
+$("semester-return-button")
+  .addEventListener(
+    "click",
+    returnToGrade8FirstSemester
+  );
+
+
 $("submit-button")
   .addEventListener(
     "click",
@@ -10204,12 +11116,7 @@ $("next-button")
 $("restart-button")
   .addEventListener(
     "click",
-    () => {
-
-      startGame(
-        mode
-      );
-    }
+    restartCurrentModeWithConfirmation
   );
 
 
@@ -10231,12 +11138,7 @@ $("mode-button")
 $("again-button")
   .addEventListener(
     "click",
-    () => {
-
-      startGame(
-        mode
-      );
-    }
+    restartCurrentModeWithConfirmation
   );
 
 
@@ -10262,12 +11164,7 @@ $("review-button")
 $("review-again-button")
   .addEventListener(
     "click",
-    () => {
-
-      startGame(
-        mode
-      );
-    }
+    restartCurrentModeWithConfirmation
   );
 
 
