@@ -102,6 +102,38 @@
       margin-bottom: 14px;
     }
 
+    /* ==================================================
+       返回目前學期
+    ================================================== */
+
+    .semester-return-row {
+      display: flex;
+      justify-content: flex-end;
+      margin: -2px 0 14px;
+    }
+
+    .semester-return-button {
+      min-height: 44px;
+      padding: 9px 16px;
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--primary-dark);
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 4px 0 var(--primary-border);
+    }
+
+    .semester-return-button:hover {
+      background: var(--primary-light);
+    }
+
+    .semester-return-button:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--primary-border);
+    }
+
     .game-card {
 
       overflow: hidden;
@@ -1042,6 +1074,17 @@
         padding: 8px;
       }
 
+      .semester-return-row {
+        justify-content: stretch;
+        margin-bottom: 12px;
+      }
+
+      .semester-return-button {
+        width: 100%;
+        min-height: 46px;
+        font-size: 15px;
+      }
+
       .screen {
 
         padding:
@@ -1104,6 +1147,19 @@
 
 
     <div id="commonHeaderMount"></div>
+
+
+    <div class="semester-return-row">
+
+      <button
+        id="semester-return-button"
+        class="semester-return-button"
+        type="button"
+      >
+        ↩️ 重回八年級上學期
+      </button>
+
+    </div>
 
 
     <main class="game-card">
@@ -1345,13 +1401,6 @@
         </div>
 
 
-        <div class="scratchpad-row">
-
-          <div id="scratchpad-mobile-button"></div>
-
-        </div>
-
-
         <div class="progress-shell">
 
           <div
@@ -1376,6 +1425,13 @@
             class="question-content"
           ></div>
 
+
+        </div>
+
+
+        <div class="scratchpad-row">
+
+          <div id="scratchpad-mobile-button"></div>
 
         </div>
 
@@ -4882,8 +4938,136 @@
 
 
     /* ==================================================
+       重新測驗確認
+
+       桌機、平板、手機皆使用瀏覽器原生確認視窗。
+       只有按下「確定」才重新開始目前模式。
+    ================================================== */
+
+
+    function confirmRestartTest() {
+
+      return window.confirm(
+        "確定要重新測驗嗎？\n目前的作答進度將會重新開始。"
+      );
+    }
+
+
+    function restartCurrentModeWithConfirmation() {
+
+      if (
+        !confirmRestartTest()
+      ) {
+
+        return;
+      }
+
+
+      startGame(
+        mode
+      );
+    }
+
+
+    /* ==================================================
+       返回八年級上學期
+
+       平常由八上首頁進入遊戲時，使用上一頁即可回到原本已選好的
+       「八年級上學期」卡牌介面，也能保留瀏覽器 BFCache 的狀態。
+       若沒有可返回的站內來源，則退回網站首頁。
+    ================================================== */
+
+
+    function returnToGrade8FirstSemester() {
+
+      const referrer =
+        String(
+          document.referrer ||
+          ""
+        );
+
+
+      let cameFromHomePage =
+        false;
+
+
+      try {
+
+        if (
+          referrer
+        ) {
+
+          const referrerURL =
+            new URL(
+              referrer
+            );
+
+
+          const sameOrigin =
+            referrerURL.origin ===
+            window.location.origin;
+
+
+          const path =
+            referrerURL.pathname
+              .replace(
+                /\/+$/,
+                ""
+              );
+
+
+          const isHomePath =
+            path ===
+              "" ||
+            path.endsWith(
+              "/index.html"
+            ) ||
+            path.endsWith(
+              "/mathteach"
+            );
+
+
+          cameFromHomePage =
+            sameOrigin &&
+            isHomePath;
+        }
+
+      } catch (
+        error
+      ) {
+
+        cameFromHomePage =
+          false;
+      }
+
+
+      if (
+        cameFromHomePage &&
+        window.history.length >
+          1
+      ) {
+
+        window.history.back();
+
+        return;
+      }
+
+
+      window.location.href =
+        "../index.html";
+    }
+
+
+    /* ==================================================
        模式卡
     ================================================== */
+
+
+    $("semester-return-button")
+      .addEventListener(
+        "click",
+        returnToGrade8FirstSemester
+      );
 
 
     document
@@ -4938,28 +5122,7 @@
     $("restart-button")
       .addEventListener(
         "click",
-        () => {
-
-
-          const confirmRestart =
-            window.confirm(
-              "確定要重新開始目前這個模式嗎？目前作答進度與時間會重新計算。"
-            );
-
-
-          if (
-            !confirmRestart
-          ) {
-
-            return;
-          }
-
-
-          startGame(
-            mode
-          );
-
-        }
+        restartCurrentModeWithConfirmation
       );
 
 
@@ -4995,14 +5158,7 @@
     $("again-button")
       .addEventListener(
         "click",
-        () => {
-
-
-          startGame(
-            mode
-          );
-
-        }
+        restartCurrentModeWithConfirmation
       );
 
 
@@ -5035,14 +5191,7 @@
     $("review-again-button")
       .addEventListener(
         "click",
-        () => {
-
-
-          startGame(
-            mode
-          );
-
-        }
+        restartCurrentModeWithConfirmation
       );
 
 
