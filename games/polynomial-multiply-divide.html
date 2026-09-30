@@ -554,7 +554,7 @@
 
       justify-content: center;
 
-      overflow-x: auto;
+      overflow-x: hidden;
 
       padding:
         14px 6px;
@@ -623,6 +623,82 @@
 
       line-height:
         1.75;
+    }
+
+    /*
+    ==================================================
+    多項式除法長題目
+    ==================================================
+    */
+
+    .math-expression.division-math {
+
+      width: 100%;
+
+      min-width: 0;
+
+      max-width: 100%;
+
+      flex-wrap: wrap;
+
+      justify-content: center;
+
+      white-space: normal;
+
+      gap:
+        .18em .24em;
+
+      font-size: .82em;
+
+      line-height: 1.6;
+    }
+
+    .math-expression.division-math
+    .question-segment {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      max-width: 100%;
+
+      white-space: nowrap;
+    }
+
+    .question-content.compact-question {
+
+      font-size:
+        clamp(
+          18px,
+          3.4vw,
+          32px
+        );
+    }
+
+    @media(
+      max-width:
+        760px
+    ) {
+
+      .math-expression.division-math {
+
+        font-size: .76em;
+
+        gap:
+          .16em .20em;
+      }
+
+      .question-content.compact-question {
+
+        font-size:
+          clamp(
+            17px,
+            5vw,
+            27px
+          );
+      }
     }
 
     .question-segment {
@@ -2413,11 +2489,11 @@
           </h2>
 
           <p>
-             練習二次至四次多項式除法，除式最高可到三次式，並包含缺項補 0、整除與商式、餘式。
+             以二次式 ÷ 一次式為主，加入 1 題三次式 ÷ 二次式與 1 題四次式 ÷ 二次式，並包含缺項補 0、整除與商式、餘式。
           </p>
 
           <div class="mode-example">
-             最高挑戰：四次式 ÷ 三次式；答錯時會顯示完整直式除法
+             高次挑戰各 1 題，其餘回到二次式 ÷ 一次式；答錯時會顯示完整直式除法
            </div>
 
         </button>
@@ -5302,12 +5378,11 @@ function randomPrimitivePolynomial(
 ==================================================
 多項式除法｜次數控制工具
 
-本遊戲的多項式除法最高支援：
-被除式四次、除式三次。
-
-為了讓題目難度真的能涵蓋 2÷1、3÷1、3÷2、
-4÷1、4÷2、4÷3，而不是只靠隨機碰到高次，
-這裡明確控制被除式、除式與商式的次數。
+本版題型配置：
+1. 二次式 ÷ 一次式為主要題型。
+2. 三次式 ÷ 二次式最多 1 題。
+3. 四次式 ÷ 二次式最多 1 題。
+4. 不再出現四次式 ÷ 三次式。
 ==================================================
 */
 
@@ -5320,27 +5395,12 @@ const DIVISION_DEGREE_PAIRS = [
 
   {
     dividendDegree: 3,
-    divisorDegree: 1
-  },
-
-  {
-    dividendDegree: 3,
     divisorDegree: 2
   },
 
   {
     dividendDegree: 4,
-    divisorDegree: 1
-  },
-
-  {
-    dividendDegree: 4,
     divisorDegree: 2
-  },
-
-  {
-    dividendDegree: 4,
-    divisorDegree: 3
   }
 
 ];
@@ -5639,7 +5699,7 @@ function monomialQuestion(
       "monomial",
 
     html:
-      `<span class="math-expression">${html}</span>`,
+      `<span class="math-expression math-wrap division-math">${html}</span>`,
 
     coefficient:
       F(
@@ -5691,6 +5751,9 @@ function polynomialQuestion(
             ? "math-wrap"
 
             : ""
+        } ${
+          options.mathClass ||
+          ""
         }">
 
           ${html}
@@ -7249,15 +7312,21 @@ function makeExactDivisionQuestion(
   return polynomialQuestion(
 
     `
-      ${bracketPolynomial(
-        data.dividend
-      )}
+      <span class="question-segment">
+        ${bracketPolynomial(
+          data.dividend
+        )}
+      </span>
 
-      ÷
+      <span class="question-segment">
+        ÷
+      </span>
 
-      ${bracketPolynomial(
-        data.divisor
-      )}
+      <span class="question-segment">
+        ${bracketPolynomial(
+          data.divisor
+        )}
+      </span>
     `,
 
     data.quotient,
@@ -7328,6 +7397,12 @@ function makeExactDivisionQuestion(
     )}`,
 
     {
+
+      wrap:
+        true,
+
+      mathClass:
+        "division-math",
 
       wrongDetail:
 
@@ -7528,15 +7603,21 @@ function makeDivisionWithRemainder(
     return divisionQuestion(
 
       `
-        ${bracketPolynomial(
-          dividend
-        )}
+        <span class="question-segment">
+          ${bracketPolynomial(
+            dividend
+          )}
+        </span>
 
-        ÷
+        <span class="question-segment">
+          ÷
+        </span>
 
-        ${bracketPolynomial(
-          divisor
-        )}
+        <span class="question-segment">
+          ${bracketPolynomial(
+            divisor
+          )}
+        </span>
       `,
 
       dividend,
@@ -7730,15 +7811,21 @@ function makeDivisionWithRemainder(
   return divisionQuestion(
 
     `
-      ${bracketPolynomial(
-        dividend
-      )}
+      <span class="question-segment">
+        ${bracketPolynomial(
+          dividend
+        )}
+      </span>
 
-      ÷
+      <span class="question-segment">
+        ÷
+      </span>
 
-      ${bracketPolynomial(
-        divisor
-      )}
+      <span class="question-segment">
+        ${bracketPolynomial(
+          divisor
+        )}
+      </span>
     `,
 
     dividend,
@@ -7805,8 +7892,9 @@ function makeMode3() {
     [
 
       /*
-      基礎：二次 ÷ 一次
+      主要題型：二次式 ÷ 一次式，共 8 題
       */
+
       makeExactDivisionQuestion(
         {
           dividendDegree: 2,
@@ -7814,72 +7902,47 @@ function makeMode3() {
         }
       ),
 
-      /*
-      三次題
-      */
       makeExactDivisionQuestion(
         {
-          dividendDegree: 3,
+          dividendDegree: 2,
           divisorDegree: 1
         }
       ),
 
       makeExactDivisionQuestion(
         {
-          dividendDegree: 3,
-          divisorDegree: 2
-        }
-      ),
-
-      /*
-      四次題
-      */
-      makeExactDivisionQuestion(
-        {
-          dividendDegree: 4,
+          dividendDegree: 2,
           divisorDegree: 1
         }
       ),
 
       makeExactDivisionQuestion(
         {
-          dividendDegree: 4,
-          divisorDegree: 2
+          dividendDegree: 2,
+          divisorDegree: 1
         }
       ),
 
-      makeExactDivisionQuestion(
-        {
-          dividendDegree: 4,
-          divisorDegree: 3
-        }
-      ),
-
-      /*
-      商式＋餘式
-      餘式維持常數，
-      所以原本的作答元件完全不用更動。
-      */
       makeDivisionWithRemainder(
         {
-          dividendDegree: 3,
-          divisorDegree: 2,
+          dividendDegree: 2,
+          divisorDegree: 1,
           missingTerm: false
         }
       ),
 
       makeDivisionWithRemainder(
         {
-          dividendDegree: 4,
-          divisorDegree: 2,
+          dividendDegree: 2,
+          divisorDegree: 1,
           missingTerm: false
         }
       ),
 
       makeDivisionWithRemainder(
         {
-          dividendDegree: 4,
-          divisorDegree: 3,
+          dividendDegree: 2,
+          divisorDegree: 1,
           missingTerm: true
         }
       ),
@@ -7889,6 +7952,24 @@ function makeMode3() {
           dividendDegree: 2,
           divisorDegree: 1,
           missingTerm: true
+        }
+      ),
+
+      /*
+      高次挑戰：各 1 題
+      */
+
+      makeExactDivisionQuestion(
+        {
+          dividendDegree: 3,
+          divisorDegree: 2
+        }
+      ),
+
+      makeExactDivisionQuestion(
+        {
+          dividendDegree: 4,
+          divisorDegree: 2
         }
       )
     ]
@@ -8220,23 +8301,23 @@ function makeMode4() {
 
       makeExactDivisionQuestion(
         {
-          dividendDegree: 4,
-          divisorDegree: 3
+          dividendDegree: 2,
+          divisorDegree: 1
         }
       ),
 
       makeDivisionWithRemainder(
         {
-          dividendDegree: 3,
-          divisorDegree: 2,
+          dividendDegree: 2,
+          divisorDegree: 1,
           missingTerm: false
         }
       ),
 
       makeDivisionWithRemainder(
         {
-          dividendDegree: 4,
-          divisorDegree: 2,
+          dividendDegree: 2,
+          divisorDegree: 1,
           missingTerm: true
         }
       ),
@@ -9907,6 +9988,123 @@ function explanationHTML(
 
 /*
 ==================================================
+題目寬度自動調整
+
+長算式優先縮小字體；若仍超出，
+多項式除法可在「被除式 ÷ 除式」之間換行，
+避免手機、平板或電腦需要左右拖動。
+==================================================
+*/
+
+function fitQuestionToWidth() {
+
+  const container =
+    $("question-content");
+
+
+  if (
+    !container
+  ) {
+
+    return;
+  }
+
+
+  container
+    .classList
+    .remove(
+      "compact-question"
+    );
+
+
+  container.style.fontSize =
+    "";
+
+
+  const expression =
+    container.querySelector(
+      ".math-expression"
+    );
+
+
+  if (
+    !expression
+  ) {
+
+    return;
+  }
+
+
+  const isDivision =
+    expression
+      .classList
+      .contains(
+        "division-math"
+      );
+
+
+  if (
+    isDivision
+  ) {
+
+    container
+      .classList
+      .add(
+        "compact-question"
+      );
+  }
+
+
+  requestAnimationFrame(
+    () => {
+
+      let fontSize =
+        parseFloat(
+          window
+            .getComputedStyle(
+              container
+            )
+            .fontSize
+        );
+
+
+      const minimum =
+        isDivision
+          ? 17
+          : 19;
+
+
+      let guard =
+        0;
+
+
+      while (
+        container.scrollWidth >
+          container.clientWidth +
+          2 &&
+        fontSize >
+          minimum &&
+        guard <
+          30
+      ) {
+
+        fontSize -=
+          1;
+
+
+        container.style.fontSize =
+          `${fontSize}px`;
+
+
+        guard++;
+      }
+    }
+  );
+}
+
+
+/*
+==================================================
 顯示題目
 ==================================================
 */
@@ -9963,6 +10161,9 @@ function displayQuestion() {
   $("question-content")
     .innerHTML =
       question.html;
+
+
+  fitQuestionToWidth();
 
 
   $("feedback")
