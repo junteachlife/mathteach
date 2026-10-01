@@ -14,7 +14,10 @@
     十字交乘因式分解大挑戰｜數學遊戲樂園
   </title>
 
-  <link
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%0A%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'15'%20fill%3D'%23d81b60'%2F%3E%0A%3Crect%20x%3D'6'%20y%3D'6'%20width%3D'52'%20height%3D'52'%20rx%3D'12'%20fill%3D'white'%20fill-opacity%3D'.14'%20stroke%3D'white'%20stroke-opacity%3D'.75'%20stroke-width%3D'2.4'%2F%3E%0A%3Ctext%20x%3D'32'%20y%3D'42'%20text-anchor%3D'middle'%20font-size%3D'31'%20font-family%3D'Arial%2CMicrosoft%20JhengHei%2CNoto%20Sans%20TC%2Csans-serif'%20font-weight%3D'900'%20fill%3D'%23ffffff'%3E%E5%8D%81%3C%2Ftext%3E%0A%3C%2Fsvg%3E">
+
+<link
     rel="stylesheet"
     href="../css/scratchpad.css"
   >
@@ -2191,6 +2194,61 @@
 
   </style>
 
+
+  <style>
+    /*
+    ==================================================
+    學期返回鍵｜只顯示於模式選擇頁
+    ==================================================
+    */
+
+    .semester-return-row {
+      display: flex;
+      justify-content: flex-end;
+      margin: -4px 0 14px;
+    }
+
+    .semester-return-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 15px;
+      border: 2px solid var(--primary-border);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--primary-dark);
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 4px 0 rgba(15, 23, 42, .10);
+      transition:
+        transform .12s ease,
+        box-shadow .12s ease,
+        background .12s ease;
+    }
+
+    .semester-return-button:hover {
+      background: var(--primary-light);
+    }
+
+    .semester-return-button:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 rgba(15, 23, 42, .10);
+    }
+
+    @media (max-width: 760px) {
+      .semester-return-row {
+        margin-top: -2px;
+      }
+
+      .semester-return-button {
+        padding: 9px 13px;
+        font-size: 13px;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -2248,7 +2306,19 @@
       class="screen"
     >
 
-      <div class="mode-grid">
+            <div class="semester-return-row">
+
+        <button
+          id="semester-return-button"
+          class="semester-return-button"
+          type="button"
+        >
+          ↩️ 重返八年級上學期
+        </button>
+
+      </div>
+
+<div class="mode-grid">
 
         <button
           class="mode-card"
@@ -2401,16 +2471,7 @@
         </div>
 
       </div>
-
-      <div class="scratchpad-row">
-
-        <div
-          id="scratchpad-mobile-button"
-        ></div>
-
-      </div>
-
-      <div class="progress-shell">
+<div class="progress-shell">
 
         <div
           id="progress-bar"
@@ -2433,7 +2494,13 @@
 
       </div>
 
-      <div
+            <div class="scratchpad-row">
+
+        <div id="scratchpad-mobile-button"></div>
+
+      </div>
+
+<div
         id="answer-panel"
         class="answer-panel"
       ></div>
@@ -6688,7 +6755,14 @@ function displayQuestion() {
     );
 
 
-  $("submit-button")
+  $("semester-return-button")
+  ?.addEventListener(
+    "click",
+    returnToGrade8FirstSemester
+  );
+
+
+$("submit-button")
     .classList
     .remove(
       "hidden"
@@ -7649,6 +7723,120 @@ Events
 ==================================================
 */
 
+
+/*
+==================================================
+重新測驗確認／返回八年級上學期
+==================================================
+*/
+
+function confirmRestartTest() {
+
+  return window.confirm(
+    "確定要重新測驗目前模式嗎？\n目前的作答進度與測驗時間將重新開始。"
+  );
+}
+
+
+function restartCurrentModeWithConfirmation() {
+
+  if (
+    !confirmRestartTest()
+  ) {
+
+    return;
+  }
+
+
+  startGame(
+    mode
+  );
+}
+
+
+function returnToGrade8FirstSemester() {
+
+  const referrer =
+    String(
+      document.referrer ||
+      ""
+    );
+
+
+  let cameFromHomePage =
+    false;
+
+
+  try {
+
+    if (
+      referrer
+    ) {
+
+      const referrerURL =
+        new URL(
+          referrer
+        );
+
+
+      const sameOrigin =
+        referrerURL.origin ===
+        window.location.origin;
+
+
+      const path =
+        referrerURL.pathname
+          .replace(
+            /\/+$/,
+            ""
+          );
+
+
+      const isHomePath =
+
+        path ===
+        "" ||
+
+        path.endsWith(
+          "/index.html"
+        ) ||
+
+        path.endsWith(
+          "/mathteach"
+        );
+
+
+      cameFromHomePage =
+        sameOrigin &&
+        isHomePath;
+    }
+
+  } catch (
+    error
+  ) {
+
+    cameFromHomePage =
+      false;
+  }
+
+
+  if (
+    cameFromHomePage &&
+    window.history.length >
+    1
+  ) {
+
+    window.history.back();
+
+    return;
+  }
+
+
+  window.location.href =
+    "../index.html";
+}
+
+
 document
   .querySelectorAll(
     "[data-mode]"
@@ -7686,10 +7874,7 @@ $("next-button")
 $("restart-button")
   .addEventListener(
     "click",
-    () =>
-      startGame(
-        mode
-      )
+    restartCurrentModeWithConfirmation
   );
 
 
@@ -7711,10 +7896,7 @@ $("mode-button")
 $("again-button")
   .addEventListener(
     "click",
-    () =>
-      startGame(
-        mode
-      )
+    restartCurrentModeWithConfirmation
   );
 
 
@@ -7738,10 +7920,7 @@ $("review-button")
 $("review-again-button")
   .addEventListener(
     "click",
-    () =>
-      startGame(
-        mode
-      )
+    restartCurrentModeWithConfirmation
   );
 
 
