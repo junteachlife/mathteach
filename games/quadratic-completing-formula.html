@@ -2407,6 +2407,59 @@
     .keep-unit{display:inline-block;white-space:nowrap}
   </style>
 
+  <style>
+    /*
+    ==================================================
+    學期返回鍵｜只顯示於模式選擇頁
+    ==================================================
+    */
+    .semester-return-row{
+      display:flex;
+      justify-content:flex-end;
+      margin:-4px 0 14px;
+    }
+
+    .semester-return-button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:10px 15px;
+      border:2px solid var(--primary-border);
+      border-radius:999px;
+      background:#fff;
+      color:var(--primary-dark);
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 4px 0 rgba(15,23,42,.10);
+      transition:
+        transform .12s ease,
+        box-shadow .12s ease,
+        background .12s ease;
+    }
+
+    .semester-return-button:hover{
+      background:var(--primary-light);
+    }
+
+    .semester-return-button:active{
+      transform:translateY(2px);
+      box-shadow:0 2px 0 rgba(15,23,42,.10);
+    }
+
+    @media(max-width:760px){
+      .semester-return-row{
+        margin-top:-2px;
+      }
+
+      .semester-return-button{
+        padding:9px 13px;
+        font-size:13px;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -2447,6 +2500,19 @@
       id="start-screen"
       class="screen"
     >
+
+
+      <div class="semester-return-row">
+        <button
+          id="semester-return-button"
+          class="semester-return-button"
+          type="button"
+          aria-label="重返八年級上學期"
+        >
+          ↩️ 重返八年級上學期
+        </button>
+      </div>
+
 
       <div class="mode-grid">
         <button
@@ -2677,12 +2743,6 @@
 
       </div>
 
-      <div class="scratchpad-row">
-
-        <div id="scratchpad-mobile-button"></div>
-
-      </div>
-
       <div class="progress-shell">
 
         <div
@@ -2704,6 +2764,10 @@
           class="question-content"
         ></div>
 
+      </div>
+
+      <div class="scratchpad-row">
+        <div id="scratchpad-mobile-button"></div>
       </div>
 
       <div
@@ -12952,6 +13016,55 @@ function showReview() {
 }
 
 
+
+/*
+==================================================
+重新測驗確認／返回八年級上學期
+==================================================
+*/
+
+function confirmRestartTest() {
+  return window.confirm(
+    "確定要重新測驗目前模式嗎？\n目前的作答進度與測驗時間將重新開始。"
+  );
+}
+
+function restartCurrentModeWithConfirmation() {
+  if (!confirmRestartTest()) {
+    return;
+  }
+
+  startGame(mode);
+}
+
+function returnToGrade8FirstSemester() {
+  const referrer = String(document.referrer || "");
+  let cameFromHomePage = false;
+
+  try {
+    if (referrer) {
+      const referrerURL = new URL(referrer);
+      const sameOrigin = referrerURL.origin === window.location.origin;
+      const path = referrerURL.pathname.replace(/\/+$/, "");
+      const isHomePath =
+        path === "" ||
+        path.endsWith("/index.html") ||
+        path.endsWith("/mathteach");
+
+      cameFromHomePage = sameOrigin && isHomePath;
+    }
+  } catch (error) {
+    cameFromHomePage = false;
+  }
+
+  if (cameFromHomePage && window.history.length > 1) {
+    window.history.back();
+    return;
+  }
+
+  window.location.href = "../index.html";
+}
+
 /*
 ==================================================
 模式按鈕
@@ -12984,6 +13097,13 @@ document
 ==================================================
 */
 
+$("semester-return-button")
+  ?.addEventListener(
+    "click",
+    returnToGrade8FirstSemester
+  );
+
+
 $("submit-button")
   .addEventListener(
     "click",
@@ -13001,12 +13121,7 @@ $("next-button")
 $("restart-button")
   .addEventListener(
     "click",
-    () => {
-
-      startGame(
-        mode
-      );
-    }
+    restartCurrentModeWithConfirmation
   );
 
 
@@ -13028,12 +13143,7 @@ $("mode-button")
 $("again-button")
   .addEventListener(
     "click",
-    () => {
-
-      startGame(
-        mode
-      );
-    }
+    restartCurrentModeWithConfirmation
   );
 
 
@@ -13059,12 +13169,7 @@ $("review-button")
 $("review-again-button")
   .addEventListener(
     "click",
-    () => {
-
-      startGame(
-        mode
-      );
-    }
+    restartCurrentModeWithConfirmation
   );
 
 
