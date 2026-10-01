@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>多項式加減大挑戰｜數學遊戲樂園</title>
 
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%2300897b'/%3E%3Crect x='7' y='7' width='50' height='50' rx='12' fill='%23e0f2f1' stroke='%2300695c' stroke-width='3'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='31' font-family='Arial,sans-serif' font-weight='900' fill='%2300695c'%3E%C2%B1%3C/text%3E%3C/svg%3E"
+>
+
 <link rel="stylesheet" href="../css/scratchpad.css">
 <link rel="stylesheet" href="../css/expression-input.css?v=5">
 
@@ -96,6 +102,37 @@ select{
   color:var(--primary-dark);
   font-size:14px;
   font-weight:900;
+}
+
+.semester-return-row{
+  display:flex;
+  justify-content:center;
+  margin-top:16px;
+}
+
+.semester-return-button{
+  min-width:220px;
+  padding:10px 18px;
+  border:2px solid var(--primary);
+  border-radius:999px;
+  background:#fff;
+  color:var(--primary-dark);
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 4px 0 rgba(0,105,92,.18);
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
+}
+
+.semester-return-button:hover{
+  transform:translateY(-2px);
+  background:var(--primary-light);
+  box-shadow:0 6px 0 rgba(0,105,92,.18);
+}
+
+.semester-return-button:active{
+  transform:translateY(1px);
+  box-shadow:0 2px 0 rgba(0,105,92,.18);
 }
 
 .screen{
@@ -741,6 +778,16 @@ select{
 <span class="concept-chip">多項式減法</span>
 <span class="concept-chip">去括號</span>
 <span class="concept-chip">分數係數</span>
+</div>
+
+<div class="semester-return-row">
+<button
+  id="semester-return-button"
+  class="semester-return-button"
+  type="button"
+>
+↩️ 重返八年級上學期
+</button>
 </div>
 
 </header>
@@ -5195,6 +5242,98 @@ function showReview() {
   );
 }
 
+function confirmRestartTest() {
+
+  return window.confirm(
+    "確定要重新測驗嗎？\n目前的作答進度與測驗時間將會重新開始。"
+  );
+}
+
+
+function restartCurrentMode() {
+
+  if (
+    !confirmRestartTest()
+  ) {
+
+    return;
+  }
+
+
+  startGame(
+    mode
+  );
+}
+
+
+function returnToGrade8FirstSemester() {
+
+  stopTimer();
+
+
+  const referrer =
+    document.referrer ||
+    "";
+
+
+  try {
+
+    if (
+      referrer
+    ) {
+
+      const referrerURL =
+        new URL(
+          referrer
+        );
+
+
+      const cameFromThisSiteHome =
+
+        referrerURL.origin ===
+          window.location.origin &&
+
+        (
+          /\/index\.html$/i
+            .test(
+              referrerURL.pathname
+            ) ||
+
+          /\/mathteach\/?$/i
+            .test(
+              referrerURL.pathname
+            )
+        );
+
+
+      if (
+        cameFromThisSiteHome &&
+        window.history.length >
+          1
+      ) {
+
+        window.history.back();
+
+        return;
+      }
+    }
+
+  } catch (
+    error
+  ) {
+
+    console.warn(
+      "判斷返回來源失敗：",
+      error
+    );
+  }
+
+
+  window.location.href =
+    "../index.html";
+}
+
+
 document
   .querySelectorAll(
     "[data-mode]"
@@ -5235,10 +5374,7 @@ $(
 )
   .addEventListener(
     "click",
-    () =>
-      startGame(
-        mode
-      )
+    restartCurrentMode
   );
 
 $(
@@ -5261,10 +5397,7 @@ $(
 )
   .addEventListener(
     "click",
-    () =>
-      startGame(
-        mode
-      )
+    restartCurrentMode
   );
 
 $(
@@ -5291,10 +5424,7 @@ $(
 )
   .addEventListener(
     "click",
-    () =>
-      startGame(
-        mode
-      )
+    restartCurrentMode
   );
 
 $(
@@ -5307,6 +5437,16 @@ $(
         "result-screen"
       )
   );
+
+
+$(
+  "semester-return-button"
+)
+  .addEventListener(
+    "click",
+    returnToGrade8FirstSemester
+  );
+
 
 document
   .addEventListener(
