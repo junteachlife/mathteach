@@ -1771,6 +1771,7 @@
       font-size: 14px;
       font-weight: 900;
       cursor: pointer;
+      text-decoration: none;
       box-shadow: 0 4px 0 rgba(15, 23, 42, .10);
       transition:
         transform .12s ease,
@@ -1862,13 +1863,14 @@
 
             <div class="semester-return-row">
 
-        <button
+        <a
           id="semester-return-button"
           class="semester-return-button"
-          type="button"
+          href="../index.html"
+          aria-label="重返八年級上學期"
         >
           ↩️ 重返八年級上學期
-        </button>
+        </a>
 
       </div>
 
@@ -2280,6 +2282,52 @@
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
 <script src="../js/expression-input.js?v=7"></script>
+
+<script>
+/*
+==================================================
+八年級上學期返回鍵
+
+使用一般連結 href 作為最終備援，因此即使遊戲 module
+載入失敗，仍然可以返回首頁。若確定是從本站首頁進入，
+則優先 history.back()，保留首頁原本選到的八年級上學期。
+==================================================
+*/
+(function () {
+  const returnLink = document.getElementById("semester-return-button");
+
+  if (!returnLink) {
+    return;
+  }
+
+  returnLink.addEventListener("click", function (event) {
+    const referrer = String(document.referrer || "");
+    let cameFromHomePage = false;
+
+    try {
+      if (referrer) {
+        const referrerURL = new URL(referrer);
+        const sameOrigin = referrerURL.origin === window.location.origin;
+        const path = referrerURL.pathname.replace(/\/+$/, "");
+        const isHomePath =
+          path === "" ||
+          path.endsWith("/index.html") ||
+          path.endsWith("/mathteach");
+
+        cameFromHomePage = sameOrigin && isHomePath;
+      }
+    } catch (error) {
+      cameFromHomePage = false;
+    }
+
+    if (cameFromHomePage && window.history.length > 1) {
+      event.preventDefault();
+      window.history.back();
+    }
+    // 不是從首頁進入時，不阻止預設行為，直接使用 href="../index.html"。
+  });
+})();
+</script>
 
 <script type="module">
 
@@ -7276,96 +7324,6 @@ function restartCurrentModeWithConfirmation() {
     mode
   );
 }
-
-
-function returnToGrade8FirstSemester() {
-
-  const referrer =
-    String(
-      document.referrer ||
-      ""
-    );
-
-
-  let cameFromHomePage =
-    false;
-
-
-  try {
-
-    if (
-      referrer
-    ) {
-
-      const referrerURL =
-        new URL(
-          referrer
-        );
-
-
-      const sameOrigin =
-        referrerURL.origin ===
-        window.location.origin;
-
-
-      const path =
-        referrerURL.pathname
-          .replace(
-            /\/+$/,
-            ""
-          );
-
-
-      const isHomePath =
-
-        path ===
-        "" ||
-
-        path.endsWith(
-          "/index.html"
-        ) ||
-
-        path.endsWith(
-          "/mathteach"
-        );
-
-
-      cameFromHomePage =
-        sameOrigin &&
-        isHomePath;
-    }
-
-  } catch (
-    error
-  ) {
-
-    cameFromHomePage =
-      false;
-  }
-
-
-  if (
-    cameFromHomePage &&
-    window.history.length >
-    1
-  ) {
-
-    window.history.back();
-
-    return;
-  }
-
-
-  window.location.href =
-    "../index.html";
-}
-
-
-$("semester-return-button")
-  ?.addEventListener(
-    "click",
-    returnToGrade8FirstSemester
-  );
 
 
 
