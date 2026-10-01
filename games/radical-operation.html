@@ -213,6 +213,7 @@
     /*
     ==================================================
     學期返回鍵｜僅顯示在模式選擇頁
+    位於遊戲外框右上角
     ==================================================
     */
 
@@ -220,9 +221,15 @@
 
       display: flex;
       justify-content: flex-end;
+      align-items: center;
 
       margin:
-        -4px 0 14px;
+        0 8px 10px 0;
+    }
+
+
+    .semester-return-row.hidden {
+      display: none !important;
     }
 
 
@@ -235,12 +242,14 @@
 
       gap: 6px;
 
+      min-width: 220px;
+
       padding:
-        10px 15px;
+        10px 18px;
 
       border:
         2px solid
-        var(--primary-border);
+        var(--primary);
 
       border-radius:
         999px;
@@ -251,25 +260,44 @@
       color:
         var(--primary-dark);
 
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 900;
 
       cursor: pointer;
 
       box-shadow:
         0 4px 0
-        rgba(74,20,140,.14);
+        rgba(74,20,140,.16);
+
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        background .15s ease;
+    }
+
+
+    .semester-return-button:hover {
+
+      transform:
+        translateY(-2px);
+
+      background:
+        var(--primary-light);
+
+      box-shadow:
+        0 6px 0
+        rgba(74,20,140,.16);
     }
 
 
     .semester-return-button:active {
 
       transform:
-        translateY(2px);
+        translateY(1px);
 
       box-shadow:
         0 2px 0
-        rgba(74,20,140,.14);
+        rgba(74,20,140,.16);
     }
 
 
@@ -2020,6 +2048,18 @@
           66px 90px minmax(140px,1fr);
       }
 
+
+      .semester-return-row {
+        margin: 0 2px 8px 0;
+      }
+
+
+      .semester-return-button {
+        min-width: 0;
+        padding: 9px 14px;
+        font-size: 14px;
+      }
+
     }
 
   </style>
@@ -2034,6 +2074,22 @@
 
 
   <div id="commonHeaderMount"></div>
+
+
+  <div
+    id="semester-return-row"
+    class="semester-return-row"
+  >
+
+    <button
+      id="semester-return-button"
+      class="semester-return-button"
+      type="button"
+    >
+      ↩️ 重返八年級上學期
+    </button>
+
+  </div>
 
 
   <main class="game-card">
@@ -2092,19 +2148,6 @@
       id="start-screen"
       class="screen"
     >
-
-
-      <div class="semester-return-row">
-
-        <button
-          id="semester-return-button"
-          class="semester-return-button"
-          type="button"
-        >
-          ↩️ 重返八年級上學期
-        </button>
-
-      </div>
 
 
       <div class="mode-grid">
@@ -6300,6 +6343,21 @@ function showOnly(
     );
 
 
+  const semesterReturnRow =
+    $(
+      "semester-return-row"
+    );
+
+
+  semesterReturnRow
+    ?.classList
+    .toggle(
+      "hidden",
+      id !==
+        "start-screen"
+    );
+
+
   if (
     id ===
     "quiz-screen"
@@ -9309,27 +9367,51 @@ function returnToGrade8FirstSemester() {
   stopTimer();
 
 
+  const referrer =
+    document.referrer ||
+    "";
+
+
   try {
 
-    const referrer =
-      document.referrer
-        ? new URL(
-            document.referrer
-          )
-        : null;
-
-
     if (
-      referrer &&
-      referrer.origin ===
-        window.location.origin &&
-      window.history.length >
-        1
+      referrer
     ) {
 
-      window.history.back();
+      const referrerURL =
+        new URL(
+          referrer
+        );
 
-      return;
+
+      const cameFromThisSiteHome =
+
+        referrerURL.origin ===
+          window.location.origin &&
+
+        (
+          /\/index\.html$/i
+            .test(
+              referrerURL.pathname
+            ) ||
+
+          /\/mathteach\/?$/i
+            .test(
+              referrerURL.pathname
+            )
+        );
+
+
+      if (
+        cameFromThisSiteHome &&
+        window.history.length >
+          1
+      ) {
+
+        window.history.back();
+
+        return;
+      }
     }
 
   } catch (
@@ -9337,7 +9419,7 @@ function returnToGrade8FirstSemester() {
   ) {
 
     console.warn(
-      "返回上一頁判斷失敗：",
+      "判斷返回來源失敗：",
       error
     );
   }
