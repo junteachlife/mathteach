@@ -618,6 +618,59 @@ button:disabled{opacity:.48;cursor:not-allowed}
 .choice-grid{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:10px!important;padding-bottom:8px!important}.choice-button{flex:0 0 auto!important;min-width:170px!important}.question-content{text-align:left!important;align-items:stretch!important}.stat-table-wrap{width:100%;overflow-x:auto;margin:10px 0}.stat-table{width:100%;min-width:520px;border-collapse:collapse;font-size:16px;background:#fff}.stat-table th,.stat-table td{border:1px solid #94a3b8;padding:8px 10px;text-align:center}.stat-table th{background:#ecfeff;color:#155e75}.stat-chart{width:100%;max-width:720px;margin:10px auto;padding:10px;border:1px solid #cbd5e1;border-radius:14px;background:#fff}.stat-chart svg{display:block;width:100%;height:auto}.chart-grid{stroke:#e2e8f0;stroke-width:1}.chart-axis{stroke:#334155;stroke-width:2}.chart-line{fill:none;stroke:var(--primary);stroke-width:4}.chart-dot{fill:var(--primary-dark)}.chart-label{font-size:13px;fill:#475569;font-family:"Microsoft JhengHei",sans-serif}.chart-title{font-size:15px;font-weight:700;fill:#0f172a}.keep-unit{display:inline-block;white-space:nowrap}
 </style>
 
+  <style>
+    /*
+    ==================================================
+    學期返回鍵｜只顯示於模式選擇頁
+    ==================================================
+    */
+    .semester-return-row{
+      display:flex;
+      justify-content:flex-end;
+      margin:-4px 0 14px;
+    }
+
+    .semester-return-button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:10px 15px;
+      border:2px solid var(--primary-border);
+      border-radius:999px;
+      background:#fff;
+      color:var(--primary-dark);
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 4px 0 rgba(15,23,42,.10);
+      transition:
+        transform .12s ease,
+        box-shadow .12s ease,
+        background .12s ease;
+    }
+
+    .semester-return-button:hover{
+      background:var(--primary-light);
+    }
+
+    .semester-return-button:active{
+      transform:translateY(2px);
+      box-shadow:0 2px 0 rgba(15,23,42,.10);
+    }
+
+    @media(max-width:760px){
+      .semester-return-row{
+        margin-top:-2px;
+      }
+
+      .semester-return-button{
+        padding:9px 13px;
+        font-size:13px;
+      }
+    }
+  </style>
+
 </head>
 <body>
 <div class="page-shell">
@@ -638,6 +691,18 @@ button:disabled{opacity:.48;cursor:not-allowed}
 </header>
 
 <section id="start-screen" class="screen">
+
+  <div class="semester-return-row">
+    <button
+      id="semester-return-button"
+      class="semester-return-button"
+      type="button"
+      aria-label="重返八年級上學期"
+    >
+      ↩️ 重返八年級上學期
+    </button>
+  </div>
+
   <h2>選擇挑戰模式</h2>
   <div class="mode-grid">
     <article class="mode-card"><div class="mode-icon">📋</div><div class="mode-title">相對次數分配表</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">由次數與全體次數計算相對次數，並反推總人數或該組次數。</p><button class="mode-button" data-mode="relativeFrequency" type="button">開始挑戰</button></article>
@@ -2990,6 +3055,52 @@ function showReview(){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
+
+/*
+==================================================
+重新測驗確認／返回八年級上學期
+==================================================
+*/
+
+function confirmRestartTest(){
+  return window.confirm(
+    "確定要重新測驗目前模式嗎？\n目前的作答進度與測驗時間將重新開始。"
+  );
+}
+
+function restartCurrentModeWithConfirmation(){
+  if(!confirmRestartTest())return;
+  startGame(modeId);
+}
+
+function returnToGrade8FirstSemester(){
+  const referrer=String(document.referrer||"");
+  let cameFromHomePage=false;
+
+  try{
+    if(referrer){
+      const referrerURL=new URL(referrer);
+      const sameOrigin=referrerURL.origin===window.location.origin;
+      const path=referrerURL.pathname.replace(/\/+$/,"");
+      const isHomePath=
+        path==="" ||
+        path.endsWith("/index.html") ||
+        path.endsWith("/mathteach");
+
+      cameFromHomePage=sameOrigin&&isHomePath;
+    }
+  }catch(error){
+    cameFromHomePage=false;
+  }
+
+  if(cameFromHomePage&&window.history.length>1){
+    window.history.back();
+    return;
+  }
+
+  window.location.href="../index.html";
+}
+
 /*
 ==================================================
 Events
@@ -2999,17 +3110,18 @@ Events
 document.querySelectorAll("[data-mode]").forEach(button=>{
   button.addEventListener("click",()=>startGame(button.dataset.mode));
 });
+$("semester-return-button")?.addEventListener("click",returnToGrade8FirstSemester);
 $("submit-button").addEventListener("click",submitAnswer);
 $("next-button").addEventListener("click",nextQuestion);
-$("restart-button").addEventListener("click",()=>startGame(modeId));
+$("restart-button").addEventListener("click",restartCurrentModeWithConfirmation);
 $("quit-button").addEventListener("click",()=>{
   if(timerId!==null){clearInterval(timerId);timerId=null}
   showOnly("start-screen");
 });
-$("again-button").addEventListener("click",()=>startGame(modeId));
+$("again-button").addEventListener("click",restartCurrentModeWithConfirmation);
 $("result-mode-button").addEventListener("click",()=>showOnly("start-screen"));
 $("review-button").addEventListener("click",showReview);
-$("review-again-button").addEventListener("click",()=>startGame(modeId));
+$("review-again-button").addEventListener("click",restartCurrentModeWithConfirmation);
 $("review-result-button").addEventListener("click",()=>showOnly("result-screen"));
 
 document.addEventListener("keydown",event=>{
