@@ -8,7 +8,7 @@
 <link
   rel="icon"
   type="image/svg+xml"
-  href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%2300897b'/%3E%3Crect x='7' y='7' width='50' height='50' rx='12' fill='%23e0f2f1' stroke='%2300695c' stroke-width='3'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='31' font-family='Arial,sans-serif' font-weight='900' fill='%2300695c'%3E%C2%B1%3C/text%3E%3C/svg%3E"
+  href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'15'%20fill%3D'%2300897b'%2F%3E%3Crect%20x%3D'7'%20y%3D'7'%20width%3D'50'%20height%3D'50'%20rx%3D'12'%20fill%3D'%23e0f2f1'%20stroke%3D'%2300695c'%20stroke-width%3D'3'%2F%3E%3Ctext%20x%3D'22'%20y%3D'42'%20text-anchor%3D'middle'%20font-size%3D'28'%20font-family%3D'Arial%2Csans-serif'%20font-weight%3D'900'%20fill%3D'%2300695c'%3Ex%3C%2Ftext%3E%3Ctext%20x%3D'43'%20y%3D'40'%20text-anchor%3D'middle'%20font-size%3D'24'%20font-family%3D'Arial%2Csans-serif'%20font-weight%3D'900'%20fill%3D'%237e57c2'%3E%C2%B1%3C%2Ftext%3E%3C%2Fsvg%3E"
 >
 
 <link rel="stylesheet" href="../css/scratchpad.css">
@@ -106,8 +106,13 @@ select{
 
 .semester-return-row{
   display:flex;
-  justify-content:center;
-  margin-top:16px;
+  justify-content:flex-end;
+  align-items:center;
+  margin:0 8px 10px 0;
+}
+
+.semester-return-row.hidden{
+  display:none!important;
 }
 
 .semester-return-button{
@@ -739,6 +744,16 @@ select{
   .explanation-math{
     font-size:17px;
   }
+
+  .semester-return-row{
+    margin:0 2px 8px 0;
+  }
+
+  .semester-return-button{
+    min-width:0;
+    padding:9px 14px;
+    font-size:14px;
+  }
 }
 
 @media(max-width:520px){
@@ -760,6 +775,19 @@ select{
 
 <div id="commonHeaderMount"></div>
 
+<div
+  id="semester-return-row"
+  class="semester-return-row"
+>
+  <button
+    id="semester-return-button"
+    class="semester-return-button"
+    type="button"
+  >
+    ↩️ 重返八年級上學期
+  </button>
+</div>
+
 <main class="game-card">
 
 <header class="game-header">
@@ -778,16 +806,6 @@ select{
 <span class="concept-chip">多項式減法</span>
 <span class="concept-chip">去括號</span>
 <span class="concept-chip">分數係數</span>
-</div>
-
-<div class="semester-return-row">
-<button
-  id="semester-return-button"
-  class="semester-return-button"
-  type="button"
->
-↩️ 重返八年級上學期
-</button>
 </div>
 
 </header>
@@ -922,10 +940,6 @@ select{
 
 </div>
 
-<div class="scratchpad-row">
-<div id="scratchpad-mobile-button"></div>
-</div>
-
 <div class="progress-shell">
 <div
   id="progress-bar"
@@ -945,6 +959,10 @@ select{
   class="question-content"
 ></div>
 
+</div>
+
+<div class="scratchpad-row">
+<div id="scratchpad-mobile-button"></div>
 </div>
 
 <div
@@ -1387,6 +1405,20 @@ function showOnly(
           );
       }
     );
+
+  const semesterReturnRow =
+    $(
+      "semester-return-row"
+    );
+
+  semesterReturnRow
+    ?.classList
+    .toggle(
+      "hidden",
+      screenId !==
+        "start-screen"
+    );
+
 
   if (
     screenId ===
@@ -5245,7 +5277,7 @@ function showReview() {
 function confirmRestartTest() {
 
   return window.confirm(
-    "確定要重新測驗嗎？\n目前的作答進度與測驗時間將會重新開始。"
+    "確定要重新測驗目前模式嗎？\n目前的作答進度與測驗時間將會重新開始。"
   );
 }
 
