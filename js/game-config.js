@@ -3,8 +3,9 @@
 數學遊戲樂園：遊戲共用設定
 檔案位置：js/game-config.js
 
-版本：9.4
-八年級上學期第 4、5 章重製同步版
+版本：9.6
+七年級下學期第 1 章 1-1／1-2／1-3 正式上線同步版
+＋八年級下學期第 1 章 1-1／1-2／1-3 正式上線同步版
 ＋一元二次方程式
 ＋排行榜 / 我的成績相容修正版
 ＋九上 1-2／1-3／1-4 正式上線
@@ -641,289 +642,102 @@ export const GAME_CONFIG = {
   ==================================================
   */
 
-
-  simultaneousEquation: {
-
-    id:
-      "simultaneousEquation",
-
-    name:
-      "二元一次聯立方程式",
-
-    shortName:
-      "二元一次聯立方程式",
-
-    semester:
-      "grade7-second",
-
-    grade:
-      7,
-
-    order:
-      1,
-
-    icon:
-      "🔢",
-
-    file:
-      "games/simultaneous-equation.html",
-
-    description:
-      "練習代入消去法與加減消去法，解出兩個未知數。",
-
-    finished:
-      false,
-
-    difficulty:
-      3,
-
-    recommended:
-      false,
-
-    isNew:
-      false,
-
-    ranking: {
-
-      type:
-        "timed"
-
+  "two-variable-linear-equation": {
+    id:"two-variable-linear-equation", section:"1-1",
+    name:"1-1 二元一次方程式大挑戰", shortName:"二元一次方程式",
+    semester:"grade7-second", grade:7, order:1, icon:"🧮",
+    file:"games/two-variable-linear-equation.html",
+    description:"練習二元一次式、代入求值、同類項化簡、二元一次方程式與解，以及正整數解的合理性。",
+    finished:true, difficulty:2, recommended:true, isNew:true, ranking:{type:"speed"},
+    modes:{
+      expressionBasics:"二元一次式與求值",
+      simplify:"二元一次式化簡",
+      equationSolution:"方程式與解",
+      integerSolutions:"正整數解與合理性",
+      comprehensive:"1-1 綜合挑戰"
     },
-
-    modes:
-      {},
-
-    theme: {
-
-      primary:
-        "#3949AB",
-
-      dark:
-        "#283593",
-
-      light:
-        "#E8EAF6",
-
-      border:
-        "#9FA8DA"
-
-    }
-
+    theme:{primary:"#2563EB",dark:"#1D4ED8",light:"#EFF6FF",border:"#93C5FD"}
   },
 
+  "linear-system-solve": {
+    id:"linear-system-solve", section:"1-2",
+    name:"1-2 解二元一次聯立方程式大挑戰", shortName:"解二元一次聯立方程式",
+    semester:"grade7-second", grade:7, order:2, icon:"🔁",
+    file:"games/linear-system-solve.html",
+    description:"練習聯立方程式共同解、代入消去法、加減消去法，以及調整係數與先化簡再求解。",
+    finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{
+      systemMeaning:"聯立方程式與共同解",
+      substitution:"代入消去法",
+      elimination:"加減消去法",
+      coefficientAdjust:"調整係數與化簡",
+      comprehensive:"1-2 綜合挑戰"
+    },
+    theme:{primary:"#7C3AED",dark:"#5B21B6",light:"#F5F3FF",border:"#C4B5FD"}
+  },
 
+  "linear-system-applications": {
+    id:"linear-system-applications", section:"1-3",
+    name:"1-3 二元一次聯立方程式應用大挑戰", shortName:"聯立方程式應用",
+    semester:"grade7-second", grade:7, order:3, icon:"💡",
+    file:"games/linear-system-applications.html",
+    description:"練習總和、價格數量、年齡倍數、分組配置與合理性問題，依課本四步驟建立並解聯立方程式。",
+    finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{
+      directTotal:"直接列式與總和問題",
+      priceQuantity:"價格與數量問題",
+      multipleAge:"倍數、年齡與數字問題",
+      grouping:"分組與配置問題",
+      reasonableness:"合理性與無解判斷",
+      comprehensive:"1-3 綜合挑戰"
+    },
+    theme:{primary:"#0F766E",dark:"#115E59",light:"#ECFDF5",border:"#5EEAD4"}
+  },
+
+  /* 舊版七下聯立方程式 GAME_ID：僅保留舊 Firestore 紀錄辨識，不顯示在首頁。 */
+  simultaneousEquation: {
+    id:"simultaneousEquation", section:"1",
+    name:"舊版 二元一次聯立方程式", shortName:"舊版聯立方程式",
+    semester:"grade7-second", grade:7, order:99, icon:"🔢",
+    file:"games/simultaneous-equation.html",
+    description:"舊版歷史成績相容用。",
+    finished:false, archived:true, difficulty:3, recommended:false, isNew:false, ranking:{type:"timed"},
+    modes:{},
+    theme:{primary:"#64748B",dark:"#475569",light:"#F1F5F9",border:"#CBD5E1"}
+  },
 
   coordinate: {
-
-    id:
-      "coordinate",
-
-    name:
-      "直角坐標與方程式圖形",
-
-    shortName:
-      "直角坐標與方程式圖形",
-
-    semester:
-      "grade7-second",
-
-    grade:
-      7,
-
-    order:
-      2,
-
-    icon:
-      "📍",
-
-    file:
-      "games/coordinate.html",
-
-    description:
-      "認識坐標平面，練習描點與判讀二元一次方程式圖形。",
-
-    finished:
-      false,
-
-    difficulty:
-      2,
-
-    recommended:
-      false,
-
-    isNew:
-      false,
-
-    ranking: {
-
-      type:
-        "timed"
-
-    },
-
-    modes:
-      {},
-
-    theme: {
-
-      primary:
-        "#039BE5",
-
-      dark:
-        "#0277BD",
-
-      light:
-        "#E1F5FE",
-
-      border:
-        "#81D4FA"
-
-    }
-
+    id:"coordinate", section:"2",
+    name:"直角坐標與方程式圖形", shortName:"直角坐標與方程式圖形",
+    semester:"grade7-second", grade:7, order:4, icon:"📍",
+    file:"games/coordinate.html",
+    description:"認識坐標平面，練習描點與判讀二元一次方程式圖形。",
+    finished:false, difficulty:2, recommended:false, isNew:false, ranking:{type:"timed"},
+    modes:{},
+    theme:{primary:"#039BE5",dark:"#0277BD",light:"#E1F5FE",border:"#81D4FA"}
   },
-
-
 
   ratio: {
-
-    id:
-      "ratio",
-
-    name:
-      "比例式、正比與反比",
-
-    shortName:
-      "比例式、正比與反比",
-
-    semester:
-      "grade7-second",
-
-    grade:
-      7,
-
-    order:
-      3,
-
-    icon:
-      "📏",
-
-    file:
-      "games/ratio.html",
-
-    description:
-      "練習比例式、正比、反比與實際應用題。",
-
-    finished:
-      false,
-
-    difficulty:
-      2,
-
-    recommended:
-      false,
-
-    isNew:
-      false,
-
-    ranking: {
-
-      type:
-        "timed"
-
-    },
-
-    modes:
-      {},
-
-    theme: {
-
-      primary:
-        "#F4511E",
-
-      dark:
-        "#D84315",
-
-      light:
-        "#FBE9E7",
-
-      border:
-        "#FFAB91"
-
-    }
-
+    id:"ratio", section:"3",
+    name:"比例式、正比與反比", shortName:"比例式、正比與反比",
+    semester:"grade7-second", grade:7, order:5, icon:"📏",
+    file:"games/ratio.html",
+    description:"練習比例式、正比、反比與實際應用題。",
+    finished:false, difficulty:2, recommended:false, isNew:false, ranking:{type:"timed"},
+    modes:{},
+    theme:{primary:"#F4511E",dark:"#D84315",light:"#FBE9E7",border:"#FFAB91"}
   },
-
-
 
   statistics: {
-
-    id:
-      "statistics",
-
-    name:
-      "統計圖表",
-
-    shortName:
-      "統計圖表",
-
-    semester:
-      "grade7-second",
-
-    grade:
-      7,
-
-    order:
-      4,
-
-    icon:
-      "📊",
-
-    file:
-      "games/statistics.html",
-
-    description:
-      "練習次數分配、統計圖表與資料判讀。",
-
-    finished:
-      false,
-
-    difficulty:
-      2,
-
-    recommended:
-      false,
-
-    isNew:
-      false,
-
-    ranking: {
-
-      type:
-        "timed"
-
-    },
-
-    modes:
-      {},
-
-    theme: {
-
-      primary:
-        "#00838F",
-
-      dark:
-        "#006064",
-
-      light:
-        "#E0F7FA",
-
-      border:
-        "#80DEEA"
-
-    }
-
+    id:"statistics", section:"5",
+    name:"統計圖表", shortName:"統計圖表",
+    semester:"grade7-second", grade:7, order:6, icon:"📊",
+    file:"games/statistics.html",
+    description:"練習次數分配、統計圖表與資料判讀。",
+    finished:false, difficulty:2, recommended:false, isNew:false, ranking:{type:"timed"},
+    modes:{},
+    theme:{primary:"#00838F",dark:"#006064",light:"#E0F7FA",border:"#80DEEA"}
   },
-
 
 
   /*
@@ -1644,6 +1458,44 @@ export const GAME_CONFIG = {
     theme:{primary:"#00838F",dark:"#006064",light:"#E0F7FA",border:"#80DEEA"}
   },
 
+
+  /* ==================================================
+  八下第 1 章｜數列與級數
+  ================================================== */
+
+  "sequence-arithmetic": {
+    id:"sequence-arithmetic", section:"1-1",
+    name:"1-1 認識數列與等差數列大挑戰", shortName:"數列與等差數列",
+    semester:"grade8-second", grade:8, order:1, icon:"🔢",
+    file:"games/sequence-arithmetic.html",
+    description:"練習數列與一般項、等差數列、公差、第 n 項、等差中項與規律生活應用。",
+    finished:true, difficulty:2, recommended:true, isNew:true, ranking:{type:"speed"},
+    modes:{sequenceBasics:"數列與一般項",arithmeticJudge:"等差數列與公差",arithmeticNth:"第 n 項與反推",arithmeticMean:"等差中項",arithmeticApplication:"規律與生活應用",comprehensive:"1-1 綜合挑戰"},
+    theme:{primary:"#1565C0",dark:"#0D47A1",light:"#E3F2FD",border:"#90CAF9"}
+  },
+
+  "arithmetic-series": {
+    id:"arithmetic-series", section:"1-2",
+    name:"1-2 等差級數大挑戰", shortName:"等差級數",
+    semester:"grade8-second", grade:8, order:2, icon:"➕",
+    file:"games/arithmetic-series.html",
+    description:"練習級數觀念、等差級數兩種求和公式、未知量反推與生活情境應用。",
+    finished:true, difficulty:2, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{seriesConcept:"級數觀念與高斯配對",sumFirstLast:"首項、末項與項數求和",sumFirstDiff:"首項、公差與項數求和",findUnknown:"反求項數與公差",seriesApplication:"等差級數應用",comprehensive:"1-2 綜合挑戰"},
+    theme:{primary:"#00897B",dark:"#00695C",light:"#E0F2F1",border:"#80CBC4"}
+  },
+
+  "geometric-sequence": {
+    id:"geometric-sequence", section:"1-3",
+    name:"1-3 等比數列大挑戰", shortName:"等比數列",
+    semester:"grade8-second", grade:8, order:3, icon:"✖️",
+    file:"games/geometric-sequence.html",
+    description:"練習等比數列、公比、第 n 項、缺項與條件反推、等比中項，以及生活應用。",
+    finished:true, difficulty:2, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{geometricJudge:"等比數列與公比",geometricNth:"第 n 項與項數",geometricComplete:"缺項與條件反推",geometricMean:"等比中項",geometricApplication:"等比數列應用",comprehensive:"1-3 綜合挑戰"},
+    theme:{primary:"#7B1FA2",dark:"#6A1B9A",light:"#F3E5F5",border:"#CE93D8"}
+  },
+
   /* 舊版一元二次方程式 GAME_ID：僅保留舊 Firestore 紀錄辨識，不顯示在首頁。 */
   quadraticEquation: {
     id:"quadraticEquation", section:"4",
@@ -2325,13 +2177,24 @@ export function getGameDisplayName(
 
 
 console.log(
-  "game-config.js 九上六遊戲整合版已成功載入"
+  "game-config.js v9.6 七下第 1 章同步版已成功載入"
 );
 
 
 console.log(
   "正式上架遊戲數：",
   getFinishedGames().length
+);
+
+
+console.log(
+  "七年級下學期正式遊戲：",
+  getFinishedGamesBySemester(
+    "grade7-second"
+  ).map(
+    game =>
+      game.name
+  )
 );
 
 
@@ -2344,3 +2207,14 @@ console.log(
       game.name
   )
 );
+
+console.log(
+  "八年級下學期正式遊戲：",
+  getFinishedGamesBySemester(
+    "grade8-second"
+  ).map(
+    game =>
+      game.name
+  )
+);
+
