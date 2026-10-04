@@ -466,6 +466,50 @@ button:disabled{opacity:.48;cursor:not-allowed}
   font-weight:900;
   vertical-align:middle;
 }
+
+/* ==================================================
+九上統一：模式首頁右上角重返鍵
+================================================== */
+.semester-return-row{
+  display:flex;
+  justify-content:flex-end;
+  margin:0 0 10px;
+}
+.semester-return-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:9px 14px;
+  border:1.5px solid var(--primary);
+  border-radius:12px;
+  background:#fff;
+  color:var(--primary-dark);
+  font-size:15px;
+  font-weight:900;
+  line-height:1.2;
+  text-decoration:none;
+  box-shadow:0 5px 14px rgba(15,23,42,.08);
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
+}
+.semester-return-link:hover{
+  transform:translateY(-1px);
+  background:var(--primary-light);
+  box-shadow:0 7px 18px rgba(15,23,42,.11);
+}
+.semester-return-link:focus-visible{
+  outline:3px solid var(--primary-border);
+  outline-offset:2px;
+}
+@media(max-width:760px){
+  .semester-return-row{margin-bottom:8px}
+  .semester-return-link{
+    min-height:42px;
+    padding:9px 12px;
+    font-size:14px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -480,7 +524,16 @@ button:disabled{opacity:.48;cursor:not-allowed}
 </header>
 
 <section id="start-screen" class="screen">
-  <h2>選擇挑戰模式</h2>
+  
+<div id="semester-return-row" class="semester-return-row">
+  <a
+    id="semester-return-link"
+    class="semester-return-link"
+    href="../index.html"
+    aria-label="重返九年級上學期"
+  >↩️ 重返九年級上學期</a>
+</div>
+<h2>選擇挑戰模式</h2>
   <div class="mode-grid">
     
 <article class="mode-card">
@@ -641,6 +694,39 @@ button:disabled{opacity:.48;cursor:not-allowed}
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
+<script>
+(() => {
+  const link = document.getElementById("semester-return-link");
+  if (!link) return;
+
+  link.addEventListener("click", event => {
+    try {
+      const referrer = String(document.referrer || "");
+      if (!referrer) return;
+
+      const referrerURL = new URL(referrer);
+      if (referrerURL.origin !== window.location.origin) return;
+
+      const currentRoot = window.location.pathname
+        .replace(/\/games\/[^/]*$/, "")
+        .replace(/\/+$/, "");
+
+      const refPath = referrerURL.pathname.replace(/\/+$/, "");
+      const isHomePage =
+        refPath === currentRoot ||
+        refPath === `${currentRoot}/index.html`;
+
+      if (isHomePage && window.history.length > 1) {
+        event.preventDefault();
+        window.history.back();
+      }
+    } catch (error) {
+      /* href="../index.html" remains the fallback */
+    }
+  });
+})();
+</script>
+
 <script type="module">
 
 "use strict";
@@ -1318,6 +1404,11 @@ Screen
 */
 
 function showOnly(id){
+  const semesterReturnRow = document.getElementById("semester-return-row");
+  if (semesterReturnRow) {
+    semesterReturnRow.classList.toggle("hidden", id !== "start-screen");
+  }
+
   ["start-screen","quiz-screen","result-screen","review-screen"].forEach(screen=>{
     $(screen).classList.toggle("hidden",screen!==id);
   });
@@ -1974,6 +2065,35 @@ $("result-mode-button").addEventListener("click",()=>showOnly("start-screen"));
 $("review-button").addEventListener("click",showReview);
 $("review-again-button").addEventListener("click",()=>startGame(modeId));
 $("review-result-button").addEventListener("click",()=>showOnly("result-screen"));
+
+
+/*
+==================================================
+九上統一：重新測驗二次確認
+==================================================
+*/
+function confirmRestartTest(){
+  return window.confirm(
+    "確定要重新測驗嗎？\n目前的作答進度將會重新開始。"
+  );
+}
+
+["restart-button","again-button","review-again-button"].forEach(id => {
+  const button = document.getElementById(id);
+  if (!button) return;
+
+  button.addEventListener(
+    "click",
+    event => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      if (!confirmRestartTest()) return;
+      startGame(modeId);
+    },
+    true
+  );
+});
 
 document.addEventListener("keydown",event=>{
   if(event.key!=="Enter" || $("quiz-screen").classList.contains("hidden"))return;
