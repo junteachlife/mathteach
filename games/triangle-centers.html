@@ -612,6 +612,47 @@ button:disabled{opacity:.48;cursor:not-allowed}
   font-weight:900;
   vertical-align:middle;
 }
+
+/*
+==================================================
+九年級上學期返回鍵
+僅放在模式首頁、位於遊戲主外框內
+==================================================
+*/
+.mode-home-toolbar{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  margin:0 0 12px;
+}
+.semester-return-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:9px 15px;
+  border:1.5px solid var(--primary-border);
+  border-radius:14px;
+  background:#fff;
+  color:var(--primary-dark);
+  text-decoration:none;
+  font-size:14px;
+  font-weight:900;
+  box-shadow:0 6px 16px rgba(15,23,42,.08);
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;
+  touch-action:manipulation;
+}
+.semester-return-link:hover{
+  transform:translateY(-1px);
+  border-color:var(--primary);
+  box-shadow:0 8px 20px rgba(15,23,42,.12);
+}
+.semester-return-link:active{transform:translateY(0)}
+@media(max-width:760px){
+  .mode-home-toolbar{margin-bottom:10px}
+  .semester-return-link{min-height:42px;padding:8px 12px;font-size:13px}
+}
+
 </style>
 </head>
 <body>
@@ -634,6 +675,10 @@ button:disabled{opacity:.48;cursor:not-allowed}
 </header>
 
 <section id="start-screen" class="screen">
+  <div class="mode-home-toolbar">
+    <a id="semester-return-link" class="semester-return-link" href="../index.html">↩️ 重返九年級上學期</a>
+  </div>
+
   <h2>選擇挑戰模式</h2>
   <div class="mode-grid">
 
@@ -760,6 +805,31 @@ button:disabled{opacity:.48;cursor:not-allowed}
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
+
+<script>
+(function(){
+  const returnLink=document.getElementById("semester-return-link");
+  if(!returnLink) return;
+  returnLink.addEventListener("click",function(event){
+    const referrer=String(document.referrer||"");
+    let cameFromHomePage=false;
+    try{
+      if(referrer){
+        const referrerURL=new URL(referrer);
+        const sameOrigin=referrerURL.origin===window.location.origin;
+        const path=referrerURL.pathname.replace(/\/+$/,"");
+        const isHomePath=path===""||path.endsWith("/index.html")||path.endsWith("/mathteach");
+        cameFromHomePage=sameOrigin&&isHomePath;
+      }
+    }catch(error){cameFromHomePage=false;}
+    if(cameFromHomePage&&window.history.length>1){
+      event.preventDefault();
+      window.history.back();
+    }
+  });
+})();
+</script>
+
 <script type="module">
 
 "use strict";
@@ -3011,15 +3081,27 @@ document.querySelectorAll("[data-mode]").forEach(button=>{
 });
 $("submit-button").addEventListener("click",submitAnswer);
 $("next-button").addEventListener("click",nextQuestion);
-$("restart-button").addEventListener("click",()=>startGame(modeId));
+
+function confirmRestartTest(){
+  return window.confirm(
+    "確定要重新測驗嗎？\n目前的作答進度將會重新開始。"
+  );
+}
+
+function restartCurrentModeWithConfirmation(){
+  if(!confirmRestartTest()) return;
+  startGame(modeId);
+}
+
+$("restart-button").addEventListener("click",restartCurrentModeWithConfirmation);
 $("quit-button").addEventListener("click",()=>{
   if(timerId!==null){clearInterval(timerId);timerId=null}
   showOnly("start-screen");
 });
-$("again-button").addEventListener("click",()=>startGame(modeId));
+$("again-button").addEventListener("click",restartCurrentModeWithConfirmation);
 $("result-mode-button").addEventListener("click",()=>showOnly("start-screen"));
 $("review-button").addEventListener("click",showReview);
-$("review-again-button").addEventListener("click",()=>startGame(modeId));
+$("review-again-button").addEventListener("click",restartCurrentModeWithConfirmation);
 $("review-result-button").addEventListener("click",()=>showOnly("result-screen"));
 
 document.addEventListener("keydown",event=>{
