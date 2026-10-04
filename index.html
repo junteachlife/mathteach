@@ -2495,7 +2495,7 @@
 
     import {
       getGamesBySemester
-    } from "./js/game-config.js?v=9.4";
+    } from "./js/game-config.js?v=9.6";
 
 
     import {
@@ -2673,7 +2673,7 @@
 
         const module =
           await import(
-            "./js/announcements.js?v=3"
+            "./js/announcements.js?v=2"
           );
 
 
@@ -2915,8 +2915,11 @@
         id:
           "sequence-arithmetic",
 
+        section:
+          "1-1",
+
         name:
-          "數列與等差數列大挑戰",
+          "認識數列與等差數列大挑戰",
 
         semester:
           "grade8-second",
@@ -2932,13 +2935,19 @@
           "games/sequence-arithmetic.html",
 
         description:
-          "認識數列規律、等差數列、公差與一般項。",
+          "練習數列與一般項、等差數列、公差、第 n 項、等差中項與生活應用。",
 
         finished:
-          false,
+          true,
 
         difficulty:
           2,
+
+        recommended:
+          true,
+
+        isNew:
+          true,
 
         theme:
           theme(
@@ -2955,6 +2964,9 @@
 
         id:
           "arithmetic-series",
+
+        section:
+          "1-2",
 
         name:
           "等差級數大挑戰",
@@ -2973,13 +2985,19 @@
           "games/arithmetic-series.html",
 
         description:
-          "練習等差級數的項數、首項、末項與總和。",
+          "練習等差級數兩種求和公式、未知量反推與生活情境應用。",
 
         finished:
-          false,
+          true,
 
         difficulty:
           2,
+
+        recommended:
+          false,
+
+        isNew:
+          true,
 
         theme:
           theme(
@@ -2996,6 +3014,9 @@
 
         id:
           "geometric-sequence",
+
+        section:
+          "1-3",
 
         name:
           "等比數列大挑戰",
@@ -3014,13 +3035,19 @@
           "games/geometric-sequence.html",
 
         description:
-          "認識等比數列、公比與一般項。",
+          "練習等比數列、公比、第 n 項、等比中項與摺紙、反彈、縮放等應用。",
 
         finished:
-          false,
+          true,
 
         difficulty:
           2,
+
+        recommended:
+          false,
+
+        isNew:
+          true,
 
         theme:
           theme(
