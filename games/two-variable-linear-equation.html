@@ -81,12 +81,47 @@ function mathWorkHTML(lines){return `<div class="math-work">${lines.map(line=>`<
 function signedNumberList(values){return values.map((n,i)=>{n=Number(n);if(i===0)return fmt(n);return n>=0?`＋${fmt(n)}`:`－${fmt(Math.abs(n))}`}).join("")}
 
 function playGameSound(method){try{const m=window.MathGameSound||window.GameSound;if(m&&typeof m[method]==="function")Promise.resolve(m[method]()).catch(()=>{})}catch(e){console.warn("音效播放失敗",e)}}
-function showOnly(id){["start-screen","quiz-screen","result-screen","review-screen"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function showOnly(id){
+  ["start-screen","quiz-screen","result-screen","review-screen"].forEach(
+    x=>$(x).classList.toggle("hidden",x!==id)
+  );
+
+  if(id==="quiz-screen"){
+    ensureScratchpadButton();
+    if(typeof window.showGameScratchpadButton==="function"){
+      window.showGameScratchpadButton();
+    }
+  }else{
+    if(typeof window.hideGameScratchpadButton==="function"){
+      window.hideGameScratchpadButton();
+    }
+  }
+}
 function startTimer(){startTime=Date.now();elapsed=0;$("timer-display").textContent="00:00";clearInterval(timerId);timerId=setInterval(()=>{elapsed=Math.floor((Date.now()-startTime)/1000);$("timer-display").textContent=formatTime(elapsed)},1000)}
 function stopTimer(){clearInterval(timerId);timerId=null;if(startTime)elapsed=Math.max(elapsed,Math.floor((Date.now()-startTime)/1000))}
 function formatTime(s){return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}
 function moveScratchpadButton(){const mount=$("scratchpad-mobile-button"),btn=$("scratchpadOpenButton");if(mount&&btn&&!mount.contains(btn))mount.appendChild(btn)}
-function ensureScratchpadButton(){moveScratchpadButton();let c=0;const t=setInterval(()=>{c++;moveScratchpadButton();if($("scratchpadOpenButton")||c>=30)clearInterval(t)},60)}
+function ensureScratchpadButton(){
+  moveScratchpadButton();
+
+  let c=0;
+  const t=setInterval(()=>{
+    c++;
+    moveScratchpadButton();
+
+    if($("scratchpadOpenButton")){
+      if(typeof window.showGameScratchpadButton==="function"){
+        window.showGameScratchpadButton();
+      }
+      clearInterval(t);
+      return;
+    }
+
+    if(c>=30){
+      clearInterval(t);
+    }
+  },60);
+}
 function renderAnswer(q){selectedChoice=null;const area=$("answer-area");if(q.type==="choice"){area.innerHTML=`<div class="answer-title">請選擇答案</div><div class="choice-grid">${q.choices.map(c=>`<button class="choice-button" type="button" data-choice="${esc(c)}">${c}</button>`).join("")}</div>`;area.querySelectorAll(".choice-button").forEach(btn=>btn.addEventListener("click",()=>{area.querySelectorAll(".choice-button").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");selectedChoice=btn.dataset.choice}))}else if(q.type==="number"){const frac=needsFraction(q.answer);area.innerHTML=`<div class="answer-title">請輸入答案</div>${scalarInputHTML("number-answer",q.answer,"number-answer")}<div class="answer-help">${frac?"答案為分數：上格填分子、下格填分母；若為負數請選負號。":"請直接輸入數值。"}</div>`;setTimeout(()=>$(frac?"number-answer-num":"number-answer-whole")?.focus(),0)}else{const fx=needsFraction(q.answer.x),fy=needsFraction(q.answer.y);area.innerHTML=`<div class="answer-title">請輸入兩個未知數的值</div><div class="pair-answer"><label class="pair-box ${fx?"fraction-pair":""}"><span class="pair-label">${q.labels[0]}＝</span>${scalarInputHTML("pair-x",q.answer.x,"pair-input")}</label><label class="pair-box ${fy?"fraction-pair":""}"><span class="pair-label">${q.labels[1]}＝</span>${scalarInputHTML("pair-y",q.answer.y,"pair-input")}</label></div><div class="answer-help">若答案為分數，會直接顯示分子、分母輸入格，不需要輸入斜線。</div>`;setTimeout(()=>$(fx?"pair-x-num":"pair-x-whole")?.focus(),0)}}
 function currentAnswer(q){if(q.type==="choice")return selectedChoice;if(q.type==="number")return readScalar("number-answer",q.answer);return{x:readScalar("pair-x",q.answer.x),y:readScalar("pair-y",q.answer.y)}}
 function answerValid(q,a){if(q.type==="choice")return a!==null;if(q.type==="number")return a!==null;return a.x!==null&&a.y!==null}
@@ -104,8 +139,28 @@ async function showResult(){stopTimer();const score=Math.round(correct/questions
 async function saveScore(score){if(scoreSaved)return;scoreSaved=true;const status=$("save-status");status.textContent="⏳ 正在儲存成績…";try{const m=await import("../js/scores.js?v=7");if(typeof m.saveGameScore!=="function")throw new Error("找不到 saveGameScore");const r=await m.saveGameScore({game:GAME_ID,mode:modeId,score,correctCount:correct,wrongCount:wrong,maxCombo,playTime:elapsed,totalQuestions:questions.length,accuracy:score});if(r?.success){status.textContent="✅ 本次成績已儲存。";status.style.color="#15803d"}else if(r?.reason==="not-logged-in"){status.textContent="ℹ️ 尚未登入，因此本次成績沒有儲存。";status.style.color="#b45309"}else{status.textContent="⚠️ 成績暫時無法儲存。";status.style.color="#b91c1c"}}catch(e){console.error("成績儲存失敗",e);status.textContent="⚠️ 本次遊戲已完成，但成績暫時無法儲存。";status.style.color="#b91c1c"}}
 function emitRPG(score){if(rpgEmitted)return;rpgEmitted=true;const detail={gameId:GAME_ID,modeId,chapter:CHAPTER,score,correct,wrong,total:questions.length,playTime:elapsed,accuracy:score,maxCombo,attemptId,difficultyWeight:MODES[modeId]?.difficultyWeight||1};window.dispatchEvent(new CustomEvent("mathgame:session-complete",{detail}));try{window.MathGameProgress?.completeLearningSession?.(detail)}catch(e){}}
 function showReview(){$("review-list").innerHTML=records.map(r=>`<article class="review-card ${r.correct?"correct-review":"wrong-review"}"><div class="review-title">第 ${r.number} 題 ${r.correct?"✅":"❌"}</div><div class="review-question">${r.question.html}</div><div class="review-answer-line">你的答案：<strong>${r.userAnswerHTML}</strong></div><div class="review-answer-line">正確答案：<strong>${answerHTML(r.question)}</strong></div>${explanationHTML(r.question)}</article>`).join("");showOnly("review-screen");window.scrollTo({top:0,behavior:"smooth"})}
-function backToModes(){stopTimer();showOnly("start-screen");window.scrollTo({top:0,behavior:"smooth"})}
-document.querySelectorAll(".mode-button").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));$("submit-button").addEventListener("click",submitAnswer);$("next-button").addEventListener("click",nextQuestion);$("restart-button").addEventListener("click",restartCurrentModeWithConfirmation);$("quit-button").addEventListener("click",backToModes);$("again-button").addEventListener("click",restartCurrentModeWithConfirmation);$("review-button").addEventListener("click",showReview);$("result-mode-button").addEventListener("click",backToModes);$("review-again-button").addEventListener("click",restartCurrentModeWithConfirmation);$("review-result-button").addEventListener("click",()=>showOnly("result-screen"));document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;if(!$("quiz-screen").classList.contains("hidden")){if(answered)nextQuestion();else submitAnswer()}});ensureScratchpadButton();
+function confirmChangeMode(){
+  return window.confirm(
+    "確定要重選模式嗎？\n目前這次的作答進度將會結束，並返回模式選擇畫面。"
+  );
+}
+
+function backToModes(){
+  stopTimer();
+
+  if(typeof window.hideGameScratchpadButton==="function"){
+    window.hideGameScratchpadButton();
+  }
+
+  showOnly("start-screen");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function backToModesWithConfirmation(){
+  if(!confirmChangeMode())return;
+  backToModes();
+}
+document.querySelectorAll(".mode-button").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));$("submit-button").addEventListener("click",submitAnswer);$("next-button").addEventListener("click",nextQuestion);$("restart-button").addEventListener("click",restartCurrentModeWithConfirmation);$("quit-button").addEventListener("click",backToModesWithConfirmation);$("again-button").addEventListener("click",restartCurrentModeWithConfirmation);$("review-button").addEventListener("click",showReview);$("result-mode-button").addEventListener("click",backToModesWithConfirmation);$("review-again-button").addEventListener("click",restartCurrentModeWithConfirmation);$("review-result-button").addEventListener("click",()=>showOnly("result-screen"));document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;if(!$("quiz-screen").classList.contains("hidden")){if(answered)nextQuestion();else submitAnswer()}});ensureScratchpadButton();
 
 
 function lin(a,b,c=0){const parts=[];const term=(coef,v)=>{if(coef===0)return;const abs=Math.abs(coef);let s=(parts.length===0?(coef<0?"−":""):(coef<0?"－":"＋"));s+=(abs===1?"":abs)+v;parts.push(s)};term(a,"x");term(b,"y");if(c!==0||!parts.length){const abs=Math.abs(c);parts.push((parts.length===0?(c<0?"−":""):(c<0?"－":"＋"))+abs)}return parts.join("")}
