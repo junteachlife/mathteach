@@ -3,8 +3,8 @@
 數學遊戲樂園：玩家資料／公開暱稱
 檔案位置：js/firestore.js
 
-版本：1.1
-2026-10-06 暱稱系統版
+版本：1.3
+2026-10-06 暱稱 7 天修改冷卻版
 ==================================================
 
 users/{uid}
@@ -23,7 +23,8 @@ import {
   doc,
   getDoc,
   setDoc,
-  serverTimestamp
+  serverTimestamp,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -35,6 +36,15 @@ const PUBLIC_PROFILES_COLLECTION = "publicProfiles";
 
 const NICKNAME_MIN_LENGTH = 2;
 const NICKNAME_MAX_LENGTH = 12;
+
+// 學生自行修改暱稱的冷卻時間：7 天（168 小時）。
+const NICKNAME_CHANGE_COOLDOWN_DAYS = 7;
+const NICKNAME_CHANGE_COOLDOWN_MS =
+  NICKNAME_CHANGE_COOLDOWN_DAYS *
+  24 *
+  60 *
+  60 *
+  1000;
 
 function normalizeNickname(value) {
   return String(value ?? "")
@@ -170,6 +180,170 @@ function getPublicPlayerName(
   );
 }
 
+function timestampToMilliseconds(
+  value
+) {
+  if (
+    !value
+  ) {
+    return 0;
+  }
+
+  if (
+    typeof value.toMillis ===
+    "function"
+  ) {
+    return value.toMillis();
+  }
+
+  if (
+    value.seconds !==
+    undefined
+  ) {
+    return (
+      Number(value.seconds) * 1000 +
+      Math.floor(
+        Number(
+          value.nanoseconds ||
+          0
+        ) / 1000000
+      )
+    );
+  }
+
+  if (
+    value instanceof Date
+  ) {
+    return value.getTime();
+  }
+
+  const parsed =
+    new Date(value).getTime();
+
+  return Number.isFinite(parsed)
+    ? parsed
+    : 0;
+}
+
+function formatNicknameAvailableAt(
+  milliseconds
+) {
+  if (
+    !milliseconds
+  ) {
+    return "";
+  }
+
+  return new Date(
+    milliseconds
+  ).toLocaleString(
+    "zh-TW",
+    {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    }
+  );
+}
+
+/*
+==================================================
+學生暱稱修改冷卻判斷
+==================================================
+
+規則：
+1. 第一次設定：立即允許。
+2. 管理員要求重新設定（nicknameSet:false）：立即允許。
+3. 舊玩家沒有 nicknameUpdatedAt：允許修改一次，之後開始計時。
+4. 一般自行修改：上次設定滿 7 天後才能再次修改。
+==================================================
+*/
+function getNicknameChangeState(
+  profile,
+  nowMilliseconds = Date.now()
+) {
+  if (
+    !profile ||
+    profile.nicknameSet !== true
+  ) {
+    return {
+      allowed: true,
+      reason: "first-or-reset",
+      nextChangeAt: 0,
+      remainingMilliseconds: 0,
+      remainingDays: 0,
+      message: ""
+    };
+  }
+
+  const lastChangedAt =
+    timestampToMilliseconds(
+      profile.nicknameUpdatedAt
+    );
+
+  if (
+    !lastChangedAt
+  ) {
+    return {
+      allowed: true,
+      reason: "legacy-no-timestamp",
+      nextChangeAt: 0,
+      remainingMilliseconds: 0,
+      remainingDays: 0,
+      message: ""
+    };
+  }
+
+  const nextChangeAt =
+    lastChangedAt +
+    NICKNAME_CHANGE_COOLDOWN_MS;
+
+  const remainingMilliseconds =
+    Math.max(
+      0,
+      nextChangeAt -
+      Number(nowMilliseconds)
+    );
+
+  if (
+    remainingMilliseconds <= 0
+  ) {
+    return {
+      allowed: true,
+      reason: "cooldown-finished",
+      nextChangeAt,
+      remainingMilliseconds: 0,
+      remainingDays: 0,
+      message: ""
+    };
+  }
+
+  const remainingDays =
+    Math.ceil(
+      remainingMilliseconds /
+      (24 * 60 * 60 * 1000)
+    );
+
+  const availableText =
+    formatNicknameAvailableAt(
+      nextChangeAt
+    );
+
+  return {
+    allowed: false,
+    reason: "cooldown",
+    nextChangeAt,
+    remainingMilliseconds,
+    remainingDays,
+    message:
+      `暱稱設定後需滿 ${NICKNAME_CHANGE_COOLDOWN_DAYS} 天才能再次自行修改。` +
+      `下次可修改時間：${availableText}。`
+  };
+}
+
 async function getPlayerProfile(
   uid
 ) {
@@ -275,6 +449,12 @@ async function createOrUpdatePlayer(
 
         nicknameSet:
           false,
+
+        nicknameResetReason:
+          "",
+
+        nicknameModerationStatus:
+          "active",
 
         displayName:
           user.displayName ||
@@ -438,6 +618,33 @@ async function setPlayerNickname(
     throw error;
   }
 
+  const latestProfile =
+    await getPlayerProfile(
+      user.uid
+    );
+
+  const changeState =
+    getNicknameChangeState(
+      latestProfile
+    );
+
+  if (
+    !changeState.allowed
+  ) {
+    const error =
+      new Error(
+        changeState.message
+      );
+
+    error.code =
+      "nickname-cooldown";
+
+    error.nextChangeAt =
+      changeState.nextChangeAt;
+
+    throw error;
+  }
+
   const nickname =
     result.nickname;
 
@@ -455,7 +662,10 @@ async function setPlayerNickname(
       user.uid
     );
 
-  await setDoc(
+  const batch =
+    writeBatch(db);
+
+  batch.set(
     privateRef,
     {
       uid:
@@ -468,6 +678,12 @@ async function setPlayerNickname(
 
       nicknameUpdatedAt:
         serverTimestamp(),
+
+      nicknameResetReason:
+        "",
+
+      nicknameModerationStatus:
+        "active",
 
       displayName:
         user.displayName ||
@@ -487,7 +703,7 @@ async function setPlayerNickname(
     }
   );
 
-  await setDoc(
+  batch.set(
     publicRef,
     {
       uid:
@@ -507,29 +723,38 @@ async function setPlayerNickname(
     }
   );
 
-  return {
+  await batch.commit();
+
+  const savedProfile =
+    await getPlayerProfile(
+      user.uid
+    );
+
+  return savedProfile || {
     uid:
       user.uid,
-
     nickname,
-
     nicknameSet:
       true
   };
 }
 
 console.log(
-  "firestore.js v1.1 暱稱系統版已成功載入"
+  "firestore.js v1.3 暱稱 7 天修改冷卻版已成功載入"
 );
 
 export {
   NICKNAME_MIN_LENGTH,
   NICKNAME_MAX_LENGTH,
+  NICKNAME_CHANGE_COOLDOWN_DAYS,
+  NICKNAME_CHANGE_COOLDOWN_MS,
   normalizeNickname,
   validateNickname,
   createAnonymousPlayerName,
   needsNickname,
   getPublicPlayerName,
+  getNicknameChangeState,
+  formatNicknameAvailableAt,
   getPlayerProfile,
   getPublicPlayerProfile,
   createOrUpdatePlayer,
