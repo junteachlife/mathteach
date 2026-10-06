@@ -3,8 +3,8 @@
 生活有解．心中有數｜遊戲排行榜
 檔案位置：js/leaderboard.js
 
-版本：9.0
-2026-10-06 七下 1-1～3-2 正式上線同步版
+版本：9.1
+2026-10-06 公開暱稱隱私版
 ==================================================
 
 本版重點：
@@ -39,6 +39,12 @@ import {
   getGameConfig,
   getGameName
 } from "./game-config.js?v=9.8";
+
+
+import {
+  getPublicPlayerProfile,
+  getPublicPlayerName
+} from "./firestore.js?v=1.1";
 
 
 import {
@@ -154,6 +160,10 @@ let selectedGame =
 
 let allScoreRecords =
   [];
+
+
+const publicProfileCache =
+  new Map();
 
 
 /*
@@ -421,20 +431,57 @@ function getPlayerName(
   record
 ) {
 
-  return (
+  const uid =
+    String(
+      record?.uid ||
+      ""
+    );
 
-    record.nickname ||
 
-    record.displayName ||
+  const publicProfile =
+    uid
+      ? publicProfileCache.get(
+          uid
+        )
+      : null;
 
-    record.playerName ||
 
-    record.name ||
+  if (
+    publicProfile
+  ) {
 
-    record.email ||
+    return getPublicPlayerName(
+      publicProfile,
+      uid
+    );
+  }
 
-    "玩家"
 
+  if (
+    record?.nickname
+  ) {
+
+    return getPublicPlayerName(
+      {
+        uid,
+        nickname:
+          record.nickname,
+        nicknameSet:
+          true
+      },
+      uid
+    );
+  }
+
+
+  /*
+  公開排行榜不再使用：
+  displayName / playerName / name / email。
+  舊紀錄沒有暱稱時一律改用匿名代號。
+  */
+  return getPublicPlayerName(
+    null,
+    uid
   );
 }
 
@@ -842,6 +889,88 @@ function createFilterButton({
 }
 
 
+
+/*
+==================================================
+載入公開暱稱
+==================================================
+*/
+
+async function loadPublicProfiles(
+  records
+) {
+
+  const uniqueUids =
+    Array.from(
+      new Set(
+        records
+          .map(
+            record =>
+              String(
+                record?.uid ||
+                ""
+              )
+          )
+          .filter(
+            Boolean
+          )
+      )
+    );
+
+
+  await Promise.all(
+    uniqueUids.map(
+      async uid => {
+
+        if (
+          publicProfileCache.has(
+            uid
+          )
+        ) {
+          return;
+        }
+
+
+        try {
+
+          const profile =
+            await getPublicPlayerProfile(
+              uid
+            );
+
+
+          publicProfileCache.set(
+            uid,
+            profile
+          );
+
+
+        } catch (
+          error
+        ) {
+
+          console.warn(
+            `讀取公開暱稱失敗：${uid}`,
+            error
+          );
+
+
+          /*
+          Rules 尚未開放時，
+          仍以匿名代號顯示，
+          不會退回真實姓名。
+          */
+          publicProfileCache.set(
+            uid,
+            null
+          );
+        }
+      }
+    )
+  );
+}
+
+
 /*
 ==================================================
 載入 Firestore 成績
@@ -882,7 +1011,12 @@ async function loadAllScores() {
       );
 
 
-    console.log(
+    
+
+    await loadPublicProfiles(
+      allScoreRecords
+    );
+console.log(
       "排行榜成績載入完成：",
       allScoreRecords.length
     );
@@ -2506,12 +2640,47 @@ onAuthStateChanged(
       userStatus
     ) {
 
-      userStatus.textContent =
-        `目前登入：${
-          user.displayName ||
-          user.email ||
-          "玩家"
-        }`;
+      try {
+
+        const ownPublicProfile =
+          await getPublicPlayerProfile(
+            user.uid
+          );
+
+
+        publicProfileCache.set(
+          user.uid,
+          ownPublicProfile
+        );
+
+
+        userStatus.textContent =
+          `目前登入：${
+            getPublicPlayerName(
+              ownPublicProfile,
+              user.uid
+            )
+          }`;
+
+
+      } catch (
+        error
+      ) {
+
+        console.warn(
+          "讀取目前玩家公開暱稱失敗：",
+          error
+        );
+
+
+        userStatus.textContent =
+          `目前登入：${
+            getPublicPlayerName(
+              null,
+              user.uid
+            )
+          }`;
+      }
     }
 
 
@@ -2569,7 +2738,7 @@ try {
 
 
   console.log(
-    "leaderboard.js v8.7 已成功載入"
+    "leaderboard.js v9.1 公開暱稱隱私版已成功載入"
   );
 
 
