@@ -105,23 +105,25 @@ function moveScratchpadButton(){const mount=$("scratchpad-mobile-button"),btn=$(
 function ensureScratchpadButton(){
   moveScratchpadButton();
 
-  let c=0;
-  const t=setInterval(()=>{
-    c++;
+  const mount=$("scratchpad-mobile-button");
+  if(!mount)return;
+
+  const existing=$("scratchpadOpenButton");
+  if(existing){
     moveScratchpadButton();
+    if(typeof window.showGameScratchpadButton==="function")window.showGameScratchpadButton();
+    return;
+  }
 
-    if($("scratchpadOpenButton")){
-      if(typeof window.showGameScratchpadButton==="function"){
-        window.showGameScratchpadButton();
-      }
-      clearInterval(t);
-      return;
-    }
-
-    if(c>=30){
-      clearInterval(t);
-    }
-  },60);
+  const observer=new MutationObserver(()=>{
+    const btn=$("scratchpadOpenButton");
+    if(!btn)return;
+    moveScratchpadButton();
+    if(typeof window.showGameScratchpadButton==="function")window.showGameScratchpadButton();
+    observer.disconnect();
+  });
+  observer.observe(document.body,{childList:true,subtree:true});
+  setTimeout(()=>observer.disconnect(),5000);
 }
 function renderAnswer(q){selectedChoice=null;const area=$("answer-area");if(q.type==="choice"){area.innerHTML=`<div class="answer-title">請選擇答案</div><div class="choice-grid">${q.choices.map(c=>`<button class="choice-button" type="button" data-choice="${esc(c)}">${c}</button>`).join("")}</div>`;area.querySelectorAll(".choice-button").forEach(btn=>btn.addEventListener("click",()=>{area.querySelectorAll(".choice-button").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");selectedChoice=btn.dataset.choice}))}else if(q.type==="number"){const frac=needsFraction(q.answer);area.innerHTML=`<div class="answer-title">請輸入答案</div>${scalarInputHTML("number-answer",q.answer,"number-answer")}<div class="answer-help">${frac?"答案為分數：上格填分子、下格填分母；若為負數請選負號。":"請直接輸入數值。"}</div>`;setTimeout(()=>$(frac?"number-answer-num":"number-answer-whole")?.focus(),0)}else{const fx=needsFraction(q.answer.x),fy=needsFraction(q.answer.y);area.innerHTML=`<div class="answer-title">請輸入兩個未知數的值</div><div class="pair-answer"><label class="pair-box ${fx?"fraction-pair":""}"><span class="pair-label">${q.labels[0]}＝</span>${scalarInputHTML("pair-x",q.answer.x,"pair-input")}</label><label class="pair-box ${fy?"fraction-pair":""}"><span class="pair-label">${q.labels[1]}＝</span>${scalarInputHTML("pair-y",q.answer.y,"pair-input")}</label></div><div class="answer-help">若答案為分數，會直接顯示分子、分母輸入格，不需要輸入斜線。</div>`;setTimeout(()=>$(fx?"pair-x-num":"pair-x-whole")?.focus(),0)}}
 function currentAnswer(q){if(q.type==="choice")return selectedChoice;if(q.type==="number")return readScalar("number-answer",q.answer);return{x:readScalar("pair-x",q.answer.x),y:readScalar("pair-y",q.answer.y)}}
@@ -134,7 +136,6 @@ function disableAnswer(){document.querySelectorAll("#answer-area input,#answer-a
 function submitAnswer(){if(answered)return;const q=questions[index],a=currentAnswer(q);if(!answerValid(q,a)){$("feedback").className="feedback warning";$("feedback").textContent="請先完成作答。";return}answered=true;const ok=answerCorrect(q,a);if(ok){correct++;combo++;maxCombo=Math.max(maxCombo,combo);$("feedback").className="feedback correct";$("feedback").textContent="✅ 答對了！";playGameSound("playCorrect")}else{wrong++;combo=0;$("feedback").className="feedback wrong";$("feedback").innerHTML=`❌ 再看一次。正確答案：<strong>${answerHTML(q)}</strong>`;playGameSound("playWrong")}records.push({number:index+1,question:q,userAnswerHTML:answerHTML(q,a),correct:ok});disableAnswer();$("explanation").innerHTML=explanationHTML(q);$("explanation").classList.remove("hidden");$("live-score").textContent=correct*10;$("correct-count").textContent=correct;$("combo-count").textContent=combo;$("submit-button").classList.add("hidden");$("next-button").classList.remove("hidden")}
 function nextQuestion(){if(!answered)return;if(index>=questions.length-1){showResult();return}index++;displayQuestion();window.scrollTo({top:0,behavior:"smooth"})}
 function confirmRestartTest(){return window.confirm("確定要重新測驗嗎？\n目前的作答進度將會重新開始。")}function restartCurrentModeWithConfirmation(){if(!confirmRestartTest())return;startGame(modeId)}
-function confirmQuitMode(){return window.confirm("確定要重選模式嗎？\n目前這次作答將會結束，尚未完成的進度不會儲存。")}function backToModesWithConfirmation(){if(!confirmQuitMode())return;backToModes()}
 function startGame(selectedMode){try{clearInterval(timerId);modeId=selectedMode;questions=createQuestions(modeId);index=0;correct=0;wrong=0;combo=0;maxCombo=0;records=[];answered=false;scoreSaved=false;rpgEmitted=false;attemptId=`${Date.now()}-${Math.random().toString(36).slice(2,8)}`;$("save-status").textContent="";showOnly("quiz-screen");displayQuestion();startTimer();playGameSound("playStart");window.scrollTo({top:0,behavior:"smooth"})}catch(error){console.error(`${GAME_TITLE} 啟動失敗`,error);alert("遊戲啟動時發生錯誤，請重新整理頁面再試一次。")}}
 function rating(score){if(score>=90)return["★★★★★","太棒了！核心概念與解題程序都掌握得很好。"];if(score>=80)return["★★★★☆","表現很好！再留意符號與計算細節就更完整。"];if(score>=60)return["★★★☆☆","基本觀念已建立，建議查看詳解並重做錯題。"];return["★★☆☆☆","建議先從基礎模式開始，把每一步的原因弄清楚再進入綜合挑戰。"]}
 async function showResult(){stopTimer();const score=Math.round(correct/questions.length*1000)/10,[stars,comment]=rating(score);$("progress-bar").style.width="100%";showOnly("result-screen");$("final-score").textContent=`${Number.isInteger(score)?score:score.toFixed(1)} 分`;$("final-stars").textContent=stars;$("final-comment").textContent=comment;$("final-correct").textContent=correct;$("final-wrong").textContent=wrong;$("final-combo").textContent=maxCombo;$("final-time").textContent=formatTime(elapsed);playGameSound("playComplete");await saveScore(score);emitRPG(score)}
