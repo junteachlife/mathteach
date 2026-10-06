@@ -3,8 +3,8 @@
 生活有解．心中有數｜遊戲排行榜
 檔案位置：js/leaderboard.js
 
-版本：8.8
-2026-10-04 七下 1-1／1-2／1-3 正式上線同步版
+版本：9.0
+2026-10-06 七下 1-1～3-2 正式上線同步版
 ==================================================
 
 本版重點：
@@ -23,7 +23,7 @@
 10. 九上 1-2／1-3／1-4／2-1／2-2／3-1／3-2 直接依 game-config.js 的正式 GAME_ID / modeId 建榜
 11. 八下 1-1 sequence-arithmetic、1-2 arithmetic-series、1-3 geometric-sequence 依 game-config.js 正式 GAME_ID / modeId 建榜
 12. 九上 3-1 geometric-proof、3-2 triangle-centers 不新增硬編碼，完全沿用 game-config.js 模式設定
-13. 七下 1-1 two-variable-linear-equation、1-2 linear-system-solve、1-3 linear-system-applications 完全依 game-config.js 正式 GAME_ID / modeId 建榜
+13. 七下 1-1～3-2 全部正式遊戲完全依 game-config.js 的 GAME_ID / modeId 自動建榜
 ==================================================
 */
 
@@ -38,7 +38,7 @@ import {
   getGamesBySemester,
   getGameConfig,
   getGameName
-} from "./game-config.js?v=9.6";
+} from "./game-config.js?v=9.8";
 
 
 import {
