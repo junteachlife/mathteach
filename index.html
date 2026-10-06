@@ -2686,7 +2686,7 @@
         🎮 設定遊戲暱稱
       </h2>
 
-      <p>
+      <p id="nicknameDialogText">
         排行榜會顯示你的遊戲暱稱，不公開顯示 Google 真實姓名。
       </p>
 
@@ -2701,7 +2701,7 @@
       >
 
       <div class="nickname-hint">
-        2～12 個字，可以使用中文、英文、數字或 Emoji。
+        2～12 個字，可以使用中文、英文、數字或 Emoji。設定後需滿 7 天才能再次自行修改。
       </div>
 
       <div
@@ -2757,8 +2757,9 @@
       createOrUpdatePlayer,
       setPlayerNickname,
       needsNickname,
-      getPublicPlayerName
-    } from "./js/firestore.js?v=1.1";
+      getPublicPlayerName,
+      getNicknameChangeState
+    } from "./js/firestore.js?v=1.3";
 
 
     import {
@@ -2805,6 +2806,12 @@
     const nicknameModal =
       document.getElementById(
         "nicknameModal"
+      );
+
+
+    const nicknameDialogText =
+      document.getElementById(
+        "nicknameDialogText"
       );
 
 
@@ -4998,12 +5005,44 @@
       required = false
     ) {
 
+      /*
+      一般主動修改先檢查 7 天冷卻。
+      第一次設定或管理員要求重設不受限制。
+      */
+      if (
+        !required
+      ) {
+
+        const changeState =
+          getNicknameChangeState(
+            currentPlayerProfile
+          );
+
+        if (
+          !changeState.allowed
+        ) {
+          window.alert(
+            changeState.message
+          );
+          return;
+        }
+      }
+
       nicknameIsRequired =
         Boolean(required);
 
 
       nicknameError.textContent =
         "";
+
+
+      nicknameDialogText.textContent =
+        required &&
+        currentPlayerProfile?.nicknameResetReason
+          ? `管理員提醒：${currentPlayerProfile.nicknameResetReason}`
+          : required
+            ? "排行榜會顯示你的遊戲暱稱，不公開顯示 Google 真實姓名。設定完成後，需滿 7 天才能再次自行修改。"
+            : "修改成功後，下一次需再等滿 7 天才能自行修改；若管理員要求重新設定則不受此限制。";
 
 
       nicknameInput.value =
@@ -5507,6 +5546,37 @@
 
       compactNicknameButton.hidden =
         false;
+
+
+      const nicknameChangeState =
+        getNicknameChangeState(
+          profile
+        );
+
+
+      if (
+        profile &&
+        profile.nicknameSet === true &&
+        !nicknameChangeState.allowed
+      ) {
+
+        compactNicknameButton.textContent =
+          `${nicknameChangeState.remainingDays} 天後可修改`;
+
+        compactNicknameButton.title =
+          nicknameChangeState.message;
+
+      } else {
+
+        compactNicknameButton.textContent =
+          profile &&
+          profile.nicknameSet === true
+            ? "修改暱稱"
+            : "設定暱稱";
+
+        compactNicknameButton.title =
+          "";
+      }
 
 
       compactLogoutButton.hidden =
