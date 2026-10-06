@@ -3,7 +3,7 @@
 生活有解．心中有數｜我的成績
 檔案位置：js/my-scores.js
 
-版本：3.8
+版本：3.9
 七下 1-1～3-2 正式上線同步版
 ==================================================
 
@@ -63,6 +63,12 @@ import {
   getGameName,
   getModeName
 } from "./game-config.js?v=9.8";
+
+
+import {
+  getPlayerProfile,
+  getPublicPlayerName
+} from "./firestore.js?v=1.1";
 
 
 import {
@@ -852,8 +858,32 @@ onAuthStateChanged(
     }
 
 
+    let profile =
+      null;
+
+
+    try {
+
+      profile =
+        await getPlayerProfile(
+          user.uid
+        );
+
+
+    } catch (
+      error
+    ) {
+
+      console.warn(
+        "讀取玩家暱稱失敗：",
+        error
+      );
+    }
+
+
     renderUser(
-      user
+      user,
+      profile
     );
 
 
@@ -885,7 +915,8 @@ onAuthStateChanged(
 */
 
 function renderUser(
-  user
+  user,
+  profile = null
 ){
 
   if (!userStatus){
@@ -932,10 +963,11 @@ function renderUser(
 
 
   name.textContent =
-    `目前登入：${
-      user.displayName ||
-      user.email ||
-      "玩家"
+    `遊戲暱稱：${
+      getPublicPlayerName(
+        profile,
+        user.uid
+      )
     }`;
 
 
@@ -3008,5 +3040,5 @@ function showError(
 
 
 console.log(
-  "my-scores.js v3.5 已成功載入"
+  "my-scores.js v3.9 公開暱稱版已成功載入"
 );
