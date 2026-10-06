@@ -540,6 +540,281 @@
       margin-top: 22px;
     }
 
+
+
+    /* ===============================
+       暱稱自動審核
+       =============================== */
+
+    .feature-card-action {
+      cursor: pointer;
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .feature-card-action:hover,
+    .feature-card-action:focus-visible {
+      transform: translateY(-2px);
+      border-color: #93c5fd;
+      box-shadow: 0 12px 28px rgba(37, 99, 235, .12);
+      outline: none;
+    }
+
+    .feature-card-action.active {
+      border-color: #2563eb;
+      background: linear-gradient(135deg, #eff6ff, #ffffff);
+    }
+
+    .review-count-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 27px;
+      margin-top: 11px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .review-count-badge.danger {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .nickname-review-section {
+      margin-top: 20px;
+    }
+
+    .review-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .review-section-header h2 {
+      margin: 0 0 7px;
+      color: #1e3a8a;
+      font-size: 25px;
+    }
+
+    .review-section-header p {
+      max-width: 720px;
+      margin: 0;
+      color: #64748b;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .review-toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mini-button {
+      min-height: 40px;
+      padding: 8px 13px;
+      border: 0;
+      border-radius: 11px;
+      color: #ffffff;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .mini-button.blue { background: #2563eb; }
+    .mini-button.slate { background: #64748b; }
+    .mini-button.green { background: #15803d; }
+    .mini-button.orange { background: #c2410c; }
+    .mini-button.red { background: #dc2626; }
+
+    .review-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .review-summary-card {
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 15px;
+      background: #f8fafc;
+    }
+
+    .review-summary-value {
+      color: #1e3a8a;
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .review-summary-label {
+      margin-top: 3px;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .review-filter-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .review-search {
+      min-width: 0;
+      min-height: 44px;
+      padding: 10px 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      background: #ffffff;
+      outline: none;
+    }
+
+    .review-search:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+    }
+
+    .review-message {
+      min-height: 24px;
+      margin-bottom: 10px;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .review-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .nickname-review-card {
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+      border-left: 5px solid #94a3b8;
+      border-radius: 16px;
+      background: #ffffff;
+    }
+
+    .nickname-review-card.high {
+      border-left-color: #dc2626;
+      background: #fffafa;
+    }
+
+    .nickname-review-card.medium {
+      border-left-color: #f59e0b;
+      background: #fffdf7;
+    }
+
+    .nickname-review-card.normal {
+      border-left-color: #16a34a;
+    }
+
+    .review-card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .review-identity {
+      min-width: 0;
+    }
+
+    .review-nickname {
+      color: #0f172a;
+      font-size: 20px;
+      font-weight: 900;
+      word-break: break-word;
+    }
+
+    .review-account {
+      margin-top: 5px;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.6;
+      word-break: break-all;
+    }
+
+    .risk-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .risk-badge.high {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .risk-badge.medium {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .risk-badge.normal {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .risk-reasons {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .risk-reason {
+      padding: 5px 9px;
+      border-radius: 9px;
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .review-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .review-actions .mini-button {
+      min-height: 38px;
+      font-size: 13px;
+    }
+
+    .review-empty {
+      padding: 28px 18px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 16px;
+      background: #f8fafc;
+      color: #64748b;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 760px) {
+      .review-summary {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .review-filter-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 850px) {
       body {
         padding: 12px;
@@ -769,13 +1044,19 @@
             <span class="coming-soon">下一階段建置</span>
           </article>
 
-          <article class="feature-card">
-            <div class="feature-icon">👥</div>
-            <div class="feature-title">使用者與成績</div>
+          <article
+            id="nicknameReviewFeature"
+            class="feature-card feature-card-action"
+            role="button"
+            tabindex="0"
+            aria-controls="nicknameReviewSection"
+          >
+            <div class="feature-icon">🕵️</div>
+            <div class="feature-title">暱稱自動審核</div>
             <div class="feature-description">
-              查看學生帳號、遊戲次數、成績與學習紀錄。
+              系統自動篩選疑似不雅、冒用身分、個資或異常格式暱稱，只把需要你確認的項目列出。
             </div>
-            <span class="coming-soon">尚未開放</span>
+            <span id="nicknamePendingBadge" class="review-count-badge">掃描中……</span>
           </article>
 
           <article class="feature-card">
@@ -816,6 +1097,92 @@
         </div>
       </section>
 
+
+
+      <section
+        id="nicknameReviewSection"
+        class="section nickname-review-section hidden"
+      >
+        <div class="review-section-header">
+          <div>
+            <h2>🕵️ 暱稱自動審核</h2>
+            <p>
+              系統會先用規則自動篩選，只顯示疑似需要確認的暱稱。
+              自動判斷可能誤判，所以不會自行刪除或處罰；最後由你選擇保留、直接修改，或要求學生重新設定。
+            </p>
+          </div>
+
+          <div class="review-toolbar">
+            <button
+              id="nicknameRescanButton"
+              class="mini-button blue"
+              type="button"
+            >
+              🔄 重新掃描
+            </button>
+
+            <button
+              id="nicknameViewToggleButton"
+              class="mini-button slate"
+              type="button"
+            >
+              👥 顯示全部暱稱
+            </button>
+          </div>
+        </div>
+
+        <div class="review-summary">
+          <div class="review-summary-card">
+            <div id="nicknameTotalCount" class="review-summary-value">0</div>
+            <div class="review-summary-label">已設定暱稱</div>
+          </div>
+
+          <div class="review-summary-card">
+            <div id="nicknamePendingCount" class="review-summary-value">0</div>
+            <div class="review-summary-label">待人工確認</div>
+          </div>
+
+          <div class="review-summary-card">
+            <div id="nicknameHighCount" class="review-summary-value">0</div>
+            <div class="review-summary-label">🔴 高風險</div>
+          </div>
+
+          <div class="review-summary-card">
+            <div id="nicknameMediumCount" class="review-summary-value">0</div>
+            <div class="review-summary-label">🟠 需確認</div>
+          </div>
+        </div>
+
+        <div class="review-filter-row">
+          <input
+            id="nicknameSearchInput"
+            class="review-search"
+            type="search"
+            placeholder="搜尋暱稱、姓名或 Email"
+            autocomplete="off"
+          >
+
+          <button
+            id="nicknameClearSearchButton"
+            class="mini-button slate"
+            type="button"
+          >
+            清除搜尋
+          </button>
+        </div>
+
+        <div
+          id="nicknameReviewMessage"
+          class="review-message"
+          aria-live="polite"
+        ></div>
+
+        <div
+          id="nicknameReviewList"
+          class="review-list"
+        ></div>
+      </section>
+
       <div class="admin-actions">
         <a class="button-link primary" href="index.html">
           🏠 回到首頁
@@ -839,6 +1206,18 @@
       getAdminDisplayName,
       logoutAdmin
     } from "./js/admin-auth.js";
+
+    import {
+      db
+    } from "./js/firebase-config.js";
+
+    import {
+      collection,
+      doc,
+      getDocs,
+      serverTimestamp,
+      writeBatch
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const $ =
       (id) =>
@@ -869,6 +1248,37 @@
 
     let submitting =
       false;
+
+    let currentAdminResult =
+      null;
+
+    let nicknamePlayers =
+      [];
+
+    let nicknameShowAll =
+      false;
+
+    const nicknameReviewFeature =
+      $("nicknameReviewFeature");
+
+    const nicknameReviewSection =
+      $("nicknameReviewSection");
+
+    const nicknamePendingBadge =
+      $("nicknamePendingBadge");
+
+    const nicknameReviewList =
+      $("nicknameReviewList");
+
+    const nicknameReviewMessage =
+      $("nicknameReviewMessage");
+
+    const nicknameSearchInput =
+      $("nicknameSearchInput");
+
+    const nicknameViewToggleButton =
+      $("nicknameViewToggleButton");
+
 
     /* ===============================
        畫面切換
@@ -921,7 +1331,1146 @@
 
       $("adminStatusValue").textContent =
         "最高管理員｜啟用中";
+
+      currentAdminResult =
+        result;
+
+      loadNicknameReviewData();
     }
+
+
+    /* ===============================
+       暱稱自動偵測與審核
+       =============================== */
+
+    const HIGH_RISK_TERMS = [
+      "幹你娘",
+      "幹你媽",
+      "操你媽",
+      "草你媽",
+      "靠北",
+      "靠杯",
+      "機掰",
+      "雞掰",
+      "雞巴",
+      "懶叫",
+      "三小",
+      "他媽的",
+      "媽的",
+      "去死",
+      "死全家",
+      "死媽",
+      "王八蛋",
+      "狗娘養",
+      "智障",
+      "腦殘",
+      "白痴",
+      "低能兒",
+      "賤人",
+      "婊子",
+      "色情",
+      "a片",
+      "做愛",
+      "性交",
+      "約炮",
+      "約砲",
+      "打炮",
+      "打砲",
+      "陰莖",
+      "陰道",
+      "龜頭",
+      "精液",
+      "自慰"
+    ];
+
+    const IMPERSONATION_TERMS = [
+      "admin",
+      "administrator",
+      "管理員",
+      "官方",
+      "系統管理",
+      "站長",
+      "老師",
+      "導師",
+      "校長",
+      "主任",
+      "教務",
+      "學務"
+    ];
+
+    function normalizeNicknameForScan(
+      value
+    ) {
+      return String(
+        value || ""
+      )
+        .normalize("NFKC")
+        .toLowerCase()
+        .replace(
+          /[\s\p{P}\p{S}_]+/gu,
+          ""
+        );
+    }
+
+    function detectNicknameRisk(
+      nickname,
+      publicProfile = null
+    ) {
+      const original =
+        String(nickname || "").trim();
+
+      const compact =
+        normalizeNicknameForScan(
+          original
+        );
+
+      const reasons = [];
+      let level = "normal";
+
+      const addRisk = (
+        nextLevel,
+        reason
+      ) => {
+        if (
+          !reasons.includes(
+            reason
+          )
+        ) {
+          reasons.push(
+            reason
+          );
+        }
+
+        if (
+          nextLevel === "high"
+        ) {
+          level = "high";
+        } else if (
+          level !== "high" &&
+          nextLevel === "medium"
+        ) {
+          level = "medium";
+        }
+      };
+
+      if (
+        HIGH_RISK_TERMS.some(
+          term =>
+            compact.includes(
+              normalizeNicknameForScan(
+                term
+              )
+            )
+        )
+      ) {
+        addRisk(
+          "high",
+          "疑似包含不雅、辱罵或成人字詞"
+        );
+      }
+
+      if (
+        IMPERSONATION_TERMS.some(
+          term =>
+            compact.includes(
+              normalizeNicknameForScan(
+                term
+              )
+            )
+        )
+      ) {
+        addRisk(
+          "medium",
+          "疑似冒用老師、管理員或官方身分"
+        );
+      }
+
+      if (
+        /[\w.+-]+@[\w.-]+\.[a-z]{2,}/i.test(
+          original
+        )
+      ) {
+        addRisk(
+          "high",
+          "疑似包含 Email 個人資料"
+        );
+      }
+
+      if (
+        /(https?:\/\/|www\.|\.com\b|\.tw\b|\.net\b|\.org\b)/i.test(
+          original
+        )
+      ) {
+        addRisk(
+          "medium",
+          "疑似包含網址或廣告資訊"
+        );
+      }
+
+      const digitsOnly =
+        original.replace(
+          /\D/g,
+          ""
+        );
+
+      if (
+        /^09\d{8}$/.test(
+          digitsOnly
+        ) ||
+        digitsOnly.length >= 9
+      ) {
+        addRisk(
+          "high",
+          "疑似包含電話或長串個資數字"
+        );
+      }
+
+      if (
+        /(line|ig|instagram|discord|telegram|facebook|fb)\s*[:：@]/i.test(
+          original
+        )
+      ) {
+        addRisk(
+          "medium",
+          "疑似公開社群或聯絡帳號"
+        );
+      }
+
+      if (
+        /(.)\1{5,}/u.test(
+          original.replace(
+            /\s/g,
+            ""
+          )
+        )
+      ) {
+        addRisk(
+          "medium",
+          "同一字元過度重複"
+        );
+      }
+
+      const visibleCore =
+        original.replace(
+          /[\s\p{P}\p{S}_]/gu,
+          ""
+        );
+
+      if (
+        visibleCore.length === 0 &&
+        Array.from(original).length >= 6
+      ) {
+        addRisk(
+          "medium",
+          "幾乎全部由符號組成，較難辨識"
+        );
+      }
+
+      if (
+        publicProfile &&
+        publicProfile.nicknameSet === true &&
+        String(
+          publicProfile.nickname || ""
+        ).trim() !== original
+      ) {
+        addRisk(
+          "medium",
+          "公開排行榜暱稱與帳號資料不同步"
+        );
+      }
+
+      return {
+        level,
+        reasons,
+        flagged:
+          level !== "normal"
+      };
+    }
+
+    function validateNicknameInput(
+      value
+    ) {
+      const nickname =
+        String(value || "")
+          .replace(/\s+/g, " ")
+          .trim();
+
+      const length =
+        Array.from(
+          nickname
+        ).length;
+
+      if (
+        length < 2
+      ) {
+        return {
+          valid: false,
+          nickname,
+          message: "暱稱至少需要 2 個字。"
+        };
+      }
+
+      if (
+        length > 12
+      ) {
+        return {
+          valid: false,
+          nickname,
+          message: "暱稱最多 12 個字。"
+        };
+      }
+
+      if (
+        /[<>]/.test(
+          nickname
+        )
+      ) {
+        return {
+          valid: false,
+          nickname,
+          message: "暱稱不能包含 < 或 >。"
+        };
+      }
+
+      return {
+        valid: true,
+        nickname,
+        message: ""
+      };
+    }
+
+    function getRiskRank(
+      level
+    ) {
+      if (
+        level === "high"
+      ) {
+        return 0;
+      }
+
+      if (
+        level === "medium"
+      ) {
+        return 1;
+      }
+
+      return 2;
+    }
+
+    function escapeHtml(
+      value
+    ) {
+      return String(
+        value ?? ""
+      )
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    async function loadNicknameReviewData() {
+      nicknameReviewMessage.textContent =
+        "正在掃描所有已設定暱稱……";
+
+      nicknamePendingBadge.textContent =
+        "掃描中……";
+
+      try {
+        const [
+          usersSnapshot,
+          publicSnapshot,
+          reviewsSnapshot
+        ] = await Promise.all([
+          getDocs(
+            collection(
+              db,
+              "users"
+            )
+          ),
+          getDocs(
+            collection(
+              db,
+              "publicProfiles"
+            )
+          ),
+          getDocs(
+            collection(
+              db,
+              "nicknameReviews"
+            )
+          )
+        ]);
+
+        const publicMap =
+          new Map(
+            publicSnapshot.docs.map(
+              item => [
+                item.id,
+                item.data()
+              ]
+            )
+          );
+
+        const reviewMap =
+          new Map(
+            reviewsSnapshot.docs.map(
+              item => [
+                item.id,
+                item.data()
+              ]
+            )
+          );
+
+        nicknamePlayers =
+          usersSnapshot.docs
+            .map(
+              item => {
+                const data =
+                  item.data() || {};
+
+                const uid =
+                  item.id;
+
+                const nickname =
+                  String(
+                    data.nickname || ""
+                  ).trim();
+
+                const publicProfile =
+                  publicMap.get(uid) ||
+                  null;
+
+                const review =
+                  reviewMap.get(uid) ||
+                  null;
+
+                const risk =
+                  detectNicknameRisk(
+                    nickname,
+                    publicProfile
+                  );
+
+                const approvedCurrent =
+                  Boolean(
+                    review &&
+                    review.status === "approved" &&
+                    String(
+                      review.reviewedNickname || ""
+                    ) === nickname
+                  );
+
+                const dataMismatch =
+                  risk.reasons.includes(
+                    "公開排行榜暱稱與帳號資料不同步"
+                  );
+
+                const flagged =
+                  Boolean(
+                    data.nicknameSet === true &&
+                    nickname &&
+                    risk.flagged &&
+                    !(approvedCurrent && !dataMismatch)
+                  );
+
+                return {
+                  uid,
+                  nickname,
+                  nicknameSet:
+                    data.nicknameSet === true,
+                  displayName:
+                    data.displayName || "",
+                  email:
+                    data.email || "",
+                  publicProfile,
+                  review,
+                  risk,
+                  approvedCurrent,
+                  flagged
+                };
+              }
+            )
+            .sort(
+              (a, b) => {
+                const flagDiff =
+                  Number(b.flagged) -
+                  Number(a.flagged);
+
+                if (
+                  flagDiff !== 0
+                ) {
+                  return flagDiff;
+                }
+
+                const riskDiff =
+                  getRiskRank(
+                    a.risk.level
+                  ) -
+                  getRiskRank(
+                    b.risk.level
+                  );
+
+                if (
+                  riskDiff !== 0
+                ) {
+                  return riskDiff;
+                }
+
+                return a.nickname.localeCompare(
+                  b.nickname,
+                  "zh-Hant"
+                );
+              }
+            );
+
+        renderNicknameReview();
+
+        nicknameReviewMessage.textContent =
+          "掃描完成。系統只做初步篩選，不會自動刪除暱稱。";
+
+      } catch (
+        error
+      ) {
+        console.error(
+          "暱稱審核資料載入失敗：",
+          error
+        );
+
+        nicknameReviewMessage.textContent =
+          "暱稱掃描失敗。請確認 Firestore Rules 已更新後再試。";
+
+        nicknamePendingBadge.textContent =
+          "讀取失敗";
+
+        nicknamePendingBadge.classList.add(
+          "danger"
+        );
+      }
+    }
+
+    function renderNicknameReview() {
+      const setPlayers =
+        nicknamePlayers.filter(
+          player =>
+            player.nicknameSet &&
+            player.nickname
+        );
+
+      const pending =
+        setPlayers.filter(
+          player =>
+            player.flagged
+        );
+
+      const highCount =
+        pending.filter(
+          player =>
+            player.risk.level === "high"
+        ).length;
+
+      const mediumCount =
+        pending.filter(
+          player =>
+            player.risk.level === "medium"
+        ).length;
+
+      $("nicknameTotalCount").textContent =
+        setPlayers.length;
+
+      $("nicknamePendingCount").textContent =
+        pending.length;
+
+      $("nicknameHighCount").textContent =
+        highCount;
+
+      $("nicknameMediumCount").textContent =
+        mediumCount;
+
+      nicknamePendingBadge.classList.toggle(
+        "danger",
+        pending.length > 0
+      );
+
+      nicknamePendingBadge.textContent =
+        pending.length > 0
+          ? `待審核 ${pending.length} 人`
+          : "✅ 目前無待審核";
+
+      const search =
+        String(
+          nicknameSearchInput.value || ""
+        )
+          .trim()
+          .toLowerCase();
+
+      let visible =
+        nicknameShowAll
+          ? setPlayers
+          : pending;
+
+      if (
+        search
+      ) {
+        visible =
+          visible.filter(
+            player => {
+              const haystack =
+                [
+                  player.nickname,
+                  player.displayName,
+                  player.email,
+                  player.uid
+                ]
+                  .join(" ")
+                  .toLowerCase();
+
+              return haystack.includes(
+                search
+              );
+            }
+          );
+      }
+
+      nicknameViewToggleButton.textContent =
+        nicknameShowAll
+          ? "⚠️ 只看待審核"
+          : "👥 顯示全部暱稱";
+
+      if (
+        visible.length === 0
+      ) {
+        nicknameReviewList.innerHTML =
+          nicknameShowAll
+            ? `<div class="review-empty">目前沒有符合搜尋條件的暱稱。</div>`
+            : `<div class="review-empty">🎉 目前沒有系統判定需要人工確認的暱稱。</div>`;
+
+        return;
+      }
+
+      nicknameReviewList.innerHTML =
+        visible
+          .map(
+            player => {
+              const level =
+                player.flagged
+                  ? player.risk.level
+                  : "normal";
+
+              const badgeText =
+                level === "high"
+                  ? "🔴 高風險"
+                  : level === "medium"
+                    ? "🟠 需確認"
+                    : player.approvedCurrent
+                      ? "✅ 已人工保留"
+                      : "🟢 未偵測異常";
+
+              const reasons =
+                player.flagged
+                  ? player.risk.reasons
+                  : player.approvedCurrent
+                    ? ["管理員已確認此暱稱可保留"]
+                    : ["自動掃描未偵測到異常"];
+
+              return `
+                <article class="nickname-review-card ${level}" data-uid="${escapeHtml(player.uid)}">
+                  <div class="review-card-top">
+                    <div class="review-identity">
+                      <div class="review-nickname">${escapeHtml(player.nickname)}</div>
+                      <div class="review-account">
+                        ${escapeHtml(player.displayName || "未提供姓名")}
+                        ${player.email ? `｜${escapeHtml(player.email)}` : ""}
+                      </div>
+                    </div>
+
+                    <span class="risk-badge ${level}">${badgeText}</span>
+                  </div>
+
+                  <div class="risk-reasons">
+                    ${reasons.map(reason => `<span class="risk-reason">${escapeHtml(reason)}</span>`).join("")}
+                  </div>
+
+                  <div class="review-actions">
+                    ${player.flagged ? `
+                      <button class="mini-button green" type="button" data-action="approve" data-uid="${escapeHtml(player.uid)}">
+                        ✅ 保留此暱稱
+                      </button>
+                    ` : ""}
+
+                    <button class="mini-button blue" type="button" data-action="edit" data-uid="${escapeHtml(player.uid)}">
+                      ✏️ 修改暱稱
+                    </button>
+
+                    <button class="mini-button orange" type="button" data-action="reset" data-uid="${escapeHtml(player.uid)}">
+                      🔄 要求重新設定
+                    </button>
+                  </div>
+                </article>
+              `;
+            }
+          )
+          .join("");
+    }
+
+    function findNicknamePlayer(
+      uid
+    ) {
+      return nicknamePlayers.find(
+        player =>
+          player.uid === uid
+      ) || null;
+    }
+
+    async function approveNickname(
+      uid
+    ) {
+      const player =
+        findNicknamePlayer(uid);
+
+      if (
+        !player ||
+        !player.nickname
+      ) {
+        return;
+      }
+
+      const confirmed =
+        window.confirm(
+          `確定要保留暱稱「${player.nickname}」嗎？\n\n確認後，只要學生沒有更改這個暱稱，系統就不會再次把它列入待審核。`
+        );
+
+      if (
+        !confirmed
+      ) {
+        return;
+      }
+
+      const adminUid =
+        currentAdminResult?.user?.uid ||
+        "";
+
+      const batch =
+        writeBatch(db);
+
+      batch.set(
+        doc(
+          db,
+          "nicknameReviews",
+          uid
+        ),
+        {
+          uid,
+          reviewedNickname:
+            player.nickname,
+          status:
+            "approved",
+          reason:
+            "管理員人工確認可保留",
+          reviewedBy:
+            adminUid,
+          reviewedAt:
+            serverTimestamp()
+        },
+        {
+          merge: true
+        }
+      );
+
+      await batch.commit();
+
+      await loadNicknameReviewData();
+    }
+
+    async function editNickname(
+      uid
+    ) {
+      const player =
+        findNicknamePlayer(uid);
+
+      if (
+        !player
+      ) {
+        return;
+      }
+
+      const entered =
+        window.prompt(
+          "輸入新的遊戲暱稱（2～12 個字）。\n暱稱可隨時修改，不受七天限制。",
+          player.nickname
+        );
+
+      if (
+        entered === null
+      ) {
+        return;
+      }
+
+      const checked =
+        validateNicknameInput(
+          entered
+        );
+
+      if (
+        !checked.valid
+      ) {
+        window.alert(
+          checked.message
+        );
+        return;
+      }
+
+      const newRisk =
+        detectNicknameRisk(
+          checked.nickname,
+          null
+        );
+
+      if (
+        newRisk.flagged
+      ) {
+        const proceed =
+          window.confirm(
+            `新的暱稱仍被系統判定為「${newRisk.level === "high" ? "高風險" : "需確認"}」：\n\n${newRisk.reasons.join("\n")}\n\n你仍要以管理員身分儲存這個暱稱嗎？`
+          );
+
+        if (
+          !proceed
+        ) {
+          return;
+        }
+      }
+
+      const adminUid =
+        currentAdminResult?.user?.uid ||
+        "";
+
+      const batch =
+        writeBatch(db);
+
+      batch.set(
+        doc(
+          db,
+          "users",
+          uid
+        ),
+        {
+          nickname:
+            checked.nickname,
+          nicknameSet:
+            true,
+          nicknameUpdatedAt:
+            serverTimestamp(),
+          nicknameResetReason:
+            "",
+          nicknameModerationStatus:
+            "active",
+          nicknameModeratedBy:
+            adminUid,
+          nicknameModeratedAt:
+            serverTimestamp()
+        },
+        {
+          merge: true
+        }
+      );
+
+      batch.set(
+        doc(
+          db,
+          "publicProfiles",
+          uid
+        ),
+        {
+          uid,
+          nickname:
+            checked.nickname,
+          nicknameSet:
+            true,
+          updatedAt:
+            serverTimestamp()
+        },
+        {
+          merge: true
+        }
+      );
+
+      batch.set(
+        doc(
+          db,
+          "nicknameReviews",
+          uid
+        ),
+        {
+          uid,
+          reviewedNickname:
+            checked.nickname,
+          status:
+            "approved",
+          reason:
+            "管理員直接修改並確認",
+          reviewedBy:
+            adminUid,
+          reviewedAt:
+            serverTimestamp()
+        },
+        {
+          merge: true
+        }
+      );
+
+      await batch.commit();
+
+      window.alert(
+        `暱稱已修改為「${checked.nickname}」。`
+      );
+
+      await loadNicknameReviewData();
+    }
+
+    async function requestNicknameReset(
+      uid
+    ) {
+      const player =
+        findNicknamePlayer(uid);
+
+      if (
+        !player
+      ) {
+        return;
+      }
+
+      const reasonInput =
+        window.prompt(
+          `要要求「${player.nickname}」重新設定暱稱嗎？\n\n可輸入給學生看的提醒原因：`,
+          "原暱稱不符合使用規範，請重新設定。"
+        );
+
+      if (
+        reasonInput === null
+      ) {
+        return;
+      }
+
+      const reason =
+        String(
+          reasonInput ||
+          "原暱稱不符合使用規範，請重新設定。"
+        )
+          .trim()
+          .slice(0, 80);
+
+      const adminUid =
+        currentAdminResult?.user?.uid ||
+        "";
+
+      const batch =
+        writeBatch(db);
+
+      batch.set(
+        doc(
+          db,
+          "users",
+          uid
+        ),
+        {
+          nickname:
+            "",
+          nicknameSet:
+            false,
+          nicknameResetReason:
+            reason,
+          nicknameModerationStatus:
+            "needsReset",
+          nicknameModeratedBy:
+            adminUid,
+          nicknameModeratedAt:
+            serverTimestamp()
+        },
+        {
+          merge: true
+        }
+      );
+
+      batch.set(
+        doc(
+          db,
+          "publicProfiles",
+          uid
+        ),
+        {
+          uid,
+          nickname:
+            "",
+          nicknameSet:
+            false,
+          updatedAt:
+            serverTimestamp()
+        },
+        {
+          merge: true
+        }
+      );
+
+      batch.set(
+        doc(
+          db,
+          "nicknameReviews",
+          uid
+        ),
+        {
+          uid,
+          reviewedNickname:
+            player.nickname,
+          status:
+            "reset-requested",
+          reason,
+          reviewedBy:
+            adminUid,
+          reviewedAt:
+            serverTimestamp()
+        },
+        {
+          merge: true
+        }
+      );
+
+      await batch.commit();
+
+      window.alert(
+        "已要求學生重新設定暱稱。排行榜會立即改用匿名代號；學生下次進入首頁時會再次被要求設定。"
+      );
+
+      await loadNicknameReviewData();
+    }
+
+    function openNicknameReview() {
+      nicknameReviewSection.classList.remove(
+        "hidden"
+      );
+
+      nicknameReviewFeature.classList.add(
+        "active"
+      );
+
+      nicknameReviewSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    nicknameReviewFeature.addEventListener(
+      "click",
+      openNicknameReview
+    );
+
+    nicknameReviewFeature.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+          event.preventDefault();
+          openNicknameReview();
+        }
+      }
+    );
+
+    $("nicknameRescanButton")
+      .addEventListener(
+        "click",
+        loadNicknameReviewData
+      );
+
+    nicknameViewToggleButton
+      .addEventListener(
+        "click",
+        () => {
+          nicknameShowAll =
+            !nicknameShowAll;
+          renderNicknameReview();
+        }
+      );
+
+    nicknameSearchInput
+      .addEventListener(
+        "input",
+        renderNicknameReview
+      );
+
+    $("nicknameClearSearchButton")
+      .addEventListener(
+        "click",
+        () => {
+          nicknameSearchInput.value =
+            "";
+          renderNicknameReview();
+          nicknameSearchInput.focus();
+        }
+      );
+
+    nicknameReviewList
+      .addEventListener(
+        "click",
+        async event => {
+          const button =
+            event.target.closest(
+              "button[data-action][data-uid]"
+            );
+
+          if (
+            !button
+          ) {
+            return;
+          }
+
+          const uid =
+            button.dataset.uid;
+
+          const action =
+            button.dataset.action;
+
+          button.disabled =
+            true;
+
+          try {
+            if (
+              action === "approve"
+            ) {
+              await approveNickname(
+                uid
+              );
+            } else if (
+              action === "edit"
+            ) {
+              await editNickname(
+                uid
+              );
+            } else if (
+              action === "reset"
+            ) {
+              await requestNicknameReset(
+                uid
+              );
+            }
+          } catch (
+            error
+          ) {
+            console.error(
+              "暱稱管理操作失敗：",
+              error
+            );
+
+            window.alert(
+              `操作失敗：${error?.message || "未知錯誤"}`
+            );
+          } finally {
+            button.disabled =
+              false;
+          }
+        }
+      );
 
     /* ===============================
        登入訊息
