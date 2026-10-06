@@ -3,8 +3,8 @@
 生活有解．心中有數｜我的成績
 檔案位置：js/my-scores.js
 
-版本：3.6
-七下 1-1／1-2／1-3 正式上線同步版
+版本：3.8
+七下 1-1～3-2 正式上線同步版
 ==================================================
 
 功能：
@@ -46,7 +46,7 @@
 
 10. 八下 1-1／1-2／1-3 正式遊戲依 game-config.js 的 GAME_ID / modeId 顯示
 
-11. 七下 1-1／1-2／1-3 正式遊戲依 game-config.js 的 GAME_ID / modeId 顯示
+11. 七下 1-1～3-2 正式遊戲依 game-config.js 的 GAME_ID / modeId 顯示
     不新增硬編碼，既有 Firestore 成績結構不變
 ==================================================
 */
@@ -62,7 +62,7 @@ import {
   getGameConfig,
   getGameName,
   getModeName
-} from "./game-config.js?v=9.6";
+} from "./game-config.js?v=9.8";
 
 
 import {
