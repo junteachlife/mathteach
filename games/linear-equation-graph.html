@@ -84,7 +84,29 @@ function startTimer(){startTime=Date.now();elapsed=0;$("timer-display").textCont
 function stopTimer(){clearInterval(timerId);timerId=null;if(startTime)elapsed=Math.max(elapsed,Math.floor((Date.now()-startTime)/1000))}
 function formatTime(s){return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}
 function moveScratchpadButton(){const mount=$("scratchpad-mobile-button"),btn=$("scratchpadOpenButton");if(mount&&btn&&!mount.contains(btn))mount.appendChild(btn)}
-function ensureScratchpadButton(){moveScratchpadButton();let c=0;const t=setInterval(()=>{c++;moveScratchpadButton();if($("scratchpadOpenButton")||c>=30)clearInterval(t)},60)}
+function ensureScratchpadButton(){
+  moveScratchpadButton();
+
+  const mount=$("scratchpad-mobile-button");
+  if(!mount)return;
+
+  const existing=$("scratchpadOpenButton");
+  if(existing){
+    moveScratchpadButton();
+    if(typeof window.showGameScratchpadButton==="function")window.showGameScratchpadButton();
+    return;
+  }
+
+  const observer=new MutationObserver(()=>{
+    const btn=$("scratchpadOpenButton");
+    if(!btn)return;
+    moveScratchpadButton();
+    if(typeof window.showGameScratchpadButton==="function")window.showGameScratchpadButton();
+    observer.disconnect();
+  });
+  observer.observe(document.body,{childList:true,subtree:true});
+  setTimeout(()=>observer.disconnect(),5000);
+}
 function renderAnswer(q){selectedChoice=null;const area=$("answer-area");if(q.type==="choice"){area.innerHTML=`<div class="answer-title">請選擇答案</div><div class="choice-grid">${q.choices.map(c=>`<button class="choice-button" type="button" data-choice="${esc(c)}">${c}</button>`).join("")}</div>`;area.querySelectorAll(".choice-button").forEach(btn=>btn.addEventListener("click",()=>{area.querySelectorAll(".choice-button").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");selectedChoice=btn.dataset.choice}))}else if(q.type==="number"){const frac=needsFraction(q.answer);area.innerHTML=`<div class="answer-title">請輸入答案</div>${scalarInputHTML("number-answer",q.answer,"number-answer")}<div class="answer-help">${frac?"答案為分數：上格填分子、下格填分母；若為負數請選負號。":"請直接輸入數值。"}</div>`;setTimeout(()=>$(frac?"number-answer-num":"number-answer-whole")?.focus(),0)}else{const fx=needsFraction(q.answer.x),fy=needsFraction(q.answer.y);area.innerHTML=`<div class="answer-title">請輸入兩個數值</div><div class="pair-answer"><label class="pair-box ${fx?"fraction-pair":""}"><span class="pair-label">${q.labels[0]}＝</span>${scalarInputHTML("pair-x",q.answer.x,"pair-input")}</label><label class="pair-box ${fy?"fraction-pair":""}"><span class="pair-label">${q.labels[1]}＝</span>${scalarInputHTML("pair-y",q.answer.y,"pair-input")}</label></div><div class="answer-help">若答案為分數，會直接顯示分子、分母輸入格，不需要輸入斜線。</div>`;setTimeout(()=>$(fx?"pair-x-num":"pair-x-whole")?.focus(),0)}}
 function currentAnswer(q){if(q.type==="choice")return selectedChoice;if(q.type==="number")return readScalar("number-answer",q.answer);return{x:readScalar("pair-x",q.answer.x),y:readScalar("pair-y",q.answer.y)}}
 function answerValid(q,a){if(q.type==="choice")return a!==null;if(q.type==="number")return a!==null;return a.x!==null&&a.y!==null}
