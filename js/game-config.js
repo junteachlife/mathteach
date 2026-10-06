@@ -3,8 +3,8 @@
 數學遊戲樂園：遊戲共用設定
 檔案位置：js/game-config.js
 
-版本：9.6
-七年級下學期第 1 章 1-1／1-2／1-3 正式上線同步版
+版本：9.8
+七年級下學期 1-1～3-2 正式上線同步版
 ＋八年級下學期第 1 章 1-1／1-2／1-3 正式上線同步版
 ＋一元二次方程式
 ＋排行榜 / 我的成績相容修正版
@@ -706,32 +706,103 @@ export const GAME_CONFIG = {
     theme:{primary:"#64748B",dark:"#475569",light:"#F1F5F9",border:"#CBD5E1"}
   },
 
+
+  "coordinate-plane": {
+    id:"coordinate-plane", section:"2-1",
+    name:"2-1 直角坐標平面大挑戰", shortName:"直角坐標平面",
+    semester:"grade7-second", grade:7, order:4, icon:"📍",
+    file:"games/coordinate-plane.html",
+    description:"練習坐標與描點、坐標軸與象限、點到兩軸的距離、坐標反推，以及移動與圖形位置判讀。",
+    finished:true, difficulty:2, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{
+      coordinateBasics:"坐標與描點",
+      axesQuadrants:"坐標軸與象限",
+      distancePosition:"距離與坐標反推",
+      movementGeometry:"移動與圖形位置",
+      comprehensive:"2-1 綜合挑戰"
+    },
+    theme:{primary:"#0284C7",dark:"#0369A1",light:"#F0F9FF",border:"#7DD3FC"}
+  },
+
+  "linear-equation-graph": {
+    id:"linear-equation-graph", section:"2-2",
+    name:"2-2 二元一次方程式的圖形大挑戰", shortName:"二元一次方程式圖形",
+    semester:"grade7-second", grade:7, order:5, icon:"📈",
+    file:"games/linear-equation-graph.html",
+    description:"練習方程式的解與點、畫直線與兩軸交點、水平線與鉛垂線、由點求方程式，以及聯立方程式與交點。",
+    finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{
+      solutionPoints:"方程式的解與點",
+      lineGraphIntercepts:"畫線與兩軸交點",
+      horizontalVertical:"水平線與鉛垂線",
+      equationFromGraph:"由點求直線方程式",
+      systemIntersection:"聯立方程式與交點",
+      comprehensive:"2-2 綜合挑戰"
+    },
+    theme:{primary:"#0F766E",dark:"#115E59",light:"#ECFDF5",border:"#5EEAD4"}
+  },
+
+  "proportion-equation": {
+    id:"proportion-equation", section:"3-1",
+    name:"3-1 比例式大挑戰", shortName:"比例式",
+    semester:"grade7-second", grade:7, order:6, icon:"⚖️",
+    file:"games/proportion-equation.html",
+    description:"練習比與比值、最簡整數比、比例式求未知數、比例關係與倍數，以及比例的生活應用。",
+    finished:true, difficulty:2, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{
+      ratioValue:"比與比值",
+      simplifyRatio:"最簡整數比",
+      proportionSolve:"比例式求未知數",
+      ratioRelation:"比例關係與倍數",
+      proportionApplication:"比例應用",
+      comprehensive:"3-1 綜合挑戰"
+    },
+    theme:{primary:"#EA580C",dark:"#C2410C",light:"#FFF7ED",border:"#FDBA74"}
+  },
+
+  "direct-inverse-proportion": {
+    id:"direct-inverse-proportion", section:"3-2",
+    name:"3-2 正比與反比大挑戰", shortName:"正比與反比",
+    semester:"grade7-second", grade:7, order:7, icon:"🔄",
+    file:"games/direct-inverse-proportion.html",
+    description:"練習正比與反比判別、正比關係、反比關係與生活應用，並能由已知條件求關係式與未知量。",
+    finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{
+      relationJudge:"正比／反比判別",
+      directProportion:"正比關係",
+      inverseProportion:"反比關係",
+      proportionApplication:"正反比生活應用",
+      comprehensive:"3-2 綜合挑戰"
+    },
+    theme:{primary:"#7C3AED",dark:"#5B21B6",light:"#F5F3FF",border:"#C4B5FD"}
+  },
+
   coordinate: {
     id:"coordinate", section:"2",
-    name:"直角坐標與方程式圖形", shortName:"直角坐標與方程式圖形",
-    semester:"grade7-second", grade:7, order:4, icon:"📍",
+    name:"舊版 直角坐標與方程式圖形", shortName:"舊版直角坐標與方程式圖形",
+    semester:"grade7-second", grade:7, order:98, icon:"📍",
     file:"games/coordinate.html",
-    description:"認識坐標平面，練習描點與判讀二元一次方程式圖形。",
-    finished:false, difficulty:2, recommended:false, isNew:false, ranking:{type:"timed"},
+    description:"舊版歷史相容用。",
+    finished:false, archived:true, difficulty:2, recommended:false, isNew:false, ranking:{type:"timed"},
     modes:{},
-    theme:{primary:"#039BE5",dark:"#0277BD",light:"#E1F5FE",border:"#81D4FA"}
+    theme:{primary:"#64748B",dark:"#475569",light:"#F1F5F9",border:"#CBD5E1"}
   },
 
   ratio: {
     id:"ratio", section:"3",
-    name:"比例式、正比與反比", shortName:"比例式、正比與反比",
-    semester:"grade7-second", grade:7, order:5, icon:"📏",
+    name:"舊版 比例式、正比與反比", shortName:"舊版比例",
+    semester:"grade7-second", grade:7, order:99, icon:"📏",
     file:"games/ratio.html",
-    description:"練習比例式、正比、反比與實際應用題。",
-    finished:false, difficulty:2, recommended:false, isNew:false, ranking:{type:"timed"},
+    description:"舊版歷史相容用。",
+    finished:false, archived:true, difficulty:2, recommended:false, isNew:false, ranking:{type:"timed"},
     modes:{},
-    theme:{primary:"#F4511E",dark:"#D84315",light:"#FBE9E7",border:"#FFAB91"}
+    theme:{primary:"#64748B",dark:"#475569",light:"#F1F5F9",border:"#CBD5E1"}
   },
 
   statistics: {
     id:"statistics", section:"5",
     name:"統計圖表", shortName:"統計圖表",
-    semester:"grade7-second", grade:7, order:6, icon:"📊",
+    semester:"grade7-second", grade:7, order:10, icon:"📊",
     file:"games/statistics.html",
     description:"練習次數分配、統計圖表與資料判讀。",
     finished:false, difficulty:2, recommended:false, isNew:false, ranking:{type:"timed"},
@@ -2177,7 +2248,7 @@ export function getGameDisplayName(
 
 
 console.log(
-  "game-config.js v9.6 七下第 1 章同步版已成功載入"
+  "game-config.js v9.8 七下 1-1～3-2 同步版已成功載入"
 );
 
 
