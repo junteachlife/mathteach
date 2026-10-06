@@ -474,7 +474,11 @@
 
       justify-content: center;
 
+      gap: 8px;
+
       margin-top: 10px;
+
+      flex-wrap: wrap;
 
     }
 
@@ -517,6 +521,195 @@
 
     .compact-logout-button {
       background: #ef4444;
+    }
+
+
+    .compact-nickname-button {
+      background: #0f766e;
+    }
+
+
+    /*
+    ==================================================
+    暱稱設定視窗
+    ==================================================
+    */
+
+
+    .nickname-modal[hidden] {
+      display: none !important;
+    }
+
+
+    .nickname-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 30000;
+
+      display: grid;
+      place-items: center;
+
+      padding: 20px;
+
+      background:
+        rgba(15, 23, 42, .58);
+
+      backdrop-filter:
+        blur(4px);
+
+      -webkit-backdrop-filter:
+        blur(4px);
+    }
+
+
+    .nickname-dialog {
+      width:
+        min(460px, 100%);
+
+      padding: 24px;
+
+      border:
+        1px solid #bfdbfe;
+
+      border-radius: 22px;
+
+      background: #ffffff;
+
+      box-shadow:
+        0 24px 70px
+        rgba(15, 23, 42, .25);
+    }
+
+
+    .nickname-dialog h2 {
+      margin:
+        0 0 10px;
+
+      color: #174f8f;
+
+      font-size: 24px;
+
+      text-align: center;
+    }
+
+
+    .nickname-dialog p {
+      margin:
+        0 0 16px;
+
+      color: #64748b;
+
+      font-size: 14px;
+
+      line-height: 1.7;
+
+      text-align: center;
+    }
+
+
+    .nickname-input {
+      width: 100%;
+
+      padding:
+        13px 14px;
+
+      border:
+        2px solid #bfdbfe;
+
+      border-radius: 13px;
+
+      background: #f8fbff;
+
+      color: #0f172a;
+
+      font-family: inherit;
+
+      font-size: 18px;
+
+      font-weight: 800;
+
+      text-align: center;
+
+      outline: none;
+    }
+
+
+    .nickname-input:focus {
+      border-color: #2563eb;
+
+      box-shadow:
+        0 0 0 4px
+        rgba(37, 99, 235, .12);
+    }
+
+
+    .nickname-hint {
+      margin-top: 8px;
+
+      color: #64748b;
+
+      font-size: 12px;
+
+      text-align: center;
+    }
+
+
+    .nickname-error {
+      min-height: 22px;
+
+      margin-top: 8px;
+
+      color: #dc2626;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      text-align: center;
+    }
+
+
+    .nickname-actions {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      margin-top: 12px;
+    }
+
+
+    .nickname-save-button,
+    .nickname-cancel-button {
+      min-width: 128px;
+
+      padding:
+        11px 16px;
+
+      border: 0;
+
+      border-radius: 12px;
+
+      color: #ffffff;
+
+      font-family: inherit;
+
+      font-size: 15px;
+
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+
+    .nickname-save-button {
+      background: #2563eb;
+    }
+
+
+    .nickname-cancel-button {
+      background: #64748b;
     }
 
 
@@ -2041,6 +2234,16 @@
 
 
                 <button
+                  id="compactNicknameButton"
+                  class="compact-auth-button compact-nickname-button"
+                  type="button"
+                  hidden
+                >
+                  修改暱稱
+                </button>
+
+
+                <button
                   id="compactLogoutButton"
                   class="compact-auth-button compact-logout-button"
                   type="button"
@@ -2467,6 +2670,68 @@
   </main>
 
 
+  <!-- 暱稱設定視窗 -->
+  <div
+    id="nicknameModal"
+    class="nickname-modal"
+    hidden
+  >
+    <section
+      class="nickname-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="nicknameDialogTitle"
+    >
+      <h2 id="nicknameDialogTitle">
+        🎮 設定遊戲暱稱
+      </h2>
+
+      <p>
+        排行榜會顯示你的遊戲暱稱，不公開顯示 Google 真實姓名。
+      </p>
+
+      <input
+        id="nicknameInput"
+        class="nickname-input"
+        type="text"
+        maxlength="12"
+        autocomplete="off"
+        placeholder="例如：數學海賊王"
+        aria-label="遊戲暱稱"
+      >
+
+      <div class="nickname-hint">
+        2～12 個字，可以使用中文、英文、數字或 Emoji。
+      </div>
+
+      <div
+        id="nicknameError"
+        class="nickname-error"
+        aria-live="polite"
+      ></div>
+
+      <div class="nickname-actions">
+        <button
+          id="nicknameSaveButton"
+          class="nickname-save-button"
+          type="button"
+        >
+          儲存並開始遊戲
+        </button>
+
+        <button
+          id="nicknameCancelButton"
+          class="nickname-cancel-button"
+          type="button"
+          hidden
+        >
+          取消
+        </button>
+      </div>
+    </section>
+  </div>
+
+
   <script type="module">
 
 
@@ -2489,8 +2754,11 @@
 
 
     import {
-      createOrUpdatePlayer
-    } from "./js/firestore.js";
+      createOrUpdatePlayer,
+      setPlayerNickname,
+      needsNickname,
+      getPublicPlayerName
+    } from "./js/firestore.js?v=1.1";
 
 
     import {
@@ -2526,6 +2794,50 @@
       document.getElementById(
         "compactLogoutButton"
       );
+
+
+    const compactNicknameButton =
+      document.getElementById(
+        "compactNicknameButton"
+      );
+
+
+    const nicknameModal =
+      document.getElementById(
+        "nicknameModal"
+      );
+
+
+    const nicknameInput =
+      document.getElementById(
+        "nicknameInput"
+      );
+
+
+    const nicknameError =
+      document.getElementById(
+        "nicknameError"
+      );
+
+
+    const nicknameSaveButton =
+      document.getElementById(
+        "nicknameSaveButton"
+      );
+
+
+    const nicknameCancelButton =
+      document.getElementById(
+        "nicknameCancelButton"
+      );
+
+
+    let currentPlayerProfile =
+      null;
+
+
+    let nicknameIsRequired =
+      false;
 
 
     const myScoresLink =
@@ -4677,6 +4989,214 @@
 
     /*
     ==================================================
+    暱稱設定
+    ==================================================
+    */
+
+
+    function openNicknameDialog(
+      required = false
+    ) {
+
+      nicknameIsRequired =
+        Boolean(required);
+
+
+      nicknameError.textContent =
+        "";
+
+
+      nicknameInput.value =
+        currentPlayerProfile?.nicknameSet
+          ? (
+              currentPlayerProfile.nickname ||
+              ""
+            )
+          : "";
+
+
+      nicknameCancelButton.hidden =
+        nicknameIsRequired;
+
+
+      nicknameSaveButton.textContent =
+        nicknameIsRequired
+          ? "儲存並開始遊戲"
+          : "儲存暱稱";
+
+
+      nicknameModal.hidden =
+        false;
+
+
+      document.body.style.overflow =
+        "hidden";
+
+
+      requestAnimationFrame(
+        () => {
+          nicknameInput.focus();
+          nicknameInput.select();
+        }
+      );
+    }
+
+
+    function closeNicknameDialog() {
+
+      if (
+        nicknameIsRequired
+      ) {
+        return;
+      }
+
+
+      nicknameModal.hidden =
+        true;
+
+
+      document.body.style.overflow =
+        "";
+    }
+
+
+    async function saveNickname() {
+
+      const user =
+        auth.currentUser;
+
+
+      if (
+        !user
+      ) {
+
+        nicknameError.textContent =
+          "登入狀態已失效，請重新登入。";
+
+        return;
+      }
+
+
+      nicknameSaveButton.disabled =
+        true;
+
+
+      nicknameSaveButton.textContent =
+        "儲存中……";
+
+
+      nicknameError.textContent =
+        "";
+
+
+      try {
+
+        const saved =
+          await setPlayerNickname(
+            user,
+            nicknameInput.value
+          );
+
+
+        currentPlayerProfile = {
+          ...(currentPlayerProfile || {}),
+          ...saved
+        };
+
+
+        nicknameIsRequired =
+          false;
+
+
+        nicknameModal.hidden =
+          true;
+
+
+        document.body.style.overflow =
+          "";
+
+
+        renderLoggedIn(
+          user,
+          currentPlayerProfile
+        );
+
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          "暱稱儲存失敗：",
+          error
+        );
+
+
+        nicknameError.textContent =
+          error?.message ||
+          "暱稱儲存失敗，請稍後再試。";
+
+
+      } finally {
+
+        nicknameSaveButton.disabled =
+          false;
+
+
+        nicknameSaveButton.textContent =
+          nicknameIsRequired
+            ? "儲存並開始遊戲"
+            : "儲存暱稱";
+
+      }
+    }
+
+
+    nicknameSaveButton
+      .addEventListener(
+        "click",
+        saveNickname
+      );
+
+
+    nicknameInput
+      .addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key ===
+            "Enter"
+          ) {
+
+            event.preventDefault();
+
+            saveNickname();
+          }
+        }
+      );
+
+
+    nicknameCancelButton
+      .addEventListener(
+        "click",
+        closeNicknameDialog
+      );
+
+
+    compactNicknameButton
+      .addEventListener(
+        "click",
+        () => {
+          openNicknameDialog(
+            false
+          );
+        }
+      );
+
+
+    /*
+    ==================================================
     Google 登入
     ==================================================
     */
@@ -4855,8 +5375,28 @@
         false;
 
 
+      compactNicknameButton.hidden =
+        true;
+
+
       compactLogoutButton.hidden =
         true;
+
+
+      currentPlayerProfile =
+        null;
+
+
+      nicknameIsRequired =
+        false;
+
+
+      nicknameModal.hidden =
+        true;
+
+
+      document.body.style.overflow =
+        "";
 
     }
 
@@ -4869,7 +5409,8 @@
 
 
     function renderLoggedIn(
-      user
+      user,
+      profile = null
     ) {
 
 
@@ -4924,8 +5465,13 @@
 
 
       name.textContent =
-        user.displayName ||
-        "玩家";
+        profile &&
+        profile.nicknameSet === true
+          ? getPublicPlayerName(
+              profile,
+              user.uid
+            )
+          : "尚未設定遊戲暱稱";
 
 
       const email =
@@ -4939,8 +5485,9 @@
 
 
       email.textContent =
-        user.email ||
-        "";
+        user.email
+          ? `登入帳號：${user.email}`
+          : "登入成功";
 
 
       text.append(
@@ -4956,6 +5503,10 @@
 
       compactLoginButton.hidden =
         true;
+
+
+      compactNicknameButton.hidden =
+        false;
 
 
       compactLogoutButton.hidden =
@@ -4989,24 +5540,30 @@
         }
 
 
-        renderLoggedIn(
-          user
-        );
-
-
         try {
 
 
-          if (
-            typeof createOrUpdatePlayer ===
-            "function"
-          ) {
-
-
+          currentPlayerProfile =
             await createOrUpdatePlayer(
               user
             );
 
+
+          renderLoggedIn(
+            user,
+            currentPlayerProfile
+          );
+
+
+          if (
+            needsNickname(
+              currentPlayerProfile
+            )
+          ) {
+
+            openNicknameDialog(
+              true
+            );
           }
 
 
@@ -5018,6 +5575,16 @@
           console.warn(
             "玩家資料同步失敗：",
             error
+          );
+
+
+          /*
+          就算玩家資料暫時讀取失敗，
+          也不顯示 Google 真名。
+          */
+          renderLoggedIn(
+            user,
+            null
           );
 
         }
