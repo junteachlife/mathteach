@@ -766,6 +766,216 @@ select{
 #polynomial-answer-mount .expression-input__fraction-coefficient{
   flex-direction:column!important;
 }
+
+/* ==================================================
+   1-2 統一新版面：對齊八上 1-1
+================================================== */
+
+.game-card-return-row{
+  display:flex;
+  justify-content:flex-end;
+  padding:10px 12px 0;
+}
+
+.game-card-return-row .semester-return-button{
+  min-width:0;
+  min-height:42px;
+  padding:9px 14px;
+}
+
+/* 舊版外部返回列不再使用 */
+.semester-return-row{
+  margin:0;
+}
+
+.quiz-topbar{
+  display:grid;
+  grid-template-columns:minmax(220px,1fr) auto minmax(300px,auto);
+  gap:12px;
+  align-items:center;
+  margin-bottom:14px;
+}
+
+.quiz-context,
+.quiz-stats{
+  display:grid;
+  gap:8px;
+}
+
+.quiz-context{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.quiz-stats{
+  grid-template-columns:repeat(3,minmax(86px,1fr));
+}
+
+.quiz-actions{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.quiz-actions .game-button{
+  min-width:116px;
+  min-height:46px;
+  padding:10px 14px;
+}
+
+.question-card{
+  position:relative;
+  padding:22px 18px 78px;
+  text-align:left;
+}
+
+.question-label{
+  text-align:left;
+}
+
+/* 題目不再使用左右拖動，長式子改成以完整括號為單位自然換行 */
+.question-content{
+  width:100%;
+  min-height:120px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:visible;
+  padding:8px 2px;
+  text-align:left;
+  font-size:clamp(21px,3.8vw,34px);
+  line-height:1.7;
+}
+
+.question-expression{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  gap:.12em .22em;
+  width:100%;
+  min-width:0;
+  margin:auto;
+  padding:.12em .12em;
+  white-space:normal;
+  line-height:1.65;
+  text-align:center;
+}
+
+.question-expression *{
+  white-space:normal;
+}
+
+.question-expression .math-bracket,
+.question-expression .outer-operator,
+.question-expression .math-fraction{
+  display:inline-flex;
+  white-space:nowrap;
+  flex:0 0 auto;
+}
+
+.question-expression .math-bracket{
+  align-items:center;
+}
+
+/* 計算紙固定在題目框右下角 */
+.scratchpad-row{
+  position:absolute;
+  right:16px;
+  bottom:14px;
+  display:flex;
+  justify-content:flex-end;
+  min-height:44px;
+  margin:0;
+  z-index:2;
+}
+
+#scratchpad-mobile-button{
+  width:auto;
+  display:flex;
+  justify-content:flex-end;
+}
+
+#scratchpad-mobile-button #scratchpadOpenButton,
+#scratchpad-mobile-button .scratchpad-open-button{
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  margin:0!important;
+  z-index:auto!important;
+}
+
+.answer-submit-row{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:16px;
+  flex-wrap:wrap;
+}
+
+@media(max-width:900px){
+  .quiz-topbar{
+    grid-template-columns:1fr;
+  }
+
+  .quiz-actions{
+    order:3;
+  }
+}
+
+@media(max-width:700px){
+  .game-card-return-row{
+    padding:10px 10px 0;
+  }
+
+  .game-card-return-row .semester-return-button{
+    width:auto;
+    min-height:40px;
+  }
+
+  .quiz-context,
+  .quiz-stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .quiz-stats .timer-box{
+    grid-column:1/-1;
+  }
+
+  .question-card{
+    padding:18px 12px 74px;
+  }
+
+  .question-content{
+    font-size:clamp(18px,5.2vw,27px);
+    line-height:1.75;
+  }
+
+  .question-expression{
+    gap:.18em .20em;
+  }
+
+  .scratchpad-row{
+    right:10px;
+    bottom:10px;
+  }
+}
+
+@media(max-width:430px){
+  .question-content{
+    font-size:clamp(17px,4.8vw,23px);
+  }
+
+  .question-expression .math-bracket{
+    font-size:.96em;
+  }
+
+  .quiz-actions .game-button{
+    min-width:132px;
+  }
+}
+
 </style>
 </head>
 
@@ -775,10 +985,9 @@ select{
 
 <div id="commonHeaderMount"></div>
 
-<div
-  id="semester-return-row"
-  class="semester-return-row"
->
+<main class="game-card">
+
+<div class="game-card-return-row">
   <button
     id="semester-return-button"
     class="semester-return-button"
@@ -787,8 +996,6 @@ select{
     ↩️ 重返八年級上學期
   </button>
 </div>
-
-<main class="game-card">
 
 <header class="game-header">
 
@@ -888,6 +1095,8 @@ select{
 
 <div class="quiz-topbar">
 
+<div class="quiz-context">
+
 <div class="status-box">
 模式
 <span
@@ -907,6 +1116,30 @@ select{
 1 / 10
 </span>
 </div>
+
+</div>
+
+<div class="quiz-actions">
+
+<button
+  id="restart-button"
+  class="game-button restart"
+  type="button"
+>
+🔄 重新測驗
+</button>
+
+<button
+  id="mode-button"
+  class="game-button secondary"
+  type="button"
+>
+重選模式
+</button>
+
+</div>
+
+<div class="quiz-stats">
 
 <div class="status-box">
 答對
@@ -940,6 +1173,8 @@ select{
 
 </div>
 
+</div>
+
 <div class="progress-shell">
 <div
   id="progress-bar"
@@ -959,10 +1194,10 @@ select{
   class="question-content"
 ></div>
 
+<div class="scratchpad-row">
+  <div id="scratchpad-mobile-button"></div>
 </div>
 
-<div class="scratchpad-row">
-<div id="scratchpad-mobile-button"></div>
 </div>
 
 <div
@@ -970,7 +1205,7 @@ select{
   class="answer-panel"
 ></div>
 
-<div class="button-row">
+<div class="answer-submit-row">
 
 <button
   id="submit-button"
@@ -986,22 +1221,6 @@ select{
   type="button"
 >
 下一題（Enter）
-</button>
-
-<button
-  id="restart-button"
-  class="game-button restart"
-  type="button"
->
-🔄 重新測驗
-</button>
-
-<button
-  id="mode-button"
-  class="game-button secondary"
-  type="button"
->
-選擇模式
 </button>
 
 </div>
@@ -1355,17 +1574,13 @@ function playGameSound(
   }
 }
 
-function moveScratchpadButtonToTop() {
+function moveScratchpadButtonToQuestionCard() {
 
   const mount =
-    $(
-      "scratchpad-mobile-button"
-    );
+    $("scratchpad-mobile-button");
 
   const button =
-    $(
-      "scratchpadOpenButton"
-    );
+    $("scratchpadOpenButton");
 
   if (
     mount &&
@@ -1379,7 +1594,52 @@ function moveScratchpadButtonToTop() {
       button
     );
   }
+
+  if (button) {
+    button.style.position = "static";
+    button.style.inset = "auto";
+    button.style.transform = "none";
+    button.style.margin = "0";
+  }
 }
+
+
+function ensureScratchpadButtonInQuestionCard() {
+
+  moveScratchpadButtonToQuestionCard();
+
+  if ($("scratchpadOpenButton")) {
+    window.showGameScratchpadButton?.();
+    return;
+  }
+
+  const observer =
+    new MutationObserver(
+      () => {
+
+        moveScratchpadButtonToQuestionCard();
+
+        if ($("scratchpadOpenButton")) {
+          window.showGameScratchpadButton?.();
+          observer.disconnect();
+        }
+      }
+    );
+
+  observer.observe(
+    document.body,
+    {
+      childList: true,
+      subtree: true
+    }
+  );
+
+  setTimeout(
+    () => observer.disconnect(),
+    10000
+  );
+}
+
 
 function showOnly(
   screenId
@@ -1405,27 +1665,12 @@ function showOnly(
           );
       }
     );
-
-  const semesterReturnRow =
-    $(
-      "semester-return-row"
-    );
-
-  semesterReturnRow
-    ?.classList
-    .toggle(
-      "hidden",
-      screenId !==
-        "start-screen"
-    );
-
-
-  if (
+if (
     screenId ===
     "quiz-screen"
   ) {
 
-    moveScratchpadButtonToTop();
+    ensureScratchpadButtonInQuestionCard();
 
     window
       .showGameScratchpadButton
@@ -5297,6 +5542,31 @@ function restartCurrentMode() {
   );
 }
 
+function confirmReselectMode() {
+
+  return window.confirm(
+    "確定要重選模式嗎？\n目前這次測驗的作答進度與測驗時間將會結束。"
+  );
+}
+
+
+function backToModesWithConfirmation() {
+
+  if (
+    !confirmReselectMode()
+  ) {
+
+    return;
+  }
+
+  stopTimer();
+
+  showOnly(
+    "start-screen"
+  );
+}
+
+
 
 function returnToGrade8FirstSemester() {
 
@@ -5409,19 +5679,10 @@ $(
     restartCurrentMode
   );
 
-$(
-  "mode-button"
-)
+$("mode-button")
   .addEventListener(
     "click",
-    () => {
-
-      stopTimer();
-
-      showOnly(
-        "start-screen"
-      );
-    }
+    backToModesWithConfirmation
   );
 
 $(
@@ -5526,10 +5787,10 @@ window
     "DOMContentLoaded",
     () => {
 
-      moveScratchpadButtonToTop();
+      ensureScratchpadButtonInQuestionCard();
 
       setTimeout(
-        moveScratchpadButtonToTop,
+        ensureScratchpadButtonInQuestionCard,
         100
       );
     }
