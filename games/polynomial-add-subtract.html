@@ -1205,7 +1205,7 @@
     }
 
     .question-label {
-      text-align: left;
+      text-align: center;
     }
 
     .question-content {
@@ -1465,12 +1465,46 @@
       font-family: "Cambria Math", "Times New Roman", "Microsoft JhengHei", sans-serif;
       font-size: 22px;
       font-weight: 800;
+      line-height: 1.55;
       outline: none;
+      cursor: text;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .free-polynomial-input:empty::before {
+      content: attr(data-placeholder);
+      color: #94a3b8;
+      font-weight: 700;
+      pointer-events: none;
     }
 
     .free-polynomial-input:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 4px rgba(63,81,181,.11);
+    }
+
+    .free-polynomial-input sup {
+      position: relative;
+      top: -.38em;
+      margin-left: 1px;
+      font-size: .68em;
+      line-height: 1;
+      vertical-align: baseline;
+      min-width: .45em;
+      display: inline-block;
+    }
+
+    .free-polynomial-input sup:empty::before {
+      content: "□";
+      color: #94a3b8;
+      font-size: .8em;
+    }
+
+    .free-polynomial-input[contenteditable="false"] {
+      background: #f8fafc;
+      color: #64748b;
+      cursor: default;
     }
 
     .exponent-insert-button {
@@ -2741,12 +2775,51 @@
     }
 
 
-    function updateTypedPolynomialPreview() {
-      const input = $("polynomial-free-input");
-      const preview = $("polynomial-system-preview");
-      if (!input || !preview) return;
+    function serializePolynomialEditor(editor) {
+      if (!editor) return "";
 
-      const result = parseTypedPolynomial(input.value);
+      const walk = node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          return node.nodeValue || "";
+        }
+
+        if (node.nodeType !== Node.ELEMENT_NODE) {
+          return "";
+        }
+
+        const tag = node.tagName?.toLowerCase();
+
+        if (tag === "sup") {
+          const power = [...node.childNodes].map(walk).join("").replace(/\u200b/g, "").trim();
+          return power ? `^${power}` : "^";
+        }
+
+        if (tag === "br") {
+          return "";
+        }
+
+        return [...node.childNodes].map(walk).join("");
+      };
+
+      return [...editor.childNodes].map(walk).join("").replace(/\u200b/g, "");
+    }
+
+
+    function syncPolynomialHiddenValue() {
+      const editor = $("polynomial-free-input");
+      const hidden = $("polynomial-free-hidden");
+      if (!editor || !hidden) return "";
+      hidden.value = serializePolynomialEditor(editor);
+      return hidden.value;
+    }
+
+
+    function updateTypedPolynomialPreview() {
+      const preview = $("polynomial-system-preview");
+      if (!preview) return;
+
+      const raw = syncPolynomialHiddenValue();
+      const result = parseTypedPolynomial(raw);
       preview.classList.remove("is-valid", "is-incomplete", "is-invalid");
 
       if (result.valid) {
@@ -2762,21 +2835,97 @@
     }
 
 
+    function placeCaretInside(element) {
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.selectNodeContents(element);
+      range.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+
+
+    function placeCaretAfter(element) {
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.setStartAfter(element);
+      range.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+
+
     function insertExponentMarker() {
-      const input = $("polynomial-free-input");
-      if (!input || input.disabled) return;
+      const editor = $("polynomial-free-input");
+      if (!editor || editor.getAttribute("contenteditable") === "false") return;
 
-      const start = input.selectionStart ?? input.value.length;
-      const end = input.selectionEnd ?? input.value.length;
-      const value = input.value;
-      const before = value.slice(0, start);
-      const after = value.slice(end);
+      editor.focus();
 
-      input.value = `${before}^${after}`;
-      const caret = start + 1;
-      input.focus();
-      input.setSelectionRange(caret, caret);
+      const selection = window.getSelection();
+      let range = selection?.rangeCount ? selection.getRangeAt(0) : null;
+
+      if (!range || !editor.contains(range.commonAncestorContainer)) {
+        range = document.createRange();
+        range.selectNodeContents(editor);
+        range.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+
+      const beforeText = serializePolynomialEditor(editor).trimEnd();
+      if (!/[xXＸｘ]$/.test(beforeText)) {
+        const preview = $("polynomial-system-preview");
+        if (preview) {
+          preview.classList.remove("is-valid", "is-incomplete");
+          preview.classList.add("is-invalid");
+          preview.textContent = "系統判斷：請先把游標放在 x 後面，再按「次方」。";
+        }
+        return;
+      }
+
+      const sup = document.createElement("sup");
+      sup.dataset.exponentInput = "true";
+      sup.appendChild(document.createTextNode("\u200b"));
+      range.deleteContents();
+      range.insertNode(sup);
+      placeCaretInside(sup);
       updateTypedPolynomialPreview();
+    }
+
+
+    function handlePolynomialEditorKeydown(event) {
+      const editor = $("polynomial-free-input");
+      if (!editor) return;
+
+      const selection = window.getSelection();
+      if (!selection?.rangeCount) return;
+
+      let node = selection.anchorNode;
+      const sup = node?.nodeType === Node.ELEMENT_NODE
+        ? node.closest?.("sup[data-exponent-input='true']")
+        : node?.parentElement?.closest?.("sup[data-exponent-input='true']");
+
+      if (!sup) return;
+
+      if (/^[0-9]$/.test(event.key)) {
+        event.preventDefault();
+        sup.textContent = event.key;
+        placeCaretAfter(sup);
+        updateTypedPolynomialPreview();
+        return;
+      }
+
+      if (event.key === "ArrowRight" || event.key === "Tab" || event.key === " ") {
+        event.preventDefault();
+        placeCaretAfter(sup);
+        updateTypedPolynomialPreview();
+        return;
+      }
+
+      if (event.key === "Escape") {
+        event.preventDefault();
+        placeCaretAfter(sup);
+      }
     }
 
 
@@ -3428,28 +3577,29 @@
         <div class="answer-title">${question.label}</div>
         <div class="free-polynomial-shell">
           <div class="free-polynomial-input-row">
-            <input
+            <div
               id="polynomial-free-input"
               class="free-polynomial-input"
-              type="text"
+              contenteditable="true"
               inputmode="text"
-              autocomplete="off"
               autocapitalize="off"
               spellcheck="false"
-              placeholder="例如：6x^2-3x+5"
+              data-placeholder="例如：6x²－3x＋5"
               aria-label="多項式答案"
-            >
+              role="textbox"
+            ></div>
+            <input id="polynomial-free-hidden" type="hidden" value="">
             <button
               id="exponent-insert-button"
               class="exponent-insert-button"
               type="button"
-              title="在游標位置插入次方符號 ^，再輸入次方數字"
+              title="先把游標放在 x 後面；按下後游標會移到 x 的右上角，再輸入次方數字"
             >
               <span class="expo-icon">xⁿ</span> 次方
             </button>
           </div>
           <p class="free-polynomial-help">
-            可直接輸入 6x^2-3x+5。需要次方時，先把游標放在 x 後面，按「次方」再輸入 2、3…；系統也會自動辨識 X、Ｘ、ｘ與常見全形符號。
+            可直接輸入一般項目。需要次方時，先把游標放在 x 後面，按「次方」，游標會移到 x 的右上角；再輸入 2、3…即可。系統也會自動辨識 X、Ｘ、ｘ與常見全形符號。
           </p>
           <div id="polynomial-system-preview" class="polynomial-system-preview is-incomplete">
             系統判斷：目前尚未輸入答案。
@@ -3460,7 +3610,9 @@
       const input=$("polynomial-free-input");
       const exponentButton=$("exponent-insert-button");
       input?.addEventListener("input", updateTypedPolynomialPreview);
-      input?.addEventListener("change", updateTypedPolynomialPreview);
+      input?.addEventListener("blur", updateTypedPolynomialPreview);
+      input?.addEventListener("keydown", handlePolynomialEditorKeydown);
+      input?.addEventListener("paste", () => setTimeout(updateTypedPolynomialPreview, 0));
       exponentButton?.addEventListener("click", insertExponentMarker);
       setTimeout(()=>input?.focus(),0);
     }
@@ -3510,7 +3662,7 @@
       }
 
       if (question.type==="polynomial") {
-        const raw=$("polynomial-free-input")?.value??"";
+        const raw=syncPolynomialHiddenValue();
         const result=parseTypedPolynomial(raw);
         if(!result.valid)return{valid:false,message:result.message||"請將多項式答案輸入完整。"};
         return{valid:true,value:result.value,display:result.display};
@@ -3756,6 +3908,8 @@
       document.querySelectorAll("#answer-panel input, #answer-panel button").forEach(element => {
         element.disabled = true;
       });
+      const polynomialEditor = $("polynomial-free-input");
+      if (polynomialEditor) polynomialEditor.setAttribute("contenteditable", "false");
 
 
       document
