@@ -26,6 +26,11 @@
     href="../css/scratchpad.css"
   >
 
+  <link
+    rel="stylesheet"
+    href="../css/expression-input.css?v=5"
+  >
+
   <style>
 
     * {
@@ -1135,6 +1140,201 @@
 
     }
 
+
+    /* ==================================================
+       2026-10 統一遊戲版面修正
+    ================================================== */
+
+    .game-card {
+      position: relative;
+    }
+
+    .game-card-return-row {
+      display: flex;
+      justify-content: flex-end;
+      padding: 12px 16px 0;
+      background: linear-gradient(180deg, var(--primary-light), #ffffff);
+    }
+
+    .game-card-return-row .semester-return-button {
+      min-height: 40px;
+      padding: 8px 14px;
+      box-shadow: none;
+    }
+
+    .quiz-topbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto minmax(300px, auto);
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .quiz-context,
+    .quiz-stats {
+      display: grid;
+      gap: 8px;
+    }
+
+    .quiz-context {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quiz-stats {
+      grid-template-columns: repeat(3, minmax(86px, 1fr));
+    }
+
+    .quiz-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-actions .game-button {
+      min-width: 116px;
+      min-height: 46px;
+      padding: 10px 14px;
+    }
+
+    .question-card {
+      position: relative;
+      padding: 22px 18px 78px;
+      text-align: left;
+    }
+
+    .question-label {
+      text-align: left;
+    }
+
+    .question-content {
+      width: 100%;
+      justify-content: flex-start;
+      text-align: left;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
+    .question-content .keep-together {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .scratchpad-row {
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
+      display: flex;
+      justify-content: flex-end;
+      min-height: 44px;
+      margin: 0;
+      z-index: 2;
+    }
+
+    #scratchpad-mobile-button {
+      width: auto;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #scratchpad-mobile-button #scratchpadOpenButton,
+    #scratchpad-mobile-button .scratchpad-open-button {
+      position: static !important;
+      inset: auto !important;
+      transform: none !important;
+      margin: 0 !important;
+      z-index: auto !important;
+    }
+
+    .answer-submit-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .polynomial-answer-shell {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .polynomial-system-preview {
+      max-width: 760px;
+      margin: 12px auto 0;
+      padding: 11px 14px;
+      border: 1px solid var(--primary-border);
+      border-radius: 12px;
+      background: #ffffff;
+      color: #334155;
+      text-align: center;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    .polynomial-system-preview strong {
+      color: var(--primary-dark);
+      font-size: 1.08em;
+    }
+
+    .answer-help {
+      margin: 0 0 12px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 820px) {
+      .quiz-topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .quiz-actions {
+        order: 2;
+      }
+
+      .quiz-stats {
+        order: 3;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .game-card-return-row {
+        padding: 10px 10px 0;
+      }
+
+      .game-card-return-row .semester-return-button {
+        width: auto;
+        min-height: 40px;
+      }
+
+      .quiz-context,
+      .quiz-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .quiz-stats .timer-box {
+        grid-column: 1 / -1;
+      }
+
+      .question-card {
+        padding: 18px 12px 74px;
+      }
+
+      .question-content {
+        font-size: clamp(23px, 7vw, 34px);
+      }
+
+      .scratchpad-row {
+        right: 10px;
+        bottom: 10px;
+      }
+    }
+
   </style>
 
 </head>
@@ -1149,20 +1349,19 @@
     <div id="commonHeaderMount"></div>
 
 
-    <div class="semester-return-row">
-
-      <button
-        id="semester-return-button"
-        class="semester-return-button"
-        type="button"
-      >
-        ↩️ 重回八年級上學期
-      </button>
-
-    </div>
-
-
     <main class="game-card">
+
+      <div class="game-card-return-row">
+
+        <button
+          id="semester-return-button"
+          class="semester-return-button"
+          type="button"
+        >
+          ↩️ 重回八年級上學期
+        </button>
+
+      </div>
 
 
       <header class="game-header">
@@ -1279,7 +1478,7 @@
             </h2>
 
             <p>
-              加入 x，練習展開、公式判讀與逆向填空。
+              加入 x，練習乘法公式展開、公式判讀，並使用多項式專屬答案格完成作答。
             </p>
 
             <div class="mode-example">
@@ -1327,111 +1526,76 @@
 
         <div class="quiz-topbar">
 
+          <div class="quiz-context">
 
-          <div class="status-box">
+            <div class="status-box">
+              模式
+              <span id="mode-name" class="status-value">—</span>
+            </div>
 
-            模式
-
-            <span
-              id="mode-name"
-              class="status-value"
-            >
-              —
-            </span>
-
-          </div>
-
-
-          <div class="status-box">
-
-            進度
-
-            <span
-              id="question-number"
-              class="status-value"
-            >
-              1 / 10
-            </span>
+            <div class="status-box">
+              進度
+              <span id="question-number" class="status-value">1 / 10</span>
+            </div>
 
           </div>
 
+          <div class="quiz-actions">
 
-          <div class="status-box">
-
-            答對
-
-            <span
-              id="correct-count"
-              class="status-value"
+            <button
+              id="restart-button"
+              class="game-button restart"
+              type="button"
             >
-              0
-            </span>
+              🔄 重新測驗
+            </button>
+
+            <button
+              id="mode-button"
+              class="game-button secondary"
+              type="button"
+            >
+              重選模式
+            </button>
 
           </div>
 
+          <div class="quiz-stats">
 
-          <div class="status-box">
+            <div class="status-box">
+              答對
+              <span id="correct-count" class="status-value">0</span>
+            </div>
 
-            最高連擊
+            <div class="status-box">
+              最高連擊
+              <span id="combo-count" class="status-value">0</span>
+            </div>
 
-            <span
-              id="combo-count"
-              class="status-value"
-            >
-              0
-            </span>
-
-          </div>
-
-
-          <div class="status-box timer-box">
-
-            ⏱️ 測驗時間
-
-            <span
-              id="timer-display"
-              class="status-value"
-            >
-              00:00
-            </span>
+            <div class="status-box timer-box">
+              ⏱️ 測驗時間
+              <span id="timer-display" class="status-value">00:00</span>
+            </div>
 
           </div>
-
 
         </div>
 
 
         <div class="progress-shell">
-
-          <div
-            id="progress-bar"
-            class="progress-bar"
-          ></div>
-
+          <div id="progress-bar" class="progress-bar"></div>
         </div>
 
 
         <div class="question-card">
 
+          <div id="question-label" class="question-label"></div>
 
-          <div
-            id="question-label"
-            class="question-label"
-          ></div>
+          <div id="question-content" class="question-content"></div>
 
-
-          <div
-            id="question-content"
-            class="question-content"
-          ></div>
-
-
-        </div>
-
-
-        <div class="scratchpad-row">
-
-          <div id="scratchpad-mobile-button"></div>
+          <div class="scratchpad-row">
+            <div id="scratchpad-mobile-button"></div>
+          </div>
 
         </div>
 
@@ -1442,8 +1606,7 @@
         ></div>
 
 
-        <div class="button-row">
-
+        <div class="answer-submit-row">
 
           <button
             id="submit-button"
@@ -1453,7 +1616,6 @@
             提交答案（Enter）
           </button>
 
-
           <button
             id="next-button"
             class="game-button hidden"
@@ -1461,25 +1623,6 @@
           >
             下一題（Enter）
           </button>
-
-
-          <button
-            id="restart-button"
-            class="game-button restart"
-            type="button"
-          >
-            🔄 重新測驗
-          </button>
-
-
-          <button
-            id="mode-button"
-            class="game-button secondary"
-            type="button"
-          >
-            選擇模式
-          </button>
-
 
         </div>
 
@@ -1626,7 +1769,7 @@
             class="game-button secondary"
             type="button"
           >
-            選擇模式
+            重選模式
           </button>
 
 
@@ -1693,6 +1836,7 @@
   <script src="../js/scratchpad.js"></script>
   <script src="../js/scratchpad-template.js"></script>
   <script src="../js/sound-manager.js?v=1"></script>
+  <script src="../js/expression-input.js?v=5"></script>
 
 
   <script type="module">
@@ -1741,6 +1885,10 @@
         document.getElementById(
           id
         );
+
+
+    const U =
+      () => window.ExpressionInputUtils;
 
 
     let mode =
@@ -1797,6 +1945,10 @@
 
     let scoreSaved =
       false;
+
+
+    let answerInput =
+      null;
 
 
     /* ==================================================
@@ -2055,28 +2207,65 @@
     ================================================== */
 
 
-    function moveScratchpadButtonToTop() {
+    function moveScratchpadButtonToQuestionCard() {
 
       const mount =
         $("scratchpad-mobile-button");
 
-
       const button =
         $("scratchpadOpenButton");
-
 
       if (
         mount &&
         button &&
-        !mount.contains(
-          button
-        )
+        !mount.contains(button)
       ) {
 
-        mount.appendChild(
-          button
-        );
+        mount.appendChild(button);
       }
+
+      if (button) {
+        button.style.position = "static";
+        button.style.inset = "auto";
+        button.style.transform = "none";
+        button.style.margin = "0";
+      }
+    }
+
+
+    function ensureScratchpadButtonInQuestionCard() {
+
+      moveScratchpadButtonToQuestionCard();
+
+      if ($("scratchpadOpenButton")) {
+        window.showGameScratchpadButton?.();
+        return;
+      }
+
+      const observer =
+        new MutationObserver(
+          () => {
+            moveScratchpadButtonToQuestionCard();
+
+            if ($("scratchpadOpenButton")) {
+              window.showGameScratchpadButton?.();
+              observer.disconnect();
+            }
+          }
+        );
+
+      observer.observe(
+        document.body,
+        {
+          childList: true,
+          subtree: true
+        }
+      );
+
+      setTimeout(
+        () => observer.disconnect(),
+        10000
+      );
     }
 
 
@@ -2109,7 +2298,7 @@
         "quiz-screen"
       ) {
 
-        moveScratchpadButtonToTop();
+        ensureScratchpadButtonInQuestionCard();
 
 
         window
@@ -2154,29 +2343,92 @@
     }
 
 
-    function coefficientQuestion(
+    function polynomialQuestion(
       html,
-      labels,
-      answer,
+      terms,
       explanation,
-      label
+      label =
+        "請輸入展開後的完整多項式"
     ) {
 
       return {
 
         type:
-          "coefficients",
+          "polynomial",
 
         html,
 
-        labels,
-
-        answer,
+        answer:
+          normalizePolynomial(terms),
 
         explanation,
 
         label
       };
+    }
+
+
+    function F(n, d = 1) {
+      return U().normalizeFraction(n, d);
+    }
+
+
+    function fractionCoefficient(value) {
+      return U().coefficientToFraction(value);
+    }
+
+
+    function normalizePolynomial(terms) {
+      return U().normalizePolynomialTermsAsFractions(terms);
+    }
+
+
+    function polynomialHTML(terms) {
+      const normalized = normalizePolynomial(terms);
+
+      if (!normalized.length) {
+        return "0";
+      }
+
+      return normalized
+        .map((term, index) => {
+          const f = fractionCoefficient(term.coefficient);
+          const value = Number(f.numerator) / Number(f.denominator);
+          const absN = Math.abs(Number(f.numerator));
+          const den = Number(f.denominator);
+          const negative = value < 0;
+          const sign = index === 0 ? (negative ? "−" : "") : (negative ? " − " : " ＋ ");
+          const exponent = Number(term.exponent);
+          const omitOne = absN === den && exponent !== 0;
+          const coefficient = omitOne
+            ? ""
+            : (den === 1 ? String(absN) : `<span class="keep-together">${absN}/${den}</span>`);
+          const variable = exponent === 0
+            ? ""
+            : exponent === 1
+              ? "x"
+              : `x<sup>${exponent}</sup>`;
+          return `${sign}${coefficient}${variable}`;
+        })
+        .join("");
+    }
+
+
+    function samePolynomial(first, second) {
+      const a = normalizePolynomial(first);
+      const b = normalizePolynomial(second);
+
+      if (a.length !== b.length) {
+        return false;
+      }
+
+      return a.every((term, i) => {
+        const x = fractionCoefficient(term.coefficient);
+        const y = fractionCoefficient(b[i].coefficient);
+        return Number(term.exponent) === Number(b[i].exponent) &&
+          Number(x.numerator) === Number(y.numerator) &&
+          Number(x.denominator) === Number(y.denominator);
+      });
     }
 
 
@@ -2244,19 +2496,18 @@
       const center =
         pick(
           [
-            10,
-            20,
             50,
             100,
-            200
+            200,
+            500
           ]
         );
 
 
       const d =
         rand(
-          1,
-          5
+          2,
+          9
         );
 
 
@@ -2514,7 +2765,6 @@
         const center =
           pick(
             [
-              20,
               50,
               100,
               200,
@@ -2645,7 +2895,6 @@
         const center =
           pick(
             [
-              20,
               50,
               100,
               200,
@@ -2737,7 +2986,6 @@
         const easyBase =
           pick(
             [
-              20,
               50,
               100,
               200,
@@ -2926,10 +3174,10 @@
       const easyFactor =
         pick(
           [
-            20,
             50,
             100,
-            200
+            200,
+            500
           ]
         );
 
@@ -3093,309 +3341,100 @@
 
     function makeForwardSquare() {
 
-      const a =
-        rand(
-          1,
-          4
-        );
+      const a = rand(1, 5);
+      const b = rand(2, 9);
+      const plus = Math.random() < .5;
 
+      const x2 = a * a;
+      const x = (plus ? 1 : -1) * 2 * a * b;
+      const c = b * b;
 
-      const b =
-        rand(
-          1,
-          8
-        );
-
-
-      const plus =
-        Math.random() <
-        .5;
-
-
-      const x2 =
-        a *
-        a;
-
-
-      const x =
-        (
-          plus
-            ? 1
-            : -1
-        ) *
-        2 *
-        a *
-        b;
-
-
-      const c =
-        b *
-        b;
-
-
-      return coefficientQuestion(
-
-        `(${
-          a ===
-          1
-            ? ""
-            : a
-        }x${
-          plus
-            ? "＋"
-            : "－"
-        }${b})<sup>2</sup>
-        ＝？`,
-
+      return polynomialQuestion(
+        `<span class="keep-together">(${a === 1 ? "" : a}x${plus ? "＋" : "－"}${b})<sup>2</sup></span> ＝？`,
         [
-          "x² 係數",
-          "x 係數",
-          "常數項"
+          { exponent: 2, coefficient: x2 },
+          { exponent: 1, coefficient: x },
+          { exponent: 0, coefficient: c }
         ],
-
         [
-          x2,
-          x,
-          c
-        ],
-
-        [
-
           "套用完全平方公式。",
-
-          `首項平方：
-
-           (${a}x)<sup>2</sup>
-           ＝
-           ${x2}x<sup>2</sup>`,
-
-          `中間項：
-
-           ${
-             plus
-               ? ""
-               : "－"
-           }2×${a}x×${b}
-
-           ＝
-           ${x}x`,
-
-          `末項：
-
-           ${b}<sup>2</sup>
-           ＝
-           ${c}`
-
+          `首項平方：(${a}x)<sup>2</sup>＝${x2}x<sup>2</sup>。`,
+          `中間項：${plus ? "" : "－"}2×${a}x×${b}＝${x}x。`,
+          `末項：${b}<sup>2</sup>＝${c}。`,
+          `所以展開後為 ${polynomialHTML([
+            { exponent: 2, coefficient: x2 },
+            { exponent: 1, coefficient: x },
+            { exponent: 0, coefficient: c }
+          ])}。`
         ],
-
-        "請填入展開後各項的實際係數"
+        "請用多項式答案格輸入展開後的完整多項式"
       );
     }
 
 
     function makeForwardDifference() {
 
-      const a =
-        rand(
-          1,
-          5
-        );
+      const a = rand(1, 6);
+      const b = rand(2, 9);
+      const answer = [
+        { exponent: 2, coefficient: a * a },
+        { exponent: 0, coefficient: -(b * b) }
+      ];
 
-
-      const b =
-        rand(
-          1,
-          9
-        );
-
-
-      return coefficientQuestion(
-
-        `(${
-          a ===
-          1
-            ? ""
-            : a
-        }x＋${b})
-        (${
-          a ===
-          1
-            ? ""
-            : a
-        }x－${b})
-        ＝？`,
-
+      return polynomialQuestion(
+        `<span class="keep-together">(${a === 1 ? "" : a}x＋${b})(${a === 1 ? "" : a}x－${b})</span> ＝？`,
+        answer,
         [
-          "x² 係數",
-          "常數項"
+          "套用平方差公式：(A＋B)(A－B)＝A²－B²。",
+          `A＝${a}x，B＝${b}。`,
+          `所以答案為 ${polynomialHTML(answer)}。`
         ],
-
-        [
-          a *
-          a,
-
-          -(
-            b *
-            b
-          )
-        ],
-
-        [
-
-          "套用平方差公式。",
-
-          `(A＋B)(A－B)
-           ＝
-           A<sup>2</sup>－B<sup>2</sup>`,
-
-          `答案為：
-
-           ${a * a}x<sup>2</sup>
-           －
-           ${b * b}`
-
-        ],
-
-        "請填入展開後各項的實際係數"
+        "請用多項式答案格輸入展開後的完整多項式"
       );
     }
 
 
     function makeReverseSquare() {
 
-      const b =
-        rand(
-          2,
-          9
-        );
+      const a = rand(1, 5);
+      const b = rand(2, 9);
+      const plus = Math.random() < .5;
+      const answer = [
+        { exponent: 2, coefficient: a * a },
+        { exponent: 1, coefficient: (plus ? 1 : -1) * 2 * a * b },
+        { exponent: 0, coefficient: b * b }
+      ];
 
-
-      const plus =
-        Math.random() <
-        .5;
-
-
-      return coefficientQuestion(
-
-        `x<sup>2</sup>
-         ${
-           plus
-             ? "＋"
-             : "－"
-         }
-         ${2 * b}x
-         ＋
-         ${b * b}
-         ＝
-         (x${
-           plus
-             ? "＋"
-             : "－"
-         }□)<sup>2</sup>`,
-
+      return polynomialQuestion(
+        `請將 <span class="keep-together">(${a === 1 ? "" : a}x${plus ? "＋" : "－"}${b})<sup>2</sup></span> 展開並整理。`,
+        answer,
         [
-          "空格"
+          `辨認為${plus ? "和" : "差"}的平方公式。`,
+          `依公式展開後，依 x 的降冪排列。`,
+          `整理得到 ${polynomialHTML(answer)}。`
         ],
-
-        [
-          b
-        ],
-
-        [
-
-          "觀察完全平方公式。",
-
-          `末項：
-
-           ${b * b}
-           ＝
-           ${b}<sup>2</sup>`,
-
-          `中間項：
-
-           ${2 * b}x
-           ＝
-           2×x×${b}`,
-
-          `所以空格應填 ${b}。`
-
-        ],
-
-        "請利用完全平方公式找出空格"
+        "請輸入整理後的完整多項式"
       );
     }
 
 
     function makeReverseDifference() {
 
-      const a =
-        rand(
-          1,
-          5
-        );
+      const a = rand(1, 6);
+      const b = rand(2, 9);
+      const answer = [
+        { exponent: 2, coefficient: a * a },
+        { exponent: 0, coefficient: -(b * b) }
+      ];
 
-
-      const b =
-        rand(
-          2,
-          9
-        );
-
-
-      const a2 =
-        a *
-        a;
-
-
-      const b2 =
-        b *
-        b;
-
-
-      return coefficientQuestion(
-
-        `${a2}x<sup>2</sup>
-         －
-         ${b2}
-         ＝
-         (${
-           a ===
-           1
-             ? ""
-             : a
-         }x＋□)
-         (${
-           a ===
-           1
-             ? ""
-             : a
-         }x－□)`,
-
+      return polynomialQuestion(
+        `請將 <span class="keep-together">(${a === 1 ? "" : a}x＋${b})(${a === 1 ? "" : a}x－${b})</span> 展開並整理。`,
+        answer,
         [
-          "空格"
+          "兩個因式的前項相同、後項互為相反數，可直接使用平方差公式。",
+          `(${a}x)<sup>2</sup>－${b}<sup>2</sup>＝${polynomialHTML(answer)}。`
         ],
-
-        [
-          b
-        ],
-
-        [
-
-          "觀察平方差公式。",
-
-          `${a2}x<sup>2</sup>
-           ＝
-           (${a}x)<sup>2</sup>`,
-
-          `${b2}
-           ＝
-           ${b}<sup>2</sup>`,
-
-          `所以空格應填 ${b}。`
-
-        ],
-
-        "請利用平方差公式找出空格"
+        "請輸入整理後的完整多項式"
       );
     }
 
@@ -3618,448 +3657,242 @@
     ================================================== */
 
 
-    function renderAnswer(
-      question
-    ) {
-
-      selectedChoice =
-        null;
-
-
-      if (
-        question.type ===
-        "number"
-      ) {
-
-        $("answer-panel")
-          .innerHTML = `
-
-            <div class="answer-title">
-              請輸入答案
-            </div>
-
-            <div class="number-answer">
-
-              <input
-                id="number-input"
-                type="text"
-                inputmode="numeric"
-                autocomplete="off"
-                placeholder="輸入答案"
-              >
-
-            </div>
-          `;
-
-
-        setTimeout(
-          () => {
-
-            $("number-input")
-              ?.focus();
-
-          },
-          0
-        );
-
-
-        return;
-      }
-
-
-      if (
-        question.type ===
-        "coefficients"
-      ) {
-
-        $("answer-panel")
-          .innerHTML = `
-
-            <div class="answer-title">
-              ${question.label}
-            </div>
-
-            <div class="coefficient-answer">
-
-              ${
-                question.labels
-                  .map(
-                    (
-                      label,
-                      i
-                    ) => `
-
-                      <label class="coefficient-box">
-
-                        <span class="coefficient-label">
-                          ${label}
-                        </span>
-
-                        <input
-                          class="coefficient-input"
-                          data-index="${i}"
-                          type="text"
-                          inputmode="numeric"
-                          autocomplete="off"
-                        >
-
-                      </label>
-                    `
-                  )
-                  .join(
-                    ""
-                  )
-              }
-
-            </div>
-          `;
-
-
-        setTimeout(
-          () => {
-
-            document
-              .querySelector(
-                ".coefficient-input"
-              )
-              ?.focus();
-
-          },
-          0
-        );
-
-
-        return;
-      }
-
-
-      $("answer-panel")
-        .innerHTML = `
-
-          <div class="answer-title">
-            ${question.label}
-          </div>
-
-          <div class="choice-grid">
-
-            ${
-              question.choices
-                .map(
-                  choice => `
-
-                    <button
-                      type="button"
-                      class="choice-button"
-                      data-choice="${choice.value}"
-                    >
-                      ${choice.text}
-                    </button>
-                  `
-                )
-                .join(
-                  ""
-                )
-            }
-
-          </div>
-        `;
-
-
-      document
-        .querySelectorAll(
-          ".choice-button"
-        )
-        .forEach(
-          button => {
-
-            button
-              .addEventListener(
-                "click",
-                () => {
-
-                  if (
-                    answered
-                  ) {
-
-                    return;
-                  }
-
-
-                  selectedChoice =
-                    button.dataset
-                      .choice;
-
-
-                  document
-                    .querySelectorAll(
-                      ".choice-button"
-                    )
-                    .forEach(
-                      item => {
-
-                        item
-                          .classList
-                          .remove(
-                            "selected"
-                          );
-                      }
-                    );
-
-
-                  button
-                    .classList
-                    .add(
-                      "selected"
-                    );
-                }
-              );
-          }
-        );
-    }
-
-
-    function readAnswer(
-      question
-    ) {
-
-      if (
-        question.type ===
-        "number"
-      ) {
-
-        const raw =
-          $("number-input")
-            ?.value
-            .trim() ??
-          "";
-
-
-        if (
-          !/^-?\d+$/
-            .test(
-              raw
-            )
-        ) {
-
-          return {
-
-            valid:
-              false,
-
-            message:
-              "請輸入完整的整數答案。"
-          };
-        }
-
-
-        return {
-
-          valid:
-            true,
-
-          value:
-            Number(
-              raw
-            ),
-
-          display:
-            raw
-        };
-      }
-
-
-      if (
-        question.type ===
-        "coefficients"
-      ) {
-
-        const inputs =
-          [
-            ...document.querySelectorAll(
-              ".coefficient-input"
-            )
-          ];
-
-
-        const rawValues =
-          inputs.map(
-            input =>
-              input.value.trim()
-          );
-
-
-        if (
-          rawValues.some(
-            value =>
-              !/^-?\d+$/
-                .test(
-                  value
-                )
-          )
-        ) {
-
-          return {
-
-            valid:
-              false,
-
-            message:
-              "請把所有空格都填完整。"
-          };
-        }
-
-
-        return {
-
-          valid:
-            true,
-
-          value:
-            rawValues.map(
-              Number
-            ),
-
-          display:
-            rawValues.join(
-              "、"
-            )
-        };
-      }
-
-
-      if (
-        !selectedChoice
-      ) {
-
-        return {
-
-          valid:
-            false,
-
-          message:
-            "請先選擇答案。"
-        };
-      }
-
-
-      const selected =
-        question.choices
-          .find(
-            choice =>
-              choice.value ===
-              selectedChoice
-          );
-
+    function expressionOptions(mountId) {
 
       return {
-
-        valid:
-          true,
-
-        value:
-          selectedChoice,
-
-        display:
-          selected?.text ||
-          selectedChoice
+        mountId,
+        allowNumber: false,
+        allowExpression: false,
+        allowPolynomial: true,
+        defaultMode: "polynomial",
+        polynomialVariable: "x",
+        polynomialExponentOptions: [2, 1, 0],
+        maxPolynomialTerms: 3,
+        allowNegativePolynomialCoefficient: true,
+        allowZeroPolynomialCoefficient: false,
+        allowFractionPolynomialCoefficient: false,
+        requireDescendingPowers: true,
+        disallowDuplicatePowers: true,
+        omitPolynomialCoefficientOne: true,
+        compactPolynomialUI: false,
+        theme: {
+          primary: "#3f51b5",
+          light: "#e8eaf6",
+          border: "#9fa8da"
+        },
+        labels: {
+          polynomialLabel: "請輸入完整多項式",
+          polynomialCoefficientLabel: "輸入這一項的係數",
+          polynomialExponentLabel: "選擇這一項",
+          polynomialSignLabel: "正負號",
+          polynomialEditLabel: "編輯多項式"
+        },
+        onChange: () => {
+          setTimeout(updatePolynomialSystemPreview, 0);
+        }
       };
     }
 
 
-    function checkCorrect(
-      question,
-      answer
-    ) {
+    function updatePolynomialSystemPreview() {
+      const preview = $("polynomial-system-preview");
 
-      if (
-        question.type ===
-        "number"
-      ) {
-
-        return (
-          answer.value ===
-          question.answer
-        );
+      if (!preview || !answerInput) {
+        return;
       }
 
+      try {
+        const result = answerInput.validate();
 
-      if (
-        question.type ===
-        "coefficients"
-      ) {
-
-        return (
-          answer.value.length ===
-            question.answer.length &&
-
-          answer.value.every(
-            (
-              value,
-              i
-            ) =>
-              value ===
-              question.answer[
-                i
-              ]
-          )
-        );
+        if (result.valid) {
+          preview.innerHTML =
+            `系統判斷目前填入的答案：<strong>${result.value.html}</strong>`;
+        } else {
+          preview.textContent =
+            "系統判斷：目前尚未完成多項式。";
+        }
+      } catch (error) {
+        preview.textContent =
+          "系統判斷：目前尚未完成多項式。";
       }
-
-
-      return (
-        answer.value ===
-        question.answer
-      );
     }
 
 
-    function correctAnswerText(
-      question
-    ) {
+    function renderPolynomialAnswer(question) {
+      $("answer-panel").innerHTML = `
+        <div class="answer-title">${question.label}</div>
+        <p class="answer-help">
+          請用多項式專屬答案格逐項輸入，並依 x 的降冪排列。
+        </p>
+        <div class="polynomial-answer-shell">
+          <div id="polynomial-answer-mount"></div>
+          <div id="polynomial-system-preview" class="polynomial-system-preview">
+            系統判斷：目前尚未完成多項式。
+          </div>
+        </div>
+      `;
 
-      if (
-        question.type ===
-        "number"
-      ) {
-
-        return String(
-          question.answer
-        );
+      if (typeof window.ExpressionInput !== "function") {
+        $("polynomial-system-preview").textContent =
+          "多項式答案格載入失敗，請確認 expression-input.js 已放在 js 資料夾。";
+        answerInput = null;
+        return;
       }
 
-
-      if (
-        question.type ===
-        "coefficients"
-      ) {
-
-        return question.answer
-          .map(
-            (
-              value,
-              i
-            ) =>
-              `${question.labels[i]}＝${value}`
-          )
-          .join(
-            "，"
-          );
-      }
-
-
-      const selected =
-        question.choices
-          .find(
-            choice =>
-              choice.value ===
-              question.answer
-          );
-
-
-      return (
-        selected?.text ||
-        ""
+      answerInput = new window.ExpressionInput(
+        expressionOptions("polynomial-answer-mount")
       );
+
+      setTimeout(() => {
+        answerInput?.focus();
+        updatePolynomialSystemPreview();
+      }, 0);
+    }
+
+
+    function renderAnswer(question) {
+      selectedChoice = null;
+      answerInput = null;
+
+      if (question.type === "number") {
+        $("answer-panel").innerHTML = `
+          <div class="answer-title">請輸入答案</div>
+          <div class="number-answer">
+            <input
+              id="number-input"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              placeholder="輸入答案"
+            >
+          </div>
+        `;
+
+        setTimeout(() => $("number-input")?.focus(), 0);
+        return;
+      }
+
+      if (question.type === "polynomial") {
+        renderPolynomialAnswer(question);
+        return;
+      }
+
+      $("answer-panel").innerHTML = `
+        <div class="answer-title">${question.label}</div>
+        <div class="choice-grid">
+          ${question.choices.map(choice => `
+            <button
+              type="button"
+              class="choice-button"
+              data-choice="${choice.value}"
+            >
+              ${choice.text}
+            </button>
+          `).join("")}
+        </div>
+      `;
+
+      document.querySelectorAll(".choice-button").forEach(button => {
+        button.addEventListener("click", () => {
+          if (answered) return;
+          selectedChoice = button.dataset.choice;
+          document.querySelectorAll(".choice-button").forEach(item =>
+            item.classList.remove("selected")
+          );
+          button.classList.add("selected");
+        });
+      });
+    }
+
+
+    function readAnswer(question) {
+      if (question.type === "number") {
+        const raw = $("number-input")?.value.trim() ?? "";
+
+        if (!/^-?\d+$/.test(raw)) {
+          return {
+            valid: false,
+            message: "請輸入完整的整數答案。"
+          };
+        }
+
+        return {
+          valid: true,
+          value: Number(raw),
+          display: raw
+        };
+      }
+
+      if (question.type === "polynomial") {
+        if (!answerInput) {
+          return {
+            valid: false,
+            message: "多項式輸入器尚未準備完成。"
+          };
+        }
+
+        const result = answerInput.validate();
+
+        if (!result.valid) {
+          return {
+            valid: false,
+            message: result.message || "請將多項式答案輸入完整。"
+          };
+        }
+
+        return {
+          valid: true,
+          value: result.value.fractionTerms,
+          display: result.value.html
+        };
+      }
+
+      if (!selectedChoice) {
+        return {
+          valid: false,
+          message: "請先選擇答案。"
+        };
+      }
+
+      const selected = question.choices.find(
+        choice => choice.value === selectedChoice
+      );
+
+      return {
+        valid: true,
+        value: selectedChoice,
+        display: selected?.text || selectedChoice
+      };
+    }
+
+
+    function checkCorrect(question, answer) {
+      if (question.type === "number") {
+        return answer.value === question.answer;
+      }
+
+      if (question.type === "polynomial") {
+        return samePolynomial(answer.value, question.answer);
+      }
+
+      return answer.value === question.answer;
+    }
+
+
+    function correctAnswerText(question) {
+      if (question.type === "number") {
+        return String(question.answer);
+      }
+
+      if (question.type === "polynomial") {
+        return polynomialHTML(question.answer);
+      }
+
+      const selected = question.choices.find(
+        choice => choice.value === question.answer
+      );
+
+      return selected?.text || "";
     }
 
 
@@ -4969,6 +4802,25 @@
     }
 
 
+    function confirmReselectMode() {
+
+      return window.confirm(
+        "確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。"
+      );
+    }
+
+
+    function backToModesWithConfirmation() {
+
+      if (!confirmReselectMode()) {
+        return;
+      }
+
+      stopTimer(true);
+      showOnly("start-screen");
+    }
+
+
     /* ==================================================
        返回八年級上學期
 
@@ -5134,19 +4986,7 @@
     $("mode-button")
       .addEventListener(
         "click",
-        () => {
-
-
-          stopTimer(
-            true
-          );
-
-
-          showOnly(
-            "start-screen"
-          );
-
-        }
+        backToModesWithConfirmation
       );
 
 
@@ -5173,12 +5013,10 @@
       .addEventListener(
         "click",
         () => {
-
-
-          showOnly(
-            "start-screen"
-          );
-
+          if (!window.confirm("確定要重選模式嗎？")) {
+            return;
+          }
+          showOnly("start-screen");
         }
       );
 
@@ -5271,11 +5109,11 @@
         () => {
 
 
-          moveScratchpadButtonToTop();
+          ensureScratchpadButtonInQuestionCard();
 
 
           setTimeout(
-            moveScratchpadButtonToTop,
+            ensureScratchpadButtonInQuestionCard,
             120
           );
 
