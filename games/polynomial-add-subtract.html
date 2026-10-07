@@ -1527,6 +1527,14 @@
       font-size: 18px;
     }
 
+    .baseline-caret-anchor {
+      display:inline;
+      vertical-align:baseline!important;
+      font-size:1em!important;
+      line-height:inherit!important;
+      font-weight:inherit;
+    }
+
     .free-polynomial-help {
       margin: 9px 0 0;
       color: #64748b;
@@ -2855,6 +2863,37 @@
     }
 
 
+    function placeCaretOnBaselineAfter(element) {
+      if (!element?.parentNode) {
+        placeCaretAfter(element);
+        return;
+      }
+
+      let anchor = element.nextSibling;
+
+      if (!(
+        anchor &&
+        anchor.nodeType === Node.ELEMENT_NODE &&
+        anchor.matches?.("span[data-baseline-caret-anchor='true']")
+      )) {
+        anchor = document.createElement("span");
+        anchor.dataset.baselineCaretAnchor = "true";
+        anchor.className = "baseline-caret-anchor";
+        anchor.appendChild(document.createTextNode("\u200b"));
+        element.parentNode.insertBefore(anchor, element.nextSibling);
+      }
+
+      const textNode = anchor.firstChild || anchor.appendChild(document.createTextNode("\u200b"));
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.setStart(textNode, textNode.nodeValue?.length || 0);
+      range.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      anchor.scrollIntoView?.({block:"nearest", inline:"nearest"});
+    }
+
+
     function insertExponentMarker() {
       const editor = $("polynomial-free-input");
       if (!editor || editor.getAttribute("contenteditable") === "false") return;
@@ -2910,21 +2949,21 @@
       if (/^[0-9]$/.test(event.key)) {
         event.preventDefault();
         sup.textContent = event.key;
-        placeCaretAfter(sup);
+        placeCaretOnBaselineAfter(sup);
         updateTypedPolynomialPreview();
         return;
       }
 
       if (event.key === "ArrowRight" || event.key === "Tab" || event.key === " ") {
         event.preventDefault();
-        placeCaretAfter(sup);
+        placeCaretOnBaselineAfter(sup);
         updateTypedPolynomialPreview();
         return;
       }
 
       if (event.key === "Escape") {
         event.preventDefault();
-        placeCaretAfter(sup);
+        placeCaretOnBaselineAfter(sup);
       }
     }
 
@@ -3599,7 +3638,7 @@
             </button>
           </div>
           <p class="free-polynomial-help">
-            可直接輸入一般項目。需要次方時，先把游標放在 x 後面，按「次方」，游標會移到 x 的右上角；再輸入 2、3…即可。系統也會自動辨識 X、Ｘ、ｘ與常見全形符號。
+            可直接輸入一般項目。需要次方時，先把游標放在 x 後面，按「次方」，游標會移到 x 的右上角；再輸入 2、3…即可；輸入次方後游標會自動回到正常位置，再繼續輸入下一項。系統也會自動辨識 X、Ｘ、ｘ與常見全形符號。
           </p>
           <div id="polynomial-system-preview" class="polynomial-system-preview is-incomplete">
             系統判斷：目前尚未輸入答案。
