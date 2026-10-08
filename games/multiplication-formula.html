@@ -1205,7 +1205,7 @@
     }
 
     .question-label {
-      text-align: left;
+      text-align: center;
     }
 
     .question-content {
@@ -1335,6 +1335,238 @@
       }
     }
 
+
+    /* ==================================================
+       v3.2｜八上 1-1 統一操作列、題目排版、詳解與自由多項式輸入
+    ================================================== */
+
+    .quiz-topbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(300px, auto) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .quiz-actions {
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+    }
+
+    .quiz-actions .game-button {
+      min-width: 112px;
+    }
+
+    .question-content {
+      width: 100%;
+      overflow: visible;
+      white-space: normal;
+    }
+
+    .question-content.is-short {
+      justify-content: center;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .question-content.is-long {
+      justify-content: flex-start;
+      text-align: left;
+      white-space: normal;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
+    .question-content.is-long .keep-together {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .explanation {
+      background: #f8fafc;
+      border: 1px solid #dbe3f4;
+    }
+
+    .explanation-step {
+      margin: 12px 0;
+      padding: 14px 15px;
+      border: 1px solid #dbe3f4;
+      border-left: 5px solid var(--primary);
+      border-radius: 13px;
+      background: #fff;
+    }
+
+    .explanation-step-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 7px;
+      color: var(--primary-dark);
+      font-weight: 900;
+      font-size: 16px;
+    }
+
+    .explanation-step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 62px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 13px;
+    }
+
+    .explanation-step-text {
+      color: #475569;
+      font-weight: 700;
+      line-height: 1.75;
+    }
+
+    .explanation-math-chain {
+      margin-top: 9px;
+      padding: 11px 13px;
+      border-radius: 11px;
+      background: #eef2ff;
+      color: #172554;
+      font-family: "Cambria Math", "Times New Roman", "Microsoft JhengHei", serif;
+      font-size: clamp(18px, 2.7vw, 23px);
+      font-weight: 900;
+      line-height: 1.8;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
+    .explanation-math-line {
+      display: block;
+    }
+
+    .free-polynomial-shell {
+      width: min(100%, 760px);
+      margin: 0 auto;
+    }
+
+    .free-polynomial-input-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .free-polynomial-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      min-height: 56px;
+      padding: 12px 14px;
+      border: 2px solid var(--primary-border);
+      border-radius: 13px;
+      background: #fff;
+      color: #0f172a;
+      font-family: "Cambria Math", "Times New Roman", "Microsoft JhengHei", sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.55;
+      outline: none;
+      cursor: text;
+      width: 100%;
+    }
+
+    .free-polynomial-input::placeholder {
+      color: #94a3b8;
+      font-weight: 700;
+    }
+
+    .free-polynomial-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(63,81,181,.11);
+    }
+
+    .exponent-insert-button {
+      flex: 0 0 auto;
+      min-width: 90px;
+      padding: 9px 12px;
+      border: 2px solid var(--primary-border);
+      border-radius: 13px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .exponent-insert-button .expo-icon {
+      display: inline-block;
+      margin-right: 4px;
+      font-family: "Cambria Math", serif;
+      font-size: 18px;
+    }
+
+    .baseline-caret-anchor {
+      display:inline;
+      vertical-align:baseline!important;
+      font-size:1em!important;
+      line-height:inherit!important;
+      font-weight:inherit;
+    }
+
+    .free-polynomial-help {
+      margin: 9px 0 0;
+      color: #64748b;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.65;
+    }
+
+    .polynomial-system-preview {
+      margin-top: 12px;
+    }
+
+    .polynomial-system-preview.is-valid {
+      border-color: #86efac;
+      background: #f0fdf4;
+      color: #166534;
+    }
+
+    .polynomial-system-preview.is-incomplete {
+      border-color: #cbd5e1;
+      background: #fff;
+      color: #475569;
+    }
+
+    .polynomial-system-preview.is-invalid {
+      border-color: #fca5a5;
+      background: #fff1f2;
+      color: #9f1239;
+    }
+
+    @media (max-width: 820px) {
+      .quiz-topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .quiz-context { order: 1; }
+      .quiz-stats { order: 2; }
+      .quiz-actions {
+        order: 3;
+        justify-content: flex-end;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .free-polynomial-input-row {
+        flex-wrap: wrap;
+      }
+
+      .exponent-insert-button {
+        margin-left: auto;
+      }
+
+      .quiz-actions {
+        flex-wrap: wrap;
+      }
+    }
+
   </style>
 
 </head>
@@ -1373,7 +1605,7 @@
 
 
         <p class="game-subtitle">
-          從數字速算開始，再進入多項式展開、公式判讀與逆向填空。
+          從數字速算開始，再進入多項式展開、公式結構判讀與完整展開。
         </p>
 
 
@@ -1499,7 +1731,7 @@
             </h2>
 
             <p>
-              數字、多項式、公式判讀與逆向填空全部混合。
+              數字、多項式、公式結構判讀與完整展開全部混合。
             </p>
 
             <div class="mode-example">
@@ -1540,6 +1772,25 @@
 
           </div>
 
+          <div class="quiz-stats">
+
+            <div class="status-box">
+              答對
+              <span id="correct-count" class="status-value">0</span>
+            </div>
+
+            <div class="status-box">
+              最高連擊
+              <span id="combo-count" class="status-value">0</span>
+            </div>
+
+            <div class="status-box timer-box">
+              ⏱️ 測驗時間
+              <span id="timer-display" class="status-value">00:00</span>
+            </div>
+
+          </div>
+
           <div class="quiz-actions">
 
             <button
@@ -1557,25 +1808,6 @@
             >
               重選模式
             </button>
-
-          </div>
-
-          <div class="quiz-stats">
-
-            <div class="status-box">
-              答對
-              <span id="correct-count" class="status-value">0</span>
-            </div>
-
-            <div class="status-box">
-              最高連擊
-              <span id="combo-count" class="status-value">0</span>
-            </div>
-
-            <div class="status-box timer-box">
-              ⏱️ 測驗時間
-              <span id="timer-display" class="status-value">00:00</span>
-            </div>
 
           </div>
 
@@ -2432,6 +2664,157 @@
     }
 
 
+    function exStep(title, text = "", mathLines = []) {
+      return { title, text, mathLines };
+    }
+
+
+    function normalizePolynomialTypedText(raw) {
+      const superscriptMap = {
+        "⁰":"0","¹":"1","²":"2","³":"3","⁴":"4",
+        "⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"
+      };
+
+      let text = String(raw ?? "")
+        .normalize("NFKC")
+        .replace(/[ＸｘX]/g, "x")
+        .replace(/[−－–—]/g, "-")
+        .replace(/[＋﹢]/g, "+")
+        .replace(/[＾]/g, "^")
+        .replace(/[×＊]/g, "*")
+        .replace(/\s+/g, "");
+
+      text = text.replace(/x([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (_, digits) =>
+        "x^" + [...digits].map(ch => superscriptMap[ch] || ch).join("")
+      );
+
+      return text;
+    }
+
+
+    function parseTypedPolynomial(raw) {
+      const source = normalizePolynomialTypedText(raw);
+
+      if (!source) {
+        return { valid: false, incomplete: true, message: "目前尚未輸入答案。" };
+      }
+
+      if (/[^0-9x+\-^*.]/i.test(source)) {
+        return { valid: false, message: "目前有無法辨識的字元，請確認英文字母 x 與運算符號。" };
+      }
+
+      if (source.includes("*")) {
+        return { valid: false, message: "答案請直接寫成多項式，不需要輸入乘號。" };
+      }
+
+      const prepared = /^[+-]/.test(source) ? source : `+${source}`;
+      const chunks = prepared.match(/[+-][^+-]+/g) || [];
+
+      if (!chunks.length || chunks.join("") !== prepared) {
+        return { valid: false, message: "多項式格式還沒有完成。" };
+      }
+
+      const terms = [];
+
+      for (const chunk of chunks) {
+        const sign = chunk[0] === "-" ? -1 : 1;
+        const body = chunk.slice(1);
+
+        if (!body) {
+          return { valid: false, incomplete: true, message: "有一項尚未輸入完成。" };
+        }
+
+        if (body.includes("x")) {
+          const match = body.match(/^(\d*)x(?:(?:\^(\d+))|(\d+))?$/i);
+          if (!match) {
+            return { valid: false, message: `無法辨識「${body}」，請使用例如 6x^2、-3x、5 的格式。` };
+          }
+
+          const coefficient = match[1] === "" ? 1 : Number(match[1]);
+          const exponentRaw = match[2] ?? match[3];
+          const exponent = exponentRaw == null ? 1 : Number(exponentRaw);
+
+          if (!Number.isInteger(exponent) || exponent < 0 || exponent > 9) {
+            return { valid: false, message: "次方請輸入 0～9 的整數。" };
+          }
+
+          terms.push({ exponent, coefficient: sign * coefficient });
+        } else {
+          if (!/^\d+$/.test(body)) {
+            return { valid: false, message: `無法辨識「${body}」。` };
+          }
+          terms.push({ exponent: 0, coefficient: sign * Number(body) });
+        }
+      }
+
+      const normalized = normalizePolynomial(terms);
+      return {
+        valid: true,
+        value: normalized,
+        display: polynomialHTML(normalized),
+        normalizedText: source
+      };
+    }
+
+
+    function syncPolynomialHiddenValue() {
+      const input = $("polynomial-free-input");
+      const hidden = $("polynomial-free-hidden");
+      if (!input || !hidden) return "";
+      hidden.value = input.value || "";
+      return hidden.value;
+    }
+
+
+    function updateTypedPolynomialPreview() {
+      const preview = $("polynomial-system-preview");
+      if (!preview) return;
+
+      const raw = syncPolynomialHiddenValue();
+      const result = parseTypedPolynomial(raw);
+      preview.classList.remove("is-valid", "is-incomplete", "is-invalid");
+
+      if (result.valid) {
+        preview.classList.add("is-valid");
+        preview.innerHTML = `系統判斷目前填入的答案：<strong>${result.display}</strong>`;
+      } else if (result.incomplete) {
+        preview.classList.add("is-incomplete");
+        preview.textContent = `系統判斷：${result.message}`;
+      } else {
+        preview.classList.add("is-invalid");
+        preview.textContent = `系統判斷：${result.message}`;
+      }
+    }
+
+
+    function insertExponentMarker() {
+      const input = $("polynomial-free-input");
+      if (!input || input.disabled) return;
+
+      input.focus();
+
+      const start = Number.isInteger(input.selectionStart) ? input.selectionStart : input.value.length;
+      const end = Number.isInteger(input.selectionEnd) ? input.selectionEnd : start;
+      const before = input.value.slice(0, start);
+      const after = input.value.slice(end);
+
+      if (!/[xXＸｘ]$/.test(before)) {
+        const preview = $("polynomial-system-preview");
+        if (preview) {
+          preview.classList.remove("is-valid", "is-incomplete");
+          preview.classList.add("is-invalid");
+          preview.textContent = "系統判斷：請先把游標放在 x 後面，再按「次方」。";
+        }
+        return;
+      }
+
+      input.value = `${before}^${after}`;
+      const caret = start + 1;
+      input.setSelectionRange(caret, caret);
+      updateTypedPolynomialPreview();
+    }
+
+
     function choiceQuestion(
       html,
       answer,
@@ -2450,7 +2833,7 @@
         explanation,
 
         label:
-          "請判斷應使用哪一個乘法公式",
+          "不先做其他代數變形，請判斷此算式直接符合哪一個乘法公式",
 
         choices: [
 
@@ -2489,205 +2872,77 @@
     ================================================== */
 
 
-    function makeBasicQuestion(
-      kind
-    ) {
+    function makeBasicQuestion(kind) {
+      const center = pick([50, 100, 200, 500]);
+      const d = rand(2, 9);
 
-      const center =
-        pick(
-          [
-            50,
-            100,
-            200,
-            500
-          ]
-        );
-
-
-      const d =
-        rand(
-          2,
-          9
-        );
-
-
-      if (
-        kind ===
-        "plus"
-      ) {
-
-        const n =
-          center +
-          d;
-
-
-        const answer =
-          n *
-          n;
-
-
+      if (kind === "plus") {
+        const n = center + d;
+        const answer = n * n;
+        const middle = 2 * center * d;
         return numberQuestion(
-
           `${n}<sup>2</sup>`,
-
           answer,
-
           [
-
-            `先把 ${n} 寫成 ${center}＋${d}。`,
-
-            `套用和的平方公式：
-
-             <br><br>
-
-             (${center}＋${d})<sup>2</sup>
-
-             ＝
-
-             ${center}<sup>2</sup>
-             ＋
-             2×${center}×${d}
-             ＋
-             ${d}<sup>2</sup>`,
-
-            `＝${answer}`
-
+            exStep("改寫成接近的整數", `把 ${n} 看成 ${center}＋${d}。`, [
+              `${n}<sup>2</sup>＝(${center}＋${d})<sup>2</sup>`
+            ]),
+            exStep("套用和的平方公式", "使用 (a＋b)²＝a²＋2ab＋b²。", [
+              `(${center}＋${d})<sup>2</sup>＝${center}<sup>2</sup>＋2×${center}×${d}＋${d}<sup>2</sup>`
+            ]),
+            exStep("依序計算", "保留上一行結果，接著完成數值計算。", [
+              `${center}<sup>2</sup>＋2×${center}×${d}＋${d}<sup>2</sup>＝${center*center}＋${middle}＋${d*d}`,
+              `＝${answer}`
+            ])
           ],
-
-          `
-            <span class="formula-name">
-              請使用「和的平方公式」計算
-            </span>
-
-            <span class="formula-hint">
-              (a＋b)<sup>2</sup>
-              ＝
-              a<sup>2</sup>＋2ab＋b<sup>2</sup>
-            </span>
-          `
+          `<span class="formula-name">請使用「和的平方公式」計算</span><span class="formula-hint">(a＋b)<sup>2</sup>＝a<sup>2</sup>＋2ab＋b<sup>2</sup></span>`
         );
       }
 
-
-      if (
-        kind ===
-        "minus"
-      ) {
-
-        const n =
-          center -
-          d;
-
-
-        const answer =
-          n *
-          n;
-
-
+      if (kind === "minus") {
+        const n = center - d;
+        const answer = n * n;
+        const middle = 2 * center * d;
         return numberQuestion(
-
           `${n}<sup>2</sup>`,
-
           answer,
-
           [
-
-            `先把 ${n} 寫成 ${center}－${d}。`,
-
-            `套用差的平方公式：
-
-             <br><br>
-
-             (${center}－${d})<sup>2</sup>
-
-             ＝
-
-             ${center}<sup>2</sup>
-             －
-             2×${center}×${d}
-             ＋
-             ${d}<sup>2</sup>`,
-
-            `＝${answer}`
-
+            exStep("改寫成接近的整數", `把 ${n} 看成 ${center}－${d}。`, [
+              `${n}<sup>2</sup>＝(${center}－${d})<sup>2</sup>`
+            ]),
+            exStep("套用差的平方公式", "使用 (a－b)²＝a²－2ab＋b²。", [
+              `(${center}－${d})<sup>2</sup>＝${center}<sup>2</sup>－2×${center}×${d}＋${d}<sup>2</sup>`
+            ]),
+            exStep("依序計算", "保留上一行結果，接著完成數值計算。", [
+              `${center}<sup>2</sup>－2×${center}×${d}＋${d}<sup>2</sup>＝${center*center}－${middle}＋${d*d}`,
+              `＝${answer}`
+            ])
           ],
-
-          `
-            <span class="formula-name">
-              請使用「差的平方公式」計算
-            </span>
-
-            <span class="formula-hint">
-              (a－b)<sup>2</sup>
-              ＝
-              a<sup>2</sup>－2ab＋b<sup>2</sup>
-            </span>
-          `
+          `<span class="formula-name">請使用「差的平方公式」計算</span><span class="formula-hint">(a－b)<sup>2</sup>＝a<sup>2</sup>－2ab＋b<sup>2</sup></span>`
         );
       }
 
-
-      const left =
-        center +
-        d;
-
-
-      const right =
-        center -
-        d;
-
-
-      const answer =
-        left *
-        right;
-
-
+      const left = center + d;
+      const right = center - d;
+      const answer = left * right;
       return numberQuestion(
-
         `${left} × ${right}`,
-
         answer,
-
         [
-
-          `將兩個數改寫成：
-
-           <br><br>
-
-           (${center}＋${d})
-           (${center}－${d})`,
-
-          `套用平方差公式：
-
-           <br><br>
-
-           (${center}＋${d})
-           (${center}－${d})
-
-           ＝
-
-           ${center}<sup>2</sup>
-           －
-           ${d}<sup>2</sup>`,
-
-          `＝${answer}`
-
+          exStep("找出共同的中間值", `${left} 與 ${right} 都以 ${center} 為中心，相差 ${d}。`, [
+            `${left}×${right}＝(${center}＋${d})(${center}－${d})`
+          ]),
+          exStep("套用平方差公式", "使用 (a＋b)(a－b)＝a²－b²。", [
+            `(${center}＋${d})(${center}－${d})＝${center}<sup>2</sup>－${d}<sup>2</sup>`
+          ]),
+          exStep("完成計算", "平方後再相減。", [
+            `${center}<sup>2</sup>－${d}<sup>2</sup>＝${center*center}－${d*d}`,
+            `＝${answer}`
+          ])
         ],
-
-        `
-          <span class="formula-name">
-            請使用「平方差公式」計算
-          </span>
-
-          <span class="formula-hint">
-            (a＋b)(a－b)
-            ＝
-            a<sup>2</sup>－b<sup>2</sup>
-          </span>
-        `
+        `<span class="formula-name">請使用「平方差公式」計算</span><span class="formula-hint">(a＋b)(a－b)＝a<sup>2</sup>－b<sup>2</sup></span>`
       );
     }
-
 
     function makeMode1() {
 
@@ -2733,534 +2988,122 @@
 
 
     function makeMixedNumberQuestion() {
+      const type = pick([
+        "squareNearBase", "squareNearBase",
+        "product", "product",
+        "reverseSquareEasy", "reverseSquareEasy", "reverseSquareEasy",
+        "reverseDifferenceEasy"
+      ]);
 
-      const type =
-        pick(
-          [
-            "squareNearBase",
-            "squareNearBase",
+      if (type === "squareNearBase") {
+        const center = pick([50,100,200,500,1000]);
+        const delta = pick([-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7]);
+        const n = center + delta;
+        const d = Math.abs(delta);
+        const answer = n*n;
 
-            "product",
-            "product",
-
-            "reverseSquareEasy",
-            "reverseSquareEasy",
-            "reverseSquareEasy",
-
-            "reverseDifferenceEasy"
-          ]
-        );
-
-
-      /* ----------------------------------------------
-         1. 接近整數的平方
-      ---------------------------------------------- */
-
-
-      if (
-        type ===
-        "squareNearBase"
-      ) {
-
-        const center =
-          pick(
-            [
-              50,
-              100,
-              200,
-              500,
-              1000
-            ]
-          );
-
-
-        const delta =
-          pick(
-            [
-              -7,
-              -6,
-              -5,
-              -4,
-              -3,
-              -2,
-              -1,
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              7
-            ]
-          );
-
-
-        const n =
-          center +
-          delta;
-
-
-        const answer =
-          n *
-          n;
-
-
-        const d =
-          Math.abs(
-            delta
-          );
-
-
-        if (
-          delta >
-          0
-        ) {
-
-          return numberQuestion(
-
-            `${n}<sup>2</sup>`,
-
-            answer,
-
-            [
-
-              `${n}＝${center}＋${d}`,
-
-              `利用和的平方公式：
-
-               <br><br>
-
-               (${center}＋${d})<sup>2</sup>
-
-               ＝
-
-               ${center}<sup>2</sup>
-               ＋
-               2×${center}×${d}
-               ＋
-               ${d}<sup>2</sup>`,
-
+        if (delta > 0) {
+          return numberQuestion(`${n}<sup>2</sup>`, answer, [
+            exStep("改寫數字", `把 ${n} 改寫成 ${center}＋${d}。`, [
+              `${n}<sup>2</sup>＝(${center}＋${d})<sup>2</sup>`
+            ]),
+            exStep("套用和的平方公式", "直接展開。", [
+              `(${center}＋${d})<sup>2</sup>＝${center}<sup>2</sup>＋2×${center}×${d}＋${d}<sup>2</sup>`
+            ]),
+            exStep("完成計算", "接續上一行計算。", [
+              `${center}<sup>2</sup>＋2×${center}×${d}＋${d}<sup>2</sup>＝${center*center}＋${2*center*d}＋${d*d}`,
               `＝${answer}`
-
-            ],
-
-            "請觀察最接近哪一個好算的整數，再選擇適合的乘法公式"
-          );
+            ])
+          ], "請觀察最接近哪一個好算的整數，再選擇適合的乘法公式");
         }
 
-
-        return numberQuestion(
-
-          `${n}<sup>2</sup>`,
-
-          answer,
-
-          [
-
-            `${n}＝${center}－${d}`,
-
-            `利用差的平方公式：
-
-             <br><br>
-
-             (${center}－${d})<sup>2</sup>
-
-             ＝
-
-             ${center}<sup>2</sup>
-             －
-             2×${center}×${d}
-             ＋
-             ${d}<sup>2</sup>`,
-
+        return numberQuestion(`${n}<sup>2</sup>`, answer, [
+          exStep("改寫數字", `把 ${n} 改寫成 ${center}－${d}。`, [
+            `${n}<sup>2</sup>＝(${center}－${d})<sup>2</sup>`
+          ]),
+          exStep("套用差的平方公式", "直接展開。", [
+            `(${center}－${d})<sup>2</sup>＝${center}<sup>2</sup>－2×${center}×${d}＋${d}<sup>2</sup>`
+          ]),
+          exStep("完成計算", "接續上一行計算。", [
+            `${center}<sup>2</sup>－2×${center}×${d}＋${d}<sup>2</sup>＝${center*center}－${2*center*d}＋${d*d}`,
             `＝${answer}`
-
-          ],
-
-          "請觀察最接近哪一個好算的整數，再選擇適合的乘法公式"
-        );
+          ])
+        ], "請觀察最接近哪一個好算的整數，再選擇適合的乘法公式");
       }
 
-
-      /* ----------------------------------------------
-         2. 對稱乘積
-      ---------------------------------------------- */
-
-
-      if (
-        type ===
-        "product"
-      ) {
-
-        const center =
-          pick(
-            [
-              50,
-              100,
-              200,
-              500
-            ]
-          );
-
-
-        const d =
-          rand(
-            1,
-            7
-          );
-
-
-        const left =
-          center +
-          d;
-
-
-        const right =
-          center -
-          d;
-
-
-        const answer =
-          center *
-          center -
-          d *
-          d;
-
-
-        return numberQuestion(
-
-          `${left} × ${right}`,
-
-          answer,
-
-          [
-
-            `${left}＝${center}＋${d}`,
-
-            `${right}＝${center}－${d}`,
-
-            `所以：
-
-             <br><br>
-
-             ${left}×${right}
-
-             ＝
-
-             (${center}＋${d})
-             (${center}－${d})`,
-
-            `利用平方差公式：
-
-             <br><br>
-
-             ＝
-
-             ${center}<sup>2</sup>
-             －
-             ${d}<sup>2</sup>`,
-
+      if (type === "product") {
+        const center = pick([50,100,200,500]);
+        const d = rand(1,7);
+        const left = center+d, right=center-d;
+        const answer = center*center-d*d;
+        return numberQuestion(`${left} × ${right}`, answer, [
+          exStep("找中間值", `${left} 與 ${right} 都可寫成 ${center}±${d}。`, [
+            `${left}×${right}＝(${center}＋${d})(${center}－${d})`
+          ]),
+          exStep("套用平方差公式", "兩個因式的前半相同、後半互為相反數。", [
+            `(${center}＋${d})(${center}－${d})＝${center}<sup>2</sup>－${d}<sup>2</sup>`
+          ]),
+          exStep("完成計算", "接續上一行。", [
+            `${center}<sup>2</sup>－${d}<sup>2</sup>＝${center*center}－${d*d}`,
             `＝${answer}`
-
-          ],
-
-          "請觀察兩個數的中間值，再利用平方差公式計算"
-        );
+          ])
+        ], "請觀察兩個數的中間值，再利用平方差公式計算");
       }
 
+      if (type === "reverseSquareEasy") {
+        const easyBase = pick([50,100,200,500]);
+        const d = rand(1,Math.min(8,easyBase-1));
+        const useMinus = Math.random()<.5;
+        const answer = easyBase*easyBase;
 
-      /* ----------------------------------------------
-         3. 完全平方反向題
-
-         重點：
-         套公式之後一定回到
-         20²、50²、100²、200²、500²
-      ---------------------------------------------- */
-
-
-      if (
-        type ===
-        "reverseSquareEasy"
-      ) {
-
-        const easyBase =
-          pick(
-            [
-              50,
-              100,
-              200,
-              500
-            ]
-          );
-
-
-        const d =
-          rand(
-            1,
-            Math.min(
-              8,
-              easyBase -
-              1
-            )
-          );
-
-
-        const useMinus =
-          Math.random() <
-          .5;
-
-
-        /*
-        差的平方：
-
-        52²－2×52×2＋2²
-        ＝(52－2)²
-        ＝50²
-        */
-
-
-        if (
-          useMinus
-        ) {
-
-          const a =
-            easyBase +
-            d;
-
-
-          const answer =
-            easyBase *
-            easyBase;
-
-
-          return numberQuestion(
-
-            `${a}<sup>2</sup>
-             －
-             2×${a}×${d}
-             ＋
-             ${d}<sup>2</sup>`,
-
-            answer,
-
-            [
-
-              `觀察原式符合：
-
-               <br><br>
-
-               a<sup>2</sup>
-               －
-               2ab
-               ＋
-               b<sup>2</sup>
-
-               ＝
-
-               (a－b)<sup>2</sup>`,
-
-              `此題：
-
-               <br>
-
-               a＝${a}，b＝${d}`,
-
-              `所以：
-
-               <br><br>
-
-               ${a}<sup>2</sup>
-               －
-               2×${a}×${d}
-               ＋
-               ${d}<sup>2</sup>
-
-               ＝
-
-               (${a}－${d})<sup>2</sup>`,
-
-              `＝${easyBase}<sup>2</sup>`,
-
+        if (useMinus) {
+          const a=easyBase+d;
+          return numberQuestion(`${a}<sup>2</sup>－2×${a}×${d}＋${d}<sup>2</sup>`, answer, [
+            exStep("辨認公式", "原式直接符合差的平方公式。", [
+              `a<sup>2</sup>－2ab＋b<sup>2</sup>＝(a－b)<sup>2</sup>`
+            ]),
+            exStep("代入 a、b", `此題 a＝${a}，b＝${d}。`, [
+              `${a}<sup>2</sup>－2×${a}×${d}＋${d}<sup>2</sup>＝(${a}－${d})<sup>2</sup>`
+            ]),
+            exStep("接續化簡", "括號內先算，再平方。", [
+              `(${a}－${d})<sup>2</sup>＝${easyBase}<sup>2</sup>`,
               `＝${answer}`
-
-            ],
-
-            "請先看出乘法公式，再把算式化成容易計算的平方"
-          );
+            ])
+          ], "請先看出乘法公式，再把算式化成容易計算的平方");
         }
 
-
-        /*
-        和的平方：
-
-        97²＋2×97×3＋3²
-        ＝(97＋3)²
-        ＝100²
-        */
-
-
-        const a =
-          easyBase -
-          d;
-
-
-        const answer =
-          easyBase *
-          easyBase;
-
-
-        return numberQuestion(
-
-          `${a}<sup>2</sup>
-           ＋
-           2×${a}×${d}
-           ＋
-           ${d}<sup>2</sup>`,
-
-          answer,
-
-          [
-
-            `觀察原式符合：
-
-             <br><br>
-
-             a<sup>2</sup>
-             ＋
-             2ab
-             ＋
-             b<sup>2</sup>
-
-             ＝
-
-             (a＋b)<sup>2</sup>`,
-
-            `此題：
-
-             <br>
-
-             a＝${a}，b＝${d}`,
-
-            `所以：
-
-             <br><br>
-
-             ${a}<sup>2</sup>
-             ＋
-             2×${a}×${d}
-             ＋
-             ${d}<sup>2</sup>
-
-             ＝
-
-             (${a}＋${d})<sup>2</sup>`,
-
-            `＝${easyBase}<sup>2</sup>`,
-
+        const a=easyBase-d;
+        return numberQuestion(`${a}<sup>2</sup>＋2×${a}×${d}＋${d}<sup>2</sup>`, answer, [
+          exStep("辨認公式", "原式直接符合和的平方公式。", [
+            `a<sup>2</sup>＋2ab＋b<sup>2</sup>＝(a＋b)<sup>2</sup>`
+          ]),
+          exStep("代入 a、b", `此題 a＝${a}，b＝${d}。`, [
+            `${a}<sup>2</sup>＋2×${a}×${d}＋${d}<sup>2</sup>＝(${a}＋${d})<sup>2</sup>`
+          ]),
+          exStep("接續化簡", "括號內先算，再平方。", [
+            `(${a}＋${d})<sup>2</sup>＝${easyBase}<sup>2</sup>`,
             `＝${answer}`
-
-          ],
-
-          "請先看出乘法公式，再把算式化成容易計算的平方"
-        );
+          ])
+        ], "請先看出乘法公式，再把算式化成容易計算的平方");
       }
 
-
-      /* ----------------------------------------------
-         4. 平方差反向題
-      ---------------------------------------------- */
-
-
-      const easyFactor =
-        pick(
-          [
-            50,
-            100,
-            200,
-            500
-          ]
-        );
-
-
-      const d =
-        rand(
-          1,
-          8
-        );
-
-
-      /*
-      a+b = easyFactor
-
-      設 b=d
-      則 a=easyFactor-d
-
-      a²-b²
-      ＝(a+b)(a-b)
-
-      第一個因數就是 easyFactor
-      */
-
-
-      const a =
-        easyFactor -
-        d;
-
-
-      const b =
-        d;
-
-
-      const answer =
-        a *
-        a -
-        b *
-        b;
-
-
-      return numberQuestion(
-
-        `${a}<sup>2</sup>
-         －
-         ${b}<sup>2</sup>`,
-
-        answer,
-
-        [
-
-          `利用平方差公式：
-
-           <br><br>
-
-           a<sup>2</sup>－b<sup>2</sup>
-
-           ＝
-
-           (a＋b)(a－b)`,
-
-          `所以：
-
-           <br><br>
-
-           ${a}<sup>2</sup>
-           －
-           ${b}<sup>2</sup>
-
-           ＝
-
-           (${a}＋${b})
-           (${a}－${b})`,
-
-          `＝${a + b}×${a - b}`,
-
+      const easyFactor = pick([50,100,200,500]);
+      const d=rand(1,8);
+      const a=easyFactor-d, b=d;
+      const answer=a*a-b*b;
+      return numberQuestion(`${a}<sup>2</sup>－${b}<sup>2</sup>`, answer, [
+        exStep("辨認公式", "原式是兩個平方相減。", [
+          `a<sup>2</sup>－b<sup>2</sup>＝(a＋b)(a－b)`
+        ]),
+        exStep("代入數值", `令 a＝${a}，b＝${b}。`, [
+          `${a}<sup>2</sup>－${b}<sup>2</sup>＝(${a}＋${b})(${a}－${b})`
+        ]),
+        exStep("接續計算", "先算兩個括號。", [
+          `(${a}＋${b})(${a}－${b})＝${a+b}×${a-b}`,
           `＝${answer}`
-
-        ],
-
-        "請先看出平方差公式，再把算式改寫成較容易計算的乘法"
-      );
+        ])
+      ], "請先看出平方差公式，再把算式改寫成較容易計算的乘法");
     }
-
 
     function makeMode2() {
 
@@ -3340,198 +3183,156 @@
 
 
     function makeForwardSquare() {
-
-      const a = rand(1, 5);
-      const b = rand(2, 9);
-      const plus = Math.random() < .5;
-
-      const x2 = a * a;
-      const x = (plus ? 1 : -1) * 2 * a * b;
-      const c = b * b;
-
+      const a=rand(1,5), b=rand(2,9), plus=Math.random()<.5;
+      const x2=a*a, x=(plus?1:-1)*2*a*b, c=b*b;
+      const answer=[
+        {exponent:2,coefficient:x2},
+        {exponent:1,coefficient:x},
+        {exponent:0,coefficient:c}
+      ];
+      const op=plus?"＋":"－";
       return polynomialQuestion(
-        `<span class="keep-together">(${a === 1 ? "" : a}x${plus ? "＋" : "－"}${b})<sup>2</sup></span> ＝？`,
+        `<span class="keep-together">(${a===1?"":a}x${op}${b})<sup>2</sup></span> ＝？`,
+        answer,
         [
-          { exponent: 2, coefficient: x2 },
-          { exponent: 1, coefficient: x },
-          { exponent: 0, coefficient: c }
+          exStep("辨認公式", `這是兩項${plus?"和":"差"}的平方。`, [
+            plus
+              ? `(A＋B)<sup>2</sup>＝A<sup>2</sup>＋2AB＋B<sup>2</sup>`
+              : `(A－B)<sup>2</sup>＝A<sup>2</sup>－2AB＋B<sup>2</sup>`
+          ]),
+          exStep("代入 A、B", `A＝${a}x，B＝${b}。`, [
+            `(${a===1?"":a}x${op}${b})<sup>2</sup>＝(${a}x)<sup>2</sup>${plus?"＋":"－"}2×(${a}x)×${b}＋${b}<sup>2</sup>`
+          ]),
+          exStep("逐項計算", "把平方與中間項都真正算出來。", [
+            `(${a}x)<sup>2</sup>${plus?"＋":"－"}2×(${a}x)×${b}＋${b}<sup>2</sup>＝${x2}x<sup>2</sup>${x>=0?"＋":"－"}${Math.abs(x)}x＋${c}`
+          ]),
+          exStep("整理答案", "依 x 的降冪排列。", [
+            `${polynomialHTML(answer)}`
+          ])
         ],
-        [
-          "套用完全平方公式。",
-          `首項平方：(${a}x)<sup>2</sup>＝${x2}x<sup>2</sup>。`,
-          `中間項：${plus ? "" : "－"}2×${a}x×${b}＝${x}x。`,
-          `末項：${b}<sup>2</sup>＝${c}。`,
-          `所以展開後為 ${polynomialHTML([
-            { exponent: 2, coefficient: x2 },
-            { exponent: 1, coefficient: x },
-            { exponent: 0, coefficient: c }
-          ])}。`
-        ],
-        "請用多項式答案格輸入展開後的完整多項式"
+        "請輸入展開後的完整多項式"
       );
     }
-
 
     function makeForwardDifference() {
-
-      const a = rand(1, 6);
-      const b = rand(2, 9);
-      const answer = [
-        { exponent: 2, coefficient: a * a },
-        { exponent: 0, coefficient: -(b * b) }
-      ];
-
+      const a=rand(1,6), b=rand(2,9);
+      const answer=[{exponent:2,coefficient:a*a},{exponent:0,coefficient:-(b*b)}];
       return polynomialQuestion(
-        `<span class="keep-together">(${a === 1 ? "" : a}x＋${b})(${a === 1 ? "" : a}x－${b})</span> ＝？`,
+        `<span class="keep-together">(${a===1?"":a}x＋${b})(${a===1?"":a}x－${b})</span> ＝？`,
         answer,
         [
-          "套用平方差公式：(A＋B)(A－B)＝A²－B²。",
-          `A＝${a}x，B＝${b}。`,
-          `所以答案為 ${polynomialHTML(answer)}。`
+          exStep("辨認公式", "兩個因式的前半相同、後半互為相反數，直接符合平方差公式。", [
+            `(A＋B)(A－B)＝A<sup>2</sup>－B<sup>2</sup>`
+          ]),
+          exStep("代入 A、B", `A＝${a}x，B＝${b}。`, [
+            `(${a===1?"":a}x＋${b})(${a===1?"":a}x－${b})＝(${a}x)<sup>2</sup>－${b}<sup>2</sup>`
+          ]),
+          exStep("把平方算完整", "不要只停在 A²－B²，要把每一個平方真正算完。", [
+            `(${a}x)<sup>2</sup>－${b}<sup>2</sup>＝${a*a}x<sup>2</sup>－${b*b}`
+          ])
         ],
-        "請用多項式答案格輸入展開後的完整多項式"
+        "請輸入展開後的完整多項式"
       );
     }
-
 
     function makeReverseSquare() {
-
-      const a = rand(1, 5);
-      const b = rand(2, 9);
-      const plus = Math.random() < .5;
-      const answer = [
-        { exponent: 2, coefficient: a * a },
-        { exponent: 1, coefficient: (plus ? 1 : -1) * 2 * a * b },
-        { exponent: 0, coefficient: b * b }
+      const a=rand(1,5), b=rand(2,9), plus=Math.random()<.5;
+      const op=plus?"＋":"－";
+      const answer=[
+        {exponent:2,coefficient:a*a},
+        {exponent:1,coefficient:(plus?1:-1)*2*a*b},
+        {exponent:0,coefficient:b*b}
       ];
-
       return polynomialQuestion(
-        `請將 <span class="keep-together">(${a === 1 ? "" : a}x${plus ? "＋" : "－"}${b})<sup>2</sup></span> 展開並整理。`,
+        `請將 <span class="keep-together">(${a===1?"":a}x${op}${b})<sup>2</sup></span> 展開並整理。`,
         answer,
         [
-          `辨認為${plus ? "和" : "差"}的平方公式。`,
-          `依公式展開後，依 x 的降冪排列。`,
-          `整理得到 ${polynomialHTML(answer)}。`
+          exStep("辨認公式", `這是${plus?"和":"差"}的平方。`, [
+            plus
+              ? `(A＋B)<sup>2</sup>＝A<sup>2</sup>＋2AB＋B<sup>2</sup>`
+              : `(A－B)<sup>2</sup>＝A<sup>2</sup>－2AB＋B<sup>2</sup>`
+          ]),
+          exStep("直接代入", `A＝${a}x，B＝${b}。`, [
+            `(${a===1?"":a}x${op}${b})<sup>2</sup>＝(${a}x)<sup>2</sup>${plus?"＋":"－"}2×(${a}x)×${b}＋${b}<sup>2</sup>`
+          ]),
+          exStep("完成每一項", "平方、中間項與常數項都要算到最後。", [
+            `(${a}x)<sup>2</sup>${plus?"＋":"－"}2×(${a}x)×${b}＋${b}<sup>2</sup>＝${polynomialHTML(answer)}`
+          ])
         ],
         "請輸入整理後的完整多項式"
       );
     }
-
 
     function makeReverseDifference() {
-
-      const a = rand(1, 6);
-      const b = rand(2, 9);
-      const answer = [
-        { exponent: 2, coefficient: a * a },
-        { exponent: 0, coefficient: -(b * b) }
-      ];
-
+      const a=rand(1,6), b=rand(2,9);
+      const answer=[{exponent:2,coefficient:a*a},{exponent:0,coefficient:-(b*b)}];
       return polynomialQuestion(
-        `請將 <span class="keep-together">(${a === 1 ? "" : a}x＋${b})(${a === 1 ? "" : a}x－${b})</span> 展開並整理。`,
+        `請將 <span class="keep-together">(${a===1?"":a}x＋${b})(${a===1?"":a}x－${b})</span> 展開並整理。`,
         answer,
         [
-          "兩個因式的前項相同、後項互為相反數，可直接使用平方差公式。",
-          `(${a}x)<sup>2</sup>－${b}<sup>2</sup>＝${polynomialHTML(answer)}。`
+          exStep("辨認公式", "直接符合平方差公式。", [
+            `(A＋B)(A－B)＝A<sup>2</sup>－B<sup>2</sup>`
+          ]),
+          exStep("代入 A、B", `A＝${a}x，B＝${b}。`, [
+            `(${a===1?"":a}x＋${b})(${a===1?"":a}x－${b})＝(${a}x)<sup>2</sup>－${b}<sup>2</sup>`
+          ]),
+          exStep("完成平方", "將兩個平方都算到最後。", [
+            `(${a}x)<sup>2</sup>－${b}<sup>2</sup>＝${a*a}x<sup>2</sup>－${b*b}`
+          ])
         ],
         "請輸入整理後的完整多項式"
       );
     }
 
-
     function makeFormulaChoiceQuestion() {
+      const kind=pick(["plus","minus","difference"]);
 
-      const kind =
-        pick(
-          [
-            "plus",
-            "minus",
-            "difference"
-          ]
-        );
-
-
-      if (
-        kind ===
-        "plus"
-      ) {
-
-        const b =
-          rand(
-            2,
-            9
-          );
-
-
+      if (kind==="plus") {
+        const b=rand(2,9);
         return choiceQuestion(
-
           `(x＋${b})<sup>2</sup>`,
-
           "plus",
-
           [
-
-            "這是兩項和的平方。",
-
-            "應使用：(a＋b)²＝a²＋2ab＋b²。"
-
+            exStep("觀察結構", "題目問的是『不先做其他代數變形，直接符合哪一個公式』。", [
+              `(x＋${b})<sup>2</sup>`
+            ]),
+            exStep("對照公式", "這是兩項和的平方，因此直接符合和的平方公式。", [
+              `(a＋b)<sup>2</sup>＝a<sup>2</sup>＋2ab＋b<sup>2</sup>`
+            ])
           ]
         );
       }
 
-
-      if (
-        kind ===
-        "minus"
-      ) {
-
-        const b =
-          rand(
-            2,
-            9
-          );
-
-
+      if (kind==="minus") {
+        const b=rand(2,9);
         return choiceQuestion(
-
           `(x－${b})<sup>2</sup>`,
-
           "minus",
-
           [
-
-            "這是兩項差的平方。",
-
-            "應使用：(a－b)²＝a²－2ab＋b²。"
-
+            exStep("觀察結構", "題目問的是『不先做其他代數變形，直接符合哪一個公式』。", [
+              `(x－${b})<sup>2</sup>`
+            ]),
+            exStep("對照公式", "這是兩項差的平方，因此直接符合差的平方公式。", [
+              `(a－b)<sup>2</sup>＝a<sup>2</sup>－2ab＋b<sup>2</sup>`
+            ])
           ]
         );
       }
 
-
-      const b =
-        rand(
-          2,
-          9
-        );
-
-
+      const b=rand(2,9);
       return choiceQuestion(
-
         `(x＋${b})(x－${b})`,
-
         "difference",
-
         [
-
-          "兩個因式前半相同，後半互為相反數。",
-
-          "應使用：(a＋b)(a－b)＝a²－b²。"
-
+          exStep("觀察結構", "兩個因式前半相同、後半互為相反數。", [
+            `(x＋${b})(x－${b})`
+          ]),
+          exStep("對照公式", "因此直接符合平方差公式。", [
+            `(a＋b)(a－b)＝a<sup>2</sup>－b<sup>2</sup>`
+          ])
         ]
       );
     }
-
 
     function makeMode3() {
 
@@ -3657,148 +3458,81 @@
     ================================================== */
 
 
-    function expressionOptions(mountId) {
-
-      return {
-        mountId,
-        allowNumber: false,
-        allowExpression: false,
-        allowPolynomial: true,
-        defaultMode: "polynomial",
-        polynomialVariable: "x",
-        polynomialExponentOptions: [2, 1, 0],
-        maxPolynomialTerms: 3,
-        allowNegativePolynomialCoefficient: true,
-        allowZeroPolynomialCoefficient: false,
-        allowFractionPolynomialCoefficient: false,
-        requireDescendingPowers: true,
-        disallowDuplicatePowers: true,
-        omitPolynomialCoefficientOne: true,
-        compactPolynomialUI: false,
-        theme: {
-          primary: "#3f51b5",
-          light: "#e8eaf6",
-          border: "#9fa8da"
-        },
-        labels: {
-          polynomialLabel: "請輸入完整多項式",
-          polynomialCoefficientLabel: "輸入這一項的係數",
-          polynomialExponentLabel: "選擇這一項",
-          polynomialSignLabel: "正負號",
-          polynomialEditLabel: "編輯多項式"
-        },
-        onChange: () => {
-          setTimeout(updatePolynomialSystemPreview, 0);
-        }
-      };
-    }
-
-
-    function updatePolynomialSystemPreview() {
-      const preview = $("polynomial-system-preview");
-
-      if (!preview || !answerInput) {
-        return;
-      }
-
-      try {
-        const result = answerInput.validate();
-
-        if (result.valid) {
-          preview.innerHTML =
-            `系統判斷目前填入的答案：<strong>${result.value.html}</strong>`;
-        } else {
-          preview.textContent =
-            "系統判斷：目前尚未完成多項式。";
-        }
-      } catch (error) {
-        preview.textContent =
-          "系統判斷：目前尚未完成多項式。";
-      }
-    }
-
-
     function renderPolynomialAnswer(question) {
       $("answer-panel").innerHTML = `
         <div class="answer-title">${question.label}</div>
-        <p class="answer-help">
-          請用多項式專屬答案格逐項輸入，並依 x 的降冪排列。
-        </p>
-        <div class="polynomial-answer-shell">
-          <div id="polynomial-answer-mount"></div>
-          <div id="polynomial-system-preview" class="polynomial-system-preview">
-            系統判斷：目前尚未完成多項式。
+        <div class="free-polynomial-shell">
+          <div class="free-polynomial-input-row">
+            <input
+              id="polynomial-free-input"
+              class="free-polynomial-input"
+              type="text"
+              inputmode="text"
+              autocapitalize="off"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="例如：6x^2-3x+5"
+              aria-label="多項式答案"
+            >
+            <input id="polynomial-free-hidden" type="hidden" value="">
+            <button
+              id="exponent-insert-button"
+              class="exponent-insert-button"
+              type="button"
+              title="先把游標放在 x 後面；按下後會插入 ^，再輸入次方數字"
+            >
+              <span class="expo-icon">xⁿ</span> 次方
+            </button>
+          </div>
+          <p class="free-polynomial-help">
+            可直接輸入一般項目。符號 <strong>^</strong> 代表「次方」：例如 x^2 代表 x²。需要次方時，先把游標放在 x 後面，按「次方」，系統會插入 ^，再輸入 2、3…即可，之後可直接繼續輸入下一項。系統也會自動辨識 X、Ｘ、ｘ與常見全形符號。
+          </p>
+          <div id="polynomial-system-preview" class="polynomial-system-preview is-incomplete">
+            系統判斷：目前尚未輸入答案。
           </div>
         </div>
       `;
 
-      if (typeof window.ExpressionInput !== "function") {
-        $("polynomial-system-preview").textContent =
-          "多項式答案格載入失敗，請確認 expression-input.js 已放在 js 資料夾。";
-        answerInput = null;
-        return;
-      }
-
-      answerInput = new window.ExpressionInput(
-        expressionOptions("polynomial-answer-mount")
-      );
-
-      setTimeout(() => {
-        answerInput?.focus();
-        updatePolynomialSystemPreview();
-      }, 0);
+      const input=$("polynomial-free-input");
+      const exponentButton=$("exponent-insert-button");
+      input?.addEventListener("input", updateTypedPolynomialPreview);
+      input?.addEventListener("blur", updateTypedPolynomialPreview);
+      input?.addEventListener("paste", () => setTimeout(updateTypedPolynomialPreview, 0));
+      exponentButton?.addEventListener("click", insertExponentMarker);
+      setTimeout(()=>input?.focus(),0);
     }
 
 
     function renderAnswer(question) {
-      selectedChoice = null;
-      answerInput = null;
+      selectedChoice=null;
+      answerInput=null;
 
-      if (question.type === "number") {
-        $("answer-panel").innerHTML = `
+      if (question.type==="number") {
+        $("answer-panel").innerHTML=`
           <div class="answer-title">請輸入答案</div>
           <div class="number-answer">
-            <input
-              id="number-input"
-              type="text"
-              inputmode="numeric"
-              autocomplete="off"
-              placeholder="輸入答案"
-            >
-          </div>
-        `;
-
-        setTimeout(() => $("number-input")?.focus(), 0);
+            <input id="number-input" type="text" inputmode="numeric" autocomplete="off" placeholder="輸入答案">
+          </div>`;
+        setTimeout(()=>$("number-input")?.focus(),0);
         return;
       }
 
-      if (question.type === "polynomial") {
+      if (question.type==="polynomial") {
         renderPolynomialAnswer(question);
         return;
       }
 
-      $("answer-panel").innerHTML = `
+      $("answer-panel").innerHTML=`
         <div class="answer-title">${question.label}</div>
         <div class="choice-grid">
-          ${question.choices.map(choice => `
-            <button
-              type="button"
-              class="choice-button"
-              data-choice="${choice.value}"
-            >
-              ${choice.text}
-            </button>
-          `).join("")}
-        </div>
-      `;
+          ${question.choices.map(choice=>`<button type="button" class="choice-button" data-choice="${choice.value}">${choice.text}</button>`).join("")}
+        </div>`;
 
-      document.querySelectorAll(".choice-button").forEach(button => {
-        button.addEventListener("click", () => {
-          if (answered) return;
-          selectedChoice = button.dataset.choice;
-          document.querySelectorAll(".choice-button").forEach(item =>
-            item.classList.remove("selected")
-          );
+      document.querySelectorAll(".choice-button").forEach(button=>{
+        button.addEventListener("click",()=>{
+          if(answered)return;
+          selectedChoice=button.dataset.choice;
+          document.querySelectorAll(".choice-button").forEach(item=>item.classList.remove("selected"));
           button.classList.add("selected");
         });
       });
@@ -3806,63 +3540,22 @@
 
 
     function readAnswer(question) {
-      if (question.type === "number") {
-        const raw = $("number-input")?.value.trim() ?? "";
-
-        if (!/^-?\d+$/.test(raw)) {
-          return {
-            valid: false,
-            message: "請輸入完整的整數答案。"
-          };
-        }
-
-        return {
-          valid: true,
-          value: Number(raw),
-          display: raw
-        };
+      if (question.type==="number") {
+        const raw=$("number-input")?.value.trim()??"";
+        if(!/^-?\d+$/.test(raw))return{valid:false,message:"請輸入完整的整數答案。"};
+        return{valid:true,value:Number(raw),display:raw};
       }
 
-      if (question.type === "polynomial") {
-        if (!answerInput) {
-          return {
-            valid: false,
-            message: "多項式輸入器尚未準備完成。"
-          };
-        }
-
-        const result = answerInput.validate();
-
-        if (!result.valid) {
-          return {
-            valid: false,
-            message: result.message || "請將多項式答案輸入完整。"
-          };
-        }
-
-        return {
-          valid: true,
-          value: result.value.fractionTerms,
-          display: result.value.html
-        };
+      if (question.type==="polynomial") {
+        const raw=syncPolynomialHiddenValue();
+        const result=parseTypedPolynomial(raw);
+        if(!result.valid)return{valid:false,message:result.message||"請將多項式答案輸入完整。"};
+        return{valid:true,value:result.value,display:result.display};
       }
 
-      if (!selectedChoice) {
-        return {
-          valid: false,
-          message: "請先選擇答案。"
-        };
-      }
-
-      const selected = question.choices.find(
-        choice => choice.value === selectedChoice
-      );
-
-      return {
-        valid: true,
-        value: selectedChoice,
-        display: selected?.text || selectedChoice
-      };
+      if(!selectedChoice)return{valid:false,message:"請先選擇答案。"};
+      const selected=question.choices.find(choice=>choice.value===selectedChoice);
+      return{valid:true,value:selectedChoice,display:selected?.text||selectedChoice};
     }
 
 
@@ -3901,37 +3594,45 @@
     ================================================== */
 
 
-    function explanationHTML(
-      question
-    ) {
-
-      return question.explanation
-        .map(
-          (
-            step,
-            i
-          ) => `
-
-            <div class="explanation-step">
-
-              <strong>
-                步驟 ${i + 1}｜
-              </strong>
-
-              ${step}
-
-            </div>
-          `
-        )
-        .join(
-          ""
-        );
+    function explanationHTML(question) {
+      return question.explanation.map((step,i)=>{
+        if(typeof step==="string"){
+          return `<div class="explanation-step"><div class="explanation-step-head"><span class="explanation-step-badge">步驟 ${i+1}</span><span>解題說明</span></div><div class="explanation-step-text">${step}</div></div>`;
+        }
+        const title=step.title||"解題說明";
+        const text=step.text?`<div class="explanation-step-text">${step.text}</div>`:"";
+        const math=(step.mathLines||[]).length
+          ? `<div class="explanation-math-chain">${step.mathLines.map(line=>`<span class="explanation-math-line">${line}</span>`).join("")}</div>`
+          : "";
+        return `<div class="explanation-step"><div class="explanation-step-head"><span class="explanation-step-badge">步驟 ${i+1}</span><span>${title}</span></div>${text}${math}</div>`;
+      }).join("");
     }
 
 
     /* ==================================================
        顯示題目
     ================================================== */
+
+
+    function updateQuestionAlignment() {
+      const content=$("question-content");
+      if(!content)return;
+
+      content.classList.remove("is-short","is-long");
+      content.classList.add("is-short");
+
+      requestAnimationFrame(()=>{
+        const available=content.clientWidth;
+        const needed=content.scrollWidth;
+        if(needed<=available+2){
+          content.classList.add("is-short");
+          content.classList.remove("is-long");
+        }else{
+          content.classList.remove("is-short");
+          content.classList.add("is-long");
+        }
+      });
+    }
 
 
     function displayQuestion() {
@@ -3990,6 +3691,8 @@
       $("question-content")
         .innerHTML =
           question.html;
+
+      updateQuestionAlignment();
 
 
       $("feedback")
@@ -4086,6 +3789,10 @@
 
       answered =
         true;
+
+      document.querySelectorAll("#answer-panel input, #answer-panel button").forEach(element => {
+        element.disabled = true;
+      });
 
 
       document
