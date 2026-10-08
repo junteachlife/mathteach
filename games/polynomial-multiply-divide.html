@@ -26,7 +26,7 @@
 
   <link
     rel="stylesheet"
-    href="../css/polynomial-input.css?v=1"
+    href="../css/polynomial-input.css?v=2"
   >
 
   <style>
@@ -2892,7 +2892,7 @@ min-height: 62px;
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
 <script src="../js/expression-input.js?v=5"></script>
-<script src="../js/polynomial-input.js?v=1"></script>
+<script src="../js/polynomial-input.js?v=2"></script>
 
 <script type="module">
 
@@ -8557,6 +8557,9 @@ function renderPolynomialAnswer(
       allowBareExponent:
         true,
 
+      coefficientMode:
+        "integer",
+
       placeholder:
         "例如：6x²－3x＋5",
 
@@ -8572,6 +8575,57 @@ function renderPolynomialAnswer(
       primaryBorder:
         "#ce93d8"
     });
+}
+
+
+function sharedCoefficientToFraction(value) {
+
+  if (
+    value &&
+    typeof value ===
+    "object"
+  ) {
+
+    return F(
+      Number(
+        value.numerator
+      ),
+      Number(
+        value.denominator
+      )
+    );
+  }
+
+
+  return F(
+    Number(
+      value
+    )
+  );
+}
+
+
+function sharedTermsToLocalPolynomial(
+  terms
+) {
+
+  return normalizePolynomial(
+    (terms || [])
+      .map(
+        term => ({
+
+          exponent:
+            Number(
+              term.exponent
+            ),
+
+          coefficient:
+            sharedCoefficientToFraction(
+              term.coefficient
+            )
+        })
+      )
+  );
 }
 
 
@@ -8598,24 +8652,19 @@ function parseSharedPolynomialInput() {
   }
 
   const terms =
-    (result.value || [])
-      .map(
-        term => ({
-          exponent:
-            Number(term.exponent),
-
-          coefficient:
-            F(Number(term.coefficient))
-        })
-      );
+    sharedTermsToLocalPolynomial(
+      result.value
+    );
 
   return {
     valid: true,
     value:
-      normalizePolynomial(terms),
+      terms,
     display:
       result.display ||
-      polynomialHTML(terms)
+      polynomialHTML(
+        terms
+      )
   };
 }
 
@@ -8711,6 +8760,63 @@ function parseExpressionInput(
 ==================================================
 */
 
+function parseSharedDivisionQuotient() {
+
+  if (
+    !divisionQuotientInput
+  ) {
+
+    return {
+      valid: false,
+      message:
+        "商式輸入元件尚未準備完成。"
+    };
+  }
+
+
+  const result =
+    divisionQuotientInput
+      .validate();
+
+
+  if (
+    !result.valid
+  ) {
+
+    return {
+      valid: false,
+      message:
+        result.message ||
+        "請將商式輸入完整。"
+    };
+  }
+
+
+  const terms =
+    sharedTermsToLocalPolynomial(
+      result.value
+    );
+
+
+  return {
+    valid: true,
+    value:
+      terms,
+    display:
+      result.display ||
+      polynomialHTML(
+        terms
+      )
+  };
+}
+
+
+/*
+==================================================
+商式餘式預覽
+==================================================
+*/
+
 function updateDivisionPreview() {
 
   const preview =
@@ -8732,9 +8838,7 @@ function updateDivisionPreview() {
   try {
 
     const result =
-      parseExpressionInput(
-        divisionQuotientInput
-      );
+      parseSharedDivisionQuotient();
 
 
     if (
@@ -8812,6 +8916,10 @@ function updateDivisionPreview() {
 /*
 ==================================================
 除法答案
+
+v2：商式改用 PolynomialAnswerInput rational 模式。
+學生可以直接輸入整數係數，也可以按「分數」輸入
+分子在上、分母在下的分數係數。
 ==================================================
 */
 
@@ -8830,7 +8938,8 @@ function renderDivisionAnswer(
 
       <p class="answer-help">
 
-        商式請依降冪排列，餘式也要一起填答。
+        商式請依降冪排列，餘式也要一起填答。<br>
+        若商式出現分數係數，可按「分數」輸入；分子在上、分母在下，並請化成最簡分數。
 
       </p>
 
@@ -8844,13 +8953,9 @@ function renderDivisionAnswer(
               商式
             </div>
 
-            <div class="polynomial-answer-shell">
-
-              <div
-                id="division-quotient-mount"
-              ></div>
-
-            </div>
+            <div
+              id="division-quotient-mount"
+            ></div>
 
           </div>
 
@@ -8883,44 +8988,60 @@ function renderDivisionAnswer(
     `;
 
 
+  if (
+    typeof window.PolynomialAnswerInput !==
+    "function"
+  ) {
+
+    $("feedback").className =
+      "feedback warning";
+
+    $("feedback").textContent =
+      "PolynomialAnswerInput v2 共用元件沒有正常載入。";
+
+    return;
+  }
+
+
   divisionQuotientInput =
-    new window.ExpressionInput(
-      expressionOptions(
-        "division-quotient-mount"
-      )
-    );
+    new window.PolynomialAnswerInput({
 
+      mountId:
+        "division-quotient-mount",
 
-  const mount =
-    $("division-quotient-mount");
+      variable:
+        "x",
 
+      maxExponent:
+        9,
 
-  cleanFractionFieldLabels(
-    mount
-  );
+      allowBareExponent:
+        true,
 
+      coefficientMode:
+        "rational",
 
-  [
-    "input",
-    "change",
-    "click"
-  ]
-    .forEach(
-      eventName => {
+      requireSimplifiedFraction:
+        true,
 
-        mount
-          ?.addEventListener(
-            eventName,
-            () => {
+      placeholder:
+        "例如：3/2x²－x＋5",
 
-              setTimeout(
-                updateDivisionPreview,
-                0
-              );
-            }
-          );
-      }
-    );
+      primary:
+        "#7b1fa2",
+
+      primaryDark:
+        "#4a148c",
+
+      primaryLight:
+        "#f3e5f5",
+
+      primaryBorder:
+        "#ce93d8",
+
+      onChange:
+        updateDivisionPreview
+    });
 
 
   $("remainder-answer")
@@ -8950,6 +9071,8 @@ function renderAnswer(
 ) {
 
   freePolynomialInput?.destroy?.();
+
+  divisionQuotientInput?.destroy?.();
 
   freePolynomialInput =
     null;
@@ -9232,9 +9355,7 @@ function readAnswer(
   ) {
 
     const quotientResult =
-      parseExpressionInput(
-        divisionQuotientInput
-      );
+      parseSharedDivisionQuotient();
 
 
     if (
