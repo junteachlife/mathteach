@@ -4398,12 +4398,21 @@ function normalizePolynomialTypedText(raw) {
     "⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"
   };
 
+  /*
+  重要：一定要先把真正的上標字元轉成 ^n，
+  再做 NFKC。否則 Android / Chrome 可能會先把 ² 轉成普通 2，
+  造成 x² 被誤讀成 x2。
+  */
   let text = String(raw ?? "")
+    .replace(/x([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/gi, (_, digits) =>
+      "x^" + [...digits].map(ch => superscriptMap[ch] || ch).join("")
+    )
     .normalize("NFKC")
     .replace(/[ＸｘX]/g, "x")
     .replace(/[−－–—]/g, "-")
     .replace(/[＋﹢]/g, "+")
     .replace(/[＾]/g, "^")
+    .replace(/[×＊]/g, "*")
     .replace(/\s+/g, "");
 
   return text;
@@ -4417,8 +4426,12 @@ function parseTypedPolynomial(raw) {
     return { valid:false, incomplete:true, message:"目前尚未輸入答案。" };
   }
 
-  if (/[^0-9x+\-^]/i.test(source)) {
-    return { valid:false, message:"目前有無法辨識的字元，請確認 x、正負號與次方格式。" };
+  if (/[^0-9x+\-^*.]/i.test(source)) {
+    return { valid:false, message:"目前有無法辨識的字元，請確認英文字母 x 與運算符號。" };
+  }
+
+  if (source.includes("*")) {
+    return { valid:false, message:"答案請直接寫成多項式，不需要輸入乘號。" };
   }
 
   const prepared = /^[+-]/.test(source) ? source : `+${source}`;
@@ -4439,23 +4452,33 @@ function parseTypedPolynomial(raw) {
     }
 
     if (body.includes("x")) {
-      const match = body.match(/^(\d*)x(?:\^(\d+))?$/i);
+      /*
+      與 1-1 同規則：
+      6x^2、6x² 都會先正規化成 6x^2；
+      同時容許舊資料中的 6x2 形式，避免既有輸入失效。
+      */
+      const match = body.match(/^(\d*)x(?:(?:\^(\d+))|(\d+))?$/i);
+
       if (!match) {
         return { valid:false, message:`無法辨識「${body}」，請使用例如 6x^2、-3x、5 的格式。` };
       }
 
       const coefficient = match[1] === "" ? 1 : Number(match[1]);
-      const exponent = match[2] == null ? 1 : Number(match[2]);
+      const exponentRaw = match[2] ?? match[3];
+      const exponent = exponentRaw == null ? 1 : Number(exponentRaw);
 
       if (!Number.isInteger(exponent) || exponent < 0 || exponent > 9) {
         return { valid:false, message:"次方請輸入 0～9 的整數。" };
       }
 
-      terms.push({ exponent, coefficient: sign * coefficient });
+      terms.push({ exponent, coefficient:sign * coefficient });
+
     } else {
+
       if (!/^\d+$/.test(body)) {
         return { valid:false, message:`無法辨識「${body}」。` };
       }
+
       terms.push({ exponent:0, coefficient:sign * Number(body) });
     }
   }
