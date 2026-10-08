@@ -2,13 +2,14 @@
 ==================================================
 PolynomialAnswerInput 共用元件
 生活有解．心中有數
-版本：2.0.0
+版本：3.0.0
 
-v2 重點：
+v3 重點：
 - 完整保留 v1 的整數係數多項式輸入與次方小框。
 - 新增 coefficientMode: "rational"，可輸入分數係數。
 - rational 模式支援「分數」按鈕：彈出分子在上、分母在下的小輸入框。
-- 系統判斷預覽以真正上下分數顯示。
+- rational 模式的「主答案框」直接以真正上下分數顯示，不再只顯示 2/5。
+- 系統判斷預覽同樣以真正上下分數顯示。
 - 支援 x² / x³ / x^2 / x^3、X／Ｘ／ｘ、全形符號。
 - integer 模式回傳數字係數，維持 1-1、1-2 向下相容。
 - rational 模式回傳 {numerator, denominator} 係數。
@@ -178,6 +179,37 @@ v2 重點：
       const variableHTML = exponent === 1 ? variable : `${variable}<sup>${exponent}</sup>`;
       return `${sign}${coefficientHTML}${variableHTML}`;
     }).join("");
+  }
+
+
+  function rawTextToRichHTML(raw, variable = "x") {
+    let source = String(raw ?? "");
+
+    if (!source) {
+      return "";
+    }
+
+    // 先做基本安全處理，再把可辨識的數學片段轉成排版。
+    source = escapeHTML(source)
+      .replace(/[ＸｘX]/g, variable)
+      .replace(/[−－–—]/g, "−")
+      .replace(/[＋﹢]/g, "＋")
+      .replace(/[／]/g, "/");
+
+    // x^2 / x＾2 顯示成右上角次方。
+    source = source.replace(
+      new RegExp(`${variable}(?:\\^|＾)([0-9]+)`, "gi"),
+      `${variable}<sup>$1</sup>`
+    );
+
+    // 真正的上標字元保留原樣；分數轉成上下式。
+    source = source.replace(
+      /(\d+)\/(\d+)/g,
+      (_, numerator, denominator) =>
+        `<span class="pai-math-fraction"><span class="pai-math-fraction-top">${numerator}</span><span class="pai-math-fraction-bottom">${denominator}</span></span>`
+    );
+
+    return source;
   }
 
   function parseCoefficient(text, coefficientMode, requireSimplifiedFraction) {
@@ -422,12 +454,20 @@ v2 重點：
         ? `<button class="pai-fraction-button" type="button" title="插入分數係數"><span class="pai-fraction-icon"><span>□</span><span>□</span></span>分數</button>`
         : "";
 
+      const richMode =
+        this.options.coefficientMode === "rational";
+
       this.mount.innerHTML = `
-        <div class="pai-shell"
+        <div class="pai-shell ${richMode ? "pai-shell--rational" : ""}"
              style="--pai-primary:${escapeHTML(this.options.primary)};--pai-primary-dark:${escapeHTML(this.options.primaryDark)};--pai-primary-light:${escapeHTML(this.options.primaryLight)};--pai-primary-border:${escapeHTML(this.options.primaryBorder)};">
           <div class="pai-input-row">
             <div class="pai-main-wrap">
-              <input class="pai-main-input" type="text" inputmode="text" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="${escapeHTML(this.options.placeholder)}" aria-label="${escapeHTML(this.options.ariaLabel)}">
+              ${
+                richMode
+                  ? `<div class="pai-rich-input-display pai-rich-input-display--placeholder">${escapeHTML(this.options.placeholder)}</div>`
+                  : ""
+              }
+              <input class="pai-main-input ${richMode ? "pai-main-input--rich-source" : ""}" type="text" inputmode="text" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="${richMode ? "" : escapeHTML(this.options.placeholder)}" aria-label="${escapeHTML(this.options.ariaLabel)}">
             </div>
             <div class="pai-tool-buttons">
               <button class="pai-exponent-button" type="button" title="先把游標放在 x 後面，再按次方"><span class="pai-exponent-icon">${escapeHTML(this.options.variable)}ⁿ</span>次方</button>
@@ -441,9 +481,12 @@ v2 重點：
 
       this.root = this.mount.querySelector(".pai-shell");
       this.input = this.mount.querySelector(".pai-main-input");
+      this.richDisplay = this.mount.querySelector(".pai-rich-input-display");
       this.exponentButton = this.mount.querySelector(".pai-exponent-button");
       this.fractionButton = this.mount.querySelector(".pai-fraction-button");
       this.preview = this.mount.querySelector(".pai-preview");
+
+      this.updateRichDisplay();
     }
 
     bind() {
@@ -479,7 +522,41 @@ v2 重點：
       return this.parse();
     }
 
+    updateRichDisplay() {
+      if (!this.richDisplay) {
+        return;
+      }
+
+      const raw =
+        this.input?.value ?? "";
+
+      if (!raw) {
+        this.richDisplay.classList.add(
+          "pai-rich-input-display--placeholder"
+        );
+        this.richDisplay.textContent =
+          this.options.placeholder;
+        return;
+      }
+
+      this.richDisplay.classList.remove(
+        "pai-rich-input-display--placeholder"
+      );
+
+      const result =
+        this.parse();
+
+      this.richDisplay.innerHTML =
+        result.valid
+          ? result.display
+          : rawTextToRichHTML(
+              raw,
+              this.options.variable
+            );
+    }
+
     updatePreview() {
+      this.updateRichDisplay();
       if (!this.preview) return;
       const result = this.parse();
 
@@ -797,6 +874,7 @@ v2 重點：
       this.closeExponentPopup();
       this.closeFractionPopup();
       if (this.input) this.input.value = "";
+      this.updateRichDisplay();
       this.updatePreview();
     }
 
@@ -818,6 +896,7 @@ v2 重點：
     setValue(value) {
       if (!this.input) return;
       this.input.value = String(value ?? "");
+      this.updateRichDisplay();
       this.updatePreview();
     }
 
@@ -834,6 +913,7 @@ v2 重點：
       this.mount.innerHTML = "";
       this.root = null;
       this.input = null;
+      this.richDisplay = null;
       this.exponentButton = null;
       this.fractionButton = null;
       this.preview = null;
@@ -846,6 +926,7 @@ v2 重點：
     parsePolynomial,
     normalizeTerms,
     termsToHTML,
+    rawTextToRichHTML,
     fraction,
     sameFraction,
     coefficientToFraction
