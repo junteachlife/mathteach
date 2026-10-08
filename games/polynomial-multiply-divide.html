@@ -26,7 +26,7 @@
 
   <link
     rel="stylesheet"
-    href="../css/polynomial-input.css?v=2"
+    href="../css/polynomial-input.css?v=3"
   >
 
   <style>
@@ -2892,7 +2892,7 @@ min-height: 62px;
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
 <script src="../js/expression-input.js?v=5"></script>
-<script src="../js/polynomial-input.js?v=2"></script>
+<script src="../js/polynomial-input.js?v=3"></script>
 
 <script type="module">
 
@@ -2966,6 +2966,9 @@ let answerInput =
   null;
 
 let freePolynomialInput =
+  null;
+
+let monomialSharedInput =
   null;
 
 let divisionQuotientInput =
@@ -8137,9 +8140,9 @@ function renderMonomialAnswer(
   question
 ) {
 
-  const fractionExpected =
-    question.coefficient.denominator !==
-    1;
+  monomialSharedInput?.destroy?.();
+  monomialSharedInput =
+    null;
 
 
   $("answer-panel")
@@ -8153,160 +8156,67 @@ function renderMonomialAnswer(
 
       <p class="answer-help">
 
-        ${
-          fractionExpected
-
-            ? "本題係數答案為分數，請填寫最簡分數。"
-
-            : "本題係數答案為整數。"
-        }
-
-        <br>
-
-        次方請填在 x 的右上角；
-        一次方最後顯示成 x，不寫 1。
+        直接輸入完整單項式。<br>
+        需要次方時，把游標放在 x 後面按「次方」；
+        若係數是分數，可按「分數」，分子在上、分母在下，並請化成最簡分數。
 
       </p>
 
-      <div class="monomial-editor">
-
-        <div class="mono-sign-wrap">
-
-          <span class="mono-label">
-            正負號
-          </span>
-
-          <select id="mono-sign">
-
-            <option value="1">
-              ＋
-            </option>
-
-            <option value="-1">
-              －
-            </option>
-
-          </select>
-
-        </div>
-
-        <div class="mono-coefficient-wrap">
-
-          <span class="mono-label">
-            係數
-          </span>
-
-          ${
-            fractionExpected
-
-              ? `
-
-                <div class="fraction-coefficient-input">
-
-                  <input
-                    id="mono-num"
-                    type="text"
-                    inputmode="numeric"
-                    autocomplete="off"
-                    placeholder="分子"
-                  >
-
-                  <input
-                    id="mono-den"
-                    type="text"
-                    inputmode="numeric"
-                    autocomplete="off"
-                    placeholder="分母"
-                  >
-
-                </div>
-              `
-
-              : `
-
-                <input
-                  id="mono-int"
-                  class="integer-coefficient-input"
-                  type="text"
-                  inputmode="numeric"
-                  autocomplete="off"
-                  placeholder="係數"
-                >
-              `
-          }
-
-        </div>
-
-        <div class="monomial-x-power">
-
-          <span class="monomial-x">
-            x
-          </span>
-
-          <span class="exponent-caption">
-            次方
-          </span>
-
-          <input
-            id="mono-exp"
-            class="exponent-input"
-            type="text"
-            inputmode="numeric"
-            autocomplete="off"
-            placeholder="次方"
-          >
-
-        </div>
-
-      </div>
-
-      <div
-        id="answer-preview"
-        class="answer-preview"
-      >
-        目前尚未完成答案。
-      </div>
+      <div id="monomial-shared-mount"></div>
     `;
 
 
-  [
-    "mono-sign",
-    "mono-int",
-    "mono-num",
-    "mono-den",
-    "mono-exp"
-  ]
-    .forEach(
-      id => {
+  if (
+    typeof window.PolynomialAnswerInput !==
+    "function"
+  ) {
 
-        $(id)
-          ?.addEventListener(
-            "input",
-            updateMonomialPreview
-          );
+    $("feedback").className =
+      "feedback warning";
+
+    $("feedback").textContent =
+      "PolynomialAnswerInput v3 共用元件沒有正常載入。";
+
+    return;
+  }
 
 
-        $(id)
-          ?.addEventListener(
-            "change",
-            updateMonomialPreview
-          );
-      }
-    );
+  monomialSharedInput =
+    new window.PolynomialAnswerInput({
 
+      mountId:
+        "monomial-shared-mount",
 
-  setTimeout(
-    () => {
+      variable:
+        "x",
 
-      (
-        $("mono-int") ||
-        $("mono-num")
-      )
-        ?.focus();
+      maxExponent:
+        9,
 
-    },
-    0
-  );
+      allowBareExponent:
+        true,
+
+      coefficientMode:
+        "rational",
+
+      requireSimplifiedFraction:
+        true,
+
+      placeholder:
+        "例如：−3/2x²",
+
+      primary:
+        "#7b1fa2",
+
+      primaryDark:
+        "#4a148c",
+
+      primaryLight:
+        "#f3e5f5",
+
+      primaryBorder:
+        "#ce93d8"
+    });
 }
 
 
@@ -8315,6 +8225,7 @@ function renderMonomialAnswer(
 ExpressionInput
 ==================================================
 */
+
 
 function expressionOptions(
   mountId
@@ -8917,7 +8828,7 @@ function updateDivisionPreview() {
 ==================================================
 除法答案
 
-v2：商式改用 PolynomialAnswerInput rational 模式。
+v3：商式使用 PolynomialAnswerInput rational 模式。
 學生可以直接輸入整數係數，也可以按「分數」輸入
 分子在上、分母在下的分數係數。
 ==================================================
@@ -8997,7 +8908,7 @@ function renderDivisionAnswer(
       "feedback warning";
 
     $("feedback").textContent =
-      "PolynomialAnswerInput v2 共用元件沒有正常載入。";
+      "PolynomialAnswerInput v3 共用元件沒有正常載入。";
 
     return;
   }
@@ -9025,7 +8936,7 @@ function renderDivisionAnswer(
         true,
 
       placeholder:
-        "例如：3/2x²－x＋5",
+        "例如：分數係數 x²－x＋5",
 
       primary:
         "#7b1fa2",
@@ -9070,9 +8981,14 @@ function renderAnswer(
   question
 ) {
 
+  monomialSharedInput?.destroy?.();
+
   freePolynomialInput?.destroy?.();
 
   divisionQuotientInput?.destroy?.();
+
+  monomialSharedInput =
+    null;
 
   freePolynomialInput =
     null;
@@ -9133,26 +9049,8 @@ function renderAnswer(
 
 function readMonomialAnswer() {
 
-  const sign =
-    Number(
-      $("mono-sign")
-        ?.value ??
-      1
-    );
-
-
-  const exponentRaw =
-    $("mono-exp")
-      ?.value
-      .trim() ??
-    "";
-
-
   if (
-    !/^\d+$/
-      .test(
-        exponentRaw
-      )
+    !monomialSharedInput
   ) {
 
     return {
@@ -9160,144 +9058,64 @@ function readMonomialAnswer() {
       valid: false,
 
       message:
-        "請輸入完整次方。"
+        "單項式輸入元件尚未準備完成。"
     };
   }
 
 
-  let coefficient;
+  const result =
+    monomialSharedInput.validate();
 
 
   if (
-    $("mono-int")
+    !result.valid
   ) {
 
-    const raw =
-      $("mono-int")
-        .value
-        .trim();
+    return {
 
+      valid: false,
 
-    if (
-      !/^\d+$/
-        .test(
-          raw
-        )
-    ) {
-
-      return {
-
-        valid: false,
-
-        message:
-          "請輸入整數係數。"
-      };
-    }
-
-
-    coefficient =
-      F(
-        sign *
-        Number(
-          raw
-        )
-      );
-
-  } else {
-
-    const numeratorRaw =
-      $("mono-num")
-        ?.value
-        .trim() ??
-      "";
-
-
-    const denominatorRaw =
-      $("mono-den")
-        ?.value
-        .trim() ??
-      "";
-
-
-    if (
-      !/^\d+$/
-        .test(
-          numeratorRaw
-        ) ||
-
-      !/^\d+$/
-        .test(
-          denominatorRaw
-        )
-    ) {
-
-      return {
-
-        valid: false,
-
-        message:
-          "請填寫完整的分子與分母。"
-      };
-    }
-
-
-    const numerator =
-      Number(
-        numeratorRaw
-      );
-
-
-    const denominator =
-      Number(
-        denominatorRaw
-      );
-
-
-    if (
-      denominator ===
-      0
-    ) {
-
-      return {
-
-        valid: false,
-
-        message:
-          "分母不可為 0。"
-      };
-    }
-
-
-    if (
-      gcd(
-        numerator,
-        denominator
-      ) !==
-      1
-    ) {
-
-      return {
-
-        valid: false,
-
-        message:
-          "係數還不是最簡分數，請先約分。"
-      };
-    }
-
-
-    coefficient =
-      F(
-        sign *
-        numerator,
-        denominator
-      );
+      message:
+        result.message ||
+        "請將單項式答案輸入完整。"
+    };
   }
 
 
-  const exponent =
-    Number(
-      exponentRaw
+  const terms =
+    result.value ||
+    [];
+
+
+  if (
+    terms.length !==
+    1
+  ) {
+
+    return {
+
+      valid: false,
+
+      message:
+        "本題答案應為一個單項式，請不要輸入兩個以上的項。"
+    };
+  }
+
+
+  const term =
+    terms[
+      0
+    ];
+
+
+  const coefficient =
+    F(
+
+      term.coefficient?.numerator ??
+      term.coefficient,
+
+      term.coefficient?.denominator ??
+      1
     );
 
 
@@ -9309,13 +9127,19 @@ function readMonomialAnswer() {
 
       coefficient,
 
-      exponent
+      exponent:
+        Number(
+          term.exponent
+        )
     },
 
     display:
+      result.display ||
       monomialHTML(
         coefficient,
-        exponent
+        Number(
+          term.exponent
+        )
       )
   };
 }
@@ -9326,6 +9150,7 @@ function readMonomialAnswer() {
 讀取答案
 ==================================================
 */
+
 
 function readAnswer(
   question
@@ -10010,6 +9835,13 @@ function submitAnswer() {
     true;
 
 
+  monomialSharedInput
+    ?.setDisabled
+    ?.(
+      true
+    );
+
+
   answerInput
     ?.setDisabled
     ?.(
@@ -10519,6 +10351,10 @@ function startGame(
   records = [];
 
   answered = false;
+
+  monomialSharedInput?.destroy?.();
+
+  monomialSharedInput = null;
 
   freePolynomialInput?.destroy?.();
 
