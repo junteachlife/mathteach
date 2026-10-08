@@ -12,6 +12,7 @@
 >
 
 <link rel="stylesheet" href="../css/scratchpad.css">
+  <link rel="stylesheet" href="../css/polynomial-input.css?v=1">
 <link rel="stylesheet" href="../css/expression-input.css?v=5">
 
 <style>
@@ -1500,6 +1501,8 @@ select{
 <script src="../js/sound-manager.js?v=1"></script>
 <script src="../js/expression-input.js?v=5"></script>
 
+<script src="../js/polynomial-input.js?v=1"></script>
+
 <script type="module">
 
 import {
@@ -1568,8 +1571,8 @@ let answered =
 let selectedChoice =
   null;
 
-let answerInput =
-  null;
+let answerInput = null;
+    let freePolynomialInput = null;
 
 let startTime =
   0;
@@ -4391,304 +4394,47 @@ function startTimer() {
 ^ 代表次方，例如 x^2 代表 x²
 ==================================================
 */
-function normalizePolynomialTypedText(raw) {
+/* 多項式自由輸入已改由 ../js/polynomial-input.js 共用元件處理。 */
 
-  const superscriptMap = {
-    "⁰":"0","¹":"1","²":"2","³":"3","⁴":"4",
-    "⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"
-  };
+    function renderFreePolynomialAnswer(question) {
+  freePolynomialInput?.destroy();
+  freePolynomialInput = null;
 
-  /*
-  重要：一定要先把真正的上標字元轉成 ^n，
-  再做 NFKC。否則 Android / Chrome 可能會先把 ² 轉成普通 2，
-  造成 x² 被誤讀成 x2。
-  */
-  let text = String(raw ?? "")
-    .replace(/x([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/gi, (_, digits) =>
-      "x^" + [...digits].map(ch => superscriptMap[ch] || ch).join("")
-    )
-    .normalize("NFKC")
-    .replace(/[ＸｘX]/g, "x")
-    .replace(/[−－–—]/g, "-")
-    .replace(/[＋﹢]/g, "+")
-    .replace(/[＾]/g, "^")
-    .replace(/[×＊]/g, "*")
-    .replace(/\s+/g, "");
+  const panel = $("answer-panel");
 
-  return text;
-}
-
-function parseTypedPolynomial(raw) {
-
-  const source = normalizePolynomialTypedText(raw);
-
-  if (!source) {
-    return { valid:false, incomplete:true, message:"目前尚未輸入答案。" };
-  }
-
-  if (/[^0-9x+\-^*.]/i.test(source)) {
-    return { valid:false, message:"目前有無法辨識的字元，請確認英文字母 x 與運算符號。" };
-  }
-
-  if (source.includes("*")) {
-    return { valid:false, message:"答案請直接寫成多項式，不需要輸入乘號。" };
-  }
-
-  const prepared = /^[+-]/.test(source) ? source : `+${source}`;
-  const chunks = prepared.match(/[+-][^+-]+/g) || [];
-
-  if (!chunks.length || chunks.join("") !== prepared) {
-    return { valid:false, message:"多項式格式還沒有完成。" };
-  }
-
-  const terms = [];
-
-  for (const chunk of chunks) {
-    const sign = chunk[0] === "-" ? -1 : 1;
-    const body = chunk.slice(1);
-
-    if (!body) {
-      return { valid:false, incomplete:true, message:"有一項尚未輸入完成。" };
-    }
-
-    if (body.includes("x")) {
-      /*
-      與 1-1 同規則：
-      6x^2、6x² 都會先正規化成 6x^2；
-      同時容許舊資料中的 6x2 形式，避免既有輸入失效。
-      */
-      const match = body.match(/^(\d*)x(?:(?:\^(\d+))|(\d+))?$/i);
-
-      if (!match) {
-        return { valid:false, message:`無法辨識「${body}」，請使用例如 6x^2、-3x、5 的格式。` };
-      }
-
-      const coefficient = match[1] === "" ? 1 : Number(match[1]);
-      const exponentRaw = match[2] ?? match[3];
-      const exponent = exponentRaw == null ? 1 : Number(exponentRaw);
-
-      if (!Number.isInteger(exponent) || exponent < 0 || exponent > 9) {
-        return { valid:false, message:"次方請輸入 0～9 的整數。" };
-      }
-
-      terms.push({ exponent, coefficient:sign * coefficient });
-
-    } else {
-
-      if (!/^\d+$/.test(body)) {
-        return { valid:false, message:`無法辨識「${body}」。` };
-      }
-
-      terms.push({ exponent:0, coefficient:sign * Number(body) });
-    }
-  }
-
-  const normalized = normalize(terms);
-
-  return {
-    valid:true,
-    value:normalized,
-    display:polynomialHTML(normalized),
-    normalizedText:source
-  };
-}
-
-    function syncPolynomialHiddenValue() {
-      const input = $("polynomial-free-input");
-      const hidden = $("polynomial-free-hidden");
-      const value = input?.value ?? "";
-      if (hidden) hidden.value = value;
-      return value;
-    }
-
-    function updateTypedPolynomialPreview() {
-      const preview = $("polynomial-system-preview");
-      if (!preview) return;
-      const result = parseTypedPolynomial(syncPolynomialHiddenValue());
-      preview.classList.remove("is-valid","is-incomplete","is-invalid");
-      if (result.valid) {
-        preview.classList.add("is-valid");
-        preview.innerHTML = `系統判斷目前填入的答案：<strong>${result.display}</strong>`;
-      } else if (result.incomplete) {
-        preview.classList.add("is-incomplete");
-        preview.textContent = `系統判斷：${result.message}`;
-      } else {
-        preview.classList.add("is-invalid");
-        preview.textContent = `系統判斷：${result.message}`;
-      }
-    }
-
-    const SUPERSCRIPT_DIGITS = {
-      "0":"⁰","1":"¹","2":"²","3":"³","4":"⁴",
-      "5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"
-    };
-
-    let exponentInsertPosition = null;
-    let exponentPopup = null;
-
-    function closeExponentPopup({ restoreFocus = false } = {}) {
-      const mainInput = $("polynomial-free-input");
-      exponentPopup?.remove();
-      exponentPopup = null;
-
-      if (restoreFocus && mainInput) {
-        mainInput.focus({ preventScroll:true });
-        const position = Math.min(
-          exponentInsertPosition ?? mainInput.value.length,
-          mainInput.value.length
-        );
-        mainInput.setSelectionRange(position, position);
-      }
-
-      exponentInsertPosition = null;
-    }
-
-    function caretVisualPosition(input, caretIndex) {
-      const rect = input.getBoundingClientRect();
-      const style = getComputedStyle(input);
-      const canvas = caretVisualPosition.canvas ||
-        (caretVisualPosition.canvas = document.createElement("canvas"));
-      const context = canvas.getContext("2d");
-
-      context.font = [
-        style.fontStyle,
-        style.fontVariant,
-        style.fontWeight,
-        style.fontSize,
-        style.fontFamily
-      ].filter(Boolean).join(" ");
-
-      const before = input.value.slice(0, caretIndex);
-      const width = context.measureText(before).width;
-      const paddingLeft = parseFloat(style.paddingLeft) || 0;
-
-      return {
-        left: rect.left + paddingLeft + width - input.scrollLeft,
-        top: rect.top + Math.max(2, rect.height * .08),
-        rect
-      };
-    }
-
-    function insertSuperscriptDigit(digit) {
-      const input = $("polynomial-free-input");
-      if (!input || exponentInsertPosition == null) return;
-
-      const superscript = SUPERSCRIPT_DIGITS[digit];
-      if (!superscript) return;
-
-      const position = exponentInsertPosition;
-      const value = input.value;
-      input.value = value.slice(0, position) + superscript + value.slice(position);
-
-      closeExponentPopup();
-
-      const nextPosition = position + superscript.length;
-      input.focus({ preventScroll:true });
-      input.setSelectionRange(nextPosition, nextPosition);
-      input.dispatchEvent(new Event("input", { bubbles:true }));
-    }
-
-    function openExponentPopup() {
-      const input = $("polynomial-free-input");
-      if (!input || input.disabled) return;
-
-      input.focus({ preventScroll:true });
-
-      const start = input.selectionStart ?? input.value.length;
-      const end = input.selectionEnd ?? start;
-
-      if (start !== end || start <= 0 || !/[xXＸｘ]/.test(input.value.charAt(start - 1))) {
-        const preview = $("polynomial-system-preview");
-        if (preview) {
-          preview.classList.remove("is-valid","is-incomplete");
-          preview.classList.add("is-invalid");
-          preview.textContent = "系統判斷：請先把游標放在 x 後面，再按「次方」。";
-        }
-        return;
-      }
-
-      closeExponentPopup();
-      exponentInsertPosition = start;
-
-      const position = caretVisualPosition(input, start);
-      const popup = document.createElement("input");
-      popup.id = "exponent-floating-input";
-      popup.className = "exponent-floating-input";
-      popup.type = "text";
-      popup.inputMode = "numeric";
-      popup.autocomplete = "off";
-      popup.maxLength = 1;
-      popup.setAttribute("aria-label", "輸入次方");
-      popup.placeholder = "n";
-
-      const popupWidth = 42;
-      const left = Math.min(
-        Math.max(position.left - 4, position.rect.left + 8),
-        position.rect.right - popupWidth - 8
-      );
-
-      popup.style.left = `${left}px`;
-      popup.style.top = `${position.top}px`;
-
-      document.body.appendChild(popup);
-      exponentPopup = popup;
-
-      popup.addEventListener("input", () => {
-        const digit = (popup.value.match(/[0-9]/) || [""])[0];
-        if (!digit) {
-          popup.value = "";
-          return;
-        }
-        insertSuperscriptDigit(digit);
-      });
-
-      popup.addEventListener("keydown", event => {
-        if (["Escape","ArrowRight","Tab","Enter"].includes(event.key)) {
-          event.preventDefault();
-          closeExponentPopup({ restoreFocus:true });
-        }
-      });
-
-      popup.addEventListener("blur", () => {
-        setTimeout(() => {
-          if (exponentPopup === popup) {
-            closeExponentPopup();
-          }
-        }, 120);
-      });
-
-      requestAnimationFrame(() => popup.focus({ preventScroll:true }));
-    }
-
-
-
-
-function renderFreePolynomialAnswer(question) {
-  const panel=$("answer-panel");
-  panel.innerHTML=`
+  panel.innerHTML = `
     <div class="answer-title">${question.label}</div>
-    <div class="free-polynomial-shell">
-      <div class="free-polynomial-input-row">
-        <div class="free-polynomial-main-wrap">
-          <input id="polynomial-free-input" class="free-polynomial-input" type="text" inputmode="text" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="例如：6x²－3x＋5" aria-label="多項式答案">
-          <input id="polynomial-free-hidden" type="hidden" value="">
-        </div>
-        <button id="exponent-insert-button" class="exponent-insert-button" type="button" title="先把游標放在 x 後面；按下後會在 x 的右上方出現次方輸入位置"><span class="expo-icon">xⁿ</span> 次方</button>
-      </div>
-      <p class="free-polynomial-help">可直接輸入完整多項式。需要次方時，把游標放在 x 後面按「次方」，x 的右上方會出現小型次方輸入格；輸入 2、3…後會自動寫成 x²、x³，並回到主答案框繼續輸入。<strong>^ 也代表次方</strong>，例如 <strong>x^2</strong> 代表 x²、<strong>x^3</strong> 代表 x³。系統也會自動辨識 X、Ｘ、ｘ與常見全形符號。</p>
-      <div id="polynomial-system-preview" class="polynomial-system-preview is-incomplete">系統判斷：目前尚未輸入答案。</div>
-    </div>`;
-  const input=$("polynomial-free-input");
-  input?.addEventListener("input",updateTypedPolynomialPreview);
-  input?.addEventListener("blur",updateTypedPolynomialPreview);
-    input?.addEventListener("paste",()=>setTimeout(updateTypedPolynomialPreview,0));
-  $("exponent-insert-button")?.addEventListener("click",openExponentPopup);
-  setTimeout(()=>input?.focus(),0);
+    <div id="polynomial-free-mount"></div>
+  `;
+
+  if (typeof window.PolynomialAnswerInput !== "function") {
+    $("feedback").className = "feedback warning";
+    $("feedback").textContent = "PolynomialAnswerInput 共用元件沒有正常載入。";
+    return;
+  }
+
+  freePolynomialInput =
+    new window.PolynomialAnswerInput({
+      mountId: "polynomial-free-mount",
+      variable: "x",
+      maxExponent: 9,
+      allowBareExponent: true,
+      placeholder: "例如：6x²－3x＋5",
+      primary: "#00897b",
+      primaryDark: "#00695c",
+      primaryLight: "#e0f2f1",
+      primaryBorder: "#80cbc4"
+    });
 }
+
 
 function renderAnswer(
   question
 ) {
+
+  freePolynomialInput?.destroy();
+  freePolynomialInput =
+    null;
 
   selectedChoice =
     null;
@@ -5056,12 +4802,23 @@ function readAnswer(
   ) {
 
     if (!question.fraction) {
-      const result = parseTypedPolynomial(syncPolynomialHiddenValue());
+
+      if (!freePolynomialInput) {
+        return {
+          valid:false,
+          message:"多項式輸入元件尚未準備完成。"
+        };
+      }
+
+      const result =
+        freePolynomialInput.validate();
 
       if (!result.valid) {
         return {
           valid:false,
-          message:result.message || "請將多項式答案輸入完整。"
+          message:
+            result.message ||
+            "請將多項式答案輸入完整。"
         };
       }
 
@@ -5410,11 +5167,7 @@ function submitAnswer() {
     ?.setDisabled(
       true
     );
-
-  const exponentInsertButton = $("exponent-insert-button");
-  if (exponentInsertButton) {
-    exponentInsertButton.disabled = true;
-  }
+  freePolynomialInput?.setDisabled(true);
 
   const isCorrect =
     checkCorrect(
