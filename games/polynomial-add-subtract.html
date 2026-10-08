@@ -4589,37 +4589,96 @@ function insertExponentMarker() {
   updateTypedPolynomialPreview();
 }
 
+let exponentInputGuard = {
+  digit: "",
+  until: 0
+};
+
+function armExponentDuplicateGuard(digit) {
+  exponentInputGuard = {
+    digit: String(digit || ""),
+    until: performance.now() + 180
+  };
+}
+
+function shouldBlockDuplicateExponentDigit(event) {
+  if (
+    event.inputType !== "insertText" ||
+    !/^[0-9]$/.test(event.data || "")
+  ) {
+    return false;
+  }
+
+  if (
+    exponentInputGuard.digit === event.data &&
+    performance.now() <= exponentInputGuard.until
+  ) {
+    exponentInputGuard = {
+      digit: "",
+      until: 0
+    };
+    return true;
+  }
+
+  return false;
+}
+
 function finishExponentInput(sup, digit) {
   if (!sup) return;
+
   sup.textContent = digit;
+
+  /*
+   * Android Chrome / Samsung Keyboard 有時會在我們完成次方並把游標
+   * 移回基準線後，再送出一次相同的 insertText。
+   * 先記住剛完成的次方數字，短時間內若收到第二次相同輸入就擋掉。
+   */
+  armExponentDuplicateGuard(digit);
+
   placeCaretOnBaselineAfter(sup);
   updateTypedPolynomialPreview();
 }
 
 function handlePolynomialEditorBeforeInput(event) {
   const sup = exponentAtCaret();
-  if (!sup) return;
-  if (event.inputType === "insertText" && /^[0-9]$/.test(event.data || "")) {
-    event.preventDefault();
-    finishExponentInput(sup, event.data);
+
+  if (sup) {
+    if (
+      event.inputType === "insertText" &&
+      /^[0-9]$/.test(event.data || "")
+    ) {
+      event.preventDefault();
+      finishExponentInput(sup, event.data);
+      return;
+    }
+
+    if (event.inputType === "insertText" && event.data) {
+      event.preventDefault();
+      placeCaretOnBaselineAfter(sup);
+      document.execCommand?.("insertText", false, event.data);
+      updateTypedPolynomialPreview();
+    }
+
     return;
   }
-  if (event.inputType === "insertText" && event.data) {
+
+  if (shouldBlockDuplicateExponentDigit(event)) {
     event.preventDefault();
-    placeCaretOnBaselineAfter(sup);
-    document.execCommand?.("insertText", false, event.data);
-    updateTypedPolynomialPreview();
   }
 }
 
 function handlePolynomialEditorKeydown(event) {
   const sup = exponentAtCaret();
   if (!sup) return;
+
+  /*
+   * 數字不要在 keydown 寫入。
+   * 只交給 beforeinput 處理一次，避免手機鍵盤同一個數字被寫入兩次。
+   */
   if (/^[0-9]$/.test(event.key)) {
-    event.preventDefault();
-    finishExponentInput(sup, event.key);
     return;
   }
+
   if (["ArrowRight","Tab"," ","Enter","Escape"].includes(event.key)) {
     event.preventDefault();
     placeCaretOnBaselineAfter(sup);
