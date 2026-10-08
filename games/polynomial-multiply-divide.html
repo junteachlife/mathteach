@@ -24,6 +24,11 @@
     href="../css/expression-input.css?v=5"
   >
 
+  <link
+    rel="stylesheet"
+    href="../css/polynomial-input.css?v=1"
+  >
+
   <style>
 
     * {
@@ -94,40 +99,6 @@
 
     #commonHeaderMount {
       margin-bottom: 14px;
-    }
-
-    /*
-    ==================================================
-    返回目前學期
-    ==================================================
-    */
-
-    .semester-return-row {
-      display: flex;
-      justify-content: flex-end;
-      margin: -2px 0 14px;
-    }
-
-    .semester-return-button {
-      min-height: 44px;
-      padding: 9px 16px;
-      border: 2px solid #7b1fa2;
-      border-radius: 12px;
-      background: #fff;
-      color: #6a1b9a;
-      font-size: 15px;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 4px 0 #e1bee7;
-    }
-
-    .semester-return-button:hover {
-      background: #f3e5f5;
-    }
-
-    .semester-return-button:active {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 #e1bee7;
     }
 
     .game-card {
@@ -443,7 +414,7 @@
       min-height: 46px;
 
       margin:
-        14px 0 4px;
+        4px 0 12px;
     }
 
     #scratchpad-mobile-button {
@@ -554,7 +525,7 @@
 
       justify-content: center;
 
-      overflow-x: hidden;
+      overflow-x: auto;
 
       padding:
         14px 6px;
@@ -623,82 +594,6 @@
 
       line-height:
         1.75;
-    }
-
-    /*
-    ==================================================
-    多項式除法長題目
-    ==================================================
-    */
-
-    .math-expression.division-math {
-
-      width: 100%;
-
-      min-width: 0;
-
-      max-width: 100%;
-
-      flex-wrap: wrap;
-
-      justify-content: center;
-
-      white-space: normal;
-
-      gap:
-        .18em .24em;
-
-      font-size: .82em;
-
-      line-height: 1.6;
-    }
-
-    .math-expression.division-math
-    .question-segment {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      max-width: 100%;
-
-      white-space: nowrap;
-    }
-
-    .question-content.compact-question {
-
-      font-size:
-        clamp(
-          18px,
-          3.4vw,
-          32px
-        );
-    }
-
-    @media(
-      max-width:
-        760px
-    ) {
-
-      .math-expression.division-math {
-
-        font-size: .76em;
-
-        gap:
-          .16em .20em;
-      }
-
-      .question-content.compact-question {
-
-        font-size:
-          clamp(
-            17px,
-            5vw,
-            27px
-          );
-      }
     }
 
     .question-segment {
@@ -1108,8 +1003,7 @@
       padding: 13px;
 
       max-width: 760px;
-
-      min-height: 62px;
+min-height: 62px;
 
       display: flex;
 
@@ -1921,7 +1815,7 @@
       display: grid;
 
       grid-template-columns:
-        minmax(150px, max-content)
+        88px
         auto;
 
       align-items: end;
@@ -1946,7 +1840,7 @@
       display: grid;
 
       grid-template-columns:
-        minmax(150px, max-content)
+        88px
         auto;
 
       align-items: start;
@@ -2107,8 +2001,7 @@
     .result-panel {
       text-align: center;
     }
-
-    .result-score {
+.result-score {
 
       margin:
         16px 0;
@@ -2228,17 +2121,6 @@
         padding: 8px;
       }
 
-      .semester-return-row {
-        justify-content: stretch;
-        margin-bottom: 12px;
-      }
-
-      .semester-return-button {
-        width: 100%;
-        min-height: 46px;
-        font-size: 15px;
-      }
-
       .screen {
 
         padding:
@@ -2309,7 +2191,7 @@
       .ld-main {
 
         grid-template-columns:
-          minmax(125px, max-content)
+          78px
           auto;
       }
 
@@ -2355,6 +2237,234 @@
 
     }
 
+
+    /* ==================================================
+       2026-10 統一遊戲版面｜八上 1-3
+    ================================================== */
+
+    .game-card {
+      position: relative;
+    }
+
+    .game-card-return-row {
+      display: flex;
+      justify-content: flex-end;
+      padding: 12px 16px 0;
+      background: linear-gradient(180deg, var(--primary-light), #ffffff);
+    }
+
+    .game-card-return-row .semester-return-button {
+      width: auto;
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      background: #ffffff;
+      color: var(--primary-dark);
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: none;
+    }
+
+    .game-card-return-row .semester-return-button:hover {
+      background: var(--primary-light);
+    }
+
+    .game-card-return-row .semester-return-button:active {
+      transform: translateY(1px);
+    }
+
+    .quiz-topbar {
+      display: grid;
+      grid-template-columns: minmax(210px, 1fr) minmax(300px, 1.35fr) auto;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .quiz-context,
+    .quiz-stats {
+      display: grid;
+      gap: 8px;
+    }
+
+    .quiz-context {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quiz-stats {
+      grid-template-columns: repeat(3, minmax(86px, 1fr));
+    }
+
+    .quiz-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-actions .game-button {
+      min-width: 116px;
+      min-height: 46px;
+      padding: 10px 14px;
+    }
+
+    .question-card {
+      position: relative;
+      padding: 22px 18px 78px;
+      text-align: center;
+    }
+
+    .question-label {
+      text-align: center;
+    }
+
+    .question-content {
+      width: 100%;
+      overflow-x: hidden;
+      justify-content: center;
+      text-align: center;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
+    .question-content.wrap-left {
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    .question-content.wrap-left .math-expression {
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    .question-content .keep-together {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .math-expression.division-math {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      white-space: normal;
+      gap: .18em .24em;
+      font-size: .82em;
+      line-height: 1.6;
+    }
+
+    .math-expression.division-math .question-segment {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+      white-space: nowrap;
+    }
+
+    .question-content.wrap-left .math-expression.division-math {
+      justify-content: flex-start;
+    }
+
+    .question-content.compact-question {
+      font-size: clamp(18px, 3.4vw, 32px);
+    }
+
+    .scratchpad-row {
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
+      display: flex;
+      justify-content: flex-end;
+      width: auto;
+      min-height: 44px;
+      margin: 0;
+      z-index: 2;
+    }
+
+    #scratchpad-mobile-button {
+      display: flex;
+      justify-content: flex-end;
+      width: auto;
+    }
+
+    #scratchpad-mobile-button #scratchpadOpenButton,
+    #scratchpad-mobile-button .scratchpad-open-button {
+      position: static !important;
+      inset: auto !important;
+      transform: none !important;
+      margin: 0 !important;
+      z-index: auto !important;
+    }
+
+    .answer-submit-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .shared-polynomial-note {
+      margin: 0 0 12px;
+      color: #64748b;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 900px) {
+      .quiz-topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .quiz-actions {
+        justify-content: flex-end;
+      }
+
+      .quiz-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .game-card-return-row {
+        padding: 10px 10px 0;
+      }
+
+      .game-card-return-row .semester-return-button {
+        width: auto;
+        min-height: 40px;
+        font-size: 14px;
+      }
+
+      .quiz-context,
+      .quiz-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .quiz-stats .timer-box {
+        grid-column: 1 / -1;
+      }
+
+      .quiz-actions {
+        justify-content: flex-end;
+      }
+
+      .math-expression.division-math {
+        font-size: .76em;
+        gap: .16em .20em;
+      }
+
+      .question-content.compact-question {
+        font-size: clamp(17px, 5vw, 27px);
+      }
+    }
+
   </style>
 
 </head>
@@ -2365,19 +2475,19 @@
 
   <div id="commonHeaderMount"></div>
 
-  <div class="semester-return-row">
-
-    <button
-      id="semester-return-button"
-      class="semester-return-button"
-      type="button"
-    >
-      ↩️ 重回八年級上學期
-    </button>
-
-  </div>
-
   <main class="game-card">
+
+    <div class="game-card-return-row">
+
+      <button
+        id="semester-return-button"
+        class="semester-return-button"
+        type="button"
+      >
+        ↩️ 重回八年級上學期
+      </button>
+
+    </div>
 
     <header class="game-header">
 
@@ -2489,12 +2599,12 @@
           </h2>
 
           <p>
-             以二次式 ÷ 一次式為主，加入 1 題三次式 ÷ 二次式與 1 題四次式 ÷ 二次式，並包含缺項補 0、整除與商式、餘式。
+            以二次式 ÷ 一次式為主，加入 1 題三次式 ÷ 二次式與 1 題四次式 ÷ 二次式，並包含缺項補 0、整除與商式、餘式。
           </p>
 
           <div class="mode-example">
-             高次挑戰各 1 題，其餘回到二次式 ÷ 一次式；答錯時會顯示完整直式除法
-           </div>
+            高次挑戰各 1 題，其餘回到二次式 ÷ 一次式；答錯時會顯示完整直式除法
+          </div>
 
         </button>
 
@@ -2533,29 +2643,57 @@
 
       <div class="quiz-topbar">
 
-        <div class="status-box">
-          模式
-          <span id="mode-name" class="status-value">—</span>
+        <div class="quiz-context">
+
+          <div class="status-box">
+            模式
+            <span id="mode-name" class="status-value">—</span>
+          </div>
+
+          <div class="status-box">
+            進度
+            <span id="question-number" class="status-value">1 / 10</span>
+          </div>
+
         </div>
 
-        <div class="status-box">
-          進度
-          <span id="question-number" class="status-value">1 / 10</span>
+        <div class="quiz-stats">
+
+          <div class="status-box">
+            答對
+            <span id="correct-count" class="status-value">0</span>
+          </div>
+
+          <div class="status-box">
+            最高連擊
+            <span id="combo-count" class="status-value">0</span>
+          </div>
+
+          <div class="status-box timer-box">
+            ⏱️ 測驗時間
+            <span id="timer-display" class="status-value">00:00</span>
+          </div>
+
         </div>
 
-        <div class="status-box">
-          答對
-          <span id="correct-count" class="status-value">0</span>
-        </div>
+        <div class="quiz-actions">
 
-        <div class="status-box">
-          最高連擊
-          <span id="combo-count" class="status-value">0</span>
-        </div>
+          <button
+            id="restart-button"
+            class="game-button restart"
+            type="button"
+          >
+            🔄 重新測驗
+          </button>
 
-        <div class="status-box timer-box">
-          測驗時間
-          <span id="timer-display" class="status-value">00:00</span>
+          <button
+            id="mode-button"
+            class="game-button secondary"
+            type="button"
+          >
+            重選模式
+          </button>
+
         </div>
 
       </div>
@@ -2576,10 +2714,10 @@
           class="question-content"
         ></div>
 
-      </div>
+        <div class="scratchpad-row">
+          <div id="scratchpad-mobile-button"></div>
+        </div>
 
-      <div class="scratchpad-row">
-        <div id="scratchpad-mobile-button"></div>
       </div>
 
       <div
@@ -2587,7 +2725,7 @@
         class="answer-panel"
       ></div>
 
-      <div class="button-row">
+      <div class="answer-submit-row">
 
         <button
           id="submit-button"
@@ -2603,22 +2741,6 @@
           type="button"
         >
           下一題（Enter）
-        </button>
-
-        <button
-          id="restart-button"
-          class="game-button restart"
-          type="button"
-        >
-          🔄 重新測驗
-        </button>
-
-        <button
-          id="mode-button"
-          class="game-button secondary"
-          type="button"
-        >
-          選擇模式
         </button>
 
       </div>
@@ -2770,6 +2892,7 @@
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
 <script src="../js/expression-input.js?v=5"></script>
+<script src="../js/polynomial-input.js?v=1"></script>
 
 <script type="module">
 
@@ -2840,6 +2963,9 @@ let answered =
   false;
 
 let answerInput =
+  null;
+
+let freePolynomialInput =
   null;
 
 let divisionQuotientInput =
@@ -3131,7 +3257,7 @@ function addF(
   return F(
 
     a.numerator *
-    b.denominator +
+b.denominator +
 
     b.numerator *
     a.denominator,
@@ -4131,8 +4257,7 @@ function addConstantToPolynomial(
   polynomial,
   constant
 ) {
-
-  return addPolynomials(
+return addPolynomials(
 
     polynomial,
 
@@ -4472,13 +4597,8 @@ function divisionStepExplanationHTML(
 
                   </span>
 
-                  缺少的次方要用係數 0 補起來。
-                  例如四次式若缺三次項，
-                  要寫成
-                  <strong>0x³</strong>；
-                  缺二次項則寫
-                  <strong>0x²</strong>；
-                  缺一次項寫
+                  缺少的次方要用係數 0 補起來，
+                  例如缺一次項就寫成
                   <strong>0x</strong>。
                   <br><br>
                 `
@@ -5136,7 +5256,7 @@ function rawTermsHTML(
             term.coefficient.numerator
           ),
           term.coefficient.denominator
-        );
+);
 
 
       if (
@@ -5374,6 +5494,7 @@ function randomPrimitivePolynomial(
 
 
 
+
 /*
 ==================================================
 多項式除法｜次數控制工具
@@ -5387,22 +5508,9 @@ function randomPrimitivePolynomial(
 */
 
 const DIVISION_DEGREE_PAIRS = [
-
-  {
-    dividendDegree: 2,
-    divisorDegree: 1
-  },
-
-  {
-    dividendDegree: 3,
-    divisorDegree: 2
-  },
-
-  {
-    dividendDegree: 4,
-    divisorDegree: 2
-  }
-
+  { dividendDegree: 2, divisorDegree: 1 },
+  { dividendDegree: 3, divisorDegree: 2 },
+  { dividendDegree: 4, divisorDegree: 2 }
 ];
 
 
@@ -5419,185 +5527,76 @@ function randomPrimitivePolynomialOfDegree(
       1,
       Math.min(
         4,
-        Number(
-          degree
-        ) ||
-        1
+        Number(degree) || 1
       )
     );
 
-
   const upperTerms =
-
-    maxTerms ===
-    null
-
+    maxTerms === null
       ? safeDegree + 1
-
       : Math.min(
           safeDegree + 1,
-          Math.max(
-            2,
-            Number(
-              maxTerms
-            ) ||
-            2
-          )
+          Math.max(2, Number(maxTerms) || 2)
         );
-
 
   const lowerTerms =
     Math.min(
       upperTerms,
-      Math.max(
-        2,
-        Number(
-          minTerms
-        ) ||
-        2
-      )
+      Math.max(2, Number(minTerms) || 2)
     );
 
+  for (let attempt = 0; attempt < 800; attempt++) {
 
-  for (
-    let attempt =
-      0;
-
-    attempt <
-    800;
-
-    attempt++
-  ) {
-
-    const targetCount =
-      rand(
-        lowerTerms,
-        upperTerms
-      );
-
+    const targetCount = rand(lowerTerms, upperTerms);
 
     const requiredExponents =
-
-      safeDegree ===
-      1
-
-        ? [
-            1,
-            0
-          ]
-
-        : [
-            safeDegree,
-            0
-          ];
-
+      safeDegree === 1
+        ? [1, 0]
+        : [safeDegree, 0];
 
     const middleExponents =
       shuffle(
         Array.from(
-          {
-            length:
-              Math.max(
-                0,
-                safeDegree -
-                1
-              )
-          },
-
-          (
-            _,
-            i
-          ) =>
-            safeDegree -
-            1 -
-            i
+          { length: Math.max(0, safeDegree - 1) },
+          (_, i) => safeDegree - 1 - i
         )
       );
 
-
-    const exponents =
-      [
-        ...requiredExponents,
-        ...middleExponents
-          .slice(
-            0,
-            Math.max(
-              0,
-              targetCount -
-              requiredExponents.length
-            )
-          )
-      ];
-
+    const exponents = [
+      ...requiredExponents,
+      ...middleExponents.slice(
+        0,
+        Math.max(0, targetCount - requiredExponents.length)
+      )
+    ];
 
     const polynomial =
       normalizePolynomial(
-
         exponents.map(
           exponent => ({
-
             exponent,
-
-            coefficient:
-              F(
-                nonZeroRand(
-                  coefficientMin,
-                  coefficientMax
-                )
-              )
+            coefficient: F(
+              nonZeroRand(coefficientMin, coefficientMax)
+            )
           })
         )
       );
 
-
-    if (
-      degreeOf(
-        polynomial
-      ) !==
-      safeDegree
-    ) {
-
+    if (degreeOf(polynomial) !== safeDegree) {
       continue;
     }
 
-
-    if (
-      !isPrimitiveIntegerPolynomial(
-        polynomial
-      )
-    ) {
-
+    if (!isPrimitiveIntegerPolynomial(polynomial)) {
       continue;
     }
-
 
     return polynomial;
   }
 
-
-  return normalizePolynomial(
-    [
-
-      {
-        exponent:
-          safeDegree,
-
-        coefficient:
-          F(
-            1
-          )
-      },
-
-      {
-        exponent: 0,
-
-        coefficient:
-          F(
-            1
-          )
-      }
-    ]
-  );
+  return normalizePolynomial([
+    { exponent: safeDegree, coefficient: F(1) },
+    { exponent: 0, coefficient: F(1) }
+  ]);
 }
 
 
@@ -5606,51 +5605,27 @@ function hasMissingPolynomialTerm(
 ) {
 
   const normalized =
-    normalizePolynomial(
-      polynomial
-    );
-
+    normalizePolynomial(polynomial);
 
   const degree =
-    degreeOf(
-      normalized
-    );
-
+    degreeOf(normalized);
 
   if (
-    !Number.isFinite(
-      degree
-    ) ||
-    degree <=
-    1
+    !Number.isFinite(degree) ||
+    degree <= 1
   ) {
-
     return false;
   }
 
-
   for (
-    let exponent =
-      degree -
-      1;
-
-    exponent >=
-    1;
-
+    let exponent = degree - 1;
+    exponent >= 1;
     exponent--
   ) {
-
-    if (
-      !polynomialTermAtExponent(
-        normalized,
-        exponent
-      )
-    ) {
-
+    if (!polynomialTermAtExponent(normalized, exponent)) {
       return true;
     }
   }
-
 
   return false;
 }
@@ -5667,7 +5642,6 @@ function divisionDegreeText(
     3: "三次式",
     4: "四次式"
   };
-
 
   return (
     `${names[dividendDegree] || `${dividendDegree} 次式`}` +
@@ -5807,7 +5781,7 @@ function divisionQuestion(
       "division",
 
     html:
-      `<span class="math-expression">${html}</span>`,
+      `<span class="math-expression math-wrap division-math">${html}</span>`,
 
     dividend:
       normalizePolynomial(
@@ -6442,8 +6416,7 @@ function makeBinomialProduct() {
     [
 
       {
-
-        exponent: 1,
+exponent: 1,
 
         coefficient:
           F(
@@ -7080,100 +7053,59 @@ function generateExactDivision(
 ) {
 
   const selectedPair =
-
     options.dividendDegree &&
     options.divisorDegree
 
       ? {
           dividendDegree:
-            Number(
-              options.dividendDegree
-            ),
+            Number(options.dividendDegree),
 
           divisorDegree:
-            Number(
-              options.divisorDegree
-            )
+            Number(options.divisorDegree)
         }
 
-      : pick(
-          DIVISION_DEGREE_PAIRS
-        );
-
+      : pick(DIVISION_DEGREE_PAIRS);
 
   const dividendDegree =
     Math.max(
       2,
-      Math.min(
-        4,
-        selectedPair.dividendDegree
-      )
+      Math.min(4, selectedPair.dividendDegree)
     );
-
 
   const divisorDegree =
     Math.max(
       1,
-      Math.min(
-        3,
-        selectedPair.divisorDegree
-      )
+      Math.min(3, selectedPair.divisorDegree)
     );
 
-
   const quotientDegree =
-    dividendDegree -
-    divisorDegree;
+    dividendDegree - divisorDegree;
 
-
-  if (
-    quotientDegree <
-    1
-  ) {
-
+  if (quotientDegree < 1) {
     throw new Error(
       "多項式除法的被除式次數必須高於除式次數。"
     );
   }
 
-
-  for (
-    let attempt =
-      0;
-
-    attempt <
-    900;
-
-    attempt++
-  ) {
+  for (let attempt = 0; attempt < 900; attempt++) {
 
     const divisor =
       randomPrimitivePolynomialOfDegree(
         divisorDegree,
         2,
-        Math.min(
-          divisorDegree +
-          1,
-          4
-        ),
+        Math.min(divisorDegree + 1, 4),
         -4,
         4
       );
-
 
     const quotient =
       randomPrimitivePolynomialOfDegree(
         quotientDegree,
         2,
-        Math.min(
-          quotientDegree +
-          1,
-          4
-        ),
+        Math.min(quotientDegree + 1, 4),
         -4,
         4
       );
-
 
     const dividend =
       multiplyTwoPolynomials(
@@ -7181,116 +7113,46 @@ function generateExactDivision(
         quotient
       );
 
-
-    if (
-      degreeOf(
-        dividend
-      ) !==
-      dividendDegree
-    ) {
-
+    if (degreeOf(dividend) !== dividendDegree) {
       continue;
     }
 
-
-    if (
-      !isPrimitiveIntegerPolynomial(
-        dividend
-      )
-    ) {
-
+    if (!isPrimitiveIntegerPolynomial(dividend)) {
       continue;
     }
-
 
     return {
-
       dividend,
-
       divisor,
-
       quotient,
-
       dividendDegree,
-
       divisorDegree,
-
       quotientDegree
     };
   }
 
-
   const divisor =
-    normalizePolynomial(
-      [
-
-        {
-          exponent:
-            divisorDegree,
-
-          coefficient:
-            F(
-              1
-            )
-        },
-
-        {
-          exponent: 0,
-
-          coefficient:
-            F(
-              1
-            )
-        }
-      ]
-    );
-
+    normalizePolynomial([
+      { exponent: divisorDegree, coefficient: F(1) },
+      { exponent: 0, coefficient: F(1) }
+    ]);
 
   const quotient =
-    normalizePolynomial(
-      [
-
-        {
-          exponent:
-            quotientDegree,
-
-          coefficient:
-            F(
-              1
-            )
-        },
-
-        {
-          exponent: 0,
-
-          coefficient:
-            F(
-              -1
-            )
-        }
-      ]
-    );
-
+    normalizePolynomial([
+      { exponent: quotientDegree, coefficient: F(1) },
+      { exponent: 0, coefficient: F(-1) }
+    ]);
 
   return {
-
     divisor,
-
     quotient,
-
-    dividend:
-      multiplyTwoPolynomials(
-        divisor,
-        quotient
-      ),
-
+    dividend: multiplyTwoPolynomials(divisor, quotient),
     dividendDegree,
-
     divisorDegree,
-
     quotientDegree
   };
 }
+
 
 function makeExactDivisionQuestion(
   options =
@@ -7298,24 +7160,16 @@ function makeExactDivisionQuestion(
 ) {
 
   const data =
-    generateExactDivision(
-      options
-    );
-
+    generateExactDivision(options);
 
   const dividendDegree =
-    degreeOf(
-      data.dividend
-    );
-
+    degreeOf(data.dividend);
 
   return polynomialQuestion(
 
     `
       <span class="question-segment">
-        ${bracketPolynomial(
-          data.dividend
-        )}
+        ${bracketPolynomial(data.dividend)}
       </span>
 
       <span class="question-segment">
@@ -7323,58 +7177,41 @@ function makeExactDivisionQuestion(
       </span>
 
       <span class="question-segment">
-        ${bracketPolynomial(
-          data.divisor
-        )}
+        ${bracketPolynomial(data.divisor)}
       </span>
     `,
 
     data.quotient,
 
     [
-
       `
       先依降冪排列，並檢查有沒有缺項。
 
       <span class="explanation-math">
-
         被除式＝
         ${polynomialWithZerosHTML(
           data.dividend,
           dividendDegree
         )}
-
       </span>
 
       從最高次項一路檢查到常數項，
       缺少哪一個次方就補上對應的 0 項。
-      例如缺三次項要補
-      <strong>0x³</strong>，
-      缺二次項補
-      <strong>0x²</strong>，
-      缺一次項補
-      <strong>0x</strong>。
+      例如缺三次項要補 <strong>0x³</strong>，
+      缺二次項補 <strong>0x²</strong>，
+      缺一次項補 <strong>0x</strong>。
       `,
 
       `
       多項式直式除法每一輪都使用：
 
       <span class="explanation-math">
-
-        首項相除
-        →
-        寫入商式
-        →
-        乘回除式
-        →
-        相減
-
+        首項相除 → 寫入商式 → 乘回除式 → 相減
       </span>
       `,
 
       `
-      重複計算，
-      直到不能再除。
+      重複計算，直到不能再除。
       本題餘式為 0，因此可以整除。
       `,
 
@@ -7382,11 +7219,7 @@ function makeExactDivisionQuestion(
       商式：
 
       <span class="explanation-math">
-
-        ${polynomialHTML(
-          data.quotient
-        )}
-
+        ${polynomialHTML(data.quotient)}
       </span>
       `
     ],
@@ -7397,20 +7230,14 @@ function makeExactDivisionQuestion(
     )}`,
 
     {
-
-      wrap:
-        true,
-
-      mathClass:
-        "division-math",
+      wrap: true,
+      mathClass: "division-math",
 
       wrongDetail:
-
         divisionStepExplanationHTML(
           data.dividend,
           data.divisor
         ) +
-
         longDivisionHTML(
           data.dividend,
           data.divisor
@@ -7423,9 +7250,7 @@ function makeExactDivisionQuestion(
         "缺項不能只空著不管，例如 x²＋5 做直式時應視為 x²＋0x＋5；另外同次方一定要上下對齊。",
 
       summary:
-        `商式＝${polynomialHTML(
-          data.quotient
-        )}，餘式＝0`
+        `商式＝${polynomialHTML(data.quotient)}，餘式＝0`
     }
   );
 }
@@ -7437,265 +7262,159 @@ function makeDivisionWithRemainder(
 ) {
 
   const normalizedSettings =
-
-    typeof settings ===
-    "boolean"
-
-      ? {
-          missingTerm:
-            settings
-        }
-
-      : (
-          settings ||
-          {}
-        );
-
+    typeof settings === "boolean"
+      ? { missingTerm: settings }
+      : (settings || {});
 
   const missingTerm =
-    normalizedSettings.missingTerm ===
-    true;
-
+    normalizedSettings.missingTerm === true;
 
   const selectedPair =
-
     normalizedSettings.dividendDegree &&
     normalizedSettings.divisorDegree
 
       ? {
           dividendDegree:
-            Number(
-              normalizedSettings.dividendDegree
-            ),
+            Number(normalizedSettings.dividendDegree),
 
           divisorDegree:
-            Number(
-              normalizedSettings.divisorDegree
-            )
+            Number(normalizedSettings.divisorDegree)
         }
 
-      : pick(
-          DIVISION_DEGREE_PAIRS
-        );
-
+      : pick(DIVISION_DEGREE_PAIRS);
 
   const dividendDegree =
     Math.max(
       2,
-      Math.min(
-        4,
-        selectedPair.dividendDegree
-      )
+      Math.min(4, selectedPair.dividendDegree)
     );
-
 
   const divisorDegree =
     Math.max(
       1,
-      Math.min(
-        3,
-        selectedPair.divisorDegree
-      )
+      Math.min(3, selectedPair.divisorDegree)
     );
 
-
   const quotientDegree =
-    dividendDegree -
-    divisorDegree;
+    dividendDegree - divisorDegree;
 
-
-  if (
-    quotientDegree <
-    1
-  ) {
-
+  if (quotientDegree < 1) {
     throw new Error(
       "多項式除法的被除式次數必須高於除式次數。"
     );
   }
 
-
-  for (
-    let attempt =
-      0;
-
-    attempt <
-    1600;
-
-    attempt++
-  ) {
+  for (let attempt = 0; attempt < 1600; attempt++) {
 
     const divisor =
       randomPrimitivePolynomialOfDegree(
         divisorDegree,
         2,
-        Math.min(
-          divisorDegree +
-          1,
-          4
-        ),
+        Math.min(divisorDegree + 1, 4),
         -4,
         4
       );
-
 
     const quotient =
       randomPrimitivePolynomialOfDegree(
         quotientDegree,
         2,
-        Math.min(
-          quotientDegree +
-          1,
-          4
-        ),
+        Math.min(quotientDegree + 1, 4),
         -4,
         4
       );
 
-
     const remainder =
-      nonZeroRand(
-        -9,
-        9
-      );
-
+      nonZeroRand(-9, 9);
 
     const dividend =
       addConstantToPolynomial(
-
         multiplyTwoPolynomials(
           divisor,
           quotient
         ),
-
         remainder
       );
 
-
-    if (
-      degreeOf(
-        dividend
-      ) !==
-      dividendDegree
-    ) {
-
+    if (degreeOf(dividend) !== dividendDegree) {
       continue;
     }
-
 
     if (
       missingTerm &&
-      !hasMissingPolynomialTerm(
-        dividend
-      )
+      !hasMissingPolynomialTerm(dividend)
     ) {
-
       continue;
     }
 
-
     const dividendDegreeActual =
-      degreeOf(
-        dividend
-      );
-
+      degreeOf(dividend);
 
     return divisionQuestion(
 
       `
         <span class="question-segment">
-          ${bracketPolynomial(
-            dividend
-          )}
+          ${bracketPolynomial(dividend)}
         </span>
 
-        <span class="question-segment">
-          ÷
-        </span>
+        <span class="question-segment">÷</span>
 
         <span class="question-segment">
-          ${bracketPolynomial(
-            divisor
-          )}
+          ${bracketPolynomial(divisor)}
         </span>
       `,
 
       dividend,
-
       divisor,
-
       quotient,
-
       remainder,
 
       [
-
         `
-         先依降冪排列並把缺項補 0：
+        先依降冪排列並把缺項補 0：
 
-         <span class="explanation-math">
-
-           ${polynomialWithZerosHTML(
-             dividend,
-             dividendDegreeActual
+        <span class="explanation-math">
+          ${polynomialWithZerosHTML(
+            dividend,
+            dividendDegreeActual
           )}
-
-         </span>
+        </span>
         `,
 
         missingTerm
-
           ? `
-             本題被除式有缺項，
-             直式中必須把缺少的次方明確補成 0。
-             例如缺 x² 就寫
-             <strong>0x²</strong>，
-             缺 x 就寫
-             <strong>0x</strong>，
-             這樣每個同次方才會上下對齊。
+            本題被除式有缺項，
+            直式中必須把缺少的次方明確補成 0。
+            例如缺 x² 就寫 <strong>0x²</strong>，
+            缺 x 就寫 <strong>0x</strong>，
+            這樣每個同次方才會上下對齊。
           `
-
           : `
-             接著從最高次項開始做直式除法。
+            接著從最高次項開始做直式除法。
           `,
 
         `
         每一輪：
 
-         <span class="explanation-math">
-
-          首項相除
-          →
-          寫商
-          →
-          乘回
-          →
-          相減
-
-         </span>
+        <span class="explanation-math">
+          首項相除 → 寫商 → 乘回 → 相減
+        </span>
         `,
 
         `
-         當最後餘下的次數低於除式的次數，
-         就不能再除，這一部分就是餘式。
-         本題的餘式設定為常數，
-         因此仍符合「餘式次數低於除式次數」。
+        當最後餘下的次數低於除式的次數，
+        就不能再除，這一部分就是餘式。
+        本題的餘式設定為常數，
+        因此仍符合「餘式次數低於除式次數」。
         `,
 
         `
         因此：
 
-         <span class="explanation-math">
-
-          商式＝
-           ${polynomialHTML(
-             quotient
-          )}
-
-          ，餘式＝
-           ${remainder}
-
-         </span>
+        <span class="explanation-math">
+          商式＝${polynomialHTML(quotient)}，
+          餘式＝${remainder}
+        </span>
         `
       ],
 
@@ -7705,158 +7424,80 @@ function makeDivisionWithRemainder(
       )}`,
 
       {
+        method:
+          "先降冪排列並補齊缺項，再進行直式除法。由最高次項開始，重複「首項相除、寫商、乘回、相減」。",
 
-         method:
-           "先降冪排列並補齊缺項，再進行直式除法。由最高次項開始，重複「首項相除、寫商、乘回、相減」。",
+        pitfall:
+          missingTerm
+            ? "被除式有缺項時一定要補 0，否則後面的項會對錯欄位；另外乘回後做的是相減，要特別注意正負號。"
+            : "高次多項式直式除法最重要的是同次方上下對齊；乘回後做的是相減，正負號不能漏掉。",
 
-         pitfall:
-           missingTerm
-             ? "被除式有缺項時一定要補 0，否則後面的項會對錯欄位；另外乘回後做的是相減，要特別注意正負號。"
-             : "高次多項式直式除法最重要的是同次方上下對齊；乘回後做的是相減，正負號不能漏掉。",
-
-         summary:
-           `商式＝${polynomialHTML(
-             quotient
-          )}，餘式＝${remainder}`
+        summary:
+          `商式＝${polynomialHTML(quotient)}，餘式＝${remainder}`
       }
     );
   }
 
-
-  /*
-  若隨機題在指定次數內沒有成功，
-  使用保證會有缺項的結構作為安全備援。
-  */
-
   const divisor =
-    normalizePolynomial(
-      [
-
-        {
-          exponent:
-            divisorDegree,
-
-          coefficient:
-            F(
-              1
-            )
-        },
-
-        {
-          exponent: 0,
-
-          coefficient:
-            F(
-              nonZeroRand(
-                1,
-                4
-              )
-            )
-        }
-      ]
-    );
-
+    normalizePolynomial([
+      {
+        exponent: divisorDegree,
+        coefficient: F(1)
+      },
+      {
+        exponent: 0,
+        coefficient: F(nonZeroRand(1, 4))
+      }
+    ]);
 
   const quotient =
-    normalizePolynomial(
-      [
-
-        {
-          exponent:
-            quotientDegree,
-
-          coefficient:
-            F(
-              nonZeroRand(
-                1,
-                3
-              )
-            )
-        },
-
-        {
-          exponent: 0,
-
-          coefficient:
-            F(
-              nonZeroRand(
-                -4,
-                4
-              )
-            )
-        }
-      ]
-    );
-
+    normalizePolynomial([
+      {
+        exponent: quotientDegree,
+        coefficient: F(nonZeroRand(1, 3))
+      },
+      {
+        exponent: 0,
+        coefficient: F(nonZeroRand(-4, 4))
+      }
+    ]);
 
   const remainder =
-    nonZeroRand(
-      -9,
-      9
-    );
-
+    nonZeroRand(-9, 9);
 
   const dividend =
     addConstantToPolynomial(
-
       multiplyTwoPolynomials(
         divisor,
         quotient
       ),
-
       remainder
     );
-
 
   return divisionQuestion(
 
     `
       <span class="question-segment">
-        ${bracketPolynomial(
-          dividend
-        )}
+        ${bracketPolynomial(dividend)}
       </span>
 
-      <span class="question-segment">
-        ÷
-      </span>
+      <span class="question-segment">÷</span>
 
       <span class="question-segment">
-        ${bracketPolynomial(
-          divisor
-        )}
+        ${bracketPolynomial(divisor)}
       </span>
     `,
 
     dividend,
-
     divisor,
-
     quotient,
-
     remainder,
 
     [
-
-      `
-      先依降冪排列並把所有缺項補 0。
-      `,
-
-      `
-      由最高次項開始，
-      重複「首項相除、寫商、乘回、相減」。
-      `,
-
-      `
-      當餘下多項式的次數低於除式時停止。
-      `,
-
-      `
-      商式＝${polynomialHTML(
-        quotient
-      )}，
-      餘式＝${remainder}
-      `
+      `先依降冪排列並把所有缺項補 0。`,
+      `由最高次項開始，重複「首項相除、寫商、乘回、相減」。`,
+      `當餘下多項式的次數低於除式時停止。`,
+      `商式＝${polynomialHTML(quotient)}，餘式＝${remainder}`
     ],
 
     `請填寫商式與餘式｜${divisionDegreeText(
@@ -7865,7 +7506,6 @@ function makeDivisionWithRemainder(
     )}`,
 
     {
-
       method:
         "高次多項式除法與二次式除以一次式的原理完全相同，只是需要多做幾輪，並持續保持同次方上下對齊。",
 
@@ -7873,114 +7513,72 @@ function makeDivisionWithRemainder(
         "不要因為次數變高就跳過缺項；缺少的 x³、x² 或 x 項都要視為係數 0。",
 
       summary:
-        `商式＝${polynomialHTML(
-          quotient
-        )}，餘式＝${remainder}`
+        `商式＝${polynomialHTML(quotient)}，餘式＝${remainder}`
     }
   );
 }
 
-/*
-==================================================
-模式三
-==================================================
-*/
 
 function makeMode3() {
 
-  return shuffle(
-    [
+  return shuffle([
 
-      /*
-      主要題型：二次式 ÷ 一次式，共 8 題
-      */
+    makeExactDivisionQuestion({
+      dividendDegree: 2,
+      divisorDegree: 1
+    }),
 
-      makeExactDivisionQuestion(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1
-        }
-      ),
+    makeExactDivisionQuestion({
+      dividendDegree: 2,
+      divisorDegree: 1
+    }),
 
-      makeExactDivisionQuestion(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1
-        }
-      ),
+    makeExactDivisionQuestion({
+      dividendDegree: 2,
+      divisorDegree: 1
+    }),
 
-      makeExactDivisionQuestion(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1
-        }
-      ),
+    makeExactDivisionQuestion({
+      dividendDegree: 2,
+      divisorDegree: 1
+    }),
 
-      makeExactDivisionQuestion(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1
-        }
-      ),
+    makeDivisionWithRemainder({
+      dividendDegree: 2,
+      divisorDegree: 1,
+      missingTerm: false
+    }),
 
-      makeDivisionWithRemainder(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1,
-          missingTerm: false
-        }
-      ),
+    makeDivisionWithRemainder({
+      dividendDegree: 2,
+      divisorDegree: 1,
+      missingTerm: false
+    }),
 
-      makeDivisionWithRemainder(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1,
-          missingTerm: false
-        }
-      ),
+    makeDivisionWithRemainder({
+      dividendDegree: 2,
+      divisorDegree: 1,
+      missingTerm: true
+    }),
 
-      makeDivisionWithRemainder(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1,
-          missingTerm: true
-        }
-      ),
+    makeDivisionWithRemainder({
+      dividendDegree: 2,
+      divisorDegree: 1,
+      missingTerm: true
+    }),
 
-      makeDivisionWithRemainder(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1,
-          missingTerm: true
-        }
-      ),
+    makeExactDivisionQuestion({
+      dividendDegree: 3,
+      divisorDegree: 2
+    }),
 
-      /*
-      高次挑戰：各 1 題
-      */
-
-      makeExactDivisionQuestion(
-        {
-          dividendDegree: 3,
-          divisorDegree: 2
-        }
-      ),
-
-      makeExactDivisionQuestion(
-        {
-          dividendDegree: 4,
-          divisorDegree: 2
-        }
-      )
-    ]
-  );
+    makeExactDivisionQuestion({
+      dividendDegree: 4,
+      divisorDegree: 2
+    })
+  ]);
 }
 
-/*
-==================================================
-模式四
-==================================================
-*/
 
 function makeFindDividendQuestion() {
 
@@ -8282,49 +7880,39 @@ function makeFindDividendQuestion() {
 
 function makeMode4() {
 
-  return shuffle(
-    [
+  return shuffle([
 
-      makeMonomialMultiply(),
+    makeMonomialMultiply(),
 
-      makeMonomialDivide(
-        true
-      ),
+    makeMonomialDivide(true),
 
-      makeMonomialTimesPolynomial(),
+    makeMonomialTimesPolynomial(),
 
-      makeBinomialProduct(),
+    makeBinomialProduct(),
 
-      makeSquareFormula(),
+    makeSquareFormula(),
 
-      makeDifferenceSquares(),
+    makeDifferenceSquares(),
 
-      makeExactDivisionQuestion(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1
-        }
-      ),
+    makeExactDivisionQuestion({
+      dividendDegree: 2,
+      divisorDegree: 1
+    }),
 
-      makeDivisionWithRemainder(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1,
-          missingTerm: false
-        }
-      ),
+    makeDivisionWithRemainder({
+      dividendDegree: 2,
+      divisorDegree: 1,
+      missingTerm: false
+    }),
 
-      makeDivisionWithRemainder(
-        {
-          dividendDegree: 2,
-          divisorDegree: 1,
-          missingTerm: true
-        }
-      ),
+    makeDivisionWithRemainder({
+      dividendDegree: 2,
+      divisorDegree: 1,
+      missingTerm: true
+    }),
 
-      makeFindDividendQuestion()
-    ]
-  );
+    makeFindDividendQuestion()
+  ]);
 }
 
 
@@ -8860,9 +8448,7 @@ function cleanFractionFieldLabels(
 
                     return;
                   }
-
-
-                  const text =
+const text =
                     child.textContent
                       ?.trim();
 
@@ -8925,53 +8511,112 @@ function renderPolynomialAnswer(
   question
 ) {
 
+  freePolynomialInput?.destroy?.();
+  freePolynomialInput = null;
+
   $("answer-panel")
     .innerHTML = `
 
       <div class="answer-title">
-
         ${question.label}
-
       </div>
 
-      <p class="answer-help">
-
-        請將答案整理成降冪排列。<br>
-
-        若使用分數係數，
-        請直接填入分子與分母並化成最簡分數。
-
+      <p class="shared-polynomial-note">
+        直接輸入完整多項式；需要次方時，可把游標放在 x 後方按「次方」。<br>
+        ^ 也代表次方，例如 x^2 代表 x²。
       </p>
 
-      <div class="polynomial-answer-shell">
-
-        <div
-          id="polynomial-answer-mount"
-        ></div>
-
-      </div>
+      <div id="polynomial-free-mount"></div>
     `;
 
+  if (
+    typeof window.PolynomialAnswerInput !==
+    "function"
+  ) {
 
-  answerInput =
-    new window.ExpressionInput(
-      expressionOptions(
-        "polynomial-answer-mount"
-      )
-    );
+    $("feedback").className =
+      "feedback warning";
+
+    $("feedback").textContent =
+      "PolynomialAnswerInput 共用元件沒有正常載入。";
+
+    return;
+  }
+
+  freePolynomialInput =
+    new window.PolynomialAnswerInput({
+      mountId:
+        "polynomial-free-mount",
+
+      variable:
+        "x",
+
+      maxExponent:
+        9,
+
+      allowBareExponent:
+        true,
+
+      placeholder:
+        "例如：6x²－3x＋5",
+
+      primary:
+        "#7b1fa2",
+
+      primaryDark:
+        "#4a148c",
+
+      primaryLight:
+        "#f3e5f5",
+
+      primaryBorder:
+        "#ce93d8"
+    });
+}
 
 
-  cleanFractionFieldLabels(
-    $("polynomial-answer-mount")
-  );
+function parseSharedPolynomialInput() {
 
+  if (!freePolynomialInput) {
+    return {
+      valid: false,
+      message:
+        "多項式輸入元件尚未準備完成。"
+    };
+  }
 
-  setTimeout(
-    () =>
-      answerInput
-        ?.focus(),
-    0
-  );
+  const result =
+    freePolynomialInput.validate();
+
+  if (!result.valid) {
+    return {
+      valid: false,
+      message:
+        result.message ||
+        "請將多項式答案輸入完整。"
+    };
+  }
+
+  const terms =
+    (result.value || [])
+      .map(
+        term => ({
+          exponent:
+            Number(term.exponent),
+
+          coefficient:
+            F(Number(term.coefficient))
+        })
+      );
+
+  return {
+    valid: true,
+    value:
+      normalizePolynomial(terms),
+    display:
+      result.display ||
+      polynomialHTML(terms)
+  };
 }
 
 
@@ -9304,6 +8949,11 @@ function renderAnswer(
   question
 ) {
 
+  freePolynomialInput?.destroy?.();
+
+  freePolynomialInput =
+    null;
+
   answerInput =
     null;
 
@@ -9572,9 +9222,7 @@ function readAnswer(
     "polynomial"
   ) {
 
-    return parseExpressionInput(
-      answerInput
-    );
+    return parseSharedPolynomialInput();
   }
 
 
@@ -9860,8 +9508,7 @@ function explanationHTML(
       <div class="explanation-question-title">
 
         題目
-
-      </div>
+</div>
 
       <div class="explanation-question-math">
 
@@ -9986,13 +9633,13 @@ function explanationHTML(
 }
 
 
+
 /*
 ==================================================
 題目寬度自動調整
 
-長算式優先縮小字體；若仍超出，
-多項式除法可在「被除式 ÷ 除式」之間換行，
-避免手機、平板或電腦需要左右拖動。
+一行放得下時置中；需要換行時統一靠左。
+長除法題先縮小，再依完整區塊換行，避免左右拖動。
 ==================================================
 */
 
@@ -10001,59 +9648,36 @@ function fitQuestionToWidth() {
   const container =
     $("question-content");
 
-
-  if (
-    !container
-  ) {
-
+  if (!container) {
     return;
   }
 
+  container.classList.remove(
+    "compact-question",
+    "wrap-left"
+  );
 
-  container
-    .classList
-    .remove(
-      "compact-question"
-    );
-
-
-  container.style.fontSize =
-    "";
-
+  container.style.fontSize = "";
 
   const expression =
     container.querySelector(
       ".math-expression"
     );
 
-
-  if (
-    !expression
-  ) {
-
+  if (!expression) {
     return;
   }
 
-
   const isDivision =
-    expression
-      .classList
-      .contains(
-        "division-math"
-      );
+    expression.classList.contains(
+      "division-math"
+    );
 
-
-  if (
-    isDivision
-  ) {
-
-    container
-      .classList
-      .add(
-        "compact-question"
-      );
+  if (isDivision) {
+    container.classList.add(
+      "compact-question"
+    );
   }
-
 
   requestAnimationFrame(
     () => {
@@ -10061,43 +9685,44 @@ function fitQuestionToWidth() {
       let fontSize =
         parseFloat(
           window
-            .getComputedStyle(
-              container
-            )
+            .getComputedStyle(container)
             .fontSize
         );
 
-
       const minimum =
-        isDivision
-          ? 17
-          : 19;
+        isDivision ? 17 : 19;
 
-
-      let guard =
-        0;
-
+      let guard = 0;
 
       while (
-        container.scrollWidth >
-          container.clientWidth +
-          2 &&
-        fontSize >
-          minimum &&
-        guard <
-          30
+        expression.scrollWidth >
+          container.clientWidth - 4 &&
+        fontSize > minimum &&
+        guard < 30
       ) {
-
-        fontSize -=
-          1;
-
-
+        fontSize -= 1;
         container.style.fontSize =
           `${fontSize}px`;
-
-
         guard++;
       }
+
+      const lineHeight =
+        parseFloat(
+          window
+            .getComputedStyle(expression)
+            .lineHeight
+        ) || fontSize * 1.6;
+
+      const wrapped =
+        expression.scrollWidth >
+          container.clientWidth + 2 ||
+        expression.getBoundingClientRect().height >
+          lineHeight * 1.45;
+
+      container.classList.toggle(
+        "wrap-left",
+        wrapped
+      );
     }
   );
 }
@@ -10188,7 +9813,8 @@ function displayQuestion() {
     );
 
 
-  $("submit-button")
+
+$("submit-button")
     .classList
     .remove(
       "hidden"
@@ -10264,6 +9890,13 @@ function submitAnswer() {
 
 
   answerInput
+    ?.setDisabled
+    ?.(
+      true
+    );
+
+
+  freePolynomialInput
     ?.setDisabled
     ?.(
       true
@@ -10617,28 +10250,64 @@ function playGameSound(
 ==================================================
 */
 
-function moveScratchpadButtonToTop() {
+function moveScratchpadButtonToQuestionCard() {
 
   const mount =
     $("scratchpad-mobile-button");
 
-
   const button =
     $("scratchpadOpenButton");
-
 
   if (
     mount &&
     button &&
-    !mount.contains(
-      button
-    )
+    !mount.contains(button)
   ) {
-
-    mount.appendChild(
-      button
-    );
+    mount.appendChild(button);
   }
+
+  if (button) {
+    button.style.position = "static";
+    button.style.inset = "auto";
+    button.style.transform = "none";
+    button.style.margin = "0";
+  }
+}
+
+
+function ensureScratchpadButtonInQuestionCard() {
+
+  moveScratchpadButtonToQuestionCard();
+
+  if ($("scratchpadOpenButton")) {
+    window.showGameScratchpadButton?.();
+    return;
+  }
+
+  const observer =
+    new MutationObserver(
+      () => {
+        moveScratchpadButtonToQuestionCard();
+
+        if ($("scratchpadOpenButton")) {
+          window.showGameScratchpadButton?.();
+          observer.disconnect();
+        }
+      }
+    );
+
+  observer.observe(
+    document.body,
+    {
+      childList: true,
+      subtree: true
+    }
+  );
+
+  setTimeout(
+    () => observer.disconnect(),
+    10000
+  );
 }
 
 
@@ -10677,7 +10346,7 @@ function showOnly(
     "quiz-screen"
   ) {
 
-    moveScratchpadButtonToTop();
+    ensureScratchpadButtonInQuestionCard();
 
 
     window
@@ -10729,6 +10398,10 @@ function startGame(
   records = [];
 
   answered = false;
+
+  freePolynomialInput?.destroy?.();
+
+  freePolynomialInput = null;
 
   answerInput = null;
 
@@ -10981,7 +10654,7 @@ async function saveCurrentScore(
           maxCombo,
 
           playTime:
-            elapsed,
+elapsed,
 
           totalQuestions:
             TOTAL_QUESTIONS
@@ -11143,17 +10816,14 @@ function showReview() {
 }
 
 
+
 /*
 ==================================================
-重新測驗確認
-
-桌機、平板、手機皆使用瀏覽器原生確認視窗。
-只有按下「確定」才重新開始目前模式。
+重新測驗／重選模式確認
 ==================================================
 */
 
 function confirmRestartTest() {
-
   return window.confirm(
     "確定要重新測驗嗎？\n目前的作答進度將會重新開始。"
   );
@@ -11162,104 +10832,81 @@ function confirmRestartTest() {
 
 function restartCurrentModeWithConfirmation() {
 
-  if (
-    !confirmRestartTest()
-  ) {
-
+  if (!confirmRestartTest()) {
     return;
   }
 
+  startGame(mode);
+}
 
-  startGame(
-    mode
+
+function confirmReselectMode() {
+  return window.confirm(
+    "確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。"
   );
+}
+
+
+function backToModesWithConfirmation() {
+
+  if (!confirmReselectMode()) {
+    return;
+  }
+
+  stopTimer();
+  showOnly("start-screen");
 }
 
 
 /*
 ==================================================
 返回八年級上學期
-
-平常由八上首頁進入遊戲時，使用上一頁即可回到原本已選好的
-「八年級上學期」卡牌介面，也能保留瀏覽器 BFCache 的狀態。
-若沒有可返回的站內來源，則退回網站首頁。
 ==================================================
 */
 
 function returnToGrade8FirstSemester() {
 
   const referrer =
-    String(
-      document.referrer ||
-      ""
-    );
-
+    String(document.referrer || "");
 
   let cameFromHomePage =
     false;
 
-
   try {
 
-    if (
-      referrer
-    ) {
+    if (referrer) {
 
       const referrerURL =
-        new URL(
-          referrer
-        );
-
+        new URL(referrer);
 
       const sameOrigin =
         referrerURL.origin ===
         window.location.origin;
 
-
       const path =
         referrerURL.pathname
-          .replace(
-            /\/+$/,
-            ""
-          );
-
+          .replace(/\/+$/, "");
 
       const isHomePath =
-        path ===
-          "" ||
-        path.endsWith(
-          "/index.html"
-        ) ||
-        path.endsWith(
-          "/mathteach"
-        );
-
+        path === "" ||
+        path.endsWith("/index.html") ||
+        path.endsWith("/mathteach");
 
       cameFromHomePage =
-        sameOrigin &&
-        isHomePath;
+        sameOrigin && isHomePath;
     }
 
-  } catch (
-    error
-  ) {
-
-    cameFromHomePage =
-      false;
+  } catch (error) {
+    cameFromHomePage = false;
   }
-
 
   if (
     cameFromHomePage &&
-    window.history.length >
-      1
+    window.history.length > 1
   ) {
-
     window.history.back();
-
     return;
   }
-
 
   window.location.href =
     "../index.html";
@@ -11271,6 +10918,13 @@ function returnToGrade8FirstSemester() {
 事件
 ==================================================
 */
+
+$("semester-return-button")
+  .addEventListener(
+    "click",
+    returnToGrade8FirstSemester
+  );
+
 
 document
   .querySelectorAll(
@@ -11290,13 +10944,6 @@ document
           }
         );
     }
-  );
-
-
-$("semester-return-button")
-  .addEventListener(
-    "click",
-    returnToGrade8FirstSemester
   );
 
 
@@ -11324,15 +10971,7 @@ $("restart-button")
 $("mode-button")
   .addEventListener(
     "click",
-    () => {
-
-      stopTimer();
-
-
-      showOnly(
-        "start-screen"
-      );
-    }
+    backToModesWithConfirmation
   );
 
 
@@ -11441,11 +11080,11 @@ window
     "DOMContentLoaded",
     () => {
 
-      moveScratchpadButtonToTop();
+      ensureScratchpadButtonInQuestionCard();
 
 
       setTimeout(
-        moveScratchpadButtonToTop,
+        ensureScratchpadButtonInQuestionCard,
         100
       );
     }
