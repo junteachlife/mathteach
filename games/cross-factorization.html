@@ -22,6 +22,10 @@
     href="../css/scratchpad.css"
   >
 
+  <link rel="stylesheet" href="../css/polynomial-input.css?v=3">
+
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=3">
+
   <style>
 
     * {
@@ -2247,6 +2251,166 @@
         font-size: 13px;
       }
     }
+  
+
+    /* ==================================================
+       最新統一遊戲版面｜對齊八上 1-1 ～ 2-2
+    ================================================== */
+
+    .game-card,
+    .game-shell{
+      position:relative;
+    }
+
+    .game-card-return-row{
+      display:flex;
+      justify-content:flex-end;
+      padding:12px 16px 0;
+      background:linear-gradient(180deg,var(--primary-light,#f8fafc),#fff);
+    }
+
+    .game-card-return-row.hidden{
+      display:none !important;
+    }
+
+    .game-card-return-row .semester-return-button{
+      width:auto;
+      min-width:0;
+      min-height:40px;
+      padding:8px 14px;
+      border:2px solid var(--primary-border,var(--teal,#94a3b8));
+      border-radius:12px;
+      background:#fff;
+      color:var(--primary-dark,var(--navy,#334155));
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:none;
+    }
+
+    .quiz-topbar{
+      display:grid !important;
+      grid-template-columns:minmax(210px,1fr) minmax(300px,1.35fr) auto !important;
+      gap:12px !important;
+      align-items:center;
+      margin-bottom:14px;
+    }
+
+    .quiz-context,
+    .quiz-stats{
+      display:grid;
+      gap:8px;
+    }
+
+    .quiz-context{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .quiz-stats{
+      grid-template-columns:repeat(3,minmax(86px,1fr));
+    }
+
+    .quiz-actions{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .quiz-actions .game-button{
+      min-width:116px;
+      min-height:46px;
+      padding:10px 14px;
+    }
+
+    .question-card{
+      position:relative;
+      padding-bottom:78px !important;
+    }
+
+    .scratchpad-row{
+      position:absolute !important;
+      right:16px !important;
+      bottom:14px !important;
+      width:auto !important;
+      min-height:44px !important;
+      margin:0 !important;
+      display:flex !important;
+      justify-content:flex-end !important;
+      z-index:5;
+    }
+
+    #scratchpad-mobile-button{
+      width:auto !important;
+      display:flex !important;
+      justify-content:flex-end !important;
+    }
+
+    #scratchpad-mobile-button #scratchpadOpenButton,
+    #scratchpad-mobile-button .scratchpad-open-button{
+      position:static !important;
+      inset:auto !important;
+      transform:none !important;
+      margin:0 !important;
+      z-index:auto !important;
+    }
+
+    .answer-submit-row{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+
+    @media(max-width:900px){
+      .quiz-topbar{
+        grid-template-columns:1fr !important;
+      }
+    }
+
+    @media(max-width:600px){
+      .game-card-return-row{
+        padding:10px 10px 0;
+      }
+
+      .game-card-return-row .semester-return-button{
+        padding:7px 10px;
+        font-size:13px;
+      }
+
+      .quiz-context,
+      .quiz-stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .quiz-stats .timer-box{
+        grid-column:1/-1;
+      }
+
+      .quiz-actions{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .quiz-actions .game-button{
+        min-width:0;
+        width:100%;
+        padding:10px 8px;
+        font-size:14px;
+      }
+
+      .question-card{
+        padding-bottom:76px !important;
+      }
+
+      .scratchpad-row{
+        right:10px !important;
+        bottom:12px !important;
+      }
+    }
+
   </style>
 
 </head>
@@ -2258,6 +2422,18 @@
   <div id="commonHeaderMount"></div>
 
   <main class="game-card">
+
+    <div id="semester-return-row" class="game-card-return-row">
+      <button
+        id="semester-return-button"
+        class="semester-return-button"
+        type="button"
+      >
+        ↩️ 重返八年級上學期
+      </button>
+    </div>
+
+
 
     <header class="game-header">
 
@@ -2306,17 +2482,8 @@
       class="screen"
     >
 
-            <div class="semester-return-row">
+            
 
-        <button
-          id="semester-return-button"
-          class="semester-return-button"
-          type="button"
-        >
-          ↩️ 重返八年級上學期
-        </button>
-
-      </div>
 
 <div class="mode-grid">
 
@@ -2403,75 +2570,47 @@
       class="screen hidden"
     >
 
+      
       <div class="quiz-topbar">
 
-        <div class="status-box">
-
-          模式
-
-          <span
-            id="mode-name"
-            class="status-value"
-          >
-            —
-          </span>
-
+        <div class="quiz-context">
+          <div class="status-box">
+            模式
+            <span id="mode-name" class="status-value">—</span>
+          </div>
+          <div class="status-box">
+            進度
+            <span id="question-number" class="status-value">1 / 10</span>
+          </div>
         </div>
 
-        <div class="status-box">
-
-          進度
-
-          <span
-            id="question-number"
-            class="status-value"
-          >
-            1 / 10
-          </span>
-
+        <div class="quiz-stats">
+          <div class="status-box">
+            答對
+            <span id="correct-count" class="status-value">0</span>
+          </div>
+          <div class="status-box">
+            最高連擊
+            <span id="combo-count" class="status-value">0</span>
+          </div>
+          <div class="status-box timer-box">
+            ⏱️ 測驗時間
+            <span id="timer-display" class="status-value">00:00</span>
+          </div>
         </div>
 
-        <div class="status-box">
-
-          答對
-
-          <span
-            id="correct-count"
-            class="status-value"
-          >
-            0
-          </span>
-
-        </div>
-
-        <div class="status-box">
-
-          最高連擊
-
-          <span
-            id="combo-count"
-            class="status-value"
-          >
-            0
-          </span>
-
-        </div>
-
-        <div class="status-box timer-box">
-
-          測驗時間
-
-          <span
-            id="timer-display"
-            class="status-value"
-          >
-            00:00
-          </span>
-
+        <div class="quiz-actions">
+          <button id="restart-button" class="game-button restart" type="button">
+            🔄 重新測驗
+          </button>
+          <button id="mode-button" class="game-button secondary" type="button">
+            重選模式
+          </button>
         </div>
 
       </div>
-<div class="progress-shell">
+
+      <div class="progress-shell">
 
         <div
           id="progress-bar"
@@ -2492,53 +2631,24 @@
           class="question-content"
         ></div>
 
-      </div>
-
-            <div class="scratchpad-row">
-
-        <div id="scratchpad-mobile-button"></div>
-
-      </div>
-
+      
+        <div class="scratchpad-row">
+          <div id="scratchpad-mobile-button"></div>
+        </div>
+</div>
 <div
         id="answer-panel"
         class="answer-panel"
       ></div>
 
-      <div class="button-row">
-
-        <button
-          id="submit-button"
-          class="game-button"
-          type="button"
-        >
+      
+      <div class="answer-submit-row">
+        <button id="submit-button" class="game-button" type="button">
           提交答案（Enter）
         </button>
-
-        <button
-          id="next-button"
-          class="game-button hidden"
-          type="button"
-        >
+        <button id="next-button" class="game-button hidden" type="button">
           下一題（Enter）
         </button>
-
-        <button
-          id="restart-button"
-          class="game-button restart"
-          type="button"
-        >
-          🔄 重新測驗
-        </button>
-
-        <button
-          id="mode-button"
-          class="game-button secondary"
-          type="button"
-        >
-          選擇模式
-        </button>
-
       </div>
 
       <div
@@ -2714,6 +2824,10 @@
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
 
+<script src="../js/math-expression-input.js?v=3"></script>
+
+<script src="../js/polynomial-input.js?v=3"></script>
+
 <script type="module">
 
 import {
@@ -2786,6 +2900,16 @@ let records =
 
 let answered =
   false;
+
+let outerSharedInput =
+  null;
+
+let factorSharedInput1 =
+  null;
+
+let factorSharedInput2 =
+  null;
+
 
 
 let startTime =
@@ -5838,79 +5962,173 @@ function readLinearFactor(
 
 function readAnswer() {
 
-  const outer =
-    readOuterFactor();
-
+  const outerResult =
+    outerSharedInput
+      ?.validate();
 
   if (
-    !outer.valid
+    !outerResult?.valid
+  ) {
+    return {
+      valid: false,
+      message:
+        outerResult?.message ||
+        "請先完成整體公因數。"
+    };
+  }
+
+  const outerTerms =
+    outerResult.terms ||
+    [];
+
+  if (
+    outerTerms.length !== 1 ||
+    outerTerms[0].radicand !== 1
+  ) {
+    return {
+      valid: false,
+      message:
+        "整體公因數請輸入整數或最簡分數。"
+    };
+  }
+
+  const outer =
+    F(
+      outerTerms[0].numerator,
+      outerTerms[0].denominator
+    );
+
+
+  function readSharedLinear(
+    input,
+    label
   ) {
 
-    return outer;
+    const result =
+      input
+        ?.validate();
+
+    if (
+      !result?.valid
+    ) {
+      return {
+        valid: false,
+        message:
+          result?.message ||
+          `請完成${label}。`
+      };
+    }
+
+    const terms =
+      (
+        result.value ||
+        []
+      )
+        .map(
+          term => ({
+            exponent:
+              Number(term.exponent),
+            coefficient:
+              F(
+                term.coefficient?.numerator ??
+                  term.coefficient,
+                term.coefficient?.denominator ??
+                  1
+              )
+          })
+        );
+
+    if (
+      terms.some(
+        term =>
+          term.exponent >
+          1
+      )
+    ) {
+      return {
+        valid: false,
+        message:
+          `${label}應為一次因式。`
+      };
+    }
+
+    const aTerm =
+      terms.find(
+        term =>
+          term.exponent === 1
+      );
+
+    const bTerm =
+      terms.find(
+        term =>
+          term.exponent === 0
+      );
+
+    if (
+      !aTerm
+    ) {
+      return {
+        valid: false,
+        message:
+          `${label}必須包含 x 項。`
+      };
+    }
+
+    return {
+      valid: true,
+      value: {
+        a:
+          aTerm.coefficient,
+        b:
+          bTerm?.coefficient ??
+          F(0,1)
+      }
+    };
   }
 
 
   const first =
-    readLinearFactor(
-      "factor1"
+    readSharedLinear(
+      factorSharedInput1,
+      "因式一"
     );
 
-
-  if (
-    !first.valid
-  ) {
-
+  if (!first.valid) {
     return first;
   }
 
 
   const second =
-    readLinearFactor(
-      "factor2"
+    readSharedLinear(
+      factorSharedInput2,
+      "因式二"
     );
 
-
-  if (
-    !second.valid
-  ) {
-
+  if (!second.valid) {
     return second;
   }
 
 
   const expanded =
     multiplyFactorAnswer(
-      outer.value,
+      outer,
       first.value,
       second.value
     );
 
-
   return {
-
-    valid:
-      true,
-
+    valid: true,
     value: {
-
-      outer:
-        outer.value,
-
+      outer,
       factor1:
         first.value,
-
       factor2:
         second.value,
-
       expanded
     },
-
-    /*
-    ★ 這裡會自動把相同因式整理成平方
-    */
     display:
       factorizedHTML(
-        outer.value,
+        outer,
         first.value,
         second.value
       )
@@ -5975,71 +6193,34 @@ Render Answer
 
 function renderAnswer() {
 
-  rationalModes.clear();
+  outerSharedInput
+    ?.destroy?.();
 
-  linearModes.clear();
+  factorSharedInput1
+    ?.destroy?.();
 
+  factorSharedInput2
+    ?.destroy?.();
 
   $("answer-panel")
     .innerHTML = `
-
       <div class="answer-title">
-
         請完成因式分解
-
       </div>
 
       <p class="answer-help">
-
-        整體公因數預設為 1；
-        若想先提出負號，可將正負號改成「－」。<br>
-
-        系統會把「公因數 × 因式一 × 因式二」乘回原式判定。<br>
-
-        若兩個因式完全相同，例如
-        (3x＋5)(3x＋5)，
-        系統會自動顯示成
-        (3x＋5)²。
-
+        整體公因數與兩個一次因式都直接輸入。
+        需要分數時再按「分數」；
+        因式內需要 x 或次方時使用共用多項式輸入。
       </p>
 
       <div class="factor-answer-main">
 
         <div class="factor-box">
-
           <div class="factor-box-title">
             整體公因數
           </div>
-
-          <div class="outer-factor-editor">
-
-            <div class="outer-sign-row">
-
-              <select id="outer-sign">
-
-                <option value="1">
-                  ＋
-                </option>
-
-                <option value="-1">
-                  －
-                </option>
-
-              </select>
-
-              <div>
-
-                ${rationalInputHTML(
-                  "outer",
-                  "1"
-                )}
-
-              </div>
-
-            </div>
-
-          </div>
-
+          <div id="outer-shared-mount"></div>
         </div>
 
         <div class="multiply-mark">
@@ -6047,15 +6228,10 @@ function renderAnswer() {
         </div>
 
         <div class="factor-box">
-
           <div class="factor-box-title">
             因式一
           </div>
-
-          ${linearEditorHTML(
-            "factor1"
-          )}
-
+          <div id="factor-one-shared-mount"></div>
         </div>
 
         <div class="multiply-mark">
@@ -6063,157 +6239,124 @@ function renderAnswer() {
         </div>
 
         <div class="factor-box">
-
           <div class="factor-box-title">
             因式二
           </div>
-
-          ${linearEditorHTML(
-            "factor2"
-          )}
-
+          <div id="factor-two-shared-mount"></div>
         </div>
 
       </div>
 
-      <div
-        id="answer-preview"
-        class="answer-preview"
-      >
+      <div id="answer-preview" class="answer-preview">
         目前尚未完成答案。
       </div>
     `;
 
+  if (
+    typeof window.MathExpressionInput !==
+      "function" ||
+    typeof window.PolynomialAnswerInput !==
+      "function"
+  ) {
+    $("feedback").className =
+      "feedback warning";
+    $("feedback").textContent =
+      "共用答案輸入元件沒有正常載入。";
+    return;
+  }
 
-  setRationalMode(
-    "outer",
-    "integer"
-  );
-
-
-  setLinearMode(
-    "factor1",
-    "integer"
-  );
-
-
-  setLinearMode(
-    "factor2",
-    "integer"
-  );
-
-
-  document
-    .querySelectorAll(
-      "[data-rational-toggle]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            const prefix =
-              button.dataset
-                .rationalToggle;
-
-
-            const current =
-              rationalModes.get(
-                prefix
-              ) ||
-              "integer";
-
-
-            setRationalMode(
-
-              prefix,
-
-              current ===
-              "integer"
-
-                ? "fraction"
-
-                : "integer"
-            );
-
-
-            updateAnswerPreview();
-          }
-        );
+  outerSharedInput =
+    new window.MathExpressionInput({
+      mountId:
+        "outer-shared-mount",
+      allowRadical:
+        false,
+      allowFraction:
+        true,
+      allowPower:
+        false,
+      allowVariable:
+        false,
+      placeholder:
+        "例如：1 或 1/2",
+      theme: {
+        primary:
+          "#d81b60",
+        dark:
+          "#ad1457",
+        light:
+          "#fce4ec",
+        border:
+          "#f48fb1"
       }
+    });
+
+  const factorOptions = {
+    variable:
+      "x",
+    maxExponent:
+      1,
+    coefficientMode:
+      "rational",
+    requireSimplifiedFraction:
+      true,
+    placeholder:
+      "例如：2x＋3",
+    primary:
+      "#d81b60",
+    primaryDark:
+      "#ad1457",
+    primaryLight:
+      "#fce4ec",
+    primaryBorder:
+      "#f48fb1",
+    helpText:
+      "一次因式直接輸入；需要分數係數時按「分數」。",
+    onChange:
+      () =>
+        setTimeout(
+          updateAnswerPreview,
+          0
+        )
+  };
+
+  factorSharedInput1 =
+    new window.PolynomialAnswerInput({
+      ...factorOptions,
+      mountId:
+        "factor-one-shared-mount"
+    });
+
+  factorSharedInput2 =
+    new window.PolynomialAnswerInput({
+      ...factorOptions,
+      mountId:
+        "factor-two-shared-mount",
+      autoFocus:
+        false
+    });
+
+  /*
+  MathExpressionInput 沒有 onChange option，
+  直接監聽底層 input，更新總預覽。
+  */
+  outerSharedInput
+    ?.input
+    ?.addEventListener(
+      "input",
+      () =>
+        setTimeout(
+          updateAnswerPreview,
+          0
+        )
     );
-
-
-  document
-    .querySelectorAll(
-      "[data-linear-toggle]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            const prefix =
-              button.dataset
-                .linearToggle;
-
-
-            const current =
-              linearModes.get(
-                prefix
-              ) ||
-              "integer";
-
-
-            setLinearMode(
-
-              prefix,
-
-              current ===
-              "integer"
-
-                ? "fraction"
-
-                : "integer"
-            );
-
-
-            updateAnswerPreview();
-          }
-        );
-      }
-    );
-
-
-  $("answer-panel")
-    .querySelectorAll(
-      "input, select"
-    )
-    .forEach(
-      element => {
-
-        element.addEventListener(
-          "input",
-          updateAnswerPreview
-        );
-
-
-        element.addEventListener(
-          "change",
-          updateAnswerPreview
-        );
-      }
-    );
-
 
   setTimeout(
-    () =>
-      $("factor1-a")
-        ?.focus(),
+    () => {
+      updateAnswerPreview();
+      outerSharedInput
+        ?.focus();
+    },
     0
   );
 }
@@ -7171,27 +7314,33 @@ Scratchpad
 ==================================================
 */
 
-function moveScratchpadButtonToTop() {
+function ensureScratchpadButtonInQuestionCard() {
 
-  const mount =
-    $("scratchpad-mobile-button");
+  const mount = $("scratchpad-mobile-button");
+  const questionCard =
+    document.querySelector("#quiz-screen .question-card");
+  const button = $("scratchpadOpenButton");
 
-
-  const button =
-    $("scratchpadOpenButton");
-
+  if (
+    mount &&
+    questionCard &&
+    mount.parentElement !== questionCard
+  ) {
+    questionCard.appendChild(
+      mount.parentElement
+    );
+  }
 
   if (
     mount &&
     button &&
-    !mount.contains(
-      button
-    )
+    !mount.contains(button)
   ) {
+    mount.appendChild(button);
+  }
 
-    mount.appendChild(
-      button
-    );
+  if (button) {
+    window.showGameScratchpadButton?.();
   }
 }
 
@@ -7225,13 +7374,24 @@ function showOnly(
       }
     );
 
+  const semesterReturnRow =
+    $("semester-return-row");
+
+  semesterReturnRow
+    ?.classList
+    .toggle(
+      "hidden",
+      id !== "start-screen"
+    );
+
+
 
   if (
     id ===
     "quiz-screen"
   ) {
 
-    moveScratchpadButtonToTop();
+    ensureScratchpadButtonInQuestionCard();
 
 
     window
@@ -7748,6 +7908,22 @@ function restartCurrentModeWithConfirmation() {
 }
 
 
+function confirmReselectMode() {
+  return window.confirm(
+    "確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。"
+  );
+}
+
+function backToModesWithConfirmation() {
+  if (!confirmReselectMode()) {
+    return;
+  }
+
+  stopTimer();
+  showOnly("start-screen");
+}
+
+
 function returnToGrade8FirstSemester() {
 
   const referrer =
@@ -7883,15 +8059,7 @@ $("restart-button")
 $("mode-button")
   .addEventListener(
     "click",
-    () => {
-
-      stopTimer();
-
-
-      showOnly(
-        "start-screen"
-      );
-    }
+    backToModesWithConfirmation
   );
 
 
@@ -7994,11 +8162,11 @@ window.addEventListener(
   "DOMContentLoaded",
   () => {
 
-    moveScratchpadButtonToTop();
+    ensureScratchpadButtonInQuestionCard();
 
 
     setTimeout(
-      moveScratchpadButtonToTop,
+      ensureScratchpadButtonInQuestionCard,
       100
     );
   }
