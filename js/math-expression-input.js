@@ -1,13 +1,13 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.6.0
+版本：1.7.0
 ==================================================
 
 設計原則：
 - 介面只保留「一個答案框＋必要功能鍵」。
 - 數字、+、- 直接用鍵盤輸入。
-- 特殊符號才使用按鈕：√ 根號、分數、次方、x。
+- 特殊符號才使用按鈕：√ 根號、分數、± 正負號、次方、x。
 - 次方是通用功能，可接在數字、x、括號、根號或其他完整底數後。
 - 分數內可以再插入根號；根號內也可以再插入分數。
 - 主答案框直接顯示正式數學排版。
@@ -33,6 +33,7 @@ MathExpressionInput 共用數學運算式輸入元件
     allowFraction: true,
     allowPower: false,
     allowVariable: false,
+    allowPlusMinus: false,
     variable: "x",
 
     /*
@@ -50,6 +51,7 @@ MathExpressionInput 共用數學運算式輸入元件
     toolOrder: [
       "radical",
       "fraction",
+      "plusMinus",
       "power",
       "variable"
     ],
@@ -107,6 +109,7 @@ MathExpressionInput 共用數學運算式輸入元件
         depth === 0 &&
         (
           ch === "+" ||
+          ch === "±" ||
           (
             ch === "-" &&
             i > 0
@@ -388,7 +391,7 @@ MathExpressionInput 共用數學運算式輸入元件
         continue;
       }
 
-      if ("+-*/^(),".includes(ch)) {
+      if ("+-*/^(),±".includes(ch)) {
         tokens.push({
           type: ch,
           value: ch
@@ -507,7 +510,8 @@ MathExpressionInput 共用數學運算式輸入元件
 
       while (
         this.peek().type === "+" ||
-        this.peek().type === "-"
+        this.peek().type === "-" ||
+        this.peek().type === "±"
       ) {
         const op =
           this.consume().type;
@@ -771,6 +775,324 @@ MathExpressionInput 共用數學運算式輸入元件
     }
   }
 
+
+  function containsPlusMinus(
+    ast
+  ) {
+
+    if (!ast) {
+      return false;
+    }
+
+    if (
+      ast.type === "binary" &&
+      ast.op === "±"
+    ) {
+      return true;
+    }
+
+    switch (
+      ast.type
+    ) {
+
+      case "group":
+      case "sqrt":
+      case "unary":
+
+        return containsPlusMinus(
+          ast.value
+        );
+
+      case "power":
+
+        return (
+          containsPlusMinus(
+            ast.base
+          ) ||
+          containsPlusMinus(
+            ast.exponent
+          )
+        );
+
+      case "fraction":
+
+        return (
+          containsPlusMinus(
+            ast.numerator
+          ) ||
+          containsPlusMinus(
+            ast.denominator
+          )
+        );
+
+      case "binary":
+
+        return (
+          containsPlusMinus(
+            ast.left
+          ) ||
+          containsPlusMinus(
+            ast.right
+          )
+        );
+
+      default:
+
+        return false;
+    }
+  }
+
+
+  function cloneAst(
+    ast
+  ) {
+
+    if (
+      typeof structuredClone ===
+      "function"
+    ) {
+      return structuredClone(
+        ast
+      );
+    }
+
+    return JSON.parse(
+      JSON.stringify(
+        ast
+      )
+    );
+  }
+
+
+  function expandPlusMinusAst(
+    ast
+  ) {
+
+    if (!ast) {
+      return [];
+    }
+
+    if (
+      ast.type === "binary" &&
+      ast.op === "±"
+    ) {
+
+      const leftBranches =
+        expandPlusMinusAst(
+          ast.left
+        );
+
+      const rightBranches =
+        expandPlusMinusAst(
+          ast.right
+        );
+
+      const results =
+        [];
+
+      for (
+        const left of
+        leftBranches
+      ) {
+
+        for (
+          const right of
+          rightBranches
+        ) {
+
+          results.push({
+            type:
+              "binary",
+            op:
+              "+",
+            left:
+              cloneAst(
+                left
+              ),
+            right:
+              cloneAst(
+                right
+              )
+          });
+
+          results.push({
+            type:
+              "binary",
+            op:
+              "-",
+            left:
+              cloneAst(
+                left
+              ),
+            right:
+              cloneAst(
+                right
+              )
+          });
+        }
+      }
+
+      return results;
+    }
+
+
+    const expandChild =
+      child =>
+        expandPlusMinusAst(
+          child
+        );
+
+
+    switch (
+      ast.type
+    ) {
+
+      case "group":
+      case "sqrt":
+      case "unary": {
+
+        return expandChild(
+          ast.value
+        )
+          .map(
+            value => ({
+              ...cloneAst(
+                ast
+              ),
+              value
+            })
+          );
+      }
+
+
+      case "power": {
+
+        const bases =
+          expandChild(
+            ast.base
+          );
+
+        const exponents =
+          expandChild(
+            ast.exponent
+          );
+
+        const result =
+          [];
+
+        for (
+          const base of
+          bases
+        ) {
+
+          for (
+            const exponent of
+            exponents
+          ) {
+
+            result.push({
+              ...cloneAst(
+                ast
+              ),
+              base,
+              exponent
+            });
+          }
+        }
+
+        return result;
+      }
+
+
+      case "fraction": {
+
+        const numerators =
+          expandChild(
+            ast.numerator
+          );
+
+        const denominators =
+          expandChild(
+            ast.denominator
+          );
+
+        const result =
+          [];
+
+        for (
+          const numerator of
+          numerators
+        ) {
+
+          for (
+            const denominator of
+            denominators
+          ) {
+
+            result.push({
+              ...cloneAst(
+                ast
+              ),
+              numerator,
+              denominator
+            });
+          }
+        }
+
+        return result;
+      }
+
+
+      case "binary": {
+
+        const lefts =
+          expandChild(
+            ast.left
+          );
+
+        const rights =
+          expandChild(
+            ast.right
+          );
+
+        const result =
+          [];
+
+        for (
+          const left of
+          lefts
+        ) {
+
+          for (
+            const right of
+            rights
+          ) {
+
+            result.push({
+              ...cloneAst(
+                ast
+              ),
+              left,
+              right
+            });
+          }
+        }
+
+        return result;
+      }
+
+
+      default:
+
+        return [
+          cloneAst(
+            ast
+          )
+        ];
+    }
+  }
+
+
   function containsPlaceholder(ast) {
     if (!ast) {
       return true;
@@ -934,7 +1256,8 @@ MathExpressionInput 共用數學運算式輸入元件
       case "binary": {
         const precedence =
           ast.op === "+" ||
-          ast.op === "-"
+          ast.op === "-" ||
+          ast.op === "±"
             ? 1
             : 2;
 
@@ -967,6 +1290,11 @@ MathExpressionInput 共用數學運算式輸入元件
         ) {
           html =
             `${left}<span class="mei-op">−</span>${right}`;
+        } else if (
+          ast.op === "±"
+        ) {
+          html =
+            `${left}<span class="mei-op mei-op--plus-minus">±</span>${right}`;
         } else if (
           ast.op === "/"
         ) {
@@ -2649,6 +2977,22 @@ MathExpressionInput 共用數學運算式輸入元件
       }
 
       if (
+        this.options.allowPlusMinus
+      ) {
+        tools.push(`
+          <button
+            type="button"
+            class="mei-tool-button"
+            data-tool="plusMinus"
+            title="插入正負號"
+          >
+            <span class="mei-tool-symbol">±</span>
+            正負號
+          </button>
+        `);
+      }
+
+      if (
         this.options.allowPower
       ) {
         tools.push(`
@@ -3056,6 +3400,31 @@ MathExpressionInput 共用數學運算式輸入元件
                 tool === "fraction"
               ) {
                 this.openFractionEditor();
+              } else if (
+                tool === "plusMinus"
+              ) {
+
+                if (
+                  this.fractionEditor &&
+                  !this.fractionEditor.hidden
+                ) {
+
+                  this.insertIntoFractionField(
+                    "±",
+                    0
+                  );
+
+                } else {
+
+                  this.insertText(
+                    "±",
+                    {
+                      selectPlaceholder:
+                        false
+                    }
+                  );
+                }
+
               } else if (
                 tool === "power"
               ) {
@@ -3850,6 +4219,92 @@ MathExpressionInput 共用數學運算式輸入元件
       }
 
       if (
+        this.options.validationMode !==
+          "polynomial" &&
+        containsPlusMinus(
+          parsed.ast
+        )
+      ) {
+
+        try {
+
+          const expandedAsts =
+            expandPlusMinusAst(
+              parsed.ast
+            );
+
+          const branches =
+            expandedAsts.map(
+              branchAst => {
+
+                const linear =
+                  linearize(
+                    branchAst
+                  );
+
+                const terms =
+                  linearToTerms(
+                    linear
+                  );
+
+                return {
+                  ast:
+                    branchAst,
+                  display:
+                    renderAst(
+                      branchAst
+                    ),
+                  terms,
+                  value: {
+                    terms,
+                    display:
+                      renderAst(
+                        branchAst
+                      )
+                  }
+                };
+              }
+            );
+
+
+          return {
+            valid: true,
+            ast:
+              parsed.ast,
+            raw:
+              parsed.raw,
+            display:
+              parsed.display,
+            plusMinus:
+              true,
+            branches,
+            values:
+              branches
+                .map(
+                  branch =>
+                    branch.value
+                )
+          };
+
+        } catch (
+          error
+        ) {
+
+          return {
+            valid: false,
+            ast:
+              parsed.ast,
+            display:
+              parsed.display,
+            message:
+              error.message ||
+              "正負號答案目前無法判定。"
+          };
+        }
+      }
+
+
+      if (
         this.options.validationMode ===
         "polynomial"
       ) {
@@ -4177,6 +4632,8 @@ MathExpressionInput 共用數學運算式輸入元件
     cleanupEditableFractionText,
     polynomialize,
     polynomialMapToTerms,
-    isFactorizedAst
+    isFactorizedAst,
+    containsPlusMinus,
+    expandPlusMinusAst
   };
 })();
