@@ -19,7 +19,7 @@
     href="../css/scratchpad.css"
   >
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=6">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=9">
   <link rel="stylesheet" href="../css/question-layout.css?v=1">
 
   <link
@@ -2307,7 +2307,7 @@
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
-<script src="../js/math-expression-input.js?v=6"></script>
+<script src="../js/math-expression-input.js?v=9"></script>
 <script src="../js/question-layout.js?v=1"></script>
 <script src="../js/expression-input.js?v=7"></script>
 
@@ -5581,7 +5581,7 @@ function renderFactorAnswer(
         請直接輸入完整因式分解結果。
         請使用括號區分各因式，例如：
         (2x−3)(x＋5)。
-        完全平方可先輸入 (x−2)，再按「次方」輸入 2。
+        完全平方可先輸入 (x−2)，再按「次方」輸入 2；答案框會直接顯示成 (x−2)²。
       </p>
 
       <div id="factor-expression-mount"></div>
@@ -5630,6 +5630,9 @@ function renderFactorAnswer(
 
       validationMode:
         "polynomial",
+
+      showPreview:
+        false,
 
       toolOrder: [
         "variable",
