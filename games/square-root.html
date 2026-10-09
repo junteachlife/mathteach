@@ -27,6 +27,8 @@
 
   <link rel="stylesheet" href="../css/radical-display.css?v=1">
 
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=1">
+
   <style>
 
     * {
@@ -2343,6 +2345,8 @@
 
 <script src="../js/radical-input.js?v=7"></script>
 
+<script src="../js/math-expression-input.js?v=1"></script>
+
 <script type="module">
 
 import {
@@ -2422,6 +2426,10 @@ let selectedChoice =
 
 let radicalInput =
   null;
+
+let mathExpressionInput =
+  null;
+
 
 
 let startTime =
@@ -5546,6 +5554,12 @@ function renderAnswer(
   radicalInput =
     null;
 
+  mathExpressionInput
+    ?.destroy?.();
+
+  mathExpressionInput =
+    null;
+
 
   selectedChoice =
     null;
@@ -5680,33 +5694,70 @@ function renderAnswer(
 
       <p class="answer-help">
 
-        根號外係數為 1 時可以保留 1。<br>
-
-        根號內若還可以化簡，
-        系統只提醒，不會替你自動化簡。
+        直接輸入係數；需要根號時按「√ 根號」。
+        根號內若仍可化簡，系統會提醒。
 
       </p>
 
       <div
-        id="radical-answer-mount"
+        id="math-expression-answer-mount"
       ></div>
     `;
 
 
-    radicalInput =
-      new window.RadicalInput(
+    if (
+      typeof window.MathExpressionInput !==
+      "function"
+    ) {
+
+      $("feedback").className =
+        "feedback warning";
+
+      $("feedback").textContent =
+        "MathExpressionInput 共用元件沒有正常載入。";
+
+      return;
+    }
+
+
+    mathExpressionInput =
+      new window.MathExpressionInput(
         {
 
           mountId:
-            "radical-answer-mount",
+            "math-expression-answer-mount",
+
+          allowRadical:
+            true,
+
+          allowFraction:
+            false,
+
+          allowPower:
+            false,
+
+          allowVariable:
+            false,
 
           requireSimplifiedRadical:
             true,
+
+          requireSimplifiedFraction:
+            true,
+
+          requireRationalDenominator:
+            true,
+
+          placeholder:
+            "例如：−2√5",
 
           theme: {
 
             primary:
               "#0288d1",
+
+            dark:
+              "#0277bd",
 
             light:
               "#e1f5fe",
@@ -5716,14 +5767,6 @@ function renderAnswer(
           }
         }
       );
-
-
-    setTimeout(
-      () =>
-        radicalInput
-          ?.focus(),
-      0
-    );
 
 
     return;
@@ -6073,7 +6116,7 @@ function readAnswer(
   ) {
 
     const result =
-      radicalInput
+      mathExpressionInput
         ?.validate();
 
 
@@ -6093,16 +6136,65 @@ function readAnswer(
     }
 
 
+    const terms =
+      result.terms ||
+      [];
+
+
+    if (
+      terms.length !==
+      1 ||
+      terms[0].radicand ===
+      1
+    ) {
+
+      return {
+
+        valid:
+          false,
+
+        message:
+          "本題答案應為一個最簡根式。"
+      };
+    }
+
+
+    const term =
+      terms[0];
+
+
+    if (
+      term.denominator !==
+      1
+    ) {
+
+      return {
+
+        valid:
+          false,
+
+        message:
+          "本題答案的根號外係數應為整數。"
+      };
+    }
+
+
     return {
 
       valid:
         true,
 
-      value:
-        result.value,
+      value: {
+
+        coefficient:
+          term.numerator,
+
+        radicand:
+          term.radicand
+      },
 
       display:
-        result.value.display
+        result.display
     };
   }
 
@@ -6443,6 +6535,13 @@ function submitAnswer() {
 
   answered =
     true;
+
+
+  mathExpressionInput
+    ?.setDisabled
+    ?.(
+      true
+    );
 
 
   radicalInput
