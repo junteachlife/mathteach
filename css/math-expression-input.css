@@ -1,0 +1,462 @@
+/*
+==================================================
+MathExpressionInput 共用數學運算式輸入元件
+版本：1.0.0
+==================================================
+*/
+
+.mei-shell{
+  --mei-primary:#7b1fa2;
+  --mei-primary-dark:#4a148c;
+  --mei-primary-light:#f3e5f5;
+  --mei-primary-border:#ce93d8;
+
+  width:min(100%,860px);
+  margin:0 auto;
+
+  font-family:
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif;
+}
+
+.mei-main-row{
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+  gap:10px;
+}
+
+.mei-editor-wrap{
+  position:relative;
+  flex:1 1 360px;
+  min-width:0;
+  min-height:66px;
+
+  border:
+    2px solid
+    var(--mei-primary-border);
+
+  border-radius:14px;
+
+  background:#fff;
+
+  box-shadow:
+    0 2px 0
+    rgba(15,23,42,.04);
+}
+
+.mei-editor-wrap:focus-within{
+  border-color:
+    var(--mei-primary);
+
+  box-shadow:
+    0 0 0 3px
+    color-mix(
+      in srgb,
+      var(--mei-primary) 14%,
+      transparent
+    );
+}
+
+.mei-source-input{
+  position:relative;
+  z-index:2;
+
+  width:100%;
+  height:100%;
+  min-height:62px;
+
+  padding:
+    10px 14px;
+
+  border:0;
+  outline:0;
+
+  background:transparent;
+
+  color:transparent !important;
+  -webkit-text-fill-color:transparent;
+
+  caret-color:
+    var(--mei-primary);
+
+  font-size:20px;
+}
+
+.mei-source-input::selection{
+  background:
+    rgba(123,31,162,.16);
+}
+
+.mei-rich-display{
+  position:absolute;
+  inset:0;
+  z-index:1;
+
+  display:flex;
+  align-items:center;
+
+  min-width:0;
+
+  padding:
+    8px 14px;
+
+  overflow-x:auto;
+  overflow-y:hidden;
+
+  pointer-events:none;
+
+  color:#0f172a;
+
+  white-space:nowrap;
+
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    serif;
+
+  font-size:
+    clamp(
+      22px,
+      3.8vw,
+      30px
+    );
+
+  font-weight:900;
+}
+
+.mei-rich-display--placeholder{
+  color:#94a3b8;
+
+  font-family:
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif;
+
+  font-size:16px;
+  font-weight:800;
+}
+
+.mei-toolbar{
+  display:flex;
+  align-items:stretch;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.mei-tool-button{
+  min-width:84px;
+  min-height:62px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  padding:
+    8px 11px;
+
+  border:
+    2px solid
+    var(--mei-primary-border);
+
+  border-radius:13px;
+
+  background:#fff;
+
+  color:
+    var(--mei-primary-dark);
+
+  font-size:14px;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+.mei-tool-button:hover{
+  background:
+    var(--mei-primary-light);
+}
+
+.mei-tool-button:active{
+  transform:
+    translateY(1px);
+}
+
+.mei-tool-symbol{
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    serif;
+
+  font-size:23px;
+  line-height:1;
+}
+
+.mei-tool-symbol sup{
+  font-size:.58em;
+}
+
+.mei-mini-fraction{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:stretch;
+
+  min-width:20px;
+
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    serif;
+
+  font-size:12px;
+  line-height:1;
+}
+
+.mei-mini-fraction span{
+  display:block;
+  padding:1px 4px;
+  text-align:center;
+}
+
+.mei-mini-fraction span:first-child{
+  border-bottom:
+    1.8px solid
+    currentColor;
+}
+
+.mei-hint{
+  margin-top:7px;
+
+  color:#64748b;
+
+  font-size:13px;
+  font-weight:700;
+
+  text-align:center;
+}
+
+.mei-preview{
+  margin-top:12px;
+
+  min-height:58px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+
+  padding:
+    11px 13px;
+
+  border:
+    2px solid
+    var(--mei-primary-border);
+
+  border-radius:13px;
+
+  background:
+    var(--mei-primary-light);
+
+  color:#334155;
+
+  text-align:center;
+
+  font-size:17px;
+  font-weight:900;
+}
+
+.mei-preview--valid{
+  border-color:#86efac;
+  background:#f0fdf4;
+  color:#166534;
+}
+
+.mei-preview--incomplete{
+  color:#475569;
+}
+
+.mei-preview-value{
+  display:inline-flex;
+  align-items:center;
+
+  color:
+    var(--mei-primary);
+
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    serif;
+
+  font-size:24px;
+  font-weight:900;
+}
+
+.mei-preview-message{
+  width:100%;
+  margin-top:2px;
+
+  color:#b45309;
+
+  font-size:13px;
+  font-weight:800;
+}
+
+.mei-slot{
+  min-width:1.9em;
+  min-height:1.5em;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:
+    .08em .28em;
+
+  border:
+    1.5px dashed
+    var(--mei-primary-border);
+
+  border-radius:7px;
+
+  color:#94a3b8;
+
+  font-family:
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif;
+
+  font-size:.62em;
+  font-weight:800;
+}
+
+.mei-op{
+  display:inline-block;
+  margin:
+    0 .12em;
+}
+
+.mei-variable{
+  font-style:italic;
+}
+
+.mei-fraction{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:center;
+
+  min-width:1.8em;
+
+  margin:
+    0 .10em;
+
+  vertical-align:middle;
+}
+
+.mei-fraction-top,
+.mei-fraction-bottom{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  padding:
+    .06em .16em;
+}
+
+.mei-fraction-top{
+  border-bottom:
+    2.2px solid
+    currentColor;
+}
+
+.mei-fallback-root{
+  display:inline-flex;
+  align-items:flex-start;
+  vertical-align:middle;
+}
+
+.mei-fallback-root-sign{
+  font-size:1.45em;
+  line-height:1;
+}
+
+.mei-fallback-root-content{
+  padding:
+    .04em .08em 0;
+
+  border-top:
+    2px solid
+    currentColor;
+}
+
+.mei-shell--disabled{
+  opacity:.72;
+}
+
+.mei-shell--disabled
+.mei-tool-button{
+  cursor:not-allowed;
+}
+
+@media(max-width:640px){
+  .mei-main-row{
+    align-items:stretch;
+    gap:8px;
+  }
+
+  .mei-editor-wrap{
+    flex-basis:240px;
+  }
+
+  .mei-toolbar{
+    gap:6px;
+  }
+
+  .mei-tool-button{
+    min-width:68px;
+    min-height:60px;
+
+    padding:
+      7px 8px;
+
+    font-size:13px;
+  }
+
+  .mei-rich-display{
+    font-size:
+      clamp(
+        21px,
+        6vw,
+        28px
+      );
+  }
+}
+
+@media(max-width:460px){
+  .mei-main-row{
+    display:grid;
+    grid-template-columns:
+      minmax(0,1fr)
+      auto;
+  }
+
+  .mei-toolbar{
+    display:grid;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(64px,1fr)
+      );
+  }
+
+  .mei-tool-button{
+    min-width:0;
+  }
+}
