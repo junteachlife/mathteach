@@ -20,6 +20,8 @@
     href="../css/scratchpad.css"
   >
 
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=3">
+
   <style>
 
     * {
@@ -2460,6 +2462,166 @@
         font-size: 13px;
       }
     }
+  
+
+    /* ==================================================
+       最新統一遊戲版面｜對齊八上 1-1 ～ 2-2
+    ================================================== */
+
+    .game-card,
+    .game-shell{
+      position:relative;
+    }
+
+    .game-card-return-row{
+      display:flex;
+      justify-content:flex-end;
+      padding:12px 16px 0;
+      background:linear-gradient(180deg,var(--primary-light,#f8fafc),#fff);
+    }
+
+    .game-card-return-row.hidden{
+      display:none !important;
+    }
+
+    .game-card-return-row .semester-return-button{
+      width:auto;
+      min-width:0;
+      min-height:40px;
+      padding:8px 14px;
+      border:2px solid var(--primary-border,var(--teal,#94a3b8));
+      border-radius:12px;
+      background:#fff;
+      color:var(--primary-dark,var(--navy,#334155));
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:none;
+    }
+
+    .quiz-topbar{
+      display:grid !important;
+      grid-template-columns:minmax(210px,1fr) minmax(300px,1.35fr) auto !important;
+      gap:12px !important;
+      align-items:center;
+      margin-bottom:14px;
+    }
+
+    .quiz-context,
+    .quiz-stats{
+      display:grid;
+      gap:8px;
+    }
+
+    .quiz-context{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .quiz-stats{
+      grid-template-columns:repeat(3,minmax(86px,1fr));
+    }
+
+    .quiz-actions{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .quiz-actions .game-button{
+      min-width:116px;
+      min-height:46px;
+      padding:10px 14px;
+    }
+
+    .question-card{
+      position:relative;
+      padding-bottom:78px !important;
+    }
+
+    .scratchpad-row{
+      position:absolute !important;
+      right:16px !important;
+      bottom:14px !important;
+      width:auto !important;
+      min-height:44px !important;
+      margin:0 !important;
+      display:flex !important;
+      justify-content:flex-end !important;
+      z-index:5;
+    }
+
+    #scratchpad-mobile-button{
+      width:auto !important;
+      display:flex !important;
+      justify-content:flex-end !important;
+    }
+
+    #scratchpad-mobile-button #scratchpadOpenButton,
+    #scratchpad-mobile-button .scratchpad-open-button{
+      position:static !important;
+      inset:auto !important;
+      transform:none !important;
+      margin:0 !important;
+      z-index:auto !important;
+    }
+
+    .answer-submit-row{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+
+    @media(max-width:900px){
+      .quiz-topbar{
+        grid-template-columns:1fr !important;
+      }
+    }
+
+    @media(max-width:600px){
+      .game-card-return-row{
+        padding:10px 10px 0;
+      }
+
+      .game-card-return-row .semester-return-button{
+        padding:7px 10px;
+        font-size:13px;
+      }
+
+      .quiz-context,
+      .quiz-stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .quiz-stats .timer-box{
+        grid-column:1/-1;
+      }
+
+      .quiz-actions{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .quiz-actions .game-button{
+        min-width:0;
+        width:100%;
+        padding:10px 8px;
+        font-size:14px;
+      }
+
+      .question-card{
+        padding-bottom:76px !important;
+      }
+
+      .scratchpad-row{
+        right:10px !important;
+        bottom:12px !important;
+      }
+    }
+
   </style>
 
 </head>
@@ -2471,6 +2633,18 @@
   <div id="commonHeaderMount"></div>
 
   <main class="game-card">
+
+    <div id="semester-return-row" class="game-card-return-row">
+      <button
+        id="semester-return-button"
+        class="semester-return-button"
+        type="button"
+      >
+        ↩️ 重返八年級上學期
+      </button>
+    </div>
+
+
 
     <header class="game-header">
 
@@ -2503,17 +2677,8 @@
       class="screen"
     >
 
-            <div class="semester-return-row">
+            
 
-        <button
-          id="semester-return-button"
-          class="semester-return-button"
-          type="button"
-        >
-          ↩️ 重返八年級上學期
-        </button>
-
-      </div>
 
 <div class="mode-grid">
         <button
@@ -2675,75 +2840,47 @@
       class="screen hidden"
     >
 
+      
       <div class="quiz-topbar">
 
-        <div class="status-box">
-
-          模式
-
-          <span
-            id="mode-name"
-            class="status-value"
-          >
-            —
-          </span>
-
+        <div class="quiz-context">
+          <div class="status-box">
+            模式
+            <span id="mode-name" class="status-value">—</span>
+          </div>
+          <div class="status-box">
+            進度
+            <span id="question-number" class="status-value">1 / 10</span>
+          </div>
         </div>
 
-        <div class="status-box">
-
-          進度
-
-          <span
-            id="question-number"
-            class="status-value"
-          >
-            1 / 10
-          </span>
-
+        <div class="quiz-stats">
+          <div class="status-box">
+            答對
+            <span id="correct-count" class="status-value">0</span>
+          </div>
+          <div class="status-box">
+            最高連擊
+            <span id="combo-count" class="status-value">0</span>
+          </div>
+          <div class="status-box timer-box">
+            ⏱️ 測驗時間
+            <span id="timer-display" class="status-value">00:00</span>
+          </div>
         </div>
 
-        <div class="status-box">
-
-          答對
-
-          <span
-            id="correct-count"
-            class="status-value"
-          >
-            0
-          </span>
-
-        </div>
-
-        <div class="status-box">
-
-          最高連擊
-
-          <span
-            id="combo-count"
-            class="status-value"
-          >
-            0
-          </span>
-
-        </div>
-
-        <div class="status-box timer-box">
-
-          測驗時間
-
-          <span
-            id="timer-display"
-            class="status-value"
-          >
-            00:00
-          </span>
-
+        <div class="quiz-actions">
+          <button id="restart-button" class="game-button restart" type="button">
+            🔄 重新測驗
+          </button>
+          <button id="mode-button" class="game-button secondary" type="button">
+            重選模式
+          </button>
         </div>
 
       </div>
-<div class="progress-shell">
+
+      <div class="progress-shell">
 
         <div
           id="progress-bar"
@@ -2764,53 +2901,24 @@
           class="question-content"
         ></div>
 
-      </div>
-
-            <div class="scratchpad-row">
-
-        <div id="scratchpad-mobile-button"></div>
-
-      </div>
-
+      
+        <div class="scratchpad-row">
+          <div id="scratchpad-mobile-button"></div>
+        </div>
+</div>
 <div
         id="answer-panel"
         class="answer-panel"
       ></div>
 
-      <div class="button-row">
-
-        <button
-          id="submit-button"
-          class="game-button"
-          type="button"
-        >
+      
+      <div class="answer-submit-row">
+        <button id="submit-button" class="game-button" type="button">
           提交答案（Enter）
         </button>
-
-        <button
-          id="next-button"
-          class="game-button hidden"
-          type="button"
-        >
+        <button id="next-button" class="game-button hidden" type="button">
           下一題（Enter）
         </button>
-
-        <button
-          id="restart-button"
-          class="game-button restart"
-          type="button"
-        >
-          🔄 重新測驗
-        </button>
-
-        <button
-          id="mode-button"
-          class="game-button secondary"
-          type="button"
-        >
-          選擇模式
-        </button>
-
       </div>
 
       <div
@@ -2994,6 +3102,8 @@
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
 
+<script src="../js/math-expression-input.js?v=3"></script>
+
 <script type="module">
 
 import {
@@ -3102,6 +3212,13 @@ let selectedChoice =
 
 let activeRootInput =
   null;
+
+let rootExpressionInput1 =
+  null;
+
+let rootExpressionInput2 =
+  null;
+
 
 
 let startTime =
@@ -9976,218 +10093,183 @@ function renderRootsAnswer(
   question
 ) {
 
-  const rootCount =
-    question.values.length;
+  rootExpressionInput1
+    ?.destroy?.();
 
+  rootExpressionInput2
+    ?.destroy?.();
+
+  rootExpressionInput1 =
+    null;
+
+  rootExpressionInput2 =
+    null;
+
+  const needSecond =
+    question.values.length >
+    1;
 
   $("answer-panel")
     .innerHTML = `
-
       <div class="answer-title">
-
         ${question.label}
-
       </div>
 
       <p class="answer-help">
-
-        ${
-          rootCount === 1
-
-            ? "本題為重根，只需填寫一次根值；系統會標示為重根。"
-
-            : "兩根前後順序可以交換。"
-        }
-
-        <br>
-
-        根號請使用下方按鈕輸入；
-        若答案為分數，請切換成上下分子、分母的答案格，
-        不需要使用 /。
-
+        每個根使用一個完整答案框。
+        數字與正負號直接輸入；
+        
+        需要分數時按「分數」。
       </p>
 
       <div class="root-input-grid">
-
-        ${rootBoxHTML(
-          1,
-
-          rootCount ===
-          1
-
-            ? "答案（重根）"
-
-            : "第一個根"
-        )}
+        <div class="root-box">
+          <div class="root-box-title">
+            ${needSecond ? "第一個根" : "根"}
+          </div>
+          <div id="root-expression-one"></div>
+        </div>
 
         ${
-          rootCount >
-          1
-
-            ? rootBoxHTML(
-                2,
-                "第二個根"
-              )
-
+          needSecond
+            ? `
+              <div class="root-box">
+                <div class="root-box-title">
+                  第二個根
+                </div>
+                <div id="root-expression-two"></div>
+              </div>
+            `
             : ""
         }
-
       </div>
 
-      <div class="symbol-toolbar">
-
-        <button
-          type="button"
-          class="symbol-button"
-          data-symbol="√"
-          aria-label="輸入根號"
-        >
-
-          <span class="sqrt-key-demo">
-            ${sqrtHTML("x")}
-          </span>
-
-        </button>
-
-        <button
-          type="button"
-          class="symbol-button"
-          data-symbol="＋"
-        >
-          ＋
-        </button>
-
-        <button
-          type="button"
-          class="symbol-button"
-          data-symbol="−"
-        >
-          −
-        </button>
-
-        <button
-          type="button"
-          class="symbol-button"
-          data-symbol="("
-        >
-          (
-        </button>
-
-        <button
-          type="button"
-          class="symbol-button"
-          data-symbol=")"
-        >
-          )
-        </button>
-
-      </div>
-
-      <div
-        id="answer-preview"
-        class="answer-preview"
-      >
+      <div id="answer-preview" class="answer-preview">
         目前尚未完成答案。
       </div>
     `;
 
+  if (
+    typeof window.MathExpressionInput !==
+    "function"
+  ) {
+    $("feedback").className =
+      "feedback warning";
+    $("feedback").textContent =
+      "MathExpressionInput 共用元件沒有正常載入。";
+    return;
+  }
 
-  [
-    1,
-    2
-  ]
-    .forEach(
-      rootNumber => {
+  const options = {
+    allowRadical:
+      false,
+    allowFraction:
+      true,
+    allowPower:
+      false,
+    allowVariable:
+      false,
+    requireSimplifiedRadical:
+      true,
+    requireSimplifiedFraction:
+      true,
+    requireRationalDenominator:
+      true,
+    placeholder:
+      "例如：−3/2",
+    theme: {
+      primary:
+        "#1565c0",
+      dark:
+        "#0d47a1",
+      light:
+        "#e3f2fd",
+      border:
+        "#90caf9"
+    }
+  };
 
-        [
-          `root-${rootNumber}`,
-          `root-${rootNumber}-num`,
-          `root-${rootNumber}-den`
-        ]
-          .forEach(
-            id => {
+  rootExpressionInput1 =
+    new window.MathExpressionInput({
+      ...options,
+      mountId:
+        "root-expression-one"
+    });
 
-              const input =
-                $(id);
+  if (needSecond) {
+    rootExpressionInput2 =
+      new window.MathExpressionInput({
+        ...options,
+        mountId:
+          "root-expression-two",
+        autoFocus:
+          false
+      });
+  }
 
+  const updateSharedRootPreview =
+    () => {
 
-              if (
-                !input
-              ) {
+      const first =
+        rootExpressionInput1
+          ?.validate();
 
-                return;
-              }
+      const second =
+        needSecond
+          ? rootExpressionInput2
+              ?.validate()
+          : null;
 
+      const preview =
+        $("answer-preview");
 
-              input.addEventListener(
-                "focus",
-                () => {
-
-                  activeRootInput =
-                    input;
-                }
-              );
-
-
-              input.addEventListener(
-                "input",
-                updateRootPreview
-              );
-            }
-          );
+      if (
+        !first?.valid ||
+        (
+          needSecond &&
+          !second?.valid
+        )
+      ) {
+        preview.innerHTML =
+          "目前尚未完成答案.";
+        return;
       }
+
+      preview.innerHTML =
+        needSecond
+          ? `
+              目前答案：
+              <span class="preview-value">
+                x＝${first.display}
+                或
+                ${second.display}
+              </span>
+            `
+          : `
+              目前答案：
+              <span class="preview-value">
+                x＝${first.display}
+              </span>
+            `;
+    };
+
+  rootExpressionInput1
+    ?.input
+    ?.addEventListener(
+      "input",
+      updateSharedRootPreview
     );
 
-
-  $("answer-panel")
-    .querySelectorAll(
-      "[data-root-toggle]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            toggleRootFractionMode(
-              Number(
-                button.dataset.rootToggle
-              )
-            );
-          }
-        );
-      }
+  rootExpressionInput2
+    ?.input
+    ?.addEventListener(
+      "input",
+      updateSharedRootPreview
     );
-
-
-  $("answer-panel")
-    .querySelectorAll(
-      "[data-symbol]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            insertRootSymbol(
-              button.dataset.symbol
-            );
-          }
-        );
-      }
-    );
-
-
-  activeRootInput =
-    $("root-1");
-
 
   setTimeout(
     () =>
-      $("root-1")
+      rootExpressionInput1
         ?.focus(),
     0
   );
@@ -10605,6 +10687,19 @@ function renderAnswer(
     null;
 
 
+  rootExpressionInput1
+    ?.destroy?.();
+
+  rootExpressionInput2
+    ?.destroy?.();
+
+  rootExpressionInput1 =
+    null;
+
+  rootExpressionInput2 =
+    null;
+
+
   if (
     question.type ===
     "choice"
@@ -10790,189 +10885,122 @@ function readRootsAnswer(
   question
 ) {
 
-  const firstRaw =
-    getRootRaw(
-      1
-    );
-
-
-  const secondRaw =
-    getRootRaw(
-      2
-    );
-
-
-  if (
-    firstRaw ===
-    null
+  function expressionResultToNumber(
+    result
   ) {
 
-    return {
+    if (
+      !result?.valid
+    ) {
+      return NaN;
+    }
 
-      valid:
-        false,
+    const terms =
+      result.terms ||
+      [];
 
-      message:
-        "第一個根的分數答案請把分子、分母都填完整。"
-    };
+    let value =
+      0;
+
+    for (
+      const term of
+      terms
+    ) {
+      value +=
+        (
+          term.numerator /
+          term.denominator
+        ) *
+        Math.sqrt(
+          term.radicand
+        );
+    }
+
+    return value;
   }
 
 
-  if (
-    secondRaw ===
-    null
-  ) {
-
-    return {
-
-      valid:
-        false,
-
-      message:
-        "第二個根的分數答案請把分子、分母都填完整。"
-    };
-  }
-
+  const firstResult =
+    rootExpressionInput1
+      ?.validate();
 
   if (
-    !firstRaw
+    !firstResult?.valid
   ) {
-
     return {
-
-      valid:
-        false,
-
+      valid: false,
       message:
-        "請輸入方程式的根。"
+        firstResult?.message ||
+        "請完成第一個根。"
     };
   }
-
-
-  if (
-    question.values.length >
-    1 &&
-
-    !secondRaw
-  ) {
-
-    return {
-
-      valid:
-        false,
-
-      message:
-        "本題有兩個根，請將兩個根都填寫完整。"
-    };
-  }
-
 
   const first =
-    parseMathExpression(
-      firstRaw
+    expressionResultToNumber(
+      firstResult
     );
 
-
   if (
-    !Number.isFinite(
-      first
-    )
+    !Number.isFinite(first)
   ) {
-
     return {
-
-      valid:
-        false,
-
+      valid: false,
       message:
         "第一個根的格式無法辨識。"
     };
   }
 
-
   const values =
-    [
-      first
-    ];
+    [first];
 
+  let secondResult =
+    null;
 
   if (
     question.values.length >
     1
   ) {
-
-    const second =
-      parseMathExpression(
-        secondRaw
-      );
-
+    secondResult =
+      rootExpressionInput2
+        ?.validate();
 
     if (
-      !Number.isFinite(
-        second
-      )
+      !secondResult?.valid
     ) {
-
       return {
+        valid: false,
+        message:
+          secondResult?.message ||
+          "請完成第二個根。"
+      };
+    }
 
-        valid:
-          false,
+    const second =
+      expressionResultToNumber(
+        secondResult
+      );
 
+    if (
+      !Number.isFinite(second)
+    ) {
+      return {
+        valid: false,
         message:
           "第二個根的格式無法辨識。"
       };
     }
 
-
-    values.push(
-      second
-    );
+    values.push(second);
   }
 
-
-  const firstDisplay =
-    rootEntryPreviewHTML(
-      1
-    ) ||
-    firstRaw;
-
-
-  const secondDisplay =
-    rootEntryPreviewHTML(
-      2
-    ) ||
-    secondRaw;
-
-
-  const conjugateDisplay =
-    values.length ===
-    2
-
-      ? conjugateRootPreviewHTML()
-
-      : "";
-
-
   return {
-
-    valid:
-      true,
-
+    valid: true,
     value:
       values,
-
     display:
-
-      values.length ===
-      1
-
-        ? `x＝${firstDisplay}（重根）`
-
-        : conjugateDisplay
-
-          ? `x＝${conjugateDisplay}`
-
-          : `x＝${firstDisplay} 或 ${secondDisplay}`
+      values.length === 1
+        ? `x＝${firstResult.display}（重根）`
+        : `x＝${firstResult.display} 或 ${secondResult.display}`
   };
 }
 
@@ -12061,6 +12089,19 @@ function submitAnswer() {
     true;
 
 
+  rootExpressionInput1
+    ?.setDisabled
+    ?.(
+      true
+    );
+
+  rootExpressionInput2
+    ?.setDisabled
+    ?.(
+      true
+    );
+
+
   const isCorrect =
     checkCorrect(
       question,
@@ -12394,27 +12435,33 @@ Scratchpad
 ==================================================
 */
 
-function moveScratchpadButtonToTop() {
+function ensureScratchpadButtonInQuestionCard() {
 
-  const mount =
-    $("scratchpad-mobile-button");
+  const mount = $("scratchpad-mobile-button");
+  const questionCard =
+    document.querySelector("#quiz-screen .question-card");
+  const button = $("scratchpadOpenButton");
 
-
-  const button =
-    $("scratchpadOpenButton");
-
+  if (
+    mount &&
+    questionCard &&
+    mount.parentElement !== questionCard
+  ) {
+    questionCard.appendChild(
+      mount.parentElement
+    );
+  }
 
   if (
     mount &&
     button &&
-    !mount.contains(
-      button
-    )
+    !mount.contains(button)
   ) {
+    mount.appendChild(button);
+  }
 
-    mount.appendChild(
-      button
-    );
+  if (button) {
+    window.showGameScratchpadButton?.();
   }
 }
 
@@ -12448,13 +12495,24 @@ function showOnly(
       }
     );
 
+  const semesterReturnRow =
+    $("semester-return-row");
+
+  semesterReturnRow
+    ?.classList
+    .toggle(
+      "hidden",
+      id !== "start-screen"
+    );
+
+
 
   if (
     id ===
     "quiz-screen"
   ) {
 
-    moveScratchpadButtonToTop();
+    ensureScratchpadButtonInQuestionCard();
 
 
     window
@@ -13054,6 +13112,22 @@ function restartCurrentModeWithConfirmation() {
 }
 
 
+function confirmReselectMode() {
+  return window.confirm(
+    "確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。"
+  );
+}
+
+function backToModesWithConfirmation() {
+  if (!confirmReselectMode()) {
+    return;
+  }
+
+  stopTimer();
+  showOnly("start-screen");
+}
+
+
 function returnToGrade8FirstSemester() {
 
   const referrer =
@@ -13195,15 +13269,7 @@ $("restart-button")
 $("mode-button")
   .addEventListener(
     "click",
-    () => {
-
-      stopTimer();
-
-
-      showOnly(
-        "start-screen"
-      );
-    }
+    backToModesWithConfirmation
   );
 
 
@@ -13312,11 +13378,11 @@ window
     "DOMContentLoaded",
     () => {
 
-      moveScratchpadButtonToTop();
+      ensureScratchpadButtonInQuestionCard();
 
 
       setTimeout(
-        moveScratchpadButtonToTop,
+        ensureScratchpadButtonInQuestionCard,
         100
       );
     }
