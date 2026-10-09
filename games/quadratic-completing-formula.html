@@ -22,7 +22,7 @@
 
   <link rel="stylesheet" href="../css/radical-display.css?v=1">
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=7">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=8">
 
   <style>
 
@@ -2669,6 +2669,26 @@
       font-weight:900;
     }
 
+  
+
+    /* ==================================================
+       4-2｜共軛根單一答案框
+    ================================================== */
+
+    .root-input-grid--single{
+      grid-template-columns:minmax(0,1fr) !important;
+      width:min(100%,640px) !important;
+    }
+
+    .root-input-grid--single .root-box{
+      width:100%;
+    }
+
+    .answer-warning{
+      color:#b45309;
+      font-weight:900;
+    }
+
   </style>
 
   <link rel="stylesheet" href="../css/question-layout.css?v=1">
@@ -3154,7 +3174,7 @@
 
 <script src="../js/radical-display.js?v=1"></script>
 
-<script src="../js/math-expression-input.js?v=7"></script>
+<script src="../js/math-expression-input.js?v=8"></script>
 
 <script src="../js/question-layout.js?v=1"></script>
 
@@ -10355,6 +10375,60 @@ function getConjugateRootsCompactHTML(
 }
 
 
+function shouldUseSinglePlusMinusRootInput(
+  question
+) {
+
+  return (
+    Array.isArray(
+      question.values
+    ) &&
+    question.values.length ===
+      2 &&
+    String(
+      question.answerHTML ||
+      ""
+    )
+      .includes(
+        "±"
+      )
+  );
+}
+
+
+function expressionTermsToNumber(
+  terms
+) {
+
+  let value =
+    0;
+
+  for (
+    const term of
+    terms ||
+    []
+  ) {
+
+    value +=
+      (
+        Number(
+          term.numerator
+        ) /
+        Number(
+          term.denominator
+        )
+      ) *
+      Math.sqrt(
+        Number(
+          term.radicand
+        )
+      );
+  }
+
+  return value;
+}
+
+
 function renderRootsAnswer(
   question
 ) {
@@ -10375,6 +10449,11 @@ function renderRootsAnswer(
     question.values.length >
     1;
 
+  const usePlusMinus =
+    shouldUseSinglePlusMinusRootInput(
+      question
+    );
+
   $("answer-panel")
     .innerHTML = `
       <div class="answer-title">
@@ -10382,23 +10461,52 @@ function renderRootsAnswer(
       </div>
 
       <p class="answer-help">
-        每個根使用一個完整答案框。
-        數字與正負號直接輸入；
+        ${
+          usePlusMinus
+            ? `
+              共軛根只要輸入一次；
+              請使用「± 正負號」表示兩個根。
+              例如：
+              1±√2、
+              (2±√3)/6。
+            `
+            : (
+                needSecond
+                  ? `
+                    本題有兩個整數或分數根，
+                    請分別輸入兩個根，前後順序不限。
+                  `
+                  : `
+                    請輸入方程式的根。
+                  `
+              )
+        }
         需要根號時按「√ 根號」，
         需要分數時按「分數」。
-        分數的分子與分母內也可以再使用根號。
       </p>
 
-      <div class="root-input-grid">
+      <div class="root-input-grid ${usePlusMinus || !needSecond ? "root-input-grid--single" : ""}">
         <div class="root-box">
           <div class="root-box-title">
-            ${needSecond ? "第一個根" : "根"}
+            ${
+              usePlusMinus
+                ? "兩個共軛根"
+                : (
+                    needSecond
+                      ? "第一個根"
+                      : "根"
+                  )
+            }
           </div>
+
           <div id="root-expression-one"></div>
         </div>
 
         ${
-          needSecond
+          (
+            needSecond &&
+            !usePlusMinus
+          )
             ? `
               <div class="root-box">
                 <div class="root-box-title">
@@ -10420,30 +10528,58 @@ function renderRootsAnswer(
     typeof window.MathExpressionInput !==
     "function"
   ) {
+
     $("feedback").className =
       "feedback warning";
+
     $("feedback").textContent =
       "MathExpressionInput 共用元件沒有正常載入。";
+
     return;
   }
 
   const options = {
     allowRadical:
       true,
+
     allowFraction:
       true,
+
+    allowPlusMinus:
+      usePlusMinus,
+
     allowPower:
       false,
+
     allowVariable:
       false,
+
     requireSimplifiedRadical:
       true,
+
     requireSimplifiedFraction:
       true,
+
     requireRationalDenominator:
       true,
+
+    toolOrder:
+      usePlusMinus
+        ? [
+            "radical",
+            "fraction",
+            "plusMinus"
+          ]
+        : [
+            "radical",
+            "fraction"
+          ],
+
     placeholder:
-      "例如：−3＋√5/2",
+      usePlusMinus
+        ? "例如：1±√2"
+        : "請輸入答案",
+
     theme: {
       primary:
         "#1565c0",
@@ -10463,10 +10599,16 @@ function renderRootsAnswer(
         "root-expression-one"
     });
 
-  if (needSecond) {
+  if (
+    needSecond &&
+    !usePlusMinus
+  ) {
+
     rootExpressionInput2 =
       new window.MathExpressionInput({
         ...options,
+        allowPlusMinus:
+          false,
         mountId:
           "root-expression-two",
         autoFocus:
@@ -10482,7 +10624,10 @@ function renderRootsAnswer(
           ?.validate();
 
       const second =
-        needSecond
+        (
+          needSecond &&
+          !usePlusMinus
+        )
           ? rootExpressionInput2
               ?.validate()
           : null;
@@ -10494,16 +10639,50 @@ function renderRootsAnswer(
         !first?.valid ||
         (
           needSecond &&
+          !usePlusMinus &&
           !second?.valid
         )
       ) {
+
         preview.innerHTML =
-          "目前尚未完成答案.";
+          "目前尚未完成答案。";
+
+        return;
+      }
+
+      if (
+        usePlusMinus
+      ) {
+
+        if (
+          !first.plusMinus ||
+          first.branches?.length !== 2
+        ) {
+
+          preview.innerHTML = `
+            <span class="answer-warning">
+              本題請使用「± 正負號」一次表示兩個共軛根。
+            </span>
+          `;
+
+          return;
+        }
+
+        preview.innerHTML = `
+          目前答案：
+          <span class="preview-value">
+            x＝${first.display}
+          </span>
+        `;
+
         return;
       }
 
       const compactConjugate =
-        needSecond
+        (
+          needSecond &&
+          second
+        )
           ? getConjugateRootsCompactHTML(
               first,
               second
@@ -10514,14 +10693,12 @@ function renderRootsAnswer(
         needSecond
           ? (
               compactConjugate
-
                 ? `
                     目前答案：
                     <span class="preview-value">
                       x＝${compactConjugate}
                     </span>
                   `
-
                 : `
                     目前答案：
                     <span class="preview-value">
@@ -11183,40 +11360,10 @@ function readRootsAnswer(
   question
 ) {
 
-  function expressionResultToNumber(
-    result
-  ) {
-
-    if (
-      !result?.valid
-    ) {
-      return NaN;
-    }
-
-    const terms =
-      result.terms ||
-      [];
-
-    let value =
-      0;
-
-    for (
-      const term of
-      terms
-    ) {
-      value +=
-        (
-          term.numerator /
-          term.denominator
-        ) *
-        Math.sqrt(
-          term.radicand
-        );
-    }
-
-    return value;
-  }
-
+  const usePlusMinus =
+    shouldUseSinglePlusMinusRootInput(
+      question
+    );
 
   const firstResult =
     rootExpressionInput1
@@ -11225,22 +11372,79 @@ function readRootsAnswer(
   if (
     !firstResult?.valid
   ) {
+
     return {
       valid: false,
       message:
         firstResult?.message ||
-        "請完成第一個根。"
+        "請完成答案。"
     };
   }
 
+
+  if (
+    usePlusMinus
+  ) {
+
+    if (
+      !firstResult.plusMinus ||
+      firstResult.branches?.length !==
+        2
+    ) {
+
+      return {
+        valid: false,
+        message:
+          "這題有兩個共軛根，請使用「± 正負號」一次表示兩個根。"
+      };
+    }
+
+    const values =
+      firstResult.branches
+        .map(
+          branch =>
+            expressionTermsToNumber(
+              branch.terms
+            )
+        );
+
+    if (
+      values.some(
+        value =>
+          !Number.isFinite(
+            value
+          )
+      )
+    ) {
+
+      return {
+        valid: false,
+        message:
+          "正負號答案目前無法辨識，請重新輸入。"
+      };
+    }
+
+    return {
+      valid: true,
+      value:
+        values,
+      display:
+        `x＝${firstResult.display}`
+    };
+  }
+
+
   const first =
-    expressionResultToNumber(
-      firstResult
+    expressionTermsToNumber(
+      firstResult.terms
     );
 
   if (
-    !Number.isFinite(first)
+    !Number.isFinite(
+      first
+    )
   ) {
+
     return {
       valid: false,
       message:
@@ -11249,7 +11453,9 @@ function readRootsAnswer(
   }
 
   const values =
-    [first];
+    [
+      first
+    ];
 
   let secondResult =
     null;
@@ -11258,6 +11464,7 @@ function readRootsAnswer(
     question.values.length >
     1
   ) {
+
     secondResult =
       rootExpressionInput2
         ?.validate();
@@ -11265,6 +11472,7 @@ function readRootsAnswer(
     if (
       !secondResult?.valid
     ) {
+
       return {
         valid: false,
         message:
@@ -11274,13 +11482,16 @@ function readRootsAnswer(
     }
 
     const second =
-      expressionResultToNumber(
-        secondResult
+      expressionTermsToNumber(
+        secondResult.terms
       );
 
     if (
-      !Number.isFinite(second)
+      !Number.isFinite(
+        second
+      )
     ) {
+
       return {
         valid: false,
         message:
@@ -11288,7 +11499,9 @@ function readRootsAnswer(
       };
     }
 
-    values.push(second);
+    values.push(
+      second
+    );
   }
 
   return {
@@ -11298,17 +11511,7 @@ function readRootsAnswer(
     display:
       values.length === 1
         ? `x＝${firstResult.display}（重根）`
-        : (
-            getConjugateRootsCompactHTML(
-              firstResult,
-              secondResult
-            )
-              ? `x＝${getConjugateRootsCompactHTML(
-                  firstResult,
-                  secondResult
-                )}`
-              : `x＝${firstResult.display} 或 ${secondResult.display}`
-          )
+        : `x＝${firstResult.display} 或 ${secondResult.display}`
   };
 }
 
