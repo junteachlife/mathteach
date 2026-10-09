@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.1.0
+版本：1.2.0
 ==================================================
 */
 
@@ -519,4 +519,58 @@ Blur 後再切回正式數學排版。
 .mei-shell--editing .mei-editor-wrap{
   border-color:
     var(--mei-primary);
+}
+
+
+/*
+==================================================
+v1.2｜分數答案自動增高
+==================================================
+*/
+
+.mei-shell--has-fraction .mei-editor-wrap{
+  min-height:94px;
+}
+
+.mei-shell--has-fraction .mei-source-input{
+  min-height:90px;
+  padding-top:18px;
+  padding-bottom:18px;
+}
+
+.mei-shell--has-fraction .mei-rich-display{
+  min-height:90px;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+/*
+正式上下分數在主答案框中保留足夠垂直空間。
+*/
+.mei-shell--has-fraction
+.rd-fraction,
+.mei-shell--has-fraction
+.mei-fraction{
+  margin-top:.10em;
+  margin-bottom:.10em;
+}
+
+/*
+編輯中雖採線性可讀格式，
+答案框仍維持加高，避免切換時高度跳動。
+*/
+.mei-shell--editing.mei-shell--has-fraction
+.mei-source-input{
+  line-height:1.55;
+}
+
+@media(max-width:640px){
+  .mei-shell--has-fraction .mei-editor-wrap{
+    min-height:88px;
+  }
+
+  .mei-shell--has-fraction .mei-source-input,
+  .mei-shell--has-fraction .mei-rich-display{
+    min-height:84px;
+  }
 }
