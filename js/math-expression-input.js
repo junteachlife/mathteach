@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.0.0
+版本：1.1.0
 ==================================================
 
 設計原則：
@@ -12,11 +12,11 @@ MathExpressionInput 共用數學運算式輸入元件
 - 主答案框直接顯示正式數學排版。
 - 實際鍵盤輸入仍使用原生 input，避免 Android contenteditable 問題。
 
-內部輸入語法（學生不需要知道）：
-sqrt(5)
-frac(2sqrt(5),3)
-sqrt(frac(3,5))
-2sqrt(3)+sqrt(7)
+編輯時直接使用可讀數學符號：
+√5
+(2√5)/(3)
+√((3)/(5))
+2√3+√7
 ==================================================
 */
 
@@ -234,6 +234,7 @@ sqrt(frac(3,5))
       .replace(/[×＊]/g, "*")
       .replace(/[÷／]/g, "/")
       .replace(/[ＸｘX]/g, "x")
+      .replace(/sqrt\s*/gi, "√")
       .replace(/\s+/g, "");
   }
 
@@ -288,6 +289,15 @@ sqrt(frac(3,5))
       if (ch === PLACEHOLDER) {
         tokens.push({
           type: "placeholder",
+          value: ch
+        });
+        i++;
+        continue;
+      }
+
+      if (ch === "√") {
+        tokens.push({
+          type: "sqrtSymbol",
           value: ch
         });
         i++;
@@ -376,6 +386,7 @@ sqrt(frac(3,5))
       return (
         token.type === "number" ||
         token.type === "placeholder" ||
+        token.type === "sqrtSymbol" ||
         token.type === "(" ||
         (
           token.type === "word" &&
@@ -563,6 +574,32 @@ sqrt(frac(3,5))
 
         return {
           type: "placeholder"
+        };
+      }
+
+      if (
+        token.type ===
+        "sqrtSymbol"
+      ) {
+        this.consume();
+
+        let value;
+
+        if (
+          this.match("(")
+        ) {
+          value =
+            this.parseExpression();
+
+          this.consume(")");
+        } else {
+          value =
+            this.parsePrimary();
+        }
+
+        return {
+          type: "sqrt",
+          value
         };
       }
 
@@ -1870,14 +1907,39 @@ sqrt(frac(3,5))
       [
         "click",
         "keyup",
-        "select",
-        "focus"
+        "select"
       ].forEach(
         eventName => {
           this.input.addEventListener(
             eventName,
             rememberSelection
           );
+        }
+      );
+
+      this.input.addEventListener(
+        "focus",
+        () => {
+          rememberSelection();
+
+          this.shell
+            ?.classList
+            .add(
+              "mei-shell--editing"
+            );
+        }
+      );
+
+      this.input.addEventListener(
+        "blur",
+        () => {
+          this.shell
+            ?.classList
+            .remove(
+              "mei-shell--editing"
+            );
+
+          this.update();
         }
       );
 
@@ -1898,19 +1960,7 @@ sqrt(frac(3,5))
         "keydown",
         event => {
           if (
-            event.key === "Tab"
-          ) {
-            const moved =
-              this.moveToFractionDenominator();
-
-            if (moved) {
-              event.preventDefault();
-            }
-
-            return;
-          }
-
-          if (
+            event.key === "Tab" ||
             event.key === "ArrowDown"
           ) {
             const moved =
@@ -1919,68 +1969,10 @@ sqrt(frac(3,5))
             if (moved) {
               event.preventDefault();
             }
-
-            return;
-          }
-
-          if (
-            event.key === "+" ||
-            event.key === "-"
-          ) {
-            const caret =
-              this.input.selectionStart ??
-              0;
-
-            if (
-              this.input.selectionStart ===
-                this.input.selectionEnd &&
-              this.input.value[
-                caret
-              ] === ")"
-            ) {
-              const context =
-                locateFunctionContext(
-                  this.input.value,
-                  caret
-                );
-
-              if (
-                context &&
-                (
-                  context.type === "sqrt" ||
-                  context.type === "power" ||
-                  (
-                    context.type === "frac" &&
-                    context.commaSeen
-                  )
-                )
-              ) {
-                event.preventDefault();
-
-                this.input.setSelectionRange(
-                  caret + 1,
-                  caret + 1
-                );
-
-                this.lastSelection = {
-                  start:
-                    caret + 1,
-                  end:
-                    caret + 1
-                };
-
-                this.insertText(
-                  event.key,
-                  {
-                    selectPlaceholder:
-                      false
-                  }
-                );
-              }
-            }
           }
         }
       );
+
 
       this.toolButtons.forEach(
         button => {
@@ -2001,22 +1993,22 @@ sqrt(frac(3,5))
                 tool === "sqrt"
               ) {
                 this.insertTemplate(
-                  "sqrt(□)",
-                  5
+                  "√□",
+                  1
                 );
               } else if (
                 tool === "fraction"
               ) {
                 this.insertTemplate(
-                  "frac(□,□)",
-                  5
+                  "(□)/(□)",
+                  1
                 );
               } else if (
                 tool === "power"
               ) {
                 this.insertTemplate(
-                  "^(□)",
-                  2
+                  "^□",
+                  1
                 );
               } else if (
                 tool === "variable"
@@ -2213,34 +2205,27 @@ sqrt(frac(3,5))
     }
 
     moveToFractionDenominator() {
+      const source =
+        this.input.value;
+
       const caret =
         this.input.selectionStart ??
         0;
 
-      const source =
-        this.input.value;
+      /*
+      新版分數編輯字串是：
+      (分子)/(分母)
 
-      const context =
-        locateFunctionContext(
-          source,
-          caret
-        );
-
-      if (
-        !context ||
-        context.type !== "frac" ||
-        context.commaSeen
-      ) {
-        return false;
-      }
+      Tab / ↓ 時：
+      如果游標仍在分子區，移到右側分母的 □。
+      */
 
       let depth = 0;
+      let slashIndex = -1;
 
       for (
-        let i =
-          context.open + 1;
-        i <
-          source.length;
+        let i = 0;
+        i < source.length;
         i++
       ) {
         const ch =
@@ -2253,67 +2238,59 @@ sqrt(frac(3,5))
         } else if (
           ch === ")"
         ) {
-          if (
-            depth === 0
-          ) {
-            break;
-          }
-
-          depth--;
+          depth =
+            Math.max(
+              0,
+              depth - 1
+            );
         } else if (
-          ch === "," &&
+          ch === "/" &&
           depth === 0
         ) {
-          const denominatorStart =
-            i + 1;
-
-          const placeholderIndex =
-            source.indexOf(
-              PLACEHOLDER,
-              denominatorStart
-            );
-
-          if (
-            placeholderIndex >=
-              denominatorStart
-          ) {
-            this.input.focus();
-
-            this.input.setSelectionRange(
-              placeholderIndex,
-              placeholderIndex + 1
-            );
-
-            this.lastSelection = {
-              start:
-                placeholderIndex,
-              end:
-                placeholderIndex + 1
-            };
-
-            return true;
-          }
-
-          this.input.focus();
-
-          this.input.setSelectionRange(
-            denominatorStart,
-            denominatorStart
-          );
-
-          this.lastSelection = {
-            start:
-              denominatorStart,
-            end:
-              denominatorStart
-          };
-
-          return true;
+          slashIndex =
+            i;
+          break;
         }
       }
 
-      return false;
+      if (
+        slashIndex < 0 ||
+        caret >
+          slashIndex
+      ) {
+        return false;
+      }
+
+      const placeholderIndex =
+        source.indexOf(
+          PLACEHOLDER,
+          slashIndex + 1
+        );
+
+      if (
+        placeholderIndex <
+        0
+      ) {
+        return false;
+      }
+
+      this.input.focus();
+
+      this.input.setSelectionRange(
+        placeholderIndex,
+        placeholderIndex + 1
+      );
+
+      this.lastSelection = {
+        start:
+          placeholderIndex,
+        end:
+          placeholderIndex + 1
+      };
+
+      return true;
     }
+
 
     parse() {
       const raw =
