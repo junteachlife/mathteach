@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.5.0
+版本：1.6.0
 ==================================================
 
 設計原則：
@@ -2888,6 +2888,9 @@ MathExpressionInput 共用數學運算式輸入元件
         this.mount.querySelector(
           ".mei-power-value"
         );
+
+      this.activeFractionInput =
+        null;
     }
 
     bind() {
@@ -3030,10 +3033,25 @@ MathExpressionInput 共用數學運算式輸入元件
               if (
                 tool === "sqrt"
               ) {
-                this.insertTemplate(
-                  "√□",
-                  1
-                );
+
+                if (
+                  this.fractionEditor &&
+                  !this.fractionEditor.hidden
+                ) {
+
+                  this.insertIntoFractionField(
+                    "√□",
+                    1
+                  );
+
+                } else {
+
+                  this.insertTemplate(
+                    "√□",
+                    1
+                  );
+                }
+
               } else if (
                 tool === "fraction"
               ) {
@@ -3092,6 +3110,33 @@ MathExpressionInput 共用數學運算式輸入元件
           () =>
             this.confirmPowerEditor()
         );
+
+      [
+        this.fractionNumerator,
+        this.fractionDenominator
+      ]
+        .filter(Boolean)
+        .forEach(
+          input => {
+
+            input.addEventListener(
+              "focus",
+              () => {
+                this.activeFractionInput =
+                  input;
+              }
+            );
+
+            input.addEventListener(
+              "click",
+              () => {
+                this.activeFractionInput =
+                  input;
+              }
+            );
+          }
+        );
+
 
       this.fractionNumerator
         ?.addEventListener(
@@ -3222,6 +3267,81 @@ MathExpressionInput 共用數學運算式輸入元件
       this.update();
     }
 
+    insertIntoFractionField(
+      template,
+      placeholderOffset = 0
+    ) {
+
+      const input =
+        this.activeFractionInput ||
+        this.fractionNumerator;
+
+      if (
+        !input
+      ) {
+        return;
+      }
+
+      const start =
+        input.selectionStart ??
+        input.value.length;
+
+      const end =
+        input.selectionEnd ??
+        start;
+
+      const current =
+        input.value;
+
+      const next =
+        current.slice(
+          0,
+          start
+        ) +
+        template +
+        current.slice(
+          end
+        );
+
+      input.value =
+        next;
+
+      const placeholderIndex =
+        next.indexOf(
+          PLACEHOLDER,
+          start
+        );
+
+      input.focus();
+
+      if (
+        placeholderIndex >=
+        0
+      ) {
+
+        input.setSelectionRange(
+          placeholderIndex,
+          placeholderIndex + 1
+        );
+
+      } else {
+
+        const caret =
+          start +
+          template.length +
+          placeholderOffset;
+
+        input.setSelectionRange(
+          caret,
+          caret
+        );
+      }
+
+      this.activeFractionInput =
+        input;
+    }
+
+
     closeSpecialEditors() {
 
       if (
@@ -3285,6 +3405,11 @@ MathExpressionInput 共用數學運算式輸入元件
       this.fractionDenominator.value =
         "";
 
+      this.activeFractionInput =
+        selected
+          ? this.fractionDenominator
+          : this.fractionNumerator;
+
       this.fractionEditor.hidden =
         false;
 
@@ -3315,16 +3440,28 @@ MathExpressionInput 共用數學運算式輸入元件
 
       const numerator =
         normalizeSource(
-          this.fractionNumerator
-            ?.value ||
-          ""
+          (
+            this.fractionNumerator
+              ?.value ||
+            ""
+          )
+            .replaceAll(
+              PLACEHOLDER,
+              ""
+            )
         );
 
       const denominator =
         normalizeSource(
-          this.fractionDenominator
-            ?.value ||
-          ""
+          (
+            this.fractionDenominator
+              ?.value ||
+            ""
+          )
+            .replaceAll(
+              PLACEHOLDER,
+              ""
+            )
         );
 
       if (
