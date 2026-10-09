@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.7.0
+版本：1.8.0
 ==================================================
 
 設計原則：
@@ -44,6 +44,13 @@ MathExpressionInput 共用數學運算式輸入元件
       支援 x、多項式、括號、乘法、分數係數與任意整數次方
     */
     validationMode: "numeric-radical",
+
+    /*
+    是否顯示元件內建的「系統判斷」預覽。
+    如果遊戲本身已有「目前答案」區塊，
+    可設為 false，避免出現兩個預覽視窗。
+    */
+    showPreview: true,
 
     /*
     工具列順序可依遊戲調整。
@@ -295,6 +302,18 @@ MathExpressionInput 共用數學運算式輸入元件
         : new Fraction(value, 1);
     }
   }
+
+  function normalizeEditableSource(raw) {
+    return String(raw ?? "")
+      .replace(/[＋﹢]/g, "+")
+      .replace(/[－−–—]/g, "-")
+      .replace(/[×＊]/g, "*")
+      .replace(/[÷／]/g, "/")
+      .replace(/[ＸｘX]/g, "x")
+      .replace(/sqrt\s*/gi, "√")
+      .replace(/\s+/g, "");
+  }
+
 
   function normalizeSource(raw) {
     return String(raw ?? "")
@@ -3175,6 +3194,7 @@ MathExpressionInput 共用數學運算式輸入元件
 
           <div
             class="mei-preview mei-preview--empty"
+            ${this.options.showPreview ? "" : "hidden"}
           >
             系統判斷：目前尚未完成答案。
           </div>
@@ -3321,7 +3341,7 @@ MathExpressionInput 共用數學運算式輸入元件
         "input",
         () => {
           let value =
-            normalizeSource(
+            normalizeEditableSource(
               this.input.value
             );
 
@@ -3808,7 +3828,7 @@ MathExpressionInput 共用數學運算式輸入元件
     confirmFractionEditor() {
 
       const numerator =
-        normalizeSource(
+        normalizeEditableSource(
           (
             this.fractionNumerator
               ?.value ||
@@ -3821,7 +3841,7 @@ MathExpressionInput 共用數學運算式輸入元件
         );
 
       const denominator =
-        normalizeSource(
+        normalizeEditableSource(
           (
             this.fractionDenominator
               ?.value ||
