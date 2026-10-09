@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.4.0
+版本：1.5.0
 ==================================================
 
 設計原則：
@@ -72,6 +72,52 @@ MathExpressionInput 共用數學運算式輸入元件
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+  }
+
+
+  const SUPERSCRIPT_DIGITS = {
+    "0":"⁰","1":"¹","2":"²","3":"³","4":"⁴",
+    "5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"
+  };
+
+  function toSuperscriptDigits(value) {
+    return String(value ?? "")
+      .split("")
+      .map(ch => SUPERSCRIPT_DIGITS[ch] || "")
+      .join("");
+  }
+
+  function needsGrouping(source) {
+    source = String(source ?? "").trim();
+
+    if (!source) {
+      return false;
+    }
+
+    let depth = 0;
+
+    for (let i = 0; i < source.length; i++) {
+      const ch = source[i];
+
+      if (ch === "(") {
+        depth++;
+      } else if (ch === ")") {
+        depth = Math.max(0, depth - 1);
+      } else if (
+        depth === 0 &&
+        (
+          ch === "+" ||
+          (
+            ch === "-" &&
+            i > 0
+          )
+        )
+      ) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   function gcd(a, b) {
@@ -255,6 +301,24 @@ MathExpressionInput 共用數學運算式輸入元件
       .replace(/[÷／]/g, "/")
       .replace(/[ＸｘX]/g, "x")
       .replace(/sqrt\s*/gi, "√")
+      .replace(
+        /[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,
+        superscriptRun => {
+          const map = {
+            "⁰":"0","¹":"1","²":"2","³":"3","⁴":"4",
+            "⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"
+          };
+
+          const digits =
+            [...superscriptRun]
+              .map(ch => map[ch] || "")
+              .join("");
+
+          return digits
+            ? `^(${digits})`
+            : "";
+        }
+      )
       .replace(/\s+/g, "");
   }
 
@@ -2672,8 +2736,97 @@ MathExpressionInput 共用數學運算式輸入元件
             }
           </div>
 
+          <div
+            class="mei-special-editor mei-special-editor--fraction"
+            data-special-editor="fraction"
+            hidden
+          >
+            <div class="mei-special-editor-title">
+              分數
+            </div>
+
+            <div class="mei-fraction-editor">
+              <input
+                class="mei-special-input mei-fraction-numerator"
+                type="text"
+                inputmode="text"
+                autocomplete="off"
+                placeholder="分子"
+                aria-label="分子"
+              >
+              <span class="mei-fraction-editor-line"></span>
+              <input
+                class="mei-special-input mei-fraction-denominator"
+                type="text"
+                inputmode="text"
+                autocomplete="off"
+                placeholder="分母"
+                aria-label="分母"
+              >
+            </div>
+
+            <div class="mei-special-editor-actions">
+              <button
+                type="button"
+                class="mei-special-confirm"
+                data-special-confirm="fraction"
+              >
+                插入
+              </button>
+
+              <button
+                type="button"
+                class="mei-special-cancel"
+                data-special-cancel
+              >
+                取消
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="mei-special-editor mei-special-editor--power"
+            data-special-editor="power"
+            hidden
+          >
+            <div class="mei-special-editor-title">
+              次方
+            </div>
+
+            <div class="mei-power-editor-preview">
+              □<sup>
+                <input
+                  class="mei-special-input mei-power-value"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  placeholder="n"
+                  aria-label="次方"
+                >
+              </sup>
+            </div>
+
+            <div class="mei-special-editor-actions">
+              <button
+                type="button"
+                class="mei-special-confirm"
+                data-special-confirm="power"
+              >
+                插入
+              </button>
+
+              <button
+                type="button"
+                class="mei-special-cancel"
+                data-special-cancel
+              >
+                取消
+              </button>
+            </div>
+          </div>
+
           <div class="mei-hint">
-            數字、＋、−直接輸入；需要特殊符號時再按功能鍵。
+            數字、＋、−、括號可直接輸入；需要特殊符號時再按功能鍵。
           </div>
 
           <div
@@ -2710,6 +2863,31 @@ MathExpressionInput 共用數學運算式輸入元件
             ".mei-tool-button"
           )
         ];
+
+      this.fractionEditor =
+        this.mount.querySelector(
+          '[data-special-editor="fraction"]'
+        );
+
+      this.powerEditor =
+        this.mount.querySelector(
+          '[data-special-editor="power"]'
+        );
+
+      this.fractionNumerator =
+        this.mount.querySelector(
+          ".mei-fraction-numerator"
+        );
+
+      this.fractionDenominator =
+        this.mount.querySelector(
+          ".mei-fraction-denominator"
+        );
+
+      this.powerValueInput =
+        this.mount.querySelector(
+          ".mei-power-value"
+        );
     }
 
     bind() {
@@ -2830,19 +3008,7 @@ MathExpressionInput 共用數學運算式輸入元件
 
       this.input.addEventListener(
         "keydown",
-        event => {
-          if (
-            event.key === "Tab" ||
-            event.key === "ArrowDown"
-          ) {
-            const moved =
-              this.moveToFractionDenominator();
-
-            if (moved) {
-              event.preventDefault();
-            }
-          }
-        }
+        () => {}
       );
 
 
@@ -2871,14 +3037,11 @@ MathExpressionInput 共用數學運算式輸入元件
               } else if (
                 tool === "fraction"
               ) {
-                this.insertTemplate(
-                  "□/□",
-                  0
-                );
+                this.openFractionEditor();
               } else if (
                 tool === "power"
               ) {
-                this.insertPowerTemplate();
+                this.openPowerEditor();
               } else if (
                 tool === "variable"
               ) {
@@ -2894,6 +3057,85 @@ MathExpressionInput 共用數學運算式輸入元件
           );
         }
       );
+
+
+      this.mount
+        .querySelectorAll(
+          "[data-special-cancel]"
+        )
+        .forEach(
+          button => {
+            button.addEventListener(
+              "click",
+              () =>
+                this.closeSpecialEditors()
+            );
+          }
+        );
+
+      this.mount
+        .querySelector(
+          '[data-special-confirm="fraction"]'
+        )
+        ?.addEventListener(
+          "click",
+          () =>
+            this.confirmFractionEditor()
+        );
+
+      this.mount
+        .querySelector(
+          '[data-special-confirm="power"]'
+        )
+        ?.addEventListener(
+          "click",
+          () =>
+            this.confirmPowerEditor()
+        );
+
+      this.fractionNumerator
+        ?.addEventListener(
+          "keydown",
+          event => {
+            if (
+              event.key === "Enter" ||
+              event.key === "ArrowDown"
+            ) {
+              event.preventDefault();
+
+              this.fractionDenominator
+                ?.focus();
+            }
+          }
+        );
+
+      this.fractionDenominator
+        ?.addEventListener(
+          "keydown",
+          event => {
+            if (
+              event.key === "Enter"
+            ) {
+              event.preventDefault();
+
+              this.confirmFractionEditor();
+            }
+          }
+        );
+
+      this.powerValueInput
+        ?.addEventListener(
+          "keydown",
+          event => {
+            if (
+              event.key === "Enter"
+            ) {
+              event.preventDefault();
+
+              this.confirmPowerEditor();
+            }
+          }
+        );
     }
 
     getSelection() {
@@ -2980,9 +3222,45 @@ MathExpressionInput 共用數學運算式輸入元件
       this.update();
     }
 
-    insertPowerTemplate() {
+    closeSpecialEditors() {
+
+      if (
+        this.fractionEditor
+      ) {
+        this.fractionEditor.hidden =
+          true;
+      }
+
+      if (
+        this.powerEditor
+      ) {
+        this.powerEditor.hidden =
+          true;
+      }
+
+      this.shell
+        ?.classList
+        .remove(
+          "mei-shell--special-open"
+        );
+    }
+
+
+    openFractionEditor() {
+
       if (
         this.disabled
+      ) {
+        return;
+      }
+
+      this.lastSelection =
+        this.getSelection();
+
+      this.closeSpecialEditors();
+
+      if (
+        !this.fractionEditor
       ) {
         return;
       }
@@ -2991,12 +3269,210 @@ MathExpressionInput 共用數學運算式輸入元件
         start,
         end
       } =
-        this.getSelection();
+        this.lastSelection;
+
+      const selected =
+        end > start
+          ? this.input.value.slice(
+              start,
+              end
+            )
+          : "";
+
+      this.fractionNumerator.value =
+        selected;
+
+      this.fractionDenominator.value =
+        "";
+
+      this.fractionEditor.hidden =
+        false;
+
+      this.shell
+        ?.classList
+        .add(
+          "mei-shell--special-open"
+        );
+
+      window.setTimeout(
+        () => {
+          if (
+            selected
+          ) {
+            this.fractionDenominator
+              ?.focus();
+          } else {
+            this.fractionNumerator
+              ?.focus();
+          }
+        },
+        0
+      );
+    }
+
+
+    confirmFractionEditor() {
+
+      const numerator =
+        normalizeSource(
+          this.fractionNumerator
+            ?.value ||
+          ""
+        );
+
+      const denominator =
+        normalizeSource(
+          this.fractionDenominator
+            ?.value ||
+          ""
+        );
+
+      if (
+        !numerator ||
+        !denominator
+      ) {
+        return;
+      }
+
+      const safeNumerator =
+        needsGrouping(
+          numerator
+        )
+          ? `(${numerator})`
+          : numerator;
+
+      const safeDenominator =
+        needsGrouping(
+          denominator
+        )
+          ? `(${denominator})`
+          : denominator;
+
+      const {
+        start,
+        end
+      } =
+        this.lastSelection;
 
       const current =
         this.input.value;
 
-      let insertion;
+      const insertion =
+        `${safeNumerator}/${safeDenominator}`;
+
+      this.input.value =
+        current.slice(
+          0,
+          start
+        ) +
+        insertion +
+        current.slice(
+          end
+        );
+
+      const caret =
+        start +
+        insertion.length;
+
+      this.lastSelection = {
+        start: caret,
+        end: caret
+      };
+
+      this.closeSpecialEditors();
+
+      this.input.focus();
+
+      this.input.setSelectionRange(
+        caret,
+        caret
+      );
+
+      this.updateEditorLayout();
+      this.update();
+    }
+
+
+    openPowerEditor() {
+
+      if (
+        this.disabled
+      ) {
+        return;
+      }
+
+      this.lastSelection =
+        this.getSelection();
+
+      this.closeSpecialEditors();
+
+      if (
+        !this.powerEditor
+      ) {
+        return;
+      }
+
+      this.powerValueInput.value =
+        "";
+
+      this.powerEditor.hidden =
+        false;
+
+      this.shell
+        ?.classList
+        .add(
+          "mei-shell--special-open"
+        );
+
+      window.setTimeout(
+        () =>
+          this.powerValueInput
+            ?.focus(),
+        0
+      );
+    }
+
+
+    confirmPowerEditor() {
+
+      const raw =
+        String(
+          this.powerValueInput
+            ?.value ||
+          ""
+        )
+          .trim();
+
+      if (
+        !/^\d+$/.test(
+          raw
+        )
+      ) {
+        return;
+      }
+
+      const superscript =
+        toSuperscriptDigits(
+          raw
+        );
+
+      if (
+        !superscript
+      ) {
+        return;
+      }
+
+      const {
+        start,
+        end
+      } =
+        this.lastSelection;
+
+      const current =
+        this.input.value;
+
+      let insertion =
+        superscript;
 
       if (
         end >
@@ -3009,28 +3485,11 @@ MathExpressionInput 共用數學運算式輸入元件
             end
           );
 
-        /*
-        選取一整段時，
-        直接把它視為底數。
-        */
         insertion =
-          `(${selected})^□`;
-
-      } else {
-
-        /*
-        沒有選取時，
-        就在目前游標位置後面接次方。
-        例如：
-        (x-2)|  →  (x-2)^□
-        2|      →  2^□
-        x|      →  x^□
-        */
-        insertion =
-          "^□";
+          `(${selected})${superscript}`;
       }
 
-      const next =
+      this.input.value =
         current.slice(
           0,
           start
@@ -3040,33 +3499,23 @@ MathExpressionInput 共用數學運算式輸入元件
           end
         );
 
-      this.input.value =
-        next;
+      const caret =
+        start +
+        insertion.length;
 
-      const placeholderIndex =
-        next.indexOf(
-          PLACEHOLDER,
-          start
-        );
+      this.lastSelection = {
+        start: caret,
+        end: caret
+      };
+
+      this.closeSpecialEditors();
 
       this.input.focus();
 
-      if (
-        placeholderIndex >=
-        0
-      ) {
-        this.input.setSelectionRange(
-          placeholderIndex,
-          placeholderIndex + 1
-        );
-
-        this.lastSelection = {
-          start:
-            placeholderIndex,
-          end:
-            placeholderIndex + 1
-        };
-      }
+      this.input.setSelectionRange(
+        caret,
+        caret
+      );
 
       this.update();
     }
@@ -3166,52 +3615,7 @@ MathExpressionInput 共用數學運算式輸入元件
     }
 
     moveToFractionDenominator() {
-      const source =
-        this.input.value;
-
-      const caret =
-        this.input.selectionStart ??
-        0;
-
-      const slashIndex =
-        source.indexOf("/");
-
-      if (
-        slashIndex < 0 ||
-        caret >
-          slashIndex
-      ) {
-        return false;
-      }
-
-      const placeholderIndex =
-        source.indexOf(
-          PLACEHOLDER,
-          slashIndex + 1
-        );
-
-      if (
-        placeholderIndex <
-        0
-      ) {
-        return false;
-      }
-
-      this.input.focus();
-
-      this.input.setSelectionRange(
-        placeholderIndex,
-        placeholderIndex + 1
-      );
-
-      this.lastSelection = {
-        start:
-          placeholderIndex,
-        end:
-          placeholderIndex + 1
-      };
-
-      return true;
+      return false;
     }
 
 
