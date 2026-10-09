@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.5.0
+版本：1.6.0
 ==================================================
 */
 
@@ -695,4 +695,27 @@ v1.5｜分數／次方專用小編輯器
   height:34px;
   padding:2px 5px;
   font-size:18px;
+}
+
+
+/*
+==================================================
+v1.6｜分數內可插入根號
+==================================================
+*/
+
+.mei-shell--special-open
+.mei-tool-button[data-tool="sqrt"]{
+  position:relative;
+}
+
+.mei-special-editor--fraction::after{
+  content:"分子、分母都可直接輸入數字與＋、−；需要根號時可按上方「√ 根號」。";
+  display:block;
+  margin-top:8px;
+  color:#64748b;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.5;
 }
