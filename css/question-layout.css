@@ -1,0 +1,89 @@
+/*
+==================================================
+QuestionLayout｜共用題目換行排版
+版本：1.0.0
+==================================================
+*/
+
+.question-content,
+#question-content{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+
+  text-align:center !important;
+
+  /*
+  一般中文仍允許正常換行，
+  只有重要詞組與數學單位會被鎖住。
+  */
+  word-break:normal;
+  overflow-wrap:break-word;
+  line-break:auto;
+}
+
+.question-content.question-wrap-left,
+#question-content.question-wrap-left{
+  text-align:left !important;
+}
+
+.question-content.question-single-line,
+#question-content.question-single-line{
+  text-align:center !important;
+}
+
+.question-keep-together,
+.question-content .keep-together,
+#question-content .keep-together{
+  display:inline-block;
+  white-space:nowrap !important;
+}
+
+/*
+數學式視為完整單位，避免根號、分數、公式被拆開。
+*/
+.question-content .math,
+.question-content .math-inline,
+.question-content .math-expression,
+.question-content .formula-box,
+.question-content .rd-radical,
+.question-content .rd-fraction,
+.question-content .fraction,
+.question-content .display-radical,
+.question-content math,
+.question-content svg,
+#question-content .math,
+#question-content .math-inline,
+#question-content .math-expression,
+#question-content .formula-box,
+#question-content .rd-radical,
+#question-content .rd-fraction,
+#question-content .fraction,
+#question-content .display-radical,
+#question-content math,
+#question-content svg{
+  white-space:nowrap !important;
+}
+
+/*
+換行後仍保持舒適閱讀寬度與行距。
+*/
+.question-content.question-wrap-left,
+#question-content.question-wrap-left{
+  line-height:1.65;
+}
+
+/*
+手機換行時不要貼邊。
+*/
+@media(max-width:600px){
+  .question-content.question-wrap-left,
+  #question-content.question-wrap-left{
+    padding-left:4px;
+    padding-right:4px;
+  }
+}
+
+.question-measure-clone{
+  box-sizing:border-box;
+}
