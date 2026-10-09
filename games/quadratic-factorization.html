@@ -20,7 +20,7 @@
     href="../css/scratchpad.css"
   >
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=3">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=4">
 
   <style>
 
@@ -3102,13 +3102,13 @@
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
 
-<script src="../js/math-expression-input.js?v=3"></script>
+<script src="../js/math-expression-input.js?v=4"></script>
 
 <script type="module">
 
 import {
   saveGameScore
-} from "../js/scores.js?v=7";
+} from "../js/scores.js?v=9";
 
 
 "use strict";
@@ -3155,6 +3155,24 @@ const MODES = {
   crossFactor: {id:"crossFactor",name:"✖️ 十字交乘求解",count:10,difficultyWeight:1.18},
   comprehensive: {id:"comprehensive",name:"🏆 4-1 綜合挑戰",count:10,difficultyWeight:1.30}
 };
+
+/*
+==================================================
+模式固定輸入能力
+4-1 所有「根」答案框固定提供分數功能，
+即使當題答案剛好是整數也不隱藏按鈕。
+==================================================
+*/
+
+const MODE_INPUT_CAPABILITIES = {
+  equationRoot: { radical:false, fraction:true },
+  zeroProduct: { radical:false, fraction:true },
+  commonFactor: { radical:false, fraction:true },
+  identityFactor: { radical:false, fraction:true },
+  crossFactor: { radical:false, fraction:true },
+  comprehensive: { radical:false, fraction:true }
+};
+
 
 window.MathGameSessionMeta = {
   gameId: GAME_ID,
