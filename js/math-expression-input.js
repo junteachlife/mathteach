@@ -1,13 +1,14 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.3.0
+版本：1.4.0
 ==================================================
 
 設計原則：
 - 介面只保留「一個答案框＋必要功能鍵」。
 - 數字、+、- 直接用鍵盤輸入。
 - 特殊符號才使用按鈕：√ 根號、分數、次方、x。
+- 次方是通用功能，可接在數字、x、括號、根號或其他完整底數後。
 - 分數內可以再插入根號；根號內也可以再插入分數。
 - 主答案框直接顯示正式數學排版。
 - 實際鍵盤輸入仍使用原生 input，避免 Android contenteditable 問題。
@@ -33,6 +34,25 @@ MathExpressionInput 共用數學運算式輸入元件
     allowPower: false,
     allowVariable: false,
     variable: "x",
+
+    /*
+    numeric-radical：
+      原本數值／根式模式
+
+    polynomial：
+      支援 x、多項式、括號、乘法、分數係數與任意整數次方
+    */
+    validationMode: "numeric-radical",
+
+    /*
+    工具列順序可依遊戲調整。
+    */
+    toolOrder: [
+      "radical",
+      "fraction",
+      "power",
+      "variable"
+    ],
     requireSimplifiedRadical: true,
     requireSimplifiedFraction: true,
     requireRationalDenominator: true,
@@ -1051,6 +1071,674 @@ MathExpressionInput 共用數學運算式輸入元件
     return linear.get(1);
   }
 
+
+  /*
+  ==================================================
+  Polynomial mode
+  ==================================================
+  Map<exponent, Fraction>
+  ==================================================
+  */
+
+  function normalizePolynomialMap(poly) {
+    const result =
+      new Map();
+
+    poly.forEach(
+      (coefficient, exponent) => {
+        coefficient =
+          Fraction.from(
+            coefficient
+          );
+
+        exponent =
+          Number(
+            exponent
+          );
+
+        if (
+          !coefficient.isZero()
+        ) {
+          result.set(
+            exponent,
+            coefficient
+          );
+        }
+      }
+    );
+
+    return result;
+  }
+
+
+  function polynomialConstant(value) {
+    const result =
+      new Map();
+
+    const coefficient =
+      Fraction.from(
+        value
+      );
+
+    if (
+      !coefficient.isZero()
+    ) {
+      result.set(
+        0,
+        coefficient
+      );
+    }
+
+    return result;
+  }
+
+
+  function polynomialVariable() {
+    return new Map([
+      [
+        1,
+        new Fraction(
+          1,
+          1
+        )
+      ]
+    ]);
+  }
+
+
+  function addPolynomial(
+    a,
+    b,
+    sign = 1
+  ) {
+    const result =
+      new Map();
+
+    a.forEach(
+      (coefficient, exponent) => {
+        result.set(
+          exponent,
+          Fraction.from(
+            coefficient
+          )
+        );
+      }
+    );
+
+    b.forEach(
+      (coefficient, exponent) => {
+        const old =
+          result.get(
+            exponent
+          ) ||
+          new Fraction(
+            0,
+            1
+          );
+
+        const next =
+          sign === 1
+            ? old.add(
+                coefficient
+              )
+            : old.subtract(
+                coefficient
+              );
+
+        if (
+          next.isZero()
+        ) {
+          result.delete(
+            exponent
+          );
+        } else {
+          result.set(
+            exponent,
+            next
+          );
+        }
+      }
+    );
+
+    return normalizePolynomialMap(
+      result
+    );
+  }
+
+
+  function multiplyPolynomial(
+    a,
+    b
+  ) {
+    const result =
+      new Map();
+
+    a.forEach(
+      (
+        coefficientA,
+        exponentA
+      ) => {
+
+        b.forEach(
+          (
+            coefficientB,
+            exponentB
+          ) => {
+
+            const exponent =
+              Number(
+                exponentA
+              ) +
+              Number(
+                exponentB
+              );
+
+            const old =
+              result.get(
+                exponent
+              ) ||
+              new Fraction(
+                0,
+                1
+              );
+
+            const next =
+              old.add(
+                coefficientA
+                  .multiply(
+                    coefficientB
+                  )
+              );
+
+            if (
+              next.isZero()
+            ) {
+              result.delete(
+                exponent
+              );
+            } else {
+              result.set(
+                exponent,
+                next
+              );
+            }
+          }
+        );
+      }
+    );
+
+    return normalizePolynomialMap(
+      result
+    );
+  }
+
+
+  function dividePolynomialByScalar(
+    polynomial,
+    scalar
+  ) {
+    scalar =
+      Fraction.from(
+        scalar
+      );
+
+    if (
+      scalar.isZero()
+    ) {
+      throw new Error(
+        "分母不能是 0。"
+      );
+    }
+
+    const result =
+      new Map();
+
+    polynomial.forEach(
+      (
+        coefficient,
+        exponent
+      ) => {
+        result.set(
+          exponent,
+          coefficient.divide(
+            scalar
+          )
+        );
+      }
+    );
+
+    return normalizePolynomialMap(
+      result
+    );
+  }
+
+
+  function scalarFromPolynomial(
+    polynomial
+  ) {
+    polynomial =
+      normalizePolynomialMap(
+        polynomial
+      );
+
+    if (
+      polynomial.size ===
+      0
+    ) {
+      return new Fraction(
+        0,
+        1
+      );
+    }
+
+    if (
+      polynomial.size !==
+      1 ||
+      !polynomial.has(
+        0
+      )
+    ) {
+      return null;
+    }
+
+    return polynomial.get(
+      0
+    );
+  }
+
+
+  function polynomialPower(
+    base,
+    exponent
+  ) {
+    exponent =
+      Number(
+        exponent
+      );
+
+    if (
+      !Number.isInteger(
+        exponent
+      ) ||
+      exponent < 0 ||
+      exponent > 12
+    ) {
+      throw new Error(
+        "次方目前支援 0～12 的整數。"
+      );
+    }
+
+    let result =
+      polynomialConstant(
+        1
+      );
+
+    let current =
+      normalizePolynomialMap(
+        base
+      );
+
+    let power =
+      exponent;
+
+    while (
+      power >
+      0
+    ) {
+      if (
+        power %
+        2 ===
+        1
+      ) {
+        result =
+          multiplyPolynomial(
+            result,
+            current
+          );
+      }
+
+      power =
+        Math.floor(
+          power /
+          2
+        );
+
+      if (
+        power >
+        0
+      ) {
+        current =
+          multiplyPolynomial(
+            current,
+            current
+          );
+      }
+    }
+
+    return result;
+  }
+
+
+  function polynomialize(ast) {
+    switch (
+      ast.type
+    ) {
+
+      case "number":
+
+        return polynomialConstant(
+          new Fraction(
+            ast.value,
+            1
+          )
+        );
+
+
+      case "variable":
+
+        return polynomialVariable();
+
+
+      case "group":
+
+        return polynomialize(
+          ast.value
+        );
+
+
+      case "unary": {
+
+        const inner =
+          polynomialize(
+            ast.value
+          );
+
+        if (
+          ast.op === "+"
+        ) {
+          return inner;
+        }
+
+        return multiplyPolynomial(
+          polynomialConstant(
+            new Fraction(
+              -1,
+              1
+            )
+          ),
+          inner
+        );
+      }
+
+
+      case "fraction": {
+
+        const numerator =
+          polynomialize(
+            ast.numerator
+          );
+
+        const denominator =
+          polynomialize(
+            ast.denominator
+          );
+
+        const scalar =
+          scalarFromPolynomial(
+            denominator
+          );
+
+        if (
+          !scalar
+        ) {
+          throw new Error(
+            "多項式分母目前只能是數值。"
+          );
+        }
+
+        return dividePolynomialByScalar(
+          numerator,
+          scalar
+        );
+      }
+
+
+      case "binary": {
+
+        const left =
+          polynomialize(
+            ast.left
+          );
+
+        const right =
+          polynomialize(
+            ast.right
+          );
+
+        if (
+          ast.op === "+"
+        ) {
+          return addPolynomial(
+            left,
+            right,
+            1
+          );
+        }
+
+        if (
+          ast.op === "-"
+        ) {
+          return addPolynomial(
+            left,
+            right,
+            -1
+          );
+        }
+
+        if (
+          ast.op === "*"
+        ) {
+          return multiplyPolynomial(
+            left,
+            right
+          );
+        }
+
+        if (
+          ast.op === "/"
+        ) {
+          const scalar =
+            scalarFromPolynomial(
+              right
+            );
+
+          if (
+            !scalar
+          ) {
+            throw new Error(
+              "多項式分母目前只能是數值。"
+            );
+          }
+
+          return dividePolynomialByScalar(
+            left,
+            scalar
+          );
+        }
+
+        throw new Error(
+          "目前不支援這個多項式運算。"
+        );
+      }
+
+
+      case "power": {
+
+        const exponentPolynomial =
+          polynomialize(
+            ast.exponent
+          );
+
+        const exponentFraction =
+          scalarFromPolynomial(
+            exponentPolynomial
+          );
+
+        if (
+          !exponentFraction ||
+          !exponentFraction.isInteger()
+        ) {
+          throw new Error(
+            "次方請輸入整數。"
+          );
+        }
+
+        return polynomialPower(
+          polynomialize(
+            ast.base
+          ),
+          exponentFraction.numerator
+        );
+      }
+
+
+      case "sqrt":
+
+        throw new Error(
+          "這個題型目前不需要根號。"
+        );
+
+
+      case "placeholder":
+
+        throw new Error(
+          "答案尚未輸入完整。"
+        );
+
+
+      default:
+
+        throw new Error(
+          "目前無法解析這個多項式答案。"
+        );
+    }
+  }
+
+
+  function polynomialMapToTerms(
+    polynomial
+  ) {
+
+    return [
+      ...normalizePolynomialMap(
+        polynomial
+      )
+        .entries()
+    ]
+      .map(
+        (
+          [
+            exponent,
+            coefficient
+          ]
+        ) => ({
+          exponent:
+            Number(
+              exponent
+            ),
+
+          numerator:
+            coefficient.numerator,
+
+          denominator:
+            coefficient.denominator,
+
+          coefficient: {
+            numerator:
+              coefficient.numerator,
+            denominator:
+              coefficient.denominator
+          }
+        })
+      )
+      .sort(
+        (
+          a,
+          b
+        ) =>
+          b.exponent -
+          a.exponent
+      );
+  }
+
+
+  /*
+  判斷「有沒有真的寫成乘積／次方形式」。
+  防止學生直接把原多項式照抄回去。
+  */
+  function isFactorizedAst(
+    ast
+  ) {
+
+    if (!ast) {
+      return false;
+    }
+
+    if (
+      ast.type ===
+      "group"
+    ) {
+      return isFactorizedAst(
+        ast.value
+      );
+    }
+
+    if (
+      ast.type ===
+      "unary"
+    ) {
+      return isFactorizedAst(
+        ast.value
+      );
+    }
+
+    if (
+      ast.type ===
+      "binary" &&
+      ast.op === "*"
+    ) {
+      return true;
+    }
+
+    if (
+      ast.type ===
+      "power"
+    ) {
+      try {
+        const exponentPolynomial =
+          polynomialize(
+            ast.exponent
+          );
+
+        const scalar =
+          scalarFromPolynomial(
+            exponentPolynomial
+          );
+
+        return Boolean(
+          scalar &&
+          scalar.isInteger() &&
+          scalar.numerator >= 2
+        );
+      } catch (_) {
+        return false;
+      }
+    }
+
+    return false;
+  }
+
+
   function linearize(ast) {
     switch (ast.type) {
       case "number": {
@@ -1904,10 +2592,10 @@ MathExpressionInput 共用數學運算式輸入元件
             type="button"
             class="mei-tool-button"
             data-tool="power"
-            title="插入次方"
+            title="在目前底數後插入次方"
           >
             <span class="mei-tool-symbol">
-              x<sup>n</sup>
+              □<sup>n</sup>
             </span>
             次方
           </button>
@@ -1965,7 +2653,19 @@ MathExpressionInput 共用數學運算式輸入元件
               tools.length
                 ? `
                   <div class="mei-toolbar">
-                    ${tools.join("")}
+                    ${
+                      this.options.toolOrder
+                        .map(
+                          toolName =>
+                            tools.find(
+                              html =>
+                                html.includes(
+                                  `data-tool="${toolName === "radical" ? "sqrt" : toolName}"`
+                                )
+                            ) || ""
+                        )
+                        .join("")
+                    }
                   </div>
                 `
                 : ""
@@ -2178,10 +2878,7 @@ MathExpressionInput 共用數學運算式輸入元件
               } else if (
                 tool === "power"
               ) {
-                this.insertTemplate(
-                  "^□",
-                  1
-                );
+                this.insertPowerTemplate();
               } else if (
                 tool === "variable"
               ) {
@@ -2282,6 +2979,98 @@ MathExpressionInput 共用數學運算式輸入元件
 
       this.update();
     }
+
+    insertPowerTemplate() {
+      if (
+        this.disabled
+      ) {
+        return;
+      }
+
+      const {
+        start,
+        end
+      } =
+        this.getSelection();
+
+      const current =
+        this.input.value;
+
+      let insertion;
+
+      if (
+        end >
+        start
+      ) {
+
+        const selected =
+          current.slice(
+            start,
+            end
+          );
+
+        /*
+        選取一整段時，
+        直接把它視為底數。
+        */
+        insertion =
+          `(${selected})^□`;
+
+      } else {
+
+        /*
+        沒有選取時，
+        就在目前游標位置後面接次方。
+        例如：
+        (x-2)|  →  (x-2)^□
+        2|      →  2^□
+        x|      →  x^□
+        */
+        insertion =
+          "^□";
+      }
+
+      const next =
+        current.slice(
+          0,
+          start
+        ) +
+        insertion +
+        current.slice(
+          end
+        );
+
+      this.input.value =
+        next;
+
+      const placeholderIndex =
+        next.indexOf(
+          PLACEHOLDER,
+          start
+        );
+
+      this.input.focus();
+
+      if (
+        placeholderIndex >=
+        0
+      ) {
+        this.input.setSelectionRange(
+          placeholderIndex,
+          placeholderIndex + 1
+        );
+
+        this.lastSelection = {
+          start:
+            placeholderIndex,
+          end:
+            placeholderIndex + 1
+        };
+      }
+
+      this.update();
+    }
+
 
     insertTemplate(
       template,
@@ -2518,6 +3307,69 @@ MathExpressionInput 共用數學運算式輸入元件
             `⚠️ ${issues[0]}`
         };
       }
+
+      if (
+        this.options.validationMode ===
+        "polynomial"
+      ) {
+
+        try {
+
+          const polynomial =
+            polynomialize(
+              parsed.ast
+            );
+
+          const polynomialTerms =
+            polynomialMapToTerms(
+              polynomial
+            );
+
+          return {
+            valid: true,
+            ast:
+              parsed.ast,
+            raw:
+              parsed.raw,
+            display:
+              parsed.display,
+            polynomialTerms,
+            terms:
+              polynomialTerms,
+            factorized:
+              isFactorizedAst(
+                parsed.ast
+              ),
+            value: {
+              polynomialTerms,
+              terms:
+                polynomialTerms,
+              factorized:
+                isFactorizedAst(
+                  parsed.ast
+                ),
+              display:
+                parsed.display
+            }
+          };
+
+        } catch (
+          error
+        ) {
+
+          return {
+            valid: false,
+            ast:
+              parsed.ast,
+            display:
+              parsed.display,
+            message:
+              error.message ||
+              "目前無法判定這個多項式答案。"
+          };
+        }
+      }
+
 
       let linear;
 
@@ -2781,6 +3633,9 @@ MathExpressionInput 共用數學運算式輸入元件
     linearToTerms,
     largestSquareFactor,
     simplifySquareRoot,
-    cleanupEditableFractionText
+    cleanupEditableFractionText,
+    polynomialize,
+    polynomialMapToTerms,
+    isFactorizedAst
   };
 })();
