@@ -26,6 +26,8 @@
     href="../css/scratchpad.css"
   >
 
+  <link rel="stylesheet" href="../css/radical-display.css?v=1">
+
 
   <style>
 
@@ -2062,6 +2064,190 @@
 
     }
 
+  
+
+    /* ==================================================
+       2026-10 統一遊戲版面｜八上 2-1 / 2-2
+       對齊八上 1-1 ～ 1-3
+    ================================================== */
+
+    .game-card {
+      position: relative;
+    }
+
+    .game-card-return-row {
+      display: flex;
+      justify-content: flex-end;
+      padding: 12px 16px 0;
+      background: linear-gradient(180deg, var(--primary-light), #ffffff);
+    }
+
+    .game-card-return-row.hidden {
+      display: none !important;
+    }
+
+    .game-card-return-row .semester-return-button {
+      width: auto;
+      min-width: 0;
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      background: #ffffff;
+      color: var(--primary-dark);
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: none;
+    }
+
+    .game-card-return-row .semester-return-button:hover {
+      background: var(--primary-light);
+    }
+
+    .game-card-return-row .semester-return-button:active {
+      transform: translateY(1px);
+    }
+
+    .quiz-topbar {
+      display: grid;
+      grid-template-columns:
+        minmax(210px, 1fr)
+        minmax(300px, 1.35fr)
+        auto;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .quiz-context,
+    .quiz-stats {
+      display: grid;
+      gap: 8px;
+    }
+
+    .quiz-context {
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    }
+
+    .quiz-stats {
+      grid-template-columns:
+        repeat(3, minmax(86px, 1fr));
+    }
+
+    .quiz-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-actions .game-button {
+      min-width: 116px;
+      min-height: 46px;
+      padding: 10px 14px;
+    }
+
+    .question-card {
+      position: relative;
+      padding: 22px 18px 78px;
+      text-align: center;
+    }
+
+    .question-label {
+      text-align: center;
+    }
+
+    .scratchpad-row {
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
+      display: flex;
+      justify-content: flex-end;
+      width: auto;
+      min-height: 44px;
+      margin: 0;
+      z-index: 5;
+    }
+
+    #scratchpad-mobile-button {
+      display: flex;
+      justify-content: flex-end;
+      width: auto;
+    }
+
+    #scratchpad-mobile-button #scratchpadOpenButton,
+    #scratchpad-mobile-button .scratchpad-open-button {
+      position: static !important;
+      inset: auto !important;
+      transform: none !important;
+      margin: 0 !important;
+      z-index: auto !important;
+    }
+
+    .answer-submit-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      .quiz-topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .quiz-actions {
+        justify-content: flex-end;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .game-card-return-row {
+        padding: 10px 10px 0;
+      }
+
+      .game-card-return-row .semester-return-button {
+        font-size: 13px;
+        padding: 7px 10px;
+      }
+
+      .quiz-context,
+      .quiz-stats {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .quiz-stats .timer-box {
+        grid-column: 1 / -1;
+      }
+
+      .quiz-actions {
+        display: grid;
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .quiz-actions .game-button {
+        min-width: 0;
+        width: 100%;
+        padding: 10px 8px;
+        font-size: 14px;
+      }
+
+      .question-card {
+        padding: 20px 12px 76px;
+      }
+
+      .scratchpad-row {
+        right: 10px;
+        bottom: 12px;
+      }
+    }
+
   </style>
 
 </head>
@@ -2074,25 +2260,23 @@
 
 
   <div id="commonHeaderMount"></div>
+<main class="game-card">
 
 
-  <div
-    id="semester-return-row"
-    class="semester-return-row"
-  >
-
-    <button
-      id="semester-return-button"
-      class="semester-return-button"
-      type="button"
+    <div
+      id="semester-return-row"
+      class="game-card-return-row"
     >
-      ↩️ 重返八年級上學期
-    </button>
+      <button
+        id="semester-return-button"
+        class="semester-return-button"
+        type="button"
+      >
+        ↩️ 重回八年級上學期
+      </button>
+    </div>
 
-  </div>
 
-
-  <main class="game-card">
 
 
     <header class="game-header">
@@ -2277,83 +2461,65 @@
     >
 
 
+      
       <div class="quiz-topbar">
 
+        <div class="quiz-context">
 
-        <div class="status-box">
+          <div class="status-box">
+            模式
+            <span id="mode-name" class="status-value">—</span>
+          </div>
 
-          模式
-
-          <span
-            id="mode-name"
-            class="status-value"
-          >
-            —
-          </span>
-
-        </div>
-
-
-        <div class="status-box">
-
-          進度
-
-          <span
-            id="question-number"
-            class="status-value"
-          >
-            1 / 10
-          </span>
+          <div class="status-box">
+            進度
+            <span id="question-number" class="status-value">1 / 10</span>
+          </div>
 
         </div>
 
+        <div class="quiz-stats">
 
-        <div class="status-box">
+          <div class="status-box">
+            答對
+            <span id="correct-count" class="status-value">0</span>
+          </div>
 
-          答對
+          <div class="status-box">
+            最高連擊
+            <span id="combo-count" class="status-value">0</span>
+          </div>
 
-          <span
-            id="correct-count"
-            class="status-value"
-          >
-            0
-          </span>
-
-        </div>
-
-
-        <div class="status-box">
-
-          最高連擊
-
-          <span
-            id="combo-count"
-            class="status-value"
-          >
-            0
-          </span>
+          <div class="status-box timer-box">
+            ⏱️ 測驗時間
+            <span id="timer-display" class="status-value">00:00</span>
+          </div>
 
         </div>
 
+        <div class="quiz-actions">
 
-        <div class="status-box timer-box">
-
-          測驗時間
-
-          <span
-            id="timer-display"
-            class="status-value"
+          <button
+            id="restart-button"
+            class="game-button restart"
+            type="button"
           >
-            00:00
-          </span>
+            🔄 重新測驗
+          </button>
+
+          <button
+            id="mode-button"
+            class="game-button secondary"
+            type="button"
+          >
+            重選模式
+          </button>
 
         </div>
-
 
       </div>
 
-
-      <div class="progress-shell">
+<div class="progress-shell">
 
         <div
           id="progress-bar"
@@ -2378,26 +2544,20 @@
         ></div>
 
 
-      </div>
+      
+        <div class="scratchpad-row">
+          <div id="scratchpad-mobile-button"></div>
+        </div>
 
-
-      <div class="scratchpad-row">
-
-        <div
-          id="scratchpad-mobile-button"
-        ></div>
-
-      </div>
-
-
-      <div
+</div>
+<div
         id="answer-panel"
         class="answer-panel"
       ></div>
 
 
-      <div class="button-row">
-
+      
+      <div class="answer-submit-row">
 
         <button
           id="submit-button"
@@ -2407,7 +2567,6 @@
           提交答案（Enter）
         </button>
 
-
         <button
           id="next-button"
           class="game-button hidden"
@@ -2416,29 +2575,9 @@
           下一題（Enter）
         </button>
 
-
-        <button
-          id="restart-button"
-          class="game-button restart"
-          type="button"
-        >
-          🔄 重新測驗
-        </button>
-
-
-        <button
-          id="mode-button"
-          class="game-button secondary"
-          type="button"
-        >
-          選擇模式
-        </button>
-
-
       </div>
 
-
-      <div
+<div
         id="feedback"
         class="feedback"
       ></div>
@@ -2646,6 +2785,8 @@
 <script src="../js/scratchpad-template.js"></script>
 
 <script src="../js/sound-manager.js?v=1"></script>
+
+<script src="../js/radical-display.js?v=1"></script>
 
 <script src="../js/radical-input.js?v=7"></script>
 
@@ -3144,87 +3285,24 @@ function sqrtDisplay(
 ) {
 
   /*
-  根號 SVG 設計完全保留。
-  這裡只判斷根號內是否為較複雜內容，
-  讓文字與次方有足夠的安全距離。
+  題目／詳解所有根號統一交給共用 RadicalDisplay。
+  根號勾形、斜線、轉折與上方橫線使用同一條 SVG path；
+  根號內內容越長，只自然延伸上方橫線。
   */
 
-  const source =
-    String(
-      content ??
-      ""
+  if (
+    window.RadicalDisplay?.sqrt
+  ) {
+
+    return window.RadicalDisplay.sqrt(
+      content
     );
-
-
-  const plainText =
-    source
-      .replace(
-        /<[^>]*>/g,
-        ""
-      )
-      .replace(
-        /\s+/g,
-        ""
-      );
-
-
-  const isComplex =
-
-    /<sup\b|<span\b|<math\b|<mfrac\b/i
-      .test(
-        source
-      ) ||
-
-    /[×÷＋－+−·]/
-      .test(
-        plainText
-      ) ||
-
-    plainText.length >=
-      5;
-
-
-  const radicandClass =
-
-    isComplex
-
-      ? "display-radicand display-radicand-complex"
-
-      : "display-radicand";
+  }
 
 
   return `
-
-    <span class="display-radical">
-
-      <svg
-        class="display-radical-svg"
-        viewBox="0 0 100 62"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-
-        <path
-          class="display-radical-path"
-          d="
-            M 1 37
-            L 7 37
-            L 13 51
-            L 18 58
-            L 29 8
-            L 98 8
-          "
-        />
-
-      </svg>
-
-
-      <span class="${radicandClass}">
-
-        ${content}
-
-      </span>
-
+    <span class="math-expression">
+      √(${content})
     </span>
   `;
 }
@@ -6288,14 +6366,31 @@ Scratchpad
 ==================================================
 */
 
-function moveScratchpadButtonToTop() {
+function moveScratchpadButtonToQuestionCard() {
 
   const mount =
     $("scratchpad-mobile-button");
 
+  const questionCard =
+    document.querySelector(
+      "#quiz-screen .question-card"
+    );
 
   const button =
     $("scratchpadOpenButton");
+
+
+  if (
+    mount &&
+    questionCard &&
+    mount.parentElement !==
+      questionCard
+  ) {
+
+    questionCard.appendChild(
+      mount.parentElement
+    );
+  }
 
 
   if (
@@ -6310,6 +6405,61 @@ function moveScratchpadButtonToTop() {
       button
     );
   }
+}
+
+
+function ensureScratchpadButtonInQuestionCard() {
+
+  moveScratchpadButtonToQuestionCard();
+
+
+  if (
+    $("scratchpadOpenButton")
+  ) {
+
+    window
+      .showGameScratchpadButton
+      ?.();
+
+    return;
+  }
+
+
+  const observer =
+    new MutationObserver(
+      () => {
+
+        moveScratchpadButtonToQuestionCard();
+
+
+        if (
+          $("scratchpadOpenButton")
+        ) {
+
+          window
+            .showGameScratchpadButton
+            ?.();
+
+          observer.disconnect();
+        }
+      }
+    );
+
+
+  observer.observe(
+    document.body,
+    {
+      childList: true,
+      subtree: true
+    }
+  );
+
+
+  setTimeout(
+    () =>
+      observer.disconnect(),
+    10000
+  );
 }
 
 
@@ -6363,7 +6513,7 @@ function showOnly(
     "quiz-screen"
   ) {
 
-    moveScratchpadButtonToTop();
+    ensureScratchpadButtonInQuestionCard();
 
 
     window
@@ -9356,6 +9506,33 @@ function confirmRestartCurrentMode() {
 }
 
 
+function confirmReselectMode() {
+
+  return window.confirm(
+    "確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。"
+  );
+}
+
+
+function backToModesWithConfirmation() {
+
+  if (
+    !confirmReselectMode()
+  ) {
+
+    return;
+  }
+
+
+  stopTimer();
+
+
+  showOnly(
+    "start-screen"
+  );
+}
+
+
 /*
 ==================================================
 重返八年級上學期
@@ -9485,14 +9662,7 @@ $("restart-button")
 $("mode-button")
   .addEventListener(
     "click",
-    () => {
-
-      stopTimer();
-
-      showOnly(
-        "start-screen"
-      );
-    }
+    backToModesWithConfirmation
   );
 
 
@@ -9589,11 +9759,11 @@ window.addEventListener(
   "DOMContentLoaded",
   () => {
 
-    moveScratchpadButtonToTop();
+    ensureScratchpadButtonInQuestionCard();
 
 
     setTimeout(
-      moveScratchpadButtonToTop,
+      ensureScratchpadButtonInQuestionCard,
       100
     );
 
