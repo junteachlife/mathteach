@@ -28,6 +28,8 @@
 
   <link rel="stylesheet" href="../css/radical-display.css?v=1">
 
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=1">
+
 
   <style>
 
@@ -2446,7 +2448,7 @@
         id="dependency-warning"
         class="dependency-warning hidden"
       >
-        ⚠️ 共用根式輸入元件未載入，已切換成備援輸入方式。若要維持全站一致介面，請確認 <code>../js/radical-input.js?v=7</code> 已存在。
+        ⚠️ 共用數學輸入元件未載入。請確認 <code>../js/math-expression-input.js?v=1</code>、<code>../js/radical-display.js?v=1</code> 已存在。
       </div>
 
 
@@ -2790,6 +2792,8 @@
 
 <script src="../js/radical-input.js?v=7"></script>
 
+<script src="../js/math-expression-input.js?v=1"></script>
+
 
 <script type="module">
 
@@ -3091,6 +3095,10 @@ let answered =
 
 let radicalInput =
   null;
+
+let mathExpressionInput =
+  null;
+
 
 
 let startTime =
@@ -7495,6 +7503,12 @@ function renderAnswer(
   radicalInput =
     null;
 
+  mathExpressionInput
+    ?.destroy?.();
+
+  mathExpressionInput =
+    null;
+
 
   const panel =
     $("answer-panel");
@@ -7577,13 +7591,25 @@ function renderAnswer(
 
 
   /*
-  Radical
+  Radical / Radical Fraction / Expression
+  全部統一成單一 MathExpressionInput。
   */
 
   if (
     question.type ===
-    "radical"
+      "radical" ||
+    question.type ===
+      "radicalFraction" ||
+    question.type ===
+      "expression"
   ) {
+
+    const allowFraction =
+      question.type ===
+        "radicalFraction" ||
+      question.type ===
+        "expression";
+
 
     panel.innerHTML = `
 
@@ -7596,402 +7622,96 @@ function renderAnswer(
 
       <p class="answer-help">
 
-        根號內若仍可化簡，
-        系統只會提醒，不會替你自動化簡。
+        數字、＋、−直接輸入；
+        需要根號時按「√ 根號」，
+        需要分數時按「分數」。<br>
+
+        分數的分子、分母裡也可以再插入根號。
 
       </p>
 
 
       <div
-        id="radical-answer-mount"
+        id="math-expression-answer-mount"
       ></div>
     `;
 
 
     if (
-      typeof window.RadicalInput ===
+      typeof window.MathExpressionInput !==
       "function"
     ) {
 
-      radicalInput =
-        new window.RadicalInput(
-          {
+      $("feedback").className =
+        "feedback warning";
 
-            mountId:
-              "radical-answer-mount",
+      $("feedback").textContent =
+        "MathExpressionInput 共用元件沒有正常載入。";
 
-            requireSimplifiedRadical:
-              true,
-
-            theme: {
-
-              primary:
-                "#7b1fa2",
-
-              light:
-                "#f3e5f5",
-
-              border:
-                "#ce93d8"
-            }
-          }
-        );
-
-    } else {
-
-      radicalInput =
-        createFallbackRadicalInput(
-          "radical-answer-mount"
-        );
+      return;
     }
 
 
-    radicalInput
-      .focus();
+    mathExpressionInput =
+      new window.MathExpressionInput(
+        {
 
+          mountId:
+            "math-expression-answer-mount",
 
-    return;
-  }
+          allowRadical:
+            true,
 
+          allowFraction,
 
-  /*
-  Radical Fraction
-  */
+          allowPower:
+            false,
 
-  if (
-    question.type ===
-    "radicalFraction"
-  ) {
+          allowVariable:
+            false,
 
-    panel.innerHTML = `
+          requireSimplifiedRadical:
+            true,
 
-      <div class="answer-title">
+          requireSimplifiedFraction:
+            true,
 
-        ${question.label}
+          requireRationalDenominator:
+            true,
 
-      </div>
+          placeholder:
+            question.type ===
+              "expression"
 
+              ? "例如：−3√2＋√21"
 
-      <p class="answer-help">
+              : question.type ===
+                  "radicalFraction"
 
-        答案必須為最簡根式，
-        分母不可含根號。
+                ? "例如：2√5／3"
 
-      </p>
+                : "例如：−2√5",
 
+          theme: {
 
-      <div class="radical-fraction-stack">
+            primary:
+              "#7b1fa2",
 
+            dark:
+              "#4a148c",
 
-        <div class="rf-numerator">
+            light:
+              "#f3e5f5",
 
-
-          <div class="rf-numerator-editor">
-
-
-            <div class="answer-field">
-
-              <label>
-                正負號
-              </label>
-
-              <select
-                id="rf-sign"
-                class="answer-sign"
-              >
-
-                <option value="1">
-                  ＋
-                </option>
-
-                <option value="-1">
-                  －
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <div class="answer-field">
-
-              <label>
-                根號外係數
-              </label>
-
-              <input
-                id="rf-coefficient"
-                class="answer-coefficient"
-                type="text"
-                inputmode="numeric"
-                value="1"
-              >
-
-            </div>
-
-
-            <div class="answer-field">
-
-              <label>
-                根號內
-              </label>
-
-
-              <div
-                class="answer-radical"
-                style="width:185px;"
-              >
-
-                ${answerRadicalSVG()}
-
-
-                <input
-                  id="rf-radicand"
-                  class="answer-radicand"
-                  type="text"
-                  inputmode="numeric"
-                  placeholder="輸入"
-                >
-
-              </div>
-
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-        <div class="rf-denominator">
-
-
-          <label class="answer-help">
-
-            分母
-
-          </label>
-
-
-          <input
-            id="rf-denominator"
-            type="text"
-            inputmode="numeric"
-            placeholder="輸入分母"
-          >
-
-
-        </div>
-
-
-      </div>
-
-
-      <div
-        id="answer-preview"
-        class="answer-preview"
-      >
-
-        目前尚未完成答案。
-
-      </div>
-    `;
-
-
-    [
-      "rf-sign",
-      "rf-coefficient",
-      "rf-radicand",
-      "rf-denominator"
-    ]
-      .forEach(
-        id => {
-
-          $(id)
-            .addEventListener(
-              "input",
-              updateRadicalFractionPreview
-            );
-
-
-          $(id)
-            .addEventListener(
-              "change",
-              updateRadicalFractionPreview
-            );
+            border:
+              "#ce93d8"
+          }
         }
       );
 
 
-    $("rf-radicand")
-      .focus();
-
-
     return;
   }
-
-
-  /*
-  ★ Expression
-  */
-
-  let editorHTML =
-    "";
-
-
-  if (
-    question.constant !==
-    0
-  ) {
-
-    editorHTML +=
-      constantPieceHTML();
-  }
-
-
-  question.radicals
-    .forEach(
-      (
-        term,
-        i
-      ) => {
-
-        editorHTML +=
-          radicalPieceHTML(
-            i
-          );
-      }
-    );
-
-
-  panel.innerHTML = `
-
-    <div class="answer-title">
-
-      ${question.label}
-
-    </div>
-
-
-    <p class="answer-help">
-
-      同類方根請先自行合併。<br>
-
-      答案有幾個不同類方根，
-      系統就提供幾組填答格。
-
-    </p>
-
-
-    <div class="expression-editor">
-
-      ${editorHTML}
-
-    </div>
-
-
-    <div
-      id="answer-preview"
-      class="answer-preview"
-    >
-
-      目前尚未完成答案。
-
-    </div>
-  `;
-
-
-  const update =
-    () =>
-      updateExpressionPreview(
-        question
-      );
-
-
-  if (
-    question.constant !==
-    0
-  ) {
-
-    [
-      "expr-constant-sign",
-      "expr-constant"
-    ]
-      .forEach(
-        id => {
-
-          $(id)
-            .addEventListener(
-              "input",
-              update
-            );
-
-
-          $(id)
-            .addEventListener(
-              "change",
-              update
-            );
-        }
-      );
-  }
-
-
-  question.radicals
-    .forEach(
-      (
-        term,
-        i
-      ) => {
-
-        [
-          `expr-sign-${i}`,
-          `expr-coefficient-${i}`,
-          `expr-radicand-${i}`
-        ]
-          .forEach(
-            id => {
-
-              $(id)
-                .addEventListener(
-                  "input",
-                  update
-                );
-
-
-              $(id)
-                .addEventListener(
-                  "change",
-                  update
-                );
-            }
-          );
-      }
-    );
-
-
-  setTimeout(
-    () => {
-
-      if (
-        question.constant !==
-        0
-      ) {
-
-        $("expr-constant")
-          ?.focus();
-
-      } else {
-
-        $("expr-radicand-0")
-          ?.focus();
-      }
-
-    },
-    0
-  );
 }
 
 
@@ -8163,16 +7883,21 @@ function readAnswer(
 
 
   /*
-  Radical
+  Radical / Radical Fraction / Expression
+  統一從 MathExpressionInput 讀取。
   */
 
   if (
     question.type ===
-    "radical"
+      "radical" ||
+    question.type ===
+      "radicalFraction" ||
+    question.type ===
+      "expression"
   ) {
 
     const result =
-      radicalInput
+      mathExpressionInput
         ?.validate();
 
 
@@ -8187,7 +7912,7 @@ function readAnswer(
 
         message:
           result?.message ||
-          "請把根式答案填寫完整。"
+          "請把答案輸入完整。"
       };
     }
 
@@ -8197,178 +7922,24 @@ function readAnswer(
       valid:
         true,
 
-      value:
-        result.value,
+      terms:
+        result.terms ||
+        [],
 
       display:
-        result.value.display
+        result.display
     };
   }
 
 
-  /*
-  Radical Fraction
-  */
+  return {
 
-  if (
-    question.type ===
-    "radicalFraction"
-  ) {
+    valid:
+      false,
 
-    const coefficientRaw =
-      $("rf-coefficient")
-        ?.value
-        .trim() ||
-      "";
-
-
-    const radicandRaw =
-      $("rf-radicand")
-        ?.value
-        .trim() ||
-      "";
-
-
-    const denominatorRaw =
-      $("rf-denominator")
-        ?.value
-        .trim() ||
-      "";
-
-
-    if (
-      !/^\d+$/.test(
-        coefficientRaw
-      ) ||
-      !/^\d+$/.test(
-        radicandRaw
-      ) ||
-      !/^\d+$/.test(
-        denominatorRaw
-      )
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          "請把分子與分母填寫完整。"
-      };
-    }
-
-
-    const coefficient =
-      Number(
-        $("rf-sign")
-          .value
-      ) *
-      Number(
-        coefficientRaw
-      );
-
-
-    const radicand =
-      Number(
-        radicandRaw
-      );
-
-
-    const denominator =
-      Number(
-        denominatorRaw
-      );
-
-
-    if (
-      denominator ===
-      0
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          "分母不能是 0。"
-      };
-    }
-
-
-    if (
-      RU()
-        .getLargestSquareFactor(
-          radicand
-        ) >
-      1
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          `⚠️ √${radicand} 還可以化簡。`
-      };
-    }
-
-
-    if (
-      gcd(
-        Math.abs(
-          coefficient
-        ),
-        denominator
-      ) !==
-      1
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          "⚠️ 分數還可以約分，請先整理成最簡形式。"
-      };
-    }
-
-
-    return {
-
-      valid:
-        true,
-
-      coefficient,
-
-      radicand,
-
-      denominator,
-
-      display:
-        fractionDisplay(
-
-          radicalDisplay(
-            coefficient,
-            radicand
-          ),
-
-          denominator
-        )
-    };
-  }
-
-
-  /*
-  Expression
-  */
-
-  return readExpressionInputs(
-    question
-  );
+    message:
+      "目前無法讀取這個答案。"
+  };
 }
 
 
@@ -8377,6 +7948,178 @@ function readAnswer(
 判定
 ==================================================
 */
+
+function normalizedExpectedTerms(
+  question
+) {
+
+  if (
+    question.type ===
+    "radical"
+  ) {
+
+    return [
+      {
+        radicand:
+          question.radicand,
+
+        numerator:
+          question.coefficient,
+
+        denominator:
+          1
+      }
+    ];
+  }
+
+
+  if (
+    question.type ===
+    "radicalFraction"
+  ) {
+
+    const divisor =
+      gcd(
+        Math.abs(
+          question.coefficient
+        ),
+        Math.abs(
+          question.denominator
+        )
+      );
+
+
+    let numerator =
+      question.coefficient /
+      divisor;
+
+    let denominator =
+      question.denominator /
+      divisor;
+
+
+    if (
+      denominator <
+      0
+    ) {
+
+      numerator *=
+        -1;
+
+      denominator *=
+        -1;
+    }
+
+
+    return [
+      {
+        radicand:
+          question.radicand,
+
+        numerator,
+
+        denominator
+      }
+    ];
+  }
+
+
+  if (
+    question.type ===
+    "expression"
+  ) {
+
+    const terms =
+      [];
+
+
+    if (
+      question.constant !==
+      0
+    ) {
+
+      terms.push(
+        {
+          radicand:
+            1,
+
+          numerator:
+            question.constant,
+
+          denominator:
+            1
+        }
+      );
+    }
+
+
+    question.radicals
+      .forEach(
+        term => {
+
+          if (
+            term.coefficient !==
+            0
+          ) {
+
+            terms.push(
+              {
+                radicand:
+                  term.radicand,
+
+                numerator:
+                  term.coefficient,
+
+                denominator:
+                  1
+              }
+            );
+          }
+        }
+      );
+
+
+    return terms
+      .sort(
+        (
+          a,
+          b
+        ) => {
+
+          if (
+            a.radicand ===
+              1 &&
+            b.radicand !==
+              1
+          ) {
+
+            return -1;
+          }
+
+
+          if (
+            b.radicand ===
+              1 &&
+            a.radicand !==
+              1
+          ) {
+
+            return 1;
+          }
+
+
+          return (
+            a.radicand -
+            b.radicand
+          );
+        }
+      );
+  }
+
+
+  return [];
+}
+
 
 function checkCorrect(
   question,
@@ -8395,76 +8138,79 @@ function checkCorrect(
   }
 
 
-  if (
-    question.type ===
-    "radical"
-  ) {
-
-    return (
-
-      answer.value.coefficient ===
-        question.coefficient &&
-
-      answer.value.radicand ===
-        question.radicand
+  const expected =
+    normalizedExpectedTerms(
+      question
     );
-  }
+
+
+  const actual =
+    [
+      ...(
+        answer.terms ||
+        []
+      )
+    ]
+      .sort(
+        (
+          a,
+          b
+        ) => {
+
+          if (
+            a.radicand ===
+              1 &&
+            b.radicand !==
+              1
+          ) {
+
+            return -1;
+          }
+
+
+          if (
+            b.radicand ===
+              1 &&
+            a.radicand !==
+              1
+          ) {
+
+            return 1;
+          }
+
+
+          return (
+            a.radicand -
+            b.radicand
+          );
+        }
+      );
 
 
   if (
-    question.type ===
-    "radicalFraction"
-  ) {
-
-    return (
-
-      answer.coefficient ===
-        question.coefficient &&
-
-      answer.radicand ===
-        question.radicand &&
-
-      answer.denominator ===
-        question.denominator
-    );
-  }
-
-
-  if (
-    answer.constant !==
-    question.constant
+    actual.length !==
+    expected.length
   ) {
 
     return false;
   }
 
 
-  if (
-    answer.radicals.length !==
-    question.radicals.length
-  ) {
+  return actual.every(
+    (
+      term,
+      i
+    ) =>
 
-    return false;
-  }
+      term.radicand ===
+        expected[i].radicand &&
 
+      term.numerator ===
+        expected[i].numerator &&
 
-  return answer.radicals
-    .every(
-      (
-        term,
-        i
-      ) =>
-
-        term.coefficient ===
-          question.radicals[
-            i
-          ].coefficient &&
-
-        term.radicand ===
-          question.radicals[
-            i
-          ].radicand
-    );
+      term.denominator ===
+        expected[i].denominator
+  );
 }
 
 
@@ -8819,6 +8565,13 @@ function submitAnswer() {
 
   answered =
     true;
+
+
+  mathExpressionInput
+    ?.setDisabled
+    ?.(
+      true
+    );
 
 
   radicalInput
