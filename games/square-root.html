@@ -27,7 +27,7 @@
 
   <link rel="stylesheet" href="../css/radical-display.css?v=1">
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=3">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=4">
 
   <style>
 
@@ -2345,7 +2345,7 @@
 
 <script src="../js/radical-input.js?v=7"></script>
 
-<script src="../js/math-expression-input.js?v=3"></script>
+<script src="../js/math-expression-input.js?v=4"></script>
 
 <script type="module">
 
@@ -2374,6 +2374,38 @@ const MODE_NAMES = {
 
   meaning:
     "平方根觀念應用"
+};
+
+
+/*
+==================================================
+模式固定輸入能力
+同一模式的工具列不隨題目答案型態改變，
+避免介面洩漏答案方向。
+==================================================
+*/
+
+const MODE_INPUT_CAPABILITIES = {
+
+  squarePractice: {
+    radical: false,
+    fraction: false
+  },
+
+  simplify: {
+    radical: true,
+    fraction: false
+  },
+
+  approximation: {
+    radical: false,
+    fraction: false
+  },
+
+  meaning: {
+    radical: false,
+    fraction: false
+  }
 };
 
 
@@ -5728,10 +5760,14 @@ function renderAnswer(
             "math-expression-answer-mount",
 
           allowRadical:
-            true,
+            MODE_INPUT_CAPABILITIES[
+              mode
+            ]?.radical === true,
 
           allowFraction:
-            false,
+            MODE_INPUT_CAPABILITIES[
+              mode
+            ]?.fraction === true,
 
           allowPower:
             false,
@@ -7507,4 +7543,4 @@ showOnly(
 
 </body>
 
-</html>
+</html>111
