@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.8.0
+版本：1.9.0
 ==================================================
 
 設計原則：
@@ -3255,6 +3255,12 @@ MathExpressionInput 共用數學運算式輸入元件
 
       this.activeFractionInput =
         null;
+
+      this.powerTargetInput =
+        null;
+
+      this.powerTargetSelection =
+        null;
     }
 
     bind() {
@@ -3448,17 +3454,46 @@ MathExpressionInput 共用數學運算式輸入元件
               } else if (
                 tool === "power"
               ) {
-                this.openPowerEditor();
+
+                if (
+                  this.fractionEditor &&
+                  !this.fractionEditor.hidden
+                ) {
+
+                  this.openPowerEditor(
+                    this.activeFractionInput ||
+                    this.fractionNumerator
+                  );
+
+                } else {
+
+                  this.openPowerEditor();
+                }
+
               } else if (
                 tool === "variable"
               ) {
-                this.insertText(
-                  this.options.variable,
-                  {
-                    selectPlaceholder:
-                      false
-                  }
-                );
+
+                if (
+                  this.fractionEditor &&
+                  !this.fractionEditor.hidden
+                ) {
+
+                  this.insertIntoFractionField(
+                    this.options.variable,
+                    0
+                  );
+
+                } else {
+
+                  this.insertText(
+                    this.options.variable,
+                    {
+                      selectPlaceholder:
+                        false
+                    }
+                  );
+                }
               }
             }
           );
@@ -3752,6 +3787,13 @@ MathExpressionInput 共用數學運算式輸入元件
         .remove(
           "mei-shell--special-open"
         );
+    
+
+      this.powerTargetInput =
+        null;
+
+      this.powerTargetSelection =
+        null;
     }
 
 
@@ -3919,7 +3961,9 @@ MathExpressionInput 共用數學運算式輸入元件
     }
 
 
-    openPowerEditor() {
+    openPowerEditor(
+      targetInput = null
+    ) {
 
       if (
         this.disabled
@@ -3927,28 +3971,77 @@ MathExpressionInput 共用數學運算式輸入元件
         return;
       }
 
-      this.lastSelection =
-        this.getSelection();
+      /*
+      targetInput 有值：
+      代表目前正在分數編輯器中，
+      次方要套用在分子／分母。
 
-      this.closeSpecialEditors();
+      targetInput 為 null：
+      代表次方作用在主答案框。
+      */
+
+      this.powerTargetInput =
+        targetInput || null;
 
       if (
-        !this.powerEditor
+        targetInput
       ) {
-        return;
+
+        this.powerTargetSelection = {
+          start:
+            targetInput.selectionStart ??
+            targetInput.value.length,
+
+          end:
+            targetInput.selectionEnd ??
+            (
+              targetInput.selectionStart ??
+              targetInput.value.length
+            )
+        };
+
+        /*
+        分數編輯器保持開啟，
+        只另外打開次方小格。
+        */
+        if (
+          this.powerEditor
+        ) {
+          this.powerEditor.hidden =
+            false;
+        }
+
+        this.shell
+          ?.classList
+          .add(
+            "mei-shell--special-open"
+          );
+
+      } else {
+
+        this.lastSelection =
+          this.getSelection();
+
+        if (
+          this.powerEditor
+        ) {
+          this.powerEditor.hidden =
+            false;
+        }
+
+        this.shell
+          ?.classList
+          .add(
+            "mei-shell--special-open"
+          );
       }
 
-      this.powerValueInput.value =
-        "";
-
-      this.powerEditor.hidden =
-        false;
-
-      this.shell
-        ?.classList
-        .add(
-          "mei-shell--special-open"
-        );
+      if (
+        this.powerValueInput
+      ) {
+        this.powerValueInput.value =
+          "";
+      }
 
       window.setTimeout(
         () =>
@@ -3987,6 +4080,108 @@ MathExpressionInput 共用數學運算式輸入元件
       ) {
         return;
       }
+
+
+      /*
+      ==================================================
+      A. 次方作用在分數的分子／分母
+      ==================================================
+      */
+
+      if (
+        this.powerTargetInput
+      ) {
+
+        const target =
+          this.powerTargetInput;
+
+        const selection =
+          this.powerTargetSelection || {
+            start:
+              target.selectionStart ??
+              target.value.length,
+            end:
+              target.selectionEnd ??
+              target.value.length
+          };
+
+        const start =
+          selection.start;
+
+        const end =
+          selection.end;
+
+        const current =
+          target.value;
+
+        let insertion =
+          superscript;
+
+        if (
+          end >
+          start
+        ) {
+
+          const selected =
+            current.slice(
+              start,
+              end
+            );
+
+          insertion =
+            `(${selected})${superscript}`;
+        }
+
+        target.value =
+          current.slice(
+            0,
+            start
+          ) +
+          insertion +
+          current.slice(
+            end
+          );
+
+        const caret =
+          start +
+          insertion.length;
+
+        target.focus();
+
+        target.setSelectionRange(
+          caret,
+          caret
+        );
+
+        this.activeFractionInput =
+          target;
+
+        /*
+        只關閉次方小格，
+        保留分數編輯器繼續編輯。
+        */
+        if (
+          this.powerEditor
+        ) {
+          this.powerEditor.hidden =
+            true;
+        }
+
+        this.powerTargetInput =
+          null;
+
+        this.powerTargetSelection =
+          null;
+
+        return;
+      }
+
+
+      /*
+      ==================================================
+      B. 次方作用在主答案框
+      ==================================================
+      */
 
       const {
         start,
@@ -4030,11 +4225,24 @@ MathExpressionInput 共用數學運算式輸入元件
         insertion.length;
 
       this.lastSelection = {
-        start: caret,
-        end: caret
+        start:
+          caret,
+        end:
+          caret
       };
 
-      this.closeSpecialEditors();
+      if (
+        this.powerEditor
+      ) {
+        this.powerEditor.hidden =
+          true;
+      }
+
+      this.shell
+        ?.classList
+        .remove(
+          "mei-shell--special-open"
+        );
 
       this.input.focus();
 
