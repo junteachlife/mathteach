@@ -28,7 +28,7 @@
 
   <link rel="stylesheet" href="../css/radical-display.css?v=1">
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=3">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=4">
 
 
   <style>
@@ -2448,7 +2448,7 @@
         id="dependency-warning"
         class="dependency-warning hidden"
       >
-        ⚠️ 共用數學輸入元件未載入。請確認 <code>../js/math-expression-input.js?v=3</code>、<code>../js/radical-display.js?v=1</code> 已存在。
+        ⚠️ 共用數學輸入元件未載入。請確認 <code>../js/math-expression-input.js?v=4</code>、<code>../js/radical-display.js?v=1</code> 已存在。
       </div>
 
 
@@ -2792,7 +2792,7 @@
 
 <script src="../js/radical-input.js?v=7"></script>
 
-<script src="../js/math-expression-input.js?v=3"></script>
+<script src="../js/math-expression-input.js?v=4"></script>
 
 
 <script type="module">
@@ -2871,6 +2871,36 @@ const MODE_NAMES = {
 
   mixed:
     "根式四則綜合"
+};
+
+
+/*
+==================================================
+模式固定輸入能力
+==================================================
+*/
+
+const MODE_INPUT_CAPABILITIES = {
+
+  multiply: {
+    radical: true,
+    fraction: false
+  },
+
+  divide: {
+    radical: true,
+    fraction: true
+  },
+
+  addSubtract: {
+    radical: true,
+    fraction: false
+  },
+
+  mixed: {
+    radical: true,
+    fraction: true
+  }
 };
 
 
@@ -7515,100 +7545,26 @@ function renderAnswer(
 
 
   /*
-  Number
+  同一模式只要可能出現根號／分數，
+  整個模式所有作答題都固定顯示相同功能鍵。
+  number 題也使用同一共用答案框，
+  避免學生從工具列判斷答案一定是整數。
   */
 
   if (
-    question.type ===
-    "number"
+    question.type === "number" ||
+    question.type === "radical" ||
+    question.type === "radicalFraction" ||
+    question.type === "expression"
   ) {
 
-    panel.innerHTML = `
-
-      <div class="answer-title">
-
-        ${question.label}
-
-      </div>
-
-
-      <div class="number-answer">
-
-        <input
-          id="number-answer"
-          type="text"
-          inputmode="numeric"
-          autocomplete="off"
-          placeholder="輸入整數答案"
-        >
-
-      </div>
-
-
-      <div
-        id="answer-preview"
-        class="answer-preview"
-      >
-
-        目前尚未完成答案。
-
-      </div>
-    `;
-
-
-    $("number-answer")
-      .addEventListener(
-        "input",
-        () => {
-
-          const raw =
-            $("number-answer")
-              .value
-              .trim();
-
-
-          $("answer-preview")
-            .innerHTML =
-
-              raw
-
-                ? `目前答案：
-                   <span class="answer-preview-value">
-                     ${raw}
-                   </span>`
-
-                : "目前尚未完成答案。";
-        }
-      );
-
-
-    $("number-answer")
-      .focus();
-
-
-    return;
-  }
-
-
-  /*
-  Radical / Radical Fraction / Expression
-  全部統一成單一 MathExpressionInput。
-  */
-
-  if (
-    question.type ===
-      "radical" ||
-    question.type ===
-      "radicalFraction" ||
-    question.type ===
-      "expression"
-  ) {
-
-    const allowFraction =
-      question.type ===
-        "radicalFraction" ||
-      question.type ===
-        "expression";
+    const capability =
+      MODE_INPUT_CAPABILITIES[
+        mode
+      ] || {
+        radical: true,
+        fraction: true
+      };
 
 
     panel.innerHTML = `
@@ -7623,10 +7579,22 @@ function renderAnswer(
       <p class="answer-help">
 
         數字、＋、−直接輸入；
-        需要根號時按「√ 根號」，
-        需要分數時按「分數」。<br>
-
-        分數的分子、分母裡也可以再插入根號。
+        ${
+          capability.radical
+            ? '需要根號時按「√ 根號」'
+            : ""
+        }
+        ${
+          capability.radical &&
+          capability.fraction
+            ? "，"
+            : ""
+        }
+        ${
+          capability.fraction
+            ? '需要分數時按「分數」'
+            : ""
+        }。
 
       </p>
 
@@ -7660,9 +7628,10 @@ function renderAnswer(
             "math-expression-answer-mount",
 
           allowRadical:
-            true,
+            capability.radical,
 
-          allowFraction,
+          allowFraction:
+            capability.fraction,
 
           allowPower:
             false,
@@ -7680,17 +7649,9 @@ function renderAnswer(
             true,
 
           placeholder:
-            question.type ===
-              "expression"
-
-              ? "例如：−3√2＋√21"
-
-              : question.type ===
-                  "radicalFraction"
-
-                ? "例如：2√5／3"
-
-                : "例如：−2√5",
+            capability.fraction
+              ? "請輸入答案"
+              : "請輸入答案",
 
           theme: {
 
@@ -7832,68 +7793,11 @@ function readAnswer(
   question
 ) {
 
-  /*
-  Number
-  */
-
   if (
-    question.type ===
-    "number"
-  ) {
-
-    const raw =
-      $("number-answer")
-        ?.value
-        .trim() ||
-      "";
-
-
-    if (
-      !/^-?\d+$/
-        .test(
-          raw
-        )
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          "請輸入完整整數答案。"
-      };
-    }
-
-
-    return {
-
-      valid:
-        true,
-
-      value:
-        Number(
-          raw
-        ),
-
-      display:
-        raw
-    };
-  }
-
-
-  /*
-  Radical / Radical Fraction / Expression
-  統一從 MathExpressionInput 讀取。
-  */
-
-  if (
-    question.type ===
-      "radical" ||
-    question.type ===
-      "radicalFraction" ||
-    question.type ===
-      "expression"
+    question.type === "number" ||
+    question.type === "radical" ||
+    question.type === "radicalFraction" ||
+    question.type === "expression"
   ) {
 
     const result =
@@ -7913,6 +7817,47 @@ function readAnswer(
         message:
           result?.message ||
           "請把答案輸入完整。"
+      };
+    }
+
+
+    if (
+      question.type ===
+      "number"
+    ) {
+
+      const terms =
+        result.terms ||
+        [];
+
+
+      if (
+        terms.length !== 1 ||
+        terms[0].radicand !== 1 ||
+        terms[0].denominator !== 1
+      ) {
+
+        return {
+
+          valid:
+            false,
+
+          message:
+            "本題答案應為整數。"
+        };
+      }
+
+
+      return {
+
+        valid:
+          true,
+
+        value:
+          terms[0].numerator,
+
+        display:
+          result.display
       };
     }
 
