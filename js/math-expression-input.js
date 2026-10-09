@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.1.0
+版本：1.2.0
 ==================================================
 
 設計原則：
@@ -1687,6 +1687,201 @@ MathExpressionInput 共用數學運算式輸入元件
     );
   }
 
+
+  function hasTopLevelAddSubtract(source) {
+    let depth = 0;
+
+    for (
+      let i = 0;
+      i < source.length;
+      i++
+    ) {
+      const ch =
+        source[i];
+
+      if (
+        ch === "("
+      ) {
+        depth++;
+        continue;
+      }
+
+      if (
+        ch === ")"
+      ) {
+        depth =
+          Math.max(
+            0,
+            depth - 1
+          );
+        continue;
+      }
+
+      if (
+        depth === 0 &&
+        (
+          ch === "+" ||
+          (
+            ch === "-" &&
+            i > 0
+          )
+        )
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function stripOuterParentheses(source) {
+    source =
+      String(source ?? "")
+        .trim();
+
+    if (
+      !source.startsWith("(") ||
+      !source.endsWith(")")
+    ) {
+      return source;
+    }
+
+    let depth = 0;
+
+    for (
+      let i = 0;
+      i < source.length;
+      i++
+    ) {
+      const ch =
+        source[i];
+
+      if (
+        ch === "("
+      ) {
+        depth++;
+      } else if (
+        ch === ")"
+      ) {
+        depth--;
+
+        if (
+          depth === 0 &&
+          i <
+            source.length - 1
+        ) {
+          return source;
+        }
+      }
+    }
+
+    return (
+      depth === 0
+        ? source.slice(
+            1,
+            -1
+          )
+        : source
+    );
+  }
+
+  function cleanupEditableFractionText(source) {
+    source =
+      String(source ?? "");
+
+    /*
+    只整理最外層的「(分子)/(分母)」。
+    若分子含有頂層加減，括號有數學意義，保留；
+    單項式／乘積型分子則可安全移除括號。
+    分母若只是單項式／乘積，也移除括號。
+    */
+
+    let depth = 0;
+    let slashIndex = -1;
+
+    for (
+      let i = 0;
+      i < source.length;
+      i++
+    ) {
+      const ch =
+        source[i];
+
+      if (
+        ch === "("
+      ) {
+        depth++;
+      } else if (
+        ch === ")"
+      ) {
+        depth =
+          Math.max(
+            0,
+            depth - 1
+          );
+      } else if (
+        ch === "/" &&
+        depth === 0
+      ) {
+        slashIndex =
+          i;
+
+        break;
+      }
+    }
+
+    if (
+      slashIndex < 0
+    ) {
+      return source;
+    }
+
+    let left =
+      source.slice(
+        0,
+        slashIndex
+      );
+
+    let right =
+      source.slice(
+        slashIndex + 1
+      );
+
+    const leftInner =
+      stripOuterParentheses(
+        left
+      );
+
+    const rightInner =
+      stripOuterParentheses(
+        right
+      );
+
+    if (
+      leftInner !== left &&
+      !hasTopLevelAddSubtract(
+        leftInner
+      )
+    ) {
+      left =
+        leftInner;
+    }
+
+    if (
+      rightInner !== right &&
+      !hasTopLevelAddSubtract(
+        rightInner
+      )
+    ) {
+      right =
+        rightInner;
+    }
+
+    return (
+      `${left}/${right}`
+    );
+  }
+
   class MathExpressionInput {
     constructor(options = {}) {
       this.options = {
@@ -1720,6 +1915,7 @@ MathExpressionInput 共用數學運算式輸入元件
 
       this.render();
       this.bind();
+      this.updateEditorLayout();
       this.update();
 
       if (
@@ -1939,6 +2135,29 @@ MathExpressionInput 共用數學運算式輸入元件
               "mei-shell--editing"
             );
 
+          const cleaned =
+            cleanupEditableFractionText(
+              this.input.value
+            );
+
+          if (
+            cleaned !==
+            this.input.value
+          ) {
+            this.input.value =
+              cleaned;
+
+            const caret =
+              this.input.value.length;
+
+            this.lastSelection = {
+              start: caret,
+              end: caret
+            };
+          }
+
+          this.updateEditorLayout();
+
           this.update();
         }
       );
@@ -1952,6 +2171,9 @@ MathExpressionInput 共用數學運算式輸入元件
             );
 
           rememberSelection();
+
+          this.updateEditorLayout();
+
           this.update();
         }
       );
@@ -2427,6 +2649,26 @@ MathExpressionInput 共用數學運算式輸入元件
       };
     }
 
+    updateEditorLayout() {
+      if (
+        !this.shell ||
+        !this.input
+      ) {
+        return;
+      }
+
+      const hasFraction =
+        this.input.value
+          .includes("/");
+
+      this.shell
+        .classList
+        .toggle(
+          "mei-shell--has-fraction",
+          hasFraction
+        );
+    }
+
     update() {
       const parsed =
         this.parse();
@@ -2536,6 +2778,9 @@ MathExpressionInput 共用數學運算式輸入元件
         start: 0,
         end: 0
       };
+
+      this.updateEditorLayout();
+
       this.update();
     }
 
@@ -2594,6 +2839,8 @@ MathExpressionInput 共用數學運算式輸入元件
         end: caret
       };
 
+      this.updateEditorLayout();
+
       this.update();
     }
 
@@ -2621,6 +2868,7 @@ MathExpressionInput 共用數學運算式輸入元件
     linearize,
     linearToTerms,
     largestSquareFactor,
-    simplifySquareRoot
+    simplifySquareRoot,
+    cleanupEditableFractionText
   };
 })();
