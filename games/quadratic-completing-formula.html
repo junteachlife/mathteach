@@ -22,7 +22,7 @@
 
   <link rel="stylesheet" href="../css/radical-display.css?v=1">
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=4">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=7">
 
   <style>
 
@@ -2406,7 +2406,7 @@
   <style>
     .choice-grid{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;overflow-x:auto!important;max-width:100%!important;padding:4px 2px 8px!important;scrollbar-width:thin}
     .choice-button{flex:0 0 auto!important;min-width:170px!important;white-space:normal!important}
-    .question-content{text-align:left!important;align-items:stretch!important}
+    .question-content{align-items:stretch!important}
     .question-content>.math,.question-content>.formula-box{align-self:center}
     .keep-unit{display:inline-block;white-space:nowrap}
   </style>
@@ -2622,8 +2622,56 @@
       }
     }
 
+  
+
+    /* ==================================================
+       4-2｜選項置中
+    ================================================== */
+
+    .choice-grid{
+      justify-content:center !important;
+      align-items:stretch !important;
+    }
+
+    .choice-button{
+      text-align:center !important;
+      justify-content:center !important;
+    }
+
+    @media(max-width:640px){
+      .choice-grid{
+        justify-content:safe center !important;
+      }
+    }
+
+  
+
+    .blank-marker{
+      display:inline-block;
+      white-space:nowrap;
+    }
+
+    .blank-marker sub{
+      margin-left:2px;
+      font-size:.46em;
+      vertical-align:-.15em;
+    }
+
+    .pair-answer-item{
+      min-width:0;
+    }
+
+    .pair-answer-label{
+      margin-bottom:6px;
+      color:var(--primary-dark);
+      text-align:center;
+      font-size:14px;
+      font-weight:900;
+    }
+
   </style>
 
+  <link rel="stylesheet" href="../css/question-layout.css?v=1">
 </head>
 
 <body>
@@ -3106,7 +3154,9 @@
 
 <script src="../js/radical-display.js?v=1"></script>
 
-<script src="../js/math-expression-input.js?v=4"></script>
+<script src="../js/math-expression-input.js?v=7"></script>
+
+<script src="../js/question-layout.js?v=1"></script>
 
 <script type="module">
 
@@ -6451,7 +6501,10 @@ function makeCompleteSquarePair() {
             : `－${Math.abs(b)}x`
         }
 
-        ＋ □
+        ＋
+        <span class="blank-marker">
+          □<sub>①</sub>
+        </span>
 
         ＝
 
@@ -6466,7 +6519,9 @@ function makeCompleteSquarePair() {
             : "－"
         }
 
-        □)<sup>2</sup>
+        <span class="blank-marker">
+          □<sub>②</sub>
+        </span>)<sup>2</sup>
 
       </span>
     `,
@@ -10110,6 +10165,196 @@ function toggleRootFractionMode(
 }
 
 
+function fractionValueHTML(
+  numerator,
+  denominator
+) {
+
+  if (
+    denominator === 1
+  ) {
+    return String(
+      numerator
+    );
+  }
+
+  return fractionHTML(
+    numerator,
+    denominator
+  );
+}
+
+
+function getConjugateRootsCompactHTML(
+  firstResult,
+  secondResult
+) {
+
+  if (
+    !firstResult?.valid ||
+    !secondResult?.valid
+  ) {
+    return null;
+  }
+
+  const firstTerms =
+    firstResult.terms ||
+    [];
+
+  const secondTerms =
+    secondResult.terms ||
+    [];
+
+  if (
+    firstTerms.length !== 2 ||
+    secondTerms.length !== 2
+  ) {
+    return null;
+  }
+
+  const split =
+    terms => {
+
+      const rational =
+        terms.find(
+          term =>
+            Number(
+              term.radicand
+            ) === 1
+        );
+
+      const radical =
+        terms.find(
+          term =>
+            Number(
+              term.radicand
+            ) !== 1
+        );
+
+      if (
+        !rational ||
+        !radical
+      ) {
+        return null;
+      }
+
+      return {
+        rational,
+        radical
+      };
+    };
+
+  const a =
+    split(
+      firstTerms
+    );
+
+  const b =
+    split(
+      secondTerms
+    );
+
+  if (
+    !a ||
+    !b
+  ) {
+    return null;
+  }
+
+  const sameRational =
+    Number(
+      a.rational.numerator
+    ) ===
+      Number(
+        b.rational.numerator
+      ) &&
+    Number(
+      a.rational.denominator
+    ) ===
+      Number(
+        b.rational.denominator
+      );
+
+  const sameRadicand =
+    Number(
+      a.radical.radicand
+    ) ===
+      Number(
+        b.radical.radicand
+      );
+
+  const oppositeRadical =
+    Number(
+      a.radical.numerator
+    ) ===
+      -Number(
+        b.radical.numerator
+      ) &&
+    Number(
+      a.radical.denominator
+    ) ===
+      Number(
+        b.radical.denominator
+      );
+
+  if (
+    !sameRational ||
+    !sameRadicand ||
+    !oppositeRadical
+  ) {
+    return null;
+  }
+
+  const rationalHTML =
+    fractionValueHTML(
+      Number(
+        a.rational.numerator
+      ),
+      Number(
+        a.rational.denominator
+      )
+    );
+
+  const coefficientNumerator =
+    Math.abs(
+      Number(
+        a.radical.numerator
+      )
+    );
+
+  const coefficientDenominator =
+    Number(
+      a.radical.denominator
+    );
+
+  let radicalCoefficientHTML =
+    "";
+
+  if (
+    coefficientNumerator !== 1 ||
+    coefficientDenominator !== 1
+  ) {
+
+    radicalCoefficientHTML =
+      fractionValueHTML(
+        coefficientNumerator,
+        coefficientDenominator
+      );
+  }
+
+  return `
+    ${rationalHTML}
+    ±
+    ${radicalCoefficientHTML}
+    ${sqrtHTML(
+      Number(
+        a.radical.radicand
+      )
+    )}
+  `;
+}
+
+
 function renderRootsAnswer(
   question
 ) {
@@ -10141,6 +10386,7 @@ function renderRootsAnswer(
         數字與正負號直接輸入；
         需要根號時按「√ 根號」，
         需要分數時按「分數」。
+        分數的分子與分母內也可以再使用根號。
       </p>
 
       <div class="root-input-grid">
@@ -10256,16 +10502,35 @@ function renderRootsAnswer(
         return;
       }
 
+      const compactConjugate =
+        needSecond
+          ? getConjugateRootsCompactHTML(
+              first,
+              second
+            )
+          : null;
+
       preview.innerHTML =
         needSecond
-          ? `
-              目前答案：
-              <span class="preview-value">
-                x＝${first.display}
-                或
-                ${second.display}
-              </span>
-            `
+          ? (
+              compactConjugate
+
+                ? `
+                    目前答案：
+                    <span class="preview-value">
+                      x＝${compactConjugate}
+                    </span>
+                  `
+
+                : `
+                    目前答案：
+                    <span class="preview-value">
+                      x＝${first.display}
+                      或
+                      ${second.display}
+                    </span>
+                  `
+            )
           : `
               目前答案：
               <span class="preview-value">
@@ -10603,21 +10868,33 @@ function renderPairAnswer(
 
       <div class="pair-number-grid">
 
-        <input
-          id="pair-1"
-          class="single-answer-input"
-          type="text"
-          autocomplete="off"
-          placeholder="第一格"
-        >
+        <div class="pair-answer-item">
+          <div class="pair-answer-label">
+            ① 第一格
+          </div>
 
-        <input
-          id="pair-2"
-          class="single-answer-input"
-          type="text"
-          autocomplete="off"
-          placeholder="第二格"
-        >
+          <input
+            id="pair-1"
+            class="single-answer-input"
+            type="text"
+            autocomplete="off"
+            placeholder="填入①"
+          >
+        </div>
+
+        <div class="pair-answer-item">
+          <div class="pair-answer-label">
+            ② 第二格
+          </div>
+
+          <input
+            id="pair-2"
+            class="single-answer-input"
+            type="text"
+            autocomplete="off"
+            placeholder="填入②"
+          >
+        </div>
 
       </div>
 
@@ -11021,7 +11298,17 @@ function readRootsAnswer(
     display:
       values.length === 1
         ? `x＝${firstResult.display}（重根）`
-        : `x＝${firstResult.display} 或 ${secondResult.display}`
+        : (
+            getConjugateRootsCompactHTML(
+              firstResult,
+              secondResult
+            )
+              ? `x＝${getConjugateRootsCompactHTML(
+                  firstResult,
+                  secondResult
+                )}`
+              : `x＝${firstResult.display} 或 ${secondResult.display}`
+          )
   };
 }
 
