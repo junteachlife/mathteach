@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.2.0
+版本：1.3.0
 ==================================================
 
 設計原則：
@@ -789,7 +789,7 @@ MathExpressionInput 共用數學運算式輸入元件
         );
 
       case "placeholder":
-        return `<span class="mei-slot">輸入</span>`;
+        return `<span class="mei-slot" aria-label="待輸入"></span>`;
 
       case "variable":
         return `<span class="mei-variable">${escapeHTML(ast.name)}</span>`;
@@ -1787,100 +1787,30 @@ MathExpressionInput 共用數學運算式輸入元件
 
   function cleanupEditableFractionText(source) {
     source =
-      String(source ?? "");
+      String(source ?? "")
+        .trim();
 
     /*
-    只整理最外層的「(分子)/(分母)」。
-    若分子含有頂層加減，括號有數學意義，保留；
-    單項式／乘積型分子則可安全移除括號。
-    分母若只是單項式／乘積，也移除括號。
+    新版不再產生括號。
+    只相容舊版：
+    (2√3)/(3) → 2√3/3
     */
-
-    let depth = 0;
-    let slashIndex = -1;
-
-    for (
-      let i = 0;
-      i < source.length;
-      i++
-    ) {
-      const ch =
-        source[i];
-
-      if (
-        ch === "("
-      ) {
-        depth++;
-      } else if (
-        ch === ")"
-      ) {
-        depth =
-          Math.max(
-            0,
-            depth - 1
-          );
-      } else if (
-        ch === "/" &&
-        depth === 0
-      ) {
-        slashIndex =
-          i;
-
-        break;
-      }
-    }
-
-    if (
-      slashIndex < 0
-    ) {
-      return source;
-    }
-
-    let left =
-      source.slice(
-        0,
-        slashIndex
-      );
-
-    let right =
-      source.slice(
-        slashIndex + 1
-      );
-
-    const leftInner =
-      stripOuterParentheses(
-        left
-      );
-
-    const rightInner =
-      stripOuterParentheses(
-        right
+    const oldStyle =
+      source.match(
+        /^\((.+)\)\/\((.+)\)$/
       );
 
     if (
-      leftInner !== left &&
-      !hasTopLevelAddSubtract(
-        leftInner
-      )
+      oldStyle
     ) {
-      left =
-        leftInner;
+      return (
+        `${oldStyle[1]}/${oldStyle[2]}`
+      );
     }
 
-    if (
-      rightInner !== right &&
-      !hasTopLevelAddSubtract(
-        rightInner
-      )
-    ) {
-      right =
-        rightInner;
-    }
-
-    return (
-      `${left}/${right}`
-    );
+    return source;
   }
+
 
   class MathExpressionInput {
     constructor(options = {}) {
@@ -2165,10 +2095,30 @@ MathExpressionInput 共用數學運算式輸入元件
       this.input.addEventListener(
         "input",
         () => {
-          this.input.value =
+          let value =
             normalizeSource(
               this.input.value
             );
+
+          /*
+          v1.3：
+          分子／分母框框只做「待輸入提示」。
+          一旦旁邊已經出現數字、x 或根號內容，
+          自動移除該 □。
+          */
+          value =
+            value
+              .replace(
+                /□(?=[0-9x√])/gi,
+                ""
+              )
+              .replace(
+                /(?<=[0-9x√])□/gi,
+                ""
+              );
+
+          this.input.value =
+            value;
 
           rememberSelection();
 
@@ -2222,8 +2172,8 @@ MathExpressionInput 共用數學運算式輸入元件
                 tool === "fraction"
               ) {
                 this.insertTemplate(
-                  "(□)/(□)",
-                  1
+                  "□/□",
+                  0
                 );
               } else if (
                 tool === "power"
@@ -2434,46 +2384,8 @@ MathExpressionInput 共用數學運算式輸入元件
         this.input.selectionStart ??
         0;
 
-      /*
-      新版分數編輯字串是：
-      (分子)/(分母)
-
-      Tab / ↓ 時：
-      如果游標仍在分子區，移到右側分母的 □。
-      */
-
-      let depth = 0;
-      let slashIndex = -1;
-
-      for (
-        let i = 0;
-        i < source.length;
-        i++
-      ) {
-        const ch =
-          source[i];
-
-        if (
-          ch === "("
-        ) {
-          depth++;
-        } else if (
-          ch === ")"
-        ) {
-          depth =
-            Math.max(
-              0,
-              depth - 1
-            );
-        } else if (
-          ch === "/" &&
-          depth === 0
-        ) {
-          slashIndex =
-            i;
-          break;
-        }
-      }
+      const slashIndex =
+        source.indexOf("/");
 
       if (
         slashIndex < 0 ||
