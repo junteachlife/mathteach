@@ -25,6 +25,10 @@
   href="../css/scratchpad.css"
 >
 
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=3">
+
+  <link rel="stylesheet" href="../css/radical-display.css?v=1">
+
 <style>
 
 * {
@@ -2193,7 +2197,167 @@ RWD
 
 }
 
-</style>
+
+
+    /* ==================================================
+       最新統一遊戲版面｜對齊八上 1-1 ～ 2-2
+    ================================================== */
+
+    .game-card,
+    .game-shell{
+      position:relative;
+    }
+
+    .game-card-return-row{
+      display:flex;
+      justify-content:flex-end;
+      padding:12px 16px 0;
+      background:linear-gradient(180deg,var(--primary-light,#f8fafc),#fff);
+    }
+
+    .game-card-return-row.hidden{
+      display:none !important;
+    }
+
+    .game-card-return-row .semester-return-button{
+      width:auto;
+      min-width:0;
+      min-height:40px;
+      padding:8px 14px;
+      border:2px solid var(--primary-border,var(--teal,#94a3b8));
+      border-radius:12px;
+      background:#fff;
+      color:var(--primary-dark,var(--navy,#334155));
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:none;
+    }
+
+    .quiz-topbar{
+      display:grid !important;
+      grid-template-columns:minmax(210px,1fr) minmax(300px,1.35fr) auto !important;
+      gap:12px !important;
+      align-items:center;
+      margin-bottom:14px;
+    }
+
+    .quiz-context,
+    .quiz-stats{
+      display:grid;
+      gap:8px;
+    }
+
+    .quiz-context{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .quiz-stats{
+      grid-template-columns:repeat(3,minmax(86px,1fr));
+    }
+
+    .quiz-actions{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .quiz-actions .game-button{
+      min-width:116px;
+      min-height:46px;
+      padding:10px 14px;
+    }
+
+    .question-card{
+      position:relative;
+      padding-bottom:78px !important;
+    }
+
+    .scratchpad-row{
+      position:absolute !important;
+      right:16px !important;
+      bottom:14px !important;
+      width:auto !important;
+      min-height:44px !important;
+      margin:0 !important;
+      display:flex !important;
+      justify-content:flex-end !important;
+      z-index:5;
+    }
+
+    #scratchpad-mobile-button{
+      width:auto !important;
+      display:flex !important;
+      justify-content:flex-end !important;
+    }
+
+    #scratchpad-mobile-button #scratchpadOpenButton,
+    #scratchpad-mobile-button .scratchpad-open-button{
+      position:static !important;
+      inset:auto !important;
+      transform:none !important;
+      margin:0 !important;
+      z-index:auto !important;
+    }
+
+    .answer-submit-row{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+
+    @media(max-width:900px){
+      .quiz-topbar{
+        grid-template-columns:1fr !important;
+      }
+    }
+
+    @media(max-width:600px){
+      .game-card-return-row{
+        padding:10px 10px 0;
+      }
+
+      .game-card-return-row .semester-return-button{
+        padding:7px 10px;
+        font-size:13px;
+      }
+
+      .quiz-context,
+      .quiz-stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .quiz-stats .timer-box{
+        grid-column:1/-1;
+      }
+
+      .quiz-actions{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .quiz-actions .game-button{
+        min-width:0;
+        width:100%;
+        padding:10px 8px;
+        font-size:14px;
+      }
+
+      .question-card{
+        padding-bottom:76px !important;
+      }
+
+      .scratchpad-row{
+        right:10px !important;
+        bottom:12px !important;
+      }
+    }
+
+  </style>
 
 </head>
 
@@ -2206,21 +2370,23 @@ RWD
 <div id="commonHeaderMount"></div>
 
 
-<div
-  id="semester-return-wrap"
-  class="semester-return-wrap"
->
-  <button
-    id="semester-return-button"
-    class="semester-return-button"
-    type="button"
-  >
-    ↩️ 重返八年級上學期
-  </button>
-</div>
+
+
 
 
 <main class="game-shell">
+
+    <div id="semester-return-row" class="game-card-return-row">
+      <button
+        id="semester-return-button"
+        class="semester-return-button"
+        type="button"
+      >
+        ↩️ 重返八年級上學期
+      </button>
+    </div>
+
+
 
 
 <header class="hero">
@@ -2403,83 +2569,47 @@ RWD
 >
 
 
-<div class="quiz-topbar">
 
+      <div class="quiz-topbar">
 
-<div class="status-box">
+        <div class="quiz-context">
+          <div class="status-box">
+            模式
+            <span id="mode-name" class="status-value">—</span>
+          </div>
+          <div class="status-box">
+            進度
+            <span id="question-number" class="status-value">1 / 10</span>
+          </div>
+        </div>
 
-模式
+        <div class="quiz-stats">
+          <div class="status-box">
+            答對
+            <span id="correct-count" class="status-value">0</span>
+          </div>
+          <div class="status-box">
+            最高連擊
+            <span id="combo-count" class="status-value">0</span>
+          </div>
+          <div class="status-box timer-box">
+            ⏱️ 測驗時間
+            <span id="timer-display" class="status-value">00:00</span>
+          </div>
+        </div>
 
-<span
-  id="mode-name"
-  class="status-value"
->
-  —
-</span>
+        <div class="quiz-actions">
+          <button id="restart-button" class="game-button restart" type="button">
+            🔄 重新測驗
+          </button>
+          <button id="mode-button" class="game-button secondary" type="button">
+            重選模式
+          </button>
+        </div>
 
-</div>
+      </div>
 
-
-<div class="status-box">
-
-進度
-
-<span
-  id="question-number"
-  class="status-value"
->
-  1 / 10
-</span>
-
-</div>
-
-
-<div class="status-box">
-
-答對
-
-<span
-  id="correct-count"
-  class="status-value"
->
-  0
-</span>
-
-</div>
-
-
-<div class="status-box">
-
-最高連擊
-
-<span
-  id="combo-count"
-  class="status-value"
->
-  0
-</span>
-
-</div>
-
-
-<div class="status-box timer-box">
-
-測驗時間
-
-<span
-  id="timer-display"
-  class="status-value"
->
-  00:00
-</span>
-
-</div>
-
-
-</div>
-
-
-<div class="progress-shell">
+      <div class="progress-shell">
 
 <div
   id="progress-bar"
@@ -2528,62 +2658,28 @@ RWD
 </div>
 
 
+
+        <div class="scratchpad-row">
+          <div id="scratchpad-mobile-button"></div>
+        </div>
 </div>
-
-
-<div class="scratchpad-row">
-
-<div
-  id="scratchpad-mobile-button"
-></div>
-
-</div>
-
-
 <div
   id="answer-panel"
   class="answer-panel"
 ></div>
 
 
-<div class="button-row">
 
-<button
-  id="submit-button"
-  class="game-button primary"
-  type="button"
->
-  提交答案（Enter）
-</button>
+      <div class="answer-submit-row">
+        <button id="submit-button" class="game-button" type="button">
+          提交答案（Enter）
+        </button>
+        <button id="next-button" class="game-button hidden" type="button">
+          下一題（Enter）
+        </button>
+      </div>
 
-<button
-  id="next-button"
-  class="game-button primary hidden"
-  type="button"
->
-  下一題（Enter）
-</button>
-
-<button
-  id="restart-button"
-  class="game-button restart"
-  type="button"
->
-  🔄 重新測驗
-</button>
-
-<button
-  id="mode-button"
-  class="game-button secondary"
-  type="button"
->
-  選擇模式
-</button>
-
-</div>
-
-
-<div
+      <div
   id="feedback"
   class="feedback"
 ></div>
@@ -2771,6 +2867,10 @@ RWD
 <script src="../js/sound-manager.js?v=1"></script>
 
 
+<script src="../js/radical-display.js?v=1"></script>
+
+<script src="../js/math-expression-input.js?v=3"></script>
+
 <script type="module">
 
 import {
@@ -2834,6 +2934,10 @@ let answered =
 
 let selectedChoice =
   null;
+
+let mathExpressionInput =
+  null;
+
 
 let startTime =
   0;
@@ -3130,84 +3234,11 @@ function segmentABHTML() {
 function sqrtDisplay(
   content
 ) {
+  if (window.RadicalDisplay?.sqrt) {
+    return window.RadicalDisplay.sqrt(content);
+  }
 
-  const source =
-    String(
-      content ??
-      ""
-    );
-
-
-  const plainText =
-    source
-      .replace(
-        /<[^>]*>/g,
-        ""
-      )
-      .replace(
-        /\s+/g,
-        ""
-      );
-
-
-  const isComplex =
-
-    /<sup\b|<span\b|<math\b|<mfrac\b/i
-      .test(
-        source
-      ) ||
-
-    /[×÷＋－+−·]/
-      .test(
-        plainText
-      ) ||
-
-    plainText.length >=
-      5;
-
-
-  const radicandClass =
-
-    isComplex
-
-      ? "display-radicand display-radicand-complex"
-
-      : "display-radicand";
-
-
-  return `
-
-    <span class="display-radical">
-
-      <svg
-        class="display-radical-svg"
-        viewBox="0 0 100 62"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-
-        <path
-          class="display-radical-path"
-          d="
-            M 1 37
-            L 7 37
-            L 13 51
-            L 18 58
-            L 29 8
-            L 98 8
-          "
-        />
-
-      </svg>
-
-      <span class="${radicandClass}">
-
-        ${content}
-
-      </span>
-
-    </span>
-  `;
+  return `<span class="math-inline">√(${content})</span>`;
 }
 
 
@@ -6395,6 +6426,11 @@ function renderAnswer(
   selectedChoice =
     null;
 
+  mathExpressionInput
+    ?.destroy?.();
+
+  mathExpressionInput =
+    null;
 
   const panel =
     $("answer-panel");
@@ -6406,13 +6442,11 @@ function renderAnswer(
   ) {
 
     panel.innerHTML = `
-
       <div class="answer-title">
         請填寫答案
       </div>
 
       <div class="number-answer">
-
         <input
           id="number-answer"
           type="text"
@@ -6420,17 +6454,12 @@ function renderAnswer(
           autocomplete="off"
           placeholder="輸入答案"
         >
-
       </div>
 
-      <div
-        id="answer-preview"
-        class="answer-preview"
-      >
+      <div id="answer-preview" class="answer-preview">
         目前尚未完成答案。
       </div>
     `;
-
 
     $("number-answer")
       .addEventListener(
@@ -6438,401 +6467,163 @@ function renderAnswer(
         updateNumberPreview
       );
 
-
     $("number-answer")
       .focus();
 
-
     return;
   }
 
 
   if (
-    q.answerType ===
-    "fraction"
+    q.answerType === "fraction" ||
+    q.answerType === "radical" ||
+    q.answerType === "radicalFraction"
   ) {
 
-    panel.innerHTML = `
+    const isFraction =
+      q.answerType === "fraction" ||
+      q.answerType === "radicalFraction";
 
+    const isRadical =
+      q.answerType === "radical" ||
+      q.answerType === "radicalFraction";
+
+    panel.innerHTML = `
       <div class="answer-title">
-        請填寫最簡分數
+        ${
+          q.answerType === "fraction"
+            ? "請填寫最簡分數"
+            : q.answerType === "radical"
+              ? "請填寫最簡根式"
+              : "請填寫最簡根式分數"
+        }
       </div>
 
       <p class="answer-help">
-        請自行約分成最簡分數後再提交。
+        數字、＋、−直接輸入；
+        ${isRadical ? '需要根號時按「√ 根號」' : ''}
+        ${isRadical && isFraction ? '，' : ''}
+        ${isFraction ? '需要分數時按「分數」' : ''}。
+        系統會提醒尚可化簡或約分的答案。
       </p>
 
-      <div class="fraction-answer-wrap">
-
-        <div class="fraction-answer">
-
-          <input
-            id="fraction-numerator"
-            type="text"
-            inputmode="numeric"
-            placeholder="分子"
-          >
-
-          <input
-            id="fraction-denominator"
-            type="text"
-            inputmode="numeric"
-            placeholder="分母"
-          >
-
-        </div>
-
-      </div>
-
-      <div
-        id="answer-preview"
-        class="answer-preview"
-      >
-        目前尚未完成答案。
-      </div>
+      <div id="math-expression-answer-mount"></div>
     `;
 
+    if (
+      typeof window.MathExpressionInput !==
+      "function"
+    ) {
+      $("feedback").className =
+        "feedback warning";
 
-    [
-      "fraction-numerator",
-      "fraction-denominator"
-    ]
-      .forEach(
-        id => {
+      $("feedback").textContent =
+        "MathExpressionInput 共用元件沒有正常載入。";
 
-          $(id)
-            .addEventListener(
-              "input",
-              updateFractionPreview
-            );
+      return;
+    }
+
+    mathExpressionInput =
+      new window.MathExpressionInput({
+        mountId:
+          "math-expression-answer-mount",
+
+        allowRadical:
+          isRadical,
+
+        allowFraction:
+          isFraction,
+
+        allowPower:
+          false,
+
+        allowVariable:
+          false,
+
+        requireSimplifiedRadical:
+          true,
+
+        requireSimplifiedFraction:
+          true,
+
+        requireRationalDenominator:
+          true,
+
+        placeholder:
+          q.answerType === "fraction"
+            ? "例如：3/5"
+            : q.answerType === "radical"
+              ? "例如：2√5"
+              : "例如：2√5/3",
+
+        theme: {
+          primary:
+            "#149b92",
+          dark:
+            "#0b746e",
+          light:
+            "#e7f8f6",
+          border:
+            "#9fd9d5"
         }
-      );
-
-
-    $("fraction-numerator")
-      .focus();
-
-
-    return;
-  }
-
-
-  if (
-    q.answerType ===
-    "radical"
-  ) {
-
-    panel.innerHTML = `
-
-      <div class="answer-title">
-        請填寫最簡根式
-      </div>
-
-      <p class="answer-help">
-        根號外係數為 1 時可以填 1。<br>
-        根號內如果還可以化簡，系統會提醒你自行修正。
-      </p>
-
-      <div class="radical-editor-row">
-
-        <div class="radical-field">
-
-          <label>
-            正負號
-          </label>
-
-          <select
-            id="radical-sign"
-            class="radical-sign"
-          >
-
-            <option value="1">
-              ＋
-            </option>
-
-            <option value="-1">
-              －
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <div class="radical-field">
-
-          <label>
-            根號外係數
-          </label>
-
-          <input
-            id="radical-coefficient"
-            class="radical-coefficient"
-            type="text"
-            inputmode="numeric"
-            value="1"
-          >
-
-        </div>
-
-
-        <div class="radical-field">
-
-          <label>
-            根號內
-          </label>
-
-          ${rootEditorHTML(
-            "radical-radicand"
-          )}
-
-        </div>
-
-      </div>
-
-
-      <div
-        id="answer-preview"
-        class="answer-preview"
-      >
-        目前尚未完成答案。
-      </div>
-    `;
-
-
-    [
-      "radical-sign",
-      "radical-coefficient",
-      "radical-radicand"
-    ]
-      .forEach(
-        id => {
-
-          $(id)
-            .addEventListener(
-              "input",
-              updateRadicalPreview
-            );
-
-
-          $(id)
-            .addEventListener(
-              "change",
-              updateRadicalPreview
-            );
-        }
-      );
-
-
-    $("radical-radicand")
-      .focus();
-
-
-    return;
-  }
-
-
-  if (
-    q.answerType ===
-    "radicalFraction"
-  ) {
-
-    panel.innerHTML = `
-
-      <div class="answer-title">
-        請填寫最簡根式分數
-      </div>
-
-      <p class="answer-help">
-        根號外係數為 1 時可填 1，分子與分母也必須完成約分。
-      </p>
-
-
-      <div class="radical-fraction-answer">
-
-
-        <div class="rf-fraction-stack">
-
-
-          <div class="rf-numerator-area">
-
-
-            <select
-              id="rf-sign"
-              class="radical-sign"
-            >
-
-              <option value="1">
-                ＋
-              </option>
-
-              <option value="-1">
-                －
-              </option>
-
-            </select>
-
-
-            <input
-              id="rf-coefficient"
-              class="radical-coefficient"
-              type="text"
-              inputmode="numeric"
-              value="1"
-            >
-
-
-            ${rootEditorHTML(
-              "rf-radicand"
-            )}
-
-
-          </div>
-
-
-          <div class="rf-fraction-line"></div>
-
-
-          <div class="rf-denominator-area">
-
-            <input
-              id="rf-denominator"
-              class="rf-denominator"
-              type="text"
-              inputmode="numeric"
-              placeholder="分母"
-            >
-
-          </div>
-
-
-        </div>
-
-
-      </div>
-
-
-      <div
-        id="answer-preview"
-        class="answer-preview"
-      >
-        目前尚未完成答案。
-      </div>
-    `;
-
-
-    [
-      "rf-sign",
-      "rf-coefficient",
-      "rf-radicand",
-      "rf-denominator"
-    ]
-      .forEach(
-        id => {
-
-          $(id)
-            .addEventListener(
-              "input",
-              updateRadicalFractionPreview
-            );
-
-
-          $(id)
-            .addEventListener(
-              "change",
-              updateRadicalFractionPreview
-            );
-        }
-      );
-
-
-    $("rf-radicand")
-      .focus();
-
+      });
 
     return;
   }
 
 
   panel.innerHTML = `
-
     <div class="answer-title">
       請選擇正確答案
     </div>
 
     <div class="choice-grid">
-
       ${
         q.choices
           .map(
             choice => `
-
               <button
                 type="button"
                 class="choice-button"
                 data-choice="${choice.value}"
               >
-
                 ${choice.text}
-
               </button>
             `
           )
           .join("")
       }
-
     </div>
 
-    <div
-      id="answer-preview"
-      class="answer-preview"
-    >
+    <div id="answer-preview" class="answer-preview">
       尚未選擇答案。
     </div>
   `;
 
-
   panel
-    .querySelectorAll(
-      ".choice-button"
-    )
+    .querySelectorAll(".choice-button")
     .forEach(
       button => {
-
         button.addEventListener(
           "click",
           () => {
-
             selectedChoice =
               button.dataset.choice;
 
-
             panel
-              .querySelectorAll(
-                ".choice-button"
-              )
+              .querySelectorAll(".choice-button")
               .forEach(
                 item =>
-                  item.classList.remove(
-                    "selected"
-                  )
+                  item.classList.remove("selected")
               );
 
-
-            button.classList.add(
-              "selected"
-            );
-
+            button.classList.add("selected");
 
             $("answer-preview")
               .innerHTML = `
-
                 目前答案：
-
                 <span class="answer-preview-value">
-
                   ${button.textContent.trim()}
-
                 </span>
               `;
           }
@@ -6985,336 +6776,138 @@ function readAnswer(
         .trim() ||
       "";
 
-
     if (
-      !/^-?\d+$/
-        .test(
-          raw
-        )
+      !/^-?\d+$/.test(raw)
     ) {
-
       return {
-
-        valid:
-          false,
-
+        valid: false,
         message:
           "請輸入完整整數答案。"
       };
     }
 
-
     return {
-
-      valid:
-        true,
-
-      value:
-        Number(
-          raw
-        ),
-
-      display:
-        raw
+      valid: true,
+      value: Number(raw),
+      display: raw
     };
   }
 
 
   if (
-    q.answerType ===
-    "fraction"
+    q.answerType === "fraction" ||
+    q.answerType === "radical" ||
+    q.answerType === "radicalFraction"
   ) {
 
-    const n =
-      Number(
-        $("fraction-numerator")
-          ?.value
-      );
-
-
-    const d =
-      Number(
-        $("fraction-denominator")
-          ?.value
-      );
-
+    const result =
+      mathExpressionInput
+        ?.validate();
 
     if (
-      !Number.isInteger(
-        n
-      ) ||
-      !Number.isInteger(
-        d
-      ) ||
-      d ===
-      0
+      !result?.valid
     ) {
-
       return {
-
-        valid:
-          false,
-
+        valid: false,
         message:
-          "請完整填寫正確的分子與分母。"
+          result?.message ||
+          "請把答案輸入完整。"
       };
     }
 
+    const terms =
+      result.terms ||
+      [];
 
     if (
-      gcd(
-        n,
-        d
-      ) !==
-      1
+      terms.length !== 1
     ) {
-
       return {
-
-        valid:
-          false,
-
+        valid: false,
         message:
-          "這個分數還可以約分，請自行化成最簡分數。"
+          "本題答案應整理成單一最簡項。"
       };
     }
 
+    const term =
+      terms[0];
+
+    if (
+      q.answerType === "fraction"
+    ) {
+
+      if (
+        term.radicand !== 1
+      ) {
+        return {
+          valid: false,
+          message:
+            "本題答案不需要根號。"
+        };
+      }
+
+      return {
+        valid: true,
+        value: {
+          numerator:
+            term.numerator,
+          denominator:
+            term.denominator
+        },
+        display:
+          result.display
+      };
+    }
+
+    if (
+      term.radicand === 1
+    ) {
+      return {
+        valid: false,
+        message:
+          "本題答案應保留最簡根式。"
+      };
+    }
+
+    if (
+      q.answerType === "radical"
+    ) {
+
+      if (
+        term.denominator !== 1
+      ) {
+        return {
+          valid: false,
+          message:
+            "本題根號外係數應為整數。"
+        };
+      }
+
+      return {
+        valid: true,
+        value: {
+          coefficient:
+            term.numerator,
+          radicand:
+            term.radicand
+        },
+        display:
+          result.display
+      };
+    }
 
     return {
-
-      valid:
-        true,
-
+      valid: true,
       value: {
-
-        numerator:
-          n,
-
+        coefficient:
+          term.numerator,
+        radicand:
+          term.radicand,
         denominator:
-          d
+          term.denominator
       },
-
       display:
-        fractionHTML(
-          n,
-          d
-        )
-    };
-  }
-
-
-  if (
-    q.answerType ===
-    "radical"
-  ) {
-
-    const sign =
-      Number(
-        $("radical-sign")
-          .value
-      );
-
-
-    const coefficient =
-      Number(
-        $("radical-coefficient")
-          .value
-      );
-
-
-    const radicand =
-      Number(
-        $("radical-radicand")
-          .value
-      );
-
-
-    if (
-      !Number.isInteger(
-        coefficient
-      ) ||
-      coefficient <=
-      0 ||
-      !Number.isInteger(
-        radicand
-      ) ||
-      radicand <=
-      0
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          "請完整填寫根式答案。"
-      };
-    }
-
-
-    if (
-      !isSimplestRadicand(
-        radicand
-      )
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          `根號內的 ${radicand} 還可以化簡，請自行化成最簡根式。`
-      };
-    }
-
-
-    return {
-
-      valid:
-        true,
-
-      value: {
-
-        coefficient:
-          sign *
-          coefficient,
-
-        radicand
-      },
-
-      display:
-        radicalHTML(
-          sign *
-          coefficient,
-          radicand
-        )
-    };
-  }
-
-
-  if (
-    q.answerType ===
-    "radicalFraction"
-  ) {
-
-    const sign =
-      Number(
-        $("rf-sign")
-          .value
-      );
-
-
-    const coefficient =
-      Number(
-        $("rf-coefficient")
-          .value
-      );
-
-
-    const radicand =
-      Number(
-        $("rf-radicand")
-          .value
-      );
-
-
-    const denominator =
-      Number(
-        $("rf-denominator")
-          .value
-      );
-
-
-    if (
-      !Number.isInteger(
-        coefficient
-      ) ||
-      coefficient <=
-      0 ||
-      !Number.isInteger(
-        radicand
-      ) ||
-      radicand <=
-      0 ||
-      !Number.isInteger(
-        denominator
-      ) ||
-      denominator <=
-      0
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          "請完整填寫根式分數。"
-      };
-    }
-
-
-    if (
-      !isSimplestRadicand(
-        radicand
-      )
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          `根號內的 ${radicand} 還可以化簡。`
-      };
-    }
-
-
-    if (
-      gcd(
-        coefficient,
-        denominator
-      ) !==
-      1
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          "根號外係數與分母還可以約分。"
-      };
-    }
-
-
-    return {
-
-      valid:
-        true,
-
-      value: {
-
-        coefficient:
-          sign *
-          coefficient,
-
-        radicand,
-
-        denominator
-      },
-
-      display:
-        radicalFractionHTML(
-          sign *
-          coefficient,
-          radicand,
-          denominator
-        )
+        result.display
     };
   }
 
@@ -7322,32 +6915,22 @@ function readAnswer(
   if (
     !selectedChoice
   ) {
-
     return {
-
-      valid:
-        false,
-
+      valid: false,
       message:
         "請先選擇答案。"
     };
   }
 
-
   return {
-
-    valid:
-      true,
-
+    valid: true,
     value:
       selectedChoice,
-
     display:
       q.choices
         .find(
           item =>
-            item.value ===
-            selectedChoice
+            item.value === selectedChoice
         )
         ?.text ||
       selectedChoice
@@ -7693,6 +7276,13 @@ function submitAnswer() {
     true;
 
 
+  mathExpressionInput
+    ?.setDisabled
+    ?.(
+      true
+    );
+
+
   const isCorrect =
     checkCorrect(
       q,
@@ -7982,27 +7572,33 @@ function startTimer() {
 計算紙
 ================================================== */
 
-function moveScratchpadButtonToTop() {
+function ensureScratchpadButtonInQuestionCard() {
 
-  const mount =
-    $("scratchpad-mobile-button");
+  const mount = $("scratchpad-mobile-button");
+  const questionCard =
+    document.querySelector("#quiz-screen .question-card");
+  const button = $("scratchpadOpenButton");
 
-
-  const button =
-    $("scratchpadOpenButton");
-
+  if (
+    mount &&
+    questionCard &&
+    mount.parentElement !== questionCard
+  ) {
+    questionCard.appendChild(
+      mount.parentElement
+    );
+  }
 
   if (
     mount &&
     button &&
-    !mount.contains(
-      button
-    )
+    !mount.contains(button)
   ) {
+    mount.appendChild(button);
+  }
 
-    mount.appendChild(
-      button
-    );
+  if (button) {
+    window.showGameScratchpadButton?.();
   }
 }
 
@@ -8034,21 +7630,17 @@ function showOnly(
       }
     );
 
+  const semesterReturnRow =
+    $("semester-return-row");
 
-  const semesterReturnWrap =
-    $("semester-return-wrap");
-
-
-  semesterReturnWrap
+  semesterReturnRow
     ?.classList
     .toggle(
       "hidden",
-      screenId !==
-        "start-screen"
+      screenId !== "start-screen"
     );
 
-
-  if (
+if (
     screenId ===
     "quiz-screen"
   ) {
@@ -8059,13 +7651,13 @@ function showOnly(
 
 
     setTimeout(
-      moveScratchpadButtonToTop,
+      ensureScratchpadButtonInQuestionCard,
       0
     );
 
 
     setTimeout(
-      moveScratchpadButtonToTop,
+      ensureScratchpadButtonInQuestionCard,
       100
     );
 
@@ -8541,6 +8133,22 @@ function restartCurrentMode() {
 只在模式選擇頁顯示按鈕
 ================================================== */
 
+function confirmReselectMode() {
+  return window.confirm(
+    "確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。"
+  );
+}
+
+function backToModesWithConfirmation() {
+  if (!confirmReselectMode()) {
+    return;
+  }
+
+  stopTimer();
+  showOnly("start-screen");
+}
+
+
 function returnToGrade8FirstSemester() {
 
   stopTimer();
@@ -8657,15 +8265,7 @@ $("restart-button")
 $("mode-button")
   .addEventListener(
     "click",
-    () => {
-
-      stopTimer();
-
-
-      showOnly(
-        "start-screen"
-      );
-    }
+    backToModesWithConfirmation
   );
 
 
@@ -8771,11 +8371,11 @@ window.addEventListener(
   "DOMContentLoaded",
   () => {
 
-    moveScratchpadButtonToTop();
+    ensureScratchpadButtonInQuestionCard();
 
 
     setTimeout(
-      moveScratchpadButtonToTop,
+      ensureScratchpadButtonInQuestionCard,
       100
     );
   }
