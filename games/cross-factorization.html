@@ -24,7 +24,7 @@
 
   <link rel="stylesheet" href="../css/polynomial-input.css?v=3">
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=4">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=5">
 
   <style>
 
@@ -2824,7 +2824,7 @@
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
 
-<script src="../js/math-expression-input.js?v=4"></script>
+<script src="../js/math-expression-input.js?v=5"></script>
 
 <script src="../js/polynomial-input.js?v=3"></script>
 
@@ -2919,6 +2919,10 @@ let factorSharedInput1 =
 
 let factorSharedInput2 =
   null;
+
+let factorExpressionInput =
+  null;
+
 
 
 
@@ -5964,184 +5968,119 @@ function readLinearFactor(
 }
 
 
+
+function sharedPolynomialToQuadratic(
+  terms
+) {
+
+  const result = {
+    a:
+      F(0,1),
+    b:
+      F(0,1),
+    c:
+      F(0,1)
+  };
+
+  for (
+    const term of
+    terms ||
+    []
+  ) {
+
+    const coefficient =
+      F(
+        term.numerator ??
+          term.coefficient?.numerator ??
+          term.coefficient,
+        term.denominator ??
+          term.coefficient?.denominator ??
+          1
+      );
+
+    if (
+      term.exponent === 2
+    ) {
+      result.a =
+        coefficient;
+    } else if (
+      term.exponent === 1
+    ) {
+      result.b =
+        coefficient;
+    } else if (
+      term.exponent === 0
+    ) {
+      result.c =
+        coefficient;
+    } else {
+      return null;
+    }
+  }
+
+  return result;
+}
+
+
 /*
 ==================================================
 讀取答案
 ==================================================
 */
 
+
 function readAnswer() {
 
-  const outerResult =
-    outerSharedInput
+  const result =
+    factorExpressionInput
       ?.validate();
 
   if (
-    !outerResult?.valid
+    !result?.valid
   ) {
+
     return {
       valid: false,
       message:
-        outerResult?.message ||
-        "請先完成整體公因數。"
+        result?.message ||
+        "請完成因式分解答案。"
     };
   }
-
-  const outerTerms =
-    outerResult.terms ||
-    [];
 
   if (
-    outerTerms.length !== 1 ||
-    outerTerms[0].radicand !== 1
+    !result.factorized
   ) {
+
     return {
       valid: false,
       message:
-        "整體公因數請輸入整數或最簡分數。"
+        "請將答案寫成因式相乘的形式，不能只輸入原來的二次式。"
     };
   }
-
-  const outer =
-    F(
-      outerTerms[0].numerator,
-      outerTerms[0].denominator
-    );
-
-
-  function readSharedLinear(
-    input,
-    label
-  ) {
-
-    const result =
-      input
-        ?.validate();
-
-    if (
-      !result?.valid
-    ) {
-      return {
-        valid: false,
-        message:
-          result?.message ||
-          `請完成${label}。`
-      };
-    }
-
-    const terms =
-      (
-        result.value ||
-        []
-      )
-        .map(
-          term => ({
-            exponent:
-              Number(term.exponent),
-            coefficient:
-              F(
-                term.coefficient?.numerator ??
-                  term.coefficient,
-                term.coefficient?.denominator ??
-                  1
-              )
-          })
-        );
-
-    if (
-      terms.some(
-        term =>
-          term.exponent >
-          1
-      )
-    ) {
-      return {
-        valid: false,
-        message:
-          `${label}應為一次因式。`
-      };
-    }
-
-    const aTerm =
-      terms.find(
-        term =>
-          term.exponent === 1
-      );
-
-    const bTerm =
-      terms.find(
-        term =>
-          term.exponent === 0
-      );
-
-    if (
-      !aTerm
-    ) {
-      return {
-        valid: false,
-        message:
-          `${label}必須包含 x 項。`
-      };
-    }
-
-    return {
-      valid: true,
-      value: {
-        a:
-          aTerm.coefficient,
-        b:
-          bTerm?.coefficient ??
-          F(0,1)
-      }
-    };
-  }
-
-
-  const first =
-    readSharedLinear(
-      factorSharedInput1,
-      "因式一"
-    );
-
-  if (!first.valid) {
-    return first;
-  }
-
-
-  const second =
-    readSharedLinear(
-      factorSharedInput2,
-      "因式二"
-    );
-
-  if (!second.valid) {
-    return second;
-  }
-
 
   const expanded =
-    multiplyFactorAnswer(
-      outer,
-      first.value,
-      second.value
+    sharedPolynomialToQuadratic(
+      result.polynomialTerms
     );
+
+  if (
+    !expanded
+  ) {
+
+    return {
+      valid: false,
+      message:
+        "展開後必須是一元二次多項式。"
+    };
+  }
 
   return {
     valid: true,
     value: {
-      outer,
-      factor1:
-        first.value,
-      factor2:
-        second.value,
       expanded
     },
     display:
-      factorizedHTML(
-        outer,
-        first.value,
-        second.value
-      )
+      result.display
   };
 }
 
@@ -6157,39 +6096,30 @@ function updateAnswerPreview() {
   const preview =
     $("answer-preview");
 
-
   if (
     !preview
   ) {
-
     return;
   }
 
-
   const result =
-    readAnswer();
-
+    factorExpressionInput
+      ?.parse();
 
   if (
-    !result.valid
+    !result?.display
   ) {
 
     preview.innerHTML =
       "目前尚未完成答案。";
 
-
     return;
   }
 
-
   preview.innerHTML = `
-
     目前答案：
-
     <span class="factor-preview">
-
       ${result.display}
-
     </span>
   `;
 }
@@ -6203,14 +6133,11 @@ Render Answer
 
 function renderAnswer() {
 
-  outerSharedInput
+  factorExpressionInput
     ?.destroy?.();
 
-  factorSharedInput1
-    ?.destroy?.();
-
-  factorSharedInput2
-    ?.destroy?.();
+  factorExpressionInput =
+    null;
 
   $("answer-panel")
     .innerHTML = `
@@ -6219,76 +6146,61 @@ function renderAnswer() {
       </div>
 
       <p class="answer-help">
-        整體公因數與兩個一次因式都直接輸入。
-        需要分數時再按「分數」；
-        因式內需要 x 或次方時使用共用多項式輸入。
+        請直接輸入完整因式分解結果。
+        使用括號區分各因式，例如：
+        2(x−3)(x＋5)。
+        完全平方可輸入 (x−2) 後按「次方」再輸入 2。
       </p>
 
-      <div class="factor-answer-main">
-
-        <div class="factor-box">
-          <div class="factor-box-title">
-            整體公因數
-          </div>
-          <div id="outer-shared-mount"></div>
-        </div>
-
-        <div class="multiply-mark">
-          ×
-        </div>
-
-        <div class="factor-box">
-          <div class="factor-box-title">
-            因式一
-          </div>
-          <div id="factor-one-shared-mount"></div>
-        </div>
-
-        <div class="multiply-mark">
-          ×
-        </div>
-
-        <div class="factor-box">
-          <div class="factor-box-title">
-            因式二
-          </div>
-          <div id="factor-two-shared-mount"></div>
-        </div>
-
-      </div>
-
-      <div id="answer-preview" class="answer-preview">
-        目前尚未完成答案。
-      </div>
+      <div id="factor-expression-mount"></div>
     `;
 
   if (
     typeof window.MathExpressionInput !==
-      "function" ||
-    typeof window.PolynomialAnswerInput !==
-      "function"
+    "function"
   ) {
+
     $("feedback").className =
       "feedback warning";
+
     $("feedback").textContent =
-      "共用答案輸入元件沒有正常載入。";
+      "MathExpressionInput 共用元件沒有正常載入。";
+
     return;
   }
 
-  outerSharedInput =
+  factorExpressionInput =
     new window.MathExpressionInput({
       mountId:
-        "outer-shared-mount",
+        "factor-expression-mount",
+
       allowRadical:
         false,
+
       allowFraction:
         true,
+
       allowPower:
-        false,
+        true,
+
       allowVariable:
-        false,
+        true,
+
+      variable:
+        "x",
+
+      validationMode:
+        "polynomial",
+
+      toolOrder: [
+        "variable",
+        "power",
+        "fraction"
+      ],
+
       placeholder:
-        "例如：1 或 1/2",
+        "例如：2(x−3)(x＋5)",
+
       theme: {
         primary:
           "#d81b60",
@@ -6301,56 +6213,7 @@ function renderAnswer() {
       }
     });
 
-  const factorOptions = {
-    variable:
-      "x",
-    maxExponent:
-      1,
-    coefficientMode:
-      "rational",
-    requireSimplifiedFraction:
-      true,
-    placeholder:
-      "例如：2x＋3",
-    primary:
-      "#d81b60",
-    primaryDark:
-      "#ad1457",
-    primaryLight:
-      "#fce4ec",
-    primaryBorder:
-      "#f48fb1",
-    helpText:
-      "一次因式直接輸入；需要分數係數時按「分數」。",
-    onChange:
-      () =>
-        setTimeout(
-          updateAnswerPreview,
-          0
-        )
-  };
-
-  factorSharedInput1 =
-    new window.PolynomialAnswerInput({
-      ...factorOptions,
-      mountId:
-        "factor-one-shared-mount"
-    });
-
-  factorSharedInput2 =
-    new window.PolynomialAnswerInput({
-      ...factorOptions,
-      mountId:
-        "factor-two-shared-mount",
-      autoFocus:
-        false
-    });
-
-  /*
-  MathExpressionInput 沒有 onChange option，
-  直接監聽底層 input，更新總預覽。
-  */
-  outerSharedInput
+  factorExpressionInput
     ?.input
     ?.addEventListener(
       "input",
@@ -6364,7 +6227,7 @@ function renderAnswer() {
   setTimeout(
     () => {
       updateAnswerPreview();
-      outerSharedInput
+      factorExpressionInput
         ?.focus();
     },
     0
@@ -6978,6 +6841,13 @@ function submitAnswer() {
 
   answered =
     true;
+
+
+  factorExpressionInput
+    ?.setDisabled
+    ?.(
+      true
+    );
 
 
   $("answer-panel")
