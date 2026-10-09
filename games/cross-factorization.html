@@ -24,7 +24,7 @@
 
   <link rel="stylesheet" href="../css/polynomial-input.css?v=3">
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=3">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=4">
 
   <style>
 
@@ -2824,7 +2824,7 @@
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
 
-<script src="../js/math-expression-input.js?v=3"></script>
+<script src="../js/math-expression-input.js?v=4"></script>
 
 <script src="../js/polynomial-input.js?v=3"></script>
 
@@ -2832,7 +2832,7 @@
 
 import {
   saveGameScore
-} from "../js/scores.js";
+} from "../js/scores.js?v=9";
 
 
 "use strict";
@@ -2857,6 +2857,16 @@ const MODE_NAMES = {
   mixed:
     "進階綜合"
 };
+
+/*
+==================================================
+模式固定輸入能力
+整體公因數固定提供「分數」；
+兩個一次因式固定使用 PolynomialAnswerInput。
+同一模式不因題目答案改變工具列。
+==================================================
+*/
+
 
 
 const $ =
