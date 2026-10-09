@@ -3,7 +3,7 @@
 數學遊戲樂園：遊戲共用設定
 檔案位置：js/game-config.js
 
-版本：9.8
+版本：9.9
 七年級下學期 1-1～3-2 正式上線同步版
 ＋八年級下學期第 1 章 1-1／1-2／1-3 正式上線同步版
 ＋一元二次方程式
@@ -1487,7 +1487,7 @@ export const GAME_CONFIG = {
 
   "quadratic-factorization": {
     id:"quadratic-factorization", section:"4-1",
-    name:"4-1 因式分解法解一元二次方程式大挑戰", shortName:"因式分解法解一元二次方程式",
+    name:"4-1 因式分解法解一元二次方程式大挑戰", shortName:"因式分解法解一元二次方程式", cardTitleLines:["4-1 因式分解法","解一元二次方程式大挑戰"],
     semester:"grade8-first", grade:8, order:9, icon:"✂️",
     file:"games/quadratic-factorization.html",
     description:"練習一元二次方程式的意義與根、零乘積性質、提公因式、乘法公式與十字交乘求解。",
@@ -1509,7 +1509,7 @@ export const GAME_CONFIG = {
 
   "quadratic-applications": {
     id:"quadratic-applications", section:"4-3",
-    name:"4-3 一元二次方程式應用問題大挑戰", shortName:"一元二次方程式應用",
+    name:"4-3 一元二次方程式應用問題", shortName:"一元二次方程式應用", cardTitleLines:["4-3 一元二次方程式應用問題"],
     semester:"grade8-first", grade:8, order:11, icon:"🌍",
     file:"games/quadratic-applications.html",
     description:"練習由題意列方程式、整數與年齡、面積與路寬、售價收入，以及合理根與近似值。",
@@ -1600,6 +1600,107 @@ export function getGameConfig(
     null
   );
 
+}
+
+
+
+/*
+==================================================
+取得首頁卡片標題分行
+==================================================
+
+若有 cardTitleLines：
+首頁卡片可依指定行數呈現，
+但正式遊戲名稱 name 仍可供排行榜／成績頁使用。
+==================================================
+*/
+
+
+export function getGameCardTitleLines(
+  gameId
+) {
+
+  const lines =
+    GAME_CONFIG[
+      gameId
+    ]?.cardTitleLines;
+
+
+  if (
+    Array.isArray(
+      lines
+    ) &&
+    lines.length >
+      0
+  ) {
+
+    return lines
+      .map(
+        line =>
+          String(
+            line
+          )
+      );
+  }
+
+
+  const name =
+    GAME_CONFIG[
+      gameId
+    ]?.name;
+
+
+  return name
+    ? [
+        String(
+          name
+        )
+      ]
+    : [];
+}
+
+
+
+/*
+==================================================
+取得首頁卡片標題 HTML
+==================================================
+*/
+
+export function getGameCardTitleHTML(
+  gameId
+) {
+
+  return getGameCardTitleLines(
+    gameId
+  )
+    .map(
+      line =>
+        line
+          .replaceAll(
+            "&",
+            "&amp;"
+          )
+          .replaceAll(
+            "<",
+            "&lt;"
+          )
+          .replaceAll(
+            ">",
+            "&gt;"
+          )
+          .replaceAll(
+            '"',
+            "&quot;"
+          )
+          .replaceAll(
+            "'",
+            "&#039;"
+          )
+    )
+    .join(
+      "<br>"
+    );
 }
 
 
@@ -2248,7 +2349,7 @@ export function getGameDisplayName(
 
 
 console.log(
-  "game-config.js v9.8 七下 1-1～3-2 同步版已成功載入"
+  "game-config.js v9.9 卡片標題分行版已成功載入"
 );
 
 
@@ -2288,4 +2389,3 @@ console.log(
       game.name
   )
 );
-
