@@ -25,7 +25,7 @@
   href="../css/scratchpad.css"
 >
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=3">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=4">
 
   <link rel="stylesheet" href="../css/radical-display.css?v=1">
 
@@ -2869,13 +2869,13 @@ RWD
 
 <script src="../js/radical-display.js?v=1"></script>
 
-<script src="../js/math-expression-input.js?v=3"></script>
+<script src="../js/math-expression-input.js?v=4"></script>
 
 <script type="module">
 
 import {
   saveGameScore
-} from "../js/scores.js";
+} from "../js/scores.js?v=9";
 
 
 "use strict";
@@ -2895,6 +2895,31 @@ const MODE_NAMES = {
 
   distance:
     "平面上兩點的距離"
+};
+
+
+/*
+==================================================
+模式固定輸入能力
+==================================================
+*/
+
+const MODE_INPUT_CAPABILITIES = {
+
+  basic: {
+    radical: true,
+    fraction: false
+  },
+
+  application: {
+    radical: true,
+    fraction: true
+  },
+
+  distance: {
+    radical: true,
+    fraction: false
+  }
 };
 
 
@@ -6436,84 +6461,61 @@ function renderAnswer(
     $("answer-panel");
 
 
+  /*
+  選擇題維持選擇題。
+  其餘數值／根式題，工具列由「模式」決定，
+  不再由當前題目的答案型態決定。
+  */
+
   if (
-    q.answerType ===
-    "number"
+    q.answerType !==
+    "choice"
   ) {
+
+    const capability =
+      MODE_INPUT_CAPABILITIES[
+        mode
+      ] || {
+        radical: true,
+        fraction: true
+      };
+
 
     panel.innerHTML = `
       <div class="answer-title">
-        請填寫答案
-      </div>
-
-      <div class="number-answer">
-        <input
-          id="number-answer"
-          type="text"
-          inputmode="numeric"
-          autocomplete="off"
-          placeholder="輸入答案"
-        >
-      </div>
-
-      <div id="answer-preview" class="answer-preview">
-        目前尚未完成答案。
-      </div>
-    `;
-
-    $("number-answer")
-      .addEventListener(
-        "input",
-        updateNumberPreview
-      );
-
-    $("number-answer")
-      .focus();
-
-    return;
-  }
-
-
-  if (
-    q.answerType === "fraction" ||
-    q.answerType === "radical" ||
-    q.answerType === "radicalFraction"
-  ) {
-
-    const isFraction =
-      q.answerType === "fraction" ||
-      q.answerType === "radicalFraction";
-
-    const isRadical =
-      q.answerType === "radical" ||
-      q.answerType === "radicalFraction";
-
-    panel.innerHTML = `
-      <div class="answer-title">
-        ${
-          q.answerType === "fraction"
-            ? "請填寫最簡分數"
-            : q.answerType === "radical"
-              ? "請填寫最簡根式"
-              : "請填寫最簡根式分數"
-        }
+        ${q.label || "請填寫答案"}
       </div>
 
       <p class="answer-help">
         數字、＋、−直接輸入；
-        ${isRadical ? '需要根號時按「√ 根號」' : ''}
-        ${isRadical && isFraction ? '，' : ''}
-        ${isFraction ? '需要分數時按「分數」' : ''}。
+        ${
+          capability.radical
+            ? '需要根號時按「√ 根號」'
+            : ""
+        }
+        ${
+          capability.radical &&
+          capability.fraction
+            ? "，"
+            : ""
+        }
+        ${
+          capability.fraction
+            ? '需要分數時按「分數」'
+            : ""
+        }。
         系統會提醒尚可化簡或約分的答案。
       </p>
 
       <div id="math-expression-answer-mount"></div>
     `;
 
+
     if (
       typeof window.MathExpressionInput !==
       "function"
     ) {
+
       $("feedback").className =
         "feedback warning";
 
@@ -6523,16 +6525,17 @@ function renderAnswer(
       return;
     }
 
+
     mathExpressionInput =
       new window.MathExpressionInput({
         mountId:
           "math-expression-answer-mount",
 
         allowRadical:
-          isRadical,
+          capability.radical,
 
         allowFraction:
-          isFraction,
+          capability.fraction,
 
         allowPower:
           false,
@@ -6550,11 +6553,7 @@ function renderAnswer(
           true,
 
         placeholder:
-          q.answerType === "fraction"
-            ? "例如：3/5"
-            : q.answerType === "radical"
-              ? "例如：2√5"
-              : "例如：2√5/3",
+          "請輸入答案",
 
         theme: {
           primary:
@@ -6766,47 +6765,19 @@ function readAnswer(
 ) {
 
   if (
-    q.answerType ===
-    "number"
-  ) {
-
-    const raw =
-      $("number-answer")
-        ?.value
-        .trim() ||
-      "";
-
-    if (
-      !/^-?\d+$/.test(raw)
-    ) {
-      return {
-        valid: false,
-        message:
-          "請輸入完整整數答案。"
-      };
-    }
-
-    return {
-      valid: true,
-      value: Number(raw),
-      display: raw
-    };
-  }
-
-
-  if (
-    q.answerType === "fraction" ||
-    q.answerType === "radical" ||
-    q.answerType === "radicalFraction"
+    q.answerType !==
+    "choice"
   ) {
 
     const result =
       mathExpressionInput
         ?.validate();
 
+
     if (
       !result?.valid
     ) {
+
       return {
         valid: false,
         message:
@@ -6815,99 +6786,144 @@ function readAnswer(
       };
     }
 
+
     const terms =
       result.terms ||
       [];
 
-    if (
-      terms.length !== 1
-    ) {
-      return {
-        valid: false,
-        message:
-          "本題答案應整理成單一最簡項。"
-      };
-    }
-
-    const term =
-      terms[0];
 
     if (
-      q.answerType === "fraction"
+      q.answerType ===
+      "number"
     ) {
 
       if (
-        term.radicand !== 1
+        terms.length !== 1 ||
+        terms[0].radicand !== 1 ||
+        terms[0].denominator !== 1
       ) {
+
         return {
           valid: false,
           message:
-            "本題答案不需要根號。"
+            "本題答案應為整數。"
         };
       }
+
+
+      return {
+        valid: true,
+        value:
+          terms[0].numerator,
+        display:
+          result.display
+      };
+    }
+
+
+    if (
+      q.answerType ===
+      "fraction"
+    ) {
+
+      if (
+        terms.length !== 1 ||
+        terms[0].radicand !== 1
+      ) {
+
+        return {
+          valid: false,
+          message:
+            "本題答案應為最簡分數。"
+        };
+      }
+
 
       return {
         valid: true,
         value: {
           numerator:
-            term.numerator,
+            terms[0].numerator,
           denominator:
-            term.denominator
+            terms[0].denominator
         },
         display:
           result.display
       };
     }
 
-    if (
-      term.radicand === 1
-    ) {
-      return {
-        valid: false,
-        message:
-          "本題答案應保留最簡根式。"
-      };
-    }
 
     if (
-      q.answerType === "radical"
+      q.answerType ===
+      "radical"
     ) {
 
       if (
-        term.denominator !== 1
+        terms.length !== 1 ||
+        terms[0].radicand === 1 ||
+        terms[0].denominator !== 1
       ) {
+
         return {
           valid: false,
           message:
-            "本題根號外係數應為整數。"
+            "本題答案應為一個最簡根式。"
         };
       }
+
 
       return {
         valid: true,
         value: {
           coefficient:
-            term.numerator,
+            terms[0].numerator,
           radicand:
-            term.radicand
+            terms[0].radicand
         },
         display:
           result.display
       };
     }
 
+
+    if (
+      q.answerType ===
+      "radicalFraction"
+    ) {
+
+      if (
+        terms.length !== 1 ||
+        terms[0].radicand === 1
+      ) {
+
+        return {
+          valid: false,
+          message:
+            "本題答案應為最簡根式分數。"
+        };
+      }
+
+
+      return {
+        valid: true,
+        value: {
+          coefficient:
+            terms[0].numerator,
+          radicand:
+            terms[0].radicand,
+          denominator:
+            terms[0].denominator
+        },
+        display:
+          result.display
+      };
+    }
+
+
     return {
-      valid: true,
-      value: {
-        coefficient:
-          term.numerator,
-        radicand:
-          term.radicand,
-        denominator:
-          term.denominator
-      },
-      display:
-        result.display
+      valid: false,
+      message:
+        "目前無法讀取這個答案。"
     };
   }
 
@@ -6915,12 +6931,14 @@ function readAnswer(
   if (
     !selectedChoice
   ) {
+
     return {
       valid: false,
       message:
         "請先選擇答案。"
     };
   }
+
 
   return {
     valid: true,
@@ -6930,7 +6948,8 @@ function readAnswer(
       q.choices
         .find(
           item =>
-            item.value === selectedChoice
+            item.value ===
+            selectedChoice
         )
         ?.text ||
       selectedChoice
