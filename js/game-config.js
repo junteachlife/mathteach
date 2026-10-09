@@ -1487,7 +1487,7 @@ export const GAME_CONFIG = {
 
   "quadratic-factorization": {
     id:"quadratic-factorization", section:"4-1",
-    name:"4-1 因式分解法解一元二次方程式大挑戰", shortName:"因式分解法解一元二次方程式", cardTitleLines:["4-1 因式分解法","解一元二次方程式大挑戰"],
+    name:"4-1 因式分解法解一元二次方程式", shortName:"因式分解法解一元二次方程式", cardTitleLines:["4-1 因式分解法","解一元二次方程式大挑戰"],
     semester:"grade8-first", grade:8, order:9, icon:"✂️",
     file:"games/quadratic-factorization.html",
     description:"練習一元二次方程式的意義與根、零乘積性質、提公因式、乘法公式與十字交乘求解。",
