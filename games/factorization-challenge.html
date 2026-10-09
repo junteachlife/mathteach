@@ -22,6 +22,8 @@
     href="../css/scratchpad.css"
   >
 
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=5">
+
   <link rel="stylesheet" href="../css/polynomial-input.css?v=3">
 
   <link
@@ -2438,6 +2440,8 @@
 
 <script src="../js/polynomial-input.js?v=3"></script>
 
+<script src="../js/math-expression-input.js?v=5"></script>
+
 <script type="module">
 
 import {
@@ -2543,6 +2547,10 @@ let polynomialFactorInput1 =
 
 let polynomialFactorInput2 =
   null;
+
+let factorExpressionInput =
+  null;
+
 
 
 
@@ -5573,121 +5581,85 @@ function parseExpressionInput(
 }
 
 
+
+function sharedPolynomialTermsToLocal(
+  terms
+) {
+
+  return normalizePolynomial(
+    (
+      terms ||
+      []
+    )
+      .map(
+        term => ({
+          exponent:
+            Number(
+              term.exponent
+            ),
+
+          coefficient:
+            F(
+              term.numerator ??
+                term.coefficient?.numerator ??
+                term.coefficient,
+              term.denominator ??
+                term.coefficient?.denominator ??
+                1
+            )
+        })
+      )
+  );
+}
+
+
+function expectedExpandedPolynomial(
+  question
+) {
+
+  return multiplyTwoPolynomials(
+    question.factor1,
+    question.factor2
+  );
+}
+
+
 /*
 ==================================================
 答案預覽
 ==================================================
 */
 
+
 function updateFactorPreview() {
 
   const preview =
     $("factor-preview");
 
-
   if (
     !preview
   ) {
-
     return;
   }
 
-
-  let first =
-    null;
-
-
-  let second =
-    null;
-
-
-  try {
-
-    const result1 =
-      parseExpressionInput(
-        factorInput1
-      );
-
-
-    if (
-      result1.valid
-    ) {
-
-      first =
-        result1;
-    }
-
-  } catch (
-    error
-  ) {
-
-    first = null;
-  }
-
-
-  try {
-
-    const result2 =
-      parseExpressionInput(
-        factorInput2
-      );
-
-
-    if (
-      result2.valid
-    ) {
-
-      second =
-        result2;
-    }
-
-  } catch (
-    error
-  ) {
-
-    second = null;
-  }
-
+  const result =
+    factorExpressionInput
+      ?.parse();
 
   if (
-    !first &&
-    !second
+    !result?.display
   ) {
 
     preview.innerHTML =
       "目前尚未完成答案。";
 
-
     return;
   }
 
-
   preview.innerHTML = `
-
     目前答案：
-
     <span class="preview-value">
-
-      ${
-        first
-
-          ? bracketPolynomial(
-              first.value
-            )
-
-          : "（尚未完成）"
-      }
-
-      ${
-        second
-
-          ? bracketPolynomial(
-              second.value
-            )
-
-          : "（尚未完成）"
-      }
-
+      ${result.display}
     </span>
   `;
 }
@@ -5703,16 +5675,10 @@ function renderFactorAnswer(
   question
 ) {
 
-  polynomialFactorInput1
+  factorExpressionInput
     ?.destroy?.();
 
-  polynomialFactorInput2
-    ?.destroy?.();
-
-  polynomialFactorInput1 =
-    null;
-
-  polynomialFactorInput2 =
+  factorExpressionInput =
     null;
 
   $("answer-panel")
@@ -5722,107 +5688,88 @@ function renderFactorAnswer(
       </div>
 
       <p class="answer-help">
-        請將最後答案寫成兩個因式相乘。
-        兩個因式前後順序可以交換；
-        完全平方請輸入兩個相同因式。
+        請直接輸入完整因式分解結果。
+        使用括號區分各因式，例如：
+        (2x−3)(x＋5)。
+        完全平方可直接輸入 (x−2) 後按「次方」再輸入 2。
       </p>
 
-      <div class="factor-answer-shell">
-        <div class="factor-answer-grid">
-          <div class="factor-box">
-            <div class="factor-title">
-              因式一
-            </div>
-            <div id="factor-one-polynomial"></div>
-          </div>
-
-          <div class="factor-times">
-            ×
-          </div>
-
-          <div class="factor-box">
-            <div class="factor-title">
-              因式二
-            </div>
-            <div id="factor-two-polynomial"></div>
-          </div>
-        </div>
-
-        <div id="factor-preview" class="answer-preview">
-          目前尚未完成答案。
-        </div>
-      </div>
+      <div id="factor-expression-mount"></div>
     `;
 
   if (
-    typeof window.PolynomialAnswerInput !==
+    typeof window.MathExpressionInput !==
     "function"
   ) {
+
     $("feedback").className =
       "feedback warning";
 
     $("feedback").textContent =
-      "PolynomialAnswerInput 共用元件沒有正常載入。";
+      "MathExpressionInput 共用元件沒有正常載入。";
 
     return;
   }
 
-  const commonOptions = {
-    variable:
-      "x",
-    maxExponent:
-      4,
-    coefficientMode:
-      "rational",
-    requireSimplifiedFraction:
-      true,
-    placeholder:
-      "例如：2x－3",
-    primary:
-      "#00897b",
-    primaryDark:
-      "#00695c",
-    primaryLight:
-      "#e0f2f1",
-    primaryBorder:
-      "#80cbc4",
-    helpText:
-      "數字與 x 直接輸入；需要次方或分數時再按功能鍵。",
-    onChange:
-      () => {
-        window.setTimeout(
+  factorExpressionInput =
+    new window.MathExpressionInput({
+      mountId:
+        "factor-expression-mount",
+
+      allowRadical:
+        false,
+
+      allowFraction:
+        true,
+
+      allowPower:
+        true,
+
+      allowVariable:
+        true,
+
+      variable:
+        "x",
+
+      validationMode:
+        "polynomial",
+
+      toolOrder: [
+        "variable",
+        "power",
+        "fraction"
+      ],
+
+      placeholder:
+        "例如：(2x−3)(x＋5)",
+
+      theme: {
+        primary:
+          "#00897b",
+        dark:
+          "#00695c",
+        light:
+          "#e0f2f1",
+        border:
+          "#80cbc4"
+      }
+    });
+
+  factorExpressionInput
+    ?.input
+    ?.addEventListener(
+      "input",
+      () =>
+        setTimeout(
           updateFactorPreview,
           0
-        );
-      }
-  };
-
-  polynomialFactorInput1 =
-    new window.PolynomialAnswerInput({
-      ...commonOptions,
-      mountId:
-        "factor-one-polynomial"
-    });
-
-  polynomialFactorInput2 =
-    new window.PolynomialAnswerInput({
-      ...commonOptions,
-      mountId:
-        "factor-two-polynomial",
-      autoFocus:
-        false
-    });
-
-  factorInput1 =
-    polynomialFactorInput1;
-
-  factorInput2 =
-    polynomialFactorInput2;
+        )
+    );
 
   setTimeout(
     () => {
       updateFactorPreview();
-      polynomialFactorInput1
+      factorExpressionInput
         ?.focus();
     },
     0
@@ -5838,69 +5785,43 @@ function renderFactorAnswer(
 
 function readFactorAnswer() {
 
-  const first =
-    parseExpressionInput(
-      factorInput1
-    );
-
+  const result =
+    factorExpressionInput
+      ?.validate();
 
   if (
-    !first.valid
+    !result?.valid
   ) {
 
     return {
-
       valid: false,
-
       message:
-        "請先完成因式一。"
+        result?.message ||
+        "請完成因式分解答案。"
     };
   }
 
-
-  const second =
-    parseExpressionInput(
-      factorInput2
-    );
-
-
   if (
-    !second.valid
+    !result.factorized
   ) {
 
     return {
-
       valid: false,
-
       message:
-        "請再完成因式二。"
+        "請將答案寫成因式相乘的形式，不能只輸入展開後的多項式。"
     };
   }
-
 
   return {
-
     valid: true,
-
     value: {
-
-      factor1:
-        first.value,
-
-      factor2:
-        second.value
+      expanded:
+        sharedPolynomialTermsToLocal(
+          result.polynomialTerms
+        )
     },
-
-    display: `
-
-      ${bracketPolynomial(
-        first.value
-      )}
-
-      ${bracketPolynomial(
-        second.value
-      )}
-    `
+    display:
+      result.display
   };
 }
 
@@ -6028,15 +5949,11 @@ function checkCorrect(
   answer
 ) {
 
-  return sameFactorPair(
-
-    answer.value.factor1,
-
-    answer.value.factor2,
-
-    question.factor1,
-
-    question.factor2
+  return samePolynomial(
+    answer.value.expanded,
+    expectedExpandedPolynomial(
+      question
+    )
   );
 }
 
@@ -6524,6 +6441,13 @@ function submitAnswer() {
 
   answered =
     true;
+
+
+  factorExpressionInput
+    ?.setDisabled
+    ?.(
+      true
+    );
 
 
   polynomialFactorInput1
