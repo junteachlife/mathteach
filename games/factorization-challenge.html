@@ -14,17 +14,13 @@
     因式分解大挑戰｜數學遊戲樂園
   </title>
 
-  
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%0A%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'15'%20fill%3D'%2300897b'%2F%3E%0A%3Crect%20x%3D'6'%20y%3D'6'%20width%3D'52'%20height%3D'52'%20rx%3D'12'%20fill%3D'white'%20fill-opacity%3D'.14'%20stroke%3D'white'%20stroke-opacity%3D'.75'%20stroke-width%3D'2.4'%2F%3E%0A%3Ctext%20x%3D'32'%20y%3D'42'%20text-anchor%3D'middle'%20font-size%3D'31'%20font-family%3D'Arial%2CMicrosoft%20JhengHei%2CNoto%20Sans%20TC%2Csans-serif'%20font-weight%3D'900'%20fill%3D'%23ffffff'%3E%E5%9B%A0%3C%2Ftext%3E%0A%3C%2Fsvg%3E">
-
-<link
+  <link
     rel="stylesheet"
     href="../css/scratchpad.css"
   >
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=5">
-
-  <link rel="stylesheet" href="../css/polynomial-input.css?v=3">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=6">
+  <link rel="stylesheet" href="../css/question-layout.css?v=1">
 
   <link
     rel="stylesheet"
@@ -1003,9 +999,7 @@
       margin:
         16px auto 0;
 
-      padding: 13px;
-
-      max-width: 780px;
+      padding: 13px;max-width: 780px;
 
       min-height: 62px;
 
@@ -1746,70 +1740,13 @@
 
     }
 
-  </style>
-
-
-  <style>
-    /*
-    ==================================================
-    學期返回鍵｜只顯示於模式選擇頁
-    ==================================================
-    */
-
-    .semester-return-row {
-      display: flex;
-      justify-content: flex-end;
-      margin: -4px 0 14px;
-    }
-
-    .semester-return-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 10px 15px;
-      border: 2px solid var(--primary-border);
-      border-radius: 999px;
-      background: #fff;
-      color: var(--primary-dark);
-      font-size: 14px;
-      font-weight: 900;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 4px 0 rgba(15, 23, 42, .10);
-      transition:
-        transform .12s ease,
-        box-shadow .12s ease,
-        background .12s ease;
-    }
-
-    .semester-return-button:hover {
-      background: var(--primary-light);
-    }
-
-    .semester-return-button:active {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 rgba(15, 23, 42, .10);
-    }
-
-    @media (max-width: 760px) {
-      .semester-return-row {
-        margin-top: -2px;
-      }
-
-      .semester-return-button {
-        padding: 9px 13px;
-        font-size: 13px;
-      }
-    }
   
 
     /* ==================================================
-       最新統一遊戲版面｜對齊八上 1-1 ～ 2-2
+       最新統一遊戲版面
     ================================================== */
 
-    .game-card,
-    .game-shell{
+    .game-card{
       position:relative;
     }
 
@@ -1817,26 +1754,23 @@
       display:flex;
       justify-content:flex-end;
       padding:12px 16px 0;
-      background:linear-gradient(180deg,var(--primary-light,#f8fafc),#fff);
+      background:linear-gradient(180deg,var(--primary-light),#fff);
     }
 
     .game-card-return-row.hidden{
       display:none !important;
     }
 
-    .game-card-return-row .semester-return-button{
-      width:auto;
-      min-width:0;
+    .semester-return-button{
       min-height:40px;
       padding:8px 14px;
-      border:2px solid var(--primary-border,var(--teal,#94a3b8));
+      border:2px solid var(--primary);
       border-radius:12px;
       background:#fff;
-      color:var(--primary-dark,var(--navy,#334155));
+      color:var(--primary-dark);
       font-size:14px;
       font-weight:900;
       cursor:pointer;
-      box-shadow:none;
     }
 
     .quiz-topbar{
@@ -1922,15 +1856,6 @@
     }
 
     @media(max-width:600px){
-      .game-card-return-row{
-        padding:10px 10px 0;
-      }
-
-      .game-card-return-row .semester-return-button{
-        padding:7px 10px;
-        font-size:13px;
-      }
-
       .quiz-context,
       .quiz-stats{
         grid-template-columns:repeat(2,minmax(0,1fr));
@@ -1948,23 +1873,11 @@
       .quiz-actions .game-button{
         min-width:0;
         width:100%;
-        padding:10px 8px;
-        font-size:14px;
-      }
-
-      .question-card{
-        padding-bottom:76px !important;
-      }
-
-      .scratchpad-row{
-        right:10px !important;
-        bottom:12px !important;
       }
     }
 
   </style>
 
-  <link rel="stylesheet" href="../css/question-layout.css?v=1">
 </head>
 
 <body>
@@ -2038,10 +1951,7 @@
       class="screen"
     >
 
-            
-
-
-<div class="mode-grid">
+      <div class="mode-grid">
 
         <button
           class="mode-card"
@@ -2138,6 +2048,7 @@
             模式
             <span id="mode-name" class="status-value">—</span>
           </div>
+
           <div class="status-box">
             進度
             <span id="question-number" class="status-value">1 / 10</span>
@@ -2149,10 +2060,12 @@
             答對
             <span id="correct-count" class="status-value">0</span>
           </div>
+
           <div class="status-box">
             最高連擊
             <span id="combo-count" class="status-value">0</span>
           </div>
+
           <div class="status-box timer-box">
             ⏱️ 測驗時間
             <span id="timer-display" class="status-value">00:00</span>
@@ -2163,6 +2076,7 @@
           <button id="restart-button" class="game-button restart" type="button">
             🔄 重新測驗
           </button>
+
           <button id="mode-button" class="game-button secondary" type="button">
             重選模式
           </button>
@@ -2196,7 +2110,8 @@
           <div id="scratchpad-mobile-button"></div>
         </div>
 </div>
-<div
+
+      <div
         id="answer-panel"
         class="answer-panel"
       ></div>
@@ -2206,6 +2121,7 @@
         <button id="submit-button" class="game-button" type="button">
           提交答案（Enter）
         </button>
+
         <button id="next-button" class="game-button hidden" type="button">
           下一題（Enter）
         </button>
@@ -2391,59 +2307,9 @@
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
-<script src="../js/expression-input.js?v=7"></script>
-
-<script>
-/*
-==================================================
-八年級上學期返回鍵
-
-使用一般連結 href 作為最終備援，因此即使遊戲 module
-載入失敗，仍然可以返回首頁。若確定是從本站首頁進入，
-則優先 history.back()，保留首頁原本選到的八年級上學期。
-==================================================
-*/
-(function () {
-  const returnLink = document.getElementById("semester-return-button");
-
-  if (!returnLink) {
-    return;
-  }
-
-  returnLink.addEventListener("click", function (event) {
-    const referrer = String(document.referrer || "");
-    let cameFromHomePage = false;
-
-    try {
-      if (referrer) {
-        const referrerURL = new URL(referrer);
-        const sameOrigin = referrerURL.origin === window.location.origin;
-        const path = referrerURL.pathname.replace(/\/+$/, "");
-        const isHomePath =
-          path === "" ||
-          path.endsWith("/index.html") ||
-          path.endsWith("/mathteach");
-
-        cameFromHomePage = sameOrigin && isHomePath;
-      }
-    } catch (error) {
-      cameFromHomePage = false;
-    }
-
-    if (cameFromHomePage && window.history.length > 1) {
-      event.preventDefault();
-      window.history.back();
-    }
-    // 不是從首頁進入時，不阻止預設行為，直接使用 href="../index.html"。
-  });
-})();
-</script>
-
-<script src="../js/polynomial-input.js?v=3"></script>
-
-<script src="../js/math-expression-input.js?v=5"></script>
-
+<script src="../js/math-expression-input.js?v=6"></script>
 <script src="../js/question-layout.js?v=1"></script>
+<script src="../js/expression-input.js?v=7"></script>
 
 <script type="module">
 
@@ -2480,15 +2346,6 @@ const MODE_NAMES = {
   formula:
     "乘法公式因式分解"
 };
-
-/*
-==================================================
-模式固定輸入能力
-本遊戲所有因式作答固定使用 PolynomialAnswerInput，
-工具列不隨題目改變，避免洩漏答案型態。
-==================================================
-*/
-
 
 
 const $ =
@@ -2545,17 +2402,6 @@ let factorInput2 =
 let factorPairInput =
   null;
 
-let polynomialFactorInput1 =
-  null;
-
-let polynomialFactorInput2 =
-  null;
-
-let factorExpressionInput =
-  null;
-
-
-
 
 let startTime =
   0;
@@ -2571,6 +2417,10 @@ let timerId =
 
 let scoreSaved =
   false;
+
+let factorExpressionInput =
+  null;
+
 
 
 /*
@@ -3249,9 +3099,7 @@ function negatePolynomial(
   return normalizePolynomial(
 
     polynomial.map(
-      term => ({
-
-        exponent:
+      term => ({exponent:
           term.exponent,
 
         coefficient:
@@ -3592,13 +3440,16 @@ function makeSimpleMonomialFactor() {
             : "－"
         }
 
-        ${Math.abs(
-          b
+        ${monomialHTML(
+          F(common),
+          1
         )}
 
         ‧
 
-        x
+        ${Math.abs(
+          b
+        )}
 
       </div>`,
 
@@ -4248,10 +4099,7 @@ function makeCommonBinomialOneHidden() {
       1,
       a +
       1
-    );
-
-
-  const first =
+    );const first =
     binomial(
       1,
       a
@@ -4454,7 +4302,35 @@ function makeCommonBinomialBothProducts() {
 
       </div>`,
 
-      `去括號並合併同類項：
+      `先把減號分配進第二個括號：
+
+      <div class="calculation-box">
+
+        ＝
+        ${bracketPolynomial(common)}
+        〔
+        ${polynomialHTML(first)}
+        －
+        ${bracketPolynomial(second)}
+        〕
+
+        <br>
+
+        ＝
+        ${bracketPolynomial(common)}
+        〔
+        ${polynomialHTML(first)}
+        ＋
+        ${polynomialHTML(
+          negatePolynomial(
+            second
+          )
+        )}
+        〕
+
+      </div>`,
+
+      `再合併括號內的同類項：
 
       <div class="calculation-box">
 
@@ -5250,9 +5126,7 @@ function makePerfectSquareMinus() {
           factor
         )}<sup>2</sup>
 
-      </div>`,
-
-      `作答時可填成兩個相同因式相乘。`
+      </div>`,`作答時可直接使用次方，例如把相同因式寫成二次方。`
     ],
 
     "請利用差的平方公式因式分解",
@@ -5523,66 +5397,79 @@ function parseExpressionInput(
   input
 ) {
 
-  if (!input) {
+  if (
+    !input
+  ) {
+
     return {
+
       valid: false,
+
       message:
         "答案輸入器尚未準備完成。"
     };
   }
 
+
   const result =
     input.validate();
 
-  if (!result.valid) {
+
+  if (
+    !result.valid
+  ) {
+
     return {
+
       valid: false,
+
       message:
         result.message ||
         "請把因式輸入完整。"
     };
   }
 
-  /*
-  PolynomialAnswerInput v3：
-  result.value 直接是 terms array。
-  舊 ExpressionInput 則保留相容。
-  */
-  const sourceTerms =
-    Array.isArray(result.value)
-      ? result.value
-      : (
-          result.value?.fractionTerms ||
-          []
-        );
 
   const terms =
-    sourceTerms.map(
-      term => ({
-        exponent:
-          Number(term.exponent),
+    (
+      result.value.fractionTerms ||
+      []
+    )
+      .map(
+        term => ({
 
-        coefficient:
-          F(
-            term.coefficient?.numerator ??
-              term.coefficient,
-            term.coefficient?.denominator ??
-              1
-          )
-      })
-    );
+          exponent:
+            Number(
+              term.exponent
+            ),
+
+          coefficient:
+            F(
+
+              term.coefficient.numerator,
+
+              term.coefficient.denominator
+            )
+        })
+      );
+
 
   return {
+
     valid: true,
+
     value:
-      normalizePolynomial(terms),
+      normalizePolynomial(
+        terms
+      ),
+
     display:
-      result.display ||
-      result.value?.html ||
-      polynomialHTML(terms)
+      result.value.html ||
+      polynomialHTML(
+        terms
+      )
   };
 }
-
 
 
 function sharedPolynomialTermsToLocal(
@@ -5692,12 +5579,19 @@ function renderFactorAnswer(
 
       <p class="answer-help">
         請直接輸入完整因式分解結果。
-        使用括號區分各因式，例如：
+        請使用括號區分各因式，例如：
         (2x−3)(x＋5)。
-        完全平方可直接輸入 (x−2) 後按「次方」再輸入 2。
+        完全平方可先輸入 (x−2)，再按「次方」輸入 2。
       </p>
 
       <div id="factor-expression-mount"></div>
+
+      <div
+        id="factor-preview"
+        class="answer-preview"
+      >
+        目前尚未完成答案。
+      </div>
     `;
 
   if (
@@ -5772,6 +5666,7 @@ function renderFactorAnswer(
   setTimeout(
     () => {
       updateFactorPreview();
+
       factorExpressionInput
         ?.focus();
     },
@@ -5798,6 +5693,7 @@ function readFactorAnswer() {
 
     return {
       valid: false,
+
       message:
         result?.message ||
         "請完成因式分解答案。"
@@ -5810,19 +5706,22 @@ function readFactorAnswer() {
 
     return {
       valid: false,
+
       message:
-        "請將答案寫成因式相乘的形式，不能只輸入展開後的多項式。"
+        "請將答案寫成因式相乘或次方形式，不能只輸入展開後的多項式。"
     };
   }
 
   return {
     valid: true,
+
     value: {
       expanded:
         sharedPolynomialTermsToLocal(
           result.polynomialTerms
         )
     },
+
     display:
       result.display
   };
@@ -6175,9 +6074,7 @@ function explanationHTML(
 
           <div class="explanation-answer-grid">
 
-            <div class="explanation-answer-card">
-
-              <div class="explanation-answer-label">
+            <div class="explanation-answer-card"><div class="explanation-answer-label">
                 你的答案
               </div>
 
@@ -6350,6 +6247,12 @@ function displayQuestion() {
       question.html;
 
 
+  window.QuestionLayout
+    ?.refresh?.(
+      $("question-content")
+    );
+
+
   $("feedback")
     .textContent =
       "";
@@ -6372,8 +6275,7 @@ function displayQuestion() {
     );
 
 
-
-$("submit-button")
+  $("submit-button")
     .classList
     .remove(
       "hidden"
@@ -6447,19 +6349,6 @@ function submitAnswer() {
 
 
   factorExpressionInput
-    ?.setDisabled
-    ?.(
-      true
-    );
-
-
-  polynomialFactorInput1
-    ?.setDisabled
-    ?.(
-      true
-    );
-
-  polynomialFactorInput2
     ?.setDisabled
     ?.(
       true
@@ -6820,16 +6709,24 @@ function playGameSound(
 
 function ensureScratchpadButtonInQuestionCard() {
 
-  const mount = $("scratchpad-mobile-button");
+  const mount =
+    $("scratchpad-mobile-button");
+
   const questionCard =
-    document.querySelector("#quiz-screen .question-card");
-  const button = $("scratchpadOpenButton");
+    document.querySelector(
+      "#quiz-screen .question-card"
+    );
+
+  const button =
+    $("scratchpadOpenButton");
 
   if (
     mount &&
     questionCard &&
-    mount.parentElement !== questionCard
+    mount.parentElement !==
+      questionCard
   ) {
+
     questionCard.appendChild(
       mount.parentElement
     );
@@ -6838,13 +6735,23 @@ function ensureScratchpadButtonInQuestionCard() {
   if (
     mount &&
     button &&
-    !mount.contains(button)
+    !mount.contains(
+      button
+    )
   ) {
-    mount.appendChild(button);
+
+    mount.appendChild(
+      button
+    );
   }
 
-  if (button) {
-    window.showGameScratchpadButton?.();
+  if (
+    button
+  ) {
+
+    window
+      .showGameScratchpadButton
+      ?.();
   }
 }
 
@@ -6878,17 +6785,6 @@ function showOnly(
       }
     );
 
-  const semesterReturnRow =
-    $("semester-return-row");
-
-  semesterReturnRow
-    ?.classList
-    .toggle(
-      "hidden",
-      id !== "start-screen"
-    );
-
-
 
   if (
     id ===
@@ -6908,7 +6804,20 @@ function showOnly(
       .hideGameScratchpadButton
       ?.();
   }
+
+
+  const semesterReturnRow =
+    $("semester-return-row");
+
+  semesterReturnRow
+    ?.classList
+    .toggle(
+      "hidden",
+      id !==
+        "start-screen"
+    );
 }
+
 
 
 /*
@@ -7213,9 +7122,7 @@ async function saveCurrentScore(
 
           mode,
 
-          score,
-
-          correctCount:
+          score,correctCount:
             correct,
 
           wrongCount:
@@ -7387,23 +7294,10 @@ function showReview() {
 }
 
 
-/*
-==================================================
-事件
-==================================================
-*/
-
-
-/*
-==================================================
-重新測驗確認／返回八年級上學期
-==================================================
-*/
-
-function confirmRestartTest() {
+function confirmRestartCurrentMode() {
 
   return window.confirm(
-    "確定要重新測驗目前模式嗎？\n目前的作答進度與測驗時間將重新開始。"
+    "確定要重新測驗嗎？\n目前的作答進度與測驗時間將重新開始。"
   );
 }
 
@@ -7411,12 +7305,10 @@ function confirmRestartTest() {
 function restartCurrentModeWithConfirmation() {
 
   if (
-    !confirmRestartTest()
+    !confirmRestartCurrentMode()
   ) {
-
     return;
   }
-
 
   startGame(
     mode
@@ -7424,21 +7316,115 @@ function restartCurrentModeWithConfirmation() {
 }
 
 
-
 function confirmReselectMode() {
+
   return window.confirm(
     "確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。"
   );
 }
 
+
 function backToModesWithConfirmation() {
-  if (!confirmReselectMode()) {
+
+  if (
+    !confirmReselectMode()
+  ) {
     return;
   }
 
   stopTimer();
-  showOnly("start-screen");
+
+  showOnly(
+    "start-screen"
+  );
 }
+
+
+function returnToGrade8FirstSemester() {
+
+  stopTimer();
+
+  const referrer =
+    String(
+      document.referrer ||
+      ""
+    );
+
+  let cameFromHomePage =
+    false;
+
+  try {
+
+    if (
+      referrer
+    ) {
+
+      const referrerURL =
+        new URL(
+          referrer
+        );
+
+      const sameOrigin =
+        referrerURL.origin ===
+        window.location.origin;
+
+      const path =
+        referrerURL.pathname
+          .replace(
+            /\/+$/,
+            ""
+          );
+
+      const isHomePath =
+        path ===
+          "" ||
+        path.endsWith(
+          "/index.html"
+        ) ||
+        path.endsWith(
+          "/mathteach"
+        );
+
+      cameFromHomePage =
+        sameOrigin &&
+        isHomePath;
+    }
+
+  } catch (
+    error
+  ) {
+
+    cameFromHomePage =
+      false;
+  }
+
+  if (
+    cameFromHomePage &&
+    window.history.length >
+      1
+  ) {
+
+    window.history.back();
+
+    return;
+  }
+
+  window.location.href =
+    "../index.html";
+}
+
+
+/*
+==================================================
+事件
+==================================================
+*/
+
+$("semester-return-button")
+  ?.addEventListener(
+    "click",
+    returnToGrade8FirstSemester
+  );
 
 
 document
@@ -7479,7 +7465,12 @@ $("next-button")
 $("restart-button")
   .addEventListener(
     "click",
-    restartCurrentModeWithConfirmation
+    () => {
+
+      startGame(
+        mode
+      );
+    }
   );
 
 
@@ -7493,7 +7484,12 @@ $("mode-button")
 $("again-button")
   .addEventListener(
     "click",
-    restartCurrentModeWithConfirmation
+    () => {
+
+      startGame(
+        mode
+      );
+    }
   );
 
 
@@ -7519,7 +7515,12 @@ $("review-button")
 $("review-again-button")
   .addEventListener(
     "click",
-    restartCurrentModeWithConfirmation
+    () => {
+
+      startGame(
+        mode
+      );
+    }
   );
 
 
