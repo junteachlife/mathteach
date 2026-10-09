@@ -2442,7 +2442,7 @@
 
 import {
   saveGameScore
-} from "../js/scores.js";
+} from "../js/scores.js?v=9";
 
 
 "use strict";
@@ -2473,6 +2473,15 @@ const MODE_NAMES = {
   formula:
     "乘法公式因式分解"
 };
+
+/*
+==================================================
+模式固定輸入能力
+本遊戲所有因式作答固定使用 PolynomialAnswerInput，
+工具列不隨題目改變，避免洩漏答案型態。
+==================================================
+*/
+
 
 
 const $ =
