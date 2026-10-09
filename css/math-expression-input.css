@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.4.0
+版本：1.5.0
 ==================================================
 */
 
@@ -586,4 +586,113 @@ v1.3｜分數待輸入框
   min-width:1.15em;
   min-height:1.15em;
   padding:.02em .16em;
+}
+
+
+/*
+==================================================
+v1.5｜分數／次方專用小編輯器
+==================================================
+*/
+
+.mei-special-editor{
+  width:min(100%,360px);
+  margin:10px auto 0;
+  padding:12px;
+  border:2px solid var(--mei-primary-border);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(15,23,42,.10);
+}
+
+.mei-special-editor[hidden]{
+  display:none !important;
+}
+
+.mei-special-editor-title{
+  margin-bottom:8px;
+  color:var(--mei-primary-dark);
+  text-align:center;
+  font-size:14px;
+  font-weight:900;
+}
+
+.mei-fraction-editor{
+  width:150px;
+  margin:0 auto;
+  display:grid;
+  grid-template-rows:auto 2px auto;
+  gap:4px;
+}
+
+.mei-special-input{
+  width:100%;
+  min-width:0;
+  height:42px;
+  padding:6px 8px;
+  border:2px solid var(--mei-primary-border);
+  border-radius:10px;
+  outline:0;
+  background:#fff;
+  color:#0f172a;
+  text-align:center;
+  font-size:20px;
+  font-weight:900;
+}
+
+.mei-special-input:focus{
+  border-color:var(--mei-primary);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--mei-primary) 14%,transparent);
+}
+
+.mei-fraction-editor-line{
+  display:block;
+  width:100%;
+  border-top:2px solid #334155;
+}
+
+.mei-special-editor-actions{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:10px;
+}
+
+.mei-special-confirm,
+.mei-special-cancel{
+  min-height:38px;
+  padding:7px 14px;
+  border:2px solid var(--mei-primary-border);
+  border-radius:10px;
+  background:#fff;
+  color:var(--mei-primary-dark);
+  font-weight:900;
+  cursor:pointer;
+}
+
+.mei-special-confirm{
+  background:var(--mei-primary-light);
+}
+
+.mei-power-editor-preview{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:58px;
+  color:#0f172a;
+  font-family:"Cambria Math","Times New Roman",serif;
+  font-size:30px;
+  font-weight:900;
+}
+
+.mei-power-editor-preview sup{
+  position:relative;
+  top:-.2em;
+}
+
+.mei-power-value{
+  width:68px;
+  height:34px;
+  padding:2px 5px;
+  font-size:18px;
 }
