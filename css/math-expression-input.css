@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.0.0
+版本：1.1.0
 ==================================================
 */
 
@@ -81,7 +81,21 @@ MathExpressionInput 共用數學運算式輸入元件
   caret-color:
     var(--mei-primary);
 
-  font-size:20px;
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    serif;
+
+  font-size:
+    clamp(
+      21px,
+      3.8vw,
+      29px
+    );
+
+  font-weight:900;
 }
 
 .mei-source-input::selection{
@@ -459,4 +473,50 @@ MathExpressionInput 共用數學運算式輸入元件
   .mei-tool-button{
     min-width:0;
   }
+}
+
+
+/*
+==================================================
+v1.1｜精準游標編輯模式
+Focus 時顯示「可讀數學符號」本身：
+√、+、−、/、^
+不再讓學生看到 sqrt(...) / frac(...) 等內部文字碼。
+
+Blur 後再切回正式數學排版。
+==================================================
+*/
+
+.mei-shell--editing .mei-rich-display{
+  display:none;
+}
+
+.mei-shell--editing .mei-source-input{
+  color:#0f172a !important;
+  -webkit-text-fill-color:#0f172a;
+
+  caret-color:
+    var(--mei-primary);
+
+  background:#fff;
+}
+
+.mei-shell--editing .mei-source-input::selection{
+  color:#0f172a;
+  -webkit-text-fill-color:#0f172a;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--mei-primary) 18%,
+      transparent
+    );
+}
+
+/*
+編輯狀態仍保留同一個答案框，不額外展開第二層介面。
+*/
+.mei-shell--editing .mei-editor-wrap{
+  border-color:
+    var(--mei-primary);
 }
