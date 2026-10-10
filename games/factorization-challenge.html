@@ -19,7 +19,7 @@
     href="../css/scratchpad.css"
   >
 
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=9">
+  <link rel="stylesheet" href="../css/math-expression-input.css?v=12">
   <link rel="stylesheet" href="../css/question-layout.css?v=1">
 
   <link
@@ -2307,7 +2307,7 @@
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
-<script src="../js/math-expression-input.js?v=9"></script>
+<script src="../js/math-expression-input.js?v=12"></script>
 <script src="../js/question-layout.js?v=1"></script>
 <script src="../js/expression-input.js?v=7"></script>
 
@@ -5634,6 +5634,14 @@ function renderFactorAnswer(
       showPreview:
         false,
 
+      onChange:
+        () => {
+          window.setTimeout(
+            updateFactorPreview,
+            0
+          );
+        },
+
       toolOrder: [
         "variable",
         "power",
@@ -5654,17 +5662,6 @@ function renderFactorAnswer(
           "#80cbc4"
       }
     });
-
-  factorExpressionInput
-    ?.input
-    ?.addEventListener(
-      "input",
-      () =>
-        setTimeout(
-          updateFactorPreview,
-          0
-        )
-    );
 
   setTimeout(
     () => {
