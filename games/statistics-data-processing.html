@@ -680,7 +680,7 @@ button:disabled{opacity:.48;cursor:not-allowed}
   justify-content:flex-end;
   align-items:center;
   width:100%;
-  margin-top:18px;
+  margin:0 0 16px;
 }
 
 .semester-return-button{
@@ -811,17 +811,8 @@ button:disabled{opacity:.48;cursor:not-allowed}
 </header>
 
 <section id="start-screen" class="screen">
-<h2>選擇挑戰模式</h2>
-  <div class="mode-grid">
-    <article class="mode-card"><div class="mode-icon">📋</div><div class="mode-title">相對次數分配表</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">由次數與全體次數計算相對次數，並反推總人數或該組次數。</p><button class="mode-button" data-mode="relativeFrequency" type="button">開始挑戰</button></article>
-    <article class="mode-card"><div class="mode-icon">📈</div><div class="mode-title">相對次數折線圖</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">練習組中點、折點坐標與相對次數折線圖的讀法。</p><button class="mode-button" data-mode="relativeGraph" type="button">開始挑戰</button></article>
-    <article class="mode-card"><div class="mode-icon">➕</div><div class="mode-title">累積次數分配</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">依序累加各組次數，並從累積次數表或折線圖讀出「未滿／以上」人數。</p><button class="mode-button" data-mode="cumulativeFrequency" type="button">開始挑戰</button></article>
-    <article class="mode-card"><div class="mode-icon">📉</div><div class="mode-title">累積相對次數分配</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">利用累積百分比求某範圍、某下限以上或某上限以下的比例與人數。</p><button class="mode-button" data-mode="cumulativeRelative" type="button">開始挑戰</button></article>
-    <article class="mode-card"><div class="mode-icon">🔎</div><div class="mode-title">統計圖表判讀與比較</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">比較兩組資料、找出人數最多的組距、判讀最陡區段與生活情境。</p><button class="mode-button" data-mode="graphInterpretation" type="button">開始挑戰</button></article>
-    <article class="mode-card final"><div class="mode-icon">🏆</div><div class="mode-title">第 5 章綜合挑戰</div><div class="mode-meta"><span class="mode-tag">綜合模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">表格與折線圖混合，加入教材精熟題的缺漏資料與條件推理。</p><button class="mode-button" data-mode="comprehensive" type="button">開始綜合挑戰</button></article>
-  </div>
 
-      <div class="mode-return-row">
+<div class="mode-return-row">
         <button
           id="semester-return-button"
           class="semester-return-button"
@@ -832,6 +823,15 @@ button:disabled{opacity:.48;cursor:not-allowed}
         </button>
       </div>
 
+<h2>選擇挑戰模式</h2>
+  <div class="mode-grid">
+    <article class="mode-card"><div class="mode-icon">📋</div><div class="mode-title">相對次數分配表</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">由次數與全體次數計算相對次數，並反推總人數或該組次數。</p><button class="mode-button" data-mode="relativeFrequency" type="button">開始挑戰</button></article>
+    <article class="mode-card"><div class="mode-icon">📈</div><div class="mode-title">相對次數折線圖</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">練習組中點、折點坐標與相對次數折線圖的讀法。</p><button class="mode-button" data-mode="relativeGraph" type="button">開始挑戰</button></article>
+    <article class="mode-card"><div class="mode-icon">➕</div><div class="mode-title">累積次數分配</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">依序累加各組次數，並從累積次數表或折線圖讀出「未滿／以上」人數。</p><button class="mode-button" data-mode="cumulativeFrequency" type="button">開始挑戰</button></article>
+    <article class="mode-card"><div class="mode-icon">📉</div><div class="mode-title">累積相對次數分配</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">利用累積百分比求某範圍、某下限以上或某上限以下的比例與人數。</p><button class="mode-button" data-mode="cumulativeRelative" type="button">開始挑戰</button></article>
+    <article class="mode-card"><div class="mode-icon">🔎</div><div class="mode-title">統計圖表判讀與比較</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">比較兩組資料、找出人數最多的組距、判讀最陡區段與生活情境。</p><button class="mode-button" data-mode="graphInterpretation" type="button">開始挑戰</button></article>
+    <article class="mode-card final"><div class="mode-icon">🏆</div><div class="mode-title">第 5 章綜合挑戰</div><div class="mode-meta"><span class="mode-tag">綜合模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">表格與折線圖混合，加入教材精熟題的缺漏資料與條件推理。</p><button class="mode-button" data-mode="comprehensive" type="button">開始綜合挑戰</button></article>
+  </div>
 </section>
 
 <section id="quiz-screen" class="screen hidden">
