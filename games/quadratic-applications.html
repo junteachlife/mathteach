@@ -2548,6 +2548,57 @@
   }
 }
 
+
+
+
+
+/* ==================================================
+   返回八上｜統一放在整個遊戲內框最右上角
+   ================================================== */
+
+.game-card{
+  position:relative;
+}
+
+.game-card-return-row{
+  position:absolute !important;
+  top:12px !important;
+  right:14px !important;
+  z-index:30;
+
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+
+  width:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+
+  background:transparent !important;
+}
+
+.game-card-return-row .semester-return-button{
+  margin:0 !important;
+}
+
+/*
+保留標題區上方空間，避免按鈕壓到標題。
+*/
+.game-header{
+  padding-top:68px !important;
+}
+
+@media(max-width:640px){
+  .game-card-return-row{
+    top:10px !important;
+    right:10px !important;
+  }
+
+  .game-header{
+    padding-top:64px !important;
+  }
+}
+
 </style>
 
 </head>
@@ -2559,6 +2610,18 @@
   <div id="commonHeaderMount"></div>
 
   <main class="game-card">
+
+    <div class="game-card-return-row">
+      <button
+        id="semester-return-button"
+        class="semester-return-button"
+        type="button"
+        aria-label="重返八年級上學期"
+      >
+        ↩️ 重返八年級上學期
+      </button>
+    </div>
+
 
     <header class="game-header">
 
@@ -2590,20 +2653,7 @@
       id="start-screen"
       class="screen"
     >
-
-<div class="mode-return-row">
-        <button
-          id="semester-return-button"
-          class="semester-return-button"
-          type="button"
-          aria-label="重返八年級上學期"
-        >
-          ↩️ 重返八年級上學期
-        </button>
-      </div>
-
-
-      <div class="mode-grid">
+<div class="mode-grid">
         <button
           class="mode-card"
           data-mode="equationModel"
