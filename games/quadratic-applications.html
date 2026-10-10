@@ -2402,7 +2402,153 @@
     .question-content{text-align:left!important;align-items:stretch!important}
     .question-content>.math,.question-content>.formula-box{align-self:center}
     .keep-unit{display:inline-block;white-space:nowrap}
-  </style>
+  
+
+/* ==================================================
+   最新統一遊戲控制位置
+   ================================================== */
+
+.mode-return-row{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  width:100%;
+  margin-top:18px;
+}
+
+.semester-return-button{
+  min-height:40px;
+  padding:8px 14px;
+  border:2px solid var(--primary-border);
+  border-radius:12px;
+  background:#fff;
+  color:var(--primary-dark);
+  font-size:14px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 4px 0 rgba(15,23,42,.10);
+}
+
+.semester-return-button:active{
+  transform:translateY(2px);
+  box-shadow:0 2px 0 rgba(15,23,42,.10);
+}
+
+.question-card{
+  position:relative;
+  padding-bottom:78px !important;
+  overflow:visible !important;
+}
+
+.question-card .scratchpad-row{
+  position:absolute !important;
+  right:16px !important;
+  bottom:14px !important;
+  width:auto !important;
+  min-height:44px !important;
+  margin:0 !important;
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  z-index:5;
+}
+
+.question-card #scratchpad-mobile-button{
+  width:auto !important;
+  display:flex !important;
+  justify-content:flex-end !important;
+}
+
+.question-card #scratchpad-mobile-button #scratchpadOpenButton,
+.question-card #scratchpad-mobile-button .scratchpad-open-button{
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  margin:0 !important;
+  z-index:auto !important;
+}
+
+.quiz-actions{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.quiz-actions .game-button{
+  min-width:116px;
+  min-height:46px;
+  padding:10px 14px;
+}
+
+.answer-submit-row{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:16px;
+  flex-wrap:wrap;
+}
+
+@media(max-width:640px){
+  .quiz-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;
+  }
+
+  .quiz-actions .game-button{
+    width:100%;
+    min-width:0;
+  }
+
+  .semester-return-button{
+    font-size:13px;
+    padding:9px 12px;
+  }
+}
+
+
+.quiz-topbar{
+  display:grid !important;
+  grid-template-columns:minmax(210px,1fr) minmax(300px,1.35fr) auto !important;
+  gap:12px !important;
+  align-items:center !important;
+  margin-bottom:14px !important;
+}
+
+.quiz-context,
+.quiz-stats{
+  display:grid;
+  gap:8px;
+}
+
+.quiz-context{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.quiz-stats{
+  grid-template-columns:repeat(3,minmax(86px,1fr));
+}
+
+@media(max-width:900px){
+  .quiz-topbar{
+    grid-template-columns:1fr !important;
+  }
+}
+
+@media(max-width:600px){
+  .quiz-context,
+  .quiz-stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .quiz-stats .timer-box{
+    grid-column:1/-1;
+  }
+}
+
+</style>
 
 </head>
 
@@ -2592,6 +2738,18 @@
 
       </div>
 
+      <div class="mode-return-row">
+        <button
+          id="semester-return-button"
+          class="semester-return-button"
+          type="button"
+          aria-label="重返八年級上學期"
+        >
+          ↩️ 重返八年級上學期
+        </button>
+      </div>
+
+
     </section>
 
     <!--
@@ -2605,78 +2763,47 @@
       class="screen hidden"
     >
 
+      
       <div class="quiz-topbar">
 
-        <div class="status-box">
+        <div class="quiz-context">
+          <div class="status-box">
+            模式
+            <span id="mode-name" class="status-value">—</span>
+          </div>
 
-          模式
-
-          <span
-            id="mode-name"
-            class="status-value"
-          >
-            —
-          </span>
-
+          <div class="status-box">
+            進度
+            <span id="question-number" class="status-value">1 / 10</span>
+          </div>
         </div>
 
-        <div class="status-box">
+        <div class="quiz-stats">
+          <div class="status-box">
+            答對
+            <span id="correct-count" class="status-value">0</span>
+          </div>
 
-          進度
+          <div class="status-box">
+            最高連擊
+            <span id="combo-count" class="status-value">0</span>
+          </div>
 
-          <span
-            id="question-number"
-            class="status-value"
-          >
-            1 / 10
-          </span>
-
+          <div class="status-box timer-box">
+            ⏱️ 測驗時間
+            <span id="timer-display" class="status-value">00:00</span>
+          </div>
         </div>
 
-        <div class="status-box">
+        <div class="quiz-actions">
+          <button id="restart-button" class="game-button restart" type="button">
+            🔄 重新測驗
+          </button>
 
-          答對
-
-          <span
-            id="correct-count"
-            class="status-value"
-          >
-            0
-          </span>
-
+          <button id="mode-button" class="game-button secondary" type="button">
+            重選模式
+          </button>
         </div>
-
-        <div class="status-box">
-
-          最高連擊
-
-          <span
-            id="combo-count"
-            class="status-value"
-          >
-            0
-          </span>
-
-        </div>
-
-        <div class="status-box timer-box">
-
-          測驗時間
-
-          <span
-            id="timer-display"
-            class="status-value"
-          >
-            00:00
-          </span>
-
-        </div>
-
-      </div>
-
-      <div class="scratchpad-row">
-
-        <div id="scratchpad-mobile-button"></div>
 
       </div>
 
@@ -2701,47 +2828,26 @@
           class="question-content"
         ></div>
 
-      </div>
+      
+        <div class="scratchpad-row">
+          <div id="scratchpad-mobile-button"></div>
+        </div>
+</div>
 
       <div
         id="answer-panel"
         class="answer-panel"
       ></div>
 
-      <div class="button-row">
-
-        <button
-          id="submit-button"
-          class="game-button"
-          type="button"
-        >
+      
+      <div class="answer-submit-row">
+        <button id="submit-button" class="game-button" type="button">
           提交答案（Enter）
         </button>
 
-        <button
-          id="next-button"
-          class="game-button hidden"
-          type="button"
-        >
+        <button id="next-button" class="game-button hidden" type="button">
           下一題（Enter）
         </button>
-
-        <button
-          id="restart-button"
-          class="game-button restart"
-          type="button"
-        >
-          🔄 重新測驗
-        </button>
-
-        <button
-          id="mode-button"
-          class="game-button secondary"
-          type="button"
-        >
-          選擇模式
-        </button>
-
       </div>
 
       <div
@@ -12991,6 +13097,66 @@ function showReview() {
 }
 
 
+function confirmRestartCurrentMode() {
+  return window.confirm(
+    "確定要重新測驗嗎？\n目前的作答進度與測驗時間將重新開始。"
+  );
+}
+
+function restartCurrentModeWithConfirmation() {
+  if (!confirmRestartCurrentMode()) return;
+  startGame(mode);
+}
+
+function confirmReselectMode() {
+  return window.confirm(
+    "確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。"
+  );
+}
+
+function backToModesWithConfirmation() {
+  if (!confirmReselectMode()) return;
+  stopTimer();
+  showOnly("start-screen");
+}
+
+function returnToGrade8FirstSemester() {
+  stopTimer();
+
+  const referrer = String(document.referrer || "");
+  let cameFromHomePage = false;
+
+  try {
+    if (referrer) {
+      const referrerURL = new URL(referrer);
+      const sameOrigin =
+        referrerURL.origin === window.location.origin;
+      const path =
+        referrerURL.pathname.replace(/\/+$/, "");
+      const isHomePath =
+        path === "" ||
+        path.endsWith("/index.html") ||
+        path.endsWith("/mathteach");
+
+      cameFromHomePage =
+        sameOrigin && isHomePath;
+    }
+  } catch (error) {
+    cameFromHomePage = false;
+  }
+
+  if (
+    cameFromHomePage &&
+    window.history.length > 1
+  ) {
+    window.history.back();
+    return;
+  }
+
+  window.location.href = "../index.html";
+}
+
+
 /*
 ==================================================
 模式按鈕
@@ -13023,6 +13189,14 @@ document
 ==================================================
 */
 
+$("semester-return-button")
+  ?.addEventListener(
+    "click",
+    returnToGrade8FirstSemester
+  );
+
+
+
 $("submit-button")
   .addEventListener(
     "click",
@@ -13040,27 +13214,14 @@ $("next-button")
 $("restart-button")
   .addEventListener(
     "click",
-    () => {
-
-      startGame(
-        mode
-      );
-    }
+    restartCurrentModeWithConfirmation
   );
 
 
 $("mode-button")
   .addEventListener(
     "click",
-    () => {
-
-      stopTimer();
-
-
-      showOnly(
-        "start-screen"
-      );
-    }
+    backToModesWithConfirmation
   );
 
 
