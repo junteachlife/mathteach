@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：2.1.0
+版本：2.3.0
 ==================================================
 */
 
@@ -884,3 +884,138 @@ v2.1｜答案預覽同步修正
 會立即保持同步。
 ==================================================
 */
+
+
+/*
+==================================================
+v2.2｜外部答案預覽同步
+==================================================
+共用元件在程式化插入分數、次方、根號、x、± 後：
+1. 先更新自身正式數學排版
+2. 派發 input
+3. 派發 change
+4. 呼叫 onChange callback
+==================================================
+*/
+
+
+/*
+==================================================
+v2.3｜特殊符號就地輸入
+==================================================
+
+根號、分數、次方都不再向下撐開大型面板，
+而是在答案框游標附近以浮動小編輯器出現。
+==================================================
+*/
+
+.mei-shell{
+  position:relative;
+}
+
+.mei-special-editor{
+  position:absolute !important;
+  z-index:40;
+
+  width:auto !important;
+  max-width:min(88vw,320px);
+
+  margin:0 !important;
+  padding:8px 10px !important;
+
+  border:2px solid var(--mei-primary-border);
+  border-radius:12px;
+
+  background:#fff;
+
+  box-shadow:
+    0 10px 28px
+    rgba(15,23,42,.16);
+}
+
+.mei-special-editor--power{
+  min-width:138px;
+}
+
+.mei-special-editor--root{
+  min-width:176px;
+}
+
+.mei-special-editor--fraction{
+  min-width:190px;
+}
+
+.mei-special-editor-title{
+  display:none;
+}
+
+.mei-inline-root-editor{
+  display:flex;
+  align-items:flex-start;
+  gap:2px;
+}
+
+.mei-inline-root-symbol{
+  display:inline-block;
+
+  margin-top:2px;
+
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    "Times New Roman",
+    serif;
+
+  font-size:34px;
+  font-weight:900;
+  line-height:1;
+}
+
+.mei-root-value{
+  width:118px;
+  height:42px;
+  border-radius:8px 8px 4px 4px;
+  border-top:3px solid #334155;
+}
+
+.mei-fraction-editor{
+  width:150px !important;
+}
+
+.mei-power-editor-preview{
+  min-height:42px !important;
+  font-size:28px !important;
+}
+
+.mei-special-editor-actions{
+  margin-top:6px !important;
+  gap:6px !important;
+}
+
+.mei-special-confirm,
+.mei-special-cancel{
+  min-height:32px !important;
+  padding:4px 9px !important;
+  font-size:12px;
+}
+
+/*
+特殊編輯器開啟時不再改變答案區高度。
+*/
+.mei-shell--special-open{
+  overflow:visible;
+}
+
+@media(max-width:600px){
+  .mei-special-editor{
+    max-width:76vw;
+  }
+
+  .mei-special-editor--fraction{
+    min-width:174px;
+  }
+
+  .mei-root-value{
+    width:102px;
+  }
+}
