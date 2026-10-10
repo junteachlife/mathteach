@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.9.0
+版本：2.0.0
 ==================================================
 */
 
@@ -782,4 +782,87 @@ v1.9｜分數編輯器完整工具延伸
     "Times New Roman",
     "Microsoft JhengHei",
     serif;
+}
+
+
+/*
+==================================================
+v2.0｜次方視覺強化
+==================================================
+
+按下「次方」完成後，主答案框立即使用 rich display
+的真正 <sup> 呈現，避免 Android 對 Unicode ²、³
+顯示太小而看起來像一般數字。
+==================================================
+*/
+
+.mei-shell--power-display
+.mei-rich-display{
+  display:flex !important;
+}
+
+.mei-shell--power-display
+.mei-source-input{
+  color:transparent !important;
+  -webkit-text-fill-color:transparent !important;
+  caret-color:transparent !important;
+  background:transparent !important;
+}
+
+/*
+正式數學排版中的次方：
+比瀏覽器預設 sup 稍大、稍高。
+*/
+.mei-rich-display sup{
+  position:relative;
+  top:-.50em;
+
+  display:inline-block;
+
+  margin-left:.04em;
+
+  font-size:.72em !important;
+  font-weight:900 !important;
+
+  line-height:1;
+  vertical-align:baseline;
+}
+
+/*
+即使學生再次點入編輯，
+Unicode ²、³ 本身也放在較大的數學字體中，
+在手機上辨識度會更高。
+*/
+.mei-shell--editing
+.mei-source-input{
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      25px,
+      4.6vw,
+      35px
+    );
+
+  font-weight:900;
+  letter-spacing:.012em;
+}
+
+/*
+次方按鈕上的小 n 也同步加強。
+*/
+.mei-tool-button[data-tool="power"]
+.mei-tool-symbol sup{
+  position:relative;
+  top:-.30em;
+
+  font-size:.74em !important;
+  font-weight:900 !important;
+
+  vertical-align:baseline;
 }
