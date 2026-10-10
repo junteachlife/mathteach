@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：1.9.0
+版本：2.0.0
 ==================================================
 
 設計原則：
@@ -3301,6 +3301,12 @@ MathExpressionInput 共用數學運算式輸入元件
 
           this.shell
             ?.classList
+            .remove(
+              "mei-shell--power-display"
+            );
+
+          this.shell
+            ?.classList
             .add(
               "mei-shell--editing"
             );
@@ -4244,14 +4250,32 @@ MathExpressionInput 共用數學運算式輸入元件
           "mei-shell--special-open"
         );
 
-      this.input.focus();
+      this.lastSelection = {
+        start:
+          caret,
+        end:
+          caret
+      };
 
-      this.input.setSelectionRange(
-        caret,
-        caret
-      );
-
+      /*
+      先更新正式數學排版，再離開 raw 文字編輯狀態。
+      因此學生會立即看到清楚的真正上標 <sup>。
+      */
       this.update();
+
+      this.shell
+        ?.classList
+        .remove(
+          "mei-shell--editing"
+        );
+
+      this.shell
+        ?.classList
+        .add(
+          "mei-shell--power-display"
+        );
+
+      this.input.blur();
     }
 
 
