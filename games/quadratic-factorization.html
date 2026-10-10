@@ -2622,7 +2622,44 @@
       }
     }
 
-  </style>
+  
+
+/* ==================================================
+   4-1｜題目文字與選項對齊修正
+   ================================================== */
+
+/*
+題目下方的補充敘述：
+單行置中；真的換行才靠左。
+*/
+#question-content .question-note{
+  width:100%;
+  text-align:center !important;
+  align-self:stretch;
+  text-wrap:pretty;
+  word-break:normal;
+}
+
+#question-content .question-note.is-wrapped{
+  text-align:left !important;
+}
+
+/*
+選項本身與整組選項置中。
+若手機寬度不足，JS 會自動改成靠左捲動，避免左側選項被裁掉。
+*/
+.choice-grid{
+  justify-content:center !important;
+}
+
+.choice-button{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+}
+
+</style>
 
   <link rel="stylesheet" href="../css/question-layout.css?v=1">
 </head>
@@ -3807,6 +3844,79 @@ function fractionHTML(
 
     </span>
   `;
+}
+
+
+/*
+==================================================
+x 一次項顯示
+==================================================
+
+一般題目與算式中：
+  1x  → x
+ -1x  → −x
+
+若詳解需要強調「一次項係數為 1」，
+仍可在文字說明中直接寫出係數 1。
+*/
+
+function signedXTermHTML(
+  coefficient
+) {
+
+  coefficient =
+    Number(
+      coefficient
+    );
+
+  if (
+    coefficient === 0
+  ) {
+    return "";
+  }
+
+  const negative =
+    coefficient < 0;
+
+  const absolute =
+    Math.abs(
+      coefficient
+    );
+
+  const coefficientText =
+    absolute === 1
+      ? ""
+      : String(
+          absolute
+        );
+
+  return (
+    negative
+      ? `－${coefficientText}x`
+      : `＋${coefficientText}x`
+  );
+}
+
+
+function positiveXTermHTML(
+  coefficient
+) {
+
+  coefficient =
+    Number(
+      coefficient
+    );
+
+  const absolute =
+    Math.abs(
+      coefficient
+    );
+
+  return `${
+    absolute === 1
+      ? ""
+      : absolute
+  }x`;
 }
 
 
@@ -5139,14 +5249,9 @@ function makeParameterQuestion() {
 
         x<sup>2</sup>
 
-        ${
-          p >=
-          0
-
-            ? `＋${p}x`
-
-            : `－${Math.abs(p)}x`
-        }
+        ${signedXTermHTML(
+          p
+        )}
 
         －m＝0
 
@@ -6358,14 +6463,9 @@ function makeCompleteSquareMissingNumber() {
 
         x<sup>2</sup>
 
-        ${
-          b >=
-          0
-
-            ? `＋${b}x`
-
-            : `－${Math.abs(b)}x`
-        }
+        ${signedXTermHTML(
+            b
+          )}
 
         ＋ □
 
@@ -6444,14 +6544,9 @@ function makeCompleteSquarePair() {
 
         x<sup>2</sup>
 
-        ${
-          b >=
-          0
-
-            ? `＋${b}x`
-
-            : `－${Math.abs(b)}x`
-        }
+        ${signedXTermHTML(
+            b
+          )}
 
         ＋ □
 
@@ -6513,14 +6608,9 @@ function makeCompleteSquarePair() {
 
           x<sup>2</sup>
 
-          ${
-            b >=
-            0
-
-              ? `＋${b}x`
-
-              : `－${Math.abs(b)}x`
-          }
+          ${signedXTermHTML(
+            b
+          )}
 
           ＋${constant}
 
@@ -6632,14 +6722,9 @@ function makeCompleteSquareSolveA1() {
 
           x<sup>2</sup>
 
-          ${
-            b >=
-            0
-
-              ? `＋${b}x`
-
-              : `－${Math.abs(b)}x`
-          }
+          ${signedXTermHTML(
+            b
+          )}
 
           ＝${-c}
 
@@ -6660,14 +6745,9 @@ function makeCompleteSquareSolveA1() {
 
           x<sup>2</sup>
 
-          ${
-            b >=
-            0
-
-              ? `＋${b}x`
-
-              : `－${Math.abs(b)}x`
-          }
+          ${signedXTermHTML(
+            b
+          )}
 
           ＋(${b / 2})<sup>2</sup>
 
@@ -6825,15 +6905,9 @@ function makeCompleteSquareSolveANot1() {
 
           x<sup>2</sup>
 
-          ${
-            b /
-            a >=
-            0
-
-              ? `＋${b / a}x`
-
-              : `－${Math.abs(b / a)}x`
-          }
+          ${signedXTermHTML(
+            b / a
+          )}
 
           ${
             c /
@@ -6856,15 +6930,9 @@ function makeCompleteSquareSolveANot1() {
 
           x<sup>2</sup>
 
-          ${
-            b /
-            a >=
-            0
-
-              ? `＋${b / a}x`
-
-              : `－${Math.abs(b / a)}x`
-          }
+          ${signedXTermHTML(
+            b / a
+          )}
 
           ＝${-(c / a)}
 
@@ -6885,15 +6953,9 @@ function makeCompleteSquareSolveANot1() {
 
           x<sup>2</sup>
 
-          ${
-            b /
-            a >=
-            0
-
-              ? `＋${b / a}x`
-
-              : `－${Math.abs(b / a)}x`
-          }
+          ${signedXTermHTML(
+            b / a
+          )}
 
           ＋(${b / (2 * a)})<sup>2</sup>
 
@@ -7063,14 +7125,9 @@ function makeCompleteSquareNature() {
 
           x<sup>2</sup>
 
-          ${
-            b >=
-            0
-
-              ? `＋${b}x`
-
-              : `－${Math.abs(b)}x`
-          }
+          ${signedXTermHTML(
+            b
+          )}
 
           ＝${-c}
 
@@ -7091,14 +7148,9 @@ function makeCompleteSquareNature() {
 
           x<sup>2</sup>
 
-          ${
-            b >=
-            0
-
-              ? `＋${b}x`
-
-              : `－${Math.abs(b)}x`
-          }
+          ${signedXTermHTML(
+            b
+          )}
 
           ＋(${b / 2})<sup>2</sup>
 
@@ -8355,7 +8407,9 @@ function makeRectangleApplication() {
         <div class="calculation-box math">
 
           x<sup>2</sup>
-          ＋${difference}x
+          ＋${positiveXTermHTML(
+            difference
+          )}
           －${area}
           ＝0
 
@@ -8380,7 +8434,9 @@ function makeRectangleApplication() {
         <div class="calculation-box math">
 
           x<sup>2</sup>
-          ＋${difference}x
+          ＋${positiveXTermHTML(
+            difference
+          )}
           －${area}
 
           ＝
@@ -8723,7 +8779,9 @@ function makeFullApplication() {
         <div class="calculation-box math">
 
           x<sup>2</sup>
-          ＋${add}x
+          ＋${positiveXTermHTML(
+            add
+          )}
           －${area}
           ＝0
 
@@ -8748,7 +8806,9 @@ function makeFullApplication() {
         <div class="calculation-box math">
 
           x<sup>2</sup>
-          ＋${add}x
+          ＋${positiveXTermHTML(
+            add
+          )}
           －${area}
 
           ＝
@@ -8954,6 +9014,11 @@ function renderChoiceAnswer(
         尚未選擇答案。
       </div>
     `;
+
+
+  window.requestAnimationFrame(
+    updateChoiceGridAlignment
+  );
 
 
   $("answer-panel")
@@ -11954,6 +12019,154 @@ function explanationHTML(
 
 /*
 ==================================================
+題目下方文字智慧對齊
+==================================================
+*/
+
+function elementHasMultipleTextLines(
+  element
+) {
+
+  if (
+    !element
+  ) {
+    return false;
+  }
+
+  const range =
+    document.createRange();
+
+  range.selectNodeContents(
+    element
+  );
+
+  const rects =
+    [
+      ...range.getClientRects()
+    ]
+      .filter(
+        rect =>
+          rect.width > 1 &&
+          rect.height > 1
+      );
+
+  const lineTops =
+    [];
+
+  rects.forEach(
+    rect => {
+
+      const top =
+        Math.round(
+          rect.top
+        );
+
+      if (
+        !lineTops.some(
+          value =>
+            Math.abs(
+              value - top
+            ) <= 2
+        )
+      ) {
+
+        lineTops.push(
+          top
+        );
+      }
+    }
+  );
+
+  return (
+    lineTops.length >
+    1
+  );
+}
+
+
+function updateQuestionNoteAlignment() {
+
+  document
+    .querySelectorAll(
+      "#question-content .question-note"
+    )
+    .forEach(
+      note => {
+
+        note
+          .classList
+          .remove(
+            "is-wrapped"
+          );
+
+        window.requestAnimationFrame(
+          () => {
+
+            note
+              .classList
+              .toggle(
+                "is-wrapped",
+                elementHasMultipleTextLines(
+                  note
+                )
+              );
+          }
+        );
+      }
+    );
+}
+
+
+function updateChoiceGridAlignment() {
+
+  const grid =
+    document.querySelector(
+      "#answer-panel .choice-grid"
+    );
+
+  if (
+    !grid
+  ) {
+    return;
+  }
+
+  grid.style.justifyContent =
+    grid.scrollWidth >
+      grid.clientWidth + 2
+      ? "flex-start"
+      : "center";
+}
+
+
+let questionAlignmentResizeTimer =
+  0;
+
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    window.clearTimeout(
+      questionAlignmentResizeTimer
+    );
+
+    questionAlignmentResizeTimer =
+      window.setTimeout(
+        () => {
+          updateQuestionNoteAlignment();
+          updateChoiceGridAlignment();
+        },
+        80
+      );
+  },
+  {
+    passive: true
+  }
+);
+
+
+/*
+==================================================
 顯示題目
 ==================================================
 */
@@ -12010,6 +12223,16 @@ function displayQuestion() {
   $("question-content")
     .innerHTML =
       question.html;
+
+
+  window
+    .QuestionLayout
+    ?.apply?.(
+      $("question-content")
+    );
+
+
+  updateQuestionNoteAlignment();
 
 
   $("feedback")
