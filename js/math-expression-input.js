@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：2.1.0
+版本：2.3.0
 ==================================================
 
 設計原則：
@@ -51,6 +51,12 @@ MathExpressionInput 共用數學運算式輸入元件
     可設為 false，避免出現兩個預覽視窗。
     */
     showPreview: true,
+
+    /*
+    外部遊戲可直接接收元件值改變通知，
+    不必只依賴原生 input event。
+    */
+    onChange: null,
 
     /*
     工具列順序可依遊戲調整。
@@ -3100,6 +3106,42 @@ MathExpressionInput 共用數學運算式輸入元件
           </div>
 
           <div
+            class="mei-special-editor mei-special-editor--root"
+            data-special-editor="root"
+            hidden
+          >
+            <div class="mei-inline-root-editor">
+              <span class="mei-inline-root-symbol">√</span>
+              <input
+                class="mei-special-input mei-root-value"
+                type="text"
+                inputmode="text"
+                autocomplete="off"
+                placeholder="根號內"
+                aria-label="根號內"
+              >
+            </div>
+
+            <div class="mei-special-editor-actions">
+              <button
+                type="button"
+                class="mei-special-confirm"
+                data-special-confirm="root"
+              >
+                插入
+              </button>
+
+              <button
+                type="button"
+                class="mei-special-cancel"
+                data-special-cancel
+              >
+                取消
+              </button>
+            </div>
+          </div>
+
+          <div
             class="mei-special-editor mei-special-editor--fraction"
             data-special-editor="fraction"
             hidden
@@ -3228,6 +3270,16 @@ MathExpressionInput 共用數學運算式輸入元件
           )
         ];
 
+      this.rootEditor =
+        this.mount.querySelector(
+          '[data-special-editor="root"]'
+        );
+
+      this.rootValueInput =
+        this.mount.querySelector(
+          ".mei-root-value"
+        );
+
       this.fractionEditor =
         this.mount.querySelector(
           '[data-special-editor="fraction"]'
@@ -3260,6 +3312,12 @@ MathExpressionInput 共用數學運算式輸入元件
         null;
 
       this.powerTargetSelection =
+        null;
+
+      this.rootTargetInput =
+        null;
+
+      this.rootTargetSelection =
         null;
     }
 
@@ -3410,23 +3468,7 @@ MathExpressionInput 共用數學運算式輸入元件
                 tool === "sqrt"
               ) {
 
-                if (
-                  this.fractionEditor &&
-                  !this.fractionEditor.hidden
-                ) {
-
-                  this.insertIntoFractionField(
-                    "√□",
-                    1
-                  );
-
-                } else {
-
-                  this.insertTemplate(
-                    "√□",
-                    1
-                  );
-                }
+                this.openRootEditor();
 
               } else if (
                 tool === "fraction"
@@ -3523,6 +3565,17 @@ MathExpressionInput 共用數學運算式輸入元件
 
       this.mount
         .querySelector(
+          '[data-special-confirm="root"]'
+        )
+        ?.addEventListener(
+          "click",
+          () =>
+            this.confirmRootEditor()
+        );
+
+
+      this.mount
+        .querySelector(
           '[data-special-confirm="fraction"]'
         )
         ?.addEventListener(
@@ -3564,6 +3617,21 @@ MathExpressionInput 共用數學運算式輸入元件
                   input;
               }
             );
+          }
+        );
+
+
+      this.rootValueInput
+        ?.addEventListener(
+          "keydown",
+          event => {
+            if (
+              event.key === "Enter"
+            ) {
+              event.preventDefault();
+
+              this.confirmRootEditor();
+            }
           }
         );
 
@@ -3655,12 +3723,15 @@ MathExpressionInput 共用數學運算式輸入元件
       }
 
       /*
-      程式直接改 this.input.value 時，
-      瀏覽器不會自動觸發 input event。
+      先同步元件自己的解析／正式顯示，
+      再通知遊戲外部。
+      */
+      this.updateEditorLayout();
+      this.update();
 
-      主動派發 input event，
-      讓遊戲外部的「目前答案」、
-      詳解預覽與其他監聽器立即同步。
+      /*
+      原生事件：
+      相容既有遊戲的 input/change listener。
       */
       this.input.dispatchEvent(
         new Event(
@@ -3670,6 +3741,46 @@ MathExpressionInput 共用數學運算式輸入元件
           }
         )
       );
+
+      this.input.dispatchEvent(
+        new Event(
+          "change",
+          {
+            bubbles: true
+          }
+        )
+      );
+
+      /*
+      共用元件正式 callback：
+      新版遊戲建議使用這個，
+      不再依賴瀏覽器是否對程式化輸入送事件。
+      */
+      if (
+        typeof this.options.onChange ===
+        "function"
+      ) {
+
+        let parsed =
+          null;
+
+        try {
+          parsed =
+            this.parse();
+        } catch (_) {}
+
+        this.options.onChange(
+          {
+            raw:
+              this.input.value,
+
+            parsed,
+
+            instance:
+              this
+          }
+        );
+      }
     }
 
 
@@ -3723,6 +3834,326 @@ MathExpressionInput 共用數學運算式輸入元件
 
       this.notifyValueChanged();
     }
+
+    getInlineEditorAnchor(
+      targetInput = null
+    ) {
+
+      const input =
+        targetInput ||
+        this.input;
+
+      if (
+        !input ||
+        !this.shell
+      ) {
+        return {
+          left: 16,
+          top: 12
+        };
+      }
+
+      const style =
+        window.getComputedStyle(
+          input
+        );
+
+      const canvas =
+        document.createElement(
+          "canvas"
+        );
+
+      const context =
+        canvas.getContext(
+          "2d"
+        );
+
+      context.font =
+        `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+
+      const caret =
+        input.selectionStart ??
+        input.value.length;
+
+      const before =
+        String(
+          input.value ||
+          ""
+        )
+          .slice(
+            0,
+            caret
+          );
+
+      const measured =
+        context.measureText(
+          before
+        ).width;
+
+      const inputRect =
+        input.getBoundingClientRect();
+
+      const shellRect =
+        this.shell.getBoundingClientRect();
+
+      const paddingLeft =
+        parseFloat(
+          style.paddingLeft
+        ) ||
+        0;
+
+      let left =
+        (
+          inputRect.left -
+          shellRect.left
+        ) +
+        paddingLeft +
+        measured -
+        input.scrollLeft;
+
+      const maxLeft =
+        Math.max(
+          12,
+          this.shell.clientWidth -
+          190
+        );
+
+      left =
+        Math.max(
+          12,
+          Math.min(
+            left,
+            maxLeft
+          )
+        );
+
+      const top =
+        Math.max(
+          8,
+          (
+            inputRect.top -
+            shellRect.top
+          ) +
+          4
+        );
+
+      return {
+        left,
+        top
+      };
+    }
+
+
+    positionSpecialEditor(
+      editor,
+      targetInput = null
+    ) {
+
+      if (
+        !editor
+      ) {
+        return;
+      }
+
+      const {
+        left,
+        top
+      } =
+        this.getInlineEditorAnchor(
+          targetInput
+        );
+
+      editor.style.left =
+        `${left}px`;
+
+      editor.style.top =
+        `${top}px`;
+    }
+
+
+    openRootEditor() {
+
+      if (
+        this.disabled
+      ) {
+        return;
+      }
+
+      const fractionOpen =
+        this.fractionEditor &&
+        !this.fractionEditor.hidden;
+
+      const targetInput =
+        fractionOpen
+          ? (
+              this.activeFractionInput ||
+              this.fractionNumerator
+            )
+          : null;
+
+      this.rootTargetInput =
+        targetInput;
+
+      if (
+        targetInput
+      ) {
+
+        this.rootTargetSelection = {
+          start:
+            targetInput.selectionStart ??
+            targetInput.value.length,
+          end:
+            targetInput.selectionEnd ??
+            targetInput.value.length
+        };
+
+      } else {
+
+        this.lastSelection =
+          this.getSelection();
+      }
+
+      if (
+        !this.rootEditor
+      ) {
+        return;
+      }
+
+      this.rootValueInput.value =
+        "";
+
+      this.rootEditor.hidden =
+        false;
+
+      this.positionSpecialEditor(
+        this.rootEditor,
+        targetInput
+      );
+
+      this.shell
+        ?.classList
+        .add(
+          "mei-shell--special-open"
+        );
+
+      window.setTimeout(
+        () =>
+          this.rootValueInput
+            ?.focus(),
+        0
+      );
+    }
+
+
+    confirmRootEditor() {
+
+      const rootContent =
+        normalizeEditableSource(
+          this.rootValueInput
+            ?.value ||
+          ""
+        );
+
+      if (
+        !rootContent
+      ) {
+        return;
+      }
+
+      const insertion =
+        `√(${rootContent})`;
+
+      if (
+        this.rootTargetInput
+      ) {
+
+        const target =
+          this.rootTargetInput;
+
+        const selection =
+          this.rootTargetSelection || {
+            start:
+              target.selectionStart ??
+              target.value.length,
+            end:
+              target.selectionEnd ??
+              target.value.length
+          };
+
+        target.value =
+          target.value.slice(
+            0,
+            selection.start
+          ) +
+          insertion +
+          target.value.slice(
+            selection.end
+          );
+
+        const caret =
+          selection.start +
+          insertion.length;
+
+        target.focus();
+
+        target.setSelectionRange(
+          caret,
+          caret
+        );
+
+        this.activeFractionInput =
+          target;
+
+        this.rootEditor.hidden =
+          true;
+
+        this.rootTargetInput =
+          null;
+
+        this.rootTargetSelection =
+          null;
+
+        return;
+      }
+
+      const {
+        start,
+        end
+      } =
+        this.lastSelection;
+
+      this.input.value =
+        this.input.value.slice(
+          0,
+          start
+        ) +
+        insertion +
+        this.input.value.slice(
+          end
+        );
+
+      const caret =
+        start +
+        insertion.length;
+
+      this.lastSelection = {
+        start: caret,
+        end: caret
+      };
+
+      this.rootEditor.hidden =
+        true;
+
+      this.input.focus();
+
+      this.input.setSelectionRange(
+        caret,
+        caret
+      );
+
+      this.notifyValueChanged();
+    }
+
 
     insertIntoFractionField(
       template,
@@ -3802,6 +4233,13 @@ MathExpressionInput 共用數學運算式輸入元件
     closeSpecialEditors() {
 
       if (
+        this.rootEditor
+      ) {
+        this.rootEditor.hidden =
+          true;
+      }
+
+      if (
         this.fractionEditor
       ) {
         this.fractionEditor.hidden =
@@ -3876,6 +4314,11 @@ MathExpressionInput 共用數學運算式輸入元件
 
       this.fractionEditor.hidden =
         false;
+
+      this.positionSpecialEditor(
+        this.fractionEditor,
+        null
+      );
 
       this.shell
         ?.classList
@@ -4042,6 +4485,11 @@ MathExpressionInput 共用數學運算式輸入元件
         ) {
           this.powerEditor.hidden =
             false;
+
+          this.positionSpecialEditor(
+            this.powerEditor,
+            targetInput
+          );
         }
 
         this.shell
@@ -4060,6 +4508,11 @@ MathExpressionInput 共用數學運算式輸入元件
         ) {
           this.powerEditor.hidden =
             false;
+
+          this.positionSpecialEditor(
+            this.powerEditor,
+            null
+          );
         }
 
         this.shell
