@@ -13,6 +13,8 @@
   <title>
     因式分解大挑戰｜數學遊戲樂園
   </title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'14'%20fill%3D'%2300897B'%2F%3E%3Ctext%20x%3D'32'%20y%3D'39'%20text-anchor%3D'middle'%20font-family%3D'Arial%2Csans-serif'%20font-size%3D'17'%20font-weight%3D'700'%20fill%3D'white'%3E3-1%3C%2Ftext%3E%3C%2Fsvg%3E">
+
 
   <link
     rel="stylesheet"
@@ -1876,7 +1878,113 @@
       }
     }
 
-  </style>
+  
+
+/* ==================================================
+   最新統一遊戲控制位置
+   ================================================== */
+
+.mode-return-row{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  width:100%;
+  margin-top:18px;
+}
+
+.semester-return-button{
+  min-height:40px;
+  padding:8px 14px;
+  border:2px solid var(--primary-border);
+  border-radius:12px;
+  background:#fff;
+  color:var(--primary-dark);
+  font-size:14px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 4px 0 rgba(15,23,42,.10);
+}
+
+.semester-return-button:active{
+  transform:translateY(2px);
+  box-shadow:0 2px 0 rgba(15,23,42,.10);
+}
+
+.question-card{
+  position:relative;
+  padding-bottom:78px !important;
+  overflow:visible !important;
+}
+
+.question-card .scratchpad-row{
+  position:absolute !important;
+  right:16px !important;
+  bottom:14px !important;
+  width:auto !important;
+  min-height:44px !important;
+  margin:0 !important;
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  z-index:5;
+}
+
+.question-card #scratchpad-mobile-button{
+  width:auto !important;
+  display:flex !important;
+  justify-content:flex-end !important;
+}
+
+.question-card #scratchpad-mobile-button #scratchpadOpenButton,
+.question-card #scratchpad-mobile-button .scratchpad-open-button{
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  margin:0 !important;
+  z-index:auto !important;
+}
+
+.quiz-actions{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.quiz-actions .game-button{
+  min-width:116px;
+  min-height:46px;
+  padding:10px 14px;
+}
+
+.answer-submit-row{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:16px;
+  flex-wrap:wrap;
+}
+
+@media(max-width:640px){
+  .quiz-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;
+  }
+
+  .quiz-actions .game-button{
+    width:100%;
+    min-width:0;
+  }
+
+  .semester-return-button{
+    font-size:13px;
+    padding:9px 12px;
+  }
+}
+
+</style>
 
 </head>
 
@@ -1887,20 +1995,7 @@
   <div id="commonHeaderMount"></div>
 
   <main class="game-card">
-
-    <div id="semester-return-row" class="game-card-return-row">
-      <button
-        id="semester-return-button"
-        class="semester-return-button"
-        type="button"
-      >
-        ↩️ 重返八年級上學期
-      </button>
-    </div>
-
-
-
-    <header class="game-header">
+<header class="game-header">
 
       <h1 class="game-title">
         🧩 因式分解大挑戰
@@ -2026,6 +2121,18 @@
         </button>
 
       </div>
+
+      <div class="mode-return-row">
+        <button
+          id="semester-return-button"
+          class="semester-return-button"
+          type="button"
+          aria-label="重返八年級上學期"
+        >
+          ↩️ 重返八年級上學期
+        </button>
+      </div>
+
 
     </section>
 
@@ -7465,12 +7572,7 @@ $("next-button")
 $("restart-button")
   .addEventListener(
     "click",
-    () => {
-
-      startGame(
-        mode
-      );
-    }
+    restartCurrentModeWithConfirmation
   );
 
 
