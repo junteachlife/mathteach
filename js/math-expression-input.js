@@ -1,7 +1,7 @@
 /*
 ==================================================
 MathExpressionInput 共用數學運算式輸入元件
-版本：2.0.0
+版本：2.1.0
 ==================================================
 
 設計原則：
@@ -3646,6 +3646,33 @@ MathExpressionInput 共用數學運算式輸入元件
       };
     }
 
+    notifyValueChanged() {
+
+      if (
+        !this.input
+      ) {
+        return;
+      }
+
+      /*
+      程式直接改 this.input.value 時，
+      瀏覽器不會自動觸發 input event。
+
+      主動派發 input event，
+      讓遊戲外部的「目前答案」、
+      詳解預覽與其他監聽器立即同步。
+      */
+      this.input.dispatchEvent(
+        new Event(
+          "input",
+          {
+            bubbles: true
+          }
+        )
+      );
+    }
+
+
     insertText(
       text,
       options = {}
@@ -3694,7 +3721,7 @@ MathExpressionInput 共用數學運算式輸入元件
         end: caret
       };
 
-      this.update();
+      this.notifyValueChanged();
     }
 
     insertIntoFractionField(
@@ -3963,7 +3990,7 @@ MathExpressionInput 共用數學運算式輸入元件
       );
 
       this.updateEditorLayout();
-      this.update();
+      this.notifyValueChanged();
     }
 
 
@@ -4258,11 +4285,15 @@ MathExpressionInput 共用數學運算式輸入元件
       };
 
       /*
-      先更新正式數學排版，再離開 raw 文字編輯狀態。
-      因此學生會立即看到清楚的真正上標 <sup>。
+      主動觸發 input event，
+      讓遊戲外部的「目前答案」立即讀到最新次方。
       */
-      this.update();
+      this.notifyValueChanged();
 
+      /*
+      再切換正式數學排版，
+      讓學生看到清楚的真正上標 <sup>。
+      */
       this.shell
         ?.classList
         .remove(
@@ -4369,7 +4400,7 @@ MathExpressionInput 共用數學運算式輸入元件
         };
       }
 
-      this.update();
+      this.notifyValueChanged();
     }
 
     moveToFractionDenominator() {
