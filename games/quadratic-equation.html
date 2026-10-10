@@ -10,16 +10,10 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>
-    一元二次方程式大挑戰｜數學遊戲樂園
-  </title>
+  <title>4-3 一元二次方程式應用問題大挑戰｜生活有解．心中有數</title>
 
   <!-- 瀏覽器分頁圖示：一元二次方程式 x² -->
-  <link
-    rel="icon"
-    type="image/svg+xml"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231565c0'/%3E%3Ctext x='10' y='43' font-family='Arial,sans-serif' font-size='34' font-weight='700' fill='white'%3Ex%3C/text%3E%3Ctext x='36' y='24' font-family='Arial,sans-serif' font-size='18' font-weight='700' fill='%23ffeb3b'%3E2%3C/text%3E%3C/svg%3E"
-  >
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'14'%20fill%3D'%23C2410C'%2F%3E%3Ctext%20x%3D'32'%20y%3D'39'%20text-anchor%3D'middle'%20font-family%3D'Arial%2Csans-serif'%20font-size%3D'17'%20font-weight%3D'700'%20fill%3D'white'%3E4-3%3C%2Ftext%3E%3C%2Fsvg%3E">
 
   <link
     rel="stylesheet"
@@ -1003,9 +997,7 @@
 
       min-width: 0;
 
-      padding: 15px;
-
-      border:
+      padding: 15px;border:
         2px solid
         #bfdbfe;
 
@@ -2003,8 +1995,7 @@
 
       font-weight: 900;
 
-      line-height: 1.7;
-    }
+      line-height: 1.7;}
 
     .calculation-box {
 
@@ -2403,6 +2394,162 @@
 
   </style>
 
+
+
+  <style>
+    .choice-grid{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;overflow-x:auto!important;max-width:100%!important;padding:4px 2px 8px!important;scrollbar-width:thin}
+    .choice-button{flex:0 0 auto!important;min-width:170px!important;white-space:normal!important}
+    .question-content{text-align:left!important;align-items:stretch!important}
+    .question-content>.math,.question-content>.formula-box{align-self:center}
+    .keep-unit{display:inline-block;white-space:nowrap}
+  
+
+/* ==================================================
+   最新統一遊戲控制位置
+   ================================================== */
+
+.mode-return-row{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  width:100%;
+  margin:0 0 16px;
+}
+
+.semester-return-button{
+  min-height:40px;
+  padding:8px 14px;
+  border:2px solid var(--primary-border);
+  border-radius:12px;
+  background:#fff;
+  color:var(--primary-dark);
+  font-size:14px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 4px 0 rgba(15,23,42,.10);
+}
+
+.semester-return-button:active{
+  transform:translateY(2px);
+  box-shadow:0 2px 0 rgba(15,23,42,.10);
+}
+
+.question-card{
+  position:relative;
+  padding-bottom:78px !important;
+  overflow:visible !important;
+}
+
+.question-card .scratchpad-row{
+  position:absolute !important;
+  right:16px !important;
+  bottom:14px !important;
+  width:auto !important;
+  min-height:44px !important;
+  margin:0 !important;
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  z-index:5;
+}
+
+.question-card #scratchpad-mobile-button{
+  width:auto !important;
+  display:flex !important;
+  justify-content:flex-end !important;
+}
+
+.question-card #scratchpad-mobile-button #scratchpadOpenButton,
+.question-card #scratchpad-mobile-button .scratchpad-open-button{
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  margin:0 !important;
+  z-index:auto !important;
+}
+
+.quiz-actions{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.quiz-actions .game-button{
+  min-width:116px;
+  min-height:46px;
+  padding:10px 14px;
+}
+
+.answer-submit-row{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:16px;
+  flex-wrap:wrap;
+}
+
+@media(max-width:640px){
+  .quiz-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;
+  }
+
+  .quiz-actions .game-button{
+    width:100%;
+    min-width:0;
+  }
+
+  .semester-return-button{
+    font-size:13px;
+    padding:9px 12px;
+  }
+}
+
+
+.quiz-topbar{
+  display:grid !important;
+  grid-template-columns:minmax(210px,1fr) minmax(300px,1.35fr) auto !important;
+  gap:12px !important;
+  align-items:center !important;
+  margin-bottom:14px !important;
+}
+
+.quiz-context,
+.quiz-stats{
+  display:grid;
+  gap:8px;
+}
+
+.quiz-context{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.quiz-stats{
+  grid-template-columns:repeat(3,minmax(86px,1fr));
+}
+
+@media(max-width:900px){
+  .quiz-topbar{
+    grid-template-columns:1fr !important;
+  }
+}
+
+@media(max-width:600px){
+  .quiz-context,
+  .quiz-stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .quiz-stats .timer-box{
+    grid-column:1/-1;
+  }
+}
+
+</style>
+
 </head>
 
 <body>
@@ -2416,40 +2563,19 @@
     <header class="game-header">
 
       <h1 class="game-title">
-        📘 一元二次方程式大挑戰
+        🌍 一元二次方程式應用問題大挑戰
       </h1>
 
-      <p class="game-subtitle">
-        從根的概念、因式分解法、平方根與配方法，
-        一路挑戰公式解、判別式與生活應用。
-      </p>
+      <p class="game-subtitle">依照課本、習作與附錄重新整理：支付與整數、年齡、面積與路寬、售價收入，以及解的合理性與近似值。</p>
 
       <div class="concept-strip">
-
-        <span class="concept-chip">
-          方程式的根
-        </span>
-
-        <span class="concept-chip">
-          因式分解法
-        </span>
-
-        <span class="concept-chip">
-          配方法
-        </span>
-
-        <span class="concept-chip">
-          公式解
-        </span>
-
-        <span class="concept-chip">
-          判別式
-        </span>
-
-        <span class="concept-chip">
-          應用問題
-        </span>
-
+        <span class="concept-chip">📝 設未知數</span>
+        <span class="concept-chip">🧮 列方程式</span>
+        <span class="concept-chip">🔢 整數年齡</span>
+        <span class="concept-chip">📐 面積路寬</span>
+        <span class="concept-chip">💰 收費收入</span>
+        <span class="concept-chip">✅ 檢查合理根</span>
+        <span class="concept-chip">🔥 精熟題</span>
       </div>
 
     </header>
@@ -2465,160 +2591,165 @@
       class="screen"
     >
 
+<div class="mode-return-row">
+        <button
+          id="semester-return-button"
+          class="semester-return-button"
+          type="button"
+          aria-label="重返八年級上學期"
+        >
+          ↩️ 重返八年級上學期
+        </button>
+      </div>
+
+
       <div class="mode-grid">
-
         <button
           class="mode-card"
-          data-mode="basic"
+          data-mode="equationModel"
           type="button"
         >
 
           <span class="mode-tag">
-            模式一｜10 題
+            模式1｜10 題
           </span>
 
           <h2>
-            🔍 基礎概念
+            📝 由題意列方程式
           </h2>
 
           <p>
-            判斷某數是否為方程式的根、由簡單形式找根，
-            以及已知其中一根求未知參數。
+            依「設未知數 → 數量關係 → 列方程式」建立一元二次方程式。
           </p>
 
           <div class="mode-example">
-            不包含「判斷是否為一元二次方程式」題型。
+            先把文字情境翻成數學關係，再決定求解方法。
           </div>
 
         </button>
 
         <button
           class="mode-card"
-          data-mode="factor"
+          data-mode="integerAge"
           type="button"
         >
 
           <span class="mode-tag">
-            模式二｜10 題
+            模式2｜10 題
           </span>
 
           <h2>
-            ✂️ 因式分解法
+            🔢 整數與年齡問題
           </h2>
 
           <p>
-            包含提公因式、平方差、完全平方及十字交乘。
+            連續整數、正負整數、平方關係與年齡情境。
           </p>
 
           <div class="mode-example">
-            完全平方同時包含「和的平方」與「差的平方」。
+            求得兩個根後，要用「正整數／年齡」條件檢查。
           </div>
 
         </button>
 
         <button
           class="mode-card"
-          data-mode="completeSquare"
+          data-mode="geometry"
           type="button"
         >
 
           <span class="mode-tag">
-            模式三｜10 題
+            模式3｜10 題
           </span>
 
           <h2>
-            🧩 平方根與配方法
+            📐 面積與路寬問題
           </h2>
 
           <p>
-            從平方根解法、補成完全平方式，
-            到完整配方法與根的情形判斷。
+            長方形、正方形、色紙面積與十字形道路等幾何應用。
           </p>
 
           <div class="mode-example">
-            包含二次項係數為 1 與不為 1 的配方法。
+            圖形題先設定 x，再用長×寬或剩餘面積列式。
           </div>
 
         </button>
 
         <button
           class="mode-card"
-          data-mode="formula"
+          data-mode="priceRevenue"
           type="button"
         >
 
           <span class="mode-tag">
-            模式四｜10 題
+            模式4｜10 題
           </span>
 
           <h2>
-            🧮 公式解與判別式
+            💰 售價、數量與收入
           </h2>
 
           <p>
-            找出 a、b、c，計算判別式，
-            判斷根的情形並使用公式完整求根。
+            降價增量、旅遊收費、園遊會與總收入等乘積型情境。
           </p>
 
           <div class="mode-example">
-            題目會先顯示一元二次方程式公式。
+            收入＝單價×數量，並檢查售價與數量限制。
           </div>
 
         </button>
 
         <button
           class="mode-card"
-          data-mode="application"
+          data-mode="validityApprox"
           type="button"
         >
 
           <span class="mode-tag">
-            模式五｜10 題
+            模式5｜10 題
           </span>
 
           <h2>
-            🌍 一元二次應用問題
+            ✅ 合理根與近似值
           </h2>
 
           <p>
-            由整數、面積、價格與數量等情境建立方程式，
-            並判斷哪一個根符合題意。
+            練習捨去負長度、超出範圍的根，並處理公式解後的近似值。
           </p>
 
           <div class="mode-example">
-            包含列式、求解與檢驗答案。
+            答案不只要「算對」，還要「符合題意」。
           </div>
 
         </button>
 
         <button
           class="mode-card"
-          data-mode="mixed"
+          data-mode="comprehensive"
           type="button"
         >
 
           <span class="mode-tag">
-            模式六｜10 題
+            模式6｜10 題
           </span>
 
           <h2>
-            🏆 全章綜合挑戰
+            🏆 4-3 綜合挑戰
           </h2>
 
           <p>
-            混合前五個模式，
-            不直接告訴你應該使用哪一種方法。
+            支付、整數、年齡、幾何、收費與近似值混合。
           </p>
 
           <div class="mode-example">
-            詳解會補充本題較適合的解法。
+            詳解固定依「設未知數→列式→求解→檢查→寫答」呈現。
           </div>
 
         </button>
 
       </div>
-
-    </section>
+</section>
 
     <!--
     ==================================================
@@ -2631,78 +2762,47 @@
       class="screen hidden"
     >
 
+      
       <div class="quiz-topbar">
 
-        <div class="status-box">
+        <div class="quiz-context">
+          <div class="status-box">
+            模式
+            <span id="mode-name" class="status-value">—</span>
+          </div>
 
-          模式
-
-          <span
-            id="mode-name"
-            class="status-value"
-          >
-            —
-          </span>
-
+          <div class="status-box">
+            進度
+            <span id="question-number" class="status-value">1 / 10</span>
+          </div>
         </div>
 
-        <div class="status-box">
+        <div class="quiz-stats">
+          <div class="status-box">
+            答對
+            <span id="correct-count" class="status-value">0</span>
+          </div>
 
-          進度
+          <div class="status-box">
+            最高連擊
+            <span id="combo-count" class="status-value">0</span>
+          </div>
 
-          <span
-            id="question-number"
-            class="status-value"
-          >
-            1 / 10
-          </span>
-
+          <div class="status-box timer-box">
+            ⏱️ 測驗時間
+            <span id="timer-display" class="status-value">00:00</span>
+          </div>
         </div>
 
-        <div class="status-box">
+        <div class="quiz-actions">
+          <button id="restart-button" class="game-button restart" type="button">
+            🔄 重新測驗
+          </button>
 
-          答對
-
-          <span
-            id="correct-count"
-            class="status-value"
-          >
-            0
-          </span>
-
+          <button id="mode-button" class="game-button secondary" type="button">
+            重選模式
+          </button>
         </div>
-
-        <div class="status-box">
-
-          最高連擊
-
-          <span
-            id="combo-count"
-            class="status-value"
-          >
-            0
-          </span>
-
-        </div>
-
-        <div class="status-box timer-box">
-
-          測驗時間
-
-          <span
-            id="timer-display"
-            class="status-value"
-          >
-            00:00
-          </span>
-
-        </div>
-
-      </div>
-
-      <div class="scratchpad-row">
-
-        <div id="scratchpad-mobile-button"></div>
 
       </div>
 
@@ -2727,47 +2827,26 @@
           class="question-content"
         ></div>
 
-      </div>
+      
+        <div class="scratchpad-row">
+          <div id="scratchpad-mobile-button"></div>
+        </div>
+</div>
 
       <div
         id="answer-panel"
         class="answer-panel"
       ></div>
 
-      <div class="button-row">
-
-        <button
-          id="submit-button"
-          class="game-button"
-          type="button"
-        >
+      
+      <div class="answer-submit-row">
+        <button id="submit-button" class="game-button" type="button">
           提交答案（Enter）
         </button>
 
-        <button
-          id="next-button"
-          class="game-button hidden"
-          type="button"
-        >
+        <button id="next-button" class="game-button hidden" type="button">
           下一題（Enter）
         </button>
-
-        <button
-          id="restart-button"
-          class="game-button restart"
-          type="button"
-        >
-          🔄 重新測驗
-        </button>
-
-        <button
-          id="mode-button"
-          class="game-button secondary"
-          type="button"
-        >
-          選擇模式
-        </button>
-
       </div>
 
       <div
@@ -2955,7 +3034,7 @@
 
 import {
   saveGameScore
-} from "../js/scores.js";
+} from "../js/scores.js?v=7";
 
 
 "use strict";
@@ -2968,34 +3047,47 @@ import {
 */
 
 const GAME_ID =
-  "quadraticEquation";
+  "quadratic-applications";
 
+const CHAPTER =
+  "4-3";
+
+const GAME_TITLE =
+  "4-3 一元二次方程式應用問題大挑戰";
 
 const TOTAL_QUESTIONS =
   10;
 
-
 const MODE_NAMES = {
-
-  basic:
-    "基礎概念",
-
-  factor:
-    "因式分解法",
-
-  completeSquare:
-    "平方根與配方法",
-
-  formula:
-    "公式解與判別式",
-
-  application:
-    "一元二次應用問題",
-
-  mixed:
-    "全章綜合挑戰"
+  equationModel:
+    "📝 由題意列方程式",
+  integerAge:
+    "🔢 整數與年齡問題",
+  geometry:
+    "📐 面積與路寬問題",
+  priceRevenue:
+    "💰 售價、數量與收入",
+  validityApprox:
+    "✅ 合理根與近似值",
+  comprehensive:
+    "🏆 4-3 綜合挑戰"
 };
 
+const MODES = {
+  equationModel: {id:"equationModel",name:"📝 由題意列方程式",count:10,difficultyWeight:1.08},
+  integerAge: {id:"integerAge",name:"🔢 整數與年齡問題",count:10,difficultyWeight:1.12},
+  geometry: {id:"geometry",name:"📐 面積與路寬問題",count:10,difficultyWeight:1.16},
+  priceRevenue: {id:"priceRevenue",name:"💰 售價、數量與收入",count:10,difficultyWeight:1.18},
+  validityApprox: {id:"validityApprox",name:"✅ 合理根與近似值",count:10,difficultyWeight:1.22},
+  comprehensive: {id:"comprehensive",name:"🏆 4-3 綜合挑戰",count:10,difficultyWeight:1.34}
+};
+
+window.MathGameSessionMeta = {
+  gameId: GAME_ID,
+  chapter: CHAPTER,
+  title: GAME_TITLE,
+  modes: MODES
+};
 
 const $ =
   id =>
@@ -3005,10 +3097,7 @@ const $ =
 
 
 let mode =
-  "basic";
-
-
-let questions =
+  "equationModel";let questions =
   [];
 
 
@@ -3062,6 +3151,14 @@ let timerId =
 
 let scoreSaved =
   false;
+
+
+let rpgEmitted =
+  false;
+
+
+let attemptId =
+  "";
 
 
 /*
@@ -3998,9 +4095,7 @@ function solveQuadratic(
       values:
         [
           root
-        ],
-
-      html:
+        ],html:
         `x＝${fractionHTML(
           f.n,
           f.d
@@ -4380,7 +4475,8 @@ function numberQuestion({
   answer,
   answerHTML = null,
   explanation,
-  method = ""
+  method = "",
+  tolerance = 1e-6
 }) {
 
   return {
@@ -4402,7 +4498,9 @@ function numberQuestion({
 
     explanation,
 
-    method
+    method,
+
+    tolerance
   };
 }
 
@@ -4996,8 +5094,7 @@ function makeParameterQuestion() {
           </span>
 
           <span>
-            － m
-          </span>
+            － m</span>
 
           <span>
             ＝ 0
@@ -5996,8 +6093,7 @@ function makeMode2() {
 }
 
 
-/*
-==================================================
+/*==================================================
 模式三｜平方根與配方法
 ==================================================
 */
@@ -6995,9 +7091,7 @@ function formulaBoxHTML() {
 
     <div class="formula-box math">
 
-      x＝
-
-      <span class="math-fraction">
+      x＝<span class="math-fraction">
 
         <span class="math-fraction-top">
 
@@ -7995,9 +8089,7 @@ function makeConsecutiveIntegers() {
         </div>
         `,
 
-        `
-
-        移項：
+        `移項：
 
         <div class="calculation-box math">
 
@@ -8664,56 +8756,101 @@ function makeMode6() {
 ==================================================
 */
 
-function createQuestions() {
 
-  if (
-    mode ===
-    "basic"
-  ) {
-
-    return makeMode1();
+function makeAgeApplication(){
+  let age=7, past=4, future=2;
+  for(let i=0;i<100;i++){
+    const a=rand(6,13), p=rand(2,5), f=(a-p)*(a-p)-a;
+    if(f>=1 && f<=18){age=a;past=p;future=f;break;}
   }
-
-
-  if (
-    mode ===
-    "factor"
-  ) {
-
-    return makeMode2();
-  }
-
-
-  if (
-    mode ===
-    "completeSquare"
-  ) {
-
-    return makeMode3();
-  }
-
-
-  if (
-    mode ===
-    "formula"
-  ) {
-
-    return makeMode4();
-  }
-
-
-  if (
-    mode ===
-    "application"
-  ) {
-
-    return makeMode5();
-  }
-
-
-  return makeMode6();
+  const b=-(2*past+1), c=past*past-future;
+  return numberQuestion({
+    label:"年齡問題：求今年年齡",
+    html:`<div class="question-note">某人 <strong>${future} 年後</strong>的年齡，剛好等於他 <strong>${past} 年前</strong>年齡的平方。請問他今年幾歲？</div>`,
+    answer:age,answerHTML:`${age} 歲`,method:"一元二次應用問題｜年齡",
+    explanation:[
+      `設今年 x 歲，則 ${future} 年後為 x＋${future} 歲，${past} 年前為 x－${past} 歲。`,
+      `<div class="calculation-box math">(x－${past})<sup>2</sup>＝x＋${future}</div>`,
+      `<div class="calculation-box math">x<sup>2</sup>${b>=0?`＋${b}x`:`－${Math.abs(b)}x`}＋${c}＝0</div>`,
+      `解方程式後要檢查年齡條件；符合題意的根為 x＝${age}。`,
+      `所以今年 ${age} 歲。`
+    ]
+  });
 }
 
+function makeRoadWidthApplication(){
+  const L=pick([24,26,28,30,32]), W=pick([12,14,16,18,20]), w=rand(2,Math.min(5,W-2));
+  const remain=(L-w)*(W-w);
+  const other=L+W-w;
+  return numberQuestion({
+    label:"路寬問題：求等寬道路的寬",
+    html:`<div class="question-note">在長 ${L} 公尺、寬 ${W} 公尺的長方形草地內開闢等寬十字形道路，道路分別與長、寬平行。若剩下草地面積為 <strong>${remain} 平方公尺</strong>，求道路寬。</div>`,
+    answer:w,answerHTML:`${w} 公尺`,method:"一元二次應用問題｜路寬",
+    explanation:[
+      `設道路寬為 x 公尺。把剩餘四塊草地平移合併，可視為長 ${L}－x、寬 ${W}－x 的長方形。`,
+      `<div class="calculation-box math">(${L}－x)(${W}－x)＝${remain}</div>`,
+      `<div class="calculation-box math">x<sup>2</sup>－${L+W}x＋${L*W-remain}＝0</div>`,
+      `解得 x＝${w} 或 x＝${other}。`,
+      `因為道路寬不可能大於草地短邊 ${W} 公尺，所以捨去 ${other}，答案為 ${w} 公尺。`
+    ]
+  });
+}
+
+function makeGoldenRatioApprox(){
+  const H=pick([150,160,165,170,175,180]);
+  const exact=H*(Math.sqrt(5)-1)/2;
+  const rounded=Math.round(exact);
+  return numberQuestion({
+    label:"近似值應用：黃金比例",
+    html:`<div class="question-note">某人的全身身長為 ${H} 公分。若「全身身長：下半身長＝下半身長：上半身長」，設下半身長為 x 公分，請將答案四捨五入到整數位。</div>`,
+    answer:rounded,answerHTML:`約 ${rounded} 公分`,method:"一元二次應用問題｜近似值",
+    explanation:[
+      `上半身長為 ${H}－x 公分，因此由比例可列式。`,
+      `<div class="calculation-box math">${H}：x＝x：(${H}－x)</div>`,
+      `<div class="calculation-box math">x<sup>2</sup>＋${H}x－${H*H}＝0</div>`,
+      `利用公式解取正根，x≈${exact.toFixed(2)}。負根不符合長度情境。`,
+      `四捨五入到整數位，約為 ${rounded} 公分。`
+    ]
+  });
+}
+
+function make43Model(){return shuffle([
+  makeApplicationEquationChoice(),makeApplicationEquationChoice(),makeApplicationEquationChoice(),makeApplicationEquationChoice(),makeApplicationEquationChoice(),
+  makeRectangleApplication(),makeConsecutiveIntegers(),makeAgeApplication(),makePriceApplication(),makeRoadWidthApplication()
+]);}
+function make43IntegerAge(){return shuffle([
+  makeConsecutiveIntegers(),makeConsecutiveIntegers(),makeConsecutiveIntegers(),makeConsecutiveIntegers(),makeConsecutiveIntegers(),
+  makeAgeApplication(),makeAgeApplication(),makeAgeApplication(),makeAgeApplication(),makeAgeApplication()
+]);}
+function make43Geometry(){return shuffle([
+  makeRectangleApplication(),makeRectangleApplication(),makeRectangleApplication(),makeRectangleApplication(),makeRectangleApplication(),
+  makeRoadWidthApplication(),makeRoadWidthApplication(),makeRoadWidthApplication(),makeRoadWidthApplication(),makeRoadWidthApplication()
+]);}
+function make43Price(){return shuffle([
+  makePriceApplication(),makePriceApplication(),makePriceApplication(),makePriceApplication(),makePriceApplication(),
+  makeValidRootApplication(),makeValidRootApplication(),makeApplicationEquationChoice(),makeFullApplication(),makePriceApplication()
+]);}
+function make43ValidityApprox(){return shuffle([
+  makeValidRootApplication(),makeValidRootApplication(),makeValidRootApplication(),makeValidRootApplication(),makeValidRootApplication(),
+  makeGoldenRatioApprox(),makeGoldenRatioApprox(),makeRoadWidthApplication(),makeAgeApplication(),makeFullApplication()
+]);}
+function make43Comprehensive(){return shuffle([
+  makeApplicationEquationChoice(),makeConsecutiveIntegers(),makeAgeApplication(),makeRectangleApplication(),makeRoadWidthApplication(),
+  makePriceApplication(),makeValidRootApplication(),makeGoldenRatioApprox(),makeFullApplication(),makePriceApplication()
+]);}
+
+
+function createQuestions() {
+  const map = {
+    equationModel: make43Model,
+    integerAge: make43IntegerAge,
+    geometry: make43Geometry,
+    priceRevenue: make43Price,
+    validityApprox: make43ValidityApprox,
+    comprehensive: make43Comprehensive
+  };
+  return (map[mode] || make43Model)();
+}
 
 /*
 ==================================================
@@ -8951,8 +9088,7 @@ function insertRootSymbol(
       0,
       start
     ) +
-    text +
-    input.value.slice(
+    text +input.value.slice(
       end
     );
 
@@ -9951,9 +10087,7 @@ function renderRootsAnswer(
             : "兩根前後順序可以交換。"
         }
 
-        <br>
-
-        根號請使用下方按鈕輸入；
+        <br>根號請使用下方按鈕輸入；
         若答案為分數，請切換成上下分子、分母的答案格，
         不需要使用 /。
 
@@ -10949,10 +11083,7 @@ function readABCAnswer() {
     $("abc-c")
       ?.value
       .trim() ??
-    "";
-
-
-  if (
+    "";if (
     !/^[-+]?\d+$/
       .test(
         aRaw
@@ -11284,7 +11415,8 @@ function checkCorrect(
 
     return approximatelyEqual(
       answer.value,
-      question.answer
+      question.answer,
+      question.tolerance ?? 1e-6
     );
   }
 
@@ -11950,8 +12082,7 @@ function displayQuestion() {
     );
 
 
-  renderAnswer(
-    question
+  renderAnswer(question
   );
 
 
@@ -12487,6 +12618,14 @@ function startGame(
     false;
 
 
+  rpgEmitted =
+    false;
+
+
+  attemptId =
+    `${GAME_ID}-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+
+
   $("timer-display")
     .textContent =
       "00:00";
@@ -12535,7 +12674,7 @@ function rating(
         "★★★★★",
 
       comment:
-        "太棒了！你已能熟練處理一元二次方程式的各種題型。"
+        "太棒了！你已能把生活情境完整轉成一元二次方程式並檢查答案。"
     };
   }
 
@@ -12551,7 +12690,7 @@ function rating(
         "★★★★☆",
 
       comment:
-        "表現很好，再注意解法選擇、根號化簡及答案檢驗。"
+        "表現很好，再注意設未知數、列式與不合題意根的判斷。"
     };
   }
 
@@ -12567,7 +12706,7 @@ function rating(
         "★★★☆☆",
 
       comment:
-        "基本概念已掌握，建議加強配方法與公式解。"
+        "基本列式能力已掌握，建議加強收費、路寬與多步驟應用。"
     };
   }
 
@@ -12578,8 +12717,63 @@ function rating(
       "★★☆☆☆",
 
     comment:
-      "建議從基礎概念與因式分解法開始，再逐步挑戰後面的模式。"
+      "建議先練習由題意列方程式，再依序挑戰整數、幾何與收費問題。"
   };
+}
+
+
+/*
+==================================================
+RPG / 學習歷程橋接
+==================================================
+*/
+
+function emitRpgSession(
+  score
+) {
+
+  if (
+    rpgEmitted
+  ) {
+    return;
+  }
+
+  rpgEmitted =
+    true;
+
+  const detail = {
+    gameId: GAME_ID,
+    modeId: mode,
+    chapter: CHAPTER,
+    score,
+    correct,
+    wrong,
+    total: TOTAL_QUESTIONS,
+    playTime: elapsed,
+    accuracy: score,
+    maxCombo,
+    attemptId,
+    difficultyWeight: MODES[mode]?.difficultyWeight ?? 1
+  };
+
+  window.dispatchEvent(
+    new CustomEvent(
+      "mathgame:session-complete",
+      { detail }
+    )
+  );
+
+  if (
+    window.MathGameProgress?.completeLearningSession
+  ) {
+    Promise.resolve(
+      window.MathGameProgress.completeLearningSession(
+        detail
+      )
+    ).catch(
+      () => {}
+    );
+  }
 }
 
 
@@ -12667,6 +12861,16 @@ async function showResult() {
         : "錯題回顧";
 
 
+  playGameSound(
+    "playComplete"
+  );
+
+
+  emitRpgSession(
+    score
+  );
+
+
   await saveCurrentScore(
     score
   );
@@ -12732,7 +12936,10 @@ async function saveCurrentScore(
             elapsed,
 
           totalQuestions:
-            TOTAL_QUESTIONS
+            TOTAL_QUESTIONS,
+
+          accuracy:
+            score
         }
       );
 
@@ -12782,7 +12989,7 @@ async function saveCurrentScore(
   ) {
 
     console.error(
-      "一元二次方程式成績儲存失敗：",
+      `${GAME_TITLE} 成績儲存失敗：`,
       error
     );
 
@@ -12873,9 +13080,7 @@ function showReview() {
                 </article>
               `
             )
-            .join("")
-
-        : `
+            .join(""): `
 
           <div class="review-card">
 
@@ -12888,6 +13093,66 @@ function showReview() {
   showOnly(
     "review-screen"
   );
+}
+
+
+function confirmRestartCurrentMode() {
+  return window.confirm(
+    "確定要重新測驗嗎？\n目前的作答進度與測驗時間將重新開始。"
+  );
+}
+
+function restartCurrentModeWithConfirmation() {
+  if (!confirmRestartCurrentMode()) return;
+  startGame(mode);
+}
+
+function confirmReselectMode() {
+  return window.confirm(
+    "確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。"
+  );
+}
+
+function backToModesWithConfirmation() {
+  if (!confirmReselectMode()) return;
+  stopTimer();
+  showOnly("start-screen");
+}
+
+function returnToGrade8FirstSemester() {
+  stopTimer();
+
+  const referrer = String(document.referrer || "");
+  let cameFromHomePage = false;
+
+  try {
+    if (referrer) {
+      const referrerURL = new URL(referrer);
+      const sameOrigin =
+        referrerURL.origin === window.location.origin;
+      const path =
+        referrerURL.pathname.replace(/\/+$/, "");
+      const isHomePath =
+        path === "" ||
+        path.endsWith("/index.html") ||
+        path.endsWith("/mathteach");
+
+      cameFromHomePage =
+        sameOrigin && isHomePath;
+    }
+  } catch (error) {
+    cameFromHomePage = false;
+  }
+
+  if (
+    cameFromHomePage &&
+    window.history.length > 1
+  ) {
+    window.history.back();
+    return;
+  }
+
+  window.location.href = "../index.html";
 }
 
 
@@ -12923,6 +13188,14 @@ document
 ==================================================
 */
 
+$("semester-return-button")
+  ?.addEventListener(
+    "click",
+    returnToGrade8FirstSemester
+  );
+
+
+
 $("submit-button")
   .addEventListener(
     "click",
@@ -12940,27 +13213,14 @@ $("next-button")
 $("restart-button")
   .addEventListener(
     "click",
-    () => {
-
-      startGame(
-        mode
-      );
-    }
+    restartCurrentModeWithConfirmation
   );
 
 
 $("mode-button")
   .addEventListener(
     "click",
-    () => {
-
-      stopTimer();
-
-
-      showOnly(
-        "start-screen"
-      );
-    }
+    backToModesWithConfirmation
   );
 
 
