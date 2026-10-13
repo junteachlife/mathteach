@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>5 統計圖表與統計數據大挑戰｜生活有解．心中有數</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230891b2'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-size='24' fill='white'%3E5%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../css/scratchpad.css">
+<link rel="stylesheet" href="../css/math-expression-input.css?v=23">
+<link rel="stylesheet" href="../css/question-layout.css?v=2">
+<style>
+:root{--primary:#0891b2;--primary-dark:#0e7490;--primary-light:#ecfeff;--primary-border:#67e8f9;}
+
+:root{
+  --primary:#2563eb;
+  --primary-dark:#1d4ed8;
+  --primary-light:#eff6ff;
+  --primary-border:#93c5fd;
+  --ink:#172033;
+  --muted:#64748b;
+  --surface:#ffffff;
+  --soft:#f8fafc;
+  --good:#047857;
+  --bad:#b91c1c;
+  --warn:#b45309;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.92),rgba(250,245,235,.88)),
+    repeating-linear-gradient(0deg,transparent 0 31px,rgba(15,23,42,.035) 32px),
+    repeating-linear-gradient(90deg,transparent 0 31px,rgba(15,23,42,.035) 32px);
+  min-height:100vh;
+}
+button,input{font:inherit}
+.hidden{display:none!important}
+.page-shell{width:min(1180px,calc(100% - 22px));margin:20px auto 60px}
+.game-card{
+  position:relative;
+  overflow:visible;
+  background:rgba(255,255,255,.97);
+  border-radius:28px;
+  border-top:7px solid var(--primary);
+  box-shadow:0 18px 44px rgba(15,23,42,.12);
+  padding:22px 24px 34px;
+}
+.game-card-return-row{
+  position:absolute;top:12px;right:14px;z-index:30;
+}
+.semester-return-link{
+  display:inline-flex;align-items:center;gap:6px;
+  min-height:40px;padding:8px 14px;border:1.5px solid var(--primary-border);
+  border-radius:12px;background:#fff;color:var(--primary-dark);
+  font-weight:900;text-decoration:none;box-shadow:0 4px 0 rgba(15,23,42,.08)
+}
+.game-header{text-align:center;padding:62px 12px 18px}
+.game-title{margin:0;color:var(--primary-dark);font-size:clamp(29px,5vw,48px);line-height:1.25}
+.game-subtitle{margin:10px auto 0;max-width:860px;color:var(--muted);font-weight:700;line-height:1.7}
+.concept-row{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:14px}
+.concept-chip{padding:6px 10px;border:1px solid var(--primary-border);border-radius:999px;background:#fff;color:var(--primary-dark);font-size:13px;font-weight:900}
+.screen{margin-top:8px}
+.section-title{font-size:23px;margin:10px 0 16px}
+.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.mode-card{border:1.5px solid var(--primary-border);border-radius:20px;background:linear-gradient(180deg,#fff,var(--primary-light));padding:18px;display:flex;flex-direction:column;min-height:185px}
+.mode-label{font-size:12px;color:var(--primary-dark);font-weight:900}
+.mode-card h3{font-size:21px;margin:9px 0;color:var(--primary-dark)}
+.mode-card p{color:var(--muted);line-height:1.7;margin:0 0 16px}
+.mode-button{margin-top:auto;border:0;border-radius:12px;background:var(--primary);color:#fff;font-weight:900;padding:12px 16px;cursor:pointer;box-shadow:0 4px 0 var(--primary-dark)}
+.quiz-top{
+  display:grid;grid-template-columns:minmax(180px,.8fr) minmax(340px,1.25fr) auto;
+  gap:12px;align-items:center;margin-bottom:12px;
+}
+.quiz-context{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.quiz-stats{display:grid;grid-template-columns:repeat(4,minmax(78px,1fr));gap:8px}
+.status-box,.stat-pill{
+  background:var(--primary-light);border-radius:14px;padding:10px 8px;text-align:center;
+  color:var(--primary-dark);font-weight:900;min-height:58px
+}
+.status-box strong,.stat-pill strong{display:block;font-size:20px;margin-top:3px}
+.quiz-actions{display:flex;gap:8px;justify-content:flex-end}
+.game-button{
+  border:0;border-radius:12px;padding:11px 16px;font-weight:900;cursor:pointer;color:#fff;
+  background:var(--primary);box-shadow:0 4px 0 var(--primary-dark)
+}
+.game-button.secondary{background:#607d8b;box-shadow:0 4px 0 #455a64}
+.game-button.restart{background:#00897b;box-shadow:0 4px 0 #00695c}
+.progress-shell{height:8px;border-radius:999px;background:#e2e8f0;overflow:hidden;margin-bottom:14px}
+.progress-bar{height:100%;width:0;background:var(--primary);transition:width .25s ease}
+.question-card{
+  position:relative;min-height:245px;border:1.5px solid var(--primary-border);border-radius:20px;
+  padding:30px 28px 82px;background:#fff;display:flex;align-items:center;justify-content:center;
+}
+.question-content{width:100%;font-size:clamp(22px,3.2vw,34px);font-weight:900;line-height:1.65;text-align:center}
+.question-content.question-wrap-left{text-align:left}
+.question-content .small{font-size:.62em;color:var(--muted);font-weight:800}
+.question-content .math{font-family:"Cambria Math","Times New Roman",serif;white-space:nowrap}
+.question-card .scratchpad-row{position:absolute;right:14px;bottom:12px;z-index:5}
+.answer-panel{
+  margin-top:14px;background:#f8fafc;border-radius:20px;padding:20px;border:1px solid #eef2f7
+}
+.answer-title{text-align:center;color:var(--primary-dark);font-weight:900;font-size:19px;margin-bottom:12px}
+.choice-grid{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.choice-button{
+  min-width:150px;min-height:52px;padding:10px 14px;border:1.5px solid #cbd5e1;border-radius:12px;background:#fff;
+  font-weight:900;cursor:pointer;text-align:center
+}
+.choice-button.selected{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 18%,transparent)}
+.shared-answer-mount{width:min(100%,720px);margin:0 auto}
+.inequality-answer{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.ineq-variable{font-family:"Cambria Math","Times New Roman",serif;font-size:32px;font-weight:900}
+.relation-group{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.relation-button{
+  width:58px;height:52px;border:1.5px solid var(--primary-border);border-radius:12px;background:#fff;color:var(--primary-dark);
+  font-size:24px;font-weight:900;cursor:pointer
+}
+.relation-button.selected{background:var(--primary);color:#fff}
+.feedback{width:min(100%,860px);margin:14px auto 0;padding:13px 16px;border-radius:13px;text-align:center;font-weight:900}
+.feedback.correct{background:#ecfdf5;color:#047857;border:1px solid #86efac}
+.feedback.wrong{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.feedback.warning{background:#fff7ed;color:#b45309;border:1px solid #fed7aa}
+.explanation{width:min(100%,930px);margin:16px auto 0;background:#f0fdfa;border:1px solid #99f6e4;border-radius:18px;padding:18px;line-height:1.8}
+.explanation-title{font-size:20px;font-weight:900;color:#0f766e;margin-bottom:10px}
+.explanation-think{background:#eff6ff;border:1px solid #bfdbfe;padding:11px 13px;border-radius:12px;margin-bottom:10px}
+.explanation-step{padding:10px 12px;background:#fff;border:1px solid #dbeafe;border-radius:11px;margin-top:8px}
+.explanation-answer{margin-top:10px;padding:12px;text-align:center;background:#ecfdf5;border:1px solid #86efac;border-radius:12px;font-weight:900;color:#047857}
+.explanation-tip{margin-top:10px;padding:11px 13px;background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;color:#9a3412}
+.quiz-submit-row{display:flex;justify-content:center;gap:10px;margin-top:16px;flex-wrap:wrap}
+.result-box{text-align:center;padding:26px 16px}
+.final-score{font-size:52px;font-weight:1000;color:var(--primary-dark)}
+.final-stars{font-size:31px;margin-top:8px}
+.result-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:800px;margin:18px auto}
+.result-stat{padding:14px;background:var(--primary-light);border-radius:14px;font-weight:900}
+.result-stat strong{display:block;font-size:23px;color:var(--primary-dark);margin-top:4px}
+.result-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.save-status{margin-top:15px;font-weight:900}
+.review-list{display:grid;gap:15px}
+.review-card{background:#fff;border-radius:18px;padding:18px;border:1.5px solid #dbeafe}
+.review-card.wrong-review{border-color:#fecaca}
+.review-title{font-weight:1000;font-size:18px;margin-bottom:10px}
+.review-question{font-size:20px;font-weight:900;margin-bottom:10px;line-height:1.6}
+.review-answer-line{margin:6px 0}
+.diagram-box{display:flex;justify-content:center;align-items:center;margin:12px auto 0;overflow:auto;max-width:100%}
+.svg-chart{max-width:100%;height:auto}
+.mini-table{margin:12px auto;border-collapse:collapse;font-size:16px;font-weight:800}
+.mini-table th,.mini-table td{border:1px solid #94a3b8;padding:7px 10px;text-align:center;background:#fff}
+.mini-table th{background:var(--primary-light)}
+@media(max-width:900px){
+  .quiz-top{grid-template-columns:1fr}
+  .quiz-actions{justify-content:flex-end}
+}
+@media(max-width:700px){
+  .page-shell{width:min(100% - 10px,1180px);margin-top:8px}
+  .game-card{padding:16px 12px 28px;border-radius:20px}
+  .game-card-return-row{top:9px;right:9px}
+  .game-header{padding-top:62px}
+  .mode-grid{grid-template-columns:1fr}
+  .quiz-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quiz-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quiz-actions .game-button{width:100%}
+  .question-card{padding:24px 14px 78px;min-height:230px}
+  .answer-panel{padding:16px 10px}
+  .choice-button{min-width:130px;flex:1 1 42%}
+  .result-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+</style>
+</head>
+<body>
+<div id="common-header-root"></div>
+<main class="page-shell">
+  <section class="game-card">
+    <div class="game-card-return-row"><a class="semester-return-link" href="../index.html">↩️ 重返七年級下學期</a></div>
+    <header class="game-header">
+      <h1 class="game-title">📊 5 統計圖表與統計數據大挑戰</h1>
+      <p class="game-subtitle">練習生活統計圖表、圓形圖、列聯表、次數分配圖，以及平均數、中位數與眾數。</p>
+      <div class="concept-row"><span class="concept-chip">長條圖／折線圖</span><span class="concept-chip">圓形圖</span><span class="concept-chip">列聯表</span><span class="concept-chip">次數分配</span><span class="concept-chip">平均數</span><span class="concept-chip">中位數</span><span class="concept-chip">眾數</span></div>
+    </header>
+
+    <section id="start-screen" class="screen">
+      <h2 class="section-title">選擇挑戰模式</h2>
+      <div class="mode-grid">
+      <article class="mode-card">
+        <div class="mode-label">1｜10 題</div>
+        <h3>📈 生活統計圖表</h3>
+        <p>判讀長條圖、折線圖與圓形圖中的數量、百分率與變化。</p>
+        <button class="mode-button" type="button" data-mode="chartsRead">開始挑戰</button>
+      </article>
+
+      <article class="mode-card">
+        <div class="mode-label">2｜10 題</div>
+        <h3>🧾 列聯表</h3>
+        <p>依兩種分類整理資料，讀取列、欄合計與條件比例。</p>
+        <button class="mode-button" type="button" data-mode="contingency">開始挑戰</button>
+      </article>
+
+      <article class="mode-card">
+        <div class="mode-label">3｜10 題</div>
+        <h3>📶 次數分配與圖形</h3>
+        <p>練習次數分配表、直方圖與折線圖的判讀。</p>
+        <button class="mode-button" type="button" data-mode="frequency">開始挑戰</button>
+      </article>
+
+      <article class="mode-card">
+        <div class="mode-label">4｜10 題</div>
+        <h3>🎯 平均數・中位數・眾數</h3>
+        <p>計算與比較三種代表值，理解奇偶筆資料的中位數。</p>
+        <button class="mode-button" type="button" data-mode="center">開始挑戰</button>
+      </article>
+
+      <article class="mode-card">
+        <div class="mode-label">5｜10 題</div>
+        <h3>🔥 第 5 章綜合挑戰</h3>
+        <p>混合圖表判讀、列聯表與統計數據。</p>
+        <button class="mode-button" type="button" data-mode="comprehensive">開始挑戰</button>
+      </article></div>
+    </section>
+
+    <section id="quiz-screen" class="screen hidden">
+      <div class="quiz-top">
+        <div class="quiz-context">
+          <div class="status-box">模式<strong id="mode-name">—</strong></div>
+          <div class="status-box">進度<div id="question-number">—</div></div>
+        </div>
+        <div class="quiz-stats">
+          <div class="stat-pill">分數<strong id="live-score">0</strong></div>
+          <div class="stat-pill">答對<strong id="correct-count">0</strong></div>
+          <div class="stat-pill">最高連擊<strong id="combo-count">0</strong></div>
+          <div class="stat-pill">測驗時間<strong id="timer-display">00:00</strong></div>
+        </div>
+        <div class="quiz-actions">
+          <button id="restart-button" class="game-button restart" type="button">🔄 重新測驗</button>
+          <button id="quit-button" class="game-button secondary" type="button">重選模式</button>
+        </div>
+      </div>
+      <div class="progress-shell"><div id="progress-bar" class="progress-bar"></div></div>
+      <div class="question-card">
+        <div id="question-content" class="question-content"></div>
+        <div class="scratchpad-row"><div id="scratchpad-mobile-button"></div></div>
+      </div>
+      <div id="answer-panel" class="answer-panel"><div id="answer-area"></div><div id="feedback" class="feedback"></div><div id="explanation" class="explanation hidden"></div></div>
+      <div class="quiz-submit-row">
+        <button id="submit-button" class="game-button" type="button">提交答案（Enter）</button>
+        <button id="next-button" class="game-button hidden" type="button">下一題（Enter）</button>
+      </div>
+    </section>
+
+    <section id="result-screen" class="screen hidden">
+      <div class="result-box">
+        <h2>本次測驗完成</h2><div id="final-score" class="final-score">0 分</div><div id="final-stars" class="final-stars">★★★★★</div><p id="final-comment"></p>
+        <div class="result-stats">
+          <div class="result-stat">答對<strong id="final-correct">0</strong></div>
+          <div class="result-stat">答錯<strong id="final-wrong">0</strong></div>
+          <div class="result-stat">最高連擊<strong id="final-combo">0</strong></div>
+          <div class="result-stat">完成時間<strong id="final-time">00:00</strong></div>
+        </div>
+        <div id="save-status" class="save-status"></div>
+        <div class="result-actions">
+          <button id="again-button" class="game-button" type="button">再測一次</button>
+          <button id="review-button" class="game-button" type="button">📘 錯題回顧</button>
+          <button id="result-mode-button" class="game-button secondary" type="button">重選模式</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="review-screen" class="screen hidden">
+      <h2 class="section-title">📘 本次題目與錯題回顧</h2>
+      <div id="review-list" class="review-list"></div>
+      <div class="result-actions">
+        <button id="review-again-button" class="game-button" type="button">再測一次</button>
+        <button id="review-result-button" class="game-button secondary" type="button">回到成績</button>
+      </div>
+    </section>
+  </section>
+</main>
+<script src="../js/common-header.js"></script>
+<script src="../js/scratchpad.js"></script>
+<script src="../js/scratchpad-template.js"></script>
+<script src="../js/sound-manager.js?v=1"></script>
+<script src="../js/math-expression-input.js?v=23"></script>
+<script src="../js/question-layout.js?v=2"></script>
+<script type="module">
+const GAME_ID="statistics-data";
+const CHAPTER="7-2-5";
+const GAME_TITLE="5 統計圖表與統計數據大挑戰";
+const MODES={
+  "chartsRead":{name:"生活統計圖表",difficultyWeight:1},
+  "contingency":{name:"列聯表",difficultyWeight:1},
+  "frequency":{name:"次數分配與圖形",difficultyWeight:1},
+  "center":{name:"平均數・中位數・眾數",difficultyWeight:1},
+  "comprehensive":{name:"第 5 章綜合挑戰",difficultyWeight:1.15}
+};
+
+const $=id=>document.getElementById(id);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const same=(a,b)=>Number.isFinite(Number(a))&&Math.abs(Number(a)-Number(b))<1e-9;
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b)[a,b]=[b,a%b];return a||1};
+function fracHTML(n,d=1){if(d<0){n=-n;d=-d}const g=gcd(n,d);n/=g;d/=g;if(d===1)return String(n).replace("-","−");return `<span style="display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.05"><span style="border-bottom:1.5px solid currentColor;padding:0 .15em">${String(n).replace("-","−")}</span><span>${d}</span></span>`}
+function valueHTML(v){if(Number.isInteger(v))return String(v).replace("-","−");const sign=v<0?-1:1,x=Math.abs(v);for(let d=2;d<=20;d++){const n=Math.round(x*d);if(Math.abs(n/d-x)<1e-9)return fracHTML(sign*n,d)}return String(Math.round(v*100)/100).replace("-","−")}
+function fmtSign(n){return n<0?`− ${Math.abs(n)}`:`＋ ${n}`}
+function formatTime(sec){const m=Math.floor(sec/60),s=sec%60;return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
+function expObj(think,steps,answer,tip=""){return{think,steps,answer,tip}}
+function qChoice(html,choices,answer,explanation,difficulty="基礎題"){return{type:"choice",html,choices,answer,explanation,difficulty}}
+function qNumber(html,answer,explanation,difficulty="基礎題",answerHTML=null){return{type:"number",html,answer,explanation,difficulty,answerHTML}}
+function qIneq(html,relation,value,explanation,difficulty="基礎題",answerHTML=null){return{type:"inequality",html,answer:{relation,value},explanation,difficulty,answerHTML}}
+function makeQuestions(core,advanced=[]){const out=[];for(let i=0;i<8;i++)out.push(pick(core)());for(let i=0;i<2;i++)out.push(pick(advanced.length?advanced:core)());return shuffle(out)}
+
+
+let singleMathInput=null;
+let selectedChoice=null;
+let selectedRelation=null;
+let lastMathInputMessage="";
+
+function destroyInput(){
+  singleMathInput?.destroy?.();
+  singleMathInput=null;
+  selectedChoice=null;
+  selectedRelation=null;
+}
+function numericInputOptions(mountId,placeholder="輸入答案"){
+  return{
+    mountId,placeholder,
+    allowRadical:false,allowFraction:true,allowPlusMinus:false,allowPower:false,allowVariable:false,
+    validationMode:"numeric-radical",showPreview:false,toolOrder:["fraction"],requireSimplifiedFraction:true,
+    theme:{primary:getComputedStyle(document.documentElement).getPropertyValue("--primary").trim(),
+      dark:getComputedStyle(document.documentElement).getPropertyValue("--primary-dark").trim(),
+      light:getComputedStyle(document.documentElement).getPropertyValue("--primary-light").trim(),
+      border:getComputedStyle(document.documentElement).getPropertyValue("--primary-border").trim()}
+  };
+}
+function createNumericInput(mountId,placeholder){
+  if(typeof window.MathExpressionInput!=="function"){lastMathInputMessage="共用答案輸入元件尚未載入。";return null}
+  return new window.MathExpressionInput(numericInputOptions(mountId,placeholder));
+}
+function numericValue(instance){
+  lastMathInputMessage="";
+  if(!instance){lastMathInputMessage="答案輸入元件尚未完成載入。";return null}
+  const r=instance.validate();
+  if(!r?.valid){lastMathInputMessage=r?.message||"請先完成答案。";return null}
+  const terms=r.terms||r.value?.terms||[];
+  if(!terms.length){lastMathInputMessage="請先輸入答案。";return null}
+  let v=0;
+  for(const t of terms){
+    const n=Number(t.numerator??0),d=Number(t.denominator??1),rad=Number(t.radicand??1);
+    if(!Number.isFinite(n)||!Number.isFinite(d)||d===0||rad!==1){lastMathInputMessage="此題只需輸入整數或分數。";return null}
+    v+=n/d;
+  }
+  return Number.isFinite(v)?v:null
+}
+function renderAnswer(q){
+  destroyInput();
+  const area=$("answer-area");
+  if(q.type==="choice"){
+    area.innerHTML=`<div class="answer-title">請選擇正確答案</div><div class="choice-grid">${q.choices.map(c=>`<button class="choice-button" type="button" data-choice="${esc(c)}">${c}</button>`).join("")}</div>`;
+    area.querySelectorAll(".choice-button").forEach(btn=>btn.addEventListener("click",()=>{
+      area.querySelectorAll(".choice-button").forEach(b=>b.classList.remove("selected"));
+      btn.classList.add("selected");selectedChoice=btn.dataset.choice;
+    }));
+    return;
+  }
+  if(q.type==="number"){
+    area.innerHTML=`<div class="answer-title">請輸入答案</div><div id="numeric-answer" class="shared-answer-mount"></div><div class="small" style="text-align:center;margin-top:8px;color:var(--muted);font-weight:800">整數、負數可直接輸入；需要分數時按「分數」。</div>`;
+    singleMathInput=createNumericInput("numeric-answer","輸入答案");
+    setTimeout(()=>singleMathInput?.focus(),0);return;
+  }
+  area.innerHTML=`<div class="answer-title">請完成 x 的解</div>
+    <div class="inequality-answer">
+      <span class="ineq-variable">x</span>
+      <div class="relation-group">${["<","≤",">","≥"].map(r=>`<button class="relation-button" type="button" data-rel="${r}">${r}</button>`).join("")}</div>
+      <div id="ineq-number-answer" class="shared-answer-mount" style="max-width:300px;margin:0"></div>
+    </div>
+    <div class="small" style="text-align:center;margin-top:8px;color:var(--muted);font-weight:800">先選不等號，再輸入端點；分數請用「分數」。</div>`;
+  area.querySelectorAll(".relation-button").forEach(btn=>btn.addEventListener("click",()=>{
+    area.querySelectorAll(".relation-button").forEach(b=>b.classList.remove("selected"));
+    btn.classList.add("selected");selectedRelation=btn.dataset.rel;
+  }));
+  singleMathInput=createNumericInput("ineq-number-answer","端點");
+}
+function currentAnswer(q){
+  if(q.type==="choice")return selectedChoice;
+  if(q.type==="number")return numericValue(singleMathInput);
+  return{relation:selectedRelation,value:numericValue(singleMathInput)};
+}
+function answerValid(q,a){
+  if(q.type==="choice")return a!==null;
+  if(q.type==="number")return a!==null;
+  return !!a?.relation && a.value!==null;
+}
+function answerCorrect(q,a){
+  if(q.type==="choice")return String(a)===String(q.answer);
+  if(q.type==="number")return same(a,q.answer);
+  return a.relation===q.answer.relation&&same(a.value,q.answer.value);
+}
+function answerHTML(q,a=null){
+  const val=a===null?q.answer:a;
+  if(q.answerHTML && a===null)return q.answerHTML;
+  if(q.type==="choice")return esc(val??"未作答");
+  if(q.type==="number")return val===null?"未作答":valueHTML(val);
+  if(!val?.relation||val.value===null)return"未作答";
+  return `<span class="math">x ${esc(val.relation)} ${valueHTML(val.value)}</span>`;
+}
+function disableAnswer(){
+  document.querySelectorAll("#answer-area input,#answer-area button").forEach(el=>el.disabled=true);
+  singleMathInput?.setDisabled?.(true);
+}
+
+
+function numberLineSVG(value,relation){
+  const min=value-4,max=value+4,w=520,h=110,left=40,right=500,y=58;
+  const x=v=>left+(v-min)/(max-min)*(right-left);
+  const closed=relation==="≥"||relation==="≤",goRight=relation===">"||relation==="≥";
+  const start=goRight?x(value):x(min),end=goRight?x(max):x(value);
+  let ticks="";
+  for(let v=min;v<=max;v++){ticks+=`<line x1="${x(v)}" y1="${y-7}" x2="${x(v)}" y2="${y+7}" stroke="#64748b" stroke-width="1.5"/><text x="${x(v)}" y="${y+28}" text-anchor="middle" font-size="14">${v}</text>`}
+  return `<div class="diagram-box"><svg class="svg-chart" viewBox="0 0 ${w} ${h}" width="520" aria-label="數線">
+    <line x1="${left}" y1="${y}" x2="${right}" y2="${y}" stroke="#334155" stroke-width="2"/>
+    <path d="M ${right-9} ${y-5} L ${right} ${y} L ${right-9} ${y+5}" fill="none" stroke="#334155" stroke-width="2"/>
+    ${ticks}
+    <line x1="${start}" y1="${y-18}" x2="${end}" y2="${y-18}" stroke="var(--primary)" stroke-width="6" stroke-linecap="round"/>
+    ${goRight?`<path d="M ${end-10} ${y-24} L ${end} ${y-18} L ${end-10} ${y-12}" fill="none" stroke="var(--primary)" stroke-width="4"/>`:`<path d="M ${start+10} ${y-24} L ${start} ${y-18} L ${start+10} ${y-12}" fill="none" stroke="var(--primary)" stroke-width="4"/>`}
+    <circle cx="${x(value)}" cy="${y-18}" r="7" fill="${closed?"var(--primary)":"#fff"}" stroke="var(--primary)" stroke-width="3"/>
+  </svg></div>`;
+}
+function barChartSVG(values,labels){
+  const w=520,h=245,left=45,bottom=205,top=25,max=Math.max(...values);
+  const bw=42,gap=(w-left-25-values.length*bw)/(values.length+1);
+  let bars="",axis=`<line x1="${left}" y1="${top}" x2="${left}" y2="${bottom}" stroke="#334155" stroke-width="2"/><line x1="${left}" y1="${bottom}" x2="${w-20}" y2="${bottom}" stroke="#334155" stroke-width="2"/>`;
+  values.forEach((v,i)=>{const x=left+gap+(bw+gap)*i,bh=(v/max)*(bottom-top-20),y=bottom-bh;bars+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="5" fill="var(--primary)" opacity=".78"/><text x="${x+bw/2}" y="${y-7}" text-anchor="middle" font-size="14" font-weight="700">${v}</text><text x="${x+bw/2}" y="${bottom+22}" text-anchor="middle" font-size="13">${labels[i]}</text>`});
+  return `<div class="diagram-box"><svg class="svg-chart" viewBox="0 0 ${w} ${h}" width="520">${axis}${bars}</svg></div>`;
+}
+function lineChartSVG(values,labels){
+  const w=520,h=245,left=45,bottom=205,top=25,max=Math.max(...values),min=Math.min(...values),span=Math.max(1,max-min);
+  const x=i=>left+30+i*(w-left-80)/(values.length-1),y=v=>bottom-20-(v-min)/span*(bottom-top-45);
+  const pts=values.map((v,i)=>`${x(i)},${y(v)}`).join(" ");
+  let dots="";
+  values.forEach((v,i)=>dots+=`<circle cx="${x(i)}" cy="${y(v)}" r="5" fill="var(--primary)"/><text x="${x(i)}" y="${y(v)-10}" text-anchor="middle" font-size="13">${v}</text><text x="${x(i)}" y="${bottom+20}" text-anchor="middle" font-size="13">${labels[i]}</text>`);
+  return `<div class="diagram-box"><svg class="svg-chart" viewBox="0 0 ${w} ${h}" width="520"><line x1="${left}" y1="${top}" x2="${left}" y2="${bottom}" stroke="#334155" stroke-width="2"/><line x1="${left}" y1="${bottom}" x2="${w-20}" y2="${bottom}" stroke="#334155" stroke-width="2"/><polyline points="${pts}" fill="none" stroke="var(--primary)" stroke-width="4"/>${dots}</svg></div>`;
+}
+function pieChartSVG(parts,labels){
+  const total=parts.reduce((a,b)=>a+b,0),cx=150,cy=130,r=95;
+  let start=-Math.PI/2,paths="",legend="";
+  const colors=["#60a5fa","#fb7185","#34d399","#fbbf24","#a78bfa"];
+  parts.forEach((v,i)=>{const ang=v/total*Math.PI*2,end=start+ang,x1=cx+r*Math.cos(start),y1=cy+r*Math.sin(start),x2=cx+r*Math.cos(end),y2=cy+r*Math.sin(end),large=ang>Math.PI?1:0;paths+=`<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} Z" fill="${colors[i%colors.length]}" stroke="#fff" stroke-width="2"/>`;legend+=`<rect x="285" y="${50+i*30}" width="16" height="16" fill="${colors[i%colors.length]}"/><text x="309" y="${63+i*30}" font-size="14">${labels[i]} ${Math.round(v/total*100)}%</text>`;start=end});
+  return `<div class="diagram-box"><svg class="svg-chart" viewBox="0 0 520 270" width="520">${paths}${legend}</svg></div>`;
+}
+function gridReflectionSVG(points,axisX=0){
+  const w=360,h=280,ox=180,oy=140,scale=28;
+  let grid="";
+  for(let i=-5;i<=5;i++){grid+=`<line x1="${ox+i*scale}" y1="0" x2="${ox+i*scale}" y2="${h}" stroke="#e2e8f0"/><line x1="0" y1="${oy+i*scale}" x2="${w}" y2="${oy+i*scale}" stroke="#e2e8f0"/>`}
+  const poly=points.map(p=>`${ox+p[0]*scale},${oy-p[1]*scale}`).join(" ");
+  return `<div class="diagram-box"><svg class="svg-chart" viewBox="0 0 ${w} ${h}" width="360">${grid}<line x1="${ox+axisX*scale}" y1="0" x2="${ox+axisX*scale}" y2="${h}" stroke="#db2777" stroke-width="4"/><polyline points="${poly} ${points.length?poly.split(" ")[0]:""}" fill="rgba(14,165,233,.15)" stroke="#0ea5e9" stroke-width="4"/></svg></div>`;
+}
+function blockViewSVG(grid){
+  const cell=34,w=grid[0].length*cell+20,h=grid.length*cell+20;
+  let s="";
+  grid.forEach((row,r)=>row.forEach((v,c)=>{if(v)s+=`<rect x="${10+c*cell}" y="${10+r*cell}" width="${cell}" height="${cell}" fill="var(--primary-light)" stroke="var(--primary-dark)" stroke-width="2"/>`}));
+  return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">${s}</svg>`;
+}
+
+function g5Bar(){
+  const vals=shuffle([18,24,30,36,42]).slice(0,4),labs=["甲","乙","丙","丁"],max=Math.max(...vals),idx=vals.indexOf(max);
+  return qChoice(`觀察長條圖，哪一類的次數最多？${barChartSVG(vals,labs)}`,labs,labs[idx],
+    expObj("長條越高，代表該類次數越多。",[`比較四個長條的高度。`,`最高的是 ${labs[idx]}，次數為 ${max}。`],labs[idx],"讀圖時先確認橫軸類別與縱軸代表的量。"));
+}
+function g5Line(){
+  const vals=[rand(15,25),rand(20,35),rand(25,40),rand(20,38)],labs=["一","二","三","四"];
+  let best=1,diff=-999;for(let i=1;i<vals.length;i++){if(vals[i]-vals[i-1]>diff){diff=vals[i]-vals[i-1];best=i}}
+  return qChoice(`下圖為四期資料。哪一期「比前一期增加最多」？${lineChartSVG(vals,labs)}`,["第二期","第三期","第四期"],["第二期","第三期","第四期"][best-1],
+    expObj("題目問的是『增加量』，要比較相鄰兩期的差，不是只看哪一期最高。",[
+      `第二期增加 ${vals[1]-vals[0]}；第三期增加 ${vals[2]-vals[1]}；第四期增加 ${vals[3]-vals[2]}。`,
+      `最大增加量出現在 ${["第二期","第三期","第四期"][best-1]}。`
+    ],["第二期","第三期","第四期"][best-1],"折線圖的斜率陡不等於一定要靠目測，最好算相鄰差。"));
+}
+function g5Pie(){
+  const parts=[40,30,20,10],labs=["A","B","C","D"],total=pick([200,300,500]),idx=rand(0,3),ans=total*parts[idx]/100;
+  return qNumber(`某調查結果如下圓形圖，共有 ${total} 人。${labs[idx]} 類有多少人？${pieChartSVG(parts,labs)}`,ans,
+    expObj("圓形圖先讀百分率，再乘上總數。",[
+      `${labs[idx]} 類占 ${parts[idx]}%。`,
+      `${total}×${parts[idx]}%＝${ans}。`
+    ],`${ans} 人`,"百分率要先換成小數或分數再乘總數。"));
+}
+function g5Contingency(){
+  const a=rand(18,30),b=rand(15,28),c=rand(12,25),d=rand(14,26),row1=a+b,row2=c+d,col1=a+c,col2=b+d,total=row1+row2;
+  const html=`<table class="mini-table"><tr><th></th><th>類別甲</th><th>類別乙</th><th>合計</th></tr><tr><th>男</th><td>${a}</td><td>${b}</td><td>${row1}</td></tr><tr><th>女</th><td>${c}</td><td>${d}</td><td>${row2}</td></tr><tr><th>合計</th><td>${col1}</td><td>${col2}</td><td>${total}</td></tr></table>`;
+  const type=rand(0,1);
+  if(type===0)return qNumber(`依列聯表，類別乙共有多少人？${html}`,col2,expObj("讀列聯表時，先找到「類別乙」整欄，再看合計列。",[`男生 ${b} 人，女生 ${d} 人。`,`合計 ${b}＋${d}＝${col2} 人。`],`${col2} 人`));
+  const pct=Math.round(b/row1*1000)/10;
+  return qNumber(`依列聯表，男生中屬於類別乙的比例約為多少 %？（四捨五入到小數第 1 位）${html}`,pct,
+    expObj("分母要用『男生總人數』，不是全體人數。",[`男生類別乙有 ${b} 人，男生合計 ${row1} 人。`,`比例＝${b}÷${row1}×100%≈${pct}%。`],`${pct}%`,"條件比例最重要的是先確定分母是哪一群。"),"精熟題");
+}
+function g5Frequency(){
+  const vals=[rand(2,5),rand(4,8),rand(6,12),rand(3,9),rand(1,5)],labs=["0-20","20-40","40-60","60-80","80-100"],total=vals.reduce((a,b)=>a+b,0),idx=rand(0,4);
+  return qNumber(`某次測驗的次數分配如下，${labs[idx]} 分組有多少人？${barChartSVG(vals,labs)}`,vals[idx],
+    expObj("直方圖每一根柱對應一個連續組距。",[`找到橫軸 ${labs[idx]}。`,`對應柱高為 ${vals[idx]}，所以有 ${vals[idx]} 人。`],`${vals[idx]} 人`,"直方圖的橫軸是組距，與一般長條圖的類別概念略有不同。"));
+}
+function g5Mean(){
+  const data=Array.from({length:5},()=>rand(4,18)),sum=data.reduce((a,b)=>a+b,0),ans=sum/5;
+  return qNumber(`資料：${data.join("、")}。求平均數。`,ans,
+    expObj("平均數＝資料總和 ÷ 資料個數。",[`總和＝${data.join("＋")}＝${sum}。`,`共有 5 筆資料，所以平均數＝${sum}÷5＝${valueHTML(ans)}。`],valueHTML(ans),"平均數不一定是原資料中的某一個數。"));
+}
+function g5Median(){
+  const n=pick([5,6,7,8]),data=Array.from({length:n},()=>rand(2,25)).sort((a,b)=>a-b);let ans;
+  if(n%2)ans=data[(n-1)/2];else ans=(data[n/2-1]+data[n/2])/2;
+  return qNumber(`資料由小到大排列為：${data.join("、")}。求中位數。`,ans,
+    expObj("中位數一定要先排序。奇數筆取正中間；偶數筆取中間兩筆的平均。",[
+      `共有 ${n} 筆資料，${n%2?"是奇數筆":"是偶數筆"}。`,
+      n%2?`第 ${(n+1)/2} 筆就是中位數：${ans}。`:`中間兩筆是 ${data[n/2-1]} 與 ${data[n/2]}，平均為 ${valueHTML(ans)}。`
+    ],valueHTML(ans),"偶數筆不是任選中間一筆，而是兩筆平均。"));
+}
+function g5Mode(){
+  const core=pick([4,5,6,7,8]),data=shuffle([core,core,core,rand(1,3),rand(9,12),rand(13,16)]);
+  return qNumber(`資料：${data.join("、")}。求眾數。`,core,
+    expObj("眾數是『出現次數最多』的資料。",[`逐一統計各數出現次數。`,`${core} 出現 3 次，次數最多。`],String(core),"眾數不是最大值，也不是平均數。"));
+}
+function createQuestions(id){
+  if(id==="chartsRead")return makeQuestions([g5Bar,g5Line,g5Pie],[g5Pie,g5Line]);
+  if(id==="contingency")return makeQuestions([g5Contingency],[g5Contingency]);
+  if(id==="frequency")return makeQuestions([g5Frequency],[g5Frequency]);
+  if(id==="center")return makeQuestions([g5Mean,g5Median,g5Mode],[g5Median,g5Mean]);
+  return makeQuestions([g5Bar,g5Line,g5Pie,g5Contingency,g5Frequency,g5Mean,g5Median,g5Mode],[g5Contingency,g5Median]);
+}
+
+
+let modeId=Object.keys(MODES)[0],questions=[],index=0,correct=0,wrong=0,combo=0,maxCombo=0,records=[],answered=false,startTime=0,elapsed=0,timerId=null,scoreSaved=false,rpgEmitted=false,attemptId="";
+
+window.MathGameSessionMeta={gameId:GAME_ID,chapter:CHAPTER,title:GAME_TITLE,modes:MODES};
+
+function showOnly(id){["start-screen","quiz-screen","result-screen","review-screen"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function ensureScratchpadButton(){
+  const mount=$("scratchpad-mobile-button");
+  if(!mount)return;
+  try{
+    if(typeof window.createScratchpadButton==="function"){mount.innerHTML="";window.createScratchpadButton("scratchpad-mobile-button");}
+    else if(typeof window.renderScratchpadButton==="function"){mount.innerHTML="";window.renderScratchpadButton("scratchpad-mobile-button");}
+  }catch(e){console.warn("計算紙按鈕初始化失敗",e)}
+}
+function startTimer(){clearInterval(timerId);startTime=Date.now();elapsed=0;$("timer-display").textContent="00:00";timerId=setInterval(()=>{elapsed=Math.floor((Date.now()-startTime)/1000);$("timer-display").textContent=formatTime(elapsed)},1000)}
+function stopTimer(){clearInterval(timerId);timerId=null}
+function playGameSound(name){try{window.SoundManager?.[name]?.()}catch(e){}}
+function explanationHTML(q){
+  const e=q.explanation;
+  return `<div class="explanation-title">📘 詳解</div>
+  <div class="explanation-think"><strong>先想一想：</strong>${e.think}</div>
+  ${e.steps.map((s,i)=>`<div class="explanation-step"><strong>步驟 ${i+1}：</strong>${s}</div>`).join("")}
+  <div class="explanation-answer">最後答案｜${e.answer}</div>
+  ${e.tip?`<div class="explanation-tip"><strong>常見提醒：</strong>${e.tip}</div>`:""}`;
+}
+function displayQuestion(){
+  answered=false;const q=questions[index];
+  $("mode-name").textContent=MODES[modeId].name;
+  $("question-number").innerHTML=`<strong>${index+1} / ${questions.length}</strong><span style="display:block;font-size:12px">${q.difficulty}</span>`;
+  $("live-score").textContent=correct*10;$("correct-count").textContent=correct;$("combo-count").textContent=combo;
+  $("progress-bar").style.width=`${index/questions.length*100}%`;
+  $("question-content").innerHTML=`<div>${q.html}</div>`;
+  window.QuestionLayout?.apply?.($("question-content"));
+  $("feedback").className="feedback";$("feedback").textContent="";
+  $("explanation").classList.add("hidden");$("explanation").innerHTML="";
+  $("submit-button").classList.remove("hidden");$("next-button").classList.add("hidden");
+  renderAnswer(q);ensureScratchpadButton();
+}
+function submitAnswer(){
+  if(answered)return;
+  const q=questions[index],a=currentAnswer(q);
+  if(!answerValid(q,a)){$("feedback").className="feedback warning";$("feedback").textContent=lastMathInputMessage||"請先完成作答。";return}
+  answered=true;const ok=answerCorrect(q,a);
+  if(ok){correct++;combo++;maxCombo=Math.max(maxCombo,combo);$("feedback").className="feedback correct";$("feedback").textContent="✅ 答對了！";playGameSound("playCorrect")}
+  else{wrong++;combo=0;$("feedback").className="feedback wrong";$("feedback").innerHTML=`❌ 再看一次。正確答案：<strong>${answerHTML(q)}</strong>`;playGameSound("playWrong")}
+  records.push({number:index+1,question:q,userAnswerHTML:answerHTML(q,a),correct:ok});
+  disableAnswer();$("explanation").innerHTML=explanationHTML(q);$("explanation").classList.remove("hidden");
+  $("live-score").textContent=correct*10;$("correct-count").textContent=correct;$("combo-count").textContent=combo;
+  $("submit-button").classList.add("hidden");$("next-button").classList.remove("hidden");
+}
+function nextQuestion(){if(!answered)return;if(index>=questions.length-1){showResult();return}index++;displayQuestion();window.scrollTo({top:0,behavior:"smooth"})}
+function confirmRestartTest(){return window.confirm("確定要重新測驗嗎？\n目前的作答進度與測驗時間將重新開始。")}
+function restartCurrentModeWithConfirmation(){if(!confirmRestartTest())return;startGame(modeId)}
+function confirmChangeMode(){return window.confirm("確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。")}
+function backToModesWithConfirmation(){if(!confirmChangeMode())return;backToModes()}
+function backToModes(){stopTimer();showOnly("start-screen");window.scrollTo({top:0,behavior:"smooth"})}
+function startGame(selectedMode){
+  try{
+    stopTimer();modeId=selectedMode;questions=createQuestions(modeId);index=0;correct=0;wrong=0;combo=0;maxCombo=0;records=[];answered=false;scoreSaved=false;rpgEmitted=false;
+    attemptId=`${Date.now()}-${Math.random().toString(36).slice(2,8)}`;$("save-status").textContent="";
+    showOnly("quiz-screen");displayQuestion();startTimer();playGameSound("playStart");window.scrollTo({top:0,behavior:"smooth"});
+  }catch(e){console.error(e);alert("遊戲啟動時發生錯誤，請重新整理後再試一次。")}
+}
+function rating(score){if(score>=90)return["★★★★★","太棒了！觀念與步驟都很穩定。"];if(score>=80)return["★★★★☆","表現很好，再留意符號與題目條件就更完整。"];if(score>=60)return["★★★☆☆","基本觀念已建立，建議查看錯題詳解再重做一次。"];return["★★☆☆☆","建議先從基礎模式開始，逐步看懂每一題的詳解。"]}
+async function saveScore(score){
+  if(scoreSaved)return;scoreSaved=true;const status=$("save-status");status.textContent="⏳ 正在儲存成績…";
+  try{
+    const m=await import("../js/scores.js?v=9");
+    if(typeof m.saveGameScore!=="function")throw new Error("找不到 saveGameScore");
+    const r=await m.saveGameScore({game:GAME_ID,mode:modeId,score,correctCount:correct,wrongCount:wrong,maxCombo,playTime:elapsed,totalQuestions:questions.length,accuracy:score});
+    if(r?.success){
+      status.innerHTML=`✅ 本次成績已儲存。${r.rank?`<br>🏆 本模式目前排名：第 ${r.rank} 名`:(r.leaderboardMessage?`<br>${esc(r.leaderboardMessage)}`:"")}`;
+      status.style.color="#15803d";
+    }else if(r?.reason==="not-logged-in"){status.textContent="ℹ️ 尚未登入，因此本次成績沒有儲存。";status.style.color="#b45309"}
+    else{status.textContent="⚠️ 成績暫時無法儲存。";status.style.color="#b91c1c"}
+  }catch(e){console.error("成績儲存失敗",e);status.textContent="⚠️ 本次遊戲已完成，但成績暫時無法儲存。";status.style.color="#b91c1c"}
+}
+function emitRPG(score){
+  if(rpgEmitted)return;rpgEmitted=true;
+  const detail={gameId:GAME_ID,modeId,chapter:CHAPTER,score,correct,wrong,total:questions.length,playTime:elapsed,accuracy:score,maxCombo,attemptId,difficultyWeight:MODES[modeId]?.difficultyWeight||1};
+  window.dispatchEvent(new CustomEvent("mathgame:session-complete",{detail}));
+  try{window.MathGameProgress?.completeLearningSession?.(detail)}catch(e){}
+}
+async function showResult(){
+  stopTimer();const score=Math.round(correct/questions.length*1000)/10,[stars,comment]=rating(score);
+  $("progress-bar").style.width="100%";showOnly("result-screen");$("final-score").textContent=`${Number.isInteger(score)?score:score.toFixed(1)} 分`;
+  $("final-stars").textContent=stars;$("final-comment").textContent=comment;$("final-correct").textContent=correct;$("final-wrong").textContent=wrong;$("final-combo").textContent=maxCombo;$("final-time").textContent=formatTime(elapsed);
+  playGameSound("playComplete");await saveScore(score);emitRPG(score);
+}
+function showReview(){
+  $("review-list").innerHTML=records.map(r=>`<article class="review-card ${r.correct?"correct-review":"wrong-review"}">
+    <div class="review-title">第 ${r.number} 題 ${r.correct?"✅":"❌"}</div>
+    <div class="review-question">${r.question.html}</div>
+    <div class="review-answer-line">你的答案：<strong>${r.userAnswerHTML}</strong></div>
+    <div class="review-answer-line">正確答案：<strong>${answerHTML(r.question)}</strong></div>
+    ${explanationHTML(r.question)}
+  </article>`).join("");
+  showOnly("review-screen");window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".mode-button").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));
+$("submit-button").addEventListener("click",submitAnswer);$("next-button").addEventListener("click",nextQuestion);
+$("restart-button").addEventListener("click",restartCurrentModeWithConfirmation);$("quit-button").addEventListener("click",backToModesWithConfirmation);
+$("again-button").addEventListener("click",restartCurrentModeWithConfirmation);$("review-button").addEventListener("click",showReview);$("result-mode-button").addEventListener("click",backToModesWithConfirmation);
+$("review-again-button").addEventListener("click",restartCurrentModeWithConfirmation);$("review-result-button").addEventListener("click",()=>showOnly("result-screen"));
+document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;if(!$("quiz-screen").classList.contains("hidden")){if(answered)nextQuestion();else submitAnswer()}});
+ensureScratchpadButton();
+
+</script>
+</body></html>
