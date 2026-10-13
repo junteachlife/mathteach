@@ -799,19 +799,89 @@ export const GAME_CONFIG = {
     theme:{primary:"#64748B",dark:"#475569",light:"#F1F5F9",border:"#CBD5E1"}
   },
 
-  statistics: {
-    id:"statistics", section:"5",
-    name:"統計圖表", shortName:"統計圖表",
-    semester:"grade7-second", grade:7, order:10, icon:"📊",
-    file:"games/statistics.html",
-    description:"練習次數分配、統計圖表與資料判讀。",
-    finished:false, difficulty:2, recommended:false, isNew:false, ranking:{type:"timed"},
-    modes:{},
-    theme:{primary:"#00838F",dark:"#006064",light:"#E0F7FA",border:"#80DEEA"}
+
+  "linear-inequality-basics": {
+    id:"linear-inequality-basics", section:"4-1",
+    name:"4-1 一元一次不等式的解及圖示大挑戰", shortName:"一元一次不等式的解及圖示",
+    semester:"grade7-second", grade:7, order:8, icon:"🚦",
+    file:"games/linear-inequality-basics.html",
+    description:"練習不等式語句、解的檢驗，以及空心點／實心點和數線圖示的判讀。",
+    finished:true, difficulty:2, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{
+      meaning:"不等式與語句",
+      solutionCheck:"代入檢驗解",
+      numberLineRead:"數線判讀",
+      numberLineChoose:"不等式圖示",
+      comprehensive:"4-1 綜合挑戰"
+    },
+    theme:{primary:"#0F766E",dark:"#115E59",light:"#ECFDF5",border:"#5EEAD4"}
   },
 
+  "linear-inequality-solve": {
+    id:"linear-inequality-solve", section:"4-2",
+    name:"4-2 解一元一次不等式及其應用大挑戰", shortName:"解一元一次不等式及其應用",
+    semester:"grade7-second", grade:7, order:9, icon:"⚖️",
+    file:"games/linear-inequality-solve.html",
+    description:"練習移項、正負數乘除、不等號反向、多步驟不等式、整數邊界與生活應用。",
+    finished:true, difficulty:3, recommended:true, isNew:true, ranking:{type:"speed"},
+    modes:{
+      addSubtract:"加減與移項",
+      multiplyDivide:"乘除與反向",
+      multiStep:"多步驟不等式",
+      integerBoundary:"整數邊界與圖示",
+      application:"生活應用",
+      comprehensive:"4-2 綜合挑戰"
+    },
+    theme:{primary:"#2563EB",dark:"#1D4ED8",light:"#EFF6FF",border:"#93C5FD"}
+  },
 
-  /*
+  "statistics-data": {
+    id:"statistics-data", section:"5",
+    name:"5 統計圖表與統計數據大挑戰", shortName:"統計圖表與統計數據",
+    semester:"grade7-second", grade:7, order:10, icon:"📊",
+    file:"games/statistics-data.html",
+    description:"練習生活統計圖表、圓形圖、列聯表、次數分配，以及平均數、中位數與眾數。",
+    finished:true, difficulty:2, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{
+      chartsRead:"生活統計圖表",
+      contingency:"列聯表",
+      frequency:"次數分配與圖形",
+      center:"平均數・中位數・眾數",
+      comprehensive:"第 5 章綜合挑戰"
+    },
+    theme:{primary:"#0891B2",dark:"#0E7490",light:"#ECFEFF",border:"#67E8F9"}
+  },
+
+  "symmetry-three-views": {
+    id:"symmetry-three-views", section:"6",
+    name:"6 線對稱與三視圖大挑戰", shortName:"線對稱與三視圖",
+    semester:"grade7-second", grade:7, order:11, icon:"🪞",
+    file:"games/symmetry-three-views.html",
+    description:"練習點線角與垂直平分、線對稱、對稱點，以及正方體積木的前視圖、上視圖與右視圖。",
+    finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
+    modes:{
+      geometryBasics:"簡單圖形與垂直平分",
+      symmetryJudge:"線對稱判斷",
+      reflection:"對稱點與完成圖形",
+      threeViews:"三視圖",
+      comprehensive:"第 6 章綜合挑戰"
+    },
+    theme:{primary:"#7C3AED",dark:"#5B21B6",light:"#F5F3FF",border:"#C4B5FD"}
+  },
+
+  /* 舊版第 5 章 GAME_ID，僅保留歷史資料辨識，不顯示在首頁。 */
+  statistics: {
+    id:"statistics", section:"5",
+    name:"舊版 統計圖表", shortName:"舊版統計圖表",
+    semester:"grade7-second", grade:7, order:97, icon:"📊",
+    file:"games/statistics.html",
+    description:"舊版歷史成績相容用。",
+    finished:false, archived:true, difficulty:2, recommended:false, isNew:false, ranking:{type:"timed"},
+    modes:{},
+    theme:{primary:"#64748B",dark:"#475569",light:"#F1F5F9",border:"#CBD5E1"}
+  },
+
+/*
   ==================================================
   八年級上學期
   ==================================================
@@ -1487,7 +1557,7 @@ export const GAME_CONFIG = {
 
   "quadratic-factorization": {
     id:"quadratic-factorization", section:"4-1",
-    name:"4-1 因式分解法解一元二次方程式", shortName:"因式分解法解一元二次方程式", cardTitleLines:["4-1 因式分解法","解一元二次方程式大挑戰"],
+    name:"4-1 因式分解法解一元二次方程式大挑戰", shortName:"因式分解法解一元二次方程式", cardTitleLines:["4-1 因式分解法","解一元二次方程式大挑戰"],
     semester:"grade8-first", grade:8, order:9, icon:"✂️",
     file:"games/quadratic-factorization.html",
     description:"練習一元二次方程式的意義與根、零乘積性質、提公因式、乘法公式與十字交乘求解。",
@@ -2349,7 +2419,7 @@ export function getGameDisplayName(
 
 
 console.log(
-  "game-config.js v9.9 卡片標題分行版已成功載入"
+  "game-config.js v10.0 七下第四至第六章同步版已成功載入"
 );
 
 
