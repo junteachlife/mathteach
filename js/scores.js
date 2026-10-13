@@ -3,7 +3,7 @@
 數學遊戲樂園：共用成績儲存
 檔案位置：js/scores.js
 
-版本：9.0
+版本：9.1
 ==================================================
 
 功能：
@@ -39,7 +39,7 @@ import {
 
 import {
   getGameConfig
-} from "./game-config.js";
+} from "./game-config.js?v=10.0";
 
 
 /*
