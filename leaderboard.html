@@ -996,4 +996,793 @@
         #333;
 
       font-size:
-        18px;
+        18px;font-weight:
+        bold;
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
+    }
+
+
+    .record-detail {
+
+      color:
+        #64748b;
+
+      font-size:
+        13px;
+
+      line-height:
+        1.7;
+    }
+
+
+    .leaderboard-play-duration {
+
+      color:
+        #0288d1;
+
+      font-weight:
+        bold;
+    }
+
+
+    .record-date {
+
+      margin-top:
+        3px;
+
+      color:
+        #94a3b8;
+
+      font-size:
+        12px;
+    }
+
+
+    /*
+    ==================================================
+    分數
+    ==================================================
+    */
+
+    .score {
+
+      text-align:
+        center;
+
+      color:
+        var(--orange);
+
+      font-size:
+        25px;
+
+      font-weight:
+        bold;
+    }
+
+
+    .score-label {
+
+      margin-top:
+        2px;
+
+      color:
+        #888;
+
+      font-size:
+        12px;
+
+      font-weight:
+        normal;
+    }
+
+
+    /*
+    ==================================================
+    底部導覽
+    ==================================================
+    */
+
+    .footer-actions {
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      gap:
+        12px;
+
+      margin-top:
+        22px;
+
+      flex-wrap:
+        wrap;
+    }
+
+
+    .action-link {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      min-width:
+        150px;
+
+      min-height:
+        46px;
+
+      padding:
+        11px 20px;
+
+      border-radius:
+        12px;
+
+      background:
+        var(--gray);
+
+      color:
+        white;
+
+      text-decoration:
+        none;
+
+      font-size:
+        15px;
+
+      font-weight:
+        bold;
+    }
+
+
+    .action-link.scores {
+
+      background:
+        var(--orange);
+    }
+
+
+    .action-link:hover {
+
+      opacity:
+        .9;
+    }
+
+
+    /*
+    ==================================================
+    平板
+    ==================================================
+    */
+
+    @media (
+      max-width:
+        760px
+    ) {
+
+      body {
+
+        padding:
+          12px;
+      }
+
+
+      .header {
+
+        padding:
+          24px 16px;
+      }
+
+
+      .top-actions {
+
+        padding:
+          12px;
+      }
+
+
+      .semester-card {
+
+        padding:
+          16px;
+      }
+
+
+      .leaderboard-card {
+
+        padding:
+          16px 12px;
+      }
+
+
+      .filter-box {
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(
+              0,
+              1fr
+            )
+          );
+      }
+
+
+      .leaderboard-item {
+
+        grid-template-columns:
+          52px
+          minmax(
+            0,
+            1fr
+          )
+          76px;
+
+        gap:
+          8px;
+
+        padding:
+          15px 10px;
+      }
+
+
+      .rank {
+
+        font-size:
+          21px;
+      }
+
+
+      .player-name {
+
+        font-size:
+          16px;
+      }
+
+
+      .score {
+
+        font-size:
+          21px;
+      }
+    }
+
+
+    /*
+    ==================================================
+    手機
+    ==================================================
+    */
+
+    @media (
+      max-width:
+        480px
+    ) {
+
+      body {
+
+        padding:
+          8px;
+      }
+
+
+      .header {
+
+        border-radius:
+          18px;
+      }
+
+
+      .header h1 {
+
+        font-size:
+          28px;
+      }
+
+
+      .subtitle {
+
+        font-size:
+          14px;
+      }
+
+
+      .ranking-rule {
+
+        font-size:
+          12px;
+      }
+
+
+      /*
+      上方兩個按鈕仍同一排
+      */
+
+      .top-actions {
+
+        display:
+          grid;
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(
+              0,
+              1fr
+            )
+          );
+
+        gap:
+          8px;
+      }
+
+
+      .top-action-link {
+
+        min-width: 0;
+
+        padding:
+          10px 8px;
+
+        font-size:
+          14px;
+      }
+
+
+      /*
+      學期
+      */
+
+      .semester-card {
+
+        display:
+          grid;
+
+        grid-template-columns:
+          1fr;
+
+        gap:
+          8px;
+
+        text-align:
+          center;
+      }
+
+
+      .semester-select {
+
+        width: 100%;
+      }
+
+
+      /*
+      遊戲按鈕
+      */
+
+      .filter-box {
+
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .filter-button.all-button {
+
+        grid-column:
+          auto;
+      }
+
+
+      /*
+      排行卡
+      */
+
+      .leaderboard-item {
+
+        grid-template-columns:
+          42px
+          minmax(
+            0,
+            1fr
+          )
+          60px;
+
+        gap:
+          6px;
+
+        padding:
+          13px 7px;
+      }
+
+
+      .rank {
+
+        font-size:
+          18px;
+      }
+
+
+      .player-name {
+
+        font-size:
+          15px;
+      }
+
+
+      .record-detail {
+
+        font-size:
+          11px;
+      }
+
+
+      .record-date {
+
+        display:
+          none;
+      }
+
+
+      .score {
+
+        font-size:
+          19px;
+      }
+
+
+      /*
+      底部
+      */
+
+      .footer-actions {
+
+        display:
+          grid;
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(
+              0,
+              1fr
+            )
+          );
+      }
+
+
+      .action-link {
+
+        min-width: 0;
+
+        padding:
+          10px 8px;
+
+        font-size:
+          14px;
+      }
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <main class="container">
+
+
+    <!--
+    ==================================================
+    頁首
+    ==================================================
+    -->
+
+    <header class="header">
+
+
+      <h1>
+        🏆 遊戲排行榜
+      </h1>
+
+
+      <p class="subtitle">
+
+        查看各學期、各遊戲的高手排行。<br>
+
+        每一個排行榜最多顯示前 20 名。
+
+      </p>
+
+
+      <div class="ranking-rule">
+
+        固定題數遊戲：
+        分數較高優先，同分時完成時間較短者優先。
+
+      </div>
+
+
+      <div
+        id="userStatus"
+        class="user-box"
+      >
+
+        正在確認登入狀態……
+
+      </div>
+
+
+    </header>
+
+
+    <!--
+    ==================================================
+    ★ 上方快速導覽
+    跟「我的成績」相同邏輯
+    ==================================================
+    -->
+
+    <nav
+      class="top-actions"
+      aria-label="排行榜快速導覽"
+    >
+
+
+      <a
+        class="top-action-link home"
+        href="index.html"
+      >
+
+        🏠 回到首頁
+
+      </a>
+
+
+      <a
+        class="top-action-link scores"
+        href="my-scores.html"
+      >
+
+        📊 我的成績
+
+      </a>
+
+
+    </nav>
+
+
+    <!--
+    ==================================================
+    學期選擇
+    ==================================================
+    -->
+
+    <section class="semester-card">
+
+
+      <label
+        class="semester-label"
+        for="semesterSelect"
+      >
+
+        📚 選擇學期
+
+      </label>
+
+
+      <select
+        id="semesterSelect"
+        class="semester-select"
+      >
+
+
+        <option
+          value="grade7-first"
+        >
+
+          七年級上學期
+
+        </option>
+
+
+        <option
+          value="grade7-second"
+        >
+
+          七年級下學期
+
+        </option>
+
+
+        <option
+          value="grade8-first"
+        >
+
+          八年級上學期
+
+        </option>
+
+
+        <option value="grade8-second">
+          八年級下學期
+        </option>
+
+
+        <option value="grade9-first">
+          九年級上學期
+        </option>
+
+
+        <option value="grade9-second">
+          九年級下學期
+        </option>
+
+
+      </select>
+
+
+    </section>
+
+
+    <!--
+    ==================================================
+    排行榜主區
+    ==================================================
+    -->
+
+    <section class="leaderboard-card">
+
+
+      <h2
+        id="filterTitle"
+        class="filter-title"
+      >
+
+        七年級上學期排行榜
+
+      </h2>
+
+
+      <!--
+      ==================================================
+      JS 自動建立遊戲篩選按鈕
+      ==================================================
+      -->
+
+      <nav
+        id="filterBox"
+        class="filter-box"
+        aria-label="排行榜遊戲篩選"
+      ></nav>
+
+
+      <!--
+      ==================================================
+      載入中
+      ==================================================
+      -->
+
+      <div
+        id="loadingMessage"
+        class="loading"
+      >
+
+        排行榜載入中……
+
+      </div>
+
+
+      <!--
+      ==================================================
+      錯誤
+      ==================================================
+      -->
+
+      <div
+        id="errorMessage"
+        class="error-message"
+        hidden
+      ></div>
+
+
+      <!--
+      ==================================================
+      無資料
+      ==================================================
+      -->
+
+      <div
+        id="emptyMessage"
+        class="empty-message"
+        hidden
+      >
+
+        目前尚無排行榜紀錄。
+
+      </div>
+
+
+      <!--
+      ==================================================
+      排行榜
+      leaderboard.js 會建立內容
+      ==================================================
+      -->
+
+      <ol
+        id="leaderboardList"
+        class="leaderboard-list"
+      ></ol>
+
+
+    </section>
+
+
+    <!--
+    ==================================================
+    底部仍保留快速導覽
+    ==================================================
+    -->
+
+    <nav
+      class="footer-actions"
+      aria-label="排行榜底部導覽"
+    >
+
+
+      <a
+        class="action-link"
+        href="index.html"
+      >
+
+        🏠 回到首頁
+
+      </a>
+
+
+      <a
+        class="action-link scores"
+        href="my-scores.html"
+      >
+
+        📊 我的成績
+
+      </a>
+
+
+    </nav>
+
+
+  </main>
+
+
+  <!--
+  ==================================================
+  排行榜程式
+
+  使用目前已修正的 leaderboard.js v8.1
+  ==================================================
+  -->
+
+  <script
+    type="module"
+    src="js/leaderboard.js?v=8.6"
+  ></script>
+
+
+</body>
+
+</html>
