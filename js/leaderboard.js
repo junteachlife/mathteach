@@ -3,8 +3,8 @@
 生活有解．心中有數｜遊戲排行榜
 檔案位置：js/leaderboard.js
 
-版本：8.6
-2026-08-25 穩定修正版
+版本：8.7
+原排行榜＋暱稱／匿名編號修正版
 ==================================================
 
 本版重點：
@@ -148,6 +148,10 @@ let selectedGame =
 
 let allScoreRecords =
   [];
+
+
+let playerProfiles =
+  new Map();
 
 
 /*
@@ -411,24 +415,186 @@ function formatDate(
 */
 
 
+
+/*
+==================================================
+玩家顯示名稱｜隱私版
+==================================================
+
+規則：
+1. users/{uid}.nickname 有自訂暱稱，而且不同於 Google 姓名
+   → 顯示暱稱
+2. 有 playerNumber / number / code
+   → 顯示玩家編號
+3. 其餘
+   → 由 uid 產生固定的匿名玩家編號
+
+永遠不拿 Google 姓名當排行榜／我的成績的公開名稱。
+==================================================
+*/
+
+function makePlayerNumber(
+  uid
+) {
+
+  const source =
+    String(
+      uid ||
+      ""
+    );
+
+
+  let hash =
+    0;
+
+
+  for (
+    let i = 0;
+    i < source.length;
+    i++
+  ) {
+
+    hash =
+      (
+        (
+          hash *
+          31
+        ) +
+        source.charCodeAt(
+          i
+        )
+      ) >>>
+      0;
+  }
+
+
+  return (
+    "#" +
+    String(
+      hash %
+      10000
+    ).padStart(
+      4,
+      "0"
+    )
+  );
+}
+
+
+function getProfileDisplayLabel(
+  profile,
+  uid
+) {
+
+  const nickname =
+    String(
+      profile?.nickname ||
+      ""
+    ).trim();
+
+
+  const googleName =
+    String(
+      profile?.displayName ||
+      ""
+    ).trim();
+
+
+  if (
+    nickname &&
+    nickname !==
+      googleName
+  ) {
+
+    return nickname;
+  }
+
+
+  const number =
+    profile?.playerNumber ??
+    profile?.number ??
+    profile?.code ??
+    profile?.studentNumber ??
+    "";
+
+
+  if (
+    String(
+      number
+    ).trim()
+  ) {
+
+    return (
+      "玩家 " +
+      String(
+        number
+      ).trim()
+    );
+  }
+
+
+  return (
+    "玩家 " +
+    makePlayerNumber(
+      uid
+    )
+  );
+}
+
+
 function getPlayerName(
   record
 ) {
 
+  const uid =
+    String(
+      record?.uid ||
+      ""
+    );
+
+
+  const profile =
+    playerProfiles.get(
+      uid
+    );
+
+
+  if (
+    profile
+  ) {
+
+    return getProfileDisplayLabel(
+      profile,
+      uid
+    );
+  }
+
+
+  /*
+  舊成績如果本身有真正的 nickname，
+  可以直接使用；但不再退回 displayName / playerName / email。
+  */
+
+  const recordNickname =
+    String(
+      record?.nickname ||
+      ""
+    ).trim();
+
+
+  if (
+    recordNickname
+  ) {
+
+    return recordNickname;
+  }
+
+
   return (
-
-    record.nickname ||
-
-    record.displayName ||
-
-    record.playerName ||
-
-    record.name ||
-
-    record.email ||
-
-    "玩家"
-
+    "玩家 " +
+    makePlayerNumber(
+      uid
+    )
   );
 }
 
@@ -843,9 +1009,121 @@ function createFilterButton({
 */
 
 
+
+async function loadPlayerProfiles() {
+
+  playerProfiles =
+    new Map();
+
+
+  try {
+
+    const usersSnapshot =
+      await getDocs(
+        collection(
+          db,
+          "users"
+        )
+      );
+
+
+    usersSnapshot.docs.forEach(
+      snapshot => {
+
+        const data =
+          snapshot.data() ||
+          {};
+
+
+        const uid =
+          String(
+            data.uid ||
+            snapshot.id ||
+            ""
+          );
+
+
+        if (
+          uid
+        ) {
+
+          playerProfiles.set(
+            uid,
+            data
+          );
+        }
+      }
+    );
+
+  } catch (
+    error
+  ) {
+
+    /*
+    如果 Firestore Rules 不允許讀全部 users，
+    排行榜仍可正常顯示，只改用匿名玩家編號。
+    */
+
+    console.warn(
+      "排行榜無法讀取玩家暱稱清單，改用匿名玩家編號：",
+      error
+    );
+  }
+}
+
+
+async function getCurrentPlayerLabel(
+  user
+) {
+
+  try {
+
+    const snapshot =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        )
+      );
+
+
+    if (
+      snapshot.exists()
+    ) {
+
+      return getProfileDisplayLabel(
+        snapshot.data(),
+        user.uid
+      );
+    }
+
+  } catch (
+    error
+  ) {
+
+    console.warn(
+      "讀取目前玩家暱稱失敗：",
+      error
+    );
+  }
+
+
+  return (
+    "玩家 " +
+    makePlayerNumber(
+      user?.uid
+    )
+  );
+}
+
+
 async function loadAllScores() {
 
   setLoading();
+
+
+  await loadPlayerProfiles();
 
 
   try {
@@ -2467,67 +2745,6 @@ semesterSelect
   );
 
 
-
-/*
-==================================================
-取得目前登入玩家暱稱
-==================================================
-*/
-
-async function getCurrentPlayerNickname(
-  user
-) {
-
-  try {
-
-    const snapshot =
-      await getDoc(
-        doc(
-          db,
-          "users",
-          user.uid
-        )
-      );
-
-
-    if (
-      snapshot.exists()
-    ) {
-
-      const nickname =
-        String(
-          snapshot.data()?.nickname ||
-          ""
-        ).trim();
-
-
-      if (
-        nickname
-      ) {
-
-        return nickname;
-      }
-    }
-
-  } catch (
-    error
-  ) {
-
-    console.warn(
-      "排行榜讀取玩家暱稱失敗：",
-      error
-    );
-  }
-
-
-  return (
-    user.displayName ||
-    user.email ||
-    "玩家"
-  );
-}
-
-
 /*
 ==================================================
 Firebase 登入狀態
@@ -2561,7 +2778,7 @@ onAuthStateChanged(
 
       userStatus.textContent =
         `目前登入：${
-          await getCurrentPlayerNickname(
+          await getCurrentPlayerLabel(
             user
           )
         }`;
@@ -2622,7 +2839,7 @@ try {
 
 
   console.log(
-    "leaderboard.js v8.6 已成功載入"
+    "leaderboard.js v8.7 已成功載入"
   );
 
 
