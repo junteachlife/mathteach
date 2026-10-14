@@ -2419,7 +2419,7 @@ export function getGameDisplayName(
 
 
 console.log(
-  "game-config.js v10.0 七下第四至第六章同步版已成功載入"
+  "game-config.js v10.1 已成功載入"
 );
 
 
