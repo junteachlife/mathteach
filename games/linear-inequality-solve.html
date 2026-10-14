@@ -173,7 +173,7 @@ button,input{font:inherit}
 <div id="common-header-root"></div>
 <main class="page-shell">
   <section class="game-card">
-    <div class="game-card-return-row"><a class="semester-return-link" href="../index.html">↩️ 重返七年級下學期</a></div>
+    <div class="game-card-return-row"><a id="semester-return-link" class="semester-return-link" href="../index.html?semester=grade7-second">↩️ 重返七年級下學期</a></div>
     <header class="game-header">
       <h1 class="game-title">⚖️ 4-2 解一元一次不等式及其應用大挑戰</h1>
       <p class="game-subtitle">練習移項、同加同減、正負數乘除、不等號反向、多步驟不等式與生活應用。</p>
@@ -289,6 +289,48 @@ button,input{font:inherit}
 <script src="../js/sound-manager.js?v=1"></script>
 <script src="../js/math-expression-input.js?v=23"></script>
 <script src="../js/question-layout.js?v=2"></script>
+
+<script>
+(() => {
+  const link =
+    document.getElementById(
+      "semester-return-link"
+    );
+
+  if (!link) return;
+
+  /*
+  不依目前 games/ 的資料夾深度計算返回網址。
+  無論遊戲在：
+    /games/game.html
+  或未來搬到：
+    /games/grade7-2/game.html
+  都會回到網站首頁的「七年級下學期」。
+  */
+  const marker =
+    "/games/";
+
+  const path =
+    window.location.pathname;
+
+  const markerIndex =
+    path.indexOf(
+      marker
+    );
+
+  const siteRoot =
+    markerIndex >= 0
+      ? path.slice(
+          0,
+          markerIndex
+        )
+      : "";
+
+  link.href =
+    `${siteRoot}/index.html?semester=grade7-second`;
+})();
+</script>
+
 <script type="module">
 const GAME_ID="linear-inequality-solve";
 const CHAPTER="7-2-4-2";
@@ -563,14 +605,150 @@ let modeId=Object.keys(MODES)[0],questions=[],index=0,correct=0,wrong=0,combo=0,
 
 window.MathGameSessionMeta={gameId:GAME_ID,chapter:CHAPTER,title:GAME_TITLE,modes:MODES};
 
-function showOnly(id){["start-screen","quiz-screen","result-screen","review-screen"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
-function ensureScratchpadButton(){
-  const mount=$("scratchpad-mobile-button");
-  if(!mount)return;
-  try{
-    if(typeof window.createScratchpadButton==="function"){mount.innerHTML="";window.createScratchpadButton("scratchpad-mobile-button");}
-    else if(typeof window.renderScratchpadButton==="function"){mount.innerHTML="";window.renderScratchpadButton("scratchpad-mobile-button");}
-  }catch(e){console.warn("計算紙按鈕初始化失敗",e)}
+function showOnly(id) {
+
+  [
+    "start-screen",
+    "quiz-screen",
+    "result-screen",
+    "review-screen"
+  ]
+    .forEach(
+      screenId =>
+        $(
+          screenId
+        )
+          .classList
+          .toggle(
+            "hidden",
+            screenId !==
+              id
+          )
+    );
+
+
+  if (
+    id ===
+    "quiz-screen"
+  ) {
+
+    ensureScratchpadButton();
+
+
+    if (
+      typeof window.showGameScratchpadButton ===
+      "function"
+    ) {
+
+      window.showGameScratchpadButton();
+    }
+
+  } else {
+
+    if (
+      typeof window.hideGameScratchpadButton ===
+      "function"
+    ) {
+
+      window.hideGameScratchpadButton();
+    }
+  }
+}
+function moveScratchpadButton() {
+
+  const mount =
+    $("scratchpad-mobile-button");
+
+  const button =
+    $("scratchpadOpenButton");
+
+  if (
+    mount &&
+    button &&
+    !mount.contains(
+      button
+    )
+  ) {
+
+    mount.appendChild(
+      button
+    );
+  }
+}
+
+function ensureScratchpadButton() {
+
+  /*
+  scratchpad-template.js 會建立全站共用的
+  #scratchpadOpenButton。
+
+  某些遊戲載入較快時，題目已顯示，
+  共用計算紙按鈕才稍後建立，因此需要重試搬入題目框。
+  */
+
+  moveScratchpadButton();
+
+
+  if (
+    typeof window.showGameScratchpadButton ===
+    "function"
+  ) {
+
+    window.showGameScratchpadButton();
+  }
+
+
+  let count =
+    0;
+
+
+  const timer =
+    window.setInterval(
+      () => {
+
+        count +=
+          1;
+
+        moveScratchpadButton();
+
+
+        const button =
+          $("scratchpadOpenButton");
+
+
+        if (
+          button
+        ) {
+
+          if (
+            typeof window.showGameScratchpadButton ===
+            "function"
+          ) {
+
+            window.showGameScratchpadButton();
+          }
+
+
+          window.clearInterval(
+            timer
+          );
+
+          return;
+        }
+
+
+        if (
+          count >=
+          40
+        ) {
+
+          window.clearInterval(
+            timer
+          );
+        }
+      },
+      75
+    );
 }
 function startTimer(){clearInterval(timerId);startTime=Date.now();elapsed=0;$("timer-display").textContent="00:00";timerId=setInterval(()=>{elapsed=Math.floor((Date.now()-startTime)/1000);$("timer-display").textContent=formatTime(elapsed)},1000)}
 function stopTimer(){clearInterval(timerId);timerId=null}
