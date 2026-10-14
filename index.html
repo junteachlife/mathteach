@@ -2484,7 +2484,8 @@
 
 
     import {
-      auth
+      auth,
+      db
     } from "./js/firebase-config.js";
 
 
@@ -2495,7 +2496,13 @@
 
     import {
       getGamesBySemester
-    } from "./js/game-config.js?v=9.1";
+    } from "./js/game-config.js?v=10.1";
+
+
+    import {
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
     import {
@@ -4956,7 +4963,74 @@
     */
 
 
-    function renderLoggedIn(
+
+    /*
+    ==================================================
+    玩家暱稱
+    ==================================================
+
+    遊戲暱稱保存在 Firestore：
+    users/{uid}.nickname
+
+    Google 的 displayName 只作為備援。
+    ==================================================
+    */
+
+    async function getPlayerNickname(
+      user
+    ) {
+
+      try {
+
+        const snapshot =
+          await getDoc(
+            doc(
+              db,
+              "users",
+              user.uid
+            )
+          );
+
+
+        if (
+          snapshot.exists()
+        ) {
+
+          const nickname =
+            String(
+              snapshot.data()?.nickname ||
+              ""
+            ).trim();
+
+
+          if (
+            nickname
+          ) {
+
+            return nickname;
+          }
+        }
+
+      } catch (
+        error
+      ) {
+
+        console.warn(
+          "讀取玩家暱稱失敗：",
+          error
+        );
+      }
+
+
+      return (
+        user.displayName ||
+        user.email ||
+        "玩家"
+      );
+    }
+
+
+    async function renderLoggedIn(
       user
     ) {
 
@@ -5012,8 +5086,9 @@
 
 
       name.textContent =
-        user.displayName ||
-        "玩家";
+        await getPlayerNickname(
+          user
+        );
 
 
       const email =
@@ -5077,7 +5152,7 @@
         }
 
 
-        renderLoggedIn(
+        await renderLoggedIn(
           user
         );
 
