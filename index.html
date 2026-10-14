@@ -474,7 +474,11 @@
 
       justify-content: center;
 
+      gap: 8px;
+
       margin-top: 10px;
+
+      flex-wrap: wrap;
 
     }
 
@@ -517,6 +521,195 @@
 
     .compact-logout-button {
       background: #ef4444;
+    }
+
+
+    .compact-nickname-button {
+      background: #0f766e;
+    }
+
+
+    /*
+    ==================================================
+    暱稱設定視窗
+    ==================================================
+    */
+
+
+    .nickname-modal[hidden] {
+      display: none !important;
+    }
+
+
+    .nickname-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 30000;
+
+      display: grid;
+      place-items: center;
+
+      padding: 20px;
+
+      background:
+        rgba(15, 23, 42, .58);
+
+      backdrop-filter:
+        blur(4px);
+
+      -webkit-backdrop-filter:
+        blur(4px);
+    }
+
+
+    .nickname-dialog {
+      width:
+        min(460px, 100%);
+
+      padding: 24px;
+
+      border:
+        1px solid #bfdbfe;
+
+      border-radius: 22px;
+
+      background: #ffffff;
+
+      box-shadow:
+        0 24px 70px
+        rgba(15, 23, 42, .25);
+    }
+
+
+    .nickname-dialog h2 {
+      margin:
+        0 0 10px;
+
+      color: #174f8f;
+
+      font-size: 24px;
+
+      text-align: center;
+    }
+
+
+    .nickname-dialog p {
+      margin:
+        0 0 16px;
+
+      color: #64748b;
+
+      font-size: 14px;
+
+      line-height: 1.7;
+
+      text-align: center;
+    }
+
+
+    .nickname-input {
+      width: 100%;
+
+      padding:
+        13px 14px;
+
+      border:
+        2px solid #bfdbfe;
+
+      border-radius: 13px;
+
+      background: #f8fbff;
+
+      color: #0f172a;
+
+      font-family: inherit;
+
+      font-size: 18px;
+
+      font-weight: 800;
+
+      text-align: center;
+
+      outline: none;
+    }
+
+
+    .nickname-input:focus {
+      border-color: #2563eb;
+
+      box-shadow:
+        0 0 0 4px
+        rgba(37, 99, 235, .12);
+    }
+
+
+    .nickname-hint {
+      margin-top: 8px;
+
+      color: #64748b;
+
+      font-size: 12px;
+
+      text-align: center;
+    }
+
+
+    .nickname-error {
+      min-height: 22px;
+
+      margin-top: 8px;
+
+      color: #dc2626;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      text-align: center;
+    }
+
+
+    .nickname-actions {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      margin-top: 12px;
+    }
+
+
+    .nickname-save-button,
+    .nickname-cancel-button {
+      min-width: 128px;
+
+      padding:
+        11px 16px;
+
+      border: 0;
+
+      border-radius: 12px;
+
+      color: #ffffff;
+
+      font-family: inherit;
+
+      font-size: 15px;
+
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+
+    .nickname-save-button {
+      background: #2563eb;
+    }
+
+
+    .nickname-cancel-button {
+      background: #64748b;
     }
 
 
@@ -804,9 +997,7 @@
 
     .announcement-content {
 
-      margin: 0;
-
-      color:
+      margin: 0;color:
         #6b4f2b;
 
       font-size: 14px;
@@ -1803,9 +1994,7 @@
       .dashboard-links {
 
         grid-template-columns:
-          1fr 1fr;
-
-      }
+          1fr 1fr;}
 
 
       .dashboard-link-card {
@@ -2037,6 +2226,16 @@
                   type="button"
                 >
                   Google 登入
+                </button>
+
+
+                <button
+                  id="compactNicknameButton"
+                  class="compact-auth-button compact-nickname-button"
+                  type="button"
+                  hidden
+                >
+                  修改暱稱
                 </button>
 
 
@@ -2467,6 +2666,68 @@
   </main>
 
 
+  <!-- 暱稱設定視窗 -->
+  <div
+    id="nicknameModal"
+    class="nickname-modal"
+    hidden
+  >
+    <section
+      class="nickname-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="nicknameDialogTitle"
+    >
+      <h2 id="nicknameDialogTitle">
+        🎮 設定遊戲暱稱
+      </h2>
+
+      <p id="nicknameDialogText">
+        排行榜會顯示你的遊戲暱稱，不公開顯示 Google 真實姓名。
+      </p>
+
+      <input
+        id="nicknameInput"
+        class="nickname-input"
+        type="text"
+        maxlength="12"
+        autocomplete="off"
+        placeholder="例如：數學海賊王"
+        aria-label="遊戲暱稱"
+      >
+
+      <div class="nickname-hint">
+        2～12 個字，可以使用中文、英文、數字或 Emoji。設定後需滿 7 天才能再次自行修改。
+      </div>
+
+      <div
+        id="nicknameError"
+        class="nickname-error"
+        aria-live="polite"
+      ></div>
+
+      <div class="nickname-actions">
+        <button
+          id="nicknameSaveButton"
+          class="nickname-save-button"
+          type="button"
+        >
+          儲存並開始遊戲
+        </button>
+
+        <button
+          id="nicknameCancelButton"
+          class="nickname-cancel-button"
+          type="button"
+          hidden
+        >
+          取消
+        </button>
+      </div>
+    </section>
+  </div>
+
+
   <script type="module">
 
 
@@ -2484,25 +2745,22 @@
 
 
     import {
-      auth,
-      db
+      auth
     } from "./js/firebase-config.js";
 
 
     import {
-      createOrUpdatePlayer
-    } from "./js/firestore.js";
+      createOrUpdatePlayer,
+      setPlayerNickname,
+      needsNickname,
+      getPublicPlayerName,
+      getNicknameChangeState
+    } from "./js/firestore.js?v=1.3";
 
 
     import {
       getGamesBySemester
     } from "./js/game-config.js?v=10.1";
-
-
-    import {
-      doc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
     import {
@@ -2533,6 +2791,56 @@
       document.getElementById(
         "compactLogoutButton"
       );
+
+
+    const compactNicknameButton =
+      document.getElementById(
+        "compactNicknameButton"
+      );
+
+
+    const nicknameModal =
+      document.getElementById(
+        "nicknameModal"
+      );
+
+
+    const nicknameDialogText =
+      document.getElementById(
+        "nicknameDialogText"
+      );
+
+
+    const nicknameInput =
+      document.getElementById(
+        "nicknameInput"
+      );
+
+
+    const nicknameError =
+      document.getElementById(
+        "nicknameError"
+      );
+
+
+    const nicknameSaveButton =
+      document.getElementById(
+        "nicknameSaveButton"
+      );
+
+
+    const nicknameCancelButton =
+      document.getElementById(
+        "nicknameCancelButton"
+      );
+
+
+    let currentPlayerProfile =
+      null;
+
+
+    let nicknameIsRequired =
+      false;
 
 
     const myScoresLink =
@@ -2685,10 +2993,7 @@
 
 
         const getImportantAnnouncement =
-          module.getImportantAnnouncement;
-
-
-        const getLatestAnnouncements =
+          module.getImportantAnnouncement;const getLatestAnnouncements =
           module.getLatestAnnouncements;
 
 
@@ -2922,8 +3227,11 @@
         id:
           "sequence-arithmetic",
 
+        section:
+          "1-1",
+
         name:
-          "數列與等差數列大挑戰",
+          "認識數列與等差數列大挑戰",
 
         semester:
           "grade8-second",
@@ -2939,13 +3247,19 @@
           "games/sequence-arithmetic.html",
 
         description:
-          "認識數列規律、等差數列、公差與一般項。",
+          "練習數列與一般項、等差數列、公差、第 n 項、等差中項與生活應用。",
 
         finished:
-          false,
+          true,
 
         difficulty:
           2,
+
+        recommended:
+          true,
+
+        isNew:
+          true,
 
         theme:
           theme(
@@ -2962,6 +3276,9 @@
 
         id:
           "arithmetic-series",
+
+        section:
+          "1-2",
 
         name:
           "等差級數大挑戰",
@@ -2980,13 +3297,19 @@
           "games/arithmetic-series.html",
 
         description:
-          "練習等差級數的項數、首項、末項與總和。",
+          "練習等差級數兩種求和公式、未知量反推與生活情境應用。",
 
         finished:
-          false,
+          true,
 
         difficulty:
           2,
+
+        recommended:
+          false,
+
+        isNew:
+          true,
 
         theme:
           theme(
@@ -3003,6 +3326,9 @@
 
         id:
           "geometric-sequence",
+
+        section:
+          "1-3",
 
         name:
           "等比數列大挑戰",
@@ -3021,13 +3347,19 @@
           "games/geometric-sequence.html",
 
         description:
-          "認識等比數列、公比與一般項。",
+          "練習等比數列、公比、第 n 項、等比中項與摺紙、反彈、縮放等應用。",
 
         finished:
-          false,
+          true,
 
         difficulty:
           2,
+
+        recommended:
+          false,
+
+        isNew:
+          true,
 
         theme:
           theme(
@@ -3427,6 +3759,9 @@
         id:
           "continued-ratio",
 
+        section:
+          "1-1",
+
         name:
           "連比大挑戰",
 
@@ -3466,7 +3801,10 @@
       {
 
         id:
-          "proportional-segment",
+          "proportional-segments",
+
+        section:
+          "1-2",
 
         name:
           "比例線段大挑戰",
@@ -3479,13 +3817,13 @@
         order: 2,
 
         icon:
-          "📏",
+          "📐",
 
         file:
-          "games/proportional-segment.html",
+          "games/proportional-segments.html",
 
         description:
-          "練習比例線段、平行線截比例線段與相關計算。",
+          "練習等高三角形面積比、平行線截比例線段、比例判別平行與中點連線段。",
 
         finished:
           true,
@@ -3495,10 +3833,10 @@
 
         theme:
           theme(
-            "#00897B",
-            "#00695C",
-            "#E0F2F1",
-            "#80CBC4"
+            "#0F766E",
+            "#115E59",
+            "#ECFDF5",
+            "#5EEAD4"
           )
 
       },
@@ -3507,7 +3845,10 @@
       {
 
         id:
-          "similar-polygon",
+          "similar-polygons",
+
+        section:
+          "1-3",
 
         name:
           "相似多邊形大挑戰",
@@ -3523,10 +3864,10 @@
           "🔷",
 
         file:
-          "games/similar-polygon.html",
+          "games/similar-polygons.html",
 
         description:
-          "練習相似多邊形、對應邊、對應角與相似比。",
+          "練習圖形縮放、相似多邊形，以及 AA、SAS、SSS 三角形相似性質。",
 
         finished:
           true,
@@ -3536,10 +3877,10 @@
 
         theme:
           theme(
-            "#3949AB",
-            "#283593",
-            "#E8EAF6",
-            "#9FA8DA"
+            "#7C3AED",
+            "#5B21B6",
+            "#F5F3FF",
+            "#C4B5FD"
           )
 
       },
@@ -3548,10 +3889,13 @@
       {
 
         id:
-          "similar-triangle",
+          "similar-triangle-trig",
+
+        section:
+          "1-4",
 
         name:
-          "相似三角形大挑戰",
+          "相似三角形應用與三角比大挑戰",
 
         semester:
           "grade9-first",
@@ -3561,13 +3905,13 @@
         order: 4,
 
         icon:
-          "🔺",
+          "📐",
 
         file:
-          "games/similar-triangle.html",
+          "games/similar-triangle-trig.html",
 
         description:
-          "練習相似三角形對應高與面積、影長測量，以及 sin、cos、tan 和坡度。",
+          "練習相似三角形比例、簡易測量、特殊直角三角形，以及 sin、cos、tan 與坡度應用。",
 
         finished:
           true,
@@ -3577,60 +3921,20 @@
 
         theme:
           theme(
-            "#D81B60",
-            "#AD1457",
-            "#FCE4EC",
-            "#F48FB1"
+            "#C2410C",
+            "#9A3412",
+            "#FFF7ED",
+            "#FDBA74"
           )
 
       },
-
-
-      {
-
-        id:
-          "trigonometric-ratio",
-
-        name:
-          "三角比大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 5,
-
-        icon:
-          "📐",
-
-        file:
-          "games/trigonometric-ratio.html",
-
-        description:
-          "練習直角三角形中的 sin、cos、tan 與邊長計算。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#F57C00",
-            "#E65100",
-            "#FFF3E0",
-            "#FFCC80"
-          )
-
-      },
-
-
       {
 
         id:
           "point-line-circle",
+
+        section:
+          "2-1",
 
         name:
           "點、線、圓大挑戰",
@@ -3640,7 +3944,7 @@
 
         grade: 9,
 
-        order: 6,
+        order: 5,
 
         icon:
           "⭕",
@@ -3673,6 +3977,9 @@
         id:
           "central-inscribed-angle",
 
+        section:
+          "2-2",
+
         name:
           "圓心角與圓周角大挑戰",
 
@@ -3681,10 +3988,9 @@
 
         grade: 9,
 
-        order: 7,
+        order: 6,
 
-        icon:
-          "🟠",
+        icon:"🟠",
 
         file:
           "games/central-inscribed-angle.html",
@@ -3714,8 +4020,58 @@
         id:
           "geometric-proof",
 
+        section:
+          "3-1",
+
         name:
           "推理證明大挑戰",
+
+        semester:
+          "grade9-first",
+
+        grade: 9,
+
+        order: 7,
+
+        icon:
+          "🧠",
+
+        file:
+          "games/geometric-proof.html",
+
+        description:
+          "練習證明結構、幾何推理、輔助線、奇偶數與代數證明。",
+
+        finished:
+          true,
+
+        isNew:
+          true,
+
+        difficulty:
+          3,
+
+        theme:
+          theme(
+            "#7C3AED",
+            "#5B21B6",
+            "#F5F3FF",
+            "#C4B5FD"
+          )
+
+      },
+
+
+      {
+
+        id:
+          "triangle-centers",
+
+        section:
+          "3-2",
+
+        name:
+          "三角形的外心、內心與重心大挑戰",
 
         semester:
           "grade9-first",
@@ -3725,149 +4081,29 @@
         order: 8,
 
         icon:
-          "🧠",
-
-        file:
-          "games/geometric-proof.html",
-
-        description:
-          "練習已知、求證與幾何推理證明的邏輯過程。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#7B1FA2",
-            "#6A1B9A",
-            "#F3E5F5",
-            "#CE93D8"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "triangle-circumcenter",
-
-        name:
-          "三角形外心大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 9,
-
-        icon:
           "🎯",
 
         file:
-          "games/triangle-circumcenter.html",
+          "games/triangle-centers.html",
 
         description:
-          "練習外心、外接圓與外心的位置及性質。",
+          "練習外心與外接圓、內心與內切圓、重心比例與重心面積。",
 
         finished:
-          false,
+          true,
+
+        isNew:
+          true,
 
         difficulty:
           3,
 
         theme:
           theme(
-            "#1976D2",
-            "#125CA6",
-            "#E3F2FD",
-            "#90CAF9"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "triangle-incenter",
-
-        name:
-          "三角形內心大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 10,
-
-        icon:
-          "❤️",
-
-        file:
-          "games/triangle-incenter.html",
-
-        description:
-          "練習內心、內切圓與角平分線的相關性質。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#E91E63",
-            "#AD1457",
-            "#FCE4EC",
-            "#F48FB1"
-          )
-
-      },
-
-
-      {
-
-        id:
-          "triangle-centroid",
-
-        name:
-          "三角形重心大挑戰",
-
-        semester:
-          "grade9-first",
-
-        grade: 9,
-
-        order: 11,
-
-        icon:
-          "⚖️",
-
-        file:
-          "games/triangle-centroid.html",
-
-        description:
-          "練習重心、中線與重心分割比例等性質。",
-
-        finished:
-          false,
-
-        difficulty:
-          3,
-
-        theme:
-          theme(
-            "#43A047",
-            "#2E7D32",
-            "#E8F5E9",
-            "#A5D6A7"
+            "#0F766E",
+            "#115E59",
+            "#ECFDF5",
+            "#5EEAD4"
           )
 
       }
@@ -4247,9 +4483,28 @@
         );
 
 
-      title.textContent =
+      const gameTitle =
         game.name ||
         "數學遊戲";
+
+
+      const sectionLabel =
+        String(
+          game.section ||
+          ""
+        )
+          .trim();
+
+
+      title.textContent =
+        sectionLabel &&
+        !gameTitle.startsWith(
+          sectionLabel
+        )
+
+          ? `${sectionLabel} ${gameTitle}`
+
+          : gameTitle;
 
 
       heading.append(
@@ -4654,83 +4909,112 @@
 
     /*
     ==================================================
-    從網址指定要顯示的學期
+    學期切換
+    ==================================================
+
+    瀏覽器用「上一頁」回首頁時，可能由 BFCache 直接恢復。
+    此時 select 的值已恢復，但卡牌面板 active 狀態可能還停留在舊學期。
+    因此 change 與 pageshow 都統一重新同步。
+    ==================================================
+    */
+
+
+
+    /*
+    ==================================================
+    從網址指定學期
     ==================================================
 
     例如：
     index.html?semester=grade7-second
 
-    這樣遊戲中的「重返七年級下學期」
-    不再依賴瀏覽器上一頁狀態。
+    遊戲頁的「重返七年級下學期」會使用這個參數，
+    因此回首頁後會直接停在正確學期，不會跳回七上。
     ==================================================
     */
 
-    function showSemester(
-      semester
-    ) {
-
-      const valid =
-        [
-          ...semesterPanels
-        ]
-          .some(
-            panel =>
-              panel.id ===
-              semester
-          );
-
+    function applySemesterFromQuery() {
 
       if (
-        !valid
+        !semesterSelect
       ) {
 
         return;
       }
 
 
-      semesterSelect.value =
-        semester;
+      const requestedSemester =
+        new URLSearchParams(
+          window.location.search
+        )
+          .get(
+            "semester"
+          );
+
+
+      if (
+        !requestedSemester
+      ) {
+
+        return;
+      }
+
+
+      const exists =
+        Array.from(
+          semesterSelect.options
+        )
+          .some(
+            option =>
+              option.value ===
+              requestedSemester
+          );
+
+
+      if (
+        exists
+      ) {
+
+        semesterSelect.value =
+          requestedSemester;
+      }
+    }
+
+
+    applySemesterFromQuery();
+
+
+    function syncSemesterPanel() {
+
+
+      if (
+        !semesterSelect
+      ) {
+
+        return;
+
+      }
+
+
+      const selected =
+        semesterSelect.value;
 
 
       semesterPanels
         .forEach(
           panel => {
 
+
             panel.classList.toggle(
               "active",
               panel.id ===
-              semester
+              selected
             );
+
           }
         );
+
     }
-
-
-    const requestedSemester =
-      new URLSearchParams(
-        window.location.search
-      )
-        .get(
-          "semester"
-        );
-
-
-    if (
-      requestedSemester
-    ) {
-
-      showSemester(
-        requestedSemester
-      );
-    }
-
-
-
-    /*
-    ==================================================
-    學期切換
-    ==================================================
-    */
 
 
     semesterSelect
@@ -4738,14 +5022,7 @@
         "change",
         () => {
 
-
-          const selected =
-            semesterSelect.value;
-
-
-          showSemester(
-            selected
-          );
+          syncSemesterPanel();
 
 
           const url =
@@ -4756,7 +5033,7 @@
 
           url.searchParams.set(
             "semester",
-            selected
+            semesterSelect.value
           );
 
 
@@ -4765,7 +5042,272 @@
             "",
             url
           );
+        }
+      );
 
+
+    window.addEventListener(
+      "pageshow",
+      () => {
+
+
+        requestAnimationFrame(
+          () => {
+
+
+            syncSemesterPanel();
+
+
+            setTimeout(
+              syncSemesterPanel,
+              0
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    syncSemesterPanel();
+
+
+    /*
+    ==================================================
+    暱稱設定
+    ==================================================*/
+
+
+    function openNicknameDialog(
+      required = false
+    ) {
+
+      /*
+      一般主動修改先檢查 7 天冷卻。
+      第一次設定或管理員要求重設不受限制。
+      */
+      if (
+        !required
+      ) {
+
+        const changeState =
+          getNicknameChangeState(
+            currentPlayerProfile
+          );
+
+        if (
+          !changeState.allowed
+        ) {
+          window.alert(
+            changeState.message
+          );
+          return;
+        }
+      }
+
+      nicknameIsRequired =
+        Boolean(required);
+
+
+      nicknameError.textContent =
+        "";
+
+
+      nicknameDialogText.textContent =
+        required &&
+        currentPlayerProfile?.nicknameResetReason
+          ? `管理員提醒：${currentPlayerProfile.nicknameResetReason}`
+          : required
+            ? "排行榜會顯示你的遊戲暱稱，不公開顯示 Google 真實姓名。設定完成後，需滿 7 天才能再次自行修改。"
+            : "修改成功後，下一次需再等滿 7 天才能自行修改；若管理員要求重新設定則不受此限制。";
+
+
+      nicknameInput.value =
+        currentPlayerProfile?.nicknameSet
+          ? (
+              currentPlayerProfile.nickname ||
+              ""
+            )
+          : "";
+
+
+      nicknameCancelButton.hidden =
+        nicknameIsRequired;
+
+
+      nicknameSaveButton.textContent =
+        nicknameIsRequired
+          ? "儲存並開始遊戲"
+          : "儲存暱稱";
+
+
+      nicknameModal.hidden =
+        false;
+
+
+      document.body.style.overflow =
+        "hidden";
+
+
+      requestAnimationFrame(
+        () => {
+          nicknameInput.focus();
+          nicknameInput.select();
+        }
+      );
+    }
+
+
+    function closeNicknameDialog() {
+
+      if (
+        nicknameIsRequired
+      ) {
+        return;
+      }
+
+
+      nicknameModal.hidden =
+        true;
+
+
+      document.body.style.overflow =
+        "";
+    }
+
+
+    async function saveNickname() {
+
+      const user =
+        auth.currentUser;
+
+
+      if (
+        !user
+      ) {
+
+        nicknameError.textContent =
+          "登入狀態已失效，請重新登入。";
+
+        return;
+      }
+
+
+      nicknameSaveButton.disabled =
+        true;
+
+
+      nicknameSaveButton.textContent =
+        "儲存中……";
+
+
+      nicknameError.textContent =
+        "";
+
+
+      try {
+
+        const saved =
+          await setPlayerNickname(
+            user,
+            nicknameInput.value
+          );
+
+
+        currentPlayerProfile = {
+          ...(currentPlayerProfile || {}),
+          ...saved
+        };
+
+
+        nicknameIsRequired =
+          false;
+
+
+        nicknameModal.hidden =
+          true;
+
+
+        document.body.style.overflow =
+          "";
+
+
+        renderLoggedIn(
+          user,
+          currentPlayerProfile
+        );
+
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          "暱稱儲存失敗：",
+          error
+        );
+
+
+        nicknameError.textContent =
+          error?.message ||
+          "暱稱儲存失敗，請稍後再試。";
+
+
+      } finally {
+
+        nicknameSaveButton.disabled =
+          false;
+
+
+        nicknameSaveButton.textContent =
+          nicknameIsRequired
+            ? "儲存並開始遊戲"
+            : "儲存暱稱";
+
+      }
+    }
+
+
+    nicknameSaveButton
+      .addEventListener(
+        "click",
+        saveNickname
+      );
+
+
+    nicknameInput
+      .addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key ===
+            "Enter"
+          ) {
+
+            event.preventDefault();
+
+            saveNickname();
+          }
+        }
+      );
+
+
+    nicknameCancelButton
+      .addEventListener(
+        "click",
+        closeNicknameDialog
+      );
+
+
+    compactNicknameButton
+      .addEventListener(
+        "click",
+        () => {
+          openNicknameDialog(
+            false
+          );
         }
       );
 
@@ -4950,8 +5492,28 @@
         false;
 
 
+      compactNicknameButton.hidden =
+        true;
+
+
       compactLogoutButton.hidden =
         true;
+
+
+      currentPlayerProfile =
+        null;
+
+
+      nicknameIsRequired =
+        false;
+
+
+      nicknameModal.hidden =
+        true;
+
+
+      document.body.style.overflow =
+        "";
 
     }
 
@@ -4963,75 +5525,9 @@
     */
 
 
-
-    /*
-    ==================================================
-    玩家暱稱
-    ==================================================
-
-    遊戲暱稱保存在 Firestore：
-    users/{uid}.nickname
-
-    Google 的 displayName 只作為備援。
-    ==================================================
-    */
-
-    async function getPlayerNickname(
-      user
-    ) {
-
-      try {
-
-        const snapshot =
-          await getDoc(
-            doc(
-              db,
-              "users",
-              user.uid
-            )
-          );
-
-
-        if (
-          snapshot.exists()
-        ) {
-
-          const nickname =
-            String(
-              snapshot.data()?.nickname ||
-              ""
-            ).trim();
-
-
-          if (
-            nickname
-          ) {
-
-            return nickname;
-          }
-        }
-
-      } catch (
-        error
-      ) {
-
-        console.warn(
-          "讀取玩家暱稱失敗：",
-          error
-        );
-      }
-
-
-      return (
-        user.displayName ||
-        user.email ||
-        "玩家"
-      );
-    }
-
-
-    async function renderLoggedIn(
-      user
+    function renderLoggedIn(
+      user,
+      profile = null
     ) {
 
 
@@ -5086,9 +5582,13 @@
 
 
       name.textContent =
-        await getPlayerNickname(
-          user
-        );
+        profile &&
+        profile.nicknameSet === true
+          ? getPublicPlayerName(
+              profile,
+              user.uid
+            )
+          : "尚未設定遊戲暱稱";
 
 
       const email =
@@ -5102,8 +5602,9 @@
 
 
       email.textContent =
-        user.email ||
-        "";
+        user.email
+          ? `登入帳號：${user.email}`
+          : "登入成功";
 
 
       text.append(
@@ -5119,6 +5620,41 @@
 
       compactLoginButton.hidden =
         true;
+
+
+      compactNicknameButton.hidden =
+        false;
+
+
+      const nicknameChangeState =
+        getNicknameChangeState(
+          profile
+        );
+
+
+      if (
+        profile &&
+        profile.nicknameSet === true &&
+        !nicknameChangeState.allowed
+      ) {
+
+        compactNicknameButton.textContent =
+          `${nicknameChangeState.remainingDays} 天後可修改`;
+
+        compactNicknameButton.title =
+          nicknameChangeState.message;
+
+      } else {
+
+        compactNicknameButton.textContent =
+          profile &&
+          profile.nicknameSet === true
+            ? "修改暱稱"
+            : "設定暱稱";
+
+        compactNicknameButton.title =
+          "";
+      }
 
 
       compactLogoutButton.hidden =
@@ -5152,24 +5688,30 @@
         }
 
 
-        await renderLoggedIn(
-          user
-        );
-
-
         try {
 
 
-          if (
-            typeof createOrUpdatePlayer ===
-            "function"
-          ) {
-
-
+          currentPlayerProfile =
             await createOrUpdatePlayer(
               user
             );
 
+
+          renderLoggedIn(
+            user,
+            currentPlayerProfile
+          );
+
+
+          if (
+            needsNickname(
+              currentPlayerProfile
+            )
+          ) {
+
+            openNicknameDialog(
+              true
+            );
           }
 
 
@@ -5181,6 +5723,16 @@
           console.warn(
             "玩家資料同步失敗：",
             error
+          );
+
+
+          /*
+          就算玩家資料暫時讀取失敗，
+          也不顯示 Google 真名。
+          */
+          renderLoggedIn(
+            user,
+            null
           );
 
         }
