@@ -2495,7 +2495,7 @@
 
     import {
       getGamesBySemester
-    } from "./js/game-config.js?v=10.0";
+    } from "./js/game-config.js?v=9.1";
 
 
     import {
@@ -4647,6 +4647,80 @@
 
     /*
     ==================================================
+    從網址指定要顯示的學期
+    ==================================================
+
+    例如：
+    index.html?semester=grade7-second
+
+    這樣遊戲中的「重返七年級下學期」
+    不再依賴瀏覽器上一頁狀態。
+    ==================================================
+    */
+
+    function showSemester(
+      semester
+    ) {
+
+      const valid =
+        [
+          ...semesterPanels
+        ]
+          .some(
+            panel =>
+              panel.id ===
+              semester
+          );
+
+
+      if (
+        !valid
+      ) {
+
+        return;
+      }
+
+
+      semesterSelect.value =
+        semester;
+
+
+      semesterPanels
+        .forEach(
+          panel => {
+
+            panel.classList.toggle(
+              "active",
+              panel.id ===
+              semester
+            );
+          }
+        );
+    }
+
+
+    const requestedSemester =
+      new URLSearchParams(
+        window.location.search
+      )
+        .get(
+          "semester"
+        );
+
+
+    if (
+      requestedSemester
+    ) {
+
+      showSemester(
+        requestedSemester
+      );
+    }
+
+
+
+    /*
+    ==================================================
     學期切換
     ==================================================
     */
@@ -4662,19 +4736,28 @@
             semesterSelect.value;
 
 
-          semesterPanels
-            .forEach(
-              panel => {
+          showSemester(
+            selected
+          );
 
 
-                panel.classList.toggle(
-                  "active",
-                  panel.id ===
-                  selected
-                );
-
-              }
+          const url =
+            new URL(
+              window.location.href
             );
+
+
+          url.searchParams.set(
+            "semester",
+            selected
+          );
+
+
+          window.history.replaceState(
+            null,
+            "",
+            url
+          );
 
         }
       );
