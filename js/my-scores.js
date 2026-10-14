@@ -3,8 +3,8 @@
 生活有解．心中有數｜我的成績
 檔案位置：js/my-scores.js
 
-版本：3.3
-學期分類＋模式統計＋暱稱隱私修正版
+版本：3.10
+公開暱稱＋最新遊戲同步修正版
 ==================================================
 
 功能：
@@ -37,6 +37,17 @@
    依 game-config.js 的 semester 自動判斷
 
 7. 相容新版七上 GAME_ID
+
+8. 九上 3-1 geometric-proof、3-2 triangle-centers
+
+9. 八上 4-1／4-2／4-3／第5章改由新版 GAME_ID 與 modeId 顯示
+   直接依 game-config.js 的正式 GAME_ID / modeId 顯示
+   不新增硬編碼，不搬動既有 Firestore 成績
+
+10. 八下 1-1／1-2／1-3 正式遊戲依 game-config.js 的 GAME_ID / modeId 顯示
+
+11. 七下 1-1～3-2 正式遊戲依 game-config.js 的 GAME_ID / modeId 顯示
+    不新增硬編碼，既有 Firestore 成績結構不變
 ==================================================
 */
 
@@ -55,12 +66,16 @@ import {
 
 
 import {
+  getPlayerProfile,
+  getPublicPlayerName
+} from "./firestore.js?v=1.3";
+
+
+import {
   collection,
   getDocs,
   query,
-  where,
-  doc,
-  getDoc
+  where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -829,133 +844,6 @@ function formatScore(
 ==================================================
 */
 
-
-/*
-==================================================
-玩家顯示名稱｜隱私版
-==================================================
-
-規則：
-1. users/{uid}.nickname 有自訂暱稱，而且不同於 Google 姓名
-   → 顯示暱稱
-2. 有 playerNumber / number / code
-   → 顯示玩家編號
-3. 其餘
-   → 由 uid 產生固定的匿名玩家編號
-
-永遠不拿 Google 姓名當排行榜／我的成績的公開名稱。
-==================================================
-*/
-
-function makePlayerNumber(
-  uid
-) {
-
-  const source =
-    String(
-      uid ||
-      ""
-    );
-
-
-  let hash =
-    0;
-
-
-  for (
-    let i = 0;
-    i < source.length;
-    i++
-  ) {
-
-    hash =
-      (
-        (
-          hash *
-          31
-        ) +
-        source.charCodeAt(
-          i
-        )
-      ) >>>
-      0;
-  }
-
-
-  return (
-    "#" +
-    String(
-      hash %
-      10000
-    ).padStart(
-      4,
-      "0"
-    )
-  );
-}
-
-
-function getProfileDisplayLabel(
-  profile,
-  uid
-) {
-
-  const nickname =
-    String(
-      profile?.nickname ||
-      ""
-    ).trim();
-
-
-  const googleName =
-    String(
-      profile?.displayName ||
-      ""
-    ).trim();
-
-
-  if (
-    nickname &&
-    nickname !==
-      googleName
-  ) {
-
-    return nickname;
-  }
-
-
-  const number =
-    profile?.playerNumber ??
-    profile?.number ??
-    profile?.code ??
-    profile?.studentNumber ??
-    "";
-
-
-  if (
-    String(
-      number
-    ).trim()
-  ) {
-
-    return (
-      "玩家 " +
-      String(
-        number
-      ).trim()
-    );
-  }
-
-
-  return (
-    "玩家 " +
-    makePlayerNumber(
-      uid
-    )
-  );
-}
-
-
 onAuthStateChanged(
 
   auth,
@@ -970,8 +858,32 @@ onAuthStateChanged(
     }
 
 
-    await renderUser(
-      user
+    let profile =
+      null;
+
+
+    try {
+
+      profile =
+        await getPlayerProfile(
+          user.uid
+        );
+
+
+    } catch (
+      error
+    ) {
+
+      console.warn(
+        "讀取玩家暱稱失敗：",
+        error
+      );
+    }
+
+
+    renderUser(
+      user,
+      profile
     );
 
 
@@ -1002,55 +914,9 @@ onAuthStateChanged(
 ==================================================
 */
 
-
-async function getCurrentPlayerLabel(
-  user
-) {
-
-  try {
-
-    const snapshot =
-      await getDoc(
-        doc(
-          db,
-          "users",
-          user.uid
-        )
-      );
-
-
-    if (
-      snapshot.exists()
-    ) {
-
-      return getProfileDisplayLabel(
-        snapshot.data(),
-        user.uid
-      );
-    }
-
-  } catch (
-    error
-  ) {
-
-    console.warn(
-      "讀取玩家暱稱失敗：",
-      error
-    );
-  }
-
-
-  return (
-    "玩家 " +
-    makePlayerNumber(
-      user?.uid
-    )
-  );
-}
-
-
-async function renderUser(
-  user
+function renderUser(
+  user,
+  profile = null
 ){
 
   if (!userStatus){
@@ -1097,9 +963,10 @@ async function renderUser(
 
 
   name.textContent =
-    `目前登入：${
-      await getCurrentPlayerLabel(
-        user
+    `遊戲暱稱：${
+      getPublicPlayerName(
+        profile,
+        user.uid
       )
     }`;
 
@@ -1130,8 +997,7 @@ async function loadMyScores(
 
         query(
 
-          collection(
-            db,
+          collection(db,
             "scores"
           ),
 
@@ -1172,7 +1038,10 @@ async function loadMyScores(
         getTimestampMilliseconds(
           a.createdAt
         )
-    );renderMyScores(
+    );
+
+
+    renderMyScores(
       records
     );
 
@@ -2127,10 +1996,7 @@ function createGameStatistic(
 
 
   wrapper.className =
-    "game-stat";
-
-
-  const valueElement =
+    "game-stat";const valueElement =
     document.createElement(
       "div"
     );
@@ -2170,7 +2036,8 @@ function createGameStatistic(
 }
 
 
-/*==================================================
+/*
+==================================================
 模式統計
 ==================================================
 */
@@ -3125,10 +2992,7 @@ function showError(
   ){
     semesterFilterSection.hidden =
       true;
-  }
-
-
-  if (
+  }if (
     statsSection
   ){
     statsSection.style.display =
@@ -3169,5 +3033,5 @@ function showError(
 
 
 console.log(
-  "my-scores.js v3.3 已成功載入"
+  "my-scores.js v3.10 公開暱稱＋最新遊戲同步版已成功載入"
 );
