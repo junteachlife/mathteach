@@ -233,7 +233,7 @@ button,input{font-family:inherit}button{touch-action:manipulation}.hidden{displa
   }
 }
 
-</style></head><body><div class="page-shell"><div id="commonHeaderMount"></div><main class="game-card"><div class="game-card-return-row"><a id="semester-return-link" class="semester-return-link" href="../index.html">↩️ 重返七年級下學期</a></div><header class="game-header"><h1 class="game-title">🧩 1-1 二元一次方程式大挑戰</h1><p class="game-subtitle">從二元一次式、代入求值與化簡，進一步判斷二元一次方程式及其解，最後挑戰正整數解。</p><div class="concept-strip"><span class="concept-chip">🧮 二元一次式</span><span class="concept-chip">🔢 代入求值</span><span class="concept-chip">🧹 合併同類項</span><span class="concept-chip">🟰 二元一次方程式</span><span class="concept-chip">🎯 方程式的解</span><span class="concept-chip">🔥 正整數解</span></div></header><section id="start-screen" class="screen"><h2>選擇挑戰模式</h2><div class="mode-grid"><article class="mode-card"><div class="mode-icon">🧮</div><div class="mode-title">二元一次式與求值</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">生活列式、二元一次式、代入 x、y 求值；以課本基礎題為主並穿插進階題。</p><button class="mode-button" data-mode="expressionBasics" type="button">開始挑戰</button></article>
+</style></head><body><div class="page-shell"><div id="commonHeaderMount"></div><main class="game-card"><div class="game-card-return-row"><a id="semester-return-link" class="semester-return-link" href="../index.html?semester=grade7-second">↩️ 重返七年級下學期</a></div><header class="game-header"><h1 class="game-title">🧩 1-1 二元一次方程式大挑戰</h1><p class="game-subtitle">從二元一次式、代入求值與化簡，進一步判斷二元一次方程式及其解，最後挑戰正整數解。</p><div class="concept-strip"><span class="concept-chip">🧮 二元一次式</span><span class="concept-chip">🔢 代入求值</span><span class="concept-chip">🧹 合併同類項</span><span class="concept-chip">🟰 二元一次方程式</span><span class="concept-chip">🎯 方程式的解</span><span class="concept-chip">🔥 正整數解</span></div></header><section id="start-screen" class="screen"><h2>選擇挑戰模式</h2><div class="mode-grid"><article class="mode-card"><div class="mode-icon">🧮</div><div class="mode-title">二元一次式與求值</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">生活列式、二元一次式、代入 x、y 求值；以課本基礎題為主並穿插進階題。</p><button class="mode-button" data-mode="expressionBasics" type="button">開始挑戰</button></article>
 <article class="mode-card"><div class="mode-icon">🧹</div><div class="mode-title">二元一次式化簡</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">合併同類項、去括號、分配律與正負號整理，包含基礎與精熟題。</p><button class="mode-button" data-mode="simplify" type="button">開始挑戰</button></article>
 <article class="mode-card"><div class="mode-icon">🎯</div><div class="mode-title">方程式與解</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">辨認二元一次方程式、代入檢驗一組解、已知一個未知數反求另一個。</p><button class="mode-button" data-mode="equationSolution" type="button">開始挑戰</button></article>
 <article class="mode-card"><div class="mode-icon">🔎</div><div class="mode-title">正整數解與合理性</div><div class="mode-meta"><span class="mode-tag">核心模式</span><span class="mode-tag">10 題</span></div><p class="mode-description">加入正整數條件後列表尋找合理解，對應課本與習作的精熟題型。</p><button class="mode-button" data-mode="integerSolutions" type="button">開始挑戰</button></article>
@@ -259,9 +259,48 @@ button,input{font-family:inherit}button{touch-action:manipulation}.hidden{displa
         </button>
       </div>
     </div><div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div><div class="question-card"><div id="question-label" class="question-label">題目</div><div id="question-content" class="question-content"></div><div class="scratchpad-row"><div id="scratchpad-mobile-button"></div></div></div><div id="answer-area" class="answer-area"></div><div id="feedback" class="feedback"></div><div id="explanation" class="explanation hidden"></div><div class="quiz-submit-row"><button id="submit-button" class="game-button primary" type="button">送出答案（Enter）</button><button id="next-button" class="game-button purple hidden" type="button">下一題（Enter）</button></div></section><section id="result-screen" class="screen hidden"><div class="result-panel"><h2>🏅 本次挑戰結果</h2><div id="final-score" class="result-score">0 分</div><div id="final-stars" class="result-stars">★★☆☆☆</div><p id="final-comment"></p><div class="result-grid"><div class="result-stat">答對<br><span id="final-correct">0</span> 題</div><div class="result-stat">答錯<br><span id="final-wrong">0</span> 題</div><div class="result-stat">最高連擊<br><span id="final-combo">0</span></div><div class="result-stat">作答時間<br><span id="final-time">00:00</span></div></div><div id="save-status" class="save-status"></div><div class="button-row"><button id="again-button" class="game-button purple" type="button">🔄 再玩一次</button><button id="review-button" class="game-button orange" type="button">📖 查看本次詳解</button><button id="result-mode-button" class="game-button secondary" type="button">重選模式</button></div></div></section><section id="review-screen" class="screen hidden"><h2>📖 本次詳解</h2><p style="color:#64748b;font-weight:700">答對、答錯都保留解析；解法依課本常用步驟整理，重點完整但不刻意拉長。</p><div id="review-list" class="review-list"></div><div class="button-row"><button id="review-again-button" class="game-button purple" type="button">🔄 再玩一次</button><button id="review-result-button" class="game-button secondary" type="button">回到測驗結果</button></div></section></main></div><script src="../js/common-header.js"></script><script src="../js/scratchpad.js"></script><script src="../js/scratchpad-template.js"></script><script src="../js/sound-manager.js?v=1"></script><script src="../js/math-expression-input.js?v=23"></script><script src="../js/question-layout.js?v=2"></script>
+
 <script>
-(()=>{const link=document.getElementById("semester-return-link");if(!link)return;link.addEventListener("click",event=>{try{const ref=String(document.referrer||"");if(!ref)return;const u=new URL(ref);const same=u.origin===location.origin;const path=u.pathname.replace(/\/+$/,"");const isHome=path===""||path.endsWith("/index.html")||path.endsWith("/mathteach");if(same&&isHome&&history.length>1){event.preventDefault();history.back()}}catch(e){}})})();
+(() => {
+  const link =
+    document.getElementById(
+      "semester-return-link"
+    );
+
+  if (!link) return;
+
+  /*
+  不依目前 games/ 的資料夾深度計算返回網址。
+  無論遊戲在：
+    /games/game.html
+  或未來搬到：
+    /games/grade7-2/game.html
+  都會回到網站首頁的「七年級下學期」。
+  */
+  const marker =
+    "/games/";
+
+  const path =
+    window.location.pathname;
+
+  const markerIndex =
+    path.indexOf(
+      marker
+    );
+
+  const siteRoot =
+    markerIndex >= 0
+      ? path.slice(
+          0,
+          markerIndex
+        )
+      : "";
+
+  link.href =
+    `${siteRoot}/index.html?semester=grade7-second`;
+})();
 </script>
+
 <script type="module">"use strict";
 const GAME_ID="two-variable-linear-equation";
 const CHAPTER="1-1";
@@ -579,18 +618,51 @@ function mathWorkHTML(lines){return `<div class="math-work">${lines.map(line=>`<
 function signedNumberList(values){return values.map((n,i)=>{n=Number(n);if(i===0)return fmt(n);return n>=0?`＋${fmt(n)}`:`－${fmt(Math.abs(n))}`}).join("")}
 
 function playGameSound(method){try{const m=window.MathGameSound||window.GameSound;if(m&&typeof m[method]==="function")Promise.resolve(m[method]()).catch(()=>{})}catch(e){console.warn("音效播放失敗",e)}}
-function showOnly(id){
-  ["start-screen","quiz-screen","result-screen","review-screen"].forEach(
-    x=>$(x).classList.toggle("hidden",x!==id)
-  );
+function showOnly(id) {
 
-  if(id==="quiz-screen"){
+  [
+    "start-screen",
+    "quiz-screen",
+    "result-screen",
+    "review-screen"
+  ]
+    .forEach(
+      screenId =>
+        $(
+          screenId
+        )
+          .classList
+          .toggle(
+            "hidden",
+            screenId !==
+              id
+          )
+    );
+
+
+  if (
+    id ===
+    "quiz-screen"
+  ) {
+
     ensureScratchpadButton();
-    if(typeof window.showGameScratchpadButton==="function"){
+
+
+    if (
+      typeof window.showGameScratchpadButton ===
+      "function"
+    ) {
+
       window.showGameScratchpadButton();
     }
-  }else{
-    if(typeof window.hideGameScratchpadButton==="function"){
+
+  } else {
+
+    if (
+      typeof window.hideGameScratchpadButton ===
+      "function"
+    ) {
+
       window.hideGameScratchpadButton();
     }
   }
@@ -598,27 +670,100 @@ function showOnly(id){
 function startTimer(){startTime=Date.now();elapsed=0;$("timer-display").textContent="00:00";clearInterval(timerId);timerId=setInterval(()=>{elapsed=Math.floor((Date.now()-startTime)/1000);$("timer-display").textContent=formatTime(elapsed)},1000)}
 function stopTimer(){clearInterval(timerId);timerId=null;if(startTime)elapsed=Math.max(elapsed,Math.floor((Date.now()-startTime)/1000))}
 function formatTime(s){return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}
-function moveScratchpadButton(){const mount=$("scratchpad-mobile-button"),btn=$("scratchpadOpenButton");if(mount&&btn&&!mount.contains(btn))mount.appendChild(btn)}
-function ensureScratchpadButton(){
+function moveScratchpadButton() {
+
+  const mount =
+    $("scratchpad-mobile-button");
+
+  const button =
+    $("scratchpadOpenButton");
+
+  if (
+    mount &&
+    button &&
+    !mount.contains(
+      button
+    )
+  ) {
+
+    mount.appendChild(
+      button
+    );
+  }
+}
+function ensureScratchpadButton() {
+
+  /*
+  scratchpad-template.js 會建立全站共用的
+  #scratchpadOpenButton。
+
+  某些遊戲載入較快時，題目已顯示，
+  共用計算紙按鈕才稍後建立，因此需要重試搬入題目框。
+  */
+
   moveScratchpadButton();
 
-  let c=0;
-  const t=setInterval(()=>{
-    c++;
-    moveScratchpadButton();
 
-    if($("scratchpadOpenButton")){
-      if(typeof window.showGameScratchpadButton==="function"){
-        window.showGameScratchpadButton();
-      }
-      clearInterval(t);
-      return;
-    }
+  if (
+    typeof window.showGameScratchpadButton ===
+    "function"
+  ) {
 
-    if(c>=30){
-      clearInterval(t);
-    }
-  },60);
+    window.showGameScratchpadButton();
+  }
+
+
+  let count =
+    0;
+
+
+  const timer =
+    window.setInterval(
+      () => {
+
+        count +=
+          1;
+
+        moveScratchpadButton();
+
+
+        const button =
+          $("scratchpadOpenButton");
+
+
+        if (
+          button
+        ) {
+
+          if (
+            typeof window.showGameScratchpadButton ===
+            "function"
+          ) {
+
+            window.showGameScratchpadButton();
+          }
+
+
+          window.clearInterval(
+            timer
+          );
+
+          return;
+        }
+
+
+        if (
+          count >=
+          40
+        ) {
+
+          window.clearInterval(
+            timer
+          );
+        }
+      },
+      75
+    );
 }
 
 function renderAnswer(q){
