@@ -3,7 +3,7 @@
 數學遊戲樂園：我的成績
 檔案位置：js/my-scores.js
 
-版本：3.1
+版本：3.2
 排行榜規則同步版
 ==================================================
 
@@ -52,13 +52,15 @@ import {
   getGameName,
   getModeName,
   getGameOrder
-} from "./game-config.js?v=10.0";
+} from "./game-config.js?v=10.1";
 
 import {
   collection,
   getDocs,
   query,
-  where
+  where,
+  doc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -244,6 +246,67 @@ function getHistoryModeText(
 }
 
 
+
+/*
+==================================================
+取得目前登入玩家暱稱
+==================================================
+*/
+
+async function getCurrentPlayerNickname(
+  user
+) {
+
+  try {
+
+    const snapshot =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        )
+      );
+
+
+    if (
+      snapshot.exists()
+    ) {
+
+      const nickname =
+        String(
+          snapshot.data()?.nickname ||
+          ""
+        ).trim();
+
+
+      if (
+        nickname
+      ) {
+
+        return nickname;
+      }
+    }
+
+  } catch (
+    error
+  ) {
+
+    console.warn(
+      "我的成績讀取玩家暱稱失敗：",
+      error
+    );
+  }
+
+
+  return (
+    user.displayName ||
+    user.email ||
+    "玩家"
+  );
+}
+
+
 /*
 ==================================================
 監聽登入狀態
@@ -262,7 +325,7 @@ onAuthStateChanged(
       return;
     }
 
-    renderUser(
+    await renderUser(
       user
     );
 
@@ -291,7 +354,7 @@ onAuthStateChanged(
 ==================================================
 */
 
-function renderUser(
+async function renderUser(
   user
 ) {
   if (!userStatus) {
@@ -341,9 +404,9 @@ function renderUser(
 
   userName.textContent =
     `目前登入：${
-      user.displayName ||
-      user.email ||
-      "玩家"
+      await getCurrentPlayerNickname(
+        user
+      )
     }`;
 
   userStatus.appendChild(
@@ -997,4 +1060,758 @@ function createGameStatistic(
   label
 ) {
 
-  const wrapper =
+  const wrapper =document.createElement(
+      "div"
+    );
+
+  wrapper.className =
+    "game-stat";
+
+
+  const valueElement =
+    document.createElement(
+      "div"
+    );
+
+  valueElement.className =
+    "game-stat-value";
+
+  valueElement.textContent =
+    value;
+
+
+  const labelElement =
+    document.createElement(
+      "div"
+    );
+
+  labelElement.className =
+    "game-stat-label";
+
+  labelElement.textContent =
+    label;
+
+
+  wrapper.appendChild(
+    valueElement
+  );
+
+  wrapper.appendChild(
+    labelElement
+  );
+
+
+  return wrapper;
+}
+
+
+/*
+==================================================
+顯示最近遊玩紀錄
+==================================================
+*/
+
+function renderHistory(
+  records
+) {
+
+  if (!historyList) {
+    return;
+  }
+
+
+  historyList.innerHTML =
+    "";
+
+
+  /*
+  最近 10 筆
+  */
+
+  const recentRecords =
+    records.slice(
+      0,
+      10
+    );
+
+
+  recentRecords.forEach(
+    (record) => {
+
+      const listItem =
+        document.createElement(
+          "li"
+        );
+
+      listItem.className =
+        "history-item";
+
+
+      /*
+      左側資訊
+      */
+
+      const information =
+        document.createElement(
+          "div"
+        );
+
+
+      /*
+      遊戲名稱
+      */
+
+      const gameName =
+        document.createElement(
+          "div"
+        );
+
+      gameName.className =
+        "history-game";
+
+      gameName.textContent =
+        getGameName(
+          record.game
+        );
+
+
+      information.appendChild(
+        gameName
+      );
+
+
+      /*
+      第一行：
+      日期＋模式
+      */
+
+      const basicDetails =
+        document.createElement(
+          "div"
+        );
+
+      basicDetails.className =
+        "history-detail";
+
+
+      const modeText =
+        getHistoryModeText(
+          record.game,
+          record.mode
+        );
+
+
+      basicDetails.textContent =
+        `${formatDate(
+          record.createdAt
+        )}` +
+        `${
+          modeText
+            ? `｜${modeText}`
+            : ""
+        }`;
+
+
+      information.appendChild(
+        basicDetails
+      );
+
+
+      /*
+      ================================================
+      timed 固定時間型
+      ================================================
+      */
+
+      if (
+        getRankingType(
+          record.game
+        ) ===
+        "timed"
+      ) {
+
+        const performance =
+          document.createElement(
+            "div"
+          );
+
+        performance.className =
+          "history-detail";
+
+        performance.textContent =
+          `✅ 答對 ${toSafeNumber(
+            record.correctCount
+          )} 題` +
+          `｜❌ 答錯 ${toSafeNumber(
+            record.wrongCount
+          )} 題` +
+          `｜🔥 最高連擊 ${toSafeNumber(
+            record.maxCombo
+          )}`;
+
+
+        information.appendChild(
+          performance
+        );
+      }
+
+
+      /*
+      ================================================
+      speed 完成速度型
+      ================================================
+      */
+
+      else {
+
+        const performance =
+          document.createElement(
+            "div"
+          );
+
+        performance.className =
+          "history-detail";
+
+
+        const playTime =
+          getPlayTime(
+            record
+          );
+
+
+        performance.textContent =
+          Number.isFinite(
+            playTime
+          )
+            ? `⏱ 完成時間：${formatPlayTime(
+                playTime
+              )}`
+            : "⏱ 完成時間：未記錄";
+
+
+        information.appendChild(
+          performance
+        );
+
+
+        /*
+        一般完成型仍保留
+        答對、答錯資料。
+        */
+
+        const answerDetails =
+          document.createElement(
+            "div"
+          );
+
+        answerDetails.className =
+          "history-detail";
+
+        answerDetails.textContent =
+          `✅ 答對 ${toSafeNumber(
+            record.correctCount
+          )} 題` +
+          `｜❌ 答錯 ${toSafeNumber(
+            record.wrongCount
+          )} 題`;
+
+
+        information.appendChild(
+          answerDetails
+        );
+      }
+
+
+      /*
+      右側分數
+      */
+
+      const scoreElement =
+        document.createElement(
+          "div"
+        );
+
+      scoreElement.className =
+        "history-score";
+
+
+      const scoreNumber =
+        document.createElement(
+          "div"
+        );
+
+      scoreNumber.textContent =
+        toSafeNumber(
+          record.score
+        );
+
+
+      const scoreLabel =
+        document.createElement(
+          "div"
+        );
+
+      scoreLabel.className =
+        "history-score-label";
+
+      scoreLabel.textContent =
+        "分";
+
+
+      scoreElement.appendChild(
+        scoreNumber
+      );
+
+      scoreElement.appendChild(
+        scoreLabel
+      );
+
+
+      /*
+      組合
+      */
+
+      listItem.appendChild(
+        information
+      );
+
+      listItem.appendChild(
+        scoreElement
+      );
+
+
+      historyList.appendChild(
+        listItem
+      );
+    }
+  );
+}
+
+
+/*
+==================================================
+安全轉換數字
+==================================================
+*/
+
+function toSafeNumber(
+  value
+) {
+
+  const number =
+    Number(
+      value
+    );
+
+  return Number.isFinite(
+    number
+  )
+    ? number
+    : 0;
+}
+
+
+/*
+==================================================
+取得 playTime
+==================================================
+*/
+
+function getPlayTime(
+  record
+) {
+
+  const value =
+    Number(
+      record?.playTime
+    );
+
+  if (
+    Number.isFinite(
+      value
+    ) &&
+    value >=
+    0
+  ) {
+
+    return value;
+  }
+
+  return Number.POSITIVE_INFINITY;
+}
+
+
+/*
+==================================================
+完成時間格式
+==================================================
+*/
+
+function formatPlayTime(
+  seconds
+) {
+
+  const safeSeconds =
+    Math.max(
+      0,
+
+      Math.round(
+        toSafeNumber(
+          seconds
+        )
+      )
+    );
+
+
+  if (
+    safeSeconds <
+    60
+  ) {
+
+    return (
+      `${safeSeconds} 秒`
+    );
+  }
+
+
+  const minutes =
+    Math.floor(
+      safeSeconds /
+      60
+    );
+
+
+  const remainingSeconds =
+    safeSeconds %
+    60;
+
+
+  if (
+    remainingSeconds ===
+    0
+  ) {
+
+    return (
+      `${minutes} 分`
+    );
+  }
+
+
+  return (
+    `${minutes} 分 ` +
+    `${remainingSeconds} 秒`
+  );
+}
+
+
+/*
+==================================================
+取得時間毫秒數
+==================================================
+*/
+
+function getTimestampMilliseconds(
+  timestamp
+) {
+
+  if (!timestamp) {
+    return 0;
+  }
+
+
+  try {
+
+    if (
+      typeof timestamp.toMillis ===
+      "function"
+    ) {
+
+      return timestamp.toMillis();
+    }
+
+
+    if (
+      typeof timestamp.toDate ===
+      "function"
+    ) {
+
+      return timestamp
+        .toDate()
+        .getTime();
+    }
+
+
+    if (
+      timestamp.seconds !==
+      undefined
+    ) {
+
+      return (
+        Number(
+          timestamp.seconds
+        ) *
+        1000
+      );
+    }
+
+
+    return (
+      new Date(
+        timestamp
+      ).getTime() ||
+      0
+    );
+
+  } catch (error) {
+
+    console.warn(
+      "時間轉換失敗：",
+      error
+    );
+
+    return 0;
+  }
+}
+
+
+/*
+==================================================
+日期格式
+==================================================
+*/
+
+function formatDate(
+  timestamp
+) {
+
+  if (!timestamp) {
+
+    return "時間未記錄";
+  }
+
+
+  try {
+
+    let date;
+
+
+    if (
+      typeof timestamp.toDate ===
+      "function"
+    ) {
+
+      date =
+        timestamp.toDate();
+
+    } else if (
+      timestamp.seconds !==
+      undefined
+    ) {
+
+      date =
+        new Date(
+          Number(
+            timestamp.seconds
+          ) *
+          1000
+        );
+
+    } else {
+
+      date =
+        new Date(
+          timestamp
+        );
+    }
+
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+
+      return "時間格式錯誤";
+    }
+
+
+    return new Intl.DateTimeFormat(
+      "zh-TW",
+      {
+        year:
+          "numeric",
+
+        month:
+          "2-digit",
+
+        day:
+          "2-digit",
+
+        hour:
+          "2-digit",
+
+        minute:
+          "2-digit",
+
+        hour12:
+          false
+      }
+    ).format(
+      date
+    );
+
+  } catch (error) {
+
+    console.warn(
+      "日期格式轉換失敗：",
+      error
+    );
+
+    return "時間格式錯誤";
+  }
+}
+
+
+/*
+==================================================
+載入狀態
+==================================================
+*/
+
+function setLoadingState() {
+
+  if (loadingMessage) {
+
+    loadingMessage.hidden =
+      false;
+  }
+
+
+  if (errorMessage) {
+
+    errorMessage.hidden =
+      true;
+  }
+
+
+  if (emptyMessage) {
+
+    emptyMessage.hidden =
+      true;
+  }
+
+
+  if (statsSection) {
+
+    statsSection.style.display =
+      "none";
+  }
+}
+
+
+/*
+==================================================
+尚未登入
+==================================================
+*/
+
+function showLoginRequiredMessage() {
+
+  if (userStatus) {
+
+    userStatus.textContent =
+      "目前尚未登入，請先回到首頁登入 Google 帳號。";
+  }
+
+
+  if (loadingMessage) {
+
+    loadingMessage.hidden =
+      true;
+  }
+
+
+  if (emptyMessage) {
+
+    emptyMessage.hidden =
+      true;
+  }
+
+
+  if (statsSection) {
+
+    statsSection.style.display =
+      "none";
+  }
+
+
+  if (errorMessage) {
+
+    errorMessage.hidden =
+      false;
+
+    errorMessage.textContent =
+      "請先登入 Google 帳號，才能查看自己的成績。";
+  }
+}
+
+
+/*
+==================================================
+錯誤
+==================================================
+*/
+
+function showError(
+  error
+) {
+
+  if (loadingMessage) {
+
+    loadingMessage.hidden =
+      true;
+  }
+
+
+  if (emptyMessage) {
+
+    emptyMessage.hidden =
+      true;
+  }
+
+
+  if (statsSection) {
+
+    statsSection.style.display =
+      "none";
+  }
+
+
+  if (!errorMessage) {
+
+    return;
+  }
+
+
+  errorMessage.hidden =
+    false;
+
+
+  if (
+    error?.code ===
+    "permission-denied"
+  ) {
+
+    errorMessage.textContent =
+      "目前沒有讀取個人成績的權限，請確認 Firestore Rules。";
+
+    return;
+  }
+
+
+  errorMessage.textContent =
+    `個人成績載入失敗：${
+      error?.message ||
+      "未知錯誤"
+    }`;
+}
