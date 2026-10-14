@@ -4,6 +4,9 @@
 檔案位置：js/common-header.js
 ==================================================
 
+版本：2.0
+遊戲進行中離站防呆版
+
 功能：
 1. 回到數學遊戲樂園首頁
 2. 前往排行榜
@@ -11,6 +14,10 @@
 4. 自動依 common-header.js 的位置尋找網站根目錄
 5. 不受目前頁面位於根目錄或 games 資料夾影響
 6. 避免導覽連結錯誤跳到其他遊戲
+7. 自動偵測正式答題畫面
+8. 正式答題中點「首頁／排行榜／我的成績」會先確認
+9. 結果畫面、開始畫面、檢討畫面自動解除防呆
+10. 支援舊遊戲：若找不到標準 quiz-screen，會以計算紙按鈕顯示狀態作備援判斷
 ==================================================
 */
 
@@ -447,6 +454,250 @@
   ==================================================
   */
 
+
+  /*
+  ==================================================
+  遊戲進行中離站防呆
+  ==================================================
+
+  不要求每一個遊戲另外修改：
+  1. 優先自動偵測標準答題畫面。
+  2. 舊遊戲若沒有標準畫面 ID，
+     再用「計算紙按鈕目前是否顯示」作備援。
+  3. 也保留 setGameActive() 給未來特殊遊戲手動控制。
+  ==================================================
+  */
+
+  const GAME_ACTIVE_SCREEN_SELECTORS = [
+    "#quiz-screen",
+    "#quizScreen",
+    "[data-screen='quiz']",
+    "[data-game-screen='quiz']"
+  ];
+
+  let manualGameActive =
+    null;
+
+  let detectedGameActive =
+    false;
+
+  let gameStateObserver =
+    null;
+
+  function isElementActuallyVisible(
+    element
+  ) {
+    if (!element) {
+      return false;
+    }
+
+    if (
+      element.hidden ||
+      element.getAttribute(
+        "aria-hidden"
+      ) === "true" ||
+      element.classList.contains(
+        "hidden"
+      )
+    ) {
+      return false;
+    }
+
+    const style =
+      window.getComputedStyle(
+        element
+      );
+
+    return (
+      style.display !== "none" &&
+      style.visibility !== "hidden"
+    );
+  }
+
+  function findVisibleQuizScreen() {
+    for (
+      const selector of
+      GAME_ACTIVE_SCREEN_SELECTORS
+    ) {
+      const element =
+        document.querySelector(
+          selector
+        );
+
+      if (
+        isElementActuallyVisible(
+          element
+        )
+      ) {
+        return element;
+      }
+    }
+
+    return null;
+  }
+
+  function isScratchpadChallengeVisible() {
+    const button =
+      document.getElementById(
+        "scratchpadOpenButton"
+      );
+
+    if (!button) {
+      return false;
+    }
+
+    return isElementActuallyVisible(
+      button
+    );
+  }
+
+  function detectGameActive() {
+    /*
+    正式新版遊戲：
+    quiz-screen 顯示 = 正在答題。
+    */
+    if (
+      findVisibleQuizScreen()
+    ) {
+      return true;
+    }
+
+    /*
+    如果頁面本身有標準 quiz-screen，
+    但現在沒有顯示，表示已經在開始／結果／檢討畫面。
+    此時不使用計算紙備援，避免結果頁誤判。
+    */
+    const hasStandardQuizScreen =
+      GAME_ACTIVE_SCREEN_SELECTORS
+        .some(
+          selector =>
+            Boolean(
+              document.querySelector(
+                selector
+              )
+            )
+        );
+
+    if (
+      hasStandardQuizScreen
+    ) {
+      return false;
+    }
+
+    /*
+    舊遊戲備援：
+    依目前共用規則，正式答題時才會顯示計算紙按鈕。
+    */
+    return isScratchpadChallengeVisible();
+  }
+
+  function refreshGameActiveState() {
+    detectedGameActive =
+      detectGameActive();
+
+    if (document.body) {
+      document.body.classList.toggle(
+        "math-game-navigation-guard-active",
+        isGameActive()
+      );
+    }
+
+    return isGameActive();
+  }
+
+  function isGameActive() {
+    if (
+      typeof manualGameActive ===
+      "boolean"
+    ) {
+      return manualGameActive;
+    }
+
+    return detectedGameActive;
+  }
+
+  function setGameActive(
+    active = null
+  ) {
+    manualGameActive =
+      typeof active === "boolean"
+        ? active
+        : null;
+
+    refreshGameActiveState();
+
+    return isGameActive();
+  }
+
+  function startGameStateObserver() {
+    if (
+      gameStateObserver ||
+      !document.body
+    ) {
+      return;
+    }
+
+    refreshGameActiveState();
+
+    gameStateObserver =
+      new MutationObserver(
+        () => {
+          refreshGameActiveState();
+        }
+      );
+
+    gameStateObserver.observe(
+      document.body,
+      {
+        subtree: true,
+        childList: true,
+        attributes: true,
+        attributeFilter: [
+          "class",
+          "hidden",
+          "aria-hidden",
+          "style"
+        ]
+      }
+    );
+
+    window.addEventListener(
+      "pageshow",
+      refreshGameActiveState
+    );
+  }
+
+  function stopGameStateObserver() {
+    if (
+      gameStateObserver
+    ) {
+      gameStateObserver.disconnect();
+      gameStateObserver =
+        null;
+    }
+  }
+
+  function confirmLeaveGame(
+    destinationLabel
+  ) {
+    if (
+      !isGameActive()
+    ) {
+      return true;
+    }
+
+    const label =
+      destinationLabel ||
+      "其他頁面";
+
+    return window.confirm(
+      "⚠️ 挑戰尚未結束\n\n" +
+      `你正在進行遊戲，確定要前往「${label}」嗎？\n\n` +
+      "按「取消」可繼續目前的挑戰。"
+    );
+  }
+
+
   function createLink({
     href,
     icon,
@@ -510,7 +761,43 @@
     link.addEventListener(
       "click",
       (event) => {
+
+        /*
+        先阻止外層卡片接收到導覽點擊。
+        */
         event.stopPropagation();
+
+
+        /*
+        正式答題中：
+        首頁／排行榜／我的成績都先做離站確認。
+
+        開始畫面、結果畫面、檢討畫面：
+        isGameActive() 會是 false，因此直接前往。
+        */
+        if (
+          isGameActive()
+        ) {
+
+          event.preventDefault();
+
+          event.stopImmediatePropagation();
+
+          const canLeave =
+            confirmLeaveGame(
+              label
+            );
+
+
+          if (
+            canLeave
+          ) {
+
+            window.location.assign(
+              link.href
+            );
+          }
+        }
       }
     );
 
@@ -547,6 +834,11 @@
     document.body.classList.add(
       BODY_CLASS
     );
+
+    /*
+    共用導覽列建立時，同步啟動遊戲狀態偵測。
+    */
+    startGameStateObserver();
 
     const header =
       document.createElement(
@@ -754,7 +1046,13 @@
       document.body.classList.remove(
         BODY_CLASS
       );
+
+      document.body.classList.remove(
+        "math-game-navigation-guard-active"
+      );
     }
+
+    stopGameStateObserver();
   }
 
   /*
@@ -772,7 +1070,17 @@
 
     getSiteRootUrl,
 
-    createSiteUrl
+    createSiteUrl,
+
+    /*
+    以下 API 主要提供未來特殊遊戲使用。
+    一般遊戲不需要另外呼叫，會自動偵測。
+    */
+    isGameActive,
+
+    setGameActive,
+
+    refreshGameActiveState
   };
 
   /*
