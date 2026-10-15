@@ -1473,7 +1473,138 @@
       }
     }
 
-  </style>
+  
+
+/*
+==================================================
+v9.3 HTML｜頁首導覽＋學期整合精簡版
+==================================================
+*/
+.header.compact-header{
+  padding:18px 20px;
+  text-align:left;
+}
+
+.header-title-row{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  min-width:0;
+  margin-bottom:10px;
+}
+
+.header-title-row h1{
+  flex:0 0 auto;
+  margin:0;
+  font-size:32px;
+  white-space:nowrap;
+}
+
+.header-title-row .subtitle{
+  min-width:0;
+  margin:0;
+  line-height:1.35;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.header.compact-header .ranking-rule{
+  display:none;
+}
+
+.header.compact-header .user-box{
+  margin-top:0;
+  padding:10px 12px;
+  font-size:15px;
+}
+
+.header-controls-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:12px;
+  min-width:0;
+}
+
+.header.compact-header .top-actions{
+  flex:0 0 auto;
+  justify-content:flex-start;
+  gap:8px;
+  margin:0;
+  padding:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+.header.compact-header .top-action-link{
+  min-width:0;
+  min-height:42px;
+  padding:9px 14px;
+  font-size:15px;
+}
+
+.header.compact-header .semester-card{
+  flex:0 1 360px;
+  justify-content:flex-end;
+  gap:8px;
+  margin:0;
+  padding:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+.header.compact-header .semester-label{
+  flex:0 0 auto;
+  font-size:15px;
+  white-space:nowrap;
+}
+
+.header.compact-header .semester-select{
+  width:min(240px,100%);
+  min-height:42px;
+  padding:7px 12px;
+  font-size:15px;
+}
+
+@media (max-width:800px){
+  .header.compact-header{padding:16px;}
+  .header-title-row{gap:10px;}
+  .header-title-row h1{font-size:28px;}
+  .header-title-row .subtitle{font-size:14px;}
+  .header-controls-row{align-items:stretch;flex-wrap:wrap;}
+  .header.compact-header .top-actions{flex:1 1 auto;}
+  .header.compact-header .semester-card{flex:1 1 260px;}
+}
+
+@media (max-width:560px){
+  .header-title-row{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:4px;
+  }
+  .header-title-row .subtitle{
+    width:100%;
+    white-space:normal;
+  }
+  .header.compact-header .top-actions{width:100%;}
+  .header.compact-header .top-action-link{
+    flex:1 1 0;
+    padding:9px 8px;
+  }
+  .header.compact-header .semester-card{
+    width:100%;
+    flex:1 1 100%;
+    justify-content:space-between;
+  }
+  .header.compact-header .semester-select{
+    flex:1 1 auto;
+    width:auto;
+  }
+}
+
+</style>
 
 </head>
 
@@ -1490,142 +1621,46 @@
     ==================================================
     -->
 
-    <header class="header">
+    <header class="header compact-header">
 
+  <div class="header-title-row">
+    <h1>🏆 遊戲排行榜</h1>
+    <p class="subtitle">查看各學期遊戲排行榜，最多顯示前 20 名</p>
+  </div>
 
-      <h1>
-        🏆 遊戲排行榜
-      </h1>
+  <div id="userStatus" class="user-box">
+    正在確認登入狀態……
+  </div>
 
+  <div class="header-controls-row">
 
-      <p class="subtitle">
-
-        查看各學期、各遊戲的高手排行。<br>
-
-        每一個排行榜最多顯示前 20 名。
-
-      </p>
-
-
-      <div class="ranking-rule">
-
-        固定題數遊戲：
-        分數較高優先，同分時完成時間較短者優先。
-
-      </div>
-
-
-      <div
-        id="userStatus"
-        class="user-box"
-      >
-
-        正在確認登入狀態……
-
-      </div>
-
-
-    </header>
-
-
-    <!--
-    ==================================================
-    ★ 上方快速導覽
-    跟「我的成績」相同邏輯
-    ==================================================
-    -->
-
-    <nav
-      class="top-actions"
-      aria-label="排行榜快速導覽"
-    >
-
-
-      <a
-        class="top-action-link home"
-        href="index.html"
-      >
-
-        🏠 回到首頁
-
-      </a>
-
-
-      <a
-        class="top-action-link scores"
-        href="my-scores.html"
-      >
-
-        📊 我的成績
-
-      </a>
-
-
+    <nav class="top-actions" aria-label="排行榜快速導覽">
+      <a class="top-action-link home" href="index.html">🏠 回到首頁</a>
+      <a class="top-action-link scores" href="my-scores.html">📊 我的成績</a>
     </nav>
 
-
-    <!--
-    ==================================================
-    學期選擇
-    ==================================================
-    -->
-
     <section class="semester-card">
-
-
-      <label
-        class="semester-label"
-        for="semesterSelect"
-      >
-
-        📚 選擇學期
-
-      </label>
-
-
-      <select
-        id="semesterSelect"
-        class="semester-select"
-      >
-
-
-        <option
-          value="grade7-first"
-        >
-
-          七年級上學期
-
-        </option>
-
-
-        <option
-          value="grade7-second"
-        >
-
-          七年級下學期
-
-        </option>
-
-
-        <option
-          value="grade8-first"
-        >
-
-          八年級上學期
-
-        </option>
+      <label class="semester-label" for="semesterSelect">📚 學期</label>
+      <select id="semesterSelect" class="semester-select">
+        <option value="grade7-first">七年級上學期</option>
+        <option value="grade7-second">七年級下學期</option>
+        <option value="grade8-first">八年級上學期</option>
         <option value="grade8-second">八年級下學期</option>
         <option value="grade9-first">九年級上學期</option>
         <option value="grade9-second">九年級下學期</option>
-
-
       </select>
-
-
     </section>
 
+  </div>
 
-    <!--
+</header>
+
+
+<!--
+    ==================================================
+    排行榜主區
+    ==================================================
+    --><!--
     ==================================================
     排行榜主區
     ==================================================
@@ -1767,7 +1802,7 @@
 
   <script
     type="module"
-    src="js/leaderboard.js?v=9.2"
+    src="js/leaderboard.js?v=9.3"
   ></script>
 
 
