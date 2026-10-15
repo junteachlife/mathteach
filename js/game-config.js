@@ -1202,7 +1202,10 @@ export const GAME_CONFIG = {
         "根號值與十分逼近",
 
       meaning:
-        "平方根觀念應用"
+        "平方根觀念應用",
+
+      comprehensive:
+        "全單元綜合挑戰"
 
     },
 
