@@ -3,8 +3,8 @@
 生活有解．心中有數｜遊戲排行榜
 檔案位置：js/leaderboard.js
 
-版本：9.2
-2026-10-14 公開暱稱＋最新遊戲同步修正版
+版本：9.3
+2026-10-15 章節名稱顯示＋公開暱稱同步版
 ==================================================
 
 本版重點：
@@ -699,6 +699,88 @@ function getGameModes(
 
 /*
 ==================================================
+排行榜顯示名稱整理
+==================================================
+
+原則：
+1. 上方已顯示目前學期，所以遊戲按鈕不重複「七上、八上、九上」。
+2. game-config.js 有 section 時，顯示「章節 + 遊戲短名」。
+3. 沒有 section 時照原名稱顯示，不強行猜章節。
+4. 若 shortName/name 已經包含同一章節，不重複。
+==================================================
+*/
+
+function cleanSemesterPrefix(
+  value
+) {
+
+  return String(
+    value ||
+    ""
+  )
+    .replace(
+      /^(七|八|九)年級(上|下)學期\s*[-－—:：]?\s*/,
+      ""
+    )
+    .replace(
+      /^(七|八|九)(上|下)\s*[-－—:：]?\s*/,
+      ""
+    )
+    .trim();
+}
+
+
+function getGameDisplayLabel(
+  game
+) {
+
+  const section =
+    String(
+      game?.section ||
+      ""
+    ).trim();
+
+
+  let baseName =
+    cleanSemesterPrefix(
+      game?.shortName ||
+      game?.name ||
+      game?.id ||
+      "未知遊戲"
+    );
+
+
+  if (
+    !section
+  ) {
+    return baseName;
+  }
+
+
+  const escapedSection =
+    section.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    );
+
+
+  baseName =
+    baseName.replace(
+      new RegExp(
+        `^${escapedSection}\\s*[-－—:：]?\\s*`
+      ),
+      ""
+    ).trim();
+
+
+  return baseName
+    ? `${section} ${baseName}`
+    : section;
+}
+
+
+/*
+==================================================
 建立遊戲篩選列
 ==================================================
 */
@@ -778,9 +860,9 @@ function renderSemesterGames() {
 
           label:
             `${game.icon || "🎮"} ${
-              game.shortName ||
-              game.name ||
-              game.id
+              getGameDisplayLabel(
+                game
+              )
             }`
 
         })
@@ -1191,9 +1273,8 @@ function createGameSection(
 
     <span>
       ${
-        game.name ||
-        getGameName(
-          game.id
+        getGameDisplayLabel(
+          game
         )
       }
     </span>
@@ -2732,7 +2813,7 @@ try {
 
 
   console.log(
-    "leaderboard.js v9.2 公開暱稱＋最新遊戲同步版已成功載入"
+    "leaderboard.js v9.3 章節名稱顯示＋公開暱稱同步版已成功載入"
   );
 
 
