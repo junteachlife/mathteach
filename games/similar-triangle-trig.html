@@ -510,6 +510,210 @@ button:disabled{opacity:.48;cursor:not-allowed}
   }
 }
 
+
+
+/* ==================================================
+九上全遊戲｜八上介面同步優化
+2026-10-15
+================================================== */
+
+.game-card{
+  position:relative!important;
+}
+
+/* 重返學期：固定在遊戲內框右上角 */
+.semester-return-row,
+.mode-home-toolbar{
+  position:absolute!important;
+  top:12px!important;
+  right:14px!important;
+  z-index:30!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  width:auto!important;
+  margin:0!important;
+  padding:0!important;
+  pointer-events:none!important;
+}
+.semester-return-row.hidden,
+.mode-home-toolbar.hidden{
+  display:flex!important;
+}
+.semester-return-link{
+  pointer-events:auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:42px!important;
+  padding:8px 13px!important;
+  border:2px solid var(--primary-border)!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.97)!important;
+  color:var(--primary-dark)!important;
+  text-decoration:none!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  line-height:1.25!important;
+  box-shadow:0 4px 14px rgba(15,23,42,.10)!important;
+  white-space:nowrap!important;
+}
+.semester-return-link:hover{
+  background:var(--primary-light)!important;
+}
+.game-header{
+  padding-top:64px!important;
+}
+
+/* 測驗上方：左側模式資訊；右側統計＋控制 */
+.quiz-top{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  gap:12px 16px!important;
+  align-items:start!important;
+}
+.quiz-right-stack{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:8px;
+}
+.quiz-right-stack .quiz-stats{
+  justify-content:flex-end!important;
+}
+.quiz-control-row{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.quiz-control-row .game-button{
+  flex:0 0 auto!important;
+  min-width:118px!important;
+  min-height:40px!important;
+  padding:8px 12px!important;
+  border-radius:12px!important;
+  font-size:14px!important;
+}
+
+/* 題目框：計算紙統一放右下角 */
+.question-card{
+  position:relative!important;
+  padding-bottom:74px!important;
+}
+#scratchpad-mobile-button{
+  position:absolute!important;
+  right:14px!important;
+  bottom:12px!important;
+  left:auto!important;
+  top:auto!important;
+  width:auto!important;
+  min-height:46px!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  z-index:8!important;
+}
+#scratchpad-mobile-button #scratchpadOpenButton,
+#scratchpad-mobile-button .scratchpad-open-button{
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  margin:0!important;
+  z-index:auto!important;
+}
+.scratchpad-row{
+  display:none!important;
+  margin:0!important;
+  padding:0!important;
+  min-height:0!important;
+}
+
+/* 題目：單行置中；真正換行才靠左 */
+.question-content{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  text-align:center!important;
+  justify-content:center!important;
+  word-break:normal!important;
+  overflow-wrap:break-word!important;
+}
+.question-content.question-is-wrapped{
+  text-align:left!important;
+  justify-content:flex-start!important;
+  align-items:flex-start!important;
+}
+.question-content .nowrap,
+.question-content .seg,
+.question-content .math-frac,
+.question-content .ratio-pair,
+.question-content .angle-name,
+.question-content .segment-name{
+  break-inside:avoid!important;
+  white-space:nowrap!important;
+}
+.question-content .qline{
+  max-width:100%!important;
+  white-space:normal!important;
+}
+
+/* 送出與下一題繼續留在答案區下方置中 */
+#quiz-screen > .button-row,
+#quiz-screen .answer-area + .button-row{
+  justify-content:center!important;
+}
+
+@media(max-width:760px){
+  .semester-return-row,
+  .mode-home-toolbar{
+    top:9px!important;
+    right:9px!important;
+  }
+  .semester-return-link{
+    min-height:39px!important;
+    padding:7px 10px!important;
+    font-size:13px!important;
+  }
+  .game-header{
+    padding-top:58px!important;
+  }
+  .quiz-top{
+    grid-template-columns:1fr!important;
+  }
+  .quiz-right-stack{
+    width:100%;
+    align-items:stretch;
+  }
+  .quiz-right-stack .quiz-stats{
+    justify-content:stretch!important;
+  }
+  .quiz-control-row{
+    justify-content:flex-end;
+  }
+  .quiz-control-row .game-button{
+    min-width:112px!important;
+  }
+  .question-card{
+    padding-bottom:70px!important;
+  }
+}
+
+@media(max-width:460px){
+  .quiz-control-row{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;
+  }
+  .quiz-control-row .game-button{
+    width:100%!important;
+    min-width:0!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -724,6 +928,174 @@ button:disabled{opacity:.48;cursor:not-allowed}
       /* href="../index.html" remains the fallback */
     }
   });
+})();
+</script>
+
+
+<script>
+(function(){
+  "use strict";
+
+  function grade9SemesterUrl(){
+    const url=new URL(window.location.href);
+    const marker="/games/";
+    const index=url.pathname.indexOf(marker);
+    if(index>=0){
+      url.pathname=url.pathname.slice(0,index+1)+"index.html";
+    }else{
+      url.pathname=url.pathname.replace(/[^/]*$/,"index.html");
+    }
+    url.search="?semester=grade9-first";
+    url.hash="";
+    return url.href;
+  }
+
+  function moveSemesterReturn(){
+    const card=document.querySelector("main.game-card");
+    const link=document.getElementById("semester-return-link");
+    if(!card || !link) return;
+
+    let holder=link.closest(".semester-return-row,.mode-home-toolbar");
+    if(!holder){
+      holder=document.createElement("div");
+      holder.className="semester-return-row";
+      link.parentNode?.insertBefore(holder,link);
+      holder.appendChild(link);
+    }
+
+    holder.classList.add("semester-return-row");
+    holder.classList.remove("hidden");
+    if(holder.parentElement!==card){
+      card.insertBefore(holder,card.firstChild);
+    }
+    link.href=grade9SemesterUrl();
+  }
+
+  function moveQuizControls(){
+    const quiz=document.getElementById("quiz-screen");
+    const top=quiz?.querySelector(".quiz-top");
+    if(!top) return;
+
+    let right=top.querySelector(".quiz-right-stack");
+    if(!right){
+      right=document.createElement("div");
+      right.className="quiz-right-stack";
+
+      const stats=top.querySelector(".quiz-stats");
+      if(stats) right.appendChild(stats);
+      top.appendChild(right);
+    }
+
+    let controls=document.getElementById("quiz-control-row");
+    if(!controls){
+      controls=document.createElement("div");
+      controls.id="quiz-control-row";
+      controls.className="quiz-control-row";
+      right.appendChild(controls);
+    }
+
+    const restart=document.getElementById("restart-button");
+    const reselect=document.getElementById("quit-button") || document.getElementById("mode-button");
+    if(restart && restart.parentElement!==controls) controls.appendChild(restart);
+    if(reselect && reselect.parentElement!==controls) controls.appendChild(reselect);
+  }
+
+  function moveScratchpadIntoQuestion(){
+    const questionCard=document.querySelector("#quiz-screen .question-card");
+    const mount=document.getElementById("scratchpad-mobile-button");
+    if(questionCard && mount && mount.parentElement!==questionCard){
+      questionCard.appendChild(mount);
+    }
+
+    const openButton=document.getElementById("scratchpadOpenButton");
+    if(mount && openButton && openButton.parentElement!==mount){
+      mount.appendChild(openButton);
+    }
+  }
+
+  function syncQuestionAlignment(){
+    const box=document.getElementById("question-content");
+    if(!box) return;
+
+    requestAnimationFrame(function(){
+      /* 圖形題維持置中；純文字／算式真的超過一行時才靠左。 */
+      if(box.querySelector("svg,canvas,.question-figure,.geometry-figure,.diagram-wrap")){
+        box.classList.remove("question-is-wrapped");
+        return;
+      }
+
+      const style=getComputedStyle(box);
+      const lineHeight=parseFloat(style.lineHeight) || 40;
+      const wrapped=box.scrollHeight > lineHeight * 1.72;
+      box.classList.toggle("question-is-wrapped",wrapped);
+    });
+  }
+
+  function observeQuestion(){
+    const box=document.getElementById("question-content");
+    if(!box) return;
+
+    const observer=new MutationObserver(syncQuestionAlignment);
+    observer.observe(box,{
+      subtree:true,
+      childList:true,
+      characterData:true,
+      attributes:true
+    });
+
+    window.addEventListener("resize",syncQuestionAlignment,{passive:true});
+    syncQuestionAlignment();
+  }
+
+  /*
+  重選模式防呆：只在正式答題畫面啟用。
+  結果頁／詳解頁的重選模式維持直接切換。
+  */
+  document.addEventListener("click",function(event){
+    const button=event.target.closest?.("#quit-button,#mode-button");
+    if(!button) return;
+
+    const quiz=document.getElementById("quiz-screen");
+    const isPlaying=quiz && !quiz.classList.contains("hidden");
+    if(!isPlaying) return;
+
+    const confirmed=window.confirm(
+      "確定要重選模式嗎？\n目前的作答進度與測驗時間將不會保留。"
+    );
+
+    if(!confirmed){
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    }
+  },true);
+
+  /* 強制返回九上，不使用 history.back，避免回錯頁。 */
+  document.addEventListener("click",function(event){
+    const link=event.target.closest?.("#semester-return-link");
+    if(!link) return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    window.location.assign(grade9SemesterUrl());
+  },true);
+
+  function init(){
+    moveSemesterReturn();
+    moveQuizControls();
+    moveScratchpadIntoQuestion();
+    observeQuestion();
+
+    /* scratchpad-template 可能稍晚建立開啟鍵，因此補兩次同步。 */
+    setTimeout(moveScratchpadIntoQuestion,80);
+    setTimeout(moveScratchpadIntoQuestion,250);
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",init,{once:true});
+  }else{
+    init();
+  }
 })();
 </script>
 
@@ -2074,7 +2446,7 @@ $("review-result-button").addEventListener("click",()=>showOnly("result-screen")
 */
 function confirmRestartTest(){
   return window.confirm(
-    "確定要重新測驗嗎？\n目前的作答進度將會重新開始。"
+    "確定要重新測驗目前模式嗎？\n目前的作答進度與測驗時間將重新開始。"
   );
 }
 
