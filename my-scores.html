@@ -1419,6 +1419,143 @@ h1{
 
 }
 
+
+
+/*
+==================================================
+v3.12｜頁首導覽＋學期整合精簡版
+==================================================
+*/
+.header.compact-header{
+  padding:18px 20px;
+  text-align:left;
+}
+
+.header-title-row{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  min-width:0;
+  margin-bottom:10px;
+}
+
+.header-title-row h1{
+  flex:0 0 auto;
+  margin:0;
+  font-size:32px;
+  white-space:nowrap;
+}
+
+.header-title-row .subtitle{
+  min-width:0;
+  margin:0;
+  line-height:1.35;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.header.compact-header .user-box{
+  justify-content:flex-start;
+  margin-top:0;
+  padding:10px 12px;
+}
+
+.header-controls-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:12px;
+  min-width:0;
+}
+
+.header.compact-header .top-actions{
+  flex:0 0 auto;
+  justify-content:flex-start;
+  gap:8px;
+  margin:0;
+  padding:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+.header.compact-header .top-action-link{
+  min-height:42px;
+  padding:9px 14px;
+  font-size:15px;
+}
+
+.header.compact-header .semester-filter-section{
+  flex:1 1 auto;
+  min-width:0;
+  margin:0;
+  padding:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+.header.compact-header .filter-heading{
+  display:none;
+}
+
+.header.compact-header .semester-filter-box{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+}
+
+.header.compact-header .semester-filter-button{
+  min-height:42px;
+  padding:7px 9px;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+.header.compact-header .semester-filter-count{
+  display:inline;
+  margin-left:3px;
+  font-size:10px;
+}
+
+@media (max-width:900px){
+  .header.compact-header{padding:16px;}
+  .header-title-row{gap:10px;}
+  .header-title-row h1{font-size:28px;}
+  .header-title-row .subtitle{font-size:14px;}
+  .header-controls-row{align-items:stretch;flex-wrap:wrap;}
+  .header.compact-header .semester-filter-section{flex:1 1 100%;}
+  .header.compact-header .semester-filter-box{
+    justify-content:flex-start;
+    flex-wrap:wrap;
+  }
+}
+
+@media (max-width:600px){
+  .header-title-row{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:4px;
+  }
+  .header-title-row .subtitle{
+    width:100%;
+    white-space:normal;
+  }
+  .header.compact-header .user-box{font-size:14px;}
+  .header.compact-header .top-actions{width:100%;}
+  .header.compact-header .top-action-link{
+    flex:1 1 0;
+    padding:9px 8px;
+  }
+  .header.compact-header .semester-filter-box{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .header.compact-header .semester-filter-button{width:100%;}
+}
+
 </style>
 
 </head>
@@ -1436,25 +1573,31 @@ h1{
 ==================================================
 -->
 
-<header class="header">
+<header class="header compact-header">
 
-<h1>
-👤 我的成績
-</h1>
+<div class="header-title-row">
+  <h1>👤 我的成績</h1>
+  <p class="subtitle">查看各學期遊戲表現與練習紀錄</p>
+</div>
 
+<div id="userStatus" class="user-box">
+  正在確認登入狀態……
+</div>
 
-<p class="subtitle">
+<div class="header-controls-row">
 
-依學期查看遊戲表現、各模式成績與最近遊玩紀錄。
+  <nav class="top-actions" aria-label="快速導覽">
+    <a class="top-action-link home" href="index.html">🏠 回到首頁</a>
+    <a class="top-action-link ranking" href="leaderboard.html">🏆 排行榜</a>
+  </nav>
 
-</p>
+  <section id="semesterFilterSection" class="semester-filter-section" hidden>
+    <div class="filter-heading">
+      <h2 class="filter-title">📚 學期</h2>
+    </div>
+    <div id="semesterFilterBox" class="semester-filter-box"></div>
+  </section>
 
-
-<div
-  id="userStatus"
-  class="user-box"
->
-正在確認登入狀態……
 </div>
 
 </header>
@@ -1462,34 +1605,9 @@ h1{
 
 <!--
 ==================================================
-快速導覽
+載入
 ==================================================
--->
-
-<nav
-  class="top-actions"
-  aria-label="快速導覽"
->
-
-<a
-  class="top-action-link home"
-  href="index.html"
->
-🏠 回到首頁
-</a>
-
-
-<a
-  class="top-action-link ranking"
-  href="leaderboard.html"
->
-🏆 排行榜
-</a>
-
-</nav>
-
-
-<!--
+--><!--
 ==================================================
 載入
 ==================================================
@@ -1528,38 +1646,9 @@ h1{
 
 <!--
 ==================================================
-學期篩選
+我的成績
 ==================================================
--->
-
-<section
-  id="semesterFilterSection"
-  class="semester-filter-section"
-  hidden
->
-
-<div class="filter-heading">
-
-<h2 class="filter-title">
-📚 選擇學期
-</h2>
-
-<span class="filter-note">
-右下數字為該學期遊玩紀錄數
-</span>
-
-</div>
-
-
-<div
-  id="semesterFilterBox"
-  class="semester-filter-box"
-></div>
-
-</section>
-
-
-<!--
+--><!--
 ==================================================
 我的成績
 ==================================================
@@ -1799,7 +1888,7 @@ h1{
 
 <script
   type="module"
-  src="js/my-scores.js?v=3.10"
+  src="js/my-scores.js?v=3.11"
 ></script>
 
 
