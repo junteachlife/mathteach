@@ -3,8 +3,8 @@
 生活有解．心中有數｜我的成績
 檔案位置：js/my-scores.js
 
-版本：3.10
-公開暱稱＋最新遊戲同步修正版
+版本：3.11
+章節名稱簡化顯示＋公開暱稱同步版
 ==================================================
 
 功能：
@@ -561,6 +561,11 @@ function getGameMeta(
       fallback.shortName ||
       "",
 
+    section:
+      config?.section ||
+      fallback.section ||
+      "",
+
     semester:
       config?.semester ||
       fallback.semester ||
@@ -608,6 +613,88 @@ function getGameMeta(
 
 /*
 ==================================================
+顯示名稱整理
+==================================================
+
+原則：
+1. 學期已由上方篩選／群組顯示，因此遊戲名稱不再重複「七上、八上、九上」。
+2. 若 game-config.js 有 section，顯示「章節 + 遊戲短名」。
+3. 若沒有 section，就照原名稱顯示，不強行猜章節。
+4. 若名稱本身已經含相同章節，不重複加一次。
+==================================================
+*/
+
+function cleanSemesterPrefix(
+  value
+){
+
+  return String(
+    value ||
+    ""
+  )
+    .replace(
+      /^(七|八|九)年級(上|下)學期\s*[-－—:：]?\s*/,
+      ""
+    )
+    .replace(
+      /^(七|八|九)(上|下)\s*[-－—:：]?\s*/,
+      ""
+    )
+    .trim();
+}
+
+
+function getSectionGameLabel(
+  meta
+){
+
+  const section =
+    String(
+      meta?.section ||
+      ""
+    ).trim();
+
+
+  let baseName =
+    cleanSemesterPrefix(
+      meta?.shortName ||
+      meta?.name ||
+      meta?.id ||
+      "未知遊戲"
+    );
+
+
+  if (
+    !section
+  ){
+    return baseName;
+  }
+
+
+  const escapedSection =
+    section.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    );
+
+
+  baseName =
+    baseName.replace(
+      new RegExp(
+        `^${escapedSection}\\s*[-－—:：]?\\s*`
+      ),
+      ""
+    ).trim();
+
+
+  return baseName
+    ? `${section} ${baseName}`
+    : section;
+}
+
+
+/*
+==================================================
 取得正式遊戲名稱
 ==================================================
 */
@@ -616,9 +703,11 @@ function getDisplayGameName(
   gameId
 ){
 
-  return getGameMeta(
-    gameId
-  ).name;
+  return getSectionGameLabel(
+    getGameMeta(
+      gameId
+    )
+  );
 }
 
 
@@ -658,9 +747,11 @@ function getDisplayModeName(
       modeKey
     ]
   ){
-    return meta.modes[
-      modeKey
-    ];
+    return cleanSemesterPrefix(
+      meta.modes[
+        modeKey
+      ]
+    );
   }
 
 
@@ -676,7 +767,9 @@ function getDisplayModeName(
     configName !==
       modeKey
   ){
-    return configName;
+    return cleanSemesterPrefix(
+      configName
+    );
   }
 
 
@@ -1697,20 +1790,9 @@ function createSemesterGroup(
 
   summary.innerHTML = `
 
-    <span
-      class="
-        semester-badge
-        semester-${semester}
-      "
-    >
-      ${getSemesterShortName(
-        semester
-      )}
-    </span>
-
     <span class="semester-group-title">
 
-      ${getSemesterName(
+      ${getSemesterShortName(
         semester
       )}
 
@@ -1893,22 +1975,6 @@ function createGameCard(
     "game-performance-title-area";
 
 
-  const badge =
-    document.createElement(
-      "span"
-    );
-
-
-  badge.className =
-    `semester-badge semester-${semester}`;
-
-
-  badge.textContent =
-    getSemesterShortName(
-      semester
-    );
-
-
   const title =
     document.createElement(
       "div"
@@ -1920,11 +1986,14 @@ function createGameCard(
 
 
   title.textContent =
-    `${meta.icon} ${meta.name}`;
+    `${meta.icon} ${
+      getSectionGameLabel(
+        meta
+      )
+    }`;
 
 
   titleArea.append(
-    badge,
     title
   );
 
@@ -2392,10 +2461,19 @@ function createHistoryItem(
     }`;
 
 
-  top.append(
-    badge,
-    gameName
-  );
+  if (
+    selectedSemester ===
+    "all"
+  ){
+    top.append(
+      badge,
+      gameName
+    );
+  } else {
+    top.appendChild(
+      gameName
+    );
+  }
 
 
   information.appendChild(
@@ -3033,5 +3111,5 @@ function showError(
 
 
 console.log(
-  "my-scores.js v3.10 公開暱稱＋最新遊戲同步版已成功載入"
+  "my-scores.js v3.11 章節名稱簡化顯示版已成功載入"
 );
