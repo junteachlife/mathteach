@@ -25,10 +25,6 @@
     href="../css/scratchpad.css"
   >
 
-  <link rel="stylesheet" href="../css/radical-display.css?v=1">
-
-  <link rel="stylesheet" href="../css/math-expression-input.css?v=4">
-
   <style>
 
     * {
@@ -1694,193 +1690,8 @@
 
     }
 
-  
-
-    /* ==================================================
-       2026-10 統一遊戲版面｜八上 2-1 / 2-2
-       對齊八上 1-1 ～ 1-3
-    ================================================== */
-
-    .game-card {
-      position: relative;
-    }
-
-    .game-card-return-row {
-      display: flex;
-      justify-content: flex-end;
-      padding: 12px 16px 0;
-      background: linear-gradient(180deg, var(--primary-light), #ffffff);
-    }
-
-    .game-card-return-row.hidden {
-      display: none !important;
-    }
-
-    .game-card-return-row .semester-return-button {
-      width: auto;
-      min-width: 0;
-      min-height: 40px;
-      padding: 8px 14px;
-      border: 2px solid var(--primary);
-      border-radius: 12px;
-      background: #ffffff;
-      color: var(--primary-dark);
-      font-size: 15px;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: none;
-    }
-
-    .game-card-return-row .semester-return-button:hover {
-      background: var(--primary-light);
-    }
-
-    .game-card-return-row .semester-return-button:active {
-      transform: translateY(1px);
-    }
-
-    .quiz-topbar {
-      display: grid;
-      grid-template-columns:
-        minmax(210px, 1fr)
-        minmax(300px, 1.35fr)
-        auto;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .quiz-context,
-    .quiz-stats {
-      display: grid;
-      gap: 8px;
-    }
-
-    .quiz-context {
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-    }
-
-    .quiz-stats {
-      grid-template-columns:
-        repeat(3, minmax(86px, 1fr));
-    }
-
-    .quiz-actions {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .quiz-actions .game-button {
-      min-width: 116px;
-      min-height: 46px;
-      padding: 10px 14px;
-    }
-
-    .question-card {
-      position: relative;
-      padding: 22px 18px 78px;
-      text-align: center;
-    }
-
-    .question-label {
-      text-align: center;
-    }
-
-    .scratchpad-row {
-      position: absolute;
-      right: 16px;
-      bottom: 14px;
-      display: flex;
-      justify-content: flex-end;
-      width: auto;
-      min-height: 44px;
-      margin: 0;
-      z-index: 5;
-    }
-
-    #scratchpad-mobile-button {
-      display: flex;
-      justify-content: flex-end;
-      width: auto;
-    }
-
-    #scratchpad-mobile-button #scratchpadOpenButton,
-    #scratchpad-mobile-button .scratchpad-open-button {
-      position: static !important;
-      inset: auto !important;
-      transform: none !important;
-      margin: 0 !important;
-      z-index: auto !important;
-    }
-
-    .answer-submit-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 16px;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width: 900px) {
-      .quiz-topbar {
-        grid-template-columns: 1fr;
-      }
-
-      .quiz-actions {
-        justify-content: flex-end;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .game-card-return-row {
-        padding: 10px 10px 0;
-      }
-
-      .game-card-return-row .semester-return-button {
-        font-size: 13px;
-        padding: 7px 10px;
-      }
-
-      .quiz-context,
-      .quiz-stats {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-      .quiz-stats .timer-box {
-        grid-column: 1 / -1;
-      }
-
-      .quiz-actions {
-        display: grid;
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-      .quiz-actions .game-button {
-        min-width: 0;
-        width: 100%;
-        padding: 10px 8px;
-        font-size: 14px;
-      }
-
-      .question-card {
-        padding: 20px 12px 76px;
-      }
-
-      .scratchpad-row {
-        right: 10px;
-        bottom: 12px;
-      }
-    }
-
   </style>
 
-  <link rel="stylesheet" href="../css/question-layout.css?v=1">
 </head>
 
 <body>
@@ -1890,22 +1701,6 @@
   <div id="commonHeaderMount"></div>
 
   <main class="game-card">
-
-
-    <div
-      id="semester-return-row"
-      class="game-card-return-row"
-    >
-      <button
-        id="semester-return-button"
-        class="semester-return-button"
-        type="button"
-      >
-        ↩️ 重回八年級上學期
-      </button>
-    </div>
-
-
 
     <header class="game-header">
 
@@ -2046,6 +1841,30 @@
 
         </button>
 
+        <button
+          class="mode-card"
+          type="button"
+          data-mode="comprehensive"
+        >
+
+          <span class="mode-tag">
+            10 題
+          </span>
+
+          <h2>
+            模式五｜全單元綜合挑戰
+          </h2>
+
+          <p>
+            混合平方數、根式化簡、平方根意義與根號估算；每次固定包含十分逼近法題目。
+          </p>
+
+          <div class="mode-example">
+            10 題中固定安排 2 題十分逼近法，另含 1 題整數範圍判斷。
+          </div>
+
+        </button>
+
       </div>
 
     </section>
@@ -2055,65 +1874,84 @@
       class="screen hidden"
     >
 
-      
       <div class="quiz-topbar">
 
-        <div class="quiz-context">
+        <div class="status-box">
 
-          <div class="status-box">
-            模式
-            <span id="mode-name" class="status-value">—</span>
-          </div>
+          模式
 
-          <div class="status-box">
-            進度
-            <span id="question-number" class="status-value">1 / 10</span>
-          </div>
+          <span
+            id="mode-name"
+            class="status-value"
+          >
+            —
+          </span>
 
         </div>
 
-        <div class="quiz-stats">
+        <div class="status-box">
 
-          <div class="status-box">
-            答對
-            <span id="correct-count" class="status-value">0</span>
-          </div>
+          進度
 
-          <div class="status-box">
-            最高連擊
-            <span id="combo-count" class="status-value">0</span>
-          </div>
-
-          <div class="status-box timer-box">
-            ⏱️ 測驗時間
-            <span id="timer-display" class="status-value">00:00</span>
-          </div>
+          <span
+            id="question-number"
+            class="status-value"
+          >
+            1 / 10
+          </span>
 
         </div>
 
-        <div class="quiz-actions">
+        <div class="status-box">
 
-          <button
-            id="restart-button"
-            class="game-button restart"
-            type="button"
-          >
-            🔄 重新測驗
-          </button>
+          答對
 
-          <button
-            id="mode-button"
-            class="game-button secondary"
-            type="button"
+          <span
+            id="correct-count"
+            class="status-value"
           >
-            重選模式
-          </button>
+            0
+          </span>
+
+        </div>
+
+        <div class="status-box">
+
+          最高連擊
+
+          <span
+            id="combo-count"
+            class="status-value"
+          >
+            0
+          </span>
+
+        </div>
+
+        <div class="status-box timer-box">
+
+          測驗時間
+
+          <span
+            id="timer-display"
+            class="status-value"
+          >
+            00:00
+          </span>
 
         </div>
 
       </div>
 
-<div class="progress-shell">
+      <div class="scratchpad-row">
+
+        <div
+          id="scratchpad-mobile-button"
+        ></div>
+
+      </div>
+
+      <div class="progress-shell">
 
         <div
           id="progress-bar"
@@ -2139,20 +1977,14 @@
           class="reference-box hidden"
         ></div>
 
-      
-        <div class="scratchpad-row">
-          <div id="scratchpad-mobile-button"></div>
-        </div>
-
-</div>
+      </div>
 
       <div
         id="answer-panel"
         class="answer-panel"
       ></div>
 
-      
-      <div class="answer-submit-row">
+      <div class="button-row">
 
         <button
           id="submit-button"
@@ -2170,9 +2002,25 @@
           下一題（Enter）
         </button>
 
+        <button
+          id="restart-button"
+          class="game-button restart"
+          type="button"
+        >
+          🔄 重新測驗
+        </button>
+
+        <button
+          id="mode-button"
+          class="game-button secondary"
+          type="button"
+        >
+          選擇模式
+        </button>
+
       </div>
 
-<div
+      <div
         id="feedback"
         class="feedback"
       ></div>
@@ -2342,13 +2190,7 @@
 
 <script src="../js/sound-manager.js?v=1"></script>
 
-<script src="../js/radical-display.js?v=1"></script>
-
 <script src="../js/radical-input.js?v=7"></script>
-
-<script src="../js/math-expression-input.js?v=4"></script>
-
-<script src="../js/question-layout.js?v=1"></script>
 
 <script type="module">
 
@@ -2376,39 +2218,10 @@ const MODE_NAMES = {
     "根號值與十分逼近",
 
   meaning:
-    "平方根觀念應用"
-};
+    "平方根觀念應用",
 
-
-/*
-==================================================
-模式固定輸入能力
-同一模式的工具列不隨題目答案型態改變，
-避免介面洩漏答案方向。
-==================================================
-*/
-
-const MODE_INPUT_CAPABILITIES = {
-
-  squarePractice: {
-    radical: false,
-    fraction: false
-  },
-
-  simplify: {
-    radical: true,
-    fraction: false
-  },
-
-  approximation: {
-    radical: false,
-    fraction: false
-  },
-
-  meaning: {
-    radical: false,
-    fraction: false
-  }
+  comprehensive:
+    "全單元綜合挑戰"
 };
 
 
@@ -2461,10 +2274,6 @@ let selectedChoice =
 
 let radicalInput =
   null;
-
-let mathExpressionInput =
-  null;
-
 
 
 let startTime =
@@ -2742,30 +2551,89 @@ function sqrtMath(
 ) {
 
   /*
-  題目／詳解所有根號統一交給共用 RadicalDisplay。
-  根號勾形、斜線、轉折與上方橫線使用同一條 SVG path；
-  根號內內容越長，只自然延伸上方橫線。
+  ==================================================
+  根號顯示｜完全沿用「根式運算大挑戰」
+
+  注意：這裡不改 SVG 根號設計。
+  只依根號內是否含次方、乘除等較複雜內容，
+  替「內容」加上安全距離，避免被根號斜線遮住。
+  ==================================================
   */
 
-  if (
-    window.RadicalDisplay?.sqrt
-  ) {
-
-    return window.RadicalDisplay.sqrt(
-      inlineMath(
-        content
-      )
+  const source =
+    String(
+      content ??
+      ""
     );
-  }
 
 
-  /*
-  安全備援：共用元件尚未載入時仍可顯示。
-  */
+  const plainText =
+    source
+      .replace(
+        /<[^>]*>/g,
+        ""
+      )
+      .replace(
+        /\s+/g,
+        ""
+      );
+
+
+  const isComplex =
+
+    /<msup\b|<mfrac\b|<msub\b|<munderover\b/i
+      .test(
+        source
+      ) ||
+
+    /[×÷＋－+−·]/
+      .test(
+        plainText
+      ) ||
+
+    plainText.length >=
+      5;
+
+
+  const radicandClass =
+
+    isComplex
+
+      ? "display-radicand display-radicand-complex"
+
+      : "display-radicand";
+
 
   return `
-    <span class="math-expression">
-      √(${inlineMath(content)})
+
+    <span class="display-radical final-answer-root">
+
+      <svg
+        class="display-radical-svg"
+        viewBox="0 0 100 62"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        focusable="false"
+      >
+
+        <path
+          class="display-radical-path"
+          d="
+            M 1 37
+            L 7 37
+            L 13 51
+            L 18 58
+            L 29 8
+            L 98 8
+          "
+        ></path>
+
+      </svg>
+
+      <span class="${radicandClass}">
+        ${inlineMath(content)}
+      </span>
+
     </span>
   `;
 }
@@ -4786,7 +4654,7 @@ function makePositiveRootApplication() {
 
     [
 
-      `「${root} 是 ${coefficient}x${constantText} 的正平方根」表示把 ${root} 平方後，就等於根號內的數：
+      `「${root} 是 ${coefficient}x${constantText} 的正平方根」表示把 ${root} 平方後，就等於原來的數：
       <span class="detail-block">
         ${detailPower(
           root,
@@ -4832,7 +4700,7 @@ function makePositiveRootApplication() {
         "關鍵不是把題目加上根號，而是把『是正平方根』翻譯成：正平方根²＝原來的數，再解一元一次方程式。",
 
       pitfall:
-        "『正平方根』代表給你的 root 是正值，但列式時要用 root²＝原來的數；不要列成 root＝原來的數。",
+        "『正平方根』代表題目給的數是正值，但列式時要用「正平方根²＝原來的數」；不要直接把正平方根寫成等於原來的數。",
 
       summary:
         `最後答案：x＝${x}`
@@ -5173,6 +5041,52 @@ function makeMode4() {
 
 /*
 ==================================================
+模式五｜全單元綜合挑戰
+==================================================
+*/
+
+function makeComprehensiveMode() {
+
+  const squareQuestions =
+    makeMode1()
+      .slice(
+        0,
+        2
+      );
+
+
+  const simplifyQuestions =
+    makeMode2()
+      .slice(
+        0,
+        2
+      );
+
+
+  return shuffle(
+    [
+
+      ...squareQuestions,
+
+      ...simplifyQuestions,
+
+      makeBetweenIntegersQuestion(),
+
+      makeApproximationQuestion(),
+      makeApproximationQuestion(),
+
+      makePositiveRootApplication(),
+
+      makeBothRootsQuestion(),
+
+      makeAbsoluteValueRootQuestion()
+    ]
+  );
+}
+
+
+/*
+==================================================
 建立題目
 ==================================================
 */
@@ -5203,6 +5117,24 @@ function createQuestions() {
   ) {
 
     return makeMode3();
+  }
+
+
+  if (
+    mode ===
+    "meaning"
+  ) {
+
+    return makeMode4();
+  }
+
+
+  if (
+    mode ===
+    "comprehensive"
+  ) {
+
+    return makeComprehensiveMode();
   }
 
 
@@ -5361,31 +5293,14 @@ function playGameSound(
 ==================================================
 */
 
-function moveScratchpadButtonToQuestionCard() {
+function moveScratchpadButtonToTop() {
 
   const mount =
     $("scratchpad-mobile-button");
 
-  const questionCard =
-    document.querySelector(
-      "#quiz-screen .question-card"
-    );
 
   const button =
     $("scratchpadOpenButton");
-
-
-  if (
-    mount &&
-    questionCard &&
-    mount.parentElement !==
-      questionCard
-  ) {
-
-    questionCard.appendChild(
-      mount.parentElement
-    );
-  }
 
 
   if (
@@ -5400,61 +5315,6 @@ function moveScratchpadButtonToQuestionCard() {
       button
     );
   }
-}
-
-
-function ensureScratchpadButtonInQuestionCard() {
-
-  moveScratchpadButtonToQuestionCard();
-
-
-  if (
-    $("scratchpadOpenButton")
-  ) {
-
-    window
-      .showGameScratchpadButton
-      ?.();
-
-    return;
-  }
-
-
-  const observer =
-    new MutationObserver(
-      () => {
-
-        moveScratchpadButtonToQuestionCard();
-
-
-        if (
-          $("scratchpadOpenButton")
-        ) {
-
-          window
-            .showGameScratchpadButton
-            ?.();
-
-          observer.disconnect();
-        }
-      }
-    );
-
-
-  observer.observe(
-    document.body,
-    {
-      childList: true,
-      subtree: true
-    }
-  );
-
-
-  setTimeout(
-    () =>
-      observer.disconnect(),
-    10000
-  );
 }
 
 
@@ -5488,27 +5348,12 @@ function showOnly(
     );
 
 
-  const semesterReturnRow =
-    $(
-      "semester-return-row"
-    );
-
-
-  semesterReturnRow
-    ?.classList
-    .toggle(
-      "hidden",
-      id !==
-        "start-screen"
-    );
-
-
   if (
     id ===
     "quiz-screen"
   ) {
 
-    ensureScratchpadButtonInQuestionCard();
+    moveScratchpadButtonToTop();
 
 
     window
@@ -5587,12 +5432,6 @@ function renderAnswer(
 ) {
 
   radicalInput =
-    null;
-
-  mathExpressionInput
-    ?.destroy?.();
-
-  mathExpressionInput =
     null;
 
 
@@ -5729,74 +5568,33 @@ function renderAnswer(
 
       <p class="answer-help">
 
-        直接輸入係數；需要根號時按「√ 根號」。
-        根號內若仍可化簡，系統會提醒。
+        根號外係數為 1 時可以保留 1。<br>
+
+        根號內若還可以化簡，
+        系統只提醒，不會替你自動化簡。
 
       </p>
 
       <div
-        id="math-expression-answer-mount"
+        id="radical-answer-mount"
       ></div>
     `;
 
 
-    if (
-      typeof window.MathExpressionInput !==
-      "function"
-    ) {
-
-      $("feedback").className =
-        "feedback warning";
-
-      $("feedback").textContent =
-        "MathExpressionInput 共用元件沒有正常載入。";
-
-      return;
-    }
-
-
-    mathExpressionInput =
-      new window.MathExpressionInput(
+    radicalInput =
+      new window.RadicalInput(
         {
 
           mountId:
-            "math-expression-answer-mount",
-
-          allowRadical:
-            MODE_INPUT_CAPABILITIES[
-              mode
-            ]?.radical === true,
-
-          allowFraction:
-            MODE_INPUT_CAPABILITIES[
-              mode
-            ]?.fraction === true,
-
-          allowPower:
-            false,
-
-          allowVariable:
-            false,
+            "radical-answer-mount",
 
           requireSimplifiedRadical:
             true,
-
-          requireSimplifiedFraction:
-            true,
-
-          requireRationalDenominator:
-            true,
-
-          placeholder:
-            "例如：−2√5",
 
           theme: {
 
             primary:
               "#0288d1",
-
-            dark:
-              "#0277bd",
 
             light:
               "#e1f5fe",
@@ -5806,6 +5604,14 @@ function renderAnswer(
           }
         }
       );
+
+
+    setTimeout(
+      () =>
+        radicalInput
+          ?.focus(),
+      0
+    );
 
 
     return;
@@ -6155,7 +5961,7 @@ function readAnswer(
   ) {
 
     const result =
-      mathExpressionInput
+      radicalInput
         ?.validate();
 
 
@@ -6175,65 +5981,16 @@ function readAnswer(
     }
 
 
-    const terms =
-      result.terms ||
-      [];
-
-
-    if (
-      terms.length !==
-      1 ||
-      terms[0].radicand ===
-      1
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          "本題答案應為一個最簡根式。"
-      };
-    }
-
-
-    const term =
-      terms[0];
-
-
-    if (
-      term.denominator !==
-      1
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          "本題答案的根號外係數應為整數。"
-      };
-    }
-
-
     return {
 
       valid:
         true,
 
-      value: {
-
-        coefficient:
-          term.numerator,
-
-        radicand:
-          term.radicand
-      },
+      value:
+        result.value,
 
       display:
-        result.display
+        result.value.display
     };
   }
 
@@ -6574,13 +6331,6 @@ function submitAnswer() {
 
   answered =
     true;
-
-
-  mathExpressionInput
-    ?.setDisabled
-    ?.(
-      true
-    );
 
 
   radicalInput
@@ -7228,162 +6978,9 @@ function showReview() {
 
 /*
 ==================================================
-重新測驗／重選模式確認
-==================================================
-*/
-
-function confirmRestartTest() {
-
-  return window.confirm(
-    "確定要重新測驗嗎？\n目前的作答進度與測驗時間將重新開始。"
-  );
-}
-
-
-function restartCurrentModeWithConfirmation() {
-
-  if (
-    !confirmRestartTest()
-  ) {
-
-    return;
-  }
-
-
-  startGame(
-    mode
-  );
-}
-
-
-function confirmReselectMode() {
-
-  return window.confirm(
-    "確定要重選模式嗎？\n目前這次測驗的作答進度將會結束。"
-  );
-}
-
-
-function backToModesWithConfirmation() {
-
-  if (
-    !confirmReselectMode()
-  ) {
-
-    return;
-  }
-
-
-  stopTimer();
-
-
-  showOnly(
-    "start-screen"
-  );
-}
-
-
-/*
-==================================================
-返回八年級上學期
-==================================================
-*/
-
-function returnToGrade8FirstSemester() {
-
-  stopTimer();
-
-
-  const referrer =
-    String(
-      document.referrer ||
-      ""
-    );
-
-
-  let cameFromHomePage =
-    false;
-
-
-  try {
-
-    if (
-      referrer
-    ) {
-
-      const referrerURL =
-        new URL(
-          referrer
-        );
-
-
-      const sameOrigin =
-        referrerURL.origin ===
-        window.location.origin;
-
-
-      const path =
-        referrerURL.pathname
-          .replace(
-            /\/+$/,
-            ""
-          );
-
-
-      const isHomePath =
-        path ===
-          "" ||
-        path.endsWith(
-          "/index.html"
-        ) ||
-        path.endsWith(
-          "/mathteach"
-        );
-
-
-      cameFromHomePage =
-        sameOrigin &&
-        isHomePath;
-    }
-
-  } catch (
-    error
-  ) {
-
-    cameFromHomePage =
-      false;
-  }
-
-
-  if (
-    cameFromHomePage &&
-    window.history.length >
-      1
-  ) {
-
-    window.history.back();
-
-    return;
-  }
-
-
-  window.location.href =
-    "../index.html";
-}
-
-
-/*
-==================================================
 事件
 ==================================================
 */
-
-$("semester-return-button")
-  .addEventListener(
-    "click",
-    returnToGrade8FirstSemester
-  );
-
 
 document
   .querySelectorAll(
@@ -7422,21 +7019,35 @@ $("next-button")
 $("restart-button")
   .addEventListener(
     "click",
-    restartCurrentModeWithConfirmation
+    () =>
+      startGame(
+        mode
+      )
   );
 
 
 $("mode-button")
   .addEventListener(
     "click",
-    backToModesWithConfirmation
+    () => {
+
+      stopTimer();
+
+
+      showOnly(
+        "start-screen"
+      );
+    }
   );
 
 
 $("again-button")
   .addEventListener(
     "click",
-    restartCurrentModeWithConfirmation
+    () =>
+      startGame(
+        mode
+      )
   );
 
 
@@ -7460,7 +7071,10 @@ $("review-button")
 $("review-again-button")
   .addEventListener(
     "click",
-    restartCurrentModeWithConfirmation
+    () =>
+      startGame(
+        mode
+      )
   );
 
 
@@ -7526,11 +7140,11 @@ window.addEventListener(
   "DOMContentLoaded",
   () => {
 
-    ensureScratchpadButtonInQuestionCard();
+    moveScratchpadButtonToTop();
 
 
     setTimeout(
-      ensureScratchpadButtonInQuestionCard,
+      moveScratchpadButtonToTop,
       100
     );
   }
