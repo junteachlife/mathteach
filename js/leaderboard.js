@@ -3,7 +3,7 @@
 生活有解．心中有數｜遊戲排行榜
 檔案位置：js/leaderboard.js
 
-版本：9.3
+版本：9.4
 2026-10-15 章節名稱顯示＋公開暱稱同步版
 ==================================================
 
@@ -513,6 +513,37 @@ function getPlayerKey(
 
 /*
 ==================================================
+舊版遊戲 ID 相容
+==================================================
+
+八上 2-2 舊版曾誤用 radicalOperations，
+正式 game-config ID 為 radicalOperation。
+既有 Firestore 成績不必刪除，排行榜讀取時自動歸回正確遊戲。
+==================================================
+*/
+
+function normalizeGameId(
+  gameId
+) {
+
+  const id =
+    String(
+      gameId ||
+      ""
+    );
+
+
+  return (
+    id ===
+    "radicalOperations"
+  )
+    ? "radicalOperation"
+    : id;
+}
+
+
+/*
+==================================================
 排行榜類型
 ==================================================
 */
@@ -524,7 +555,9 @@ function getRankingType(
 
   const type =
     getGameConfig(
-      gameId
+      normalizeGameId(
+        gameId
+      )
     )?.ranking?.type;
 
 
@@ -1205,7 +1238,7 @@ function renderLeaderboard() {
       const gameRecords =
         allScoreRecords.filter(
           record =>
-            String(
+            normalizeGameId(
               record.game ||
               ""
             ) ===
@@ -2813,7 +2846,7 @@ try {
 
 
   console.log(
-    "leaderboard.js v9.3 章節名稱顯示＋公開暱稱同步版已成功載入"
+    "leaderboard.js v9.4 根式運算舊ID相容版已成功載入"
   );
 
 
