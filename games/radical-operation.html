@@ -1973,6 +1973,16 @@
 
 
 <body>
+<!--
+2026-10-20 八上 2-2 修正版：
+1. 模式一所有根號乘法題，根號相乘後就已是最簡根式，不再出現 √12、√18 等還要再提出平方因數的答案。
+2. 模式一仍保留正負號、分數係數、整數／分數乘除混合。
+3. 分數可以約分，但不另外考根式化簡。
+4. 所有單一根號答案改用 MathExpressionInput v2.3 共用元件。
+5. 分數根式答案也使用 MathExpressionInput v2.3。
+6. GAME_ID 保持 radicalOperation；mode ID 與成績分類不變。
+-->
+
 
 <!-- 2026-10-19 修正：GAME_ID 統一為 radicalOperation，與 game-config.js 完全一致，避免成績落入未分類。 -->
 <!-- 2026-10-19：主題一加入分數係數、正負號與乘除混合；分數答案使用 MathExpressionInput v2.3；綜合挑戰同步。 -->
@@ -2153,7 +2163,7 @@
         id="dependency-warning"
         class="dependency-warning hidden"
       >
-        ⚠️ 共用答案輸入元件未完整載入。請確認 <code>radical-input.js</code> 與 <code>math-expression-input.js</code> 都已存在。
+        ⚠️ 共用答案輸入元件未載入。請確認 <code>math-expression-input.js</code> 已存在。
       </div>
 
 
@@ -2538,8 +2548,6 @@
 
 <script src="../js/sound-manager.js?v=1"></script>
 
-<script src="../js/radical-input.js?v=7"></script>
-
 <script src="../js/math-expression-input.js?v=2.3"></script>
 
 
@@ -2801,7 +2809,6 @@ const FALLBACK_RADICAL_UTILS = {
 
 const RU =
   () =>
-    window.RadicalInputUtils ||
     FALLBACK_RADICAL_UTILS;
 
 
@@ -2841,7 +2848,7 @@ let answered =
   false;
 
 
-let radicalInput =
+let radicalAnswerInput =
   null;
 
 
@@ -3723,7 +3730,7 @@ function makeMultiplyBasic() {
     {
 
       method:
-        `看到兩個根式相乘，先使用 ${sqrtDisplay("a")} × ${sqrtDisplay("b")}＝${sqrtDisplay("ab")}，再檢查根號內能不能繼續化簡。`,
+        `看到兩個根式相乘，先使用 ${sqrtDisplay("a")} × ${sqrtDisplay("b")}＝${sqrtDisplay("ab")}，本模式題目的根號內乘積會直接是最簡根式。`,
 
       pitfall:
         "根號相乘不是把根號外直接相加，也不是只算其中一個根號；合併後一定要再檢查根號內是否有完全平方因數。",
@@ -3815,7 +3822,7 @@ function makeMultiplyCoefficient() {
 
     {
       method:
-        "含係數根式相乘時：根號外係數相乘，根號內數相乘，最後再化成最簡根式。",
+        "含係數根式相乘時：根號外係數相乘，根號內數相乘；本模式的根號內乘積已是最簡根式。",
       pitfall:
         "不要把根號外係數乘進根號內；根號外與根號內要分開處理，最後才重新組合。",
       summary:
@@ -3918,10 +3925,11 @@ function makeMultiplySignedCoefficient() {
       `先判斷正負號：<span class="detail-block">${first*second>0?"同號相乘得正":"異號相乘得負"}</span>`,
       `根號外係數相乘：<span class="detail-block">(${first})×(${second})＝${rawCoefficient}</span>`,
       `根號內相乘：<span class="detail-block">${sqrtDisplay(a)}×${sqrtDisplay(b)}＝${sqrtDisplay(a*b)}</span>`,
-      `最後化簡：<span class="detail-block">${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}</span>`
+      `最後整理答案。本題根號內乘積本身已是最簡根式：
+      <span class="detail-block">${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}</span>`
     ],
-    "請計算並化成最簡根式",
-    {method:"先處理正負號，再分別計算根號外係數與根號內乘積，最後化簡。",pitfall:"異號相乘為負，同號相乘為正，負號不要漏掉。",summary:`最後答案：${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}`}
+    "請計算",
+    {method:"先處理正負號，再分別計算根號外係數與根號內乘積；模式一的根號內乘積都已是最簡根式。",pitfall:"異號相乘為負，同號相乘為正，負號不要漏掉。",summary:`最後答案：${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}`}
   );
 }
 
@@ -3930,8 +3938,8 @@ function makeMultiplyFractionSigned() {
     {n1:-1,d1:2,r1:2,n2:3,d2:5,r2:3},
     {n1:2,d1:3,r1:5,n2:-3,d2:4,r2:2},
     {n1:-3,d1:4,r1:2,n2:-2,d2:5,r2:7},
-    {n1:1,d1:3,r1:6,n2:5,d2:4,r2:2},
-    {n1:-2,d1:5,r1:3,n2:3,d2:4,r2:6}
+    {n1:1,d1:3,r1:6,n2:5,d2:4,r2:5},
+    {n1:-2,d1:5,r1:3,n2:3,d2:4,r2:5}
   ]);
   const num=item.n1*item.n2, den=item.d1*item.d2, rad=item.r1*item.r2;
   const answer=simplifyRationalRadical(num,den,rad);
@@ -3943,17 +3951,18 @@ function makeMultiplyFractionSigned() {
       `分子係數與分母分別相乘：<span class="detail-block">分子：(${item.n1})×(${item.n2})＝${num}<br>分母：${item.d1}×${item.d2}＝${den}</span>`,
       `根號內相乘：<span class="detail-block">${sqrtDisplay(item.r1)}×${sqrtDisplay(item.r2)}＝${sqrtDisplay(rad)}</span>`,
       `先得到：<span class="detail-block">${rationalRadicalDisplay(num,rad,den)}</span>`,
-      `最後約分並化簡根式：<span class="detail-block">${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}</span>`
+      `最後只要把分數約成最簡；本題根號內乘積已是最簡根式：
+      <span class="detail-block">${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}</span>`
     ],
-    "請計算並化成最簡分數與最簡根式",
-    {method:"分數係數相乘時分子乘分子、分母乘分母，根號內另外相乘，最後約分並化簡。",pitfall:"分數與根式都要化到最簡；負號只保留一個。",summary:`最後答案：${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}`}
+    "請計算並將分數約成最簡",
+    {method:"分數係數相乘時分子乘分子、分母乘分母，根號內另外相乘；模式一的根號內乘積已是最簡根式，最後只需約分。",pitfall:"分數要約成最簡；負號只保留一個。模式一不會要求再提出根號內的平方因數。",summary:`最後答案：${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}`}
   );
 }
 
 function makeMultiplyDivideMixed() {
   const item=pick([
     {n:-2,d:3,r:6,m:3,qn:4,qd:1},
-    {n:3,d:5,r:8,m:1,qn:2,qd:1},
+    {n:3,d:5,r:7,m:1,qn:2,qd:1},
     {n:5,d:6,r:3,m:2,qn:5,qd:1},
     {n:-3,d:4,r:10,m:1,qn:3,qd:2},
     {n:2,d:3,r:15,m:1,qn:4,qd:5}
@@ -3968,10 +3977,11 @@ function makeMultiplyDivideMixed() {
       `先處理根號外的分數係數：<span class="detail-block">${fractionDisplay(String(item.n),String(item.d))}${item.m!==1?`×${item.m}`:""}÷${divisor}</span>`,
       item.qd===1?`除以整數 ${item.qn}，等於乘 ${fractionDisplay("1",String(item.qn))}。`:`除以分數 ${fractionDisplay(String(item.qn),String(item.qd))}，等於乘倒數 ${fractionDisplay(String(item.qd),String(item.qn))}。`,
       `整理後係數：<span class="detail-block">${fractionDisplay(String(num),String(den))}</span>`,
-      `最後約分並化簡：<span class="detail-block">${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}</span>`
+      `最後把分數約成最簡；根式本身已是最簡：
+      <span class="detail-block">${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}</span>`
     ],
-    "請依序計算乘除，並化成最簡形式",
-    {method:"乘除混合時先把除法改成乘倒數，再處理分數係數與根式化簡。",pitfall:"除以分數要乘倒數；最後分數一定要約分。",summary:`最後答案：${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}`}
+    "請依序計算乘除，並將分數約成最簡",
+    {method:"乘除混合時先把除法改成乘倒數，再處理分數係數；模式一使用的根式本身已是最簡。",pitfall:"除以分數要乘倒數；最後分數一定要約分，但不用再化簡根號。",summary:`最後答案：${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}`}
   );
 }
 
@@ -7311,7 +7321,7 @@ function renderAnswer(
   question
 ) {
 
-  radicalInput =
+  radicalAnswerInput =
     null;
 
 
@@ -7401,6 +7411,7 @@ function renderAnswer(
 
   /*
   Radical
+  共用 MathExpressionInput v2.3
   */
 
   if (
@@ -7411,67 +7422,67 @@ function renderAnswer(
     panel.innerHTML = `
 
       <div class="answer-title">
-
         ${question.label}
-
       </div>
 
-
       <p class="answer-help">
-
-        根號內若仍可化簡，
-        系統只會提醒，不會替你自動化簡。
-
+        直接輸入完整根式答案；需要根號時按「√ 根號」。
       </p>
 
-
-      <div
-        id="radical-answer-mount"
-      ></div>
+      <div id="radical-answer-mount"></div>
     `;
 
-
     if (
-      typeof window.RadicalInput ===
+      typeof window.MathExpressionInput !==
       "function"
     ) {
-
-      radicalInput =
-        new window.RadicalInput(
-          {
-
-            mountId:
-              "radical-answer-mount",
-
-            requireSimplifiedRadical:
-              true,
-
-            theme: {
-
-              primary:
-                "#7b1fa2",
-
-              light:
-                "#f3e5f5",
-
-              border:
-                "#ce93d8"
-            }
-          }
-        );
-
-    } else {
-
-      radicalInput =
-        createFallbackRadicalInput(
-          "radical-answer-mount"
-        );
+      $("feedback").className =
+        "feedback warning";
+      $("feedback").textContent =
+        "MathExpressionInput 共用根號輸入元件沒有正常載入。";
+      return;
     }
 
+    radicalAnswerInput =
+      new window.MathExpressionInput({
+        mountId:
+          "radical-answer-mount",
+        allowRadical:
+          true,
+        allowFraction:
+          false,
+        allowPower:
+          false,
+        allowVariable:
+          false,
+        allowPlusMinus:
+          false,
+        validationMode:
+          "numeric-radical",
+        requireSimplifiedRadical:
+          true,
+        requireSimplifiedFraction:
+          true,
+        requireRationalDenominator:
+          true,
+        showPreview:
+          true,
+        toolOrder:
+          ["radical"],
+        placeholder:
+          "例如：18√35",
+        theme: {
+          primary: "#7b1fa2",
+          dark: "#4a148c",
+          light: "#f3e5f5",
+          border: "#ce93d8"
+        }
+      });
 
-    radicalInput
-      .focus();
-
+    setTimeout(
+      () => radicalAnswerInput?.focus?.(),
+      0
+    );
 
     return;
   }
@@ -7835,6 +7846,7 @@ function readAnswer(
 
   /*
   Radical
+  共用 MathExpressionInput v2.3
   */
 
   if (
@@ -7843,36 +7855,56 @@ function readAnswer(
   ) {
 
     const result =
-      radicalInput
+      radicalAnswerInput
         ?.validate();
 
-
-    if (
-      !result?.valid
-    ) {
-
+    if (!result?.valid) {
       return {
-
-        valid:
-          false,
-
+        valid: false,
         message:
           result?.message ||
-          "請把根式答案填寫完整。"
+          "請把根式答案輸入完整。"
       };
     }
 
+    const terms =
+      result.terms ||
+      result.value?.terms ||
+      [];
+
+    if (terms.length !== 1) {
+      return {
+        valid: false,
+        message: "答案請整理成單一根式。"
+      };
+    }
+
+    const term = terms[0];
+
+    if (term.denominator !== 1) {
+      return {
+        valid: false,
+        message: "本題答案不是分數，請直接輸入根式。"
+      };
+    }
+
+    if (term.radicand === 1) {
+      return {
+        valid: false,
+        message: "本題答案應保留根號形式。"
+      };
+    }
 
     return {
-
-      valid:
-        true,
-
-      value:
-        result.value,
-
+      valid: true,
+      value: {
+        coefficient: term.numerator,
+        radicand: term.radicand
+      },
       display:
-        result.value.display
+        result.display ||
+        result.value?.display ||
+        ""
     };
   }
 
@@ -8349,8 +8381,9 @@ function submitAnswer() {
     true;
 
 
-  radicalInput
-    ?.setDisabled(
+  radicalAnswerInput
+    ?.setDisabled
+    ?.(
       true
     );
 
@@ -9184,9 +9217,6 @@ window.addEventListener(
 
 
     const missingRadicalInput =
-      typeof window.RadicalInput !==
-      "function" ||
-      !window.RadicalInputUtils ||
       typeof window.MathExpressionInput !==
       "function";
 
