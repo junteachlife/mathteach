@@ -3,7 +3,7 @@
 生活有解．心中有數｜我的成績
 檔案位置：js/my-scores.js
 
-版本：3.11
+版本：3.12
 章節名稱簡化顯示＋公開暱稱同步版
 ==================================================
 
@@ -513,6 +513,41 @@ let allRecords =
 
 let selectedSemester =
   "all";
+
+
+/*
+==================================================
+舊版遊戲 ID 相容
+==================================================
+
+八上 2-2 舊版曾誤用 radicalOperations，
+正式 game-config ID 為 radicalOperation。
+這裡只做讀取相容，讓既有歷史成績也能回到正確分類。
+==================================================
+*/
+
+function normalizeGameId(
+  gameId
+){
+
+  const id =
+    normalizeGameId(
+      gameId
+    );
+
+
+  if (
+    id ===
+    "radicalOperations"
+  ){
+
+    return
+      "radicalOperation";
+  }
+
+
+  return id;
+}
 
 
 /*
@@ -1825,7 +1860,7 @@ function createSemesterGroup(
     record => {
 
       const gameId =
-        String(
+        normalizeGameId(
           record.game ||
           "unknown"
         );
@@ -2387,7 +2422,7 @@ function createHistoryItem(
 
 
   const gameId =
-    String(
+    normalizeGameId(
       record.game ||
       ""
     );
@@ -3111,5 +3146,5 @@ function showError(
 
 
 console.log(
-  "my-scores.js v3.11 章節名稱簡化顯示版已成功載入"
+  "my-scores.js v3.12 根式運算舊ID相容版已成功載入"
 );
