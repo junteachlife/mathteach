@@ -28,6 +28,11 @@
 
   <link
     rel="stylesheet"
+    href="../css/radical-display.css?v=1"
+  >
+
+  <link
+    rel="stylesheet"
     href="../css/math-expression-input.css?v=2.3"
   >
 
@@ -1967,12 +1972,46 @@
       /* 共用分數答案輸入元件 */
     #fraction-answer-mount{width:min(100%,620px);margin:12px auto 0;}
     #fraction-answer-mount input{text-align:center;}
+  
+    /*
+    ==================================================
+    MathExpressionInput × RadicalDisplay
+    根號預覽穩定修正
+    ==================================================
+    */
+
+    #radical-answer-mount .rd-radical,
+    #fraction-answer-mount .rd-radical {
+      vertical-align: middle;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    #radical-answer-mount .rd-radical__content,
+    #fraction-answer-mount .rd-radical__content {
+      line-height: 1.05;
+    }
+
+    #radical-answer-mount .rd-radical__svg,
+    #fraction-answer-mount .rd-radical__svg {
+      overflow: visible;
+    }
+
   </style>
 
 </head>
 
 
 <body>
+
+<!--
+2026-10-20 根號顯示修正：
+MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件，
+不再使用字型 √ ＋ border-top 的備援樣式。
+根號勾、斜線、轉折與上方橫線重新使用同一條 SVG path，
+恢復先前正常且一致的根號顯示。
+-->
+
 <!--
 2026-10-20 八上 2-2 修正版：
 1. 模式一所有根號乘法題，根號相乘後就已是最簡根式，不再出現 √12、√18 等還要再提出平方因數的答案。
@@ -2547,6 +2586,8 @@
 <script src="../js/scratchpad-template.js"></script>
 
 <script src="../js/sound-manager.js?v=1"></script>
+
+<script src="../js/radical-display.js?v=1"></script>
 
 <script src="../js/math-expression-input.js?v=2.3"></script>
 
