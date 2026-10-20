@@ -2019,6 +2019,20 @@
       text-align: left;
     }
 
+  
+    .game-header{position:relative;padding-top:58px}
+    .grade-return{position:absolute;right:16px;top:14px;text-decoration:none;border:2px solid var(--primary-border);background:#fff;color:var(--primary-dark);padding:8px 12px;border-radius:12px;font-size:14px;font-weight:900}
+    .quiz-topbar{display:flex;flex-wrap:nowrap;align-items:center;gap:6px;overflow-x:auto;padding-bottom:5px}
+    .quiz-topbar .status-box{flex:1 1 0;min-width:72px;min-height:48px;padding:5px 7px;font-size:12px;white-space:nowrap}
+    .quiz-topbar .mode-status{flex:1.45 0 100px;white-space:normal}
+    .quiz-topbar .status-value{font-size:15px;margin-top:1px}
+    .quiz-top-actions{display:flex;flex:0 0 auto;gap:5px;align-items:center}
+    .quiz-top-actions .compact-action{min-width:0;padding:9px 9px;font-size:12px;box-shadow:none;border-radius:10px;white-space:nowrap}
+    .question-card{position:relative;padding-bottom:12px}
+    .question-scratchpad{justify-content:flex-end;min-height:0;margin:6px 0 0}
+    .question-scratchpad #scratchpad-mobile-button{justify-content:flex-end;width:auto}
+    .question-scratchpad #scratchpadOpenButton,.question-scratchpad .scratchpad-open-button{min-width:0!important;width:auto!important;padding:8px 13px!important;font-size:13px!important}
+    @media(max-width:760px){.quiz-topbar{display:flex;gap:4px}.quiz-topbar .timer-box{grid-column:auto}.quiz-topbar .status-box{min-width:57px;font-size:10px;padding:4px}.quiz-topbar .status-value{font-size:12px}.quiz-topbar .mode-status{display:none}.quiz-top-actions .compact-action{font-size:11px;padding:7px 5px}.question-content{font-size:clamp(23px,5vw,34px)}}
   </style>
 
 </head>
@@ -2070,6 +2084,7 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
     <header class="game-header">
 
 
+      <a class="grade-return" href="../index.html" id="grade-return-link">↩ 八年級返回</a>
       <h1 class="game-title">
         ⚡ 根式運算大挑戰
       </h1>
@@ -2165,7 +2180,7 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
           </h2>
 
           <p>
-            根式除法、含係數除法、單一根式分母有理化。
+            根式除法、根號內分數、係數約分與單一根式分母有理化。
           </p>
 
           <div class="mode-example">
@@ -2194,11 +2209,18 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
           </p>
 
           <div class="mode-example">
-            答案有幾個不同類方根，就自動顯示幾組填答格。
+            使用單一完整數學答案輸入，先化簡再合併。
           </div>
 
         </button>
 
+
+        <button class="mode-card" type="button" data-mode="formula">
+          <span class="mode-tag">課本 P86～88｜10 題</span>
+          <h2>模式四｜根式的乘法公式</h2>
+          <p>和的平方、差的平方、平方差公式，以及共軛式有理化分母。</p>
+          <div class="mode-example">基本公式、含係數根式、雙根式平方與進階有理化。</div>
+        </button>
 
         <button
           class="mode-card"
@@ -2211,7 +2233,7 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
           </span>
 
           <h2>
-            模式四｜根式四則綜合
+            模式五｜根式四則運算與綜合題型
           </h2>
 
           <p>
@@ -2251,18 +2273,7 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
       <div class="quiz-topbar">
 
 
-        <div class="status-box">
-
-          模式
-
-          <span
-            id="mode-name"
-            class="status-value"
-          >
-            —
-          </span>
-
-        </div>
+        <div class="status-box mode-status">模式 <span id="mode-name" class="status-value">—</span></div>
 
 
         <div class="status-box">
@@ -2321,17 +2332,27 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
         </div>
 
 
+        <div class="quiz-top-actions">
+        <button
+          id="restart-button"
+          class="game-button restart compact-action"
+          type="button"
+        >
+          🔄 重新測驗
+        </button>
+
+
+        <button
+          id="mode-button"
+          class="game-button secondary compact-action"
+          type="button"
+        >
+          重選模式
+        </button>
+
+
+        </div>
       </div>
-
-
-      <div class="scratchpad-row">
-
-        <div
-          id="scratchpad-mobile-button"
-        ></div>
-
-      </div>
-
 
       <div class="progress-shell">
 
@@ -2356,8 +2377,7 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
           id="question-content"
           class="question-content"
         ></div>
-
-
+        <div class="scratchpad-row question-scratchpad"><div id="scratchpad-mobile-button"></div></div>
       </div>
 
 
@@ -2385,24 +2405,6 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
           type="button"
         >
           下一題（Enter）
-        </button>
-
-
-        <button
-          id="restart-button"
-          class="game-button restart"
-          type="button"
-        >
-          🔄 重新測驗
-        </button>
-
-
-        <button
-          id="mode-button"
-          class="game-button secondary"
-          type="button"
-        >
-          選擇模式
         </button>
 
 
@@ -2696,6 +2698,9 @@ const MODE_NAMES = {
 
   addSubtract:
     "根式加減",
+
+  formula:
+    "根式乘法公式",
 
   mixed:
     "根式四則綜合"
@@ -6174,6 +6179,102 @@ function makeMode4() {
 ==================================================
 */
 
+
+/* 2026-10-20｜按課本與習作擴充難度。保留題型與成績資料結構。 */
+function advSteps(lines){return lines.map(x=>`<span class="detail-block">${x}</span>`)}
+function advancedDivision(){
+ const [a,b,c,d]=pick([[3,2,5,3],[5,3,7,2],[7,2,3,5],[2,5,11,3]]);
+ const num=a*c, den=b*d, root=c*d;
+ const ans=simplifyRationalRadical(num,den,root);
+ const html=`<span class="math-expression">${fractionDisplay(radicalDisplay(a,c),String(b))}<span>÷</span>${fractionDisplay(sqrtDisplay(d),String(den/d))}</span>`;
+ // (a√c/b) / (√d/b) = a√(cd)/d
+ return rationalRadicalQuestion(html,a,d,c*d,advSteps([
+ `先把除以分數改成乘倒數：${fractionDisplay(radicalDisplay(a,c),String(b))} × ${fractionDisplay(String(b),sqrtDisplay(d))}`,
+ `先約掉整數係數 ${b}，得到 ${fractionDisplay(radicalDisplay(a,c),sqrtDisplay(d))}`,
+ `分子分母同乘 ${sqrtDisplay(d)}，得到 ${fractionDisplay(radicalDisplay(a,c*d),String(d))}`,
+ `根式提出平方因數並約分，最終為 ${rationalRadicalDisplay(simplifyRationalRadical(a,d,c*d).coefficient,simplifyRationalRadical(a,d,c*d).radicand,simplifyRationalRadical(a,d,c*d).denominator)}`
+ ]),'請依序除法、分母有理化，並化為最簡根式',{method:'除以分數先乘倒數，再有理化分母。',pitfall:'不能只把分母乘以根式；分子、分母須同乘。'});
+}
+function advancedDivisionRootFraction(){
+ const [n,d]=pick([[7,12],[14,27],[15,8],[11,18],[21,20]]);
+ const reduced=simplifyRationalRadical(1,d,n*d);
+ return rationalRadicalQuestion(sqrtDisplay(fractionDisplay(String(n),String(d))),1,d,n*d,advSteps([
+ `${sqrtDisplay(fractionDisplay(String(n),String(d)))}＝${fractionDisplay(sqrtDisplay(n),sqrtDisplay(d))}`,
+ `同乘 ${sqrtDisplay(d)} 有理化：${fractionDisplay(sqrtDisplay(n*d),String(d))}`,
+ `將分子根式化簡、係數約分：${rationalRadicalDisplay(reduced.coefficient,reduced.radicand,reduced.denominator)}`
+ ]),'請化成最簡根式',{method:'根號內含分數時，先分子分母開根號，再進行有理化。',pitfall:'最終答案分母不能留下根號。'});
+}
+function advancedDivisionSimplify(){
+ const [a,b,k]=pick([[48,8,2],[72,6,3],[150,6,2],[98,2,3]]);
+ const c=rand(2,4), result=simplifyRationalRadical(c,1,a/b);
+ return rationalRadicalQuestion(`${c}${fractionDisplay(sqrtDisplay(a),sqrtDisplay(b))}`,c,1,a/b,advSteps([
+ `根號內先計算 ${a}÷${b}＝${a/b}`,
+ `得到 ${c}${sqrtDisplay(a/b)}`,
+ `提出平方因數後為 ${rationalRadicalDisplay(result.coefficient,result.radicand,result.denominator)}`
+ ]),'請計算並化為最簡根式',{method:'先除，再化簡根式。',pitfall:'根號內若有平方因數，還須提出。'});
+}
+function advancedAddFour(){
+ const [r,t]=pick([[2,3],[3,5],[5,7],[2,5]]),a=rand(2,5),b=rand(2,4),c=rand(2,4),d=rand(2,3);
+ const A=a*a*r,B=b*b*r,C=c*c*t,D=d*d*r;
+ const coeff=a-b-d;
+ const radicals=[{coefficient:coeff,radicand:r},{coefficient:c,radicand:t}];
+ const answer=expressionDisplay(0,radicals);
+ return expressionQuestion(`<span class="math-expression">${sqrtDisplay(A)} − ${sqrtDisplay(B)} ＋ ${sqrtDisplay(C)} − ${sqrtDisplay(D)}</span>`,0,radicals,advSteps([
+ `先分別化簡：${sqrtDisplay(A)}＝${radicalDisplay(a,r)}，${sqrtDisplay(B)}＝${radicalDisplay(b,r)}`,
+ `${sqrtDisplay(C)}＝${radicalDisplay(c,t)}，${sqrtDisplay(D)}＝${radicalDisplay(d,r)}`,
+ `將同類方根合併：(${a}−${b}−${d})${sqrtDisplay(r)}＋${c}${sqrtDisplay(t)}`,
+ `整理成最簡答案：${answer}`
+ ]),'請先化簡各項，再合併同類方根',{method:'先提出各根式完全平方因數，再分組合併。',pitfall:'不同類方根不能合併；負號要一起帶入。'});
+}
+function advancedAddBracket(){
+ const [r,t]=pick([[2,5],[3,7],[2,3],[5,6]]),a=rand(2,5),b=rand(2,4),c=rand(2,4),d=rand(2,4);
+ const radicals=[{coefficient:a+c,radicand:r},{coefficient:-(b+d),radicand:t}];const answer=expressionDisplay(0,radicals);
+ return expressionQuestion(`<span class="math-expression">(${radicalDisplay(a,r)} − ${radicalDisplay(b,t)}) − (${radicalDisplay(d,t)} − ${radicalDisplay(c,r)})</span>`,0,radicals,advSteps([
+ `先去括號，第二個括號前的「−」要改變每一項正負號。`,
+ `${radicalDisplay(a,r)} − ${radicalDisplay(b,t)} − ${radicalDisplay(d,t)} ＋ ${radicalDisplay(c,r)}`,
+ `同類方根合併：( ${a}＋${c} )${sqrtDisplay(r)} − ( ${b}＋${d} )${sqrtDisplay(t)}`,
+ `最後答案：${answer}`
+ ]),'請去括號並合併同類方根',{method:'先去括號，再按同類方根分類。',pitfall:'減去整個括號時，括號內每一項都要變號。'});
+}
+function makeFormulaSquare(sign=1){
+ const [a,b]=pick([[3,5],[2,7],[4,3],[2,11],[5,2]]),k=rand(1,3);
+ const constant=a*a+k*k*b, coef=sign*2*a*k;
+ const answer=expressionDisplay(constant,[{coefficient:coef,radicand:b}]);const signText=sign===1?'＋':'−';
+ return expressionQuestion(`<span class="math-expression">(${a}${signText}${radicalDisplay(k,b)})²</span>`,constant,[{coefficient:coef,radicand:b}],advSteps([
+ `套用公式：(A${signText}B)²＝A²${signText}2AB＋B²`,
+ `這裡 A＝${a}，B＝${radicalDisplay(k,b)}`,
+ `第一項 ${a}²＝${a*a}；最後一項 (${radicalDisplay(k,b)})²＝${k*k*b}`,
+ `中間項為 ${signText}${2*a*k}${sqrtDisplay(b)}`,
+ `合併整數項 ${a*a}＋${k*k*b}＝${constant}，得到 ${answer}`
+ ]),'請利用完全平方公式展開並化簡',{method:sign===1?'和的平方：A²＋2AB＋B²。':'差的平方：A²−2AB＋B²。',pitfall:'中間項 2AB 不可漏掉，差的平方中間項為負。'});
+}
+function makeFormulaDoubleSquare(){
+ const [a,b]=pick([[2,3],[3,5],[5,7],[2,7],[3,11]]), sign=pick([1,-1]), c=rand(1,3);
+ const constant=a+c*c*b;const rt=simplifyRadicalData(2*c*sign,a*b);
+ const rad=rt.type==='radical'?[{coefficient:rt.coefficient,radicand:rt.radicand}]:[];
+ const answer=expressionDisplay(constant,rad);
+ return expressionQuestion(`<span class="math-expression">(${sqrtDisplay(a)} ${sign>0?'＋':'−'} ${radicalDisplay(c,b)})²</span>`,constant,rad,advSteps([
+ `展開：(A±B)²＝A²±2AB＋B²。`,
+ `第一項 (${sqrtDisplay(a)})²＝${a}；最後一項 (${radicalDisplay(c,b)})²＝${c*c*b}`,
+ `中間項：${sign>0?'＋':'−'}2×${sqrtDisplay(a)}×${radicalDisplay(c,b)}＝${simplifiedDataDisplay(rt)}`,
+ `整數合併：${a}＋${c*c*b}＝${constant}；答案為 ${answer}`
+ ]),'請利用完全平方公式化簡',{method:'兩個根式也可以直接套完全平方公式。',pitfall:'注意中間項有兩倍乘積，且 √a × √b＝√ab。'});
+}
+function makeFormulaDifference(){
+ const [a,b,k]=pick([[7,2,2],[11,3,2],[5,3,3],[6,2,2],[3,7,2]]);
+ const answer=k*k*a-b;
+ return numberQuestion(`<span class="math-expression">(${radicalDisplay(k,a)}＋${sqrtDisplay(b)})(${radicalDisplay(k,a)}−${sqrtDisplay(b)})</span>`,answer,advSteps([
+ `兩括號互為共軛式，套平方差公式 (A＋B)(A−B)＝A²−B²。`,
+ `A²＝(${radicalDisplay(k,a)})²＝${k*k*a}，B²＝(${sqrtDisplay(b)})²＝${b}`,
+ `相減得到 ${k*k*a}−${b}＝${answer}`
+ ]),'請利用平方差公式計算',{method:'共軛兩式相乘可消去交叉項。',pitfall:'公式是平方相減，不是根號內相減。'});
+}
+function makeFormulaConjugate(){return makeMode4E()}
+function makeModeFormula(){return shuffle([makeFormulaSquare(1),makeFormulaSquare(1),makeFormulaSquare(-1),makeFormulaSquare(-1),makeFormulaDoubleSquare(),makeFormulaDoubleSquare(),makeFormulaDifference(),makeFormulaDifference(),makeFormulaConjugate(),makeFormulaConjugate()])}
+function makeMode2Advanced(){return shuffle([makeDivideBasic(),makeDivideCoefficient(),makeSimpleRationalize(),makeSimpleRationalize(),advancedDivision(),advancedDivision(),advancedDivisionRootFraction(),advancedDivisionRootFraction(),advancedDivisionSimplify(),advancedDivisionSimplify()])}
+function makeMode3Advanced(){return shuffle([makeAddSameRoot(),makeTwoRootDirect(),makeSimplifyThenTwoRoots(),makeThreeTermTwoRoots(),advancedAddFour(),advancedAddFour(),advancedAddBracket(),advancedAddBracket(),makeSimplifyThenTwoRoots(),advancedAddFour()])}
+function makeMode5Advanced(){return shuffle([makeMode4A(),makeMode4A(),makeMode4B(),makeMode4B(),advancedAddFour(),advancedDivision(),makeFormulaSquare(-1),makeFormulaDoubleSquare(),makeFormulaDifference(),makeFormulaConjugate()])}
+
 function createQuestions() {
 
   if (
@@ -6190,7 +6291,7 @@ function createQuestions() {
     "divide"
   ) {
 
-    return makeMode2();
+    return makeMode2Advanced();
   }
 
 
@@ -6199,11 +6300,12 @@ function createQuestions() {
     "addSubtract"
   ) {
 
-    return makeMode3();
+    return makeMode3Advanced();
   }
 
 
-  return makeMode4();
+  if (mode === "formula") return makeModeFormula();
+  return makeMode5Advanced();
 }
 
 
@@ -9232,9 +9334,7 @@ $("restart-button")
   .addEventListener(
     "click",
     () =>
-      startGame(
-        mode
-      )
+      {if(confirm("確定重新測驗嗎？目前作答進度將重新開始。"))startGame(mode);}
   );
 
 
@@ -9243,11 +9343,9 @@ $("mode-button")
     "click",
     () => {
 
+      if (!confirm("確定重選模式嗎？目前測驗進度將不會保留。")) return;
       stopTimer();
-
-      showOnly(
-        "start-screen"
-      );
+      showOnly("start-screen");
     }
   );
 
