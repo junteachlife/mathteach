@@ -1997,12 +1997,43 @@
       overflow: visible;
     }
 
+  
+    /*
+    ==================================================
+    Expression｜MathExpressionInput v2.3
+    單一完整答案輸入
+    ==================================================
+    */
+
+    #expression-answer-mount {
+      width: min(100%, 760px);
+      margin: 12px auto 0;
+    }
+
+    #expression-answer-mount .mei-shell {
+      margin-inline: auto;
+    }
+
+    #expression-answer-mount .mei-main-input,
+    #expression-answer-mount input {
+      text-align: left;
+    }
+
   </style>
 
 </head>
 
 
 <body>
+<!--
+2026-10-20 根式加減答案格更新：
+1. expression 類題型不再使用「第1個根式／第2個根式」分割填答格。
+2. 改用 MathExpressionInput v2.3 單一完整答案輸入元件。
+3. 學生可直接輸入 5√2−3√5、7＋2√3 等真正答案形式。
+4. 模式三與綜合挑戰中所有 expression 類題型同步套用。
+5. GAME_ID、mode ID、成績儲存格式不變。
+-->
+
 
 <!--
 2026-10-20 根號顯示修正：
@@ -2894,6 +2925,10 @@ let radicalAnswerInput =
 
 
 let fractionAnswerInput =
+  null;
+
+
+let expressionAnswerInput =
   null;
 
 
@@ -7370,6 +7405,10 @@ function renderAnswer(
     null;
 
 
+  expressionAnswerInput =
+    null;
+
+
   const panel =
     $("answer-panel");
 
@@ -7557,37 +7596,11 @@ function renderAnswer(
 
 
   /*
-  ★ Expression
+  ==================================================
+  Expression
+  共用 MathExpressionInput v2.3
+  ==================================================
   */
-
-  let editorHTML =
-    "";
-
-
-  if (
-    question.constant !==
-    0
-  ) {
-
-    editorHTML +=
-      constantPieceHTML();
-  }
-
-
-  question.radicals
-    .forEach(
-      (
-        term,
-        i
-      ) => {
-
-        editorHTML +=
-          radicalPieceHTML(
-            i
-          );
-      }
-    );
-
 
   panel.innerHTML = `
 
@@ -7600,119 +7613,106 @@ function renderAnswer(
 
     <p class="answer-help">
 
-      同類方根請先自行合併。<br>
-
-      答案有幾個不同類方根，
-      系統就提供幾組填答格。
+      請直接輸入整理後的完整答案；
+      同類方根先合併，需要根號時按「√ 根號」。
 
     </p>
 
 
-    <div class="expression-editor">
-
-      ${editorHTML}
-
-    </div>
-
-
     <div
-      id="answer-preview"
-      class="answer-preview"
-    >
-
-      目前尚未完成答案。
-
-    </div>
+      id="expression-answer-mount"
+    ></div>
   `;
 
 
-  const update =
-    () =>
-      updateExpressionPreview(
-        question
-      );
-
-
   if (
-    question.constant !==
-    0
+    typeof window.MathExpressionInput !==
+    "function"
   ) {
 
-    [
-      "expr-constant-sign",
-      "expr-constant"
-    ]
-      .forEach(
-        id => {
-
-          $(id)
-            .addEventListener(
-              "input",
-              update
-            );
+    $("feedback")
+      .className =
+        "feedback warning";
 
 
-          $(id)
-            .addEventListener(
-              "change",
-              update
-            );
-        }
-      );
+    $("feedback")
+      .textContent =
+        "MathExpressionInput 共用答案元件沒有正常載入。";
+
+
+    return;
   }
 
 
-  question.radicals
-    .forEach(
-      (
-        term,
-        i
-      ) => {
+  expressionAnswerInput =
+    new window.MathExpressionInput(
+      {
 
-        [
-          `expr-sign-${i}`,
-          `expr-coefficient-${i}`,
-          `expr-radicand-${i}`
-        ]
-          .forEach(
-            id => {
+        mountId:
+          "expression-answer-mount",
 
-              $(id)
-                .addEventListener(
-                  "input",
-                  update
-                );
+        allowRadical:
+          true,
 
+        allowFraction:
+          true,
 
-              $(id)
-                .addEventListener(
-                  "change",
-                  update
-                );
-            }
-          );
+        allowPower:
+          false,
+
+        allowVariable:
+          false,
+
+        allowPlusMinus:
+          false,
+
+        validationMode:
+          "numeric-radical",
+
+        requireSimplifiedRadical:
+          true,
+
+        requireSimplifiedFraction:
+          true,
+
+        requireRationalDenominator:
+          true,
+
+        showPreview:
+          true,
+
+        toolOrder:
+          [
+            "radical",
+            "fraction"
+          ],
+
+        placeholder:
+          "例如：5√2−3√5",
+
+        theme: {
+
+          primary:
+            "#7b1fa2",
+
+          dark:
+            "#4a148c",
+
+          light:
+            "#f3e5f5",
+
+          border:
+            "#ce93d8"
+        }
       }
     );
 
 
   setTimeout(
-    () => {
-
-      if (
-        question.constant !==
-        0
-      ) {
-
-        $("expr-constant")
-          ?.focus();
-
-      } else {
-
-        $("expr-radicand-0")
-          ?.focus();
-      }
-
-    },
+    () =>
+      expressionAnswerInput
+        ?.focus
+        ?.(),
     0
   );
 }
@@ -7964,12 +7964,108 @@ function readAnswer(
 
 
   /*
+  ==================================================
   Expression
+  共用 MathExpressionInput v2.3
+  ==================================================
   */
 
-  return readExpressionInputs(
-    question
-  );
+  const result =
+    expressionAnswerInput
+      ?.validate();
+
+
+  if (
+    !result?.valid
+  ) {
+
+    return {
+
+      valid:
+        false,
+
+      message:
+        result?.message ||
+        "請把完整答案輸入完成。"
+    };
+  }
+
+
+  const terms =
+    result.terms ||
+    result.value?.terms ||
+    [];
+
+
+  let constant =
+    0;
+
+
+  const radicals =
+    [];
+
+
+  for (
+    const term of terms
+  ) {
+
+    if (
+      term.denominator !==
+      1
+    ) {
+
+      return {
+
+        valid:
+          false,
+
+        message:
+          "本題整理後的係數應為整數，請再檢查答案。"
+      };
+    }
+
+
+    if (
+      term.radicand ===
+      1
+    ) {
+
+      constant +=
+        term.numerator;
+
+    } else {
+
+      radicals.push(
+        {
+
+          coefficient:
+            term.numerator,
+
+          radicand:
+            term.radicand
+        }
+      );
+    }
+  }
+
+
+  return {
+
+    valid:
+      true,
+
+    constant,
+
+    radicals:
+      normalizeRadicalTerms(
+        radicals
+      ),
+
+    display:
+      result.display ||
+      result.value?.display ||
+      ""
+  };
 }
 
 
@@ -8430,6 +8526,13 @@ function submitAnswer() {
 
 
   fractionAnswerInput
+    ?.setDisabled
+    ?.(
+      true
+    );
+
+
+  expressionAnswerInput
     ?.setDisabled
     ?.(
       true
