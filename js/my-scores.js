@@ -3,7 +3,7 @@
 生活有解．心中有數｜我的成績
 檔案位置：js/my-scores.js
 
-版本：3.12
+版本：3.13
 章節名稱簡化顯示＋公開暱稱同步版
 ==================================================
 
@@ -526,29 +526,17 @@ let selectedSemester =
 ==================================================
 */
 
-function normalizeGameId(
-  gameId
-){
+function normalizeGameId(gameId) {
+  // 先轉成字串，避免再次呼叫自身造成無限遞迴。
+  const id = String(gameId ?? "").trim();
 
-  const id =
-    normalizeGameId(
-      gameId
-    );
-
-
-  if (
-    id ===
-    "radicalOperations"
-  ){
-
-    return
-      "radicalOperation";
+  // 保留八上 2-2 舊版遊戲 ID 的讀取相容性。
+  if (id === "radicalOperations") {
+    return "radicalOperation";
   }
-
 
   return id;
 }
-
 
 /*
 ==================================================
@@ -560,11 +548,7 @@ function getGameMeta(
   gameId
 ){
 
-  const id =
-    String(
-      gameId ||
-      ""
-    );
+  const id = normalizeGameId(gameId);
 
 
   const config =
@@ -3146,5 +3130,5 @@ function showError(
 
 
 console.log(
-  "my-scores.js v3.12 根式運算舊ID相容版已成功載入"
+  "my-scores.js v3.13 呼叫堆疊修復版已成功載入"
 );
