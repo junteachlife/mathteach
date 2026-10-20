@@ -1288,8 +1288,11 @@ export const GAME_CONFIG = {
       addSubtract:
         "根式加減",
 
+      formula:
+        "根式的乘法公式",
+
       mixed:
-        "根式四則綜合"
+        "根式四則運算與綜合題型"
 
     },
 
