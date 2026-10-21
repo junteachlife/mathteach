@@ -1256,7 +1256,7 @@ export const GAME_CONFIG = {
       "games/radical-operation.html",
 
     description:
-      "練習根式化簡、根式乘除，以及同類方根的加減運算。",
+      "六模式隨機練習根式乘除、大小比較、同類方根、四則運算與乘法公式。",
 
     finished:
       true,
@@ -1292,7 +1292,10 @@ export const GAME_CONFIG = {
         "根式的乘法公式",
 
       mixed:
-        "根式四則運算與綜合題型"
+        "根式四則運算",
+
+      comprehensive:
+        "全單元綜合挑戰"
 
     },
 
