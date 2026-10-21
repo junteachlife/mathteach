@@ -157,6 +157,27 @@ button:disabled{opacity:.48;cursor:not-allowed}
   font-family:"Cambria Math","Times New Roman","Microsoft JhengHei",sans-serif
 }
 
+.radical{
+  display:inline-flex;
+  align-items:flex-start;
+  white-space:nowrap;
+  vertical-align:middle;
+}
+.radical-sign{
+  display:inline-block;
+  font-size:1.08em;
+  line-height:1;
+  padding-right:.04em;
+  transform:translateY(.04em);
+}
+.radical-overbar{
+  display:inline-block;
+  border-top:2px solid currentColor;
+  padding:.05em .04em 0 .10em;
+  line-height:1.03;
+  transform:translateY(.04em);
+}
+
 /*
 線段符號：上方橫線。
 使用 border-top，避免不同瀏覽器的 overline 高度不一致。
@@ -1678,6 +1699,56 @@ function chordDiagram({radius="",distance="",chord="",half=""}={}){
   `);
 }
 
+function chordPointDiagram({ab="",ac="",bc="",distance="",oc=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 340" role="img" aria-label="弦上一點與弦心距圖">
+      <circle class="circle-shape" cx="310" cy="160" r="125"></circle>
+      <line class="chord-line" x1="170" y1="230" x2="450" y2="230"></line>
+      <line class="distance-line" x1="310" y1="160" x2="310" y2="230"></line>
+      <line class="helper" x1="235" y1="230" x2="310" y2="160"></line>
+      <path class="right-mark" d="M 310 230 L 310 213 L 327 213"></path>
+      <circle class="center-dot" cx="310" cy="160" r="4"></circle>
+      <circle class="point-dot" cx="235" cy="230" r="4"></circle>
+      <text class="point" x="292" y="183">O</text>
+      <text class="point" x="154" y="252">A</text>
+      <text class="point" x="457" y="252">B</text>
+      <text class="point" x="294" y="252">M</text>
+      <text class="point" x="223" y="252">C</text>
+      ${ab?`<text class="side-label" x="275" y="222">AB＝${ab}</text>`:""}
+      ${ac?`<text class="side-label" x="188" y="214">AC＝${ac}</text>`:""}
+      ${bc?`<text class="side-label" x="340" y="214">BC＝${bc}</text>`:""}
+      ${distance?`<text class="side-label" x="320" y="202">OM＝${distance}</text>`:""}
+      ${oc?`<text class="side-label" x="255" y="190">OC＝${oc}</text>`:""}
+    </svg>
+  `,"示意圖（不按比例）");
+}
+
+function twoChordDiagram({upperLabel="AB",lowerLabel="CD",upperChord="",lowerChord="",upperDistance="",lowerDistance=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 360" role="img" aria-label="同圓兩弦與弦心距圖">
+      <circle class="circle-shape" cx="310" cy="180" r="130"></circle>
+      <line class="chord-line" x1="190" y1="120" x2="430" y2="120"></line>
+      <line class="chord-line" x1="165" y1="255" x2="455" y2="255"></line>
+      <line class="distance-line" x1="310" y1="180" x2="310" y2="120"></line>
+      <line class="distance-line" x1="310" y1="180" x2="310" y2="255"></line>
+      <path class="right-mark" d="M 310 120 L 310 137 L 327 137"></path>
+      <path class="right-mark" d="M 310 255 L 310 238 L 327 238"></path>
+      <circle class="center-dot" cx="310" cy="180" r="4"></circle>
+      <text class="point" x="292" y="203">O</text>
+      <text class="point" x="174" y="110">A</text>
+      <text class="point" x="437" y="110">B</text>
+      <text class="point" x="150" y="278">C</text>
+      <text class="point" x="463" y="278">D</text>
+      <text class="point" x="294" y="114">N</text>
+      <text class="point" x="294" y="278">M</text>
+      ${upperChord?`<text class="side-label" x="268" y="112">${upperLabel}＝${upperChord}</text>`:""}
+      ${lowerChord?`<text class="side-label" x="268" y="247">${lowerLabel}＝${lowerChord}</text>`:""}
+      ${upperDistance?`<text class="side-label" x="320" y="154">ON＝${upperDistance}</text>`:""}
+      ${lowerDistance?`<text class="side-label" x="320" y="224">OM＝${lowerDistance}</text>`:""}
+    </svg>
+  `,"示意圖（不按比例）");
+}
+
 function triangleIncircleDiagram(){
   return diagramWrap(`
     <svg viewBox="0 0 620 340" role="img" aria-label="三角形三邊與圓相切圖">
@@ -2875,21 +2946,21 @@ function qChordOffCenter(){
     {AB:12,AC:1,BC:11,d:5,cm:5,oc:5*Math.sqrt(2)},
     {AB:14,AC:2,BC:12,d:4,cm:5,oc:Math.sqrt(41)}
   ];
-  const c=cases[0];
+  const c=pick(cases);
 
   return numberQuestion({
     family:"chord-off-center",
     label:"🔥 精熟題｜弦上非中點",
-    html:`<div class="question-flow"><span class="qline">${seg("AB")} 為圓 O 的一弦，C 點在 ${seg("AB")} 上。若 ${keep(`${seg("AC")}＝${c.AC}`)}、${keep(`${seg("BC")}＝${c.BC}`)}，且弦心距為 ${c.d}，求 ${seg("OC")}。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">${seg("AB")} 為圓 O 的一弦，C 點在 ${seg("AB")} 上。若 ${keep(`${seg("AC")}＝${c.AC}`)}、${keep(`${seg("BC")}＝${c.BC}`)}，且弦心距為 ${c.d}，求 ${seg("OC")}。</span></div>${chordPointDiagram({ab:String(c.AB),ac:String(c.AC),bc:String(c.BC),distance:String(c.d),oc:"？"})}`,
     answer:c.oc,
     explanation:explanation(
-      String(c.oc),
+      Number.isInteger(c.oc)?String(c.oc):goRad(Math.round(c.oc*c.oc)),
       "先找弦 AB 的中點 M，再求 CM，最後使用直角三角形 OMC。",
       [
         `${seg("AB")}＝${c.AC}＋${c.BC}＝${c.AB}。`,
         `${seg("AM")}＝${seg("MB")}＝${c.AB}÷2＝${c.AB/2}。`,
         `${seg("CM")}＝${c.AB/2}－${c.AC}＝${c.cm}。`,
-        `${seg("OC")}＝√（${c.d}${sup(2)}＋${c.cm}${sup(2)}）＝${c.oc}。`
+        `${seg("OC")}＝√（${c.d}${sup(2)}＋${c.cm}${sup(2)}）＝${Number.isInteger(c.oc)?c.oc:goRad(Math.round(c.oc*c.oc))}。`
       ]
     )
   });
@@ -2907,7 +2978,7 @@ function qTwoChords(){
   return numberQuestion({
     family:"chord-two-chords",
     label:"🔥 精熟題｜同圓兩弦",
-    html:`<div class="question-flow"><span class="qline">${seg("AB")}、${seg("CD")} 為圓 O 的兩弦。已知 ${keep(`${seg("AB")}＝${chord1}`)}，其弦心距為 ${d1}；${seg("CD")} 的弦心距為 ${d2}。求 ${seg("CD")}。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">${seg("AB")}、${seg("CD")} 為圓 O 的兩弦。已知 ${keep(`${seg("AB")}＝${chord1}`)}，其弦心距為 ${d1}；${seg("CD")} 的弦心距為 ${d2}。求 ${seg("CD")}。</span></div>${twoChordDiagram({upperLabel:"AB",lowerLabel:"CD",upperChord:String(chord1),lowerChord:"？",upperDistance:String(d1),lowerDistance:String(d2)})}`,
     answer:chord2,
     explanation:explanation(
       String(chord2),
@@ -2925,7 +2996,7 @@ function qIntegerChordBetween(){
   return choiceQuestion({
     family:"chord-integer-between",
     label:"🔥 精熟題｜弦長範圍",
-    html:`<div class="question-flow"><span class="qline">圓 O 半徑為 10。弦 ${seg("AB")} 的弦心距為 5，弦 ${seg("CD")} 的弦心距為 6。另有一弦 ${seg("EF")} 的弦心距介於 5 與 6 之間，且 ${seg("EF")} 長為整數。求 ${seg("EF")} 的長。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">圓 O 半徑為 10。弦 ${seg("AB")} 的弦心距為 5，弦 ${seg("CD")} 的弦心距為 6。另有一弦 ${seg("EF")} 的弦心距介於 5 與 6 之間，且 ${seg("EF")} 長為整數。求 ${seg("EF")} 的長。</span></div>${twoChordDiagram({upperLabel:"AB",lowerLabel:"CD",upperDistance:"5",lowerDistance:"6"})}`,
     choices:[
       {value:"15",text:"15"},
       {value:"16",text:"16"},
@@ -2946,91 +3017,202 @@ function qIntegerChordBetween(){
   });
 }
 
-function createQuestions(selected){
-  const map={
-    sectorArc:()=>shuffle([
-      qArcLengthBasic(),
-      qArcLengthBasic(),
-      qSectorAreaBasic(),
-      qSectorAreaBasic(),
-      qAngleFromArc(),
-      qSectorAreaReverse(),
-      qSectorPerimeter(),
-      qMetronome(),
-      qFerrisWheel(),
-      pick([qConcentricArc(),qBowShape90()])
-    ]),
-
-    pointCircle:()=>shuffle([
-      qPointPositionDirect(),
-      qPointPositionDirect(),
-      qPointPositionDiagram(),
-      qCoordinatePosition(),
-      qRadiusFromPoint(),
-      qThreePoints(),
-      qDiameterPoint(),
-      qRadar(),
-      qPointRange(),
-      qCoordinateUnknown()
-    ]),
-
-    lineCircle:()=>shuffle([
-      qLineRelationDirect(),
-      qLineRelationDirect(),
-      qLineCount(),
-      qLineDiagram(),
-      qLineRadiusChoice(),
-      qLineDistanceChoice(),
-      qCoordinateLine(),
-      qTangentDefinitionTrap(),
-      qTangentPerpCondition(),
-      pick([qLineRangeMastery(),qMovingLineConcept()])
-    ]),
-
-    tangent:()=>shuffle([
-      qTangentLength(),
-      qTangentRadius(),
-      qTangentOP(),
-      qTwoTangentsEqual(),
-      qTangentAngleBisector(),
-      qTriangleTangency(),
-      qTangentTrianglePerimeter(),
-      qContactChord(),
-      qTangentPropertyChoice(),
-      qTangentRadiusPerpendicular()
-    ]),
-
-    chordDistance:()=>shuffle([
-      qChordLength(),
-      qChordRadius(),
-      qChordDistance(),
-      qChordDiagram(),
-      qEqualChordDistance(),
-      qChordCompareByDistance(),
-      qDistanceCompareByChord(),
-      qChordOffCenter(),
-      qTwoChords(),
-      qIntegerChordBetween()
-    ])
-  };
-
-  if(selected!=="comprehensive"){
-    return map[selected]();
-  }
-
-  return shuffle([
-    qArcLengthBasic(),
-    qSectorPerimeter(),
-    qCoordinatePosition(),
-    qPointRange(),
-    qLineDiagram(),
-    qTangentDefinitionTrap(),
-    qTangentLength(),
-    qTriangleTangency(),
-    qChordDiagram(),
-    qIntegerChordBetween()
-  ]);
+/* 115 基礎 GO 九上 2-1 題庫｜講義題型優先，舊題庫不再抽用 */
+const GO21_FAMILIES={
+  sectorArc:[],pointCircle:[],lineCircle:[],tangent:[],chordDistance:[]
+};
+function goRegister(mode,fn){GO21_FAMILIES[mode].push(fn);}
+function goChoices(correct,others){
+  const all=[correct,...others].map(String); const seen=new Set();
+  return all.filter(v=>{if(seen.has(v))return false;seen.add(v);return true;})
+    .map((v,i)=>({value:String(i),text:v}));
 }
+function goChoice({family,label,html,correct,others,think,steps,tip}){
+  const choices=goChoices(correct,others);
+  return choiceQuestion({family,label,html,choices,answer:"0",explanation:explanation(correct,think,steps,tip||"")});
+}
+function goRad(n){
+  if(n===0)return "0";
+  let k=1,x=n;
+  for(let i=2;i*i<=x;i++)while(x%(i*i)===0){x/=(i*i);k*=i;}
+  if(x===1)return String(k);
+  return `${k===1?"":k}√${x}`;
+}
+function goText(s){return `<div class="question-flow"><span class="qline">${s}</span></div>`;}
+function goSteps(...s){return s;}
+function goRel(a,b){return a<b?"＜":a>b?"＞":"＝";}
+function goSectorAnswer(kind,r,ang){return R((kind==="arc"?2*r:r*r)*ang,360);}
+const goAngles=[30,45,60,72,90,120,135,150,180,210,240,270,300];
+function goSector(kind){
+  const r=rand(4,20),ang=pick(goAngles),ans=goSectorAnswer(kind,r,ang);
+  const isArc=kind==="arc",name=isArc?"弧長":"扇形面積";
+  const formula=isArc?`2×π×${r}×${fracHTML(ang,360)}`:`π×${r}${sup(2)}×${fracHTML(ang,360)}`;
+  return piQuestion({family:`go-sector-${kind}`,label:name,
+    html:goText(`扇形 AOB 的半徑為 ${r} 公分，圓心角為 ${ang}°，求${name}。`),answer:ans,
+    explanation:explanation(piHTML(ans),isArc?"弧長＝圓周長×圓心角／360°。":"扇形面積＝圓面積×圓心角／360°。",[
+      `${name}＝${formula}`,`＝${piHTML(ans)}${isArc?"（公分）":"（平方公分）"}。`])});
+}
+goRegister("sectorArc",()=>goSector("arc"));goRegister("sectorArc",()=>goSector("area"));
+goRegister("sectorArc",()=>{
+ const r=rand(4,18),ang=pick(goAngles),arc=goSectorAnswer("arc",r,ang),n=R(2*r*ang,360);
+ return goChoice({family:"go-sector-perimeter",label:"扇形周長",html:goText(`半徑 ${r} 公分、圓心角 ${ang}° 的扇形，其周長是哪一式？`),correct:`${2*r}＋${piHTML(arc)}`,others:[`${r}＋${piHTML(arc)}`,piHTML(arc),`${2*r}＋${piHTML(goSectorAnswer("area",r,ang))}`],think:"周長＝兩條半徑＋弧長。",steps:[`弧長＝2×π×${r}×${fracHTML(ang,360)}＝${piHTML(n)}。`,`周長＝${r}＋${r}＋${piHTML(arc)}＝${2*r}＋${piHTML(arc)}。`]});
+});
+goRegister("sectorArc",()=>{
+ const r=pick([6,8,9,10,12,15,18,20]),ang=pick([30,45,60,90,120,135,150,180,240]),arc=goSectorAnswer("arc",r,ang);
+ return numberQuestion({family:"go-sector-reverse",label:"由弧長反求圓心角",html:goText(`扇形 AOB 半徑為 ${r} 公分，弧長為 ${piHTML(arc)} 公分，求圓心角。`),answer:ang,explanation:explanation(`${ang}°`,"設圓心角為 x°，代入弧長公式。",[`2×π×${r}×${fracHTML("x",360)}＝${piHTML(arc)}。`,`約去 π，得 x＝${ang}，所以圓心角為 ${ang}°。`])});
+});
+goRegister("sectorArc",()=>{
+ const r=rand(3,16),diam=r*2;
+ return numberQuestion({family:"go-circle-diameter",label:"直徑、半徑與最長弦",html:goText(pick([`圓 O 的半徑為 ${r} 公分，求圓內最長的弦長。`,`圓 O 的直徑為 ${diam} 公分，求圓內最長的弦長。`])),answer:diam,explanation:explanation(`${diam} 公分`,"圓內最長的弦就是直徑。",[`最長弦＝直徑＝${r}×2＝${diam} 公分。`])});
+});
+goRegister("sectorArc",()=>{
+ const concepts=[ ["連接圓周上兩點的線段，稱為什麼？","弦"],["通過圓心的弦，稱為什麼？","直徑"],["從圓心連到圓周上一點的線段，稱為什麼？","半徑"],["以圓心為頂點、兩條半徑為邊的角，稱為什麼？","圓心角"],["圓周上兩點所夾較小的弧，稱為什麼？","劣弧"],["圓周上兩點所夾較大的弧，稱為什麼？","優弧"]];
+ const [q,a]=pick(concepts);return goChoice({family:"go-circle-definition",label:"圓的基本名詞",html:goText(q),correct:a,others:["弦","直徑","半徑","圓心角","劣弧","優弧"].filter(x=>x!==a).sort(()=>Math.random()-.5).slice(0,3),think:"依照圓的基本定義判斷。",steps:[`依定義，正確名稱是「${a}」。`]});
+});
+goRegister("sectorArc",()=>{
+ const r=rand(4,18),small=pick([30,45,60,75,90,120,150]),big=360-small;
+ const ans=R(2*r*(big-small),360);
+ return piQuestion({family:"go-arc-difference",label:"優弧與劣弧長度差",html:goText(`圓 O 半徑為 ${r} 公分，${arc("AB")} 的劣弧所對圓心角為 ${small}°，求優弧與劣弧的弧長差。`),answer:ans,explanation:explanation(piHTML(ans),"先求優弧的角度，再將兩段弧長相減。",[`優弧圓心角＝360°－${small}°＝${big}°。`,`弧長差＝2×π×${r}×${fracHTML(big,360)}－2×π×${r}×${fracHTML(small,360)}`,`＝${piHTML(ans)}（公分）。`])});
+});
+goRegister("sectorArc",()=>{
+ const r=pick([6,8,10,12,14,16,18]),ang=pick([90,60,120]);
+ const sector=goSectorAnswer("area",r,ang);
+ const tri=ang===90?`${r*r/2}`:(ang===60?`${r*r%4===0?r*r/4:fracHTML(r*r,4)}√3`:`${r*r%4===0?r*r/4:fracHTML(r*r,4)}√3`);
+ const ans=`${piHTML(sector)}－${tri}`;
+ return goChoice({family:"go-bow-area",label:"弓形面積",html:goText(`半徑 ${r} 公分、圓心角 ${ang}° 的扇形 AOB，求弦 AB 與劣弧 AB 之間的弓形面積。`),correct:ans,others:[piHTML(sector),`${piHTML(sector)}＋${tri}`,tri],think:"弓形面積＝扇形面積－△OAB 面積。",steps:[`扇形面積＝π×${r}${sup(2)}×${fracHTML(ang,360)}＝${piHTML(sector)}。`,ang===90?`△OAB 面積＝${fracHTML(1,2)}×${r}×${r}＝${tri}。`:(ang===60?`△OAB 為正三角形，面積＝${fracHTML(1,4)}×${r}${sup(2)}×√3＝${tri}。`:`由 30°－60°－90° 直角三角形，可得 △OAB 面積＝${fracHTML(1,4)}×${r}${sup(2)}×√3＝${tri}。`),`弓形面積＝${piHTML(sector)}－${tri}（平方公分）。`]});
+});
+goRegister("sectorArc",()=>{
+ const parts=pick([3,4,5,6,8,9,10,12]),step=rand(1,parts-1),r=rand(4,18),ans=R(2*r*step,parts);
+ return piQuestion({family:"go-rotation-arc",label:"旋轉轉盤弧長",html:goText(`圓形轉盤半徑 ${r} 公分，圓周等分成 ${parts} 份；一點沿圓周轉過 ${step} 個間隔，求掃過的弧長。`),answer:ans,explanation:explanation(piHTML(ans),"旋轉部分占整圓的「間隔數／總間隔數」。",[`旋轉圈數＝${fracHTML(step,parts)} 圈。`,`弧長＝2×π×${r}×${fracHTML(step,parts)}＝${piHTML(ans)}（公分）。`])});
+});
+// 主題 2：圓內、圓上、圓外；直接距離、直徑、坐標距離。
+goRegister("pointCircle",()=>{
+ const r=rand(5,16),d=r+pick([-4,-3,-2,-1,0,1,2,3,4]),pos=positionFromDistance(d,r);
+ return goChoice({family:"go-point-one",label:"比較圓心距離與半徑",html:goText(`圓 O 半徑為 ${r}，${seg("OP")}＝${d}，P 點在圓的何處？`),correct:pos.text,others:["圓內","圓上","圓外"].filter(x=>x!==pos.text),think:"比較 OP 與 r。",steps:[`OP＝${d} ${goRel(d,r)} ${r}＝r，所以 P 點在${pos.text}。`]});
+});
+goRegister("pointCircle",()=>{
+ const r=rand(5,15),vals=shuffle([r-rand(1,4),r,r+rand(1,4)]),names=["A","B","C"],target=pick(["圓內","圓上","圓外"]),index=target==="圓內"?vals.indexOf(Math.min(...vals)):target==="圓上"?vals.indexOf(r):vals.indexOf(Math.max(...vals));
+ return goChoice({family:"go-point-multiple",label:"三點位置判別",html:goText(`圓 O 半徑為 ${r}，OA、OB、OC 依序為 ${vals.join("、")}。哪一點在${target}？`),correct:names[index],others:names.filter(x=>x!==names[index]),think:"逐一比較三個點到圓心的距離與半徑。",steps:vals.map((v,i)=>`${names[i]}：${v}${goRel(v,r)}${r}，在${positionFromDistance(v,r).text}。`)});
+});
+goRegister("pointCircle",()=>{
+ const r=rand(5,14),d=pick([r-2,r,r+2]),pos=positionFromDistance(d,r);
+ return goChoice({family:"go-point-diameter",label:"已知直徑的位置判別",html:goText(`圓 O 的直徑為 ${2*r}，OP＝${d}，P 點在圓的何處？`),correct:pos.text,others:["圓內","圓上","圓外"].filter(x=>x!==pos.text),think:"題目是直徑，先除以 2 求半徑。",steps:[`半徑＝${2*r}÷2＝${r}。`,`OP＝${d}${goRel(d,r)}${r}，所以在${pos.text}。`]});
+});
+goRegister("pointCircle",()=>{
+ const [a,b,h]=pick(PYTHAGOREAN_TRIPLES),sx=pick([-1,1]),sy=pick([-1,1]),r=h+pick([-2,0,2]),pos=positionFromDistance(h,r);
+ return goChoice({family:"go-point-coordinate",label:"坐標平面與圓的位置",html:goText(`坐標平面上圓 O 以原點為圓心、半徑 ${r}，點 P（${sx*a}，${sy*b}）在圓的何處？`),correct:pos.text,others:["圓內","圓上","圓外"].filter(x=>x!==pos.text),think:"用畢氏定理求 OP 再比半徑。",steps:[`OP＝√(${a}${sup(2)}＋${b}${sup(2)})＝${h}。`,`${h}${goRel(h,r)}${r}，故 P 點在${pos.text}。`]});
+});
+goRegister("pointCircle",()=>{
+ const [a,b,h]=pick(PYTHAGOREAN_TRIPLES),sx=pick([-1,1]),sy=pick([-1,1]);
+ return numberQuestion({family:"go-point-coordinate-radius",label:"由圓上一點求半徑",html:goText(`圓心在原點，P（${sx*a}，${sy*b}）在圓 O 上，求圓 O 半徑。`),answer:h,explanation:explanation(String(h),"圓上點到圓心的距離就是半徑。",[`半徑＝OP＝√(${a}${sup(2)}＋${b}${sup(2)})`,`＝${h}。`])});
+});
+goRegister("pointCircle",()=>{
+ const r=rand(5,18),dist=[r-2,r,r+2,r-1].map(x=>x),names=["A","B","C","D"],target=pick(["圓內","圓上","圓外"]),selected=names.filter((_,i)=>positionFromDistance(dist[i],r).text===target).join("、");
+ return goChoice({family:"go-point-four",label:"多個點的位置判斷",html:goText(`圓 O 直徑為 ${2*r}，OA、OB、OC、OD 依序為 ${dist.join("、")}，哪些點在${target}？`),correct:selected,others:names.filter(x=>!selected.includes(x)).concat(["A、B","B、C","C、D","A、D"]).filter(x=>x!==selected).slice(0,3),think:"先求半徑，再逐點分類。",steps:[`半徑＝${2*r}÷2＝${r}。`,...dist.map((v,i)=>`${names[i]}：${v}${goRel(v,r)}${r}，在${positionFromDistance(v,r).text}。`),`所以答案為 ${selected}。`]});
+});
+// 主題 3 概念 1：三條直線位置、交點數、切線割線。
+goRegister("lineCircle",()=>{
+ const r=rand(5,16),dist=shuffle([r-rand(1,4),r,r+rand(1,4)]),names=["L1","L2","L3"],chosen=rand(0,2),rel=relationFromDistance(dist[chosen],r);
+ return numberQuestion({family:"go-line-count-three",label:"直線與圓的交點數",html:goText(`圓 O 半徑為 ${r}，三條直線 L1、L2、L3 到圓心的距離分別是 ${dist.join("、")}。求 L${chosen+1} 與圓的交點數。`),answer:rel.count,explanation:explanation(`${rel.count} 個`,"比較圓心到直線距離 d 與半徑 r。",[`L${chosen+1} 的 d＝${dist[chosen]}${goRel(dist[chosen],r)}${r}＝r。`,`因此交點數為 ${rel.count}。`])});
+});
+goRegister("lineCircle",()=>{
+ const r=rand(5,17),dist=shuffle([r-rand(1,4),r,r+rand(1,4)]),names=["A","B","C"],kind=pick(["切線","割線","不相交"]),ind=dist.findIndex(v=>kind==="切線"?v===r:kind==="割線"?v<r:v>r);
+ return goChoice({family:"go-line-three",label:"多條直線位置辨認",html:goText(`圓 O 半徑為 ${r}，圓心到直線 A、B、C 的距離依序為 ${dist.join("、")}。哪條直線與圓 O ${kind==="不相交"?"不相交":"構成"+kind}？`),correct:names[ind],others:names.filter(x=>x!==names[ind]),think:"d＝r 是切線，d＜r 是割線，d＞r 不相交。",steps:dist.map((v,i)=>`${names[i]}：d＝${v}${goRel(v,r)}${r}，${relationFromDistance(v,r).text}。`)});
+});
+goRegister("lineCircle",()=>{
+ const r=rand(5,16),d=r+pick([-4,-2,0,2,4]),rel=relationFromDistance(d,r);
+ return goChoice({family:"go-line-diameter",label:"由直徑判斷直線",html:goText(`圓 O 的直徑為 ${2*r}，圓心到直線 L 的距離為 ${d}，判斷 L 與圓的位置關係。`),correct:rel.text,others:["割線（交於兩點）","切線（只交於一點）","不相交"].filter(x=>x!==rel.text),think:"先把直徑除以 2。",steps:[`半徑＝${2*r}÷2＝${r}。`,`d＝${d}${goRel(d,r)}${r}，所以是${rel.text}。`]});
+});
+goRegister("lineCircle",()=>{
+ const r=rand(5,14),dist=shuffle([r-1,r,r+1]);
+ return numberQuestion({family:"go-line-total",label:"三條直線交點總數",html:goText(`圓 O 半徑 ${r}，直線 L1、L2、L3 到圓心的距離分別是 ${dist.join("、")}，三條直線各與圓的交點個數加總為多少？（分別計數）`),answer:3,explanation:explanation("3", "圓心距小於、等於、大於半徑時，交點數分別為 2、1、0。",dist.map((v,i)=>`L${i+1}：${v}${goRel(v,r)}${r}，有 ${relationFromDistance(v,r).count} 個交點。`).concat(["總數＝2＋1＋0＝3 個。"]))});
+});
+// 主題 3 概念 2、3：切線段，兩切線，三角形三邊切圓。
+goRegister("tangent",()=>{
+ const [r,ap,op]=pickTriple(),scale=rand(1,3),rr=r*scale,aa=ap*scale,oo=op*scale;
+ return numberQuestion({family:"go-tangent-length",label:"切線段長",html:goText(`PA 切圓 O 於 A，半徑 OA＝${rr}，OP＝${oo}，求 AP。`),answer:aa,explanation:explanation(String(aa),"連接 OA，切點處半徑垂直切線，利用畢氏定理。",[`OA⊥PA，所以 △OPA 為直角三角形。`,`AP＝√(OP${sup(2)}－OA${sup(2)})`,`＝√(${oo}${sup(2)}－${rr}${sup(2)})＝${aa}。`])});
+});
+goRegister("tangent",()=>{
+ const [r,ap,op]=pickTriple(),scale=rand(1,3),rr=r*scale,aa=ap*scale,oo=op*scale;
+ return numberQuestion({family:"go-tangent-radius",label:"由切線段求半徑",html:goText(`PA 切圓 O 於 A，OP＝${oo}，AP＝${aa}，求半徑 OA。`),answer:rr,explanation:explanation(String(rr),"切線 PA 垂直 OA，所以使用畢氏定理。",[`OA＝√(OP${sup(2)}－AP${sup(2)})`,`＝√(${oo}${sup(2)}－${aa}${sup(2)})＝${rr}。`])});
+});
+goRegister("tangent",()=>{
+ const [r,ap,op]=pickTriple(),scale=rand(1,3),rr=r*scale,aa=ap*scale,oo=op*scale,bp=rand(2,8);
+ return numberQuestion({family:"go-tangent-collinear",label:"切線段與外部延長線",html:`${goText(`PA 切圓 O 於 A。B 在 OP 線段上且 OB 為半徑，已知 OB＝${rr}、BP＝${oo-rr}，求 AP。`)}${tangentDiagram({radius:String(rr),op:String(oo),ap:"？"})}`,answer:aa,explanation:explanation(String(aa),"OP＝OB＋BP；連接 OA，OA 垂直切線。",[`OP＝${rr}＋${oo-rr}＝${oo}，OA＝${rr}。`,`AP＝√(${oo}${sup(2)}－${rr}${sup(2)})＝${aa}。`])});
+});
+goRegister("tangent",()=>{
+ const [r,ap,op]=pickTriple(),scale=rand(1,3),rr=r*scale,aa=ap*scale,oo=op*scale,bp=oo-rr;
+ return numberQuestion({family:"go-tangent-radius-eq",label:"切線與半徑方程式",html:`${goText(`PA 切圓 O 於 A，B 在 OP 上且 OB＝OA＝r。若 AP＝${aa}，BP＝${bp}，求半徑 r。`)}${tangentDiagram({radius:"r",op:`r＋${bp}`,ap:String(aa)})}`,answer:rr,explanation:explanation(String(rr),"設半徑 x，OP＝x＋BP，再利用畢氏定理。",[`設 OA＝OB＝x，則 OP＝x＋${bp}。`,`x${sup(2)}＋${aa}${sup(2)}＝(x＋${bp})${sup(2)}。`,`${2*bp}x＝${aa*aa-bp*bp}，x＝${rr}。`])});
+});
+goRegister("tangent",()=>{
+ const r=rand(3,15),ap=rand(4,18);
+ return numberQuestion({family:"go-two-tangent",label:"同一外點兩切線等長",html:`${goText(`PA、PB 分別切圓 O 於 A、B，已知 PA＝${ap}，求 PB。`)}${tangentPairDiagram({pa:String(ap),pb:"？"})}`,answer:ap,explanation:explanation(String(ap),"由同一圓外點引出的兩條切線段相等。",[`PA＝PB，所以 PB＝${ap}。`])});
+});
+goRegister("tangent",()=>{
+ const a=rand(3,13),b=rand(3,13),c=rand(3,13),AB=a+b,BC=b+c,AC=a+c,query=pick(["A","B","C"]),val=query==="A"?a:query==="B"?b:c;
+ return numberQuestion({family:"go-incircle-sides",label:"三角形三邊切圓",html:goText(`△ABC 的三邊分別與同一圓相切於 D、E、F，AB＝${AB}，BC＝${BC}，AC＝${AC}，求從頂點 ${query} 引出的切線段長。`),answer:val,explanation:explanation(String(val),"同一頂點引出的兩條切線段等長。",[`設 A、B、C 的切線段長依序為 x、y、z。`,`x＋y＝${AB}，y＋z＝${BC}，x＋z＝${AC}。`,`所以 ${query} 點切線段＝${query==="A"?`(${AB}＋${AC}－${BC})÷2` :query==="B"?`(${AB}＋${BC}－${AC})÷2`:`(${BC}＋${AC}－${AB})÷2`}＝${val}。`])});
+});
+goRegister("tangent",()=>{
+ const [r,ap,op]=pickTriple(),scale=rand(1,2),rr=r*scale,aa=ap*scale,oo=op*scale;
+ const ab=R(2*rr*aa,oo);
+ return exactValueQuestion({family:"go-tangent-contact-chord",label:"兩切點連線長",html:`${goText(`PA、PB 切圓 O 於 A、B，OP 與 AB 交於 D，半徑 ${rr}、OP＝${oo}，求 AB。`)}${tangentPairDiagram({})}`,answer:ab,explanation:explanation(ratHTML(ab),"連接 OA，先求 AP；再利用直角三角形的面積關係求 AD。",[`AP＝√(${oo}${sup(2)}－${rr}${sup(2)})＝${aa}。`,`AD＝OA×AP÷OP＝${fracHTML(`${rr}×${aa}`,oo)}。`,`AB＝2AD＝${ratHTML(ab)}。`])});
+});
+goRegister("tangent",()=>{
+ const ap=rand(3,14);
+ return goChoice({family:"go-tangent-45",label:"兩切線構成直角",html:goText(`PA、PB 為兩切線，PA＝${ap}，∠APB＝90°，下列何者為 AB 的長？`),correct:`${ap}√2`,others:[`${ap}`,`${2*ap}`,`${ap}√3`],think:"兩切線段相等，△APB 是等腰直角三角形。",steps:[`PA＝PB＝${ap}，又∠APB＝90°。`,`AB＝√(${ap}${sup(2)}＋${ap}${sup(2)})＝${ap}√2。`]});
+});
+// 主題 3 概念 4、5：弦心距、弦長、比較與多弦。
+function goChordData(){const [d,half,r]=pickTriple(),k=rand(1,3);return {d:d*k,h:half*k,r:r*k,c:2*half*k};}
+goRegister("chordDistance",()=>{
+ const v=goChordData();return numberQuestion({family:"go-chord-distance",label:"由弦長求弦心距",html:`${goText(`圓 O 的半徑為 ${v.r}，弦 AB 長 ${v.c}，求 AB 的弦心距。`)}${chordDiagram({radius:String(v.r),chord:String(v.c),distance:"？"})}`,answer:v.d,explanation:explanation(String(v.d),"作 OM⊥AB，則 M 為弦 AB 的中點。",[`MB＝AB÷2＝${v.c}÷2＝${v.h}。`,`OM＝√(OB${sup(2)}－MB${sup(2)})`,`＝√(${v.r}${sup(2)}－${v.h}${sup(2)})＝${v.d}。`])});
+});
+goRegister("chordDistance",()=>{
+ const v=goChordData();return numberQuestion({family:"go-chord-radius",label:"由弦心距求半徑",html:`${goText(`弦 AB＝${v.c}，弦心距 OM＝${v.d}，求圓 O 半徑。`)}${chordDiagram({distance:String(v.d),chord:String(v.c),radius:"？"})}`,answer:v.r,explanation:explanation(String(v.r),"OM 垂直平分 AB，先求半弦長。",[`MB＝${v.c}÷2＝${v.h}。`,`OB＝√(OM${sup(2)}＋MB${sup(2)})`,`＝√(${v.d}${sup(2)}＋${v.h}${sup(2)})＝${v.r}。`])});
+});
+goRegister("chordDistance",()=>{
+ const v=goChordData();return numberQuestion({family:"go-chord-length",label:"由半徑與弦心距求弦長",html:goText(`圓 O 半徑為 ${v.r}，弦 AB 的弦心距為 ${v.d}，求 AB 長。`),answer:v.c,explanation:explanation(String(v.c),"半徑、弦心距與半弦長組成直角三角形。",[`MB＝√(${v.r}${sup(2)}－${v.d}${sup(2)})＝${v.h}。`,`AB＝2MB＝2×${v.h}＝${v.c}。`])});
+});
+goRegister("chordDistance",()=>{
+ const r=rand(7,18),h=rand(3,r-1),rad=r*r-h*h,correct=goRad(rad),ans=correct;
+ return goChoice({family:"go-chord-irrational",label:"最簡根式弦心距",html:goText(`圓 O 半徑為 ${r}，弦 AB 長 ${2*h}，求 AB 的弦心距（化為最簡根式）。`),correct:ans,others:[goRad(rad+1),goRad(rad+4),goRad(r*r+h*h)],think:"弦心距＝√(半徑²－半弦長²)，根號內需化簡。",steps:[`半弦長＝${2*h}÷2＝${h}。`,`弦心距＝√(${r}${sup(2)}－${h}${sup(2)})＝√${rad}＝${ans}。`]});
+});
+goRegister("chordDistance",()=>{
+ const r=rand(7,18),d=rand(2,r-1),rad=r*r-d*d,half=goRad(rad),ans=`2×${half}`;
+ return goChoice({family:"go-chord-radical-length",label:"最簡根式弦長",html:goText(`圓 O 半徑 ${r}，弦 AB 的弦心距 ${d}，AB 長為何？`),correct:ans,others:[half,`2×${goRad(rad+1)}`,`${2*r}`],think:"先求半弦長，再乘以 2。",steps:[`MB＝√(${r}${sup(2)}－${d}${sup(2)})＝√${rad}＝${half}。`,`AB＝2MB＝2×${half}＝${ans}。`]});
+});
+goRegister("chordDistance",()=>{
+ const a=rand(6,20),b=a+rand(1,8),which=pick(["距離","弦長"]);
+ if(which==="距離")return goChoice({family:"go-chord-compare",label:"弦長比較弦心距",html:goText(`同一圓中，弦 AB＝${a}，CD＝${b}，比較 AB、CD 的弦心距 OM、ON。`),correct:"OM＞ON",others:["OM＜ON","OM＝ON"],think:"同圓中，弦越長，弦心距越短。",steps:[`AB＝${a}＜CD＝${b}。`,`因此 OM＞ON。`]});
+ return goChoice({family:"go-chord-compare-reverse",label:"弦心距比較弦長",html:goText(`同圓中兩弦 AB、CD 的弦心距 OM＝${a}、ON＝${b}，比較兩弦長度。`),correct:"AB＞CD",others:["AB＜CD","AB＝CD"],think:"同圓中，弦心距越短，弦越長。",steps:[`OM＝${a}＜ON＝${b}。`,`因此 AB＞CD。`]});
+});
+goRegister("chordDistance",()=>{
+ const v=goChordData(),eq=pick(["等弦","等弦心距"]);
+ return numberQuestion({family:"go-chord-equal",label:"等弦與等弦心距",html:goText(eq==="等弦"?`同圓中 AB＝CD，半徑 ${v.r}，AB 的弦心距為 ${v.d}，求 CD 的弦心距。`:`同圓中兩弦的弦心距相等。若 AB＝${v.c}，求 CD。`),answer:eq==="等弦"?v.d:v.c,explanation:explanation(String(eq==="等弦"?v.d:v.c),eq==="等弦"?"等弦對應等弦心距。":"等弦心距對應等弦。",[eq==="等弦"?`由 AB＝CD，得兩弦心距相等，故為 ${v.d}。`:`由弦心距相等，得 CD＝AB＝${v.c}。`])});
+});
+goRegister("chordDistance",()=>{
+ const r=pick([13,15,17,20,25]),ds=[3,4,5,6,7,8,9,12,15].filter(d=>d<r),d1=pick(ds),d2=pick(ds.filter(d=>d!==d1)),c1=goRad(r*r-d1*d1),c2=goRad(r*r-d2*d2);
+ return goChoice({family:"go-chord-two-distance",label:"同圓兩弦長度比較",html:goText(`同圓中，兩弦 AB、CD 的弦心距分別是 ${d1} 與 ${d2}，哪條弦比較長？`),correct:d1<d2?"AB":"CD",others:[d1<d2?"CD":"AB","兩弦等長"],think:"弦心距較小的弦較長。",steps:[`${d1}${goRel(d1,d2)}${d2}，因此 ${d1<d2?"AB":"CD"} 較長。`]});
+});
+/* 同一回合：每一大類輪替選取，題型與係數都重新產生；避免固定十種模板。 */
+function goMakeMode(selected,count=10){
+ const pool=GO21_FAMILIES[selected];if(!pool?.length)throw new Error(`未知模式：${selected}`);
+ const result=[],seen=new Set();let attempts=0;
+ while(result.length<count&&attempts<300){
+  if(attempts%pool.length===0)var order=shuffle(pool);
+  const q=order[attempts%pool.length](); attempts++;
+  const signature=q.family+"|"+q.html.replace(/<[^>]*>/g,"").slice(0,140);
+  if(seen.has(signature))continue; seen.add(signature);result.push(q);
+ }
+ if(result.length!==count)throw new Error(`題庫產生不足：${selected}`);
+ return shuffle(result);
+}
+function createQuestions(selected){
+ if(selected!=="comprehensive")return goMakeMode(selected,MODES[selected].count);
+ const modes=["sectorArc","pointCircle","lineCircle","tangent","chordDistance"];
+ const result=[];for(const m of modes)result.push(...goMakeMode(m,2));
+ return shuffle(result);
+}
+
 
 /*
 ==================================================
@@ -3594,6 +3776,18 @@ Explanation
 不會出現「BC」留在上一行、「＝5」掉到下一行的情況。
 ==================================================
 */
+function radicalSpan(content){
+  return `<span class="radical math"><span class="radical-sign">√</span><span class="radical-overbar">${content}</span></span>`;
+}
+
+function formatRadicalsInHTML(input){
+  let html=String(input??"");
+  html=html.replace(/√（([^<>]+?)）/g,(_,inner)=>radicalSpan(`（${inner}）`));
+  html=html.replace(/√\(([^<>]+?)\)/g,(_,inner)=>radicalSpan(`(${inner})`));
+  html=html.replace(/√([0-9A-Za-z]+(?:<sup>[^<]+<\/sup>)?)/g,(_,inner)=>radicalSpan(inner));
+  return html;
+}
+
 function protectImportantUnits(input){
   let html=String(input??"");
 
@@ -3656,6 +3850,8 @@ function protectImportantUnits(input){
     /∥/g,
     '<span class="parallel-symbol" aria-label="平行">//</span>'
   );
+
+  html=formatRadicalsInHTML(html);
 
   return html;
 }
