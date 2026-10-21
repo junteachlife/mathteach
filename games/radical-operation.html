@@ -2084,7 +2084,7 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
     <header class="game-header">
 
 
-      <a class="grade-return" href="../index.html" id="grade-return-link">↩ 八年級返回</a>
+      <a class="grade-return" href="../index.html?semester=grade8-first" id="grade-return-link">↩ 重返八年級上學期</a>
       <h1 class="game-title">
         ⚡ 根式運算大挑戰
       </h1>
@@ -2092,7 +2092,7 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
 
       <p class="game-subtitle">
 
-        根式乘除、分母有理化、同類方根、乘法公式與根式四則運算。
+        六種模式涵蓋根式乘除、大小比較、最簡根式、同類方根、四則運算與乘法公式。
 
       </p>
 
@@ -2216,7 +2216,7 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
 
 
         <button class="mode-card" type="button" data-mode="formula">
-          <span class="mode-tag">課本 P86～88｜10 題</span>
+          <span class="mode-tag">10 題</span>
           <h2>模式四｜根式的乘法公式</h2>
           <p>和的平方、差的平方、平方差公式，以及共軛式有理化分母。</p>
           <div class="mode-example">基本公式、含係數根式、雙根式平方與進階有理化。</div>
@@ -2229,25 +2229,31 @@ MathExpressionInput v2.3 的根號預覽改回使用 RadicalDisplay 共用元件
         >
 
           <span class="mode-tag">
-            課本型｜10 題
+            10 題
           </span>
 
           <h2>
-            模式五｜根式四則運算與綜合題型
+            模式五｜根式四則運算
           </h2>
 
           <p>
-            綜合根式四則、分數係數、正負號、乘法公式與有理化。
+            分配律、括號四則、根式乘除與多步驟計算。
           </p>
 
           <div class="mode-example">
 
-            括號四則、分數乘除、正負號、完全平方、平方差與有理化。
+            包含基礎題與多步驟進階題。
 
           </div>
 
         </button>
 
+        <button class="mode-card" type="button" data-mode="comprehensive">
+          <span class="mode-tag">10 題</span>
+          <h2>模式六｜全單元綜合挑戰</h2>
+          <p>從前五個模式混合抽題，完整複習根式乘除、大小比較、加減、四則與乘法公式。</p>
+          <div class="mode-example">每次挑選不同題型與數字，適合單元總複習。</div>
+        </button>
 
       </div>
 
@@ -2703,7 +2709,9 @@ const MODE_NAMES = {
     "根式乘法公式",
 
   mixed:
-    "根式四則綜合"
+    "根式四則運算",
+
+  comprehensive: "六模式綜合挑戰"
 };
 
 
@@ -6030,7 +6038,7 @@ function makeMode4E() {
     1
   ) {
 
-    return makeMode4E();
+    return makeM4Conjugate();
   }
 
 
@@ -6275,38 +6283,114 @@ function makeMode2Advanced(){return shuffle([makeDivideBasic(),makeDivideCoeffic
 function makeMode3Advanced(){return shuffle([makeAddSameRoot(),makeTwoRootDirect(),makeSimplifyThenTwoRoots(),makeThreeTermTwoRoots(),advancedAddFour(),advancedAddFour(),advancedAddBracket(),advancedAddBracket(),makeSimplifyThenTwoRoots(),advancedAddFour()])}
 function makeMode5Advanced(){return shuffle([makeMode4A(),makeMode4A(),makeMode4B(),makeMode4B(),advancedAddFour(),advancedDivision(),makeFormulaSquare(-1),makeFormulaDoubleSquare(),makeFormulaDifference(),makeFormulaConjugate()])}
 
-function createQuestions() {
-
-  if (
-    mode ===
-    "multiply"
-  ) {
-
-    return makeMode1();
-  }
-
-
-  if (
-    mode ===
-    "divide"
-  ) {
-
-    return makeMode2Advanced();
-  }
-
-
-  if (
-    mode ===
-    "addSubtract"
-  ) {
-
-    return makeMode3Advanced();
-  }
-
-
-  if (mode === "formula") return makeModeFormula();
-  return makeMode5Advanced();
+/* 2-2 六模式隨機題庫：依基礎 GO 主題 1～5 設計 */
+const ROOT_POOL=[2,3,5,6,7,10,11,13,14,15,17,19,21,22,23,26,30,33,35,39,42,55,70,77];
+const BASIC_ROOTS=[2,3,5,6,7,10,11,13,14,15];
+function qopts(method,pitfall='注意負號、最簡根式及分母不可留下根號。'){return {method,pitfall}}
+function numericRootParts(coefficient,radicand){
+ const result=simplifyRadicalData(coefficient,radicand);
+ return result.type==='number'?{constant:result.value,radicals:[]}:{constant:0,radicals:[result]};
 }
+function joinRootParts(parts){let constant=0, radicals=[];for(const p of parts){constant+=p.constant;radicals.push(...p.radicals)}return {constant,radicals:normalizeRadicalTerms(radicals)}}
+function exprFromParts(html,parts,steps,label,opts={}){
+ const a=joinRootParts(parts);
+ if(!a.radicals.length)return numberQuestion(html,a.constant,steps,label,opts);
+ if(!a.constant&&a.radicals.length===1&&Number.isInteger(a.radicals[0].coefficient))return radicalQuestion(html,a.radicals[0].coefficient,a.radicals[0].radicand,steps,label,opts);
+ return expressionQuestion(html,a.constant,a.radicals,steps,label,opts);
+}
+function expRoot(v){return sqrtDisplay(v)}
+function makeM1Scalar(){
+ const c=rand(2,8)*(Math.random()<.36?-1:1),k=rand(2,8)*(Math.random()<.33?-1:1),r=pick(BASIC_ROOTS), divide=Math.random()<.45;
+ const n=divide?c*pick([2,3,4,5]):c, d=divide?n/c:null;
+ const html=divide?`(${radicalDisplay(n,r)}) ÷ (${d})`:`(${radicalDisplay(c,r)}) × (${k})`;
+ const ans=divide?c:c*k;
+ return radicalQuestion(html,ans,r,[`根式乘除整數時，根號內的 ${r} 不變，只計算根號外係數。`,`根號外計算：${divide?`${n} ÷ ${d}`:`(${c}) × (${k})`}＝${ans}。`,`所以得到 ${radicalDisplay(ans,r)}，已是最簡根式。`],'請計算',qopts('先處理正負號，再做根號外係數的乘除。'));
+}
+function makeM1Fraction(){
+ const c=rand(1,6)*(Math.random()<.4?-1:1),n=rand(2,7),d=rand(2,8),r=pick(BASIC_ROOTS), mul=Math.random()<.5;
+ const num=mul?c*n:c*d,den=mul?d:n;
+ const html=`${radicalDisplay(c,r)} ${mul?'×':'÷'} ${fractionDisplay(String(n),String(d))}`;
+ const ans=simplifyRationalRadical(num,den,r);
+ return rationalRadicalQuestion(html,num,den,r,[`把根式看成「係數 × 根號」，分數只和係數運算。`,`係數計算：${c} ${mul?'×':'÷'} ${fractionDisplay(String(n),String(d))}＝${fractionDisplay(String(num),String(den))}。`,`係數約分，根號內仍為 ${r}；最後答案：${rationalRadicalDisplay(ans.coefficient,ans.radicand,ans.denominator)}。`],'請計算並約成最簡',qopts('乘分數分子分母各相乘；除分數先乘倒數。'));
+}
+function makeM1RootMultiply(){
+ const a=pick(BASIC_ROOTS),b=pick(BASIC_ROOTS),u=rand(1,5)*(Math.random()<.27?-1:1),v=rand(1,5)*(Math.random()<.3?-1:1);
+ const ans=simplifyRadicalData(u*v,a*b);
+ const html=`${radicalDisplay(u,a)} × (${radicalDisplay(v,b)})`;
+ return rationalRadicalQuestion(html,u*v,1,a*b,[`根號外係數：(${u})×(${v})＝${u*v}。`,`根號內：${a}×${b}＝${a*b}，得到 ${radicalDisplay(u*v,a*b)}。`,`若根號內可提出完全平方因數，必須再化簡：${simplifiedDataDisplay(ans)}。`],'請計算並化為最簡根式',qopts('根號外與根號內分別相乘，再化簡。'));
+}
+function makeM1RootCompare(){
+ let a,b,u,v,x,y;
+ for(let tries=0;tries<30;tries++){
+ a=pick(BASIC_ROOTS);b=pick(BASIC_ROOTS);u=rand(1,9);v=rand(1,9);x=u*u*a;y=v*v*b;if(x!==y&&Math.abs(x-y)<90)break;
+ }
+ const answer=x>y?1:-1;
+ const q=numberQuestion(`${radicalDisplay(u,a)} <span style="padding:0 .25em;color:#64748b">□</span> ${radicalDisplay(v,b)}`,answer,[`兩個根式均為正數，可以同時平方來比較。`,`左邊平方：(${radicalDisplay(u,a)})²＝${u}²×${a}＝${x}。`,`右邊平方：(${radicalDisplay(v,b)})²＝${v}²×${b}＝${y}。`,`因為 ${x}${x>y?'＞':'＜'}${y}，所以原式應填「${x>y?'＞':'＜'}」。`],'請選擇正確的大小關係',qopts('正根式比較大小，可先將根號外係數平方後乘入根號內。'));
+ q.compare=true;return q;
+}
+function makeM1SameRoot(){const r=pick(BASIC_ROOTS),a=rand(1,7),b=rand(1,6)*(Math.random()<.45?-1:1),ans=a*b*r;return numberQuestion(`${radicalDisplay(a,r)} × (${radicalDisplay(b,r)})`,ans,[`相同的根式相乘：${expRoot(r)}×${expRoot(r)}＝${r}。`,`外係數相乘：${a}×(${b})＝${a*b}。`,`最後 ${a*b}×${r}＝${ans}。`],'請計算',qopts('先算根號相乘，再計算係數與正負號。'))}
+function makeM2DivSimple(){const b=pick([2,3,5,7]),r=pick(BASIC_ROOTS),a=b*r,c=rand(1,6)*(Math.random()<.3?-1:1);const ans=simplifyRadicalData(c,r);return rationalRadicalQuestion(`${radicalDisplay(c,a)} ÷ ${sqrtDisplay(b)}`,c,1,r,[`同一個根號相除：${sqrtDisplay(a)}÷${sqrtDisplay(b)}＝${sqrtDisplay(`${a}÷${b}`)}＝${sqrtDisplay(r)}。`,`根號外保留係數 ${c}，得到 ${radicalDisplay(c,r)}。`,`檢查最簡根式：${simplifiedDataDisplay(ans)}。`],'請計算並化簡',qopts('根式除法根號內相除；最後再提出平方因數。'))}
+function makeM2RootFraction(){const a=rand(2,20),b=rand(2,14),ans=simplifyRationalRadical(1,b,a*b);return rationalRadicalQuestion(sqrtDisplay(fractionDisplay(String(a),String(b))),1,b,a*b,[`根號內分數先寫成 ${fractionDisplay(sqrtDisplay(a),sqrtDisplay(b))}。`,`分子、分母同乘 ${sqrtDisplay(b)}：${fractionDisplay(sqrtDisplay(a*b),String(b))}。`,`提出分子根號的完全平方因數並約分：${rationalRadicalDisplay(ans.coefficient,ans.radicand,ans.denominator)}。`],'請化為最簡根式',qopts('根號內有分數，先分別取根號再將分母有理化。'))}
+function makeM2Rationalize(){const a=rand(1,11)*(Math.random()<.35?-1:1),b=pick([2,3,5,6,7,10,11,13]),c=pick([1,2,3,4]),den=c*b,rad=a*b;const ans=simplifyRationalRadical(a,c*b,b);return rationalRadicalQuestion(fractionDisplay(String(a),radicalDisplay(c,b)),a,c*b,b,[`分母有 ${sqrtDisplay(b)}，分子分母同乘 ${sqrtDisplay(b)}。`,`分母：${c}${sqrtDisplay(b)}×${sqrtDisplay(b)}＝${c*b}。`,`分子：${a}×${sqrtDisplay(b)}＝${radicalDisplay(a,b)}。`,`最後整理：${rationalRadicalDisplay(ans.coefficient,ans.radicand,ans.denominator)}。`],'請將分母有理化',qopts('分子分母同乘分母的根式，最後約分。'))}
+function makeM2FractionDivide(){const a=rand(1,8),b=rand(2,10),c=rand(1,8),d=rand(2,10),r=pick(BASIC_ROOTS);const num=a*d,den=b*c;const ans=simplifyRationalRadical(num,den,r);return rationalRadicalQuestion(`${fractionDisplay(radicalDisplay(a,r),String(b))} ÷ ${fractionDisplay(String(c),String(d))}`,num,den,r,[`除以分數先乘倒數：${fractionDisplay(radicalDisplay(a,r),String(b))}×${fractionDisplay(String(d),String(c))}。`,`分子係數 ${a}×${d}＝${num}，分母 ${b}×${c}＝${den}。`,`分數約成最簡：${rationalRadicalDisplay(ans.coefficient,ans.radicand,ans.denominator)}。`],'請計算並約分',qopts('含根式的分數除法，先乘倒數再整理係數。'))}
+function makeM2Simplify(){let a=pick(BASIC_ROOTS),k=rand(2,9),n=a*k*k;const ans=simplifyRadicalData(1,n);return radicalQuestion(sqrtDisplay(n),k,a,[`把 ${n} 拆成完全平方因數乘以另一個因數：${n}＝${k}²×${a}。`,`所以 ${sqrtDisplay(n)}＝${k}${sqrtDisplay(a)}。`,`根號內 ${a} 已無其他完全平方因數，答案是 ${radicalDisplay(k,a)}。`],'請化為最簡根式',qopts('找出平方因數，將平方因數提出根號外。'))}
+function makeM2Mixed(){return pick([advancedDivision,advancedDivisionRootFraction,advancedDivisionSimplify,makeMode4B])()}
+function makeM3Same(){const r=pick(BASIC_ROOTS),n=rand(3,11),m=rand(2,9),c=rand(1,8),s=pick([1,-1]),t=pick([1,-1]),ans=n+s*m+t*c;return exprFromParts(`${radicalDisplay(n,r)} ${s>0?'＋':'−'} ${radicalDisplay(m,r)} ${t>0?'＋':'−'} ${radicalDisplay(c,r)}`,[numericRootParts(ans,r)],[`三項根號內都為 ${r}，是同類方根。`,`僅把根號外係數相加減：(${n}${s>0?'+':'−'}${m}${t>0?'+':'−'}${c})＝${ans}。`,`所以答案是 ${radicalDisplay(ans,r)}。`],'請合併同類方根',qopts('只有根號內相同的項才可以合併。'))}
+function makeM3Mixed(){const r=pick([2,3,5,6,7]),t=pick(BASIC_ROOTS.filter(x=>x!==r)),k=rand(2,7),m=rand(2,7),n=rand(1,5),c=rand(1,5),sgn=pick([1,-1]);const ans=joinRootParts([numericRootParts(k,r),numericRootParts(-m,r),numericRootParts(sgn*n,t),numericRootParts(c,r)]);return exprFromParts(`${radicalDisplay(k,r)} − ${radicalDisplay(m,r)} ${sgn>0?'＋':'−'} ${radicalDisplay(n,t)} ＋ ${radicalDisplay(c,r)}`,[numericRootParts(k-m+c,r),numericRootParts(sgn*n,t)],[`先依根號內分類：${sqrtDisplay(r)} 的三項與 ${sqrtDisplay(t)} 的一項。`,`合併同類方根：(${k}−${m}＋${c})${sqrtDisplay(r)} ${sgn>0?'＋':'−'} ${radicalDisplay(n,t)}。`,`得到 ${expressionDisplay(ans.constant,ans.radicals)}。`],'請合併可以合併的根式',qopts('不同類方根不能合併，且減法需連同負號處理。'))}
+function makeM3Simplify(){const r=pick([2,3,5,7]),a=rand(2,7),b=rand(2,7),c=rand(1,5),first=a*a*r,second=b*b*r,sgn=pick([1,-1]),coef=a+sgn*b-c;return exprFromParts(`${sqrtDisplay(first)} ${sgn>0?'＋':'−'} ${sqrtDisplay(second)} − ${radicalDisplay(c,r)}`,[numericRootParts(coef,r)],[`將每一項化為最簡根式：${sqrtDisplay(first)}＝${radicalDisplay(a,r)}；${sqrtDisplay(second)}＝${radicalDisplay(b,r)}。`,`代回：(${a}${sgn>0?'+':'−'}${b}−${c})${sqrtDisplay(r)}。`,`係數為 ${coef}，得到 ${radicalDisplay(coef,r)}。`],'請先化簡再合併',qopts('不同根號內的數，化簡後可能變成同類方根。'))}
+function makeM3Bracket(){return pick([advancedAddFour,advancedAddBracket])()}
+function makeM3Zero(){const r=pick(BASIC_ROOTS),a=rand(2,7),b=rand(2,7);return numberQuestion(`${sqrtDisplay(a*a*r)} ＋ ${radicalDisplay(b,r)} − ${radicalDisplay(a+b,r)}`,0,[`先化簡 ${sqrtDisplay(a*a*r)}＝${radicalDisplay(a,r)}。`,`合併後係數 ${a}＋${b}−(${a+b})＝0。`,`所有同類方根完全抵銷，所以答案是 0。`],'請化簡',qopts('同類方根係數相加等於零，答案就是整數 0。'))}
+function makeM4Square(){return makeFormulaSquare(pick([1,-1]))}
+function makeM4Double(){return makeFormulaDoubleSquare()}
+function makeM4Difference(){return makeFormulaDifference()}
+function makeM4Conjugate(){
+ const a=pick([2,3,5,6,7,11]),b=pick([2,3,5,6,7,11].filter(x=>x!==a)),sign=pick([1,-1]);
+ let delta=a-b;if(delta===0)return makeM4Conjugate();
+ const scale=rand(1,4),constant=0;
+ const num=scale*Math.abs(delta),denom=delta>0?1:-1;
+ const aRad=scale*(delta>0?1:-1),bRad=-sign*aRad;
+ const html=fractionDisplay(String(num),`(${sqrtDisplay(a)} ${sign>0?'＋':'−'} ${sqrtDisplay(b)})`);
+ // numer / (√a + sign√b) => numer*(√a-sign√b)/(a-b)
+ const parts=[numericRootParts(aRad,a),numericRootParts(bRad,b)];
+ return exprFromParts(html,parts,[`分母為兩個根式相加減，使用共軛式：(${sqrtDisplay(a)} ${sign>0?'−':'＋'} ${sqrtDisplay(b)})。`,`分子、分母同乘共軛式，分母利用平方差公式變為 ${a}−${b}＝${delta}。`,`分子乘開：${num}(${sqrtDisplay(a)} ${sign>0?'−':'＋'} ${sqrtDisplay(b)})。`,`分子每一項除以 ${delta}，最後答案 ${expressionDisplay(0,joinRootParts(parts).radicals)}。`],'請利用共軛式將分母有理化',qopts('使用 (A＋B)(A−B)＝A²−B²；分子和分母都要乘共軛式。'));
+}
+function makeM4IntegerConjugate(){const a=pick([5,6,7,11,13,14]),b=rand(1,3),delta=a-b*b;if(delta===0)return makeM4IntegerConjugate();const k=rand(1,4),sign=pick([1,-1]);const n=Math.abs(delta)*k;const mult=delta>0?1:-1;const parts=[numericRootParts(mult*k,a),{constant:-sign*mult*k*b,radicals:[]}];return exprFromParts(fractionDisplay(String(n),`(${sqrtDisplay(a)} ${sign>0?'＋':'−'} ${b})`),parts,[`分母同乘共軛式 (${sqrtDisplay(a)} ${sign>0?'−':'＋'} ${b})。`,`分母：(${sqrtDisplay(a)})²−${b}²＝${a}−${b*b}＝${delta}。`,`分子：${n}(${sqrtDisplay(a)} ${sign>0?'−':'＋'} ${b})。`,`約分整理得到 ${expressionDisplay(joinRootParts(parts).constant,joinRootParts(parts).radicals)}。`],'請將分母有理化',qopts('利用平方差公式，將根號與整數組成的二項式分母有理化。'))}
+function makeM5Distribute(){const a=pick(BASIC_ROOTS),b=pick(BASIC_ROOTS),c=pick(BASIC_ROOTS),k=rand(1,4)*(Math.random()<.3?-1:1),s=pick([1,-1]);const parts=[numericRootParts(k,a*b),numericRootParts(s*k,a*c)];const res=joinRootParts(parts);return exprFromParts(`${radicalDisplay(k,a)}(${sqrtDisplay(b)} ${s>0?'＋':'−'} ${sqrtDisplay(c)})`,parts,[`先使用分配律：${radicalDisplay(k,a)}×${sqrtDisplay(b)} ${s>0?'＋':'−'} ${radicalDisplay(k,a)}×${sqrtDisplay(c)}。`,`兩項乘積分別是 ${radicalDisplay(k,a*b)} 與 ${radicalDisplay(s*k,a*c)}。`,`各項化簡後，再合併同類方根：${expressionDisplay(res.constant,res.radicals)}。`],'請展開並化簡',qopts('分配律兩項都要乘到，最後逐項提出平方因數。'))}
+function makeM5Pair(){const a=pick([2,3,5,6,7]),b=pick([2,3,5,6,7]),c=pick([2,3,5,6,7]),s=pick([1,-1]);const parts=[numericRootParts(1,a*c),numericRootParts(1,a),numericRootParts(s,b*c),numericRootParts(s,b)];const joined=joinRootParts(parts);return exprFromParts(`(${sqrtDisplay(a)} ${s>0?'＋':'−'} ${sqrtDisplay(b)})(${sqrtDisplay(c)}＋1)`,parts,[`兩括號相乘，每一項都必須乘到：${sqrtDisplay(a*c)}＋${sqrtDisplay(a)} ${s>0?'＋':'−'} ${sqrtDisplay(b*c)} ${s>0?'＋':'−'} ${sqrtDisplay(b)}。`,`逐項化成最簡根式，將根號內相同的項合併。`,`最後答案：${expressionDisplay(joined.constant,joined.radicals)}。`],'請展開並化簡',qopts('兩括號相乘共有四項，注意負號與化簡後同類方根。'))}
+function makeM5DivideBracket(){const a=pick([2,3,5,6]),b=pick([2,3,5,6].filter(x=>x!==a)),c=rand(2,5),d=rand(2,4),s=pick([1,-1]);const first=a*a,second=d*a*b;const parts=[numericRootParts(c,a),numericRootParts(s*d,b)];const joined=joinRootParts(parts);return exprFromParts(`${fractionDisplay(`(${radicalDisplay(c,first)} ${s>0?'＋':'−'} ${radicalDisplay(d,second)})`,sqrtDisplay(a))}`,parts,[`括號整體除以 ${sqrtDisplay(a)}，可以逐項相除。`,`第一項：${radicalDisplay(c,first)}÷${sqrtDisplay(a)}＝${radicalDisplay(c,a)}。`,`第二項：${radicalDisplay(d,second)}÷${sqrtDisplay(a)}＝${radicalDisplay(d,b)}，保留原本正負號。`,`整理：${expressionDisplay(joined.constant,joined.radicals)}。`],'請計算並化簡',qopts('除法分配到分子各項，逐項相除後化簡。'))}
+function makeM5Rationalized(){return pick([makeMode4B,advancedDivision,makeM2Rationalize])()}
+function makeM5Chain(){return pick([makeMultiplyDivideMixed,makeMultiplyFractionSigned,makeM5Distribute,makeM5Pair,makeM5DivideBracket])()}
+const SIX_FAMILIES={
+ multiply:[makeM1Scalar,makeM1Fraction,makeM1RootMultiply,makeM1RootCompare,makeM1SameRoot,makeMultiplyBasic,makeMultiplyCoefficient,makeMultiplyFractionSigned],
+ divide:[makeM2DivSimple,makeM2RootFraction,makeM2Rationalize,makeM2FractionDivide,makeM2Simplify,makeM2Mixed,makeSimpleRationalize,advancedDivisionRootFraction],
+ addSubtract:[makeM3Same,makeM3Mixed,makeM3Simplify,makeM3Bracket,makeM3Zero,makeTwoRootDirect,makeSimplifyThenTwoRoots,advancedAddBracket],
+ formula:[makeM4Square,makeM4Double,makeM4Difference,makeM4Conjugate,makeM4IntegerConjugate,makeFormulaSquare,makeFormulaDoubleSquare,makeFormulaDifference],
+ mixed:[makeM5Distribute,makeM5Pair,makeM5DivideBracket,makeM5Rationalized,makeM5Chain,makeMode4A,makeMode4B,advancedAddFour]
+};
+function makeRandomQuiz(selectedMode){
+ let constructors=[];
+ if(selectedMode==='comprehensive'){
+  for(const key of ['multiply','divide','addSubtract','formula','mixed']){
+   constructors.push(...shuffle(SIX_FAMILIES[key]).slice(0,2));
+  }
+ }else{
+  const pool=SIX_FAMILIES[selectedMode]||SIX_FAMILIES.multiply;
+  constructors=[...shuffle(pool),...shuffle(pool).slice(0,2)];
+ }
+ const seen=new Set(),out=[];
+ for(const build of shuffle(constructors)){
+  let q;
+  for(let t=0;t<15;t++){
+   try{q=build()}catch(error){console.warn('重新產題',error);continue}
+   const signature=q.html.replace(/\s+/g,'');if(!seen.has(signature)){seen.add(signature);break}q=null;
+  }
+  if(q)out.push(q);
+ }
+ while(out.length<TOTAL_QUESTIONS){const pool=SIX_FAMILIES[selectedMode==='comprehensive'?pick(Object.keys(SIX_FAMILIES)):selectedMode]||SIX_FAMILIES.multiply;const q=pick(pool)();if(!seen.has(q.html.replace(/\s+/g,''))){seen.add(q.html.replace(/\s+/g,''));out.push(q)}}
+ return shuffle(out).slice(0,TOTAL_QUESTIONS);
+}
+
+function createQuestions(){return makeRandomQuiz(mode)}
 
 
 /*
@@ -7519,6 +7603,14 @@ function renderAnswer(
   Number
   */
 
+  if (question.type === "number" && question.compare) {
+    panel.innerHTML = `<div class="answer-title">${question.label}</div>
+      <div class="number-answer"><select id="number-answer" aria-label="選擇比較符號"
+      style="font-size:24px;padding:12px 22px;border:2px solid var(--primary-border);border-radius:12px">
+      <option value="">選擇 ＞ 或 ＜</option><option value="1">＞</option><option value="-1">＜</option></select></div>`;
+    return;
+  }
+
   if (
     question.type ===
     "number"
@@ -7966,7 +8058,7 @@ function readAnswer(
           false,
 
         message:
-          "請輸入完整整數答案。"
+          question.compare ? "請先選擇比較符號。" : "請輸入完整整數答案。"
       };
     }
 
@@ -7982,7 +8074,7 @@ function readAnswer(
         ),
 
       display:
-        raw
+        question.compare ? (Number(raw)===1?"＞":"＜") : raw
     };
   }
 
@@ -8282,6 +8374,7 @@ function correctAnswerText(
     "number"
   ) {
 
+    if(question.compare) return question.answer===1?"＞":"＜";
     return String(
       question.answer
     );
