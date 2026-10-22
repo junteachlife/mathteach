@@ -161,21 +161,26 @@ button:disabled{opacity:.48;cursor:not-allowed}
   display:inline-flex;
   align-items:flex-start;
   white-space:nowrap;
-  vertical-align:middle;
+  vertical-align:-.14em;
+  line-height:1.3;
+  max-width:100%;
 }
 .radical-sign{
   display:inline-block;
-  font-size:1.08em;
-  line-height:1;
-  padding-right:.04em;
-  transform:translateY(.04em);
+  flex:none;
+  font-family:"Cambria Math","Times New Roman",serif;
+  font-size:1.40em;
+  line-height:.95;
+  margin-right:-.07em;
+  transform:translateY(.09em);
 }
 .radical-overbar{
   display:inline-block;
+  flex:none;
   border-top:2px solid currentColor;
-  padding:.05em .04em 0 .10em;
-  line-height:1.03;
-  transform:translateY(.04em);
+  padding:.10em .08em 0 .08em;
+  line-height:1.2;
+  white-space:nowrap;
 }
 
 /*
@@ -3146,7 +3151,7 @@ goRegister("tangent",()=>{
 });
 goRegister("tangent",()=>{
  const r=rand(3,15),ap=rand(4,18);
- return numberQuestion({family:"go-two-tangent",label:"同一外點兩切線等長",html:`${goText(`PA、PB 分別切圓 O 於 A、B，已知 PA＝${ap}，求 PB。`)}${tangentPairDiagram({pa:String(ap),pb:"？"})}`,answer:ap,explanation:explanation(String(ap),"由同一圓外點引出的兩條切線段相等。",[`PA＝PB，所以 PB＝${ap}。`])});
+ return numberQuestion({family:"go-two-tangent",label:"同一外點兩切線等長",html:`${goText(`PA、PB 分別切圓 O 於 A、B，已知 PA＝${ap}，求 PB。`)}${twoTangentDiagram({pa:String(ap),pb:"？"})}`,answer:ap,explanation:explanation(String(ap),"由同一圓外點引出的兩條切線段相等。",[`PA＝PB，所以 PB＝${ap}。`])});
 });
 goRegister("tangent",()=>{
  const a=rand(3,13),b=rand(3,13),c=rand(3,13),AB=a+b,BC=b+c,AC=a+c,query=pick(["A","B","C"]),val=query==="A"?a:query==="B"?b:c;
@@ -3155,7 +3160,7 @@ goRegister("tangent",()=>{
 goRegister("tangent",()=>{
  const [r,ap,op]=pickTriple(),scale=rand(1,2),rr=r*scale,aa=ap*scale,oo=op*scale;
  const ab=R(2*rr*aa,oo);
- return exactValueQuestion({family:"go-tangent-contact-chord",label:"兩切點連線長",html:`${goText(`PA、PB 切圓 O 於 A、B，OP 與 AB 交於 D，半徑 ${rr}、OP＝${oo}，求 AB。`)}${tangentPairDiagram({})}`,answer:ab,explanation:explanation(ratHTML(ab),"連接 OA，先求 AP；再利用直角三角形的面積關係求 AD。",[`AP＝√(${oo}${sup(2)}－${rr}${sup(2)})＝${aa}。`,`AD＝OA×AP÷OP＝${fracHTML(`${rr}×${aa}`,oo)}。`,`AB＝2AD＝${ratHTML(ab)}。`])});
+ return exactValueQuestion({family:"go-tangent-contact-chord",label:"兩切點連線長",html:`${goText(`PA、PB 切圓 O 於 A、B，OP 與 AB 交於 D，半徑 ${rr}、OP＝${oo}，求 AB。`)}${twoTangentDiagram({})}`,answer:ab,explanation:explanation(ratHTML(ab),"連接 OA，先求 AP；再利用直角三角形的面積關係求 AD。",[`AP＝√(${oo}${sup(2)}－${rr}${sup(2)})＝${aa}。`,`AD＝OA×AP÷OP＝${fracHTML(`${rr}×${aa}`,oo)}。`,`AB＝2AD＝${ratHTML(ab)}。`])});
 });
 goRegister("tangent",()=>{
  const ap=rand(3,14);
@@ -3780,12 +3785,65 @@ function radicalSpan(content){
   return `<span class="radical math"><span class="radical-sign">√</span><span class="radical-overbar">${content}</span></span>`;
 }
 
+/*
+  根號顯示：從 √ 起讀取「完整」被開方內容。
+  包含 HTML 上標 <span class="math-sup">2</span>、<sup>2</sup>、
+  線段名稱和括號內的多項運算，不能只匹配開頭一個數字。
+  例如 √（OP²－OA²）與 √(3²＋4²) 都保留在同一條根號橫線下。
+*/
 function formatRadicalsInHTML(input){
-  let html=String(input??"");
-  html=html.replace(/√（([^<>]+?)）/g,(_,inner)=>radicalSpan(`（${inner}）`));
-  html=html.replace(/√\(([^<>]+?)\)/g,(_,inner)=>radicalSpan(`(${inner})`));
-  html=html.replace(/√([0-9A-Za-z]+(?:<sup>[^<]+<\/sup>)?)/g,(_,inner)=>radicalSpan(inner));
-  return html;
+  const html=String(input??"");
+  let result="",cursor=0;
+  const isTagAt=pos=>html[pos]==="<";
+  const skipTag=pos=>{
+    const close=html.indexOf(">",pos);
+    return close===-1?html.length:close+1;
+  };
+  const captureAtom=pos=>{
+    let end=pos;
+    while(end<html.length){
+      if(isTagAt(end)){
+        const tagEnd=skipTag(end);
+        const tag=html.slice(end,tagEnd);
+        if(/^<span\b[^>]*class=["'][^"']*math-sup\b/i.test(tag) || /^<sup\b/i.test(tag)){
+          const name=tag.startsWith("<sup")?"sup":"span";
+          const closing=`</${name}>`;
+          const closingAt=html.indexOf(closing,tagEnd);
+          if(closingAt>=0){end=closingAt+closing.length;continue;}
+        }
+        break;
+      }
+      if(/[0-9A-Za-z.]/.test(html[end])){end++;continue;}
+      break;
+    }
+    return end;
+  };
+  while(cursor<html.length){
+    const at=html.indexOf("√",cursor);
+    if(at<0){result+=html.slice(cursor);break;}
+    result+=html.slice(cursor,at);
+    let p=at+1,body="";
+    const open=html[p];
+    if(open==="("||open==="（"){
+      const closing=open==="("?")":"）";
+      let depth=1;
+      const start=p+1;
+      p++;
+      while(p<html.length&&depth>0){
+        if(isTagAt(p)){p=skipTag(p);continue;}
+        if(html[p]===open)depth++;
+        else if(html[p]===closing)depth--;
+        if(depth>0)p++;
+      }
+      if(depth===0){body=html.slice(start,p);p++;}
+    }else{
+      const last=captureAtom(p);
+      if(last>p){body=html.slice(p,last);p=last;}
+    }
+    if(body){result+=radicalSpan(body);cursor=p;}
+    else{result+="√";cursor=at+1;}
+  }
+  return result;
 }
 
 function protectImportantUnits(input){
