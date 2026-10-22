@@ -7857,32 +7857,25 @@ function readAnswer(
       [];
 
     if (terms.length !== 1) {
+      // 例如 1＋√6 也是合法的作答形式，只是可能不等於標準答案。
+      // 這裡保留所有數學項目，在 checkCorrect() 中判斷正確與否。
       return {
-        valid: false,
-        message: "答案請整理成單一根式。"
+        valid: true,
+        value: { terms },
+        display: result.display || result.value?.display || ""
       };
     }
 
     const term = terms[0];
 
-    if (term.denominator !== 1) {
-      return {
-        valid: false,
-        message: "請將答案整理成最簡形式。"
-      };
-    }
-
-    if (term.radicand === 1) {
-      return {
-        valid: false,
-        message: "請將答案整理成最簡形式。"
-      };
-    }
-
+    // 根式係數允許最簡分數。例如 (1/8)√6 是合法答案格式。
+    // 格式有效不代表答案正確，應交給 checkCorrect() 比對。
+    // MathExpressionInput.validate() 已負責檢查根號與分數有無化簡。
     return {
       valid: true,
       value: {
         coefficient: term.numerator,
+        denominator: term.denominator,
         radicand: term.radicand
       },
       display:
@@ -8042,8 +8035,10 @@ function checkCorrect(
 
     return (
 
+      Number.isFinite(answer.value.coefficient) &&
+
       answer.value.coefficient ===
-        question.coefficient &&
+        question.coefficient * (answer.value.denominator || 1) &&
 
       answer.value.radicand ===
         question.radicand
