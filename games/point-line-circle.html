@@ -1768,6 +1768,99 @@ function twoChordDiagram({upperLabel="AB",lowerLabel="CD",upperChord="",lowerCho
   `,"示意圖（不按比例）");
 }
 
+function coordinatePointDiagram({x=0,y=0,r="",pointLabel="P"}={}){
+  const cx=190, cy=180, scale=9;
+  const px=cx + Number(x)*scale;
+  const py=cy - Number(y)*scale;
+  const rr=Math.max(28, Number(r||0)*scale);
+  return diagramWrap(`
+    <svg viewBox="0 0 620 360" role="img" aria-label="坐標平面中的點與圓示意圖">
+      <line class="helper" x1="60" y1="180" x2="560" y2="180"></line>
+      <line class="helper" x1="190" y1="320" x2="190" y2="40"></line>
+      <text class="point" x="548" y="172">x</text>
+      <text class="point" x="198" y="52">y</text>
+      <circle class="circle-shape" cx="${cx}" cy="${cy}" r="${rr}"></circle>
+      <circle class="center-dot" cx="${cx}" cy="${cy}" r="4"></circle>
+      <line class="radius-line" x1="${cx}" y1="${cy}" x2="${px}" y2="${py}"></line>
+      <circle class="point-dot" cx="${px}" cy="${py}" r="4"></circle>
+      <text class="point" x="${cx-18}" y="${cy+22}">O</text>
+      <text class="point" x="${px+8}" y="${py-8}">${pointLabel}</text>
+      <text class="side-label" x="${(cx+px)/2-6}" y="${(cy+py)/2-8}">${seg("OP")}</text>
+      ${r?`<text class="side-label" x="${cx+rr/2-10}" y="${cy-12}">r＝${r}</text>`:""}
+      <text class="side-label" x="${px+12}" y="${py+18}">（${x}，${y}）</text>
+    </svg>
+  `,"示意圖（不按比例）");
+}
+
+function triplePointCircleDiagram({radius="",oa="",ob="",oc=""}={}){
+  return diagramWrap(`
+    <svg viewBox="0 0 620 360" role="img" aria-label="三點與圓的位置示意圖">
+      <circle class="circle-shape" cx="310" cy="180" r="120"></circle>
+      <circle class="center-dot" cx="310" cy="180" r="4"></circle>
+      <line class="helper" x1="310" y1="180" x2="220" y2="150"></line>
+      <line class="helper" x1="310" y1="180" x2="430" y2="180"></line>
+      <line class="helper" x1="310" y1="180" x2="450" y2="280"></line>
+      <circle class="point-dot" cx="220" cy="150" r="4"></circle>
+      <circle class="point-dot" cx="430" cy="180" r="4"></circle>
+      <circle class="point-dot" cx="450" cy="280" r="4"></circle>
+      <text class="point" x="292" y="203">O</text>
+      <text class="point" x="205" y="145">A</text>
+      <text class="point" x="438" y="176">B</text>
+      <text class="point" x="458" y="292">C</text>
+      ${radius?`<text class="side-label" x="337" y="112">半徑＝${radius}</text>`:""}
+      ${oa?`<text class="side-label" x="228" y="165">${seg("OA")}＝${oa}</text>`:""}
+      ${ob?`<text class="side-label" x="346" y="170">${seg("OB")}＝${ob}</text>`:""}
+      ${oc?`<text class="side-label" x="360" y="246">${seg("OC")}＝${oc}</text>`:""}
+    </svg>
+  `,"示意圖（不按比例）");
+}
+
+function radarDiagram({radius="",distances=[]}={}){
+  const [a,b,c]=distances;
+  return diagramWrap(`
+    <svg viewBox="0 0 620 360" role="img" aria-label="雷達範圍示意圖">
+      <circle class="circle-shape" cx="310" cy="180" r="120"></circle>
+      <circle class="center-dot" cx="310" cy="180" r="4"></circle>
+      <line class="helper" x1="310" y1="180" x2="205" y2="125"></line>
+      <line class="helper" x1="310" y1="180" x2="430" y2="150"></line>
+      <line class="helper" x1="310" y1="180" x2="395" y2="270"></line>
+      <circle class="point-dot" cx="205" cy="125" r="4"></circle>
+      <circle class="point-dot" cx="430" cy="150" r="4"></circle>
+      <circle class="point-dot" cx="395" cy="270" r="4"></circle>
+      <text class="point" x="292" y="203">O</text>
+      <text class="point" x="190" y="120">A</text>
+      <text class="point" x="438" y="145">B</text>
+      <text class="point" x="403" y="282">C</text>
+      ${radius?`<text class="side-label" x="338" y="114">最大距離＝${radius}</text>`:""}
+      ${a!=null?`<text class="side-label" x="212" y="148">${seg("OA")}＝${a}</text>`:""}
+      ${b!=null?`<text class="side-label" x="354" y="144">${seg("OB")}＝${b}</text>`:""}
+      ${c!=null?`<text class="side-label" x="356" y="246">${seg("OC")}＝${c}</text>`:""}
+    </svg>
+  `,"示意圖（不按比例）");
+}
+
+function coordinateLineDiagram({k="",r=""}={}){
+  const cx=220, cy=180, scale=12;
+  const lineX=cx+Number(k)*scale;
+  const rr=Math.max(36, Number(r||0)*scale);
+  return diagramWrap(`
+    <svg viewBox="0 0 620 360" role="img" aria-label="坐標平面中的直線與圓示意圖">
+      <line class="helper" x1="60" y1="180" x2="560" y2="180"></line>
+      <line class="helper" x1="220" y1="320" x2="220" y2="40"></line>
+      <text class="point" x="548" y="172">x</text>
+      <text class="point" x="228" y="52">y</text>
+      <circle class="circle-shape" cx="${cx}" cy="${cy}" r="${rr}"></circle>
+      <circle class="center-dot" cx="${cx}" cy="${cy}" r="4"></circle>
+      <line class="tangent-line" x1="${lineX}" y1="55" x2="${lineX}" y2="305"></line>
+      <line class="distance-line" x1="${cx}" y1="180" x2="${lineX}" y2="180"></line>
+      <text class="point" x="205" y="203">O</text>
+      <text class="point" x="${lineX+8}" y="72">L</text>
+      ${r?`<text class="side-label" x="${cx+rr/2-8}" y="165">r＝${r}</text>`:""}
+      ${k!==""?`<text class="side-label" x="${(cx+lineX)/2-10}" y="170">d＝${Math.abs(Number(k))}</text><text class="side-label" x="${lineX-16}" y="324">x＝${k}</text>`:""}
+    </svg>
+  `,"示意圖（不按比例）");
+}
+
 function triangleIncircleDiagram(){
   return diagramWrap(`
     <svg viewBox="0 0 620 340" role="img" aria-label="三角形三邊與圓相切圖">
@@ -1898,7 +1991,7 @@ function qAngleFromArc(){
   return numberQuestion({
     family:"sector-angle-from-arc",
     label:"由弧長反求圓心角",
-    html:`<div class="question-flow"><span class="qline">在扇形 AOB 中，${keep(`${seg("OA")}＝${r}`)}，且 ${arc("AB")} 的長為 ${keep(piHTML(coef))}。求 ∠AOB 的度數。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">在扇形 AOB 中，${keep(`${seg("OA")}＝${r}`)}，且 ${arc("AB")} 的長為 ${keep(piHTML(coef))}。求 ∠AOB 的度數。</span></div>${sectorDiagram({radius:String(r),arcLabel:`弧長 ${piHTML(coef)}`})}`,
     answer:angle,
     explanation:explanation(
       `${angle}°`,
@@ -1920,7 +2013,7 @@ function qSectorAreaReverse(){
   return numberQuestion({
     family:"sector-angle-from-area",
     label:"由扇形面積反求圓心角",
-    html:`<div class="question-flow"><span class="qline">扇形 AOB 的半徑為 ${r}，面積為 ${keep(piHTML(coef))}。求 ∠AOB 的度數。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">扇形 AOB 的半徑為 ${r}，面積為 ${keep(piHTML(coef))}。求 ∠AOB 的度數。</span></div>${sectorDiagram({radius:String(r),arcLabel:`面積 ${piHTML(coef)}`})}`,
     answer:angle,
     explanation:explanation(
       `${angle}°`,
@@ -2082,7 +2175,7 @@ function qPointPositionDirect(){
   return choiceQuestion({
     family:"point-direct",
     label:"點與圓的位置",
-    html:`<div class="question-flow"><span class="qline">圓 O 的半徑為 ${r}，${keep(`${seg("OP")}＝${d}`)}。P 點在圓 O 的哪一個位置？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">圓 O 的半徑為 ${r}，${keep(`${seg("OP")}＝${d}`)}。P 點在圓 O 的哪一個位置？</span></div>${pointCircleDiagram({radius:String(r),distance:String(d),position:pos.key})}`,
     choices:circleRelationChoices(),
     answer:pos.key,
     explanation:explanation(
@@ -2136,7 +2229,7 @@ function qCoordinatePosition(){
   return choiceQuestion({
     family:"point-coordinate-position",
     label:"坐標平面判斷",
-    html:`<div class="question-flow"><span class="qline">坐標平面上，圓 O 的圓心為原點，半徑為 ${r}。P 點坐標為 ${keep(`（${p.x}，${p.y}）`)}。P 點在圓 O 的哪一個位置？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">坐標平面上，圓 O 的圓心為原點，半徑為 ${r}。P 點坐標為 ${keep(`（${p.x}，${p.y}）`)}。P 點在圓 O 的哪一個位置？</span></div>${coordinatePointDiagram({x:p.x,y:p.y,r:r})}`,
     choices:circleRelationChoices(),
     answer:pos.key,
     explanation:explanation(
@@ -2156,7 +2249,7 @@ function qRadiusFromPoint(){
   return numberQuestion({
     family:"point-coordinate-radius",
     label:"坐標平面求半徑",
-    html:`<div class="question-flow"><span class="qline">圓 O 的圓心在原點，P 點坐標為 ${keep(`（${x}，${y}）`)}，且 P 在圓 O 上。求圓 O 的半徑。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">圓 O 的圓心在原點，P 點坐標為 ${keep(`（${x}，${y}）`)}，且 P 在圓 O 上。求圓 O 的半徑。</span></div>${coordinatePointDiagram({x:x,y:y,pointLabel:"P"})}`,
     answer:r,
     explanation:explanation(
       String(r),
@@ -2185,7 +2278,7 @@ function qThreePoints(){
   return choiceQuestion({
     family:"point-three",
     label:"三點位置綜合判斷",
-    html:`<div class="question-flow"><span class="qline">圓 O 半徑為 ${r}。已知 ${keep(`${seg("OA")}＝${a}`)}、${keep(`${seg("OB")}＝${b}`)}、${keep(`${seg("OC")}＝${c}`)}。下列敘述何者正確？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">圓 O 半徑為 ${r}。已知 ${keep(`${seg("OA")}＝${a}`)}、${keep(`${seg("OB")}＝${b}`)}、${keep(`${seg("OC")}＝${c}`)}。下列敘述何者正確？</span></div>${triplePointCircleDiagram({radius:String(r),oa:String(a),ob:String(b),oc:String(c)})}`,
     choices,
     answer:"a",
     explanation:explanation(
@@ -2209,7 +2302,7 @@ function qDiameterPoint(){
   return choiceQuestion({
     family:"point-diameter",
     label:"由直徑判斷位置",
-    html:`<div class="question-flow"><span class="qline">圓 O 的直徑為 ${diameter}，${keep(`${seg("OP")}＝${d}`)}。P 點在圓 O 的哪一個位置？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">圓 O 的直徑為 ${diameter}，${keep(`${seg("OP")}＝${d}`)}。P 點在圓 O 的哪一個位置？</span></div>${pointCircleDiagram({radius:String(r),distance:String(d),position:pos.key})}`,
     choices:circleRelationChoices(),
     answer:pos.key,
     explanation:explanation(
@@ -2244,7 +2337,7 @@ function qRadar(){
   return choiceQuestion({
     family:"point-radar",
     label:"🖼️ 生活情境｜雷達範圍",
-    html:`<div class="question-flow"><span class="qline">海巡船雷達以 O 為中心，最多偵測距離為 ${r} 個單位。A、B、C 三艘船到 O 的距離分別為 ${distances[0]}、${distances[1]}、${distances[2]}。哪些船會顯示在雷達上？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">海巡船雷達以 O 為中心，最多偵測距離為 ${r} 個單位。A、B、C 三艘船到 O 的距離分別為 ${distances[0]}、${distances[1]}、${distances[2]}。哪些船會顯示在雷達上？</span></div>${radarDiagram({radius:String(r),distances:[distances[0],distances[1],distances[2]]})}`,
     choices,
     answer:key,
     explanation:explanation(
@@ -2343,7 +2436,7 @@ function qLineRelationDirect(){
   return choiceQuestion({
     family:"line-relation",
     label:"直線與圓的位置",
-    html:`<div class="question-flow"><span class="qline">圓 O 的半徑為 ${r}，圓心 O 到直線 L 的距離為 ${d}。直線 L 與圓 O 的位置關係為何？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">圓 O 的半徑為 ${r}，圓心 O 到直線 L 的距離為 ${d}。直線 L 與圓 O 的位置關係為何？</span></div>${lineCircleDiagram({radius:String(r),distance:String(d),relation:relation.key})}`,
     choices:lineRelationChoices(),
     answer:relation.key,
     explanation:explanation(
@@ -2365,7 +2458,7 @@ function qLineCount(){
   return numberQuestion({
     family:"line-count",
     label:"交點個數",
-    html:`<div class="question-flow"><span class="qline">圓 O 的半徑為 ${r}，圓心到直線 L 的距離 ${keep(`d＝${d}`)}。直線 L 與圓 O 有幾個交點？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">圓 O 的半徑為 ${r}，圓心到直線 L 的距離 ${keep(`d＝${d}`)}。直線 L 與圓 O 有幾個交點？</span></div>${lineCircleDiagram({radius:String(r),distance:String(d),relation:relation.key})}`,
     answer:relation.count,
     explanation:explanation(
       `${relation.count} 個`,
@@ -2426,7 +2519,7 @@ function qLineRadiusChoice(){
   return choiceQuestion({
     family:"line-radius-choice",
     label:"反向判斷半徑",
-    html:`<div class="question-flow"><span class="qline">圓心 O 到直線 L 的距離為 ${d}。若直線 L 要成為圓 O 的${relationText}，下列哪一個半徑可能符合？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">圓心 O 到直線 L 的距離為 ${d}。若直線 L 要成為圓 O 的${relationText}，下列哪一個半徑可能符合？</span></div>${lineCircleDiagram({radius:String(target==="secant"?d+2:target==="tangent"?d:Math.max(1,d-2)),distance:String(d),relation:target})}`,
     choices:values.map((v,i)=>({value:String(v),text:String(v)})),
     answer:String(correct),
     explanation:explanation(
@@ -2469,7 +2562,7 @@ function qLineDistanceChoice(){
   return choiceQuestion({
     family:"line-distance-choice",
     label:"反向判斷圓心距離",
-    html:`<div class="question-flow"><span class="qline">圓 O 半徑為 ${r}。若直線 L 與圓 O ${relationText}，下列哪一個圓心到直線的距離 d 可能符合？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">圓 O 半徑為 ${r}。若直線 L 與圓 O ${relationText}，下列哪一個圓心到直線的距離 d 可能符合？</span></div>${lineCircleDiagram({radius:String(r),distance:String(correct),relation:target})}`,
     choices:values.map(v=>({value:String(v),text:String(v)})),
     answer:String(correct),
     explanation:explanation(
@@ -2492,7 +2585,7 @@ function qCoordinateLine(){
   return choiceQuestion({
     family:"line-coordinate",
     label:"坐標平面中的直線與圓",
-    html:`<div class="question-flow"><span class="qline">坐標平面上，圓 O 圓心在原點，半徑為 ${r}。直線 L 的方程式為 ${keep(`x＝${k}`)}。判斷 L 與圓 O 的位置關係。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">坐標平面上，圓 O 圓心在原點，半徑為 ${r}。直線 L 的方程式為 ${keep(`x＝${k}`)}。判斷 L 與圓 O 的位置關係。</span></div>${coordinateLineDiagram({k:k,r:r})}`,
     choices:lineRelationChoices(),
     answer:relation.key,
     explanation:explanation(
@@ -2510,7 +2603,7 @@ function qTangentDefinitionTrap(){
   return choiceQuestion({
     family:"line-tangent-trap",
     label:"🔥 觀念陷阱｜切線",
-    html:`<div class="question-flow"><span class="qline">A 點在圓 O 上，直線 L 通過 A 點。只根據這兩個條件，能否判定 L 一定是圓 O 的切線？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">A 點在圓 O 上，直線 L 通過 A 點。只根據這兩個條件，能否判定 L 一定是圓 O 的切線？</span></div>${tangentDiagram()}`,
     choices:[
       {value:"yes",text:"可以，一定是切線"},
       {value:"no",text:"不可以，還需要其他條件"}
@@ -2532,7 +2625,7 @@ function qTangentPerpCondition(){
   return choiceQuestion({
     family:"line-tangent-perp",
     label:"切線判定",
-    html:`<div class="question-flow"><span class="qline">P 點在圓 O 上，直線 L 通過 P 點。下列哪一個條件足以判定 L 為圓 O 的切線？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">P 點在圓 O 上，直線 L 通過 P 點。下列哪一個條件足以判定 L 為圓 O 的切線？</span></div>${tangentDiagram()}`,
     choices:[
       {value:"a",html:`${seg("OP")}⊥L`},
       {value:"b",html:`${seg("OP")}＝L`},
@@ -2554,7 +2647,7 @@ function qLineRangeMastery(){
   return choiceQuestion({
     family:"line-range",
     label:"🔥 精熟題｜交點條件",
-    html:`<div class="question-flow"><span class="qline">圓 O 的半徑為 ${r}。若直線 L 與圓 O 有兩個交點，圓心到直線 L 的距離 d 必須滿足哪一個條件？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">圓 O 的半徑為 ${r}。若直線 L 與圓 O 有兩個交點，圓心到直線 L 的距離 d 必須滿足哪一個條件？</span></div>${lineCircleDiagram({radius:String(r),distance:String(Math.max(1,r-2)),relation:"secant"})}`,
     choices:[
       {value:"a",html:`d＜${r}`},
       {value:"b",html:`d＝${r}`},
@@ -2574,7 +2667,7 @@ function qMovingLineConcept(){
   return choiceQuestion({
     family:"line-moving",
     label:"概念排序｜直線移動",
-    html:`<div class="question-flow"><span class="qline">固定圓 O 的半徑 r，讓直線 L 從圓外逐漸平移靠近圓心。直線與圓的關係依序會如何變化？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">固定圓 O 的半徑 r，讓直線 L 從圓外逐漸平移靠近圓心。直線與圓的關係依序會如何變化？</span></div>${lineCircleDiagram({radius:"r",distance:"d",relation:"outside"})}`,
     choices:[
       {value:"a",text:"不相交 → 切線 → 割線"},
       {value:"b",text:"割線 → 切線 → 不相交"},
@@ -2733,7 +2826,7 @@ function qTangentTrianglePerimeter(){
   return numberQuestion({
     family:"tangent-triangle-perimeter",
     label:"切線段與三角形周長",
-    html:`<div class="question-flow"><span class="qline">△ABC 的三邊與同一圓相切。若從 A、B、C 三個頂點引出的切線段長分別為 ${a}、${b}、${c}，求 △ABC 的周長。</span></div>`,
+    html:`<div class="question-flow"><span class="qline">△ABC 的三邊與同一圓相切。若從 A、B、C 三個頂點引出的切線段長分別為 ${a}、${b}、${c}，求 △ABC 的周長。</span></div>${triangleIncircleDiagram()}`,
     answer:perimeter,
     explanation:explanation(
       String(perimeter),
@@ -2775,7 +2868,7 @@ function qTangentPropertyChoice(){
   return choiceQuestion({
     family:"tangent-property",
     label:"切線性質判斷",
-    html:`<div class="question-flow"><span class="qline">PA、PB 為圓 O 從同一個圓外點 P 引出的兩條切線。下列何者不一定正確？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">PA、PB 為圓 O 從同一個圓外點 P 引出的兩條切線。下列何者不一定正確？</span></div>${twoTangentDiagram()}`,
     choices:[
       {value:"a",html:`${seg("PA")}＝${seg("PB")}`},
       {value:"b",text:"OP 平分 ∠APB"},
@@ -2903,7 +2996,7 @@ function qEqualChordDistance(){
   return choiceQuestion({
     family:"chord-equal",
     label:"等弦與等弦心距",
-    html:`<div class="question-flow"><span class="qline">${seg("AB")}、${seg("CD")} 為同一圓上的兩弦，OM、ON 分別為它們的弦心距。若 ${keep(`${seg("AB")}＝${seg("CD")}`)}，則下列何者一定正確？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">${seg("AB")}、${seg("CD")} 為同一圓上的兩弦，OM、ON 分別為它們的弦心距。若 ${keep(`${seg("AB")}＝${seg("CD")}`)}，則下列何者一定正確？</span></div>${twoChordDiagram({upperLabel:"AB",lowerLabel:"CD"})}`,
     choices:[
       {value:"a",html:`${seg("OM")}＝${seg("ON")}`},
       {value:"b",html:`${seg("OM")}＞${seg("ON")}`},
@@ -2923,7 +3016,7 @@ function qChordCompareByDistance(){
   return choiceQuestion({
     family:"chord-compare-distance",
     label:"弦心距比較弦長",
-    html:`<div class="question-flow"><span class="qline">${seg("AB")}、${seg("CD")} 為同一圓上的兩弦，OM、ON 分別為弦心距。若 ${keep(`${seg("OM")}＞${seg("ON")}`)}，則 ${seg("AB")}、${seg("CD")} 的大小關係為何？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">${seg("AB")}、${seg("CD")} 為同一圓上的兩弦，OM、ON 分別為弦心距。若 ${keep(`${seg("OM")}＞${seg("ON")}`)}，則 ${seg("AB")}、${seg("CD")} 的大小關係為何？</span></div>${twoChordDiagram({upperLabel:"AB",lowerLabel:"CD",upperDistance:"較長",lowerDistance:"較短"})}`,
     choices:[
       {value:"a",html:`${seg("AB")}＜${seg("CD")}`},
       {value:"b",html:`${seg("AB")}＝${seg("CD")}`},
@@ -2943,7 +3036,7 @@ function qDistanceCompareByChord(){
   return choiceQuestion({
     family:"chord-compare-chord",
     label:"弦長比較弦心距",
-    html:`<div class="question-flow"><span class="qline">${seg("AB")}、${seg("CD")} 為同一圓上的兩弦。若 ${keep(`${seg("AB")}＞${seg("CD")}`)}，其弦心距 OM、ON 的大小關係為何？</span></div>`,
+    html:`<div class="question-flow"><span class="qline">${seg("AB")}、${seg("CD")} 為同一圓上的兩弦。若 ${keep(`${seg("AB")}＞${seg("CD")}`)}，其弦心距 OM、ON 的大小關係為何？</span></div>${twoChordDiagram({upperLabel:"AB",lowerLabel:"CD",upperChord:"較長",lowerChord:"較短"})}`,
     choices:[
       {value:"a",html:`${seg("OM")}＜${seg("ON")}`},
       {value:"b",html:`${seg("OM")}＝${seg("ON")}`},
