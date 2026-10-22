@@ -2043,6 +2043,12 @@
   flex-wrap:wrap;
   max-width:100%;
 }
+
+/* 八上 2-2：詳解真上標，避免 5² 視覺上連成 52 */
+.detail-block sup, .detail-step sup, .detail-content sup, .explanation sup {
+ font-size:.73em!important; line-height:0!important; vertical-align:super!important;
+ position:relative; top:-.05em; margin-left:.05em;
+}
 </style>
 
 </head>
@@ -6211,17 +6217,17 @@ function makeMode4() {
 function advSteps(lines){return lines.map(x=>`<span class="detail-block">${x}</span>`)}
 function advancedDivision(){
  const [a,b,c,d]=pick([[3,2,5,3],[5,3,7,2],[7,2,3,5],[2,5,11,3]]);
- const num=a*c, den=b*d, root=c*d;
- const ans=simplifyRationalRadical(num,den,root);
- const html=`<span class="math-expression">${fractionDisplay(radicalDisplay(a,c),String(b))}<span>÷</span>${fractionDisplay(sqrtDisplay(d),String(den/d))}</span>`;
- // (a√c/b) / (√d/b) = a√(cd)/d
- return rationalRadicalQuestion(html,a,d,c*d,advSteps([
- `先把除以分數改成乘倒數：${fractionDisplay(radicalDisplay(a,c),String(b))} × ${fractionDisplay(String(b),sqrtDisplay(d))}`,
- `先約掉整數係數 ${b}，得到 ${fractionDisplay(radicalDisplay(a,c),sqrtDisplay(d))}`,
- `分子分母同乘 ${sqrtDisplay(d)}，得到 ${fractionDisplay(radicalDisplay(a,c*d),String(d))}`,
- `根式提出平方因數並約分，最終為 ${rationalRadicalDisplay(simplifyRationalRadical(a,d,c*d).coefficient,simplifyRationalRadical(a,d,c*d).radicand,simplifyRationalRadical(a,d,c*d).denominator)}`
- ]),'請依序除法、分母有理化，並化為最簡根式',{method:'除以分數先乘倒數，再有理化分母。',pitfall:'不能只把分母乘以根式；分子、分母須同乘。'});
+ const original=`<span class="math-expression">${fractionDisplay(radicalDisplay(a,c),String(b))} ÷ ${fractionDisplay(sqrtDisplay(d),String(b))}</span>`;
+ const answer=simplifyRationalRadical(a,d,c*d);
+ return rationalRadicalQuestion(original,a,d,c*d,advSteps([
+  `除以分數改成乘倒數：${fractionDisplay(radicalDisplay(a,c),String(b))}×${fractionDisplay(String(b),sqrtDisplay(d))}。`,
+  `先約掉相同係數 ${b}：${fractionDisplay(radicalDisplay(a,c),sqrtDisplay(d))}。`,
+  `分子、分母同乘 ${sqrtDisplay(d)}：${fractionDisplay(`${radicalDisplay(a,c)}×${sqrtDisplay(d)}`,`${sqrtDisplay(d)}×${sqrtDisplay(d)}`)}。`,
+  `根號相乘，整理成 ${fractionDisplay(radicalDisplay(a,c*d),String(d))}。`,
+  `最後化為最簡根式與最簡分數：${rationalRadicalDisplay(answer.coefficient,answer.radicand,answer.denominator)}。`
+ ]),'請依序除法、分母有理化，並化為最簡根式',{method:'先乘倒數並約分，必要時再有理化。',pitfall:'分子與分母必須同乘相同的根式。'});
 }
+
 function advancedDivisionRootFraction(){
  const [n,d]=pick([[7,12],[14,27],[15,8],[11,18],[21,20]]);
  const db=simplifyRadicalData(1,d);
@@ -6428,22 +6434,44 @@ function primeRadicalSteps822(n){
  ];
 }
 function rootDenominatorSteps822(n,d){
- const dRoot=simplifyRadicalData(1,d);
- const dn=dRoot.type==='number'?dRoot.value:dRoot.coefficient;
- const dr=dRoot.type==='number'?1:dRoot.radicand;
- const top=sqrtDisplay(n);
- const first=`${sqrtDisplay(fractionDisplay(String(n),String(d)))}＝${fractionDisplay(top,sqrtDisplay(d))}`;
- const second=`先化簡分母：${sqrtDisplay(d)}＝${radicalDisplay(dn,dr)}，原式＝${fractionDisplay(top,radicalDisplay(dn,dr))}。`;
- if(dr===1)return [first,second,`分母已是整數，整理並約分得最簡答案。`];
- const numeratorProduct=sqrtDisplay(`${n}×${dr}`);
- const denominatorProduct=`${dn}×${dr}`;
- const third=`分子、分母同乘 ${sqrtDisplay(dr)}：${fractionDisplay(top,radicalDisplay(dn,dr))}×${fractionDisplay(sqrtDisplay(dr),sqrtDisplay(dr))}＝${fractionDisplay(`${top}×${sqrtDisplay(dr)}`,`${radicalDisplay(dn,dr)}×${sqrtDisplay(dr)}`)}。`;
- const fourth=`根號相乘並整理分母：${fractionDisplay(numeratorProduct,denominatorProduct)}＝${fractionDisplay(sqrtDisplay(n*dr),String(dn*dr))}。`;
- const reduced=simplifyRationalRadical(1,dn*dr,n*dr);
- return [first,second,third,fourth,`最後將分子根式提出完全平方因數並約分：${rationalRadicalDisplay(reduced.coefficient,reduced.radicand,reduced.denominator)}。`];
+ const gg=gcd(n,d), rn=n/gg, rd=d/gg;
+ const start=`${sqrtDisplay(fractionDisplay(String(n),String(d)))}`;
+ const reduced=`${sqrtDisplay(fractionDisplay(String(rn),String(rd)))}`;
+ const steps=[`${start}${gg>1?`＝${reduced}（根號內先約分 ${n}÷${gg}、${d}÷${gg}）`:''}＝${fractionDisplay(sqrtDisplay(rn),sqrtDisplay(rd))}。`];
+ const top=simplifyRadicalData(1,rn), bottom=simplifyRadicalData(1,rd);
+ const topText=top.type==='number'?String(top.value):radicalDisplay(top.coefficient,top.radicand);
+ const bottomText=bottom.type==='number'?String(bottom.value):radicalDisplay(bottom.coefficient,bottom.radicand);
+ const numeratorCoefficient=top.type==='number'?top.value:top.coefficient;
+ const nr=top.type==='number'?1:top.radicand;
+ const denominatorCoefficient=bottom.type==='number'?bottom.value:bottom.coefficient;
+ const dr=bottom.type==='number'?1:bottom.radicand;
+ steps.push(`先化簡完全平方因數：${fractionDisplay(sqrtDisplay(rn),sqrtDisplay(rd))}＝${fractionDisplay(topText,bottomText)}。`);
+ if(dr===1){
+  const result=simplifyRationalRadical(numeratorCoefficient,denominatorCoefficient,nr);
+  steps.push(`分母已是整數，約分後為 ${rationalRadicalDisplay(result.coefficient,result.radicand,result.denominator)}。`);
+  return steps;
+ }
+ const product=nr*dr;
+ const out=simplifyRationalRadical(numeratorCoefficient,denominatorCoefficient*dr,product);
+ steps.push(`分子、分母同乘 ${sqrtDisplay(dr)}：${fractionDisplay(topText,bottomText)}×${fractionDisplay(sqrtDisplay(dr),sqrtDisplay(dr))}＝${fractionDisplay(`${topText}×${sqrtDisplay(dr)}`,`${bottomText}×${sqrtDisplay(dr)}`)}。`);
+ steps.push(`根號相乘、分母有理化：${fractionDisplay(radicalDisplay(numeratorCoefficient,product),String(denominatorCoefficient*dr))}。`);
+ steps.push(`最後提出分子完全平方因數並約分：${rationalRadicalDisplay(out.coefficient,out.radicand,out.denominator)}。`);
+ return steps;
 }
 
-function makeM2DivSimple(){const b=pick([2,3,5,7]),r=pick(BASIC_ROOTS),a=b*r,c=rand(1,6)*(Math.random()<.3?-1:1);const ans=simplifyRadicalData(c,r);return rationalRadicalQuestion(`${radicalDisplay(c,a)} ÷ ${sqrtDisplay(b)}`,c,1,r,[`同一個根號相除：${sqrtDisplay(a)}÷${sqrtDisplay(b)}＝${sqrtDisplay(`${a}÷${b}`)}＝${sqrtDisplay(r)}。`,`根號外保留係數 ${c}，得到 ${radicalDisplay(c,r)}。`,`檢查最簡根式：${simplifiedDataDisplay(ans)}。`],'請計算並化簡',qopts('根式除法根號內相除；最後再提出平方因數。'))}
+function makeM2DivSimple(){
+ const b=pick([2,3,5,6,7,10]),r=pick([2,3,4,5,6,7,8,9,10,12,15,25]),a=b*r,c=rand(1,6)*(Math.random()<.3?-1:1);
+ const ans=simplifyRadicalData(c,r);
+ const steps=[
+  `先算根號內的商：${radicalDisplay(c,a)}÷${sqrtDisplay(b)}＝${c}×${sqrtDisplay(`${a}÷${b}`)}＝${c}×${sqrtDisplay(r)}。`
+ ];
+ if(ans.type==='number')steps.push(`${sqrtDisplay(r)}＝${Math.sqrt(r)}，所以答案是 ${ans.value}。`);
+ else if(ans.radicand!==r)steps.push(...primeRadicalSteps822(r));
+ else steps.push(`${sqrtDisplay(r)} 已是最簡根式。`);
+ steps.push(`最後答案：${simplifiedDataDisplay(ans)}。`);
+ return rationalRadicalQuestion(`${radicalDisplay(c,a)} ÷ ${sqrtDisplay(b)}`,c,1,r,steps,'請計算並化簡',qopts('根式除法先約根號內的數，再檢查是否為完全平方數。'));
+}
+
 function makeM2RootFraction(){
  const a=rand(2,20),b=rand(2,14);
  const db=simplifyRadicalData(1,b);
@@ -6457,7 +6485,7 @@ function makeM2RootFraction(){
 function makeM2Rationalize(){
  const a=rand(1,11)*(Math.random()<.35?-1:1),b=pick([2,3,5,6,7,10,11,13]),c=pick([1,2,3,4]);
  const den=c*b, ans=simplifyRationalRadical(a,den,b);
- const original=fractionDisplay(String(a),radicalDisplay(c,b));
+ const original=`${a} ÷ (${radicalDisplay(c,b)})`;
  const afterMultiply=fractionDisplay(`${a}×${sqrtDisplay(b)}`,`${radicalDisplay(c,b)}×${sqrtDisplay(b)}`);
  const beforeSimplify=fractionDisplay(radicalDisplay(a,b),String(den));
  return rationalRadicalQuestion(original,a,den,b,[
@@ -6466,7 +6494,25 @@ function makeM2Rationalize(){
   `＝${rationalRadicalDisplay(ans.coefficient,ans.radicand,ans.denominator)}`
  ],'請將分母有理化',qopts('分子、分母同乘相同根式，完整列式，再把分數約成最簡。'));
 }
-function makeM2FractionDivide(){const a=rand(1,8),b=rand(2,10),c=rand(1,8),d=pick([2,3,4,5,6,7,8,9,10].filter(x=>x!==c)),r=pick(BASIC_ROOTS);const num=a*d,den=b*c;const ans=simplifyRationalRadical(num,den,r);return rationalRadicalQuestion(`${fractionDisplay(radicalDisplay(a,r),String(b))} ÷ ${fractionDisplay(String(c),String(d))}`,num,den,r,[`除以分數先乘倒數：${fractionDisplay(radicalDisplay(a,r),String(b))}×${fractionDisplay(String(d),String(c))}。`,`分子係數 ${a}×${d}＝${num}，分母 ${b}×${c}＝${den}。`,`分數約成最簡：${rationalRadicalDisplay(ans.coefficient,ans.radicand,ans.denominator)}。`],'請計算並約分',qopts('含根式的分數除法，先乘倒數再整理係數。'))}
+function makeM2FractionDivide(){
+ const a=rand(2,8),b=rand(2,10),c=rand(2,8),d=rand(2,10),r=pick(BASIC_ROOTS);
+ const n0=a*d, d0=b*c;
+ const g1=gcd(a,b), a1=a/g1,b1=b/g1;
+ const g2=gcd(d,c), d1=d/g2,c1=c/g2;
+ const g3=gcd(a1,c1), a2=a1/g3,c2=c1/g3;
+ const g4=gcd(d1,b1),d2=d1/g4,b2=b1/g4;
+ const num=a2*d2,den=b2*c2;
+ const ans=simplifyRationalRadical(num,den,r);
+ const original=`<span class="math-expression">${fractionDisplay(radicalDisplay(a,r),String(b))} ÷ ${fractionDisplay(String(c),String(d))}</span>`;
+ const steps=[
+  `除以分數改成乘以倒數：${fractionDisplay(radicalDisplay(a,r),String(b))}×${fractionDisplay(String(d),String(c))}。`,
+  `乘之前先約分：${fractionDisplay(radicalDisplay(a2,r),String(b2))}×${fractionDisplay(String(d2),String(c2))}。`,
+  `分子與分母分別相乘，得到 ${fractionDisplay(radicalDisplay(num,r),String(den))}。`,
+  `整理成最簡分數、最簡根式：${rationalRadicalDisplay(ans.coefficient,ans.radicand,ans.denominator)}。`
+ ];
+ return rationalRadicalQuestion(original,num,den,r,steps,'請計算並約分',qopts('先乘倒數、交叉約分，再乘分子與分母。'));
+}
+
 function makeM2Simplify(){
  const a=pick(BASIC_ROOTS),k=rand(2,9),n=a*k*k;
  const ans=simplifyRadicalData(1,n);
