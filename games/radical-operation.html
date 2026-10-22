@@ -6225,9 +6225,9 @@ function advancedDivisionSimplify(){
  const [a,b,k]=pick([[48,8,2],[72,6,3],[150,6,2],[98,2,3]]);
  const c=rand(2,4), result=simplifyRationalRadical(c,1,a/b);
  return rationalRadicalQuestion(`${c}${fractionDisplay(sqrtDisplay(a),sqrtDisplay(b))}`,c,1,a/b,advSteps([
- `根號內先計算 ${a}÷${b}＝${a/b}`,
- `得到 ${c}${sqrtDisplay(a/b)}`,
- `提出平方因數後為 ${rationalRadicalDisplay(result.coefficient,result.radicand,result.denominator)}`
+ `根號內先計算 ${a}÷${b}＝${a/b}。`,
+ `將 ${sqrtDisplay(a/b)} 拆成完全平方因數乘上剩餘因數，再把平方因數提出根號。`,
+ `本題接著計算 ${c}${sqrtDisplay(a/b)}＝${rationalRadicalDisplay(result.coefficient,result.radicand,result.denominator)}。`
  ]),'請計算並化為最簡根式',{method:'先除，再化簡根式。',pitfall:'根號內若有平方因數，還須提出。'});
 }
 function advancedAddFour(){
@@ -6324,7 +6324,7 @@ function makeM1Scalar(){
  ],'請計算',qopts('根式乘除整數時，根號內不變，只需計算根號外的係數與正負號。'));
 }
 function makeM1Fraction(){
- const c=rand(1,6)*(Math.random()<.4?-1:1),n=rand(2,7),d=rand(2,8),r=pick(BASIC_ROOTS), mul=Math.random()<.5;
+ const c=rand(1,6)*(Math.random()<.4?-1:1),n=rand(2,7),d=pick([2,3,4,5,6,7,8].filter(x=>x!==n)),r=pick(BASIC_ROOTS), mul=Math.random()<.5;
  const num=mul?c*n:c*d,den=mul?d:n;
  const html=`${radicalDisplay(c,r)} ${mul?'×':'÷'} ${fractionDisplay(String(n),String(d))}`;
  const ans=simplifyRationalRadical(num,den,r);
@@ -6373,8 +6373,8 @@ function makeM2Rationalize(){
   `＝${rationalRadicalDisplay(ans.coefficient,ans.radicand,ans.denominator)}`
  ],'請將分母有理化',qopts('分子、分母同乘相同根式，完整列式，再把分數約成最簡。'));
 }
-function makeM2FractionDivide(){const a=rand(1,8),b=rand(2,10),c=rand(1,8),d=rand(2,10),r=pick(BASIC_ROOTS);const num=a*d,den=b*c;const ans=simplifyRationalRadical(num,den,r);return rationalRadicalQuestion(`${fractionDisplay(radicalDisplay(a,r),String(b))} ÷ ${fractionDisplay(String(c),String(d))}`,num,den,r,[`除以分數先乘倒數：${fractionDisplay(radicalDisplay(a,r),String(b))}×${fractionDisplay(String(d),String(c))}。`,`分子係數 ${a}×${d}＝${num}，分母 ${b}×${c}＝${den}。`,`分數約成最簡：${rationalRadicalDisplay(ans.coefficient,ans.radicand,ans.denominator)}。`],'請計算並約分',qopts('含根式的分數除法，先乘倒數再整理係數。'))}
-function makeM2Simplify(){let a=pick(BASIC_ROOTS),k=rand(2,9),n=a*k*k;const ans=simplifyRadicalData(1,n);return radicalQuestion(sqrtDisplay(n),k,a,[`把 ${n} 拆成完全平方因數乘以另一個因數：${n}＝${k}²×${a}。`,`所以 ${sqrtDisplay(n)}＝${k}${sqrtDisplay(a)}。`,`根號內 ${a} 已無其他完全平方因數，答案是 ${radicalDisplay(k,a)}。`],'請化為最簡根式',qopts('找出平方因數，將平方因數提出根號外。'))}
+function makeM2FractionDivide(){const a=rand(1,8),b=rand(2,10),c=rand(1,8),d=pick([2,3,4,5,6,7,8,9,10].filter(x=>x!==c)),r=pick(BASIC_ROOTS);const num=a*d,den=b*c;const ans=simplifyRationalRadical(num,den,r);return rationalRadicalQuestion(`${fractionDisplay(radicalDisplay(a,r),String(b))} ÷ ${fractionDisplay(String(c),String(d))}`,num,den,r,[`除以分數先乘倒數：${fractionDisplay(radicalDisplay(a,r),String(b))}×${fractionDisplay(String(d),String(c))}。`,`分子係數 ${a}×${d}＝${num}，分母 ${b}×${c}＝${den}。`,`分數約成最簡：${rationalRadicalDisplay(ans.coefficient,ans.radicand,ans.denominator)}。`],'請計算並約分',qopts('含根式的分數除法，先乘倒數再整理係數。'))}
+function makeM2Simplify(){let a=pick(BASIC_ROOTS),k=rand(2,9),n=a*k*k;const ans=simplifyRadicalData(1,n);return radicalQuestion(sqrtDisplay(n),k,a,[`把 ${n} 拆成完全平方因數乘以另一個因數：${n}＝${k}²×${a}。`,`所以 ${sqrtDisplay(n)}＝${sqrtDisplay(`${k*k}×${a}`)}＝${sqrtDisplay(k*k)}×${sqrtDisplay(a)}＝${k}${sqrtDisplay(a)}。`,`根號內 ${a} 已無其他完全平方因數，答案是 ${radicalDisplay(k,a)}。`],'請化為最簡根式',qopts('找出平方因數，將平方因數提出根號外。'))}
 function makeM2Mixed(){return pick([advancedDivision,advancedDivisionRootFraction,advancedDivisionSimplify,makeMode4B])()}
 function makeM3Same(){
  const r=pick(BASIC_ROOTS),n=rand(3,11),m=rand(2,9),c=rand(1,8),s=pick([1,-1]),t=pick([1,-1]),ans=n+s*m+t*c;
@@ -6430,6 +6430,13 @@ const SIX_FAMILIES={
  formula:[makeM4Square,makeM4Double,makeM4Difference,makeM4Conjugate,makeM4IntegerConjugate,makeFormulaSquare,makeFormulaDoubleSquare,makeFormulaDifference],
  mixed:[makeM5Distribute,makeM5Pair,makeM5DivideBracket,makeM5Rationalized,makeM5Chain,makeMode4A,makeMode4B,advancedAddFour]
 };
+function isTrivialDisplayedFraction(html){
+ const text=String(html).replace(/<[^>]*>/g, " ").replace(/\s+/g,"");
+ // 跳過如 6/6、6÷6 這種一眼即可看出結果為 1 的純數字題。
+ const literal=/(?:^|[^0-9])(\d{1,3})(?:\/|／|÷)\1(?![0-9])/.test(text);
+ const fractionPattern=/<span class="display-fraction-top">\s*(\d+)\s*<\/span>\s*<span class="display-fraction-bottom">\s*\1\s*<\/span>/i;
+ return literal||fractionPattern.test(String(html));
+}
 function makeRandomQuiz(selectedMode){
  let constructors=[];
  if(selectedMode==='comprehensive'){
@@ -6445,11 +6452,13 @@ function makeRandomQuiz(selectedMode){
   let q;
   for(let t=0;t<15;t++){
    try{q=build()}catch(error){console.warn('重新產題',error);continue}
-   const signature=q.html.replace(/\s+/g,'');if(!seen.has(signature)){seen.add(signature);break}q=null;
+   const signature=q.html.replace(/\s+/g,'');
+   if(isTrivialDisplayedFraction(q.html)){q=null;continue}
+   if(!seen.has(signature)){seen.add(signature);break}q=null;
   }
   if(q)out.push(q);
  }
- while(out.length<TOTAL_QUESTIONS){const pool=SIX_FAMILIES[selectedMode==='comprehensive'?pick(Object.keys(SIX_FAMILIES)):selectedMode]||SIX_FAMILIES.multiply;const q=pick(pool)();if(!seen.has(q.html.replace(/\s+/g,''))){seen.add(q.html.replace(/\s+/g,''));out.push(q)}}
+ while(out.length<TOTAL_QUESTIONS){const pool=SIX_FAMILIES[selectedMode==='comprehensive'?pick(Object.keys(SIX_FAMILIES)):selectedMode]||SIX_FAMILIES.multiply;const q=pick(pool)();if(isTrivialDisplayedFraction(q.html))continue;if(!seen.has(q.html.replace(/\s+/g,''))){seen.add(q.html.replace(/\s+/g,''));out.push(q)}}
  return shuffle(out).slice(0,TOTAL_QUESTIONS);
 }
 
@@ -7642,336 +7651,44 @@ function createFallbackRadicalInput(
 ==================================================
 */
 
-function renderAnswer(
-  question
-) {
-
-  radicalAnswerInput =
-    null;
-
-
-  fractionAnswerInput =
-    null;
-
-
-  expressionAnswerInput =
-    null;
-
-
-  const panel =
-    $("answer-panel");
-
-
-  /*
-  Number
-  */
-
-  if (question.type === "number" && question.compare) {
-    panel.innerHTML = `<div class="answer-title">${question.label}</div>
+function renderAnswer(question) {
+  radicalAnswerInput=null;
+  fractionAnswerInput=null;
+  expressionAnswerInput=null;
+  const panel=$("answer-panel");
+  // 大小比較題的答案是比較符號，因此仍採固定的符號選擇器。
+  if(question.type==="number" && question.compare){
+    panel.innerHTML=`<div class="answer-title">${question.label}</div>
       <div class="number-answer"><select id="number-answer" aria-label="選擇比較符號"
       style="font-size:24px;padding:12px 22px;border:2px solid var(--primary-border);border-radius:12px">
       <option value="">選擇 ＞ 或 ＜</option><option value="1">＞</option><option value="-1">＜</option></select></div>`;
     return;
   }
-
-  if (
-    question.type ===
-    "number"
-  ) {
-
-    panel.innerHTML = `
-
-      <div class="answer-title">
-
-        ${question.label}
-
-      </div>
-
-
-      <div class="number-answer">
-
-        <input
-          id="number-answer"
-          type="text"
-          inputmode="numeric"
-          autocomplete="off"
-          placeholder="輸入整數答案"
-        >
-
-      </div>
-
-
-      <div
-        id="answer-preview"
-        class="answer-preview"
-      >
-
-        目前尚未完成答案。
-
-      </div>
-    `;
-
-
-    $("number-answer")
-      .addEventListener(
-        "input",
-        () => {
-
-          const raw =
-            $("number-answer")
-              .value
-              .trim();
-
-
-          $("answer-preview")
-            .innerHTML =
-
-              raw
-
-                ? `目前答案：
-                   <span class="answer-preview-value">
-                     ${raw}
-                   </span>`
-
-                : "目前尚未完成答案。";
-        }
-      );
-
-
-    $("number-answer")
-      .focus();
-
-
+  // 所有計算題，無論正確答案為整數、分數、根式或多項根式，顯示完全相同的元件。
+  panel.innerHTML=`<div class="answer-title">${question.label}</div>
+     <p class="answer-help">請輸入最簡答案；可以使用根號或分數功能鍵。</p>
+     <div id="unified-answer-mount"></div>`;
+  if(typeof window.MathExpressionInput!=="function"){
+    $("feedback").className="feedback warning";
+    $("feedback").textContent="共用答案輸入元件沒有正常載入。";
     return;
   }
-
-
-  /*
-  Radical
-  共用 MathExpressionInput v2.3
-  */
-
-  if (
-    question.type ===
-    "radical"
-  ) {
-
-    panel.innerHTML = `
-
-      <div class="answer-title">
-        ${question.label}
-      </div>
-
-      <p class="answer-help">
-        直接輸入完整根式答案；需要根號時按「√ 根號」。
-      </p>
-
-      <div id="radical-answer-mount"></div>
-    `;
-
-    if (
-      typeof window.MathExpressionInput !==
-      "function"
-    ) {
-      $("feedback").className =
-        "feedback warning";
-      $("feedback").textContent =
-        "MathExpressionInput 共用根號輸入元件沒有正常載入。";
-      return;
-    }
-
-    radicalAnswerInput =
-      new window.MathExpressionInput({
-        mountId:
-          "radical-answer-mount",
-        allowRadical:
-          true,
-        allowFraction:
-          false,
-        allowPower:
-          false,
-        allowVariable:
-          false,
-        allowPlusMinus:
-          false,
-        validationMode:
-          "numeric-radical",
-        requireSimplifiedRadical:
-          true,
-        requireSimplifiedFraction:
-          true,
-        requireRationalDenominator:
-          true,
-        showPreview:
-          true,
-        toolOrder:
-          ["radical"],
-        placeholder:
-          "例如：18√35",
-        theme: {
-          primary: "#7b1fa2",
-          dark: "#4a148c",
-          light: "#f3e5f5",
-          border: "#ce93d8"
-        }
-      });
-
-    setTimeout(
-      () => radicalAnswerInput?.focus?.(),
-      0
-    );
-
-    return;
-  }
-
-
-  /*
-  Radical Fraction：MathExpressionInput v2.3 共用分數元件
-  */
-  if (question.type === "radicalFraction") {
-    panel.innerHTML = `
-      <div class="answer-title">${question.label}</div>
-      <p class="answer-help">請直接輸入完整答案；分數要約成最簡分數，根式也要化成最簡根式。</p>
-      <div id="fraction-answer-mount"></div>
-    `;
-    if (typeof window.MathExpressionInput !== "function") {
-      $("feedback").className="feedback warning";
-      $("feedback").textContent="MathExpressionInput 共用分數元件沒有正常載入。";
-      return;
-    }
-    fractionAnswerInput=new window.MathExpressionInput({
-      mountId:"fraction-answer-mount",
-      allowRadical:true,allowFraction:true,allowPower:false,allowVariable:false,allowPlusMinus:false,
-      validationMode:"numeric-radical",
-      requireSimplifiedRadical:true,requireSimplifiedFraction:true,requireRationalDenominator:true,
-      showPreview:true,toolOrder:["radical","fraction"],placeholder:"例如：−3√2/4",
-      theme:{primary:"#7b1fa2",dark:"#4a148c",light:"#f3e5f5",border:"#ce93d8"}
-    });
-    setTimeout(()=>fractionAnswerInput?.focus?.(),0);
-    return;
-  }
-
-
-  /*
-  ==================================================
-  Expression
-  共用 MathExpressionInput v2.3
-  ==================================================
-  */
-
-  panel.innerHTML = `
-
-    <div class="answer-title">
-
-      ${question.label}
-
-    </div>
-
-
-    <p class="answer-help">
-
-      請直接輸入整理後的完整答案；
-      同類方根先合併，需要根號時按「√ 根號」。
-
-    </p>
-
-
-    <div
-      id="expression-answer-mount"
-    ></div>
-  `;
-
-
-  if (
-    typeof window.MathExpressionInput !==
-    "function"
-  ) {
-
-    $("feedback")
-      .className =
-        "feedback warning";
-
-
-    $("feedback")
-      .textContent =
-        "MathExpressionInput 共用答案元件沒有正常載入。";
-
-
-    return;
-  }
-
-
-  expressionAnswerInput =
-    new window.MathExpressionInput(
-      {
-
-        mountId:
-          "expression-answer-mount",
-
-        allowRadical:
-          true,
-
-        allowFraction:
-          true,
-
-        allowPower:
-          false,
-
-        allowVariable:
-          false,
-
-        allowPlusMinus:
-          false,
-
-        validationMode:
-          "numeric-radical",
-
-        requireSimplifiedRadical:
-          true,
-
-        requireSimplifiedFraction:
-          true,
-
-        requireRationalDenominator:
-          true,
-
-        showPreview:
-          true,
-
-        toolOrder:
-          [
-            "radical",
-            "fraction"
-          ],
-
-        placeholder:
-          "例如：5√2−3√5",
-
-        theme: {
-
-          primary:
-            "#7b1fa2",
-
-          dark:
-            "#4a148c",
-
-          light:
-            "#f3e5f5",
-
-          border:
-            "#ce93d8"
-        }
-      }
-    );
-
-
-  setTimeout(
-    () =>
-      expressionAnswerInput
-        ?.focus
-        ?.(),
-    0
-  );
+  const instance=new window.MathExpressionInput({
+    mountId:"unified-answer-mount",
+    allowRadical:true,allowFraction:true,allowPower:false,
+    allowVariable:false,allowPlusMinus:false,
+    validationMode:"numeric-radical",
+    requireSimplifiedRadical:true,requireSimplifiedFraction:true,
+    requireRationalDenominator:true,showPreview:true,
+    toolOrder:["radical","fraction"],
+    placeholder:"請輸入最簡答案",
+    theme:{primary:"#7b1fa2",dark:"#4a148c",light:"#f3e5f5",border:"#ce93d8"}
+  });
+  // 保持既有 readAnswer() 對各型別使用的實例引用，避免動到成績及判分流程。
+  expressionAnswerInput=instance;
+  radicalAnswerInput=instance;
+  fractionAnswerInput=instance;
+  setTimeout(()=>instance.focus?.(),0);
 }
 
 
@@ -8096,53 +7813,22 @@ function readAnswer(
   Number
   */
 
-  if (
-    question.type ===
-    "number"
-  ) {
-
-    const raw =
-      $("number-answer")
-        ?.value
-        .trim() ||
-      "";
-
-
-    if (
-      !/^-?\d+$/
-        .test(
-          raw
-        )
-    ) {
-
-      return {
-
-        valid:
-          false,
-
-        message:
-          question.compare ? "請先選擇比較符號。" : "請輸入完整整數答案。"
-      };
+  if (question.type==="number") {
+    if(question.compare){
+      const raw=$("number-answer")?.value?.trim()||"";
+      if(raw!=="1"&&raw!=="-1")return {valid:false,message:"請先選擇比較符號。"};
+      return {valid:true,value:Number(raw),display:raw==="1"?"＞":"＜"};
     }
-
-
-    return {
-
-      valid:
-        true,
-
-      value:
-        Number(
-          raw
-        ),
-
-      display:
-        question.compare ? (Number(raw)===1?"＞":"＜") : raw
-    };
+    const parsed=expressionAnswerInput?.validate();
+    if(!parsed?.valid)return {valid:false,message:parsed?.message||"請輸入完整答案。"};
+    const terms=parsed.terms||parsed.value?.terms||[];
+    if(terms.length===0)return {valid:true,value:0,display:parsed.display||"0"};
+    if(terms.length!==1||terms[0].radicand!==1||terms[0].denominator!==1)
+      return {valid:false,message:"請確認答案已計算為整數。"};
+    return {valid:true,value:terms[0].numerator,display:parsed.display||String(terms[0].numerator)};
   }
 
-
-  /*
+    /*
   Radical
   共用 MathExpressionInput v2.3
   */
@@ -8182,14 +7868,14 @@ function readAnswer(
     if (term.denominator !== 1) {
       return {
         valid: false,
-        message: "本題答案不是分數，請直接輸入根式。"
+        message: "請將答案整理成最簡形式。"
       };
     }
 
     if (term.radicand === 1) {
       return {
         valid: false,
-        message: "本題答案應保留根號形式。"
+        message: "請將答案整理成最簡形式。"
       };
     }
 
