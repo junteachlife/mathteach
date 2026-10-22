@@ -3074,7 +3074,7 @@ MathExpressionInput 共用數學運算式輸入元件
               <input
                 class="mei-source-input"
                 type="text"
-                inputmode="text"
+                inputmode="decimal"
                 autocomplete="off"
                 autocapitalize="off"
                 spellcheck="false"
@@ -3115,7 +3115,7 @@ MathExpressionInput 共用數學運算式輸入元件
               <input
                 class="mei-special-input mei-root-value"
                 type="text"
-                inputmode="text"
+                inputmode="decimal"
                 autocomplete="off"
                 placeholder="根號內"
                 aria-label="根號內"
@@ -3154,7 +3154,7 @@ MathExpressionInput 共用數學運算式輸入元件
               <input
                 class="mei-special-input mei-fraction-numerator"
                 type="text"
-                inputmode="text"
+                inputmode="decimal"
                 autocomplete="off"
                 placeholder="分子"
                 aria-label="分子"
@@ -3163,7 +3163,7 @@ MathExpressionInput 共用數學運算式輸入元件
               <input
                 class="mei-special-input mei-fraction-denominator"
                 type="text"
-                inputmode="text"
+                inputmode="decimal"
                 autocomplete="off"
                 placeholder="分母"
                 aria-label="分母"
@@ -3636,35 +3636,21 @@ MathExpressionInput 共用數學運算式輸入元件
         );
 
 
-      this.fractionNumerator
-        ?.addEventListener(
-          "keydown",
-          event => {
-            if (
-              event.key === "Enter" ||
-              event.key === "ArrowDown"
-            ) {
-              event.preventDefault();
-
-              this.fractionDenominator
-                ?.focus();
-            }
-          }
-        );
-
-      this.fractionDenominator
-        ?.addEventListener(
-          "keydown",
-          event => {
-            if (
-              event.key === "Enter"
-            ) {
-              event.preventDefault();
-
-              this.confirmFractionEditor();
-            }
-          }
-        );
+      this.fractionNumerator?.addEventListener("keydown",event=>{
+        if(event.key==="Enter"){
+          event.preventDefault();
+          this.confirmFractionEditor();
+        } else if(event.key==="ArrowDown"){
+          event.preventDefault();
+          this.fractionDenominator?.focus();
+        }
+      });
+      this.fractionDenominator?.addEventListener("keydown",event=>{
+        if(event.key==="Enter"||event.key==="ArrowUp"){
+          event.preventDefault();
+          this.fractionNumerator?.focus();
+        }
+      });
 
       this.powerValueInput
         ?.addEventListener(
@@ -4307,10 +4293,8 @@ MathExpressionInput 共用數學運算式輸入元件
       this.fractionDenominator.value =
         "";
 
-      this.activeFractionInput =
-        selected
-          ? this.fractionDenominator
-          : this.fractionNumerator;
+      // 分數開啟時先輸入分母，再輸入分子。
+      this.activeFractionInput = this.fractionDenominator;
 
       this.fractionEditor.hidden =
         false;
@@ -4328,15 +4312,7 @@ MathExpressionInput 共用數學運算式輸入元件
 
       window.setTimeout(
         () => {
-          if (
-            selected
-          ) {
-            this.fractionDenominator
-              ?.focus();
-          } else {
-            this.fractionNumerator
-              ?.focus();
-          }
+          this.fractionDenominator?.focus();
         },
         0
       );
