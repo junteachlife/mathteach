@@ -6235,13 +6235,37 @@ function advancedDivisionRootFraction(){
 function advancedDivisionSimplify(){
  const [a,b]=pick([[48,8],[72,6],[150,6],[98,2]]);
  const c=rand(2,4), n=a/b;
+ const simplified=simplifyRadicalData(1,n);
  const result=simplifyRationalRadical(c,1,n);
- return rationalRadicalQuestion(`${c}${fractionDisplay(sqrtDisplay(a),sqrtDisplay(b))}`,c,1,n,advSteps([
-  `根號相除先化為 ${c}${sqrtDisplay(`${a}÷${b}`)}＝${c}${sqrtDisplay(n)}。`,
-  ...primeRadicalSteps822(n),
-  `乘回根號外的係數：${c}×${radicalDisplay(simplifyRadicalData(1,n).coefficient||simplifyRadicalData(1,n).value,simplifyRadicalData(1,n).radicand||1)}＝${rationalRadicalDisplay(result.coefficient,result.radicand,result.denominator)}。`
- ]),'請計算並化為最簡根式',{method:'先算根號內的商，質因數分解後以指數方式提出完全平方因數。',pitfall:'請寫出由質因數分解到指數減半的過程。'});
+ // 教學優先：根式相除先約分根號內的數，再檢查是否為完全平方數。
+ // 例如 2√150 ÷ √6 → 2√(150÷6) → 2√25 → 2×5 → 10。
+ const reduction=`${c}×${sqrtDisplay(a)}÷${sqrtDisplay(b)}＝${c}×${sqrtDisplay(`${a}÷${b}`)}＝${c}×${sqrtDisplay(n)}。`;
+ let steps=[
+  `先約分根號內的數，不必把較大的 ${a} 先做質因數分解：${reduction}`
+ ];
+ if(simplified.type==='number'){
+  steps.push(`${sqrtDisplay(n)}＝${simplified.value}，因為 ${simplified.value}<sup>2</sup>＝${n}。`);
+  steps.push(`因此原式＝${c}×${simplified.value}＝${c*simplified.value}。`);
+ }else{
+  // 商不是完全平方數才進行最簡根式化簡，使用先前指定的指數式詳解。
+  const factored=simplified.coefficient===1
+    ? sqrtDisplay(simplified.radicand)
+    : radicalDisplay(simplified.coefficient,simplified.radicand);
+  if(simplified.coefficient!==1){
+   steps.push(...primeRadicalSteps822(n));
+  }else{
+   steps.push(`${sqrtDisplay(n)} 已是最簡根式，不需額外拆解。`);
+  }
+  steps.push(`乘回根號外的係數：${c}×${factored}＝${rationalRadicalDisplay(result.coefficient,result.radicand,result.denominator)}。`);
+ }
+ return rationalRadicalQuestion(
+  `${radicalDisplay(c,a)} ÷ ${sqrtDisplay(b)}`,
+  c,1,n,advSteps(steps),
+  '請計算並化為最簡根式',
+  {method:'先將兩個根號的數字相除並約分；商為完全平方數就直接開根號。',pitfall:'先算根號內的商，比先拆解較大的被開方數更省步驟。'}
+ );
 }
+
 function advancedAddFour(){
  const [r,t]=pick([[2,3],[3,5],[5,7],[2,5]]),a=rand(2,5),b=rand(2,4),c=rand(2,4),d=rand(2,3);
  const A=a*a*r,B=b*b*r,C=c*c*t,D=d*d*r;
