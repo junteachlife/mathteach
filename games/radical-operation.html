@@ -6564,7 +6564,41 @@ function makeM5Distribute(){
  ],'請展開並化簡',qopts('分配律的每一項都要乘到，最後化簡與合併同類方根。'));
 }
 function makeM5Pair(){const a=pick([2,3,5,6,7]),b=pick([2,3,5,6,7]),c=pick([2,3,5,6,7]),s=pick([1,-1]);const parts=[numericRootParts(1,a*c),numericRootParts(1,a),numericRootParts(s,b*c),numericRootParts(s,b)];const joined=joinRootParts(parts);return exprFromParts(`(${sqrtDisplay(a)} ${s>0?'＋':'−'} ${sqrtDisplay(b)})(${sqrtDisplay(c)}＋1)`,parts,[`兩括號相乘，每一項都必須乘到：${sqrtDisplay(a*c)}＋${sqrtDisplay(a)} ${s>0?'＋':'−'} ${sqrtDisplay(b*c)} ${s>0?'＋':'−'} ${sqrtDisplay(b)}。`,`逐項化成最簡根式，將根號內相同的項合併。`,`最後答案：${expressionDisplay(joined.constant,joined.radicals)}。`],'請展開並化簡',qopts('兩括號相乘共有四項，注意負號與化簡後同類方根。'))}
-function makeM5DivideBracket(){const a=pick([2,3,5,6]),b=pick([2,3,5,6].filter(x=>x!==a)),c=rand(2,5),d=rand(2,4),s=pick([1,-1]);const first=a*a,second=d*a*b;const parts=[numericRootParts(c,a),numericRootParts(s*d,b)];const joined=joinRootParts(parts);return exprFromParts(`${fractionDisplay(`(${radicalDisplay(c,first)} ${s>0?'＋':'−'} ${radicalDisplay(d,second)})`,sqrtDisplay(a))}`,parts,[`括號整體除以 ${sqrtDisplay(a)}，可以逐項相除。`,`第一項：${radicalDisplay(c,first)}÷${sqrtDisplay(a)}＝${radicalDisplay(c,a)}。`,`第二項：${radicalDisplay(d,second)}÷${sqrtDisplay(a)}＝${radicalDisplay(d,b)}，保留原本正負號。`,`整理：${expressionDisplay(joined.constant,joined.radicals)}。`],'請計算並化簡',qopts('除法分配到分子各項，逐項相除後化簡。'))}
+function makeM5DivideBracket(){
+ const a=pick([2,3,5,6]);
+ const b=pick([2,3,5,6].filter(x=>x!==a));
+ const c=rand(2,5);
+ const d=rand(2,4);
+ const s=pick([1,-1]);
+ const first=a*a;
+ const second=d*a*b;
+ // 原題第二項是 d√(d×a×b)。除以 √a 後是 d√(d×b)，不可誤寫為 d√b。
+ const secondQuotient=d*b;
+ const parts=[numericRootParts(c,a),numericRootParts(s*d,secondQuotient)];
+ const joined=joinRootParts(parts);
+ const op=s>0?'＋':'−';
+ const numerator=`${radicalDisplay(c,first)} ${op} ${radicalDisplay(d,second)}`;
+ const original=`${fractionDisplay(`(${numerator})`,sqrtDisplay(a))}`;
+ const firstQuotientDisplay=radicalDisplay(c,a);
+ const secondBeforeSimplify=radicalDisplay(d,secondQuotient);
+ const secondSimplified=simplifyRadicalData(d,secondQuotient);
+ const secondAfterSimplify=simplifiedDataDisplay(secondSimplified);
+ const secondSteps=[
+  `第二項先約分根號內的數：${radicalDisplay(d,second)}÷${sqrtDisplay(a)}＝${d}×${sqrtDisplay(`${second}÷${a}`)}＝${secondBeforeSimplify}。`
+ ];
+ if(secondSimplified.type==='number'||secondSimplified.radicand!==secondQuotient){
+  secondSteps.push(`再將 ${sqrtDisplay(secondQuotient)} 化為最簡根式：${secondBeforeSimplify}＝${secondAfterSimplify}。`);
+ }else{
+  secondSteps.push(`${sqrtDisplay(secondQuotient)} 已是最簡根式，所以第二項為 ${secondAfterSimplify}。`);
+ }
+ const finalAnswer=expressionDisplay(joined.constant,joined.radicals);
+ return exprFromParts(original,parts,[
+  `分母整體是 ${sqrtDisplay(a)}，將分子兩項分別除以 ${sqrtDisplay(a)}，並保留原來的 ${op} 號。`,
+  `第一項先約分根號內的數：${radicalDisplay(c,first)}÷${sqrtDisplay(a)}＝${c}×${sqrtDisplay(`${first}÷${a}`)}＝${firstQuotientDisplay}。`,
+  ...secondSteps,
+  `合併原來的正負號並整理：${firstQuotientDisplay} ${op} ${secondAfterSimplify}＝${finalAnswer}。`
+ ],'請計算並化簡',qopts('根號相除要把根號內的數真正相除；若商還有完全平方因數，必須繼續提出。'));
+}
 function makeM5Rationalized(){return pick([makeMode4B,advancedDivision,makeM2Rationalize])()}
 function makeM5Chain(){return pick([makeMultiplyDivideMixed,makeMultiplyFractionSigned,makeM5Distribute,makeM5Pair,makeM5DivideBracket])()}
 const SIX_FAMILIES={
