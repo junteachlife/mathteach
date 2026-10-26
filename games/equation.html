@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>一元一次方程式挑戰賽</title>
+<title>一元一次方程式挑戰賽｜生活有解．心中有數</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%237b1fa2%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2244%22%20font-size%3D%2239%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-weight%3D%22bold%22%20fill%3D%22white%22%3E%E6%96%B9%3C%2Ftext%3E%3C%2Fsvg%3E">
 
 <link rel="stylesheet" href="../css/scratchpad.css">
 <link rel="stylesheet" href="../css/math-expression-input.css?v=2.3">
@@ -718,6 +719,88 @@ body{
 .review-explanation{margin-top:12px}
 .review-explanation .solution-step{background:#fff}
 @media(max-width:600px){.topbar{align-items:stretch}.quiz-controls{width:100%}.quiz-controls .btn{flex:1}.answer-wrap{padding:12px 8px}.unified-row{gap:6px}.answer-x{font-size:23px}.problem{font-size:clamp(24px,6vw,34px)}}
+
+/* v2026-10-26 UI aligns visually with grade8 2-2; retains all four question generators */
+:root{--blue:#7b1fa2;--blue-dark:#4a148c;--green:#7b1fa2;--amber:#b45309;--line:#dfc6e4}
+body{background:linear-gradient(180deg,#f7ecf9 0,#fff 260px);padding:12px 8px 28px}
+.app{width:min(100%,1280px);min-height:calc(100vh - 30px);border:0;border-top:6px solid #7b1fa2;border-radius:22px;box-shadow:0 15px 40px #5422641e;overflow:visible}
+.inner{padding:18px 24px 38px}
+.equation-game-header{position:relative;text-align:center;padding:48px 18px 26px;background:linear-gradient(180deg,#f6eaf7 0%,#fff 100%);border-radius:18px;margin-bottom:10px}
+.grade-return{position:absolute;right:15px;top:12px;text-decoration:none;border:1.5px solid #c796d1;background:#fff;color:#57176c;padding:8px 12px;border-radius:12px;font-size:13px;font-weight:850}
+.title{color:#57176c;font-size:clamp(26px,3.6vw,39px);margin:4px 0 12px}
+.subtitle{margin:0 auto 16px;color:#7d7182;font-size:14px;line-height:1.6}
+.concept-strip{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.concept-strip span{border:1px solid #c895ce;border-radius:20px;padding:6px 12px;color:#642576;background:white;font-size:12px;font-weight:750}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;max-width:1050px;margin:12px auto 25px}
+.mode-card{position:relative;display:block;min-width:0}
+.mode-card span{height:100%;min-height:174px;padding:22px 23px;border:1.5px solid #d8a9da;border-radius:18px;background:linear-gradient(160deg,#f4e3f5 0%,#fff 96%);transition:transform .18s,box-shadow .18s,border-color .18s;box-shadow:0 4px 12px #4a14550b}
+.mode-card:hover span{transform:translateY(-2px);box-shadow:0 8px 20px #4a14551d}
+.mode-card input:checked+span{border-color:#8f3ba3;background:linear-gradient(150deg,#ecd2f0,#fff);box-shadow:0 0 0 2px #aa6cbd30}
+.mode-count{display:inline-flex;font-weight:850;font-size:12px;color:#71388d;border-radius:9px;background:#fff;padding:5px 10px;margin-bottom:14px}
+.mode-title{font-size:20px;color:#622277}
+.example{font-family:'Microsoft JhengHei','Noto Sans TC',sans-serif;font-size:14px;line-height:1.7;color:#766a7a;margin-top:10px}
+.btn{border-radius:12px}
+.btn-primary,.btn-green{background:#7b1fa2;color:white}
+.btn-primary:hover,.btn-green:hover{background:#651384}
+.btn-light{background:#f5eef9;border:1px solid #dac2e6;color:#5f246e}
+.btn-danger-light{background:#f4e9f5;border:1px solid #dac2e6;color:#602371}
+.topbar{display:flex;align-items:stretch;flex-wrap:nowrap;gap:8px;margin:0 0 15px}
+.quiz-stats{flex:1;min-width:0;display:flex;gap:8px;align-items:stretch;flex-wrap:nowrap}
+.pill{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:52px;flex:1 1 0;padding:6px 8px;border-radius:13px;box-shadow:none;background:#f2e4f4;color:#5b2568;text-align:center;font-size:14px}
+.pill small{display:block;font-size:11px;font-weight:700;line-height:1.25}
+.pill strong{display:block;font-size:15px;font-weight:850;line-height:1.5}
+.pill-amber{background:#f5e7f5;color:#5b2568}
+.pill-gray{background:#fff6ec;color:#b05c1b}
+.quiz-controls{margin:0;display:flex;flex:0 0 auto;gap:6px;align-items:center;flex-wrap:nowrap}
+.quiz-controls .btn{min-height:40px;padding:8px 12px;font-size:12px;white-space:nowrap}
+.progress{height:0;background:transparent}
+.progress>div{height:6px;border-radius:8px;background:linear-gradient(90deg,#a53cbe,#7b1fa2)}
+.problem-card{border:1.5px solid #cc9dce;border-radius:18px;background:#fff;margin:0 0 14px;overflow:visible}
+.problem{display:flex;align-items:center;justify-content:center;min-height:205px;padding:38px 18px 65px;font-size:clamp(29px,4vw,49px);line-height:1.5;overflow-x:auto;white-space:nowrap;color:#19131d}
+.scratchpad-corner{right:15px;bottom:12px}
+.scratchpad-corner .scratchpad-open-button{background:linear-gradient(#fffbe0,#f5b740)!important;border:1.5px solid #d28a22!important;color:#643a08!important;box-shadow:0 3px 0 #ba790c!important;border-radius:12px!important}
+.answer-wrap{max-width:940px;background:#faf9fc;border-radius:18px;padding:23px 25px;margin:0 auto}
+.answer-wrap>.label{text-align:center;color:#622277;font-size:16px;margin-bottom:13px}
+.unified-row{max-width:810px;margin:auto;display:flex;align-items:center;justify-content:center;gap:12px}
+#equation-answer-mount{flex:1;min-width:0}
+#equation-answer-mount .mei-shell{--mei-primary:#7b1fa2;--mei-primary-dark:#4a148c;--mei-primary-light:#f3e5f5;--mei-primary-border:#ce93d8;max-width:100%;margin:0}
+#equation-answer-mount .mei-main-row{justify-content:center;align-items:center;gap:8px}
+#equation-answer-mount .mei-editor-wrap{flex:1 1 auto;min-width:0}
+.answer-x{color:#2b2330;font-size:30px}
+.preview{color:#6c5279}
+.actions{display:flex;justify-content:center;gap:12px;margin:14px 0}
+.actions .btn{min-width:165px}
+.feedback{margin-top:10px}
+.full-solution{max-width:960px}
+.solution-step{border-left-color:#7b1fa2}
+.solution-step>b,.solution-title{color:#713189}
+.review-card{border-color:#deb6dd}
+.grade-card{background:linear-gradient(140deg,#f5e8f8,#fff);border-color:#dcc1e6}
+.grade-big{color:#713189}
+@media(max-width:760px){
+ .inner{padding:10px 11px 22px}
+ .equation-game-header{padding:57px 10px 16px}
+ .grade-return{right:8px;top:10px;font-size:12px}
+ .modes{grid-template-columns:1fr;gap:12px}
+ .mode-card span{min-height:130px;padding:17px 18px}
+ .topbar{gap:5px;flex-wrap:wrap}
+ .quiz-stats{width:100%;flex:1 1 100%;gap:5px}
+ .pill{min-height:42px;font-size:12px;padding:4px 5px}
+ .pill strong{font-size:13px}
+ .quiz-controls{width:100%;justify-content:flex-end}
+ .quiz-controls .btn{flex:0 0 auto;font-size:11px}
+ .problem{min-height:175px;font-size:clamp(25px,6vw,36px);padding:28px 10px 60px}
+ .answer-wrap{padding:16px 8px}
+ .unified-row{gap:7px}
+ .answer-x{font-size:24px}
+ #equation-answer-mount .mei-tool-button{min-width:57px;font-size:11px;padding:6px}
+}
+
+
+/* Keep metric headings after JS replaces each pill's text */
+#question-number::before{content:"進度";display:block;font-size:11px;font-weight:700}
+#mode-badge::before{content:"模式";display:block;font-size:11px;font-weight:700}
+#time-display::before{content:"測驗時間";display:block;font-size:11px;font-weight:700}
 </style>
 
 <script
@@ -741,17 +824,13 @@ body{
   </div>
 
   <div class="inner">
-
+    <header class="equation-game-header">
+      <a class="grade-return" href="../index.html?semester=grade7-first">↩ 重返七年級上學期</a>
+      <h1 class="title">⚡ 一元一次方程式挑戰賽</h1>
+      <p class="subtitle">四種模式涵蓋基本方程式、移項合併、括號運算與分數係數方程式。</p>
+      <div class="concept-strip"><span>基本方程式</span><span>移項與合併</span><span>括號與負號</span><span>分數係數</span></div>
+    </header>
     <section id="start-screen">
-<div class="semester-nav"><a class="btn btn-light" href="../index.html?semester=grade7-first">← 返回七年級上學期</a></div>
-
-      <h1 class="title">
-        一元一次方程式挑戰賽
-      </h1>
-
-      <p class="subtitle">
-        請選擇模式：模式一～三每回合 10 題，模式四每回合 6 題
-      </p>
 
       <div class="modes">
 
@@ -766,6 +845,7 @@ body{
 
           <span>
 
+            <div class="mode-count">10 題</div>
             <div class="mode-title">
               模式一｜基本一元一次方程式
             </div>
@@ -788,6 +868,7 @@ body{
 
           <span>
 
+            <div class="mode-count">10 題</div>
             <div class="mode-title">
               模式二｜移項與合併同類項
             </div>
@@ -810,6 +891,7 @@ body{
 
           <span>
 
+            <div class="mode-count">10 題</div>
             <div class="mode-title">
               模式三｜括號、負號與化簡
             </div>
@@ -832,6 +914,7 @@ body{
 
           <span>
 
+            <div class="mode-count">6 題</div>
             <div class="mode-title">
               模式四｜分數係數方程式
             </div>
@@ -898,12 +981,12 @@ body{
               id="change-mode-btn"
               class="btn btn-light"
             >
-              ← 重選模式
+              重選模式
             </button><button
               id="reset-btn"
               class="btn btn-danger-light"
             >
-              重新測驗（目前模式）
+              🔄 重新測驗
             </button>
 
             </div>
@@ -917,7 +1000,7 @@ body{
           <div class="answer-wrap">
 
             <div class="label">
-              方程式解
+              請求出方程式的解
             </div>
 
             <div class="answer-entry-row unified-row"><span class="answer-x">x ＝</span><div id="equation-answer-mount"></div></div>
