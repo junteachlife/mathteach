@@ -801,6 +801,45 @@ body{background:linear-gradient(180deg,#f7ecf9 0,#fff 260px);padding:12px 8px 28
 #question-number::before{content:"進度";display:block;font-size:11px;font-weight:700}
 #mode-badge::before{content:"模式";display:block;font-size:11px;font-weight:700}
 #time-display::before{content:"測驗時間";display:block;font-size:11px;font-weight:700}
+
+/* 2026-10-26 : 專屬七上首頁色系（只套用模式首頁，不改測驗功能） */
+body.equation-home{background:linear-gradient(180deg,#e9f6f4 0%,#f6fbf9 55%,#fff 100%)}
+body.equation-home .app{border-top-color:#087e86;box-shadow:0 15px 42px #11676b19}
+body.equation-home .equation-game-header{background:linear-gradient(155deg,#e0f4ed 0%,#f0fcf7 50%,#fff 100%)}
+body.equation-home .title{color:#14656b}
+body.equation-home .subtitle{color:#497b79}
+body.equation-home .concept-strip span{border-color:#a5d7cc;color:#146a6c;background:#fff}
+body.equation-home .grade-return{border-color:#9ad5d0;color:#14696e;background:#fff}
+body.equation-home .mode-card span{background:linear-gradient(155deg,#e5f6ee 0%,#fff 100%);border-color:#a7d8cf;box-shadow:0 4px 12px #117f7911}
+body.equation-home .mode-card:hover span,body.equation-home .mode-card:focus-visible span{transform:translateY(-3px);border-color:#1d9292;box-shadow:0 10px 22px #167e7830}
+body.equation-home .mode-card input:checked+span{background:linear-gradient(155deg,#dcf4ec,#fff);border-color:#5aa9a1;box-shadow:0 0 0 2px #45a69c2b}
+body.equation-home .mode-title{color:#176b70}
+body.equation-home .mode-count{color:#147779;background:#f7fffc}
+body.equation-home .example{color:#557b77}
+#start-screen .mode-card{cursor:pointer;outline:none}
+#start-screen .mode-card:focus-visible span{outline:3px solid #168e90;outline-offset:3px}
+/* 狀態及操作按鈕平均分配同一列空間，與乘法公式版型一致 */
+#quiz-screen .topbar{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:8px;align-items:stretch}
+#quiz-screen .quiz-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+#quiz-screen .quiz-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;min-width:0;align-items:stretch}
+#quiz-screen .quiz-stats .pill,#quiz-screen .quiz-controls .btn{min-height:58px;min-width:0;width:100%;margin:0;display:flex;justify-content:center;align-items:center;text-align:center;border-radius:13px;box-sizing:border-box}
+#quiz-screen .quiz-controls .btn{padding:8px 6px;font-size:13px;font-weight:850;line-height:1.3;white-space:normal}
+@media(max-width:760px){
+  #quiz-screen .topbar{grid-template-columns:1fr}
+  #quiz-screen .quiz-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+  #quiz-screen .quiz-controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  #quiz-screen .quiz-stats .pill,#quiz-screen .quiz-controls .btn{min-height:46px}
+  #quiz-screen .quiz-controls .btn{font-size:12px}
+}
+
+
+/* 2026-10-26：x＝與答案實際輸入框在同一水平，不受預覽區高度影響 */
+.unified-row{position:relative;align-items:flex-start!important;gap:10px!important}
+.unified-row>.answer-x{flex:0 0 auto;align-self:flex-start;display:flex;align-items:center;justify-content:flex-end;height:64px;line-height:1!important;margin:0!important;padding:0!important;white-space:nowrap}
+#equation-answer-mount{flex:1;min-width:0}
+#equation-answer-mount .mei-main-row{align-items:flex-start!important}
+#equation-answer-mount .mei-editor-wrap{min-height:64px}
+@media(max-width:640px){.unified-row>.answer-x{height:62px;font-size:25px}}
 </style>
 
 <script
@@ -810,7 +849,7 @@ body{background:linear-gradient(180deg,#f7ecf9 0,#fff 260px);padding:12px 8px 28
 
 </head>
 
-<body>
+<body class="equation-home">
 
 <div id="commonHeaderMount"></div>
 
@@ -929,16 +968,7 @@ body{background:linear-gradient(180deg,#f7ecf9 0,#fff 260px);padding:12px 8px 28
 
       </div>
 
-      <div class="center">
-
-        <button
-          id="start-btn"
-          class="btn btn-primary"
-        >
-          開始挑戰
-        </button>
-
-      </div>
+      <button id="start-btn" type="button" hidden style="display:none!important">開始挑戰</button>
 
     </section>
 
@@ -2656,6 +2686,9 @@ function makeQuestions(
         k *
         q;
 
+      // 排除 x＝常數、−x＝常數等不需計算的題目；不改答案生成規則。
+      if(Math.abs(a)===1) continue;
+
       const b =
         k *
         p;
@@ -3108,6 +3141,7 @@ function makeQuestions(
 */
 
 function showOnly(id) {
+  document.body.classList.toggle("equation-home",id==="start-screen");
   [
     "start-screen",
     "quiz-screen",
@@ -3648,40 +3682,65 @@ function equationExpr(a,b){
 function equationStep(title,detail){return `<div class="solution-step"><b>${title}</b><div class="solution-math">${detail}</div></div>`;}
 function equationLCM(a,b){return Math.abs(a*b)/gcd(a,b);}
 function buildEquationSolution(q){
-  let co;
-  try{co=equationCoefficients(q);}catch(err){
-    console.warn("詳解算式讀取：",err);
-    return `<div class="solution-title">📘 完整詳解</div>`+
-      equationStep("步驟一｜觀察題目",questionHTML(q))+
-      equationStep("步驟二｜移項、合併同類項",`先去括號並合併同類項，再把含 x 的項目移至等號左側，常數移至右側。`)+
-      equationStep("最後答案",`x ＝ ${mathFracHTML(q.ans)}`);
-  }
-  let {a,b,c,d}=co;
-  let steps=`<div class="solution-title">📘 完整詳解</div>`;
-  steps+=equationStep("步驟一｜原方程式",questionHTML(q));
-  if(mode===3){
-    steps+=equationStep("步驟二｜逐項去括號、合併同類項",`括號外的係數乘進括號內每一項；若括號前是負號，各項符號都要變號。整理後：<div>${equationExpr(a,b)} ＝ ${equationExpr(c,d)}</div>`);
-  }else if(mode===4){
-    steps+=equationStep("步驟二｜把分式和括號整理成同類項",`分式依分母整理，每一項都要處理；括號利用分配律展開：<div>${equationExpr(a,b)} ＝ ${equationExpr(c,d)}</div>`);
-    const common=equationLCM(equationLCM(a.d,b.d),equationLCM(c.d,d.d));
-    if(common>1){
-      a=ratMul(a,rat(common));b=ratMul(b,rat(common));
-      c=ratMul(c,rat(common));d=ratMul(d,rat(common));
-      steps+=equationStep("步驟三｜等號兩側同乘最小公倍數",`兩側同乘 ${common}，消去分母：<div>${equationExpr(a,b)} ＝ ${equationExpr(c,d)}</div>`);
+  const out=[];
+  const add=(title,math)=>{
+    if(math&&String(math).trim())out.push(equationStep(`步驟${out.length+1}｜${title}`,math));
+  };
+  const negative=(r)=>r.n<0;
+  const minus=(r)=>mathFracHTML(r);
+  const nonzero=(a,b)=>equationExpr(a,b);
+  const same=(a,b)=>a.n===b.n&&a.d===b.d;
+  const root=`<div class="solution-title">📘 完整詳解</div>`;
+  try{
+    let {a,b,c,d}=equationCoefficients(q);
+    const coef=ratSub(a,c),rhs=ratSub(d,b);
+    if(coef.n===0)throw Error('一元一次方程式係數為零');
+    const result=ratDiv(rhs,coef);
+    if(!ratEq(result,q.ans))throw Error('題目係數與答案不符');
+    add('原方程式',questionHTML(q));
+    if(mode===1){
+      // ax=b 已經是可直接同除的形式；不做無意義移項。
+      add('兩邊同除以 x 的係數',`x ＝ ${mathFracHTML(d)} ÷ (${mathFracHTML(a)}) ＝ <strong>${mathFracHTML(result)}</strong>`);
+      return root+out.join('');
     }
-  }else{
-    steps+=equationStep("步驟二｜整理方程式",`${equationExpr(a,b)} ＝ ${equationExpr(c,d)}`);
+    // 模式二/三/四：從原式直接化簡。僅在實際需要時顯示去括號、清除分母。
+    const original=q.qStr;
+    let A=a,B=b,C=c,D=d;
+    const simplified=`${nonzero(A,B)} ＝ ${nonzero(C,D)}`;
+    const strippedOriginal=original.replace(/<[^>]+>/g,'').replace(/\s+/g,'').replace(/[−－]/g,'-');
+    const strippedSimple=simplified.replace(/<[^>]+>/g,'').replace(/\s+/g,'').replace(/[−－]/g,'-');
+    if(mode===3 && strippedOriginal!==strippedSimple){
+      add('去括號、合併同類項',simplified);
+    }
+    if(mode===4){
+      const lcm=[A.d,B.d,C.d,D.d].reduce((n,x)=>equationLCM(n,x),1);
+      if(lcm>1){
+        A=ratMul(A,rat(lcm));B=ratMul(B,rat(lcm));
+        C=ratMul(C,rat(lcm));D=ratMul(D,rat(lcm));
+        add(`同乘 ${lcm}，消去分母`,`${nonzero(A,B)} ＝ ${nonzero(C,D)}`);
+      }else if(strippedOriginal!==strippedSimple){
+        add('去括號、整理同類項',simplified);
+      }
+    }
+    const newCoef=ratSub(A,C),newRhs=ratSub(D,B);
+    // 不寫 - (0)，也不加入完全相同的「整理、合併」步驟。
+    const moved=`${coefficientXHTML(newCoef)} ＝ ${mathFracHTML(newRhs)}`;
+    const before=`${nonzero(A,B)} ＝ ${nonzero(C,D)}`;
+    if(before.replace(/\s/g,'')!==moved.replace(/\s/g,'')){
+      add('移項、合併同類項',moved);
+    }
+    if(!same(newCoef,rat(1))){
+      add('兩邊同除以 x 的係數',`x ＝ ${mathFracHTML(newRhs)} ÷ (${mathFracHTML(newCoef)}) ＝ <strong>${mathFracHTML(result)}</strong>`);
+    }else{
+      add('解得',`<strong>x ＝ ${mathFracHTML(result)}</strong>`);
+    }
+    return root+out.join('');
+  }catch(err){
+    console.warn('詳解計算失敗',err);
+    // 若遇到無法解析的特例，不要提供與題目不相符的虛假運算過程。
+    return root+equationStep('原方程式',questionHTML(q))+
+      equationStep('答案',`x ＝ ${mathFracHTML(q.ans)}`);
   }
-  const coefficient=ratSub(a,c),rhs=ratSub(d,b);
-  const stepNumber=mode===4?"步驟四":"步驟三";
-  steps+=equationStep(`${stepNumber}｜移項（含 x 放左側，常數放右側）`,`${coefficientXHTML(a)||"0"} － (${coefficientXHTML(c)||"0"}) ＝ ${mathFracHTML(d)} － (${mathFracHTML(b)})`);
-  steps+=equationStep(mode===4?"步驟五｜合併同類項":"步驟四｜合併同類項",`${coefficientXHTML(coefficient)||"0"} ＝ ${mathFracHTML(rhs)}`);
-  if(coefficient.n!==0){
-    const solved=ratDiv(rhs,coefficient);
-    steps+=equationStep(mode===4?"步驟六｜同除以 x 的係數":"步驟五｜同除以 x 的係數",`x ＝ ${mathFracHTML(rhs)} ÷ (${mathFracHTML(coefficient)}) ＝ ${mathFracHTML(solved)}`);
-    steps+=equationStep(mode===4?"步驟七｜答案化為最簡分數":"步驟六｜答案化為最簡分數",`<strong>x ＝ ${mathFracHTML(q.ans)}</strong>`);
-  }
-  return steps;
 }
 /*
 ==================================================
@@ -4180,6 +4239,29 @@ function modeSelect() {
 事件
 ==================================================
 */
+
+// 模式卡片整張都可直接啟動（包含原本預先勾選的第一張）。
+document.querySelectorAll("#start-screen .mode-card").forEach(card=>{
+  card.setAttribute("tabindex","0");
+  card.setAttribute("role","button");
+  const openMode=()=>{
+    if(!$('start-screen').classList.contains('hidden')){
+      const radio=card.querySelector('input[name="mode"]');
+      if(radio) radio.checked=true;
+      startGame(false);
+    }
+  };
+  card.addEventListener("click",event=>{
+    event.preventDefault();
+    openMode();
+  });
+  card.addEventListener("keydown",event=>{
+    if(event.key==="Enter"||event.key===" "){
+      event.preventDefault();
+      openMode();
+    }
+  });
+});
 
 $("start-btn")
   .addEventListener(
