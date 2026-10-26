@@ -6,6 +6,7 @@
 <title>一元一次方程式挑戰賽</title>
 
 <link rel="stylesheet" href="../css/scratchpad.css">
+<link rel="stylesheet" href="../css/math-expression-input.css?v=2.3">
 
 <style>
 :root{
@@ -689,6 +690,34 @@ body{
     grid-template-columns:1fr;
   }
 }
+
+/* v2026-10-26 七上一元一次方程式共用元件／詳解統一版 */
+.semester-nav{display:flex;justify-content:flex-end;margin-bottom:12px}
+.topbar{justify-content:space-between;gap:10px}
+.quiz-stats{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.quiz-controls{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-left:auto}
+.quiz-controls .btn{font-size:13px;padding:9px 12px;white-space:nowrap}
+.problem-card{position:relative;border:2px solid #bfdbfe;border-radius:18px;margin-bottom:14px;background:#fff;overflow:visible}
+.problem{border:0;background:transparent;margin:0;padding:34px 18px 65px;min-height:170px;white-space:normal;overflow-x:auto}
+.scratchpad-corner{position:absolute;right:12px;bottom:10px;z-index:5}
+.scratchpad-corner .scratchpad-open-button{min-height:36px!important;padding:6px 12px!important;font-size:13px!important}
+.unified-row{gap:12px;align-items:center;margin:12px auto}
+#equation-answer-mount{flex:1;min-width:0}
+#equation-answer-mount .mei-shell{width:100%;max-width:none}
+#equation-answer-mount .mei-main-row{align-items:center}
+#equation-answer-mount .mei-editor-wrap{min-width:0}
+.answer-x{font-size:30px}
+.answer-wrap{max-width:900px;padding:18px 18px;background:#f8fafc;border-radius:17px}
+.actions{display:flex;align-items:center;justify-content:center;margin-top:16px}
+.actions .btn{min-width:180px}
+.full-solution{margin:18px auto 0;max-width:960px;text-align:left;display:grid;gap:10px}
+.solution-title{text-align:left;font-weight:900;color:#1d4ed8;font-size:19px;margin:10px 0}
+.solution-step{padding:15px 17px;background:#fff;border-left:4px solid #2563eb;border-radius:12px;box-shadow:0 2px 10px #1f29370b;line-height:1.7}
+.solution-step>b{color:#1d4ed8;font-size:15px}
+.solution-math{font-family:'Cambria Math','Times New Roman','Microsoft JhengHei',serif;font-size:21px;margin-top:6px;overflow-x:auto;line-height:1.8}
+.review-explanation{margin-top:12px}
+.review-explanation .solution-step{background:#fff}
+@media(max-width:600px){.topbar{align-items:stretch}.quiz-controls{width:100%}.quiz-controls .btn{flex:1}.answer-wrap{padding:12px 8px}.unified-row{gap:6px}.answer-x{font-size:23px}.problem{font-size:clamp(24px,6vw,34px)}}
 </style>
 
 <script
@@ -714,6 +743,7 @@ body{
   <div class="inner">
 
     <section id="start-screen">
+<div class="semester-nav"><a class="btn btn-light" href="../index.html?semester=grade7-first">← 返回七年級上學期</a></div>
 
       <h1 class="title">
         一元一次方程式挑戰賽
@@ -839,13 +869,7 @@ body{
         <div>
 
           <div class="topbar">
-
-            <button
-              id="change-mode-btn"
-              class="btn btn-light"
-            >
-              ← 重選模式
-            </button>
+<div class="quiz-stats">
 
             <span
               id="question-number"
@@ -868,21 +892,27 @@ body{
               ⏳ 00:00
             </span>
 
+            </div><div class="quiz-controls">
+
             <button
+              id="change-mode-btn"
+              class="btn btn-light"
+            >
+              ← 重選模式
+            </button><button
               id="reset-btn"
               class="btn btn-danger-light"
             >
               重新測驗（目前模式）
             </button>
 
-            <div id="scratchpad-mobile-button"></div>
+            </div>
 
           </div>
 
-          <div
-            id="problem-text"
-            class="problem"
-          ></div>
+          <div class="problem-card"><div id="problem-text" class="problem"></div>
+            <div id="scratchpad-mobile-button" class="scratchpad-corner"></div>
+          </div>
 
           <div class="answer-wrap">
 
@@ -890,65 +920,8 @@ body{
               方程式解
             </div>
 
-            <div class="answer-entry-row">
-
-              <div
-                id="mode4-answer"
-                class="mode4-answer"
-              >
-
-                <span class="answer-x">
-                  x =
-                </span>
-
-                <select
-                  id="x-sign"
-                  class="answer-sign-select hidden"
-                >
-                  <option value="1">
-                    ＋
-                  </option>
-
-                  <option value="-1">
-                    −
-                  </option>
-                </select>
-
-                <div
-                  id="x-frac-box"
-                  class="frac-input"
-                >
-
-                  <input
-                    id="x-num"
-                    inputmode="text"
-                    autocomplete="off"
-                    placeholder="整數"
-                  >
-
-                  <span class="frac-line"></span>
-
-                  <input
-                    id="x-den"
-                    inputmode="numeric"
-                    autocomplete="off"
-                    placeholder="分母"
-                  >
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="fraction-help">
-              整數請填一格；分數請先選正負號，上格填分子、下格填分母，並化成最簡分數。
-            </div>
-
-            <div
-              id="normalized-preview"
-              class="preview"
-            ></div>
+            <div class="answer-entry-row unified-row"><span class="answer-x">x ＝</span><div id="equation-answer-mount"></div></div>
+            <div id="normalized-preview" class="preview" style="display:none"></div>
 
             <div class="actions">
 
@@ -971,7 +944,7 @@ body{
             <div
               id="feedback"
               class="feedback"
-            ></div>
+            ></div><div id="full-solution" class="full-solution hidden"></div>
 
           </div>
 
@@ -1082,7 +1055,7 @@ body{
 
         <a
           class="btn btn-light"
-          href="../index.html"
+          href="../index.html?semester=grade7-first"
         >
           🏠 回首頁
         </a>
@@ -1141,6 +1114,7 @@ body{
 
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
+<script src="../js/math-expression-input.js?v=2.3"></script>
 
 <script type="module">
 
@@ -3010,240 +2984,39 @@ function makeQuestions(
 ==================================================
 */
 
-function readAnswer() {
-  const q =
-    questions[index];
-
-  if (!q) {
-    return null;
-  }
-
-  const numeratorText =
-    $("x-num")
-      .value
-      .trim();
-
-  const denominatorText =
-    $("x-den")
-      .value
-      .trim();
-
-  const integerAnswer =
-    q.ans.d === 1;
-
-  if (
-    !numeratorText
-  ) {
-    return null;
-  }
-
-  if (
-    integerAnswer
-  ) {
-    if (
-      !/^[+\-]?\d+$/
-        .test(
-          numeratorText
-        )
-    ) {
-      return null;
-    }
-
-    const n =
-      Number(
-        numeratorText
-      );
-
-    if (
-      !Number
-        .isSafeInteger(
-          n
-        )
-    ) {
-      return null;
-    }
-
-    return {
-      value:
-        rat(n),
-
-      simplest:
-        true,
-
-      raw:
-        String(n),
-
-      displayHTML:
-        integerText(n)
-    };
-  }
-
-  if (
-    !/^\d+$/
-      .test(
-        numeratorText
-      ) ||
-    !/^\d+$/
-      .test(
-        denominatorText
-      )
-  ) {
-    return null;
-  }
-
-  const numerator =
-    Number(
-      numeratorText
-    );
-
-  const denominator =
-    Number(
-      denominatorText
-    );
-
-  const sign =
-    Number(
-      $("x-sign")
-        .value
-    );
-
-  if (
-    numerator <= 0 ||
-    denominator <= 1
-  ) {
-    return null;
-  }
-
-  const signedNumerator =
-    sign *
-    numerator;
-
-  return {
-    value:
-      rat(
-        signedNumerator,
-        denominator
-      ),
-
-    simplest:
-      gcd(
-        numerator,
-        denominator
-      ) === 1,
-
-    raw:
-      `${sign < 0 ? "−" : ""}` +
-      `${numerator}/${denominator}`,
-
-    displayHTML:
-      `${sign < 0 ? "−" : ""}` +
-      `${stackedFractionHTML(
-        numerator,
-        denominator
-      )}`
-  };
-}
-
-function clearAnswerInputs() {
-  $("x-sign")
-    .value =
-      "1";
-
-  $("x-sign")
-    .disabled =
-      false;
-
-  $("x-num")
-    .value =
-      "";
-
-  $("x-den")
-    .value =
-      "";
-
-  $("x-num")
-    .disabled =
-      false;
-
-  $("x-den")
-    .disabled =
-      false;
-
-  $("mode4-answer")
-    .classList
-    .remove(
-      "disabled"
-    );
-}
-
-function configureAnswerInputs(q) {
-  const integer =
-    q.ans.d === 1;
-
-  $("x-frac-box")
-    .classList
-    .toggle(
-      "integer-input",
-      integer
-    );
-
-  $("x-sign")
-    .classList
-    .toggle(
-      "hidden",
-      integer
-    );
-
-  $("x-num")
-    .placeholder =
-      integer
-        ? "整數"
-        : "分子";
-
-  $("x-den")
-    .disabled =
-      integer;
-
-  if (
-    integer
-  ) {
-    $("x-den")
-      .value =
-        "";
-  }
-}
-
-function disableAnswerInputs() {
-  $("x-sign")
-    .disabled =
-      true;
-
-  $("x-num")
-    .disabled =
-      true;
-
-  $("x-den")
-    .disabled =
-      true;
-
-  $("mode4-answer")
-    .classList
-    .add(
-      "disabled"
-    );
-}
-
-function updateAnswerPreview() {
-  const answer =
-    readAnswer();
-
-  $("normalized-preview")
-    .innerHTML =
-      answer
-        ? `系統判讀：x ＝ ${answer.displayHTML}`
-        : "";
-}
-
+ let equationInput = null;
+ function initEquationInput(){
+   if(typeof window.MathExpressionInput!=="function"){
+     $("normalized-preview").textContent="⚠️ 共用數學元件未載入，請確認 js/math-expression-input.js";
+     return;
+   }
+   if(equationInput){equationInput.destroy();equationInput=null;}
+   equationInput=new window.MathExpressionInput({
+     mountId:"equation-answer-mount",placeholder:"請輸入 x 的值",
+     allowRadical:true,allowFraction:true,allowPower:false,allowVariable:false,
+     allowPlusMinus:false,validationMode:"numeric-radical",showPreview:true,
+     requireSimplifiedRadical:true,requireSimplifiedFraction:true,
+     requireRationalDenominator:true,toolOrder:["fraction","radical"],
+     theme:{primary:"#2563eb",dark:"#1d4ed8",light:"#eff6ff",border:"#93c5fd"}
+   });
+ }
+ function readAnswer(){
+   if(!equationInput)return null;
+   const checked=equationInput.validate();
+   if(!checked.valid)return {invalid:true,message:checked.message||"請輸入合法的最簡數值答案。"};
+   const terms=checked.terms||[];
+   const nonzero=terms.filter(t=>Number(t.numerator)!==0);
+   if(nonzero.some(t=>t.radicand!==1))return {invalid:true,message:"這題的 x 應為有理數，請檢查答案。"};
+   const t=nonzero.find(t=>t.radicand===1);
+   const n=t?Number(t.numerator):0,d=t?Number(t.denominator):1;
+   if(!Number.isSafeInteger(n)||!Number.isSafeInteger(d)||d===0)return {invalid:true,message:"請輸入有效的整數或分數。"};
+   const value=rat(n,d);
+   return {value,simplest:true,raw:equationInput.getRawValue(),displayHTML:mathFracHTML(value)};
+ }
+ function clearAnswerInputs(){if(!equationInput)initEquationInput(); else equationInput.reset(); equationInput?.setDisabled(false);}
+ function configureAnswerInputs(q){} // 所有模式統一輸入框，不透露答案類型
+ function disableAnswerInputs(){equationInput?.setDisabled(true);}
+ function updateAnswerPreview(){} // 預覽由共用元件負責
 
 /*
 ==================================================
@@ -3697,6 +3470,8 @@ function loadQuestion() {
   $("feedback")
     .innerHTML =
       "";
+  $("full-solution").classList.add("hidden");
+  $("full-solution").innerHTML="";
 
   const q =
     questions[
@@ -3731,14 +3506,100 @@ function loadQuestion() {
 
   setTimeout(
     () => {
-      $("x-num")
-        .focus();
+      equationInput?.focus?.();
     },
     0
   );
 }
 
 
+
+/*
+  保持原產題演算法完全不變。從已產生的 qStr 讀取等號兩側，
+  以精確有理數在 x=0 與 x=1 時計算，還原係數並逐步列式。
+*/
+function equationHTMLToSource(html){
+  const root=document.createElement("div");root.innerHTML=html;
+  function recur(node){
+    if(node.nodeType===Node.TEXT_NODE)return node.nodeValue;
+    if(node.nodeType!==Node.ELEMENT_NODE)return "";
+    if(node.classList?.contains("math-frac")){
+      const top=node.querySelector(":scope > .top");
+      const bottom=node.querySelector(":scope > .bottom");
+      return "(("+recur(top)+")/("+recur(bottom)+"))";
+    }
+    return Array.from(node.childNodes).map(recur).join("");
+  }
+  return recur(root).replace(/−/g,"-").replace(/×/g,"*").replace(/÷/g,"/").replace(/＝/g,"=");
+}
+function equationEval(expr,x){
+  let s=expr.replace(/\s/g,"").replace(/(\d)(x|\()/gi,"$1*$2").replace(/(x|\))(\()/gi,"$1*$2").replace(/\)(x|\d)/gi,")*$1");
+  const tokens=s.match(/\d+|x|[()+*\/-]/g)||[];
+  if(tokens.join("")!==s)throw Error("無法辨識方程式格式："+s);
+  let k=0;
+  function atom(){
+    const z=tokens[k++];
+    if(z==="+")return atom();
+    if(z==="-")return ratMul(rat(-1),atom());
+    if(z==="("){const a=add();if(tokens[k++]!==")")throw Error("括號不完整");return a;}
+    if(z==="x")return rat(x);
+    if(/^\d+$/.test(z||""))return rat(Number(z));
+    throw Error("算式項目錯誤："+z);
+  }
+  function mul(){let v=atom();while(tokens[k]==="*"||tokens[k]==="/"){const op=tokens[k++],b=atom();v=op==="*"?ratMul(v,b):ratDiv(v,b);}return v;}
+  function add(){let v=mul();while(tokens[k]==="+"||tokens[k]==="-"){const op=tokens[k++],b=mul();v=op==="+"?ratAdd(v,b):ratSub(v,b);}return v;}
+  const result=add();if(k!==tokens.length)throw Error("算式尚有未處理部分");return result;
+}
+function equationCoefficients(q){
+  const source=equationHTMLToSource(q.qStr);
+  const parts=source.split("=");if(parts.length!==2)throw Error("缺少等號");
+  const left0=equationEval(parts[0],0),left1=equationEval(parts[0],1);
+  const right0=equationEval(parts[1],0),right1=equationEval(parts[1],1);
+  return {a:ratSub(left1,left0),b:left0,c:ratSub(right1,right0),d:right0};
+}
+function equationExpr(a,b){
+  let html=coefficientXHTML(a);
+  if(b.n!==0)html+=signedHTML(b,!html);
+  return html||"0";
+}
+function equationStep(title,detail){return `<div class="solution-step"><b>${title}</b><div class="solution-math">${detail}</div></div>`;}
+function equationLCM(a,b){return Math.abs(a*b)/gcd(a,b);}
+function buildEquationSolution(q){
+  let co;
+  try{co=equationCoefficients(q);}catch(err){
+    console.warn("詳解算式讀取：",err);
+    return `<div class="solution-title">📘 完整詳解</div>`+
+      equationStep("步驟一｜觀察題目",questionHTML(q))+
+      equationStep("步驟二｜移項、合併同類項",`先去括號並合併同類項，再把含 x 的項目移至等號左側，常數移至右側。`)+
+      equationStep("最後答案",`x ＝ ${mathFracHTML(q.ans)}`);
+  }
+  let {a,b,c,d}=co;
+  let steps=`<div class="solution-title">📘 完整詳解</div>`;
+  steps+=equationStep("步驟一｜原方程式",questionHTML(q));
+  if(mode===3){
+    steps+=equationStep("步驟二｜逐項去括號、合併同類項",`括號外的係數乘進括號內每一項；若括號前是負號，各項符號都要變號。整理後：<div>${equationExpr(a,b)} ＝ ${equationExpr(c,d)}</div>`);
+  }else if(mode===4){
+    steps+=equationStep("步驟二｜把分式和括號整理成同類項",`分式依分母整理，每一項都要處理；括號利用分配律展開：<div>${equationExpr(a,b)} ＝ ${equationExpr(c,d)}</div>`);
+    const common=equationLCM(equationLCM(a.d,b.d),equationLCM(c.d,d.d));
+    if(common>1){
+      a=ratMul(a,rat(common));b=ratMul(b,rat(common));
+      c=ratMul(c,rat(common));d=ratMul(d,rat(common));
+      steps+=equationStep("步驟三｜等號兩側同乘最小公倍數",`兩側同乘 ${common}，消去分母：<div>${equationExpr(a,b)} ＝ ${equationExpr(c,d)}</div>`);
+    }
+  }else{
+    steps+=equationStep("步驟二｜整理方程式",`${equationExpr(a,b)} ＝ ${equationExpr(c,d)}`);
+  }
+  const coefficient=ratSub(a,c),rhs=ratSub(d,b);
+  const stepNumber=mode===4?"步驟四":"步驟三";
+  steps+=equationStep(`${stepNumber}｜移項（含 x 放左側，常數放右側）`,`${coefficientXHTML(a)||"0"} － (${coefficientXHTML(c)||"0"}) ＝ ${mathFracHTML(d)} － (${mathFracHTML(b)})`);
+  steps+=equationStep(mode===4?"步驟五｜合併同類項":"步驟四｜合併同類項",`${coefficientXHTML(coefficient)||"0"} ＝ ${mathFracHTML(rhs)}`);
+  if(coefficient.n!==0){
+    const solved=ratDiv(rhs,coefficient);
+    steps+=equationStep(mode===4?"步驟六｜同除以 x 的係數":"步驟五｜同除以 x 的係數",`x ＝ ${mathFracHTML(rhs)} ÷ (${mathFracHTML(coefficient)}) ＝ ${mathFracHTML(solved)}`);
+    steps+=equationStep(mode===4?"步驟七｜答案化為最簡分數":"步驟六｜答案化為最簡分數",`<strong>x ＝ ${mathFracHTML(q.ans)}</strong>`);
+  }
+  return steps;
+}
 /*
 ==================================================
 檢查答案
@@ -3770,6 +3631,7 @@ function check() {
     return;
   }
 
+  if(answer.invalid){$("feedback").textContent=answer.message;return;}
   if (
     !answer.simplest
   ) {
@@ -3839,6 +3701,8 @@ function check() {
         `方程式之解為：x ＝ ${ansHTML}` +
       `</div>`;
 
+  $("full-solution").innerHTML=buildEquationSolution(q);
+  $("full-solution").classList.remove("hidden");
   nextTimer =
     setTimeout(
       () => {
@@ -4184,7 +4048,7 @@ function showReview() {
                     record.question.ans
                   )}</b>` +
                 `</div>` +
-
+                `<div class="review-explanation">${buildEquationSolution(record.question)}</div>` +
               `</article>`
             );
           }
@@ -4247,7 +4111,7 @@ $("start-btn")
 $("change-mode-btn")
   .addEventListener(
     "click",
-    modeSelect
+    () => {if(confirm("確定要重選模式嗎？目前測驗進度將不會保留。"))modeSelect();}
   );
 
 $("result-change-mode-btn")
@@ -4277,11 +4141,7 @@ $("next-btn")
 $("reset-btn")
   .addEventListener(
     "click",
-    () => {
-      startGame(
-        true
-      );
-    }
+    () => {if(confirm("確定重新測驗嗎？目前作答進度將不會保留。"))startGame(true);}
   );
 
 $("again-btn")
@@ -4320,27 +4180,12 @@ $("review-back-btn")
     }
   );
 
-$("x-num")
-  .addEventListener(
-    "input",
-    updateAnswerPreview
-  );
 
-$("x-den")
-  .addEventListener(
-    "input",
-    updateAnswerPreview
-  );
-
-$("x-sign")
-  .addEventListener(
-    "change",
-    updateAnswerPreview
-  );
 
 document.addEventListener(
   "keydown",
   event => {
+    if(event.target?.closest?.('.mei-special-editor'))return;
     if (
       event.key !==
         "Enter" ||
