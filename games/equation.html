@@ -834,12 +834,12 @@ body.equation-home .example{color:#557b77}
 
 
 /* 2026-10-26：x＝與答案實際輸入框在同一水平，不受預覽區高度影響 */
-.unified-row{position:relative;align-items:flex-start!important;gap:10px!important}
-.unified-row>.answer-x{flex:0 0 auto;align-self:flex-start;display:flex;align-items:center;justify-content:flex-end;height:64px;line-height:1!important;margin:0!important;padding:0!important;white-space:nowrap}
+.unified-row{position:relative;align-items:center!important;gap:10px!important}
+.unified-row>.answer-x{flex:0 0 auto;display:flex;align-items:center;justify-content:flex-end;min-height:64px;line-height:1!important;margin:0!important;padding:0 0 0 4px!important;white-space:nowrap}
 #equation-answer-mount{flex:1;min-width:0}
 #equation-answer-mount .mei-main-row{align-items:flex-start!important}
 #equation-answer-mount .mei-editor-wrap{min-height:64px}
-@media(max-width:640px){.unified-row>.answer-x{height:62px;font-size:25px}}
+@media(max-width:640px){.unified-row>.answer-x{min-height:62px;font-size:25px}}
 </style>
 
 <script
@@ -3681,15 +3681,36 @@ function equationExpr(a,b){
 }
 function equationStep(title,detail){return `<div class="solution-step"><b>${title}</b><div class="solution-math">${detail}</div></div>`;}
 function equationLCM(a,b){return Math.abs(a*b)/gcd(a,b);}
+function ratNeg(v){return rat(-v.n,v.d);}
+function xTermHTML(value,first=false){
+  const r=rat(value.n,value.d);
+  if(r.n===0)return "";
+  if(first)return coefficientXHTML(r);
+  const abs=ratAbs(r);
+  return r.n<0?` − ${coefficientXHTML(abs)}`:` + ${coefficientXHTML(abs)}`;
+}
+function constTermHTML(value,first=false){
+  const r=rat(value.n,value.d);
+  if(r.n===0)return "";
+  if(first)return mathFracHTML(r,true);
+  const abs=ratAbs(r);
+  return r.n<0?` − ${mathFracHTML(abs,false)}`:` + ${mathFracHTML(abs,false)}`;
+}
+function partsToHTML(parts,fallback="0"){
+  const s=parts.filter(Boolean).join("");
+  return s||fallback;
+}
+function splitEquationHTML(qStr){
+  const token='__EQ_SPLIT__';
+  const marked=qStr.replace(/\s=\s/,' '+token+' ');
+  const arr=marked.split(token);
+  return arr.length===2?arr:[qStr,''];
+}
 function buildEquationSolution(q){
   const out=[];
   const add=(title,math)=>{
     if(math&&String(math).trim())out.push(equationStep(`步驟${out.length+1}｜${title}`,math));
   };
-  const negative=(r)=>r.n<0;
-  const minus=(r)=>mathFracHTML(r);
-  const nonzero=(a,b)=>equationExpr(a,b);
-  const same=(a,b)=>a.n===b.n&&a.d===b.d;
   const root=`<div class="solution-title">📘 完整詳解</div>`;
   try{
     let {a,b,c,d}=equationCoefficients(q);
@@ -3699,47 +3720,53 @@ function buildEquationSolution(q){
     if(!ratEq(result,q.ans))throw Error('題目係數與答案不符');
     add('原方程式',questionHTML(q));
     if(mode===1){
-      // ax=b 已經是可直接同除的形式；不做無意義移項。
       add('兩邊同除以 x 的係數',`x ＝ ${mathFracHTML(d)} ÷ (${mathFracHTML(a)}) ＝ <strong>${mathFracHTML(result)}</strong>`);
       return root+out.join('');
     }
-    // 模式二/三/四：從原式直接化簡。僅在實際需要時顯示去括號、清除分母。
+
     const original=q.qStr;
     let A=a,B=b,C=c,D=d;
-    const simplified=`${nonzero(A,B)} ＝ ${nonzero(C,D)}`;
+    const simplified=`${equationExpr(A,B)} ＝ ${equationExpr(C,D)}`;
     const strippedOriginal=original.replace(/<[^>]+>/g,'').replace(/\s+/g,'').replace(/[−－]/g,'-');
     const strippedSimple=simplified.replace(/<[^>]+>/g,'').replace(/\s+/g,'').replace(/[−－]/g,'-');
+
     if(mode===3 && strippedOriginal!==strippedSimple){
-      add('去括號、合併同類項',simplified);
+      add('去括號、整理同類項',simplified);
     }
+
     if(mode===4){
       const lcm=[A.d,B.d,C.d,D.d].reduce((n,x)=>equationLCM(n,x),1);
+      const [lhsHtml,rhsHtml]=splitEquationHTML(q.qStr);
       if(lcm>1){
+        add(`同乘 ${lcm}，先把兩邊分母消去`,`${lcm} × (${lhsHtml}) ＝ ${lcm} × (${rhsHtml})`);
         A=ratMul(A,rat(lcm));B=ratMul(B,rat(lcm));
         C=ratMul(C,rat(lcm));D=ratMul(D,rat(lcm));
-        add(`同乘 ${lcm}，消去分母`,`${nonzero(A,B)} ＝ ${nonzero(C,D)}`);
+        add('分配律乘開、消去分母',`${equationExpr(A,B)} ＝ ${equationExpr(C,D)}`);
       }else if(strippedOriginal!==strippedSimple){
         add('去括號、整理同類項',simplified);
       }
     }
+
+    const moveLeft=partsToHTML([xTermHTML(A,true),xTermHTML(ratNeg(C),false)]);
+    const moveRight=partsToHTML([constTermHTML(D,true),constTermHTML(ratNeg(B),false)]);
+    const moved=`${moveLeft} ＝ ${moveRight}`;
+    add('移項（含 x 的項移到左邊，常數項移到右邊）',moved);
+
     const newCoef=ratSub(A,C),newRhs=ratSub(D,B);
-    // 不寫 - (0)，也不加入完全相同的「整理、合併」步驟。
-    const moved=`${coefficientXHTML(newCoef)} ＝ ${mathFracHTML(newRhs)}`;
-    const before=`${nonzero(A,B)} ＝ ${nonzero(C,D)}`;
-    if(before.replace(/\s/g,'')!==moved.replace(/\s/g,'')){
-      add('移項、合併同類項',moved);
+    const combined=`${coefficientXHTML(newCoef)} ＝ ${mathFracHTML(newRhs)}`;
+    if(moved.replace(/\s/g,'')!==combined.replace(/\s/g,'')){
+      add('合併同類項',combined);
     }
-    if(!same(newCoef,rat(1))){
-      add('兩邊同除以 x 的係數',`x ＝ ${mathFracHTML(newRhs)} ÷ (${mathFracHTML(newCoef)}) ＝ <strong>${mathFracHTML(result)}</strong>`);
-    }else{
+
+    if(newCoef.n===newCoef.d){
       add('解得',`<strong>x ＝ ${mathFracHTML(result)}</strong>`);
+    }else{
+      add('兩邊同除以 x 的係數',`x ＝ ${mathFracHTML(newRhs)} ÷ (${mathFracHTML(newCoef)}) ＝ <strong>${mathFracHTML(result)}</strong>`);
     }
     return root+out.join('');
   }catch(err){
     console.warn('詳解計算失敗',err);
-    // 若遇到無法解析的特例，不要提供與題目不相符的虛假運算過程。
-    return root+equationStep('原方程式',questionHTML(q))+
-      equationStep('答案',`x ＝ ${mathFracHTML(q.ans)}`);
+    return root+equationStep('原方程式',questionHTML(q))+equationStep('答案',`x ＝ ${mathFracHTML(q.ans)}`);
   }
 }
 /*
