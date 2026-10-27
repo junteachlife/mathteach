@@ -833,13 +833,18 @@ body.equation-home .example{color:#557b77}
 }
 
 
+/* 2026-10-27：以實際第一列編輯框為對齊基準，不受元件下方預覽及提示文字影響 */
+#equation-answer-mount .mei-shell{margin-top:0!important}
+#equation-answer-mount .mei-main-row{margin-top:0!important}
+#equation-answer-mount .mei-editor-wrap{margin-top:0!important}
+.unified-row>.answer-x{padding-top:0!important;align-self:flex-start!important}
 /* 2026-10-26：x＝與答案實際輸入框在同一水平，不受預覽區高度影響 */
-.unified-row{position:relative;align-items:center!important;gap:10px!important}
-.unified-row>.answer-x{flex:0 0 auto;display:flex;align-items:center;justify-content:flex-end;min-height:64px;line-height:1!important;margin:0!important;padding:0 0 0 4px!important;white-space:nowrap}
+.unified-row{position:relative;align-items:flex-start!important;gap:10px!important}
+.unified-row>.answer-x{flex:0 0 auto;display:flex;align-items:center;justify-content:flex-end;height:64px;min-height:0;line-height:1!important;margin:0!important;padding:0 0 0 4px!important;white-space:nowrap}
 #equation-answer-mount{flex:1;min-width:0}
 #equation-answer-mount .mei-main-row{align-items:flex-start!important}
 #equation-answer-mount .mei-editor-wrap{min-height:64px}
-@media(max-width:640px){.unified-row>.answer-x{min-height:62px;font-size:25px}}
+@media(max-width:640px){.unified-row>.answer-x{height:62px;font-size:25px}}
 </style>
 
 <script
@@ -3697,14 +3702,108 @@ function constTermHTML(value,first=false){
   return r.n<0?` − ${mathFracHTML(abs,false)}`:` + ${mathFracHTML(abs,false)}`;
 }
 function partsToHTML(parts,fallback="0"){
-  const s=parts.filter(Boolean).join("");
-  return s||fallback;
+  return parts.filter(Boolean).join("")||fallback;
 }
-function splitEquationHTML(qStr){
-  const token='__EQ_SPLIT__';
-  const marked=qStr.replace(/\s=\s/,' '+token+' ');
-  const arr=marked.split(token);
-  return arr.length===2?arr:[qStr,''];
+function equationTermParts(expr){
+  const result=[];
+  let depth=0,begin=0;
+  const text=expr.replace(/\s/g,"");
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(ch==="(")depth++;
+    else if(ch===")")depth--;
+    else if(depth===0&&i>begin&&(ch==="+"||ch==="-")){
+      result.push(text.slice(begin,i));
+      begin=i;
+    }
+  }
+  result.push(text.slice(begin));
+  return result.filter(Boolean);
+}
+function expressionTerms(expr){
+  return equationTermParts(expr).map(source=>({
+    source,
+    a:ratSub(equationEval(source,1),equationEval(source,0)),
+    b:equationEval(source,0)
+  }));
+}
+function equationPrettySource(source){
+  let s=source.trim().replace(/\*/g,"×").replace(/-/g,"−");
+  // ((linear expression)/(denominator)) for source extracted from HTML fractions.
+  s=s.replace(/\(\(([^()]*)\)\/\((\d+)\)\)/g,(_,a,d)=>stackedFractionHTML(a.replace(/\*/g,"×").replace(/-/g,"−"),d));
+  s=s.replace(/\(([^()]*)\)\/(\d+)/g,(_,a,d)=>stackedFractionHTML(a.replace(/\*/g,"×").replace(/-/g,"−"),d));
+  return s;
+}
+function scaledDenominators(source){
+  const den=[];
+  for(const m of source.matchAll(/\/(?:\((\d+)\)|(\d+))/g))den.push(Number(m[1]||m[2]));
+  return den;
+}
+function scaledExpressionTerms(terms,multiple){
+  const evaluated=terms.map(t=>{
+    const a=ratMul(t.a,rat(multiple)),b=ratMul(t.b,rat(multiple));
+    return {a,b};
+  });
+  return evaluated;
+}
+function formatTermGroup(terms){
+  let output="";
+  for(const t of terms){
+    const expr=equationExpr(t.a,t.b);
+    if(expr==="0")continue;
+    const neg=expr.startsWith("−");
+    const abs=neg?expr.slice(1):expr;
+    output+=output?(neg?` − ${abs}`:` + ${abs}`):(neg?`−${abs}`:abs);
+  }
+  return output||"0";
+}
+function expandedExpression(terms){
+  let output="";
+  for(const t of terms){
+    for(const item of [{r:t.a,isX:true},{r:t.b,isX:false}]){
+      if(item.r.n===0)continue;
+      const neg=item.r.n<0;
+      const val=item.isX?coefficientXHTML(ratAbs(item.r)):mathFracHTML(ratAbs(item.r));
+      output+=output?(neg?` − ${val}`:` + ${val}`):(neg?`−${val}`:val);
+    }
+  }
+  return output||"0";
+}
+function cancelOneTerm(t,multiple){
+  const raw=t.source.replace(/\s/g,"");
+  // Original mathematical fraction from the workbook: ((numerator)/(denominator)).
+  // Reduce the multiple against the denominator before distributing parentheses.
+  const match=raw.match(/^([+-]?)\(\((.*)\)\/\((\d+)\)\)$/);
+  if(match){
+    const sign=match[1],numerator=match[2],den=Number(match[3]);
+    if(multiple%den===0){
+      const factor=multiple/den;
+      let n=numerator.replace(/\*/g,"").replace(/-/g,"−");
+      const bracketed=/[+−]/.test(n.slice(1));
+      if(bracketed)n=`(${n})`;
+      const value=factor===1?n:`${factor}${n}`;
+      return {sign,value};
+    }
+  }
+  const multiplied={a:ratMul(t.a,rat(multiple)),b:ratMul(t.b,rat(multiple))};
+  const value=equationExpr(multiplied.a,multiplied.b);
+  if(value.startsWith("−"))return {sign:"-",value:value.slice(1)};
+  return {sign:"",value};
+}
+function cancelledExpression(terms,multiple){
+  return terms.map((t,i)=>{
+    const v=cancelOneTerm(t,multiple);
+    return (i===0?(v.sign?"−":""):(v.sign?" − ":" + "))+v.value;
+  }).join("")||"0";
+}
+function scaledDisplay(terms,multiple){
+  return terms.map((t,i)=>{
+    const source=equationPrettySource(t.source);
+    const neg=t.source[0]==="-";
+    const positive=source.replace(/^[＋+−-]/,"");
+    const item=`${positive} × ${multiple}`;
+    return (i===0?(neg?"−":""):(neg?" − ":" + "))+item;
+  }).join("")||"0";
 }
 function buildEquationSolution(q){
   const out=[];
@@ -3713,7 +3812,7 @@ function buildEquationSolution(q){
   };
   const root=`<div class="solution-title">📘 完整詳解</div>`;
   try{
-    let {a,b,c,d}=equationCoefficients(q);
+    const {a,b,c,d}=equationCoefficients(q);
     const coef=ratSub(a,c),rhs=ratSub(d,b);
     if(coef.n===0)throw Error('一元一次方程式係數為零');
     const result=ratDiv(rhs,coef);
@@ -3723,40 +3822,52 @@ function buildEquationSolution(q){
       add('兩邊同除以 x 的係數',`x ＝ ${mathFracHTML(d)} ÷ (${mathFracHTML(a)}) ＝ <strong>${mathFracHTML(result)}</strong>`);
       return root+out.join('');
     }
-
-    const original=q.qStr;
-    let A=a,B=b,C=c,D=d;
-    const simplified=`${equationExpr(A,B)} ＝ ${equationExpr(C,D)}`;
-    const strippedOriginal=original.replace(/<[^>]+>/g,'').replace(/\s+/g,'').replace(/[−－]/g,'-');
-    const strippedSimple=simplified.replace(/<[^>]+>/g,'').replace(/\s+/g,'').replace(/[−－]/g,'-');
-
-    if(mode===3 && strippedOriginal!==strippedSimple){
-      add('去括號、整理同類項',simplified);
-    }
+    const source=equationHTMLToSource(q.qStr);
+    const sides=source.split('=');
+    if(sides.length!==2)throw Error('無法分隔左右式');
+    let leftTerms=expressionTerms(sides[0]),rightTerms=expressionTerms(sides[1]);
+    const originalLeft=equationExpr(a,b), originalRight=equationExpr(c,d);
+    const simplified=`${originalLeft} ＝ ${originalRight}`;
+    const stripped=(t)=>t.replace(/<[^>]+>/g,'').replace(/\s+/g,'').replace(/[−－]/g,'-');
 
     if(mode===4){
-      const lcm=[A.d,B.d,C.d,D.d].reduce((n,x)=>equationLCM(n,x),1);
-      const [lhsHtml,rhsHtml]=splitEquationHTML(q.qStr);
+      const allDen=[...scaledDenominators(source),...leftTerms.flatMap(t=>[t.a.d,t.b.d]),...rightTerms.flatMap(t=>[t.a.d,t.b.d])];
+      const lcm=allDen.reduce((n,x)=>equationLCM(n,x),1);
       if(lcm>1){
-        add(`同乘 ${lcm}，先把兩邊分母消去`,`${lcm} × (${lhsHtml}) ＝ ${lcm} × (${rhsHtml})`);
-        A=ratMul(A,rat(lcm));B=ratMul(B,rat(lcm));
-        C=ratMul(C,rat(lcm));D=ratMul(D,rat(lcm));
-        add('分配律乘開、消去分母',`${equationExpr(A,B)} ＝ ${equationExpr(C,D)}`);
-      }else if(strippedOriginal!==strippedSimple){
-        add('去括號、整理同類項',simplified);
+        add(`兩邊各項同乘 ${lcm}`,`${scaledDisplay(leftTerms,lcm)} ＝ ${scaledDisplay(rightTerms,lcm)}`);
+        leftTerms=scaledExpressionTerms(leftTerms,lcm);
+        rightTerms=scaledExpressionTerms(rightTerms,lcm);
+        // Distribute and retain individual x and constant terms; only combine in the following step.
+        add('消去分母，先整理乘法與括號',`${cancelledExpression(expressionTerms(sides[0]),lcm)} ＝ ${cancelledExpression(expressionTerms(sides[1]),lcm)}`);
+        const distributed=`${expandedExpression(leftTerms)} ＝ ${expandedExpression(rightTerms)}`;
+        if(stripped(distributed)!==stripped(`${cancelledExpression(expressionTerms(sides[0]),lcm)} ＝ ${cancelledExpression(expressionTerms(sides[1]),lcm)}`)){
+          add('利用分配律乘開',distributed);
+        }
+      }else if(stripped(q.qStr)!==stripped(simplified)){
+        add('去括號、分配律乘開',`${expandedExpression(leftTerms)} ＝ ${expandedExpression(rightTerms)}`);
       }
+    }else if(mode===3 && stripped(q.qStr)!==stripped(simplified)){
+      add('去括號，利用分配律乘開',`${expandedExpression(leftTerms)} ＝ ${expandedExpression(rightTerms)}`);
+    }
+
+    const A=leftTerms.reduce((v,t)=>ratAdd(v,t.a),rat(0));
+    const B=leftTerms.reduce((v,t)=>ratAdd(v,t.b),rat(0));
+    const C=rightTerms.reduce((v,t)=>ratAdd(v,t.a),rat(0));
+    const D=rightTerms.reduce((v,t)=>ratAdd(v,t.b),rat(0));
+    const arranged=`${equationExpr(A,B)} ＝ ${equationExpr(C,D)}`;
+    const last=out[out.length-1]||"";
+    if(!last.includes(arranged)&&stripped(arranged)!==stripped(q.qStr)){
+      add('整理方程式',arranged);
     }
 
     const moveLeft=partsToHTML([xTermHTML(A,true),xTermHTML(ratNeg(C),false)]);
     const moveRight=partsToHTML([constTermHTML(D,true),constTermHTML(ratNeg(B),false)]);
     const moved=`${moveLeft} ＝ ${moveRight}`;
-    add('移項（含 x 的項移到左邊，常數項移到右邊）',moved);
+    add('移項：一次項移左邊，常數項移右邊',moved);
 
     const newCoef=ratSub(A,C),newRhs=ratSub(D,B);
     const combined=`${coefficientXHTML(newCoef)} ＝ ${mathFracHTML(newRhs)}`;
-    if(moved.replace(/\s/g,'')!==combined.replace(/\s/g,'')){
-      add('合併同類項',combined);
-    }
+    if(stripped(moved)!==stripped(combined))add('合併同類項',combined);
 
     if(newCoef.n===newCoef.d){
       add('解得',`<strong>x ＝ ${mathFracHTML(result)}</strong>`);
