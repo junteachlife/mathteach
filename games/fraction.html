@@ -1060,6 +1060,57 @@
       line-height:1!important;
     }
 
+
+ /* 2-3、2-4 共用操作列：四個數據與兩個按鈕同行、六格同尺寸 */
+ .page-shell{width:min(100%,1180px)}
+ .game-header{position:relative;padding:35px 24px 24px}
+ .grade-return{position:absolute;right:16px;top:13px;display:inline-flex;align-items:center;justify-content:center;
+   border:1.5px solid var(--primary-border);border-radius:12px;background:#fff;color:var(--primary-dark);
+   text-decoration:none;padding:9px 13px;font-size:14px;font-weight:900;z-index:2}
+ .game-title{padding-top:8px}
+ .mode-card{min-height:148px;border-radius:18px}
+ .mode-card:focus-visible,.topbar-action:focus-visible{outline:3px solid var(--primary);outline-offset:3px}
+ .quiz-topbar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:14px;
+   align-items:stretch}
+ .quiz-topbar>.status-box,.quiz-topbar>.topbar-action{height:72px;min-height:72px;max-height:72px;min-width:0;
+   padding:8px 5px;border-radius:14px;box-sizing:border-box;display:flex;flex-direction:column;
+   justify-content:center;align-items:center;text-align:center;gap:3px}
+ .quiz-topbar>.status-box{border:1.5px solid var(--primary-border)}
+ .quiz-topbar .status-label{font-size:12px;line-height:1.2;margin:0}
+ .quiz-topbar .status-value{font-size:clamp(12px,1.4vw,17px);line-height:1.35;margin:0;font-weight:900}
+ .topbar-action{border:1.5px solid var(--primary-border);cursor:pointer;font-family:inherit;transition:filter .14s ease,transform .14s ease}
+ .topbar-action:hover{filter:brightness(.97)}
+ .topbar-action:active{transform:scale(.98)}
+ .action-restart{background:#e9f8e9;border-color:#94d2a0;color:#126a32}
+ .action-reselect{background:var(--primary-light);border-color:var(--primary-border);color:var(--primary-dark)}
+ .topbar-action .status-label{color:#64748b}
+ .question-card{position:relative;padding:26px 18px 70px;border-radius:19px}
+ .question-content{min-height:85px}
+ #scratchpad-mobile-button.scratchpad-corner{position:absolute;right:13px;bottom:11px;z-index:4;
+   display:flex;justify-content:flex-end;align-items:center;width:auto!important;min-height:0!important}
+ #scratchpad-mobile-button.scratchpad-corner .scratchpad-open-button{position:static!important;inset:auto!important;
+   min-height:38px!important;padding:7px 13px!important;background:linear-gradient(#fffbdc,#f6b944)!important;
+   color:#70460d!important;border:1.5px solid #d49b26!important;border-radius:12px!important;
+   box-shadow:0 3px 0 #bd8721!important;font-size:13px!important;width:auto!important}
+ .answer-panel{margin-top:16px;border:2px solid var(--primary-border);border-radius:18px}
+ .button-row #submit-button,.button-row #next-button{min-width:200px}
+ @media(max-width:850px){
+   .quiz-topbar{gap:5px}
+   .quiz-topbar>.status-box,.quiz-topbar>.topbar-action{height:64px;min-height:64px;max-height:64px;padding:5px 3px}
+   .quiz-topbar .status-value{font-size:12px}
+   .quiz-topbar .status-label{font-size:10px}
+ }
+ @media(max-width:600px){
+   .game-header{padding-top:65px}
+   .quiz-topbar{display:grid;grid-template-columns:repeat(6,minmax(110px,1fr));overflow-x:auto;
+      padding-bottom:7px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+   .quiz-topbar>.status-box,.quiz-topbar>.topbar-action{height:65px;min-height:65px;max-height:65px}
+   .quiz-topbar .status-value{font-size:13px}
+   .quiz-topbar .status-label{font-size:11px}
+   .question-card{padding:20px 12px 67px}
+   .button-row #submit-button,.button-row #next-button{width:100%}
+ }
+
 </style>
 </head>
 
@@ -1071,6 +1122,7 @@
   <main class="game-card">
 
     <header class="game-header">
+      <a class="grade-return" href="../index.html?semester=grade7-first">↩ 返回七年級上學期</a>
       <h1 class="game-title">2-3 分數的四則運算大挑戰</h1>
       <p class="game-subtitle">等值分數 → 正負分數加減 → 乘除與倒數 → 四則混合 → 數線與生活應用。答錯後提供可學習的逐步解析。</p>
     </header>
@@ -1134,6 +1186,12 @@
           <span class="status-label">連擊</span>
           <span id="combo-display" class="status-value">0</span>
         </div>
+        <button id="restart-button" class="topbar-action action-restart" type="button" title="重新測驗（需確認）">
+          <span class="status-label">測驗操作</span><span class="status-value">🔄 重新測驗</span>
+        </button>
+        <button id="quit-button" class="topbar-action action-reselect" type="button" title="重選模式（需確認）">
+          <span class="status-label">測驗操作</span><span class="status-value">↩ 重選模式</span>
+        </button>
       </div>
 
       <div class="progress-shell">
@@ -1144,10 +1202,7 @@
         <div id="question-label" class="question-label"></div>
         <div id="question-content" class="question-content"></div>
         <div id="question-note" class="mini-note"></div>
-      </div>
-
-      <div class="scratchpad-row">
-        <div id="scratchpad-mobile-button"></div>
+        <div id="scratchpad-mobile-button" class="scratchpad-corner"></div>
       </div>
 
       <div class="answer-panel">
@@ -1234,8 +1289,7 @@
       <div class="button-row">
         <button id="submit-button" class="game-button" type="button">送出答案</button>
         <button id="next-button" class="game-button secondary hidden" type="button">下一題</button>
-        <button id="restart-button" class="game-button restart" type="button">🔄 重新測驗</button>
-        <button id="quit-button" class="game-button orange" type="button">選擇模式</button>
+
       </div>
     </section>
 
@@ -4013,10 +4067,17 @@ function answerHTML(q){return q.kind==="choice"?answerPresentationHTML(q.choices
 document.querySelectorAll(".mode-card").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));
 $("submit-button").addEventListener("click",submitAnswer);
 $("next-button").addEventListener("click",nextQuestion);
-$("restart-button").addEventListener("click",()=>startGame(modeId));
+$("restart-button").addEventListener("click",()=>{
+  if(confirm("確定要重新測驗嗎？目前的作答進度將不會保留。")){
+    clearInterval(timerHandle);
+    startGame(modeId);
+  }
+});
 $("quit-button").addEventListener("click",()=>{
-  clearInterval(timerHandle);
-  showScreen("start-screen");
+  if(confirm("確定要重選模式嗎？目前的作答進度將不會保留。")){
+    clearInterval(timerHandle);timerHandle=null;
+    showScreen("start-screen");
+  }
 });
 $("again-button").addEventListener("click",()=>startGame(modeId));
 $("review-button").addEventListener("click",renderReview);
