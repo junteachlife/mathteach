@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>正負數四則運算大挑戰</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='38' font-family='sans-serif' font-weight='700' fill='white'%3E%E9%81%8B%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="../css/scratchpad.css">
 
 <style>
@@ -657,11 +658,57 @@ select{
       )
   }
 }
+
+/* ===== 與七上 2-3、2-4 統一的版面與操作規格 ===== */
+:root{--primary:#2563eb;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--primary-border:#bfdbfe}
+body{padding:12px;background:linear-gradient(135deg,#e9f3ff,#fff7e9)}
+.common-header-mount{width:min(100%,1180px);margin:0 auto 12px}
+.app{max-width:1180px;min-height:0;border:1px solid #c7d8f6;border-top:8px solid var(--primary);border-radius:26px}
+.inner{padding:28px 24px}
+.title{margin-bottom:12px}
+.subtitle{max-width:800px;margin:0 auto 22px}
+.modes{width:100%;max-width:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.mode-card{display:block;min-width:0;min-height:150px;text-align:left;padding:22px;border:2px solid var(--primary-border);border-radius:20px;background:linear-gradient(180deg,var(--primary-light),#fff);cursor:pointer;transition:transform .16s,box-shadow .16s;color:var(--ink);font-family:inherit}
+.mode-card:hover{transform:translateY(-2px);box-shadow:0 10px 25px #1e3a8a20;border-color:var(--primary)}
+.mode-card:focus-visible,.topbar-action:focus-visible{outline:3px solid var(--primary);outline-offset:3px}
+.mode-card .mode-title{font-size:21px;line-height:1.5;margin-bottom:10px}
+.mode-card .example{font-family:inherit;font-size:15px;line-height:1.7;margin:0;color:var(--muted)}
+.home-return-row{margin:6px 0 10px}
+.home-return-row .btn{font-size:15px}
+.topbar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;align-items:stretch;justify-content:stretch;flex-wrap:nowrap;margin-bottom:15px}
+.topbar>.status-tile,.topbar>.topbar-action{box-sizing:border-box;min-width:0;width:100%;height:73px;min-height:73px;max-height:73px;padding:8px 5px;margin:0;border-radius:14px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;text-align:center;box-shadow:none}
+.topbar>.status-tile{border:1.5px solid var(--primary-border)}
+.topbar .status-caption{font-size:12px;font-weight:800;line-height:1.1;color:var(--muted)}
+.topbar .status-main{font-size:clamp(12px,1.4vw,17px);line-height:1.32;font-weight:900;color:var(--blue-dark);overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.topbar-action{border:1.5px solid var(--primary-border);cursor:pointer;transition:filter .14s,transform .14s;font-family:inherit}
+.topbar-action:hover{filter:brightness(.97)}
+.topbar-action:active{transform:scale(.98)}
+.action-restart{background:#e8f8eb;border-color:#94d2a0;color:#147137}
+.action-restart .status-main{color:#147137}
+.action-reselect{background:var(--primary-light);color:var(--primary-dark)}
+.problem{position:relative;background:#fff;border:2px solid var(--primary-border);border-radius:20px;min-height:206px;padding:18px 18px 70px;margin-bottom:16px;font-family:inherit;font-size:inherit;white-space:normal;overflow:visible}
+.question-number{color:var(--muted);font-size:18px;line-height:1.5;font-weight:900;margin-bottom:15px}
+.problem-text{font-family:'Cambria Math','Times New Roman',serif;font-size:clamp(26px,4vw,40px);font-weight:800;line-height:1.65;white-space:normal;overflow-x:auto;overflow-y:hidden;overflow-wrap:normal;padding:4px 0}
+.problem-text sup{font-size:.6em}
+#scratchpad-mobile-button.scratchpad-corner{position:absolute;right:12px;bottom:11px;z-index:5;display:flex;justify-content:flex-end;align-items:center;width:auto;min-height:0}
+#scratchpad-mobile-button.scratchpad-corner .scratchpad-open-button{position:static!important;inset:auto!important;display:inline-flex!important;width:auto!important;min-height:38px!important;padding:7px 13px!important;border:1.5px solid #d49b26!important;border-radius:12px!important;background:linear-gradient(#fffbdc,#f6b944)!important;color:#70460d!important;box-shadow:0 3px 0 #bd8721!important;font-size:13px!important;font-weight:900!important}
+#scratchpad-mobile-button.scratchpad-corner .scratchpad-open-button[hidden]{display:none!important}
+.answer-wrap{max-width:100%;margin:0}
+.answer-card{max-width:850px;margin:0 auto;min-height:114px;padding:18px;background:#f8fbff;border-color:var(--primary-border)}
+.help,.preview{text-align:center}
+.actions{display:flex;justify-content:center;align-items:center;gap:12px}
+.actions .btn{min-width:210px;max-width:100%}
+.feedback{max-width:900px;margin:16px auto 0}
+.explanation-panel{max-width:900px;margin:14px auto}
+@media(max-width:850px){.topbar{gap:5px}.topbar>.status-tile,.topbar>.topbar-action{height:65px;min-height:65px;max-height:65px;padding:5px 3px}.topbar .status-main{font-size:12px}.topbar .status-caption{font-size:10px}}
+@media(max-width:600px){body{padding:7px}.inner{padding:18px 14px}.modes{grid-template-columns:1fr}.mode-card{min-height:124px;padding:18px}.topbar{grid-template-columns:repeat(6,minmax(110px,1fr));overflow-x:auto;padding-bottom:7px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}.topbar>.status-tile,.topbar>.topbar-action{height:65px;min-height:65px;max-height:65px}.topbar .status-main{font-size:13px}.topbar .status-caption{font-size:11px}.problem{padding:17px 12px 67px;min-height:180px}.problem-text{font-size:clamp(24px,6.5vw,34px)}.actions .btn{width:100%}.answer-card{flex-wrap:wrap}.result-actions{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 
 <body>
 
+<div id="commonHeaderMount" class="common-header-mount"></div>
 <main class="app">
 
   <div class="progress">
@@ -682,15 +729,7 @@ select{
 
       <div class="modes">
 
-        <label class="mode-card">
-          <input
-            type="radio"
-            name="mode"
-            value="muldiv"
-            checked
-          >
-
-          <span>
+        <button class="mode-card" type="button" data-mode="muldiv">
             <div class="mode-title">
               模式一｜正負數的乘除
             </div>
@@ -698,18 +737,10 @@ select{
             <div class="example">
               整數與分數的正負乘除運算
             </div>
-          </span>
-        </label>
+          </button>
 
 
-        <label class="mode-card">
-          <input
-            type="radio"
-            name="mode"
-            value="absolute"
-          >
-
-          <span>
+        <button class="mode-card" type="button" data-mode="absolute">
             <div class="mode-title">
               模式二｜絕對值運算
             </div>
@@ -717,18 +748,10 @@ select{
             <div class="example">
               例如：|−5| − |−7| − (−5)
             </div>
-          </span>
-        </label>
+          </button>
 
 
-        <label class="mode-card">
-          <input
-            type="radio"
-            name="mode"
-            value="power"
-          >
-
-          <span>
+        <button class="mode-card" type="button" data-mode="power">
             <div class="mode-title">
               模式三｜乘方計算
             </div>
@@ -736,18 +759,10 @@ select{
             <div class="example">
               例如：−(−2)²
             </div>
-          </span>
-        </label>
+          </button>
 
 
-        <label class="mode-card">
-          <input
-            type="radio"
-            name="mode"
-            value="mixed"
-          >
-
-          <span>
+        <button class="mode-card" type="button" data-mode="mixed">
             <div class="mode-title">
               模式四｜四則運算
             </div>
@@ -755,18 +770,10 @@ select{
             <div class="example">
               整數、絕對值與乘方的綜合運算
             </div>
-          </span>
-        </label>
+          </button>
 
 
-        <label class="mode-card">
-          <input
-            type="radio"
-            name="mode"
-            value="advanced"
-          >
-
-          <span>
+        <button class="mode-card" type="button" data-mode="advanced">
             <div class="mode-title">
               模式五｜四則運算進階挑戰
             </div>
@@ -774,19 +781,11 @@ select{
             <div class="example">
               整數與分數混合四則運算
             </div>
-          </span>
-        </label>
+          </button>
 
       </div>
 
-      <div class="center">
-        <button
-          id="start-btn"
-          class="btn btn-primary"
-        >
-          開始挑戰
-        </button>
-      </div>
+      <div class="center home-return-row"><a class="btn btn-light" href="../index.html?semester=grade7-first">↩ 返回七年級上學期</a></div>
 
     </section>
 
@@ -796,55 +795,21 @@ select{
       class="hidden"
     >
 
-      <div class="topbar">
+             <div class="topbar" aria-label="測驗資訊與操作">
+         <div class="pill pill-blue status-tile"><span class="status-caption">模式</span><span id="mode-badge" class="status-main">模式一</span></div>
+         <div class="pill pill-gray status-tile"><span class="status-caption">時間</span><span id="time-display" class="status-main">00:00</span></div>
+         <div class="pill pill-blue status-tile"><span class="status-caption">分數</span><span id="live-score" class="status-main">0</span></div>
+         <div class="pill pill-amber status-tile"><span class="status-caption">連擊</span><span id="live-combo" class="status-main">0</span></div>
+         <button id="reset-btn" type="button" class="topbar-action action-restart"><span class="status-caption">測驗操作</span><span class="status-main">🔄 重新測驗</span></button>
+         <button id="change-mode-btn" type="button" class="topbar-action action-reselect"><span class="status-caption">測驗操作</span><span class="status-main">↩ 重選模式</span></button>
+       </div>
+       <div class="problem" id="problem-card">
+         <div id="question-number" class="question-number">第 1 / 10 題</div>
+         <div id="problem-text" class="problem-text"></div>
+         <div id="scratchpad-mobile-button" class="scratchpad-corner"></div>
+       </div>
 
-        <button
-          id="change-mode-btn"
-          class="btn btn-light"
-        >
-          ← 重選模式
-        </button>
-
-        <span
-          id="question-number"
-          class="pill pill-blue"
-        >
-          第 1 / 10 題
-        </span>
-
-        <span
-          id="mode-badge"
-          class="pill pill-amber"
-        >
-          模式一
-        </span>
-
-        <span
-          id="time-display"
-          class="pill pill-gray"
-        >
-          ⏳ 00:00
-        </span>
-
-        <button
-          id="reset-btn"
-          class="btn btn-danger-light"
-        >
-          重新測驗（目前模式）
-        </button>
-
-        <div id="scratchpad-mobile-button"></div>
-
-      </div>
-
-
-      <div
-        id="problem-text"
-        class="problem"
-      ></div>
-
-
-      <div class="answer-wrap">
+<div class="answer-wrap">
 
         <div class="answer-card">
 
@@ -1079,30 +1044,30 @@ import {
 "use strict";
 
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const mount =
-      document.getElementById(
-        "scratchpad-mobile-button"
-      );
-
-    const button =
-      document.getElementById(
-        "scratchpadOpenButton"
-      );
-
-    if (
-      mount &&
-      button
-    ) {
-      mount.appendChild(
-        button
-      );
-    }
+function mountOperationsScratchpad(){
+  const mount=document.getElementById("scratchpad-mobile-button");
+  const button=document.getElementById("scratchpadOpenButton");
+  if(!mount||!button)return false;
+  if(button.parentElement!==mount)mount.appendChild(button);
+  return true;
+}
+function syncOperationsScratchpad(visible){
+  mountOperationsScratchpad();
+  const button=document.getElementById("scratchpadOpenButton");
+  if(!button)return;
+  button.hidden=!visible;
+  button.style.setProperty("display",visible?"inline-flex":"none","important");
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  let tries=0;
+  const mountTimer=setInterval(()=>{
+    tries++;
+    if(mountOperationsScratchpad()||tries>=80){clearInterval(mountTimer);syncOperationsScratchpad(false)}
+  },50);
+  if(window.MathGameCommonHeader?.init){
+    try{window.MathGameCommonHeader.init({mountId:"commonHeaderMount",basePath:"../"})}catch(e){console.warn(e)}
   }
-);
+});
 
 
 const $ =
@@ -1455,6 +1420,9 @@ let correct =
 let wrong =
   0;
 
+let combo=0;
+let maxCombo=0;
+
 let locked =
   false;
 
@@ -1473,6 +1441,21 @@ let finalElapsed =
 let scoreSaved =
   false;
 
+
+function refreshOperationsStatus(){
+  const score=document.getElementById("live-score");
+  const chain=document.getElementById("live-combo");
+  if(score)score.textContent=String(Math.round(correct/Math.max(1,index+(locked?1:0))*100));
+  if(chain)chain.textContent=String(combo);
+}
+function confirmRestartOperations(){
+  if(!confirm("確定要重新測驗嗎？目前的作答進度將不會保留。"))return;
+  startGame(true);
+}
+function confirmReselectOperations(){
+  if(!confirm("確定要重選模式嗎？目前的作答進度將不會保留。"))return;
+  showModeSelection();
+}
 
 /*
 ==================================================
@@ -4276,6 +4259,7 @@ function configureAnswerInput(
 function showOnly(
   id
 ) {
+  syncOperationsScratchpad(id==="quiz-screen");
 
   [
     "start-screen",
@@ -4310,14 +4294,9 @@ function startGame(
   );
 
 
-  if (
-    !keepMode
-  ) {
-
-    mode =
-      document.querySelector(
-        'input[name="mode"]:checked'
-      ).value;
+  if(typeof keepMode==="string"){
+    if(!MODE_NAMES[keepMode])return;
+    mode=keepMode;
   }
 
 
@@ -4332,6 +4311,8 @@ function startGame(
 
   wrong =
     0;
+
+  combo=0;maxCombo=0;
 
   locked =
     false;
@@ -4361,12 +4342,11 @@ function startGame(
   showOnly(
     "quiz-screen"
   );
+  syncOperationsScratchpad(true);
+  refreshOperationsStatus();
 
 
-  $("mode-badge").textContent =
-    MODE_NAMES[
-      mode
-    ];
+  $("mode-badge").textContent =MODE_NAMES[mode].replace(/^模式[一二三四五]｜/,"");
 
 
   loadQuestion();
@@ -4392,7 +4372,7 @@ function updateTimer() {
 
 
   $("time-display").textContent =
-    `⏳ ${
+    `${
       String(
         Math.floor(
           elapsed /
@@ -4486,6 +4466,7 @@ function loadQuestion() {
       index
     ].answer
   );
+  refreshOperationsStatus();
 }
 
 
@@ -4896,6 +4877,7 @@ function checkAnswer() {
   ) {
 
     correct++;
+    combo++;maxCombo=Math.max(maxCombo,combo);
 
     playGameSound(
       "playCorrect"
@@ -4904,6 +4886,7 @@ function checkAnswer() {
   } else {
 
     wrong++;
+    combo=0;
 
     playGameSound(
       "playWrong"
@@ -4911,6 +4894,7 @@ function checkAnswer() {
   }
 
 
+  refreshOperationsStatus();
   $("feedback").innerHTML =
     `
       <span
@@ -5178,7 +5162,7 @@ async function saveCurrentScore(
           wrong,
 
         maxCombo:
-          0,
+          maxCombo,
 
         playTime:
           finalElapsed
@@ -5373,17 +5357,14 @@ function showModeSelection() {
 ==================================================
 */
 
-$("start-btn")
-  .onclick =
-  () =>
-    startGame(
-      false
-    );
+document.querySelectorAll(".mode-card[data-mode]").forEach(card=>{
+  card.addEventListener("click",()=>startGame(card.dataset.mode));
+});
 
 
 $("change-mode-btn")
   .onclick =
-  showModeSelection;
+  confirmReselectOperations;
 
 
 $("result-change-mode-btn")
@@ -5393,10 +5374,7 @@ $("result-change-mode-btn")
 
 $("reset-btn")
   .onclick =
-  () =>
-    startGame(
-      true
-    );
+  confirmRestartOperations;
 
 
 $("again-btn")
