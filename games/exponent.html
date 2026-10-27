@@ -1026,6 +1026,51 @@
       overflow-wrap:normal;
     }
 
+
+    /* 2-4 對齊七上一元一次方程式的遊戲操作規格 */
+    :root{--primary:#6644ad;--primary-dark:#482d80;--primary-light:#f0eafb;--primary-border:#c9b9e9}
+    body{background:linear-gradient(135deg,#f6f1ff,#fff9ef)}
+    .page-shell{width:min(100%,1180px)}
+    .game-header{position:relative;padding:34px 22px 24px;background:linear-gradient(120deg,#ece3fa,#fffaf2)}
+    .grade-return{position:absolute;right:16px;top:14px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:12px;border:1.5px solid #bda5e5;background:#fff;color:#50327f;padding:9px 13px;
+      text-decoration:none;font-weight:900;font-size:14px}
+    .game-title{padding-top:10px}
+    .mode-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .mode-card{min-height:150px;padding:18px;border-radius:18px;box-shadow:0 4px 13px #34215011}
+    .mode-card:focus-visible{outline:3px solid #6644ad;outline-offset:3px}
+    .quiz-topbar{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:8px}
+    .quiz-topbar .status-box{min-height:58px;padding:7px;border-radius:13px}
+    .status-label{font-size:12px}.status-value{font-size:16px}
+    .quiz-control-row{display:flex;justify-content:flex-end;gap:8px;margin:0 0 14px}
+    .control-button{min-height:44px;min-width:144px;padding:8px 13px;border:1.5px solid #c9b9e9;
+      border-radius:12px;font-size:14px;font-weight:900;cursor:pointer}
+    .control-restart{background:#e9f8e9;border-color:#95d7a0;color:#126a32}
+    .control-mode{background:#f1edff;border-color:#c6b4ee;color:#59318a}
+    .control-button:active{transform:scale(.98)}
+    .question-card{position:relative;padding:26px 18px 70px;border-radius:19px}
+    .question-content{min-height:85px}
+    .scratchpad-corner{position:absolute;right:13px;bottom:11px;z-index:4;display:flex;width:auto!important;min-height:auto}
+    .scratchpad-corner .scratchpad-open-button{position:static!important;inset:auto!important;
+      min-height:38px!important;padding:7px 13px!important;background:linear-gradient(#fffbdc,#f6b944)!important;
+      color:#70460d!important;border:1.5px solid #d49b26!important;border-radius:12px!important;
+      box-shadow:0 3px 0 #bd8721!important;font-size:13px!important}
+    .answer-panel{margin-top:16px;border:2px solid #e2d9f4;border-radius:18px;background:#fbfaff}
+    .button-row #submit-button,.button-row #next-button{min-width:200px}
+    .button-row{justify-content:center}
+    .button-row .game-button{border-radius:13px}
+    @media(max-width:760px){
+      .game-header{padding-top:63px}.grade-return{top:12px;right:12px}
+      .mode-grid{grid-template-columns:1fr}
+      .mode-card{min-height:126px}
+      .quiz-topbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+      .quiz-topbar .status-box{min-height:48px}
+      .quiz-control-row{display:grid;grid-template-columns:1fr 1fr}
+      .control-button{min-width:0;width:100%;min-height:44px;font-size:13px}
+      .question-card{padding:20px 12px 66px}
+      .button-row #submit-button,.button-row #next-button{width:100%}
+    }
+
 </style>
 </head>
 
@@ -1037,6 +1082,7 @@
   <main class="game-card">
 
     <header class="game-header">
+      <a class="grade-return" href="../index.html?semester=grade7-first">↩ 返回七年級上學期</a>
       <h1 class="game-title">2-4 指數律大挑戰</h1>
       <p class="game-subtitle">依 115 課本與習作編排：分數次方 → 同底數乘除 → 0 次方 → 冪的乘方 → 積的乘方 → 綜合運算。題目只使用具體數字，不出負整數指數。</p>
     </header>
@@ -1102,6 +1148,11 @@
         </div>
       </div>
 
+      <div class="quiz-control-row" aria-label="測驗操作區">
+        <button id="restart-button" class="control-button control-restart" type="button">🔄 重新測驗</button>
+        <button id="quit-button" class="control-button control-mode" type="button">重選模式</button>
+      </div>
+
       <div class="progress-shell">
         <div id="progress-bar" class="progress-bar"></div>
       </div>
@@ -1110,10 +1161,7 @@
         <div id="question-label" class="question-label"></div>
         <div id="question-content" class="question-content"></div>
         <div id="question-note" class="mini-note"></div>
-      </div>
-
-      <div class="scratchpad-row">
-        <div id="scratchpad-mobile-button"></div>
+        <div id="scratchpad-mobile-button" class="scratchpad-corner"></div>
       </div>
 
       <div class="answer-panel">
@@ -1200,8 +1248,6 @@
       <div class="button-row">
         <button id="submit-button" class="game-button" type="button">送出答案</button>
         <button id="next-button" class="game-button secondary hidden" type="button">下一題</button>
-        <button id="restart-button" class="game-button restart" type="button">🔄 重新測驗</button>
-        <button id="quit-button" class="game-button orange" type="button">選擇模式</button>
       </div>
     </section>
 
@@ -1278,6 +1324,30 @@ const MODE_CONFIG={
   speed:{name:"⚡ 指數律快手",seconds:60,difficultyWeight:1.12},
   comprehensive:{name:"🏆 綜合指數律挑戰",count:10,difficultyWeight:1.34}
 };
+
+// 修復模式按鈕初始化與題目派發（原檔遺漏）
+const $ = (id) => document.getElementById(id);
+const screens = ["start-screen", "quiz-screen", "result-screen", "review-screen"];
+function makeQuestion(requestedMode, sequence = 0) {
+  switch (requestedMode) {
+    case "fractionPower":
+      return [makeFractionPower, makeSignParity, makeIndexFirst][sequence % 3]();
+    case "sameBaseMultiply":
+      return makeSameBaseMultiply();
+    case "sameBaseDivide":
+      return makeSameBaseDivide();
+    case "powerOfPower":
+      return makePowerOfPower();
+    case "powerOfProduct":
+      return makePowerOfProduct();
+    case "comprehensive":
+      return makeCombined();
+    case "speed":
+      return [makeSameBaseMultiply, makeSameBaseDivide, makePowerOfPower][Math.floor(Math.random() * 3)]();
+    default:
+      throw new Error(`無效的遊戲模式：${requestedMode}`);
+  }
+}
 
 function igcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1}
 function R(n,d=1){if(!d)throw new Error("分母不可為 0");if(d<0){n=-n;d=-d}const g=igcd(n,d);return {n:n/g,d:d/g}}
@@ -3275,8 +3345,18 @@ function renderReview(){
 function answerHTML(q){return q.kind==="choice"?q.choices[q.answerIndex]:(q.kind==="integer"?esc(q.answer):ratHTML(q.answer))}
 document.querySelectorAll(".mode-card").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));
 $("submit-button").addEventListener("click",submitAnswer);$("next-button").addEventListener("click",nextQuestion);
-$("restart-button").addEventListener("click",()=>startGame(modeId));
-$("quit-button").addEventListener("click",()=>{clearInterval(timerHandle);showScreen("start-screen")});
+$("restart-button").addEventListener("click",()=>{
+  if(confirm("確定要重新測驗嗎？目前的作答進度將不會保留。")){
+    clearInterval(timerHandle);
+    startGame(modeId);
+  }
+});
+$("quit-button").addEventListener("click",()=>{
+  if(confirm("確定要重選模式嗎？目前的作答進度將不會保留。")){
+    clearInterval(timerHandle);timerHandle=null;
+    showScreen("start-screen");
+  }
+});
 $("again-button").addEventListener("click",()=>startGame(modeId));$("review-button").addEventListener("click",renderReview);
 $("result-mode-button").addEventListener("click",()=>showScreen("start-screen"));
 $("review-again-button").addEventListener("click",()=>startGame(modeId));$("review-result-button").addEventListener("click",()=>showScreen("result-screen"));
