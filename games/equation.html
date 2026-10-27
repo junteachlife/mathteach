@@ -2146,6 +2146,9 @@ function makeMode4Question(
           rand(2,6)
         );
 
+      // 排除 alpha = beta 造成 x 係數抵消、方程式有無限多解的無效題。
+      if (ratEq(alpha, beta)) continue;
+
       const inside =
         rand(
           -15,
@@ -2220,6 +2223,9 @@ function makeMode4Question(
           2,
           7
         );
+
+      // 兩邊分母相同只需合併分子，失去消去不同分母的練習意義。
+      if (m === n) continue;
 
       const a =
         nz(
@@ -2397,6 +2403,9 @@ function makeMode4Question(
         2,
         6
       );
+
+    // 三個分式的分母須互不相同，確保需要真正找最小公倍數。
+    if (m === n || m === r || n === r) continue;
 
     const a =
       nz(
@@ -2627,6 +2636,17 @@ function makeQuestions(
               makeAnswerByRatio()
             );
 
+          // 所有模式四題目都重新由題目本身計算一次，
+          // 必須有唯一解，且與產題器給定的答案一致，否則重抽。
+          try {
+            const {a,b,c,d}=equationCoefficients(question);
+            const coefficient=ratSub(a,c);
+            if(coefficient.n===0 || !ratEq(ratDiv(ratSub(d,b),coefficient),question.ans)) continue;
+          } catch(error) {
+            console.warn("忽略無效分式方程式題目", error);
+            continue;
+          }
+
           const key =
             question.qStr
               .replace(
@@ -2655,6 +2675,7 @@ function makeQuestions(
       }
     );
 
+    if(output.length!==target)throw new Error("模式四有效題目不足，請重新開始測驗");
     return shuffle(
       output
     );
@@ -3737,18 +3758,15 @@ function equationPrettySource(source){
   return s;
 }
 function mathOuterBracket(content,source=""){
-  // 小括號先用；只有原算式內確實已有數學小括號才升為中括號。
-  // 解析器包在分子、分母外的 ((...)/(...)) 只是結構記號，不計入巢狀層級。
+  // 分式解析器的 ((分子)/(分母)) 不是數學題目中的小括號。
+  // 是否使用中括號，只檢查學生實際看得到的內層數學括號。
   const shown=String(content).trim();
-  const raw=String(source).trim().replace(/^[+\-]/,"");
-  const fraction=raw.match(/^\(\((.*)\)\/\((\d+)\)\)$/);
-  const meaningful=fraction?fraction[1]:raw;
-  const hasInnerParentheses=/[()（）]/.test(meaningful);
+  const visible=shown.replace(/<[^>]*>/g,"");
+  const realInnerBrackets=/[（(][^()（）]*[)）]/.test(visible);
   const isFraction=shown.includes('class="math-frac"');
-  const hasSum=isFraction&&/<span class="top">[\s\S]*?[+＋−-][\s\S]*?<\/span>/.test(shown);
-  const needsGrouping=isFraction || hasInnerParentheses || /[＋+−-]/.test(shown.slice(1));
-  if(!needsGrouping)return shown;
-  return hasInnerParentheses?`[${shown}]`:`(${shown})`;
+  const isCompound=/[＋+−-]/.test(visible.slice(1));
+  if(!isFraction && !isCompound && !realInnerBrackets)return shown;
+  return realInnerBrackets?`[${shown}]`:`(${shown})`;
 }
 function scaledDenominators(source){
   const den=[];
@@ -3894,7 +3912,8 @@ function buildEquationSolution(q){
     return root+out.join('');
   }catch(err){
     console.warn('詳解計算失敗',err);
-    return root+equationStep('原方程式',questionHTML(q))+equationStep('答案',`x ＝ ${mathFracHTML(q.ans)}`);
+        return root+equationStep('原方程式',questionHTML(q))+
+      equationStep('檢查提醒','此題詳解無法通過數學一致性檢查，請通知老師檢查題目；系統不應將單一答案當作完整推導。');
   }
 }
 /*
