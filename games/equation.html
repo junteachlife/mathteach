@@ -3729,10 +3729,26 @@ function expressionTerms(expr){
 }
 function equationPrettySource(source){
   let s=source.trim().replace(/\*/g,"×").replace(/-/g,"−");
-  // ((linear expression)/(denominator)) for source extracted from HTML fractions.
-  s=s.replace(/\(\(([^()]*)\)\/\((\d+)\)\)/g,(_,a,d)=>stackedFractionHTML(a.replace(/\*/g,"×").replace(/-/g,"−"),d));
-  s=s.replace(/\(([^()]*)\)\/(\d+)/g,(_,a,d)=>stackedFractionHTML(a.replace(/\*/g,"×").replace(/-/g,"−"),d));
+  // 保留上下分數；完整分式先還原為可閱讀的直式版面。
+  s=s.replace(/\(\((.*?)\)\/\((\d+)\)\)/g,(_,numerator,denominator)=>
+    stackedFractionHTML(numerator,denominator));
+  s=s.replace(/\(([^()]*)\)\/(\d+)/g,(_,numerator,denominator)=>
+    stackedFractionHTML(numerator,denominator));
   return s;
+}
+function mathOuterBracket(content,source=""){
+  // 小括號先用；只有原算式內確實已有數學小括號才升為中括號。
+  // 解析器包在分子、分母外的 ((...)/(...)) 只是結構記號，不計入巢狀層級。
+  const shown=String(content).trim();
+  const raw=String(source).trim().replace(/^[+\-]/,"");
+  const fraction=raw.match(/^\(\((.*)\)\/\((\d+)\)\)$/);
+  const meaningful=fraction?fraction[1]:raw;
+  const hasInnerParentheses=/[()（）]/.test(meaningful);
+  const isFraction=shown.includes('class="math-frac"');
+  const hasSum=isFraction&&/<span class="top">[\s\S]*?[+＋−-][\s\S]*?<\/span>/.test(shown);
+  const needsGrouping=isFraction || hasInnerParentheses || /[＋+−-]/.test(shown.slice(1));
+  if(!needsGrouping)return shown;
+  return hasInnerParentheses?`[${shown}]`:`(${shown})`;
 }
 function scaledDenominators(source){
   const den=[];
@@ -3780,7 +3796,7 @@ function cancelOneTerm(t,multiple){
       const factor=multiple/den;
       let n=numerator.replace(/\*/g,"").replace(/-/g,"−");
       const bracketed=/[+−]/.test(n.slice(1));
-      if(bracketed)n=`(${n})`;
+      if(bracketed)n=n.includes("(")?`[${n}]`:`(${n})`;
       const value=factor===1?n:`${factor}${n}`;
       return {sign,value};
     }
@@ -3800,8 +3816,9 @@ function scaledDisplay(terms,multiple){
   return terms.map((t,i)=>{
     const source=equationPrettySource(t.source);
     const neg=t.source[0]==="-";
-    const positive=source.replace(/^[＋+−-]/,"");
-    const item=`${positive} × ${multiple}`;
+    const positive=source.replace(/^[＋+−-]/,"").trim();
+    // 分式保持直式；第一層小括號，已有數學小括號才使用中括號。
+    const item=`${mathOuterBracket(positive,t.source)} × ${multiple}`;
     return (i===0?(neg?"−":""):(neg?" − ":" + "))+item;
   }).join("")||"0";
 }
