@@ -703,6 +703,21 @@ body{padding:12px;background:linear-gradient(135deg,#e9f3ff,#fff7e9)}
 @media(max-width:850px){.topbar{gap:5px}.topbar>.status-tile,.topbar>.topbar-action{height:65px;min-height:65px;max-height:65px;padding:5px 3px}.topbar .status-main{font-size:12px}.topbar .status-caption{font-size:10px}}
 @media(max-width:600px){body{padding:7px}.inner{padding:18px 14px}.modes{grid-template-columns:1fr}.mode-card{min-height:124px;padding:18px}.topbar{grid-template-columns:repeat(6,minmax(110px,1fr));overflow-x:auto;padding-bottom:7px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}.topbar>.status-tile,.topbar>.topbar-action{height:65px;min-height:65px;max-height:65px}.topbar .status-main{font-size:13px}.topbar .status-caption{font-size:11px}.problem{padding:17px 12px 67px;min-height:180px}.problem-text{font-size:clamp(24px,6.5vw,34px)}.actions .btn{width:100%}.answer-card{flex-wrap:wrap}.result-actions{grid-template-columns:1fr 1fr}}
 
+
+/* 首頁返回鍵固定置於標題區右上角 */
+.home-heading-bar{display:flex;justify-content:flex-end;align-items:center;margin:0 0 8px}
+.home-return-top{font-size:14px;padding:9px 15px;white-space:nowrap}
+/* 詳解的文字與算式分開，長算式可橫向滑動 */
+.explanation-panel{font-size:16px;line-height:1.9}
+.explanation-intro{padding:14px 16px;border-radius:12px;background:#fff7ed;border:1px solid #fed7aa;margin:10px 0;color:#7c2d12}
+.explanation-original{padding:12px 14px;background:#fff;border:1px solid #dbeafe;border-radius:12px;margin:10px 0}
+.explanation-original .explanation-math{margin-top:6px}
+.explanation-step{padding:14px 16px;margin:12px 0}
+.explanation-step-reason{font-family:'Microsoft JhengHei','Noto Sans TC',sans-serif;font-size:15px;font-weight:500;line-height:1.75;color:#475569;margin:5px 0 9px}
+.explanation-reminder{padding:12px 15px;background:#fff1f2;border:1px solid #fecdd3;border-radius:12px;color:#9f1239;margin-top:13px}
+.explanation-math{font-size:clamp(19px,2.6vw,25px);line-height:1.8;white-space:normal;overflow-x:auto;overflow-wrap:normal}
+@media(max-width:600px){.home-heading-bar{margin-bottom:14px}.home-return-top{font-size:12px;padding:8px 11px}.explanation-panel{padding:12px}.explanation-step{padding:12px}}
+
 </style>
 </head>
 
@@ -719,6 +734,9 @@ body{padding:12px;background:linear-gradient(135deg,#e9f3ff,#fff7e9)}
 
     <section id="start-screen">
 
+      <div class="home-heading-bar">
+        <a class="btn btn-light home-return-top" href="../index.html?semester=grade7-first">↩ 返回七年級上學期</a>
+      </div>
       <h1 class="title">
         正負數四則運算大挑戰
       </h1>
@@ -785,7 +803,7 @@ body{padding:12px;background:linear-gradient(135deg,#e9f3ff,#fff7e9)}
 
       </div>
 
-      <div class="center home-return-row"><a class="btn btn-light" href="../index.html?semester=grade7-first">↩ 返回七年級上學期</a></div>
+
 
     </section>
 
@@ -4735,61 +4753,51 @@ function updatePreview() {
 ==================================================
 */
 
-function explanationHTML(
-  q
-) {
-
-  const steps =
-    q.steps
-      .map(
-        (
-          step,
-          i
-        ) =>
-          `
-            <div class="explanation-step">
-
-              <span class="explanation-step-label">
-                步驟 ${i + 1}｜${step[0]}
-              </span>
-
-              <div class="explanation-math">
-                ${step[1]}
-              </div>
-
-            </div>
-          `
-      )
-      .join(
-        ""
-      );
-
-
+function explanationConcept(modeValue){
+  const messages={
+    muldiv:"先判斷正負號：同號得正、異號得負。乘法先約分再相乘；除法先改成乘以倒數，最後化為最簡分數。",
+    absolute:"絕對值代表到 0 的距離，結果不會是負數。遇到絕對值與加減混合時，先計算絕對值內的算式，再依原本的加減符號計算。",
+    power:"先辨認底數是否包含負號，再計算次方。負數加括號時，奇次方為負、偶次方為正；若負號在次方外，須最後處理。",
+    mixed:"先處理括號與絕對值，再計算乘方，接著由左往右做乘除，最後由左往右做加減。每一步都要保留原本的正負號。",
+    advanced:"正負分數的四則混合：先括號、乘方與乘除，再加減。加減分數需要通分；乘除分數要先約分或將除法改成乘倒數。"
+  };
+  return messages[modeValue]||messages.mixed;
+}
+function explanationStepReason(label,modeValue){
+  const t=String(label||"");
+  if(/正負號|同號|異號/.test(t))return "先只觀察兩個運算數的正負號，確定最後結果的符號，再計算數值大小。";
+  if(/倒數|除法/.test(t))return "被除數不變；把除數的分子與分母交換，再將除號改成乘號，注意負號必須保留。";
+  if(/分子乘|進行乘法|再算乘法|分數乘法/.test(t))return "先檢查分子與分母可否交叉約分，再將分子相乘、分母相乘；整數可看成分母是 1 的分數。";
+  if(/最簡|約分/.test(t))return "分子、分母同除以最大公因數；若分母已為 1，就直接寫成整數。";
+  if(/絕對值內/.test(t))return "依照括號內原本的加減順序計算，得到整個絕對值符號裡面的數。";
+  if(/絕對值/.test(t))return "正數的絕對值是本身，負數的絕對值則去掉負號；最後結果一定大於或等於 0。";
+  if(/辨認底數|括號內整體/.test(t))return "括號內的負數才是完整底數；沒有括號時，次方只作用在數字上，不會作用在前面的負號。";
+  if(/判斷奇偶/.test(t))return "負底數連乘偶數次時負號成對抵消；連乘奇數次時會留下負號。";
+  if(/乘方|展開乘方/.test(t))return "指數代表相同底數連乘的次數。請先完成次方，不要把底數與指數直接相乘。";
+  if(/加減|再相加|再做減法|最後相加|由左到右/.test(t))return modeValue==="advanced"?"如果遇到分母不同的分數，先找最小公倍數通分，再合併分子；每個負號都必須連同該項保留。":"先把前面已算完的結果代入原式，再依序計算剩餘加減；減去負數相當於加上正數。";
+  if(/計算/.test(t))return "依題目指定的先後順序運算，並確認正負號與數值大小。";
+  return "將前一步算出的結果代回原式，逐步化簡，不跳過運算優先順序。";
+}
+function explanationHTML(q){
+  const steps=(q.steps||[]).map((step,i)=>`
+    <div class="explanation-step">
+      <span class="explanation-step-label">步驟 ${i+1}｜${step[0]}</span>
+      <div class="explanation-step-reason">${explanationStepReason(step[0],mode)}</div>
+      <div class="explanation-math">${step[1]}</div>
+    </div>`).join("");
+  const conclusion=q.answer.d===1
+    ? `分母為 1，因此答案寫成整數 ${fracHTML(q.answer)}。`
+    : `分數答案要檢查分母為正數，且分子與分母沒有大於 1 的公因數。`;
   return `
-    <div class="explanation-title">
-      逐步解題解析
-    </div>
-
+    <div class="explanation-title">📘 完整逐步詳解</div>
+    <div class="explanation-original"><strong>原題：</strong><div class="explanation-math">${q.html}</div></div>
+    <div class="explanation-intro"><strong>先想一想｜</strong>${explanationConcept(mode)}</div>
     ${steps}
-
-    <div
-      class="
-        explanation-step
-        explanation-final
-      "
-    >
-
-      <span class="explanation-step-label">
-        最後答案
-      </span>
-
-      <div class="explanation-math">
-        ${fracHTML(
-          q.answer
-        )}
-      </div>
-
+    <div class="explanation-step explanation-final">
+      <span class="explanation-step-label">最後答案</span>
+      <div class="explanation-math">${fracHTML(q.answer)}</div>
     </div>
+    <div class="explanation-reminder"><strong>檢查提醒｜</strong>${conclusion}</div>
   `;
 }
 
