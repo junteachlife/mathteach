@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3-1 式子的運算大挑戰｜生活有解．心中有數</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%237b1fa2%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2244%22%20font-size%3D%2239%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-weight%3D%22bold%22%20fill%3D%22white%22%3E%E6%96%B9%3C%2Ftext%3E%3C%2Fsvg%3E">
+
+<link rel="stylesheet" href="../css/scratchpad.css">
+<link rel="stylesheet" href="../css/math-expression-input.css?v=2.3">
+
+<style>
+:root{
+  --blue:#2563eb;
+  --blue-dark:#1d4ed8;
+  --green:#16a34a;
+  --amber:#d97706;
+  --ink:#1f2937;
+  --muted:#64748b;
+  --line:#dbe3ef;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+  font-family:
+    "Noto Sans TC",
+    "Microsoft JhengHei",
+    sans-serif;
+  color:var(--ink);
+}
+
+body{
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #f8fafc
+    );
+  padding:4px;
+  overflow-x:hidden;
+}
+
+.app{
+  width:100%;
+  min-height:calc(100vh - 8px);
+  margin:0 auto;
+  background:#fff;
+  border:3px solid #bfdbfe;
+  border-radius:24px;
+  box-shadow:
+    0 18px 45px
+    #1e3a8a22;
+  overflow:hidden;
+}
+
+.progress{
+  height:10px;
+  background:#e5e7eb;
+}
+
+.progress>div{
+  height:100%;
+  width:0;
+  background:
+    linear-gradient(
+      90deg,
+      #60a5fa,
+      #2563eb
+    );
+  transition:width .3s;
+}
+
+.inner{
+  padding:24px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.title{
+  text-align:center;
+  color:var(--blue-dark);
+  font-size:
+    clamp(
+      28px,
+      4vw,
+      42px
+    );
+  font-weight:900;
+  margin:0 0 8px;
+}
+
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  margin:0 0 24px;
+}
+
+.modes{
+  display:grid;
+  gap:14px;
+  max-width:800px;
+  margin:0 auto 24px;
+}
+
+.mode-card input{
+  position:absolute;
+  opacity:0;
+}
+
+.mode-card span{
+  display:block;
+  border:2px solid var(--line);
+  border-radius:17px;
+  padding:17px;
+  cursor:pointer;
+  transition:.2s;
+  background:#fff;
+}
+
+.mode-card input:checked+span{
+  border-color:#3b82f6;
+  background:#eff6ff;
+  box-shadow:
+    0 0 0 4px
+    #3b82f622;
+}
+
+.mode-title{
+  font-weight:900;
+  color:var(--blue-dark);
+  font-size:18px;
+}
+
+.example{
+  font-family:
+    "Times New Roman",
+    serif;
+  font-size:20px;
+  margin-top:6px;
+  color:#475569;
+}
+
+.center{
+  text-align:center;
+}
+
+.btn{
+  border:0;
+  border-radius:14px;
+  padding:13px 20px;
+  font-weight:900;
+  font-size:17px;
+  cursor:pointer;
+  transition:.15s;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.btn:active{
+  transform:scale(.98);
+}
+
+.btn-primary{
+  background:var(--blue);
+  color:#fff;
+}
+
+.btn-green{
+  background:var(--green);
+  color:#fff;
+}
+
+.btn-light{
+  background:#eff6ff;
+  color:var(--blue-dark);
+  border:2px solid #bfdbfe;
+}
+
+.btn-danger-light{
+  background:#fff1f2;
+  color:#be123c;
+  border:2px solid #fecdd3;
+}
+
+.btn-neutral{
+  background:#f1f5f9;
+  color:#334155;
+  border:2px solid #cbd5e1;
+}
+
+.quiz-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:20px;
+  align-items:start;
+}
+
+.topbar{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+  text-align:center;
+}
+
+.pill{
+  padding:9px 14px;
+  border-radius:14px;
+  font-size:15px;
+  font-weight:900;
+  box-shadow:
+    0 4px 12px
+    #0f172a10;
+}
+
+.pill-blue{
+  background:#dbeafe;
+  color:var(--blue-dark);
+}
+
+.pill-amber{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.pill-gray{
+  background:#f1f5f9;
+  color:#475569;
+}
+
+.problem{
+  background:#f8fafc;
+  border:2px solid #e2e8f0;
+  border-radius:20px;
+  padding:30px 14px;
+  text-align:center;
+  font-family:
+    "Times New Roman",
+    serif;
+  font-size:
+    clamp(
+      28px,
+      4.2vw,
+      46px
+    );
+  font-weight:bold;
+  margin-bottom:22px;
+  white-space:nowrap;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+
+.answer-wrap{
+  max-width:760px;
+  margin:auto;
+}
+
+.label{
+  display:block;
+  font-weight:900;
+  color:#475569;
+  margin-bottom:9px;
+  font-size:18px;
+}
+
+.answer-entry-row{
+  display:flex;
+  align-items:center;
+  width:100%;
+}
+
+.answer-x{
+  flex:0 0 auto;
+  font-family:
+    "Times New Roman",
+    serif;
+  font-size:38px;
+  font-weight:900;
+  color:#1f2937;
+  white-space:nowrap;
+}
+
+.mode4-answer{
+  display:flex;
+  flex:1 1 auto;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:nowrap;
+  padding:14px;
+  border:2px solid #dbeafe;
+  border-radius:18px;
+  background:#f8fbff;
+  min-height:132px;
+}
+
+.answer-sign-select{
+  height:48px;
+  min-width:76px;
+  padding:0 10px;
+  border:2px solid #cbd5e1;
+  border-radius:10px;
+  background:#fff;
+  color:#1f2937;
+  text-align:center;
+  font-family:
+    "Times New Roman",
+    serif;
+  font-size:22px;
+  font-weight:900;
+  outline:none;
+  cursor:pointer;
+}
+
+.answer-sign-select:focus{
+  border-color:#60a5fa;
+  box-shadow:
+    0 0 0 4px
+    #dbeafe;
+}
+
+.frac-input{
+  position:relative;
+  display:inline-grid;
+  grid-template-rows:
+    48px
+    48px;
+  width:82px;
+  gap:8px;
+  vertical-align:middle;
+}
+
+.frac-input input{
+  width:100%;
+  height:48px;
+  border:2px solid #cbd5e1;
+  border-radius:10px;
+  text-align:center;
+  font-size:24px;
+  font-weight:900;
+  outline:none;
+  background:#fff;
+}
+
+.frac-input input:focus{
+  border-color:#60a5fa;
+  box-shadow:
+    0 0 0 4px
+    #dbeafe;
+}
+
+.frac-input input::placeholder{
+  font-size:12px;
+  font-weight:700;
+  color:#94a3b8;
+}
+
+.frac-input .frac-line{
+  position:absolute;
+  left:5px;
+  right:5px;
+  top:50%;
+  height:2px;
+  background:#1f2937;
+  transform:translateY(-1px);
+  z-index:2;
+  pointer-events:none;
+}
+
+.frac-input.integer-input{
+  display:flex;
+  width:min(190px,55vw);
+}
+
+.frac-input.integer-input input:first-child{
+  display:block;
+}
+
+.frac-input.integer-input input:last-child,
+.frac-input.integer-input .frac-line{
+  display:none;
+}
+
+.fraction-help{
+  text-align:center;
+  color:#64748b;
+  font-size:13px;
+  margin:8px 0 12px;
+}
+
+.math-frac{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:center;
+  min-width:.78em;
+  text-align:center;
+  line-height:.92;
+  margin:0 .035em;
+  vertical-align:middle;
+  transform:translateY(.01em);
+}
+
+.math-frac .top,
+.math-frac .bottom{
+  display:block;
+  font-size:.64em;
+  line-height:.95;
+  padding:0 .08em;
+}
+
+.math-frac .top{
+  border-bottom:
+    2px solid currentColor;
+  padding-bottom:.07em;
+}
+
+.math-frac .bottom{
+  padding-top:.07em;
+}
+
+.math-frac .bar{
+  display:none;
+}
+
+.math-expression{
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:max-content;
+  line-height:1.15;
+}
+
+.mode4-answer.disabled{
+  opacity:.65;
+  pointer-events:none;
+}
+
+.preview{
+  min-height:26px;
+  text-align:center;
+  color:#64748b;
+  margin:9px 0 14px;
+  font-size:14px;
+}
+
+.actions{
+  display:grid;
+  gap:10px;
+}
+
+.feedback{
+  min-height:60px;
+  margin-top:15px;
+  text-align:center;
+  font-size:19px;
+  font-weight:900;
+  line-height:1.55;
+}
+
+.solution{
+  margin-top:12px;
+  background:#f8fafc;
+  border-radius:14px;
+  padding:14px;
+  color:#334155;
+  font-family:
+    "Times New Roman",
+    serif;
+  font-size:21px;
+  line-height:1.75;
+}
+
+.result-box{
+  max-width:700px;
+  margin:auto;
+  text-align:center;
+}
+
+.grade-card{
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #f8fafc
+    );
+  border:2px solid #bfdbfe;
+  border-radius:22px;
+  padding:24px;
+  margin:18px 0;
+}
+
+.grade-big{
+  font-size:54px;
+  font-weight:900;
+  color:var(--blue-dark);
+}
+
+.stars{
+  font-size:34px;
+  letter-spacing:4px;
+  margin:6px 0;
+}
+
+.comment{
+  font-size:20px;
+  font-weight:900;
+  color:#334155;
+}
+
+.score-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+  gap:12px;
+  margin:18px 0;
+}
+
+.score-card{
+  background:#f8fafc;
+  border:2px solid #e2e8f0;
+  border-radius:16px;
+  padding:15px;
+}
+
+.score-card b{
+  display:block;
+  font-size:26px;
+  margin-top:5px;
+}
+
+.save-status{
+  min-height:24px;
+  margin:10px 0 16px;
+  font-size:15px;
+  font-weight:900;
+  line-height:1.6;
+}
+
+.result-actions{
+  display:grid;
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+  gap:10px;
+}
+
+.review-list{
+  display:grid;
+  gap:14px;
+  text-align:left;
+  margin-top:18px;
+}
+
+.review-card{
+  border:2px solid #fecaca;
+  background:#fff7f7;
+  border-radius:17px;
+  padding:16px;
+}
+
+.review-title{
+  font-weight:900;
+  color:#b91c1c;
+  margin-bottom:8px;
+}
+
+.review-problem{
+  font-family:
+    "Times New Roman",
+    serif;
+  font-size:23px;
+  font-weight:700;
+  margin:8px 0;
+}
+
+.review-answer{
+  line-height:1.7;
+  color:#475569;
+}
+
+#scratchpad-mobile-button{
+  display:flex;
+  align-items:center;
+}
+
+#scratchpad-mobile-button
+.scratchpad-open-button{
+  position:static!important;
+  inset:auto!important;
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:42px;
+  padding:10px 16px;
+  border:2px solid #c7d2fe;
+  border-radius:14px;
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #2563eb
+    );
+  color:#fff;
+  box-shadow:
+    0 6px 16px
+    #3730a333;
+  font-size:16px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+@media(max-width:980px){
+  .result-actions{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:560px){
+  .inner{
+    padding:14px;
+  }
+
+  .btn{
+    padding:10px 11px;
+    font-size:14px;
+  }
+
+  .problem{
+    padding:24px 8px;
+    font-size:
+      clamp(
+        24px,
+        8vw,
+        38px
+      );
+  }
+
+  .answer-x{
+    font-size:30px;
+  }
+
+  .mode4-answer{
+    gap:8px;
+    padding:10px;
+  }
+
+  .answer-sign-select{
+    min-width:64px;
+    height:42px;
+    font-size:19px;
+  }
+
+  .frac-input{
+    width:66px;
+    grid-template-rows:
+      42px
+      42px;
+    gap:7px;
+  }
+
+  .frac-input.integer-input{
+    width:120px;
+  }
+
+  .frac-input input{
+    height:42px;
+    font-size:20px;
+  }
+
+  .score-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* v2026-10-26 七上一元一次方程式共用元件／詳解統一版 */
+.semester-nav{display:flex;justify-content:flex-end;margin-bottom:12px}
+.topbar{justify-content:space-between;gap:10px}
+.quiz-stats{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.quiz-controls{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-left:auto}
+.quiz-controls .btn{font-size:13px;padding:9px 12px;white-space:nowrap}
+.problem-card{position:relative;border:2px solid #bfdbfe;border-radius:18px;margin-bottom:14px;background:#fff;overflow:visible}
+.problem{border:0;background:transparent;margin:0;padding:34px 18px 65px;min-height:170px;white-space:normal;overflow-x:auto}
+.scratchpad-corner{position:absolute;right:12px;bottom:10px;z-index:5}
+.scratchpad-corner .scratchpad-open-button{min-height:36px!important;padding:6px 12px!important;font-size:13px!important}
+.unified-row{gap:12px;align-items:center;margin:12px auto}
+#equation-answer-mount{flex:1;min-width:0}
+#equation-answer-mount .mei-shell{width:100%;max-width:none}
+#equation-answer-mount .mei-main-row{align-items:center}
+#equation-answer-mount .mei-editor-wrap{min-width:0}
+.answer-x{font-size:30px}
+.answer-wrap{max-width:900px;padding:18px 18px;background:#f8fafc;border-radius:17px}
+.actions{display:flex;align-items:center;justify-content:center;margin-top:16px}
+.actions .btn{min-width:180px}
+.full-solution{margin:18px auto 0;max-width:960px;text-align:left;display:grid;gap:10px}
+.solution-title{text-align:left;font-weight:900;color:#1d4ed8;font-size:19px;margin:10px 0}
+.solution-step{padding:15px 17px;background:#fff;border-left:4px solid #2563eb;border-radius:12px;box-shadow:0 2px 10px #1f29370b;line-height:1.7}
+.solution-step>b{color:#1d4ed8;font-size:15px}
+.solution-math{font-family:'Cambria Math','Times New Roman','Microsoft JhengHei',serif;font-size:21px;margin-top:6px;overflow-x:auto;line-height:1.8}
+.review-explanation{margin-top:12px}
+.review-explanation .solution-step{background:#fff}
+@media(max-width:600px){.topbar{align-items:stretch}.quiz-controls{width:100%}.quiz-controls .btn{flex:1}.answer-wrap{padding:12px 8px}.unified-row{gap:6px}.answer-x{font-size:23px}.problem{font-size:clamp(24px,6vw,34px)}}
+
+/* v2026-10-26 UI aligns visually with grade8 2-2; retains all four question generators */
+:root{--blue:#7b1fa2;--blue-dark:#4a148c;--green:#7b1fa2;--amber:#b45309;--line:#dfc6e4}
+body{background:linear-gradient(180deg,#f7ecf9 0,#fff 260px);padding:12px 8px 28px}
+.app{width:min(100%,1280px);min-height:calc(100vh - 30px);border:0;border-top:6px solid #7b1fa2;border-radius:22px;box-shadow:0 15px 40px #5422641e;overflow:visible}
+.inner{padding:18px 24px 38px}
+.equation-game-header{position:relative;text-align:center;padding:48px 18px 26px;background:linear-gradient(180deg,#f6eaf7 0%,#fff 100%);border-radius:18px;margin-bottom:10px}
+.grade-return{position:absolute;right:15px;top:12px;text-decoration:none;border:1.5px solid #c796d1;background:#fff;color:#57176c;padding:8px 12px;border-radius:12px;font-size:13px;font-weight:850}
+.title{color:#57176c;font-size:clamp(26px,3.6vw,39px);margin:4px 0 12px}
+.subtitle{margin:0 auto 16px;color:#7d7182;font-size:14px;line-height:1.6}
+.concept-strip{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.concept-strip span{border:1px solid #c895ce;border-radius:20px;padding:6px 12px;color:#642576;background:white;font-size:12px;font-weight:750}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;max-width:1050px;margin:12px auto 25px}
+.mode-card{position:relative;display:block;min-width:0}
+.mode-card span{height:100%;min-height:174px;padding:22px 23px;border:1.5px solid #d8a9da;border-radius:18px;background:linear-gradient(160deg,#f4e3f5 0%,#fff 96%);transition:transform .18s,box-shadow .18s,border-color .18s;box-shadow:0 4px 12px #4a14550b}
+.mode-card:hover span{transform:translateY(-2px);box-shadow:0 8px 20px #4a14551d}
+.mode-card input:checked+span{border-color:#8f3ba3;background:linear-gradient(150deg,#ecd2f0,#fff);box-shadow:0 0 0 2px #aa6cbd30}
+.mode-count{display:inline-flex;font-weight:850;font-size:12px;color:#71388d;border-radius:9px;background:#fff;padding:5px 10px;margin-bottom:14px}
+.mode-title{font-size:20px;color:#622277}
+.example{font-family:'Microsoft JhengHei','Noto Sans TC',sans-serif;font-size:14px;line-height:1.7;color:#766a7a;margin-top:10px}
+.btn{border-radius:12px}
+.btn-primary,.btn-green{background:#7b1fa2;color:white}
+.btn-primary:hover,.btn-green:hover{background:#651384}
+.btn-light{background:#f5eef9;border:1px solid #dac2e6;color:#5f246e}
+.btn-danger-light{background:#f4e9f5;border:1px solid #dac2e6;color:#602371}
+.topbar{display:flex;align-items:stretch;flex-wrap:nowrap;gap:8px;margin:0 0 15px}
+.quiz-stats{flex:1;min-width:0;display:flex;gap:8px;align-items:stretch;flex-wrap:nowrap}
+.pill{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:52px;flex:1 1 0;padding:6px 8px;border-radius:13px;box-shadow:none;background:#f2e4f4;color:#5b2568;text-align:center;font-size:14px}
+.pill small{display:block;font-size:11px;font-weight:700;line-height:1.25}
+.pill strong{display:block;font-size:15px;font-weight:850;line-height:1.5}
+.pill-amber{background:#f5e7f5;color:#5b2568}
+.pill-gray{background:#fff6ec;color:#b05c1b}
+.quiz-controls{margin:0;display:flex;flex:0 0 auto;gap:6px;align-items:center;flex-wrap:nowrap}
+.quiz-controls .btn{min-height:40px;padding:8px 12px;font-size:12px;white-space:nowrap}
+.progress{height:0;background:transparent}
+.progress>div{height:6px;border-radius:8px;background:linear-gradient(90deg,#a53cbe,#7b1fa2)}
+.problem-card{border:1.5px solid #cc9dce;border-radius:18px;background:#fff;margin:0 0 14px;overflow:visible}
+.problem{display:flex;align-items:center;justify-content:center;min-height:205px;padding:38px 18px 65px;font-size:clamp(29px,4vw,49px);line-height:1.5;overflow-x:auto;white-space:nowrap;color:#19131d}
+.scratchpad-corner{right:15px;bottom:12px}
+.scratchpad-corner .scratchpad-open-button{background:linear-gradient(#fffbe0,#f5b740)!important;border:1.5px solid #d28a22!important;color:#643a08!important;box-shadow:0 3px 0 #ba790c!important;border-radius:12px!important}
+.answer-wrap{max-width:940px;background:#faf9fc;border-radius:18px;padding:23px 25px;margin:0 auto}
+.answer-wrap>.label{text-align:center;color:#622277;font-size:16px;margin-bottom:13px}
+.unified-row{max-width:810px;margin:auto;display:flex;align-items:center;justify-content:center;gap:12px}
+#equation-answer-mount{flex:1;min-width:0}
+#equation-answer-mount .mei-shell{--mei-primary:#7b1fa2;--mei-primary-dark:#4a148c;--mei-primary-light:#f3e5f5;--mei-primary-border:#ce93d8;max-width:100%;margin:0}
+#equation-answer-mount .mei-main-row{justify-content:center;align-items:center;gap:8px}
+#equation-answer-mount .mei-editor-wrap{flex:1 1 auto;min-width:0}
+.answer-x{color:#2b2330;font-size:30px}
+.preview{color:#6c5279}
+.actions{display:flex;justify-content:center;gap:12px;margin:14px 0}
+.actions .btn{min-width:165px}
+.feedback{margin-top:10px}
+.full-solution{max-width:960px}
+.solution-step{border-left-color:#7b1fa2}
+.solution-step>b,.solution-title{color:#713189}
+.review-card{border-color:#deb6dd}
+.grade-card{background:linear-gradient(140deg,#f5e8f8,#fff);border-color:#dcc1e6}
+.grade-big{color:#713189}
+@media(max-width:760px){
+ .inner{padding:10px 11px 22px}
+ .equation-game-header{padding:57px 10px 16px}
+ .grade-return{right:8px;top:10px;font-size:12px}
+ .modes{grid-template-columns:1fr;gap:12px}
+ .mode-card span{min-height:130px;padding:17px 18px}
+ .topbar{gap:5px;flex-wrap:wrap}
+ .quiz-stats{width:100%;flex:1 1 100%;gap:5px}
+ .pill{min-height:42px;font-size:12px;padding:4px 5px}
+ .pill strong{font-size:13px}
+ .quiz-controls{width:100%;justify-content:flex-end}
+ .quiz-controls .btn{flex:0 0 auto;font-size:11px}
+ .problem{min-height:175px;font-size:clamp(25px,6vw,36px);padding:28px 10px 60px}
+ .answer-wrap{padding:16px 8px}
+ .unified-row{gap:7px}
+ .answer-x{font-size:24px}
+ #equation-answer-mount .mei-tool-button{min-width:57px;font-size:11px;padding:6px}
+}
+
+
+/* Keep metric headings after JS replaces each pill's text */
+#question-number::before{content:"進度";display:block;font-size:11px;font-weight:700}
+#mode-badge::before{content:"模式";display:block;font-size:11px;font-weight:700}
+#time-display::before{content:"測驗時間";display:block;font-size:11px;font-weight:700}
+
+/* 2026-10-26 : 專屬七上首頁色系（只套用模式首頁，不改測驗功能） */
+body.equation-home{background:linear-gradient(180deg,#e9f6f4 0%,#f6fbf9 55%,#fff 100%)}
+body.equation-home .app{border-top-color:#087e86;box-shadow:0 15px 42px #11676b19}
+body.equation-home .equation-game-header{background:linear-gradient(155deg,#e0f4ed 0%,#f0fcf7 50%,#fff 100%)}
+body.equation-home .title{color:#14656b}
+body.equation-home .subtitle{color:#497b79}
+body.equation-home .concept-strip span{border-color:#a5d7cc;color:#146a6c;background:#fff}
+body.equation-home .grade-return{border-color:#9ad5d0;color:#14696e;background:#fff}
+body.equation-home .mode-card span{background:linear-gradient(155deg,#e5f6ee 0%,#fff 100%);border-color:#a7d8cf;box-shadow:0 4px 12px #117f7911}
+body.equation-home .mode-card:hover span,body.equation-home .mode-card:focus-visible span{transform:translateY(-3px);border-color:#1d9292;box-shadow:0 10px 22px #167e7830}
+body.equation-home .mode-card input:checked+span{background:linear-gradient(155deg,#dcf4ec,#fff);border-color:#5aa9a1;box-shadow:0 0 0 2px #45a69c2b}
+body.equation-home .mode-title{color:#176b70}
+body.equation-home .mode-count{color:#147779;background:#f7fffc}
+body.equation-home .example{color:#557b77}
+#start-screen .mode-card{cursor:pointer;outline:none}
+#start-screen .mode-card:focus-visible span{outline:3px solid #168e90;outline-offset:3px}
+/* 狀態及操作按鈕平均分配同一列空間，與乘法公式版型一致 */
+#quiz-screen .topbar{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:8px;align-items:stretch}
+#quiz-screen .quiz-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+#quiz-screen .quiz-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;min-width:0;align-items:stretch}
+#quiz-screen .quiz-stats .pill,#quiz-screen .quiz-controls .btn{min-height:58px;min-width:0;width:100%;margin:0;display:flex;justify-content:center;align-items:center;text-align:center;border-radius:13px;box-sizing:border-box}
+#quiz-screen .quiz-controls .btn{padding:8px 6px;font-size:13px;font-weight:850;line-height:1.3;white-space:normal}
+@media(max-width:760px){
+  #quiz-screen .topbar{grid-template-columns:1fr}
+  #quiz-screen .quiz-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+  #quiz-screen .quiz-controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  #quiz-screen .quiz-stats .pill,#quiz-screen .quiz-controls .btn{min-height:46px}
+  #quiz-screen .quiz-controls .btn{font-size:12px}
+}
+
+
+/* 2026-10-27：以實際第一列編輯框為對齊基準，不受元件下方預覽及提示文字影響 */
+#equation-answer-mount .mei-shell{margin-top:0!important}
+#equation-answer-mount .mei-main-row{margin-top:0!important}
+#equation-answer-mount .mei-editor-wrap{margin-top:0!important}
+.unified-row>.answer-x{padding-top:0!important;align-self:flex-start!important}
+/* 2026-10-26：x＝與答案實際輸入框在同一水平，不受預覽區高度影響 */
+.unified-row{position:relative;align-items:flex-start!important;gap:10px!important}
+.unified-row>.answer-x{flex:0 0 auto;display:flex;align-items:center;justify-content:flex-end;height:64px;min-height:0;line-height:1!important;margin:0!important;padding:0 0 0 4px!important;white-space:nowrap}
+#equation-answer-mount{flex:1;min-width:0}
+#equation-answer-mount .mei-main-row{align-items:flex-start!important}
+#equation-answer-mount .mei-editor-wrap{min-height:64px}
+@media(max-width:640px){.unified-row>.answer-x{height:62px;font-size:25px}}
+
+/* 七上 3-2：概念判斷題與原有數值輸入共用版面 */
+.concept-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:900px;margin:8px auto 18px}
+.concept-option{border:2px solid #d5c5e2;border-radius:13px;background:white;color:#36213f;min-height:70px;padding:14px 12px;font-family:'Cambria Math','Microsoft JhengHei',sans-serif;font-size:clamp(16px,2vw,21px);font-weight:750;line-height:1.6;text-align:center;cursor:pointer;overflow-wrap:anywhere}
+.concept-option:hover{border-color:#7b1fa2;background:#fbf4fd}
+.concept-option.selected{border-color:#7b1fa2;background:#eedbf4;box-shadow:0 0 0 2px #a65abb33}
+.concept-option:disabled{cursor:default;opacity:.85}
+.concept-option.correct-option{border-color:#16a34a;background:#f0fdf4}
+#problem-text.concept-prompt{font-family:'Microsoft JhengHei','Noto Sans TC',sans-serif;font-size:clamp(18px,2.5vw,28px);white-space:normal;overflow-wrap:anywhere;text-align:center;line-height:1.8}
+#problem-text.concept-prompt .math-expression{white-space:normal;min-width:0;display:inline;line-height:1.8}
+@media(max-width:620px){.concept-choices{grid-template-columns:1fr}.concept-option{min-height:56px}}
+
+/* 七上 3-1、3-3 統一遊戲 RWD、選擇題與長文字 */
+#problem-text.problem{display:block;white-space:normal;overflow-wrap:anywhere;text-align:left;font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;font-size:clamp(19px,2.2vw,27px);line-height:1.8;padding:25px 20px 70px;min-height:175px}
+#problem-text.problem b{font-family:"Cambria Math","Microsoft JhengHei",serif;color:#442053}
+#quiz-screen .answer-wrap{max-width:100%}
+.concept-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;max-width:950px;margin:0 auto 14px}
+.concept-choice{text-align:left;font-family:"Cambria Math","Microsoft JhengHei",serif;font-size:19px;min-height:70px;border:2px solid #ded0e6;border-radius:13px;background:white;cursor:pointer;padding:13px 15px;line-height:1.65;overflow-wrap:anywhere;color:#382943}
+.concept-choice.selected{background:#f2e5f6;border-color:#7b1fa2;box-shadow:0 0 0 2px #dfb9e7}
+.concept-choice strong{color:#8a46a2;margin-right:8px}
+#numeric-answer-area{max-width:670px;margin:0 auto}
+#numeric-answer-area .unified-row{display:block!important}
+#quiz-screen .topbar{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
+@media(max-width:760px){.concept-choices{grid-template-columns:1fr}#quiz-screen .topbar{grid-template-columns:1fr}#problem-text.problem{font-size:19px;padding:18px 12px 62px}.concept-choice{font-size:17px;min-height:56px}}
+@media(min-width:761px){.app{width:min(100%,1440px)}}
+.solution-math{white-space:normal;overflow-wrap:anywhere}
+.review-problem{white-space:normal;font-family:"Microsoft JhengHei",sans-serif;font-size:18px;line-height:1.7}
+
+</style>
+
+<script
+  defer
+  src="../js/common-header.js?v=5"
+></script>
+
+</head>
+
+<body class="equation-home">
+
+<div id="commonHeaderMount"></div>
+
+<main
+  id="app"
+  class="app"
+>
+
+  <div class="progress">
+    <div id="progress-bar"></div>
+  </div>
+
+  <div class="inner">
+    <header class="equation-game-header"><a class="grade-return" href="../index.html?semester=grade7-first">↩ 重返七年級上學期</a><h1 class="title">⚡ 3-1 式子的運算大挑戰</h1><p class="subtitle">依據七年級上學期 3-1 教材概念設計，各模式隨機出題並附逐步詳解。</p><div class="concept-strip"><span>符號簡記與乘除表示</span><span>文字敘述與生活列式</span><span>代入求式子的值</span><span>加減與合併同類項</span><span>乘除與分配律</span><span>含分數式子的化簡</span></div></header><section id="start-screen"><div class="modes"><label class="mode-card"><input type="radio" name="mode" value="1" checked><span><div class="mode-count">10 題</div><div class="mode-title">模式一｜符號簡記與乘除表示</div><div class="example">乘號省略、負係數、分數係數</div></span></label>
+<label class="mode-card"><input type="radio" name="mode" value="2" ><span><div class="mode-count">10 題</div><div class="mode-title">模式二｜文字敘述與生活列式</div><div class="example">倍數、差、總價與平均</div></span></label>
+<label class="mode-card"><input type="radio" name="mode" value="3" ><span><div class="mode-count">10 題</div><div class="mode-title">模式三｜代入求式子的值</div><div class="example">整數、負數與分數代入</div></span></label>
+<label class="mode-card"><input type="radio" name="mode" value="4" ><span><div class="mode-count">10 題</div><div class="mode-title">模式四｜加減與合併同類項</div><div class="example">一次項及常數項整理</div></span></label>
+<label class="mode-card"><input type="radio" name="mode" value="5" ><span><div class="mode-count">10 題</div><div class="mode-title">模式五｜乘除與分配律</div><div class="example">係數運算、去括號</div></span></label>
+<label class="mode-card"><input type="radio" name="mode" value="6" ><span><div class="mode-count">10 題</div><div class="mode-title">模式六｜含分數式子的化簡</div><div class="example">通分、去括號、同類項</div></span></label></div><button id="start-btn" type="button" hidden style="display:none!important">開始挑戰</button></section>
+<section
+      id="quiz-screen"
+      class="hidden"
+    >
+
+      <div class="quiz-grid">
+
+        <div>
+
+          <div class="topbar">
+<div class="quiz-stats">
+
+            <span
+              id="question-number"
+              class="pill pill-blue"
+            >
+              第 1 / 10 題
+            </span>
+
+            <span
+              id="mode-badge"
+              class="pill pill-amber"
+            >
+              模式一
+            </span>
+
+            <span
+              id="time-display"
+              class="pill pill-gray"
+            >
+              ⏳ 00:00
+            </span>
+
+            </div><div class="quiz-controls">
+
+            <button
+              id="change-mode-btn"
+              class="btn btn-light"
+            >
+              重選模式
+            </button><button
+              id="reset-btn"
+              class="btn btn-danger-light"
+            >
+              🔄 重新測驗
+            </button>
+
+            </div>
+
+          </div>
+
+          <div class="problem-card"><div id="problem-text" class="problem"></div>
+            <div id="scratchpad-mobile-button" class="scratchpad-corner"></div>
+          </div>
+
+          <div class="answer-wrap">
+
+            <div class="label" id="question-instruction">請作答</div>
+
+            <div id="concept-choices" class="concept-choices hidden" role="group" aria-label="選擇答案"></div>
+            <div id="numeric-answer-area">
+            <div class="answer-entry-row unified-row"><div id="equation-answer-mount"></div></div>
+            </div>
+            <div id="normalized-preview" class="preview" style="display:none"></div>
+
+            <div class="actions">
+
+              <button
+                id="submit-btn"
+                class="btn btn-green"
+              >
+                送出答案（Enter）
+              </button>
+
+              <button
+                id="next-btn"
+                class="btn btn-primary hidden"
+              >
+                下一題（Enter）
+              </button>
+
+            </div>
+
+            <div
+              id="feedback"
+              class="feedback"
+            ></div><div id="full-solution" class="full-solution hidden"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section
+      id="result-screen"
+      class="hidden result-box"
+    >
+
+      <h2 class="title">
+        挑戰完成！
+      </h2>
+
+      <div class="grade-card">
+
+        <div
+          id="final-score"
+          class="grade-big"
+        >
+          0 分
+        </div>
+
+        <div
+          id="final-stars"
+          class="stars"
+        >
+          ☆☆☆☆☆
+        </div>
+
+        <div
+          id="final-comment"
+          class="comment"
+        ></div>
+
+      </div>
+
+      <div class="score-grid">
+
+        <div class="score-card">
+          答對
+          <b id="final-correct">
+            0
+          </b>
+        </div>
+
+        <div class="score-card">
+          答錯
+          <b id="final-wrong">
+            0
+          </b>
+        </div>
+
+        <div class="score-card">
+          總時間
+          <b id="final-time">
+            0:00
+          </b>
+        </div>
+
+      </div>
+
+      <p
+        id="save-status"
+        class="save-status"
+      ></p>
+
+      <div class="result-actions">
+
+        <button
+          id="review-btn"
+          class="btn btn-neutral"
+        >
+          錯題回顧
+        </button>
+
+        <button
+          id="again-btn"
+          class="btn btn-primary"
+        >
+          🔄 再玩一次
+        </button>
+
+        <button
+          id="result-change-mode-btn"
+          class="btn btn-light"
+        >
+          重選模式
+        </button>
+
+        <a
+          class="btn btn-neutral"
+          href="../leaderboard.html"
+        >
+          🏆 排行榜
+        </a>
+
+        <a
+          class="btn btn-neutral"
+          href="../my-scores.html"
+        >
+          📊 我的成績
+        </a>
+
+        <a
+          class="btn btn-light"
+          href="../index.html?semester=grade7-first"
+        >
+          🏠 回首頁
+        </a>
+
+      </div>
+
+    </section>
+
+    <section
+      id="review-screen"
+      class="hidden result-box"
+    >
+
+      <h2 class="title">
+        錯題回顧
+      </h2>
+
+      <div
+        id="review-list"
+        class="review-list"
+      ></div>
+
+      <div
+        class="result-actions"
+        style="margin-top:18px"
+      >
+
+        <button
+          id="review-back-btn"
+          class="btn btn-light"
+        >
+          返回成績
+        </button>
+
+        <button
+          id="review-again-btn"
+          class="btn btn-primary"
+        >
+          重新測驗
+        </button>
+
+        <button
+          id="review-mode-btn"
+          class="btn btn-neutral"
+        >
+          重選模式
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+<script src="../js/scratchpad.js"></script>
+<script src="../js/scratchpad-template.js"></script>
+<script src="../js/math-expression-input.js?v=2.3"></script>
+
+<script type="module">
+import {saveGameScore} from '../js/scores.js';
+'use strict';
+const $=id=>document.getElementById(id);
+const GAME_ID='expression-operations';
+const MODE_NAMES={1:'符號簡記與乘除表示',2:'文字敘述與生活列式',3:'代入求式子的值',4:'加減與合併同類項',5:'乘除與分配律',6:'含分數式子的化簡'};
+const NMODES=6;
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=arr=>arr[rand(0,arr.length-1)];
+const shuf=arr=>[...arr].sort(()=>Math.random()-.5);
+const nz=(a,b)=>{let r=0;while(!r)r=rand(a,b);return r};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b)[a,b]=[b,a%b];return a||1};
+function R(n,d=1){if(!d)throw Error('分母不可為零');if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}}
+const add=(a,b)=>R(a.n*b.d+b.n*a.d,a.d*b.d);
+const sub=(a,b)=>R(a.n*b.d-b.n*a.d,a.d*b.d);
+const mul=(a,b)=>R(a.n*b.n,a.d*b.d);
+const div=(a,b)=>R(a.n*b.d,a.d*b.n);
+const eq=(a,b)=>a.n===b.n&&a.d===b.d;
+const f=r=>r.d===1?String(r.n).replace(/-/g,'−'):`${r.n<0?'−':''}<span class="math-frac"><span class="top">${Math.abs(r.n)}</span><span class="bar"></span><span class="bottom">${r.d}</span></span>`;
+const signed=n=>n<0?`− ${Math.abs(n)}`:`+ ${n}`;
+function term(n){return n===0?'':n===1?'x':n===-1?'−x':`${n}x`.replace(/-/g,'−')}
+function lin(a,b){return [term(a),b===0?'':a===0?`${b}`:signed(b)].filter(Boolean).join(' ').replace(/-/g,'−')||'0'}
+const line=(title,body)=>`<div class="solution-step"><b>${title}</b><div class="solution-math">${body}</div></div>`;
+function explanation(q){return `<div class="solution-title">📘 完整詳解</div>`+q.steps.map(([a,b],i)=>line(`步驟${i+1}｜${a}`,b)).join('')}
+function choice(prompt,correct,wrong,steps,tag=''){const distractors=[...new Set(wrong.filter(x=>x!==correct))];if(distractors.length<3)throw Error('選項不夠');const options=shuf([correct,...shuf(distractors).slice(0,3)]);return {kind:'choice',prompt,options,correctIndex:options.indexOf(correct),answerLabel:correct,steps,tag};}
+function numberQ(prompt,answer,steps,unit='',tag=''){return {kind:'number',prompt,ans:answer,answerLabel:f(answer)+(unit?' '+unit:''),unit,steps,tag};}
+// 教材 3-1：符號簡記、列式、代入、同類項、分配律、分式化簡
+function algebraChoice(prompt,a,b,steps,tag=''){
+ const correct=lin(a,b);
+ const wrong=[lin(a+(a>=0?1:-1),b),lin(a,b+3),lin(-a,b),lin(a,b===0?5:-b),lin(b||2,a||3),lin(a+2,b-2)].filter(x=>x!==correct);
+ return choice(prompt,correct,wrong,steps,tag)
+}
+function makeQuestion(m,i){
+ if(m===1){
+   const a=nz(-12,12),b=rand(-9,9),form=rand(0,3);
+   if(form===0)return algebraChoice(`將 <b>${a} × x ${b<0?'− '+(-b):'+ '+b}</b> 簡記成代數式。`,a,b,[['省略乘號',`數字和 x 相乘時，寫成 ${term(a)}，不必寫 ×。`],['合併記號',`常數項是 ${b}，因此為 <strong>${lin(a,b)}</strong>。`]]);
+   if(form===1)return algebraChoice(`「x 的 ${Math.abs(a)} 倍${a<0?'再取相反數':''}，再${b<0?'減去 '+(-b):'加上 '+b}」應記成哪個式子？`,a,b,[['處理倍數',`未知數倍數記作 ${term(a)}。`],['加減常數',`再調整 ${b}，得到 ${lin(a,b)}。`]]);
+   if(form===2){const d=pick([2,3,4,5,6]),n=nz(-5,5),r=R(n,d),correct=`${f(r)}x`,wrong=[`${f(R(-n,d))}x`,`${f(R(n*d))}x`,`${f(R(d,n))}x`,`${f(R(n,d+1))}x`];return choice(`將 <b>${n} × x ÷ ${d}</b> 簡記。`,correct,wrong,[['先算數值係數',`${n}÷${d}＝${f(r)}。`],['乘號省略',`寫成 ${correct}。`]])}
+   return algebraChoice(`「比 x 的 ${Math.abs(a)} 倍${a<0?'的相反數':''}${b<0?'少 '+(-b):'多 '+b}」列為代數式。`,a,b,[['關鍵字辨識',`「倍」寫作係數與 x 相乘；「多／少」決定常數正負。`],['完成列式',`${lin(a,b)}`]])
+ }
+ if(m===2){const v=rand(0,3),x=rand(4,30),k=rand(2,8),c=rand(3,25);
+  if(v===0)return algebraChoice(`每個筆記本售價 <b>x 元</b>，買 ${k} 本另付運費 ${c} 元，總費用的代數式為何？`,k,c,[['單價乘數量',`${k} 本費用為 ${k}x。`],['再加運費',`總費用＝${lin(k,c)} 元。`]]);
+  if(v===1){const correct=`<span class="math-frac"><span class="top">x − ${c}</span><span class="bottom">${k}</span></span>`;return choice(`袋內共有 <b>x 顆糖果</b>，先拿走 ${c} 顆，剩下的糖分成 ${k} 份。哪一個式子表示每份顆數？`,correct,[`x − ${c}/${k}`,`${k}(x−${c})`,`x/${k} − ${c}`,`(x+${c})/${k}`],[['先扣掉',`剩下 x−${c} 顆。`],['再平均',`每份為 (x−${c})/${k} 顆，分子含減法要保留整個分子的範圍。`]])}
+  if(v===2)return algebraChoice(`小羊有 x 隻，牛的隻數比羊的 ${k} 倍少 ${c} 隻。牛的數量列式為何？`,k,-c,[['倍數關係',`羊的 ${k} 倍是 ${k}x。`],['少的部分',`再減去 ${c}，得到 ${lin(k,-c)}。`]]);
+  return algebraChoice(`一碗湯 ${c} 元，一個水餃 x 元，買 ${k} 個水餃與一碗湯共多少元？`,k,c,[['逐項列式',`水餃 ${k}x 元，湯 ${c} 元。`],['合計',`${lin(k,c)} 元。`]])
+ }
+ if(m===3){const a=nz(-9,9),b=rand(-15,15),x=pick([R(-6),R(-4),R(0),R(3),R(7),R(2,3),R(-3,2)]),answer=add(mul(R(a),x),R(b));return numberQ(`若 <b>x＝${f(x)}</b>，求 <b>${lin(a,b)}</b> 的值。`,answer,[['寫出原式',`${lin(a,b)}`],['代入 x 的值',`${term(a)} 的 x 用（${f(x)}）取代，算式為 ${a} × (${f(x)}) ${b<0?'− '+(-b):'+ '+b}。`],['先乘再加減',`${a} × (${f(x)}) ＝ ${f(mul(R(a),x))}`],['計算結果',`${f(mul(R(a),x))} ${b<0?'− '+(-b):'+ '+b} ＝ <strong>${f(answer)}</strong>`]])}
+ if(m===4){const a=nz(-12,12),c=nz(-12,12),b=rand(-16,16),d=rand(-16,16),A=a+c,B=b+d;return algebraChoice(`化簡：<b>${lin(a,b)} ${c<0?'−':'+'} ${Math.abs(c)}x ${d<0?'− '+(-d):'+ '+d}</b>`,A,B,[['一次項歸一次項',`${a}x 與 ${c}x 合併，係數 ${a}+(${c})＝${A}。`],['常數項歸常數項',`${b}+(${d})＝${B}。`],['寫成最簡式',`<strong>${lin(A,B)}</strong>`]])}
+ if(m===5){const a=nz(-6,6),b=nz(-7,7),c=rand(-8,8),k=rand(-4,4)||2,v=rand(0,2);
+  if(v===0){const A=a*k,B=b*k;return algebraChoice(`化簡：<b>${k}（${lin(a,b)}）</b>`,A,B,[['使用分配律',`${k} 要分別乘以括號中的 ${term(a)} 和 ${b}。`],['逐項相乘',`${k}×(${a}x)＝${term(A)}；${k}×(${b})＝${B}。`],['整理答案',`<strong>${lin(A,B)}</strong>`]])}
+  if(v===1){const A=a-k,B=b-k*c;return algebraChoice(`化簡：<b>${lin(a,b)} − ${Math.abs(k)}（x ${c<0?'− '+(-c):'+ '+c}）</b>`,a-Math.abs(k),b-Math.abs(k)*c,[['先展開後半括號',`減去 ${Math.abs(k)} 倍的整個括號，每一項都要減。`],['整理一次項',`${a}x−${Math.abs(k)}x＝${term(a-Math.abs(k))}。`],['整理常數項',`${b}−(${Math.abs(k)*c})＝${b-Math.abs(k)*c}。`],['答案',`${lin(a-Math.abs(k),b-Math.abs(k)*c)}`]])}
+  const d=pick([2,3,4,5]),p=nz(-7,7),q=rand(-9,9);return algebraChoice(`化簡：<b>${d}（${lin(p,q)}）＋${lin(a,b)}</b>`,d*p+a,d*q+b,[['分配律',`${d}（${lin(p,q)}）＝${lin(d*p,d*q)}。`],['合併同類項',`${lin(d*p,d*q)}＋（${lin(a,b)}）＝<strong>${lin(d*p+a,d*q+b)}</strong>`]])
+ }
+ const den1=pick([2,3,4,5,6]),den2=pick([3,4,5,7,8]);const a=nz(-8,8),b=rand(-8,8),c=nz(-7,7),d=rand(-8,8),minus=i%2===0;const A=sub(R(a,den1),mul(R(c,den2),R(minus?1:-1))),B=sub(R(b,den1),mul(R(d,den2),R(minus?1:-1)));const expr=(aa,bb)=>{const X=aa.n===0?'':aa.n===aa.d?'x':aa.n===-aa.d?'−x':`${f(aa)}x`;return X+(bb.n===0?'':X?bb.n<0?` − ${f(R(-bb.n,bb.d))}`:` + ${f(bb)}`:f(bb))||'0'};const correct=expr(A,B),wrong=[expr(R(-A.n,A.d),B),expr(A,R(-B.n,B.d)),expr(add(A,R(1)),B),expr(A,add(B,R(1))),expr(sub(A,R(1)),B)];const sign=minus?'−':'+';return choice(`化簡：<b>${f(R(1,den1))}（${lin(a,b)}） ${sign} ${f(R(1,den2))}（${lin(c,d)}）</b>`,correct,wrong,[['先找共同分母',`兩組分母分別是 ${den1}、${den2}，可使用最小公倍數 ${Math.abs(den1*den2)/gcd(den1,den2)}。`],['括號內各項都要乘',`第一組係數為 ${f(R(a,den1))}x 與 ${f(R(b,den1))}；第二組為 ${f(R(c,den2))}x 與 ${f(R(d,den2))}。`],['合併一次項',`x 的係數＝${f(R(a,den1))} ${sign} (${f(R(c,den2))})＝${f(A)}。`],['合併常數項',`常數＝${f(R(b,den1))} ${sign} (${f(R(d,den2))})＝${f(B)}。`],['最簡答案',`<strong>${correct}</strong>`]])
+}
+
+let mode=1,questions=[],ix=0,correct=0,wrong=0,records=[],startTime=0,timer=null,nextTimer=null,locked=false,nextReady=false,saved=false,elapsed=0,selected=-1,input=null;
+function show(id){document.body.classList.toggle('equation-home',id==='start-screen');['start-screen','quiz-screen','result-screen','review-screen'].forEach(s=>$(s).classList.toggle('hidden',s!==id));}
+function makeSet(m){const out=[],used=new Set();let n=0;while(out.length<10&&n++<500){const q=makeQuestion(m,out.length);const key=q.prompt.replace(/<[^>]*>/g,'');if(used.has(key))continue;used.add(key);out.push(q)}if(out.length!==10)throw Error('題目產生數量不足');return shuf(out)}
+function initInput(){if(typeof window.MathExpressionInput!=='function')return;input?.destroy?.();input=new window.MathExpressionInput({mountId:'equation-answer-mount',placeholder:'請輸入答案',allowRadical:false,allowFraction:true,allowPower:false,allowVariable:false,allowPlusMinus:false,validationMode:'numeric-radical',showPreview:true,requireSimplifiedFraction:true,requireSimplifiedRadical:true,requireRationalDenominator:true,toolOrder:['fraction'],theme:{primary:'#7b1fa2',dark:'#4a148c',light:'#f3e5f5',border:'#ce93d8'}})}
+function start(keep=false){clearInterval(timer);clearTimeout(nextTimer);if(!keep)mode=Number(document.querySelector('input[name="mode"]:checked')?.value||1);try{questions=makeSet(mode)}catch(e){alert('題目建立失敗：'+e.message);console.error(e);return}ix=0;correct=0;wrong=0;records=[];saved=false;startTime=Date.now();$('mode-badge').textContent=`模式${mode}`;$('save-status').textContent='';show('quiz-screen');timer=setInterval(()=>$('time-display').textContent='⏳ '+fmtTime(Math.floor((Date.now()-startTime)/1000)),1000);load();}
+const fmtTime=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+function load(){clearTimeout(nextTimer);locked=false;nextReady=false;selected=-1;const q=questions[ix];$('submit-btn').classList.remove('hidden');$('next-btn').classList.add('hidden');$('feedback').innerHTML='';$('full-solution').innerHTML='';$('full-solution').classList.add('hidden');$('problem-text').innerHTML=q.prompt;$('question-number').textContent=`第 ${ix+1} / 10 題`;$('progress-bar').style.width=`${ix*10}%`;const isChoice=q.kind==='choice';$('concept-choices').classList.toggle('hidden',!isChoice);$('numeric-answer-area').classList.toggle('hidden',isChoice);$('question-instruction').textContent=isChoice?'請選出正確答案':'請輸入計算結果'+(q.unit?'（'+q.unit+'）':'');if(isChoice){$('concept-choices').innerHTML='';q.options.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.className='concept-choice';b.innerHTML=`<strong>${'ABCD'[i]}.</strong> ${o}`;b.onclick=()=>{if(locked)return;selected=i;[...$('concept-choices').children].forEach((c,k)=>c.classList.toggle('selected',k===i))};$('concept-choices').appendChild(b)})}else{if(!input)initInput();else{input.reset();input.setDisabled(false)}setTimeout(()=>input?.focus?.(),30)}window.resetGameScratchpad?.()}
+function read(){if(!input)return {error:'共用數學答案輸入元件尚未載入'};const x=input.validate();if(!x.valid)return {error:x.message||'請輸入有效的最簡數值'};const terms=(x.terms||[]).filter(t=>Number(t.numerator)!==0);if(terms.some(t=>t.radicand!==1))return {error:'請輸入有理數'};if(terms.length>1)return {error:'請輸入單一數值'};const t=terms[0];return {value:R(t?Number(t.numerator):0,t?Number(t.denominator):1),raw:input.getRawValue()}}
+function check(){if(locked)return;const q=questions[ix];let user,ok;if(q.kind==='choice'){if(selected<0){$('feedback').textContent='請先選擇一個答案。';return}ok=selected===q.correctIndex;user=q.options[selected]}else{const r=read();if(r.error){$('feedback').textContent=r.error;return}ok=eq(r.value,q.ans);user=f(r.value)}locked=true;input?.setDisabled?.(true);if(ok)correct++;else wrong++;records.push({q,user,ok,number:ix+1});$('feedback').innerHTML=ok?'<span style="color:#15803d">✨ 正確！</span>':`<span style="color:#b91c1c">❌ 答案不正確，正確答案：${q.answerLabel}</span>`;$('full-solution').innerHTML=explanation(q);$('full-solution').classList.remove('hidden');nextTimer=setTimeout(()=>{nextReady=true;$('submit-btn').classList.add('hidden');$('next-btn').classList.remove('hidden');$('next-btn').textContent=ix===9?'查看測驗結果（Enter）':'下一題（Enter）'},850)}
+function next(){if(!nextReady)return;ix++;if(ix<10)load();else result()}
+function rating(s){return s>=90?['★★★★★','太棒了！觀念與計算都很熟練。']:s>=80?['★★★★☆','表現很好，繼續維持！']:s>=60?['★★★☆☆','已有基礎，請多練習錯題。']:['★★☆☆☆','利用計算紙配合詳解，再練習一次！']}
+async function result(){clearInterval(timer);elapsed=Math.floor((Date.now()-startTime)/1000);show('result-screen');const score=correct*10,[stars,msg]=rating(score);$('final-score').textContent=score+' 分';$('final-stars').textContent=stars;$('final-comment').textContent=msg;$('final-correct').textContent=correct;$('final-wrong').textContent=wrong;$('final-time').textContent=fmtTime(elapsed);$('progress-bar').style.width='100%';$('review-btn').disabled=wrong===0;$('review-btn').textContent=wrong?'錯題回顧':'全部答對，無錯題';if(saved)return;saved=true;$('save-status').textContent='☁️ 正在儲存成績……';try{const response=await saveGameScore({game:GAME_ID,mode:String(mode),score,correctCount:correct,wrongCount:wrong,maxCombo:0,playTime:elapsed});$('save-status').textContent=response.success?'✅ 成績已儲存':response.reason==='not-logged-in'?'ℹ️ 尚未登入，本次成績未儲存':'⚠️ 成績暫時無法儲存'}catch(e){console.error(e);$('save-status').textContent='⚠️ 儲存失敗'}}
+function review(){$('review-list').innerHTML=records.filter(r=>!r.ok).map(r=>`<article class="review-card"><div class="review-title">第 ${r.number} 題</div><div class="review-problem">${r.q.prompt}</div><div class="review-answer">你的答案：${r.user}<div>正確答案：${r.q.answerLabel}</div></div>${explanation(r.q)}</article>`).join('')||'<div class="grade-card">全部答對！</div>';show('review-screen')}
+function selectMode(){clearInterval(timer);clearTimeout(nextTimer);$('progress-bar').style.width='0%';show('start-screen')}
+document.querySelectorAll('#start-screen .mode-card').forEach(c=>{c.setAttribute('tabindex','0');c.setAttribute('role','button');const open=()=>{c.querySelector('input').checked=true;start()};c.onclick=e=>{e.preventDefault();open()};c.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}});
+$('start-btn').onclick=()=>start();$('submit-btn').onclick=check;$('next-btn').onclick=next;$('reset-btn').onclick=()=>{if(confirm('確定要重新測驗？目前進度將不會保留。'))start(true)};$('change-mode-btn').onclick=()=>{if(confirm('確定重選模式？目前進度將不會保留。'))selectMode()};$('again-btn').onclick=()=>start(true);$('result-change-mode-btn').onclick=selectMode;$('review-btn').onclick=review;$('review-back-btn').onclick=()=>show('result-screen');$('review-again-btn').onclick=()=>start(true);$('review-mode-btn').onclick=selectMode;
+document.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.target?.closest?.('.mei-special-editor'))return;if($('quiz-screen').classList.contains('hidden'))return;e.preventDefault();if(nextReady)next();else check()});
+window.addEventListener('DOMContentLoaded',()=>{window.MathGameCommonHeader?.init({mountId:'commonHeaderMount',basePath:'../'});const mount=$('scratchpad-mobile-button'),button=$('scratchpadOpenButton');if(mount&&button)mount.appendChild(button)});
+
+</script>
+
+</body>
+</html>
