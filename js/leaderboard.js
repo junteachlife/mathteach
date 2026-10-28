@@ -3,7 +3,7 @@
 生活有解．心中有數｜遊戲排行榜
 檔案位置：js/leaderboard.js
 
-版本：9.4
+版本：9.5｜七上 3-2 新版五模式及歷史四模式相容
 2026-10-15 章節名稱顯示＋公開暱稱同步版
 ==================================================
 
@@ -15,9 +15,7 @@
 4. 只顯示 finished:true 的正式遊戲
 5. 多模式遊戲可切換模式
 6. 同一玩家、同一遊戲、同一模式只保留最佳紀錄
-7. 一元一次方程式：
-   mode "1"～"4" 保持不變
-   只修改排行榜中文名稱
+7. 一元一次方程式：新版 v2-1～v2-5 與舊版 1～4 分別排名，名稱統一來自共用設定
 8. 每個排行榜最多 20 名
 9. Firestore 讀取失敗時不會再被後續畫面覆蓋
 10. 九上 1-2／1-3／1-4／2-1／2-2／3-1／3-2 直接依 game-config.js 的正式 GAME_ID / modeId 建榜
@@ -38,7 +36,7 @@ import {
   getGamesBySemester,
   getGameConfig,
   getGameName
-} from "./game-config.js?v=10.1";
+} from "./game-config.js?v=20261028-equation5";
 
 
 import {
@@ -168,37 +166,12 @@ const publicProfileCache =
 
 /*
 ==================================================
-一元一次方程式模式正式名稱
-
-重要：
-
-Firestore 中仍然使用：
-1
-2
-3
-4
-
-這裡只負責「顯示中文名稱」。
+七上 3-2：歷史成績與新版五模式共存
+舊版：1 / 2 / 3 / 4
+新版：v2-1 / v2-2 / v2-3 / v2-4 / v2-5
+名稱統一讀取 game-config.js，避免硬編碼覆蓋新版名稱。
 ==================================================
 */
-
-
-const EQUATION_MODE_NAMES = {
-
-  "1":
-    "基本一元一次方程式",
-
-  "2":
-    "移項與合併同類項",
-
-  "3":
-    "括號、負號與化簡",
-
-  "4":
-    "分數係數方程式"
-
-};
-
 
 /*
 ==================================================
@@ -654,9 +627,17 @@ function getGameModes(
   }
 
 
-  return Object.entries(
-    modes
-  )
+  const entries = Object.entries(modes);
+  if (String(gameId) === "equation") {
+    entries.sort(([a], [b]) => {
+      const aNew = /^v2-[1-5]$/.test(a);
+      const bNew = /^v2-[1-5]$/.test(b);
+      if (aNew !== bNew) return aNew ? -1 : 1;
+      if (aNew && bNew) return Number(a.slice(3)) - Number(b.slice(3));
+      return Number(a) - Number(b);
+    });
+  }
+  return entries
     .map(
       (
         [
@@ -669,44 +650,6 @@ function getGameModes(
           String(
             rawId
           );
-
-
-        /*
-        ==============================================
-        一元一次方程式
-
-        遊戲 ID：
-        equation
-
-        Firestore：
-        1 / 2 / 3 / 4
-
-        只更換顯示名稱。
-        ==============================================
-        */
-
-
-        if (
-          String(
-            gameId
-          ) === "equation"
-        ) {
-
-          return {
-
-            id:
-              modeId,
-
-            name:
-              EQUATION_MODE_NAMES[
-                modeId
-              ] ||
-              String(
-                rawName
-              )
-
-          };
-        }
 
 
         /*
@@ -2846,7 +2789,7 @@ try {
 
 
   console.log(
-    "leaderboard.js v9.4 根式運算舊ID相容版已成功載入"
+    "leaderboard.js v9.5 七上3-2新舊模式相容版已成功載入"
   );
 
 
@@ -2858,7 +2801,7 @@ try {
 
   console.log(
     "一元一次方程式排行榜模式：",
-    EQUATION_MODE_NAMES
+    getGameModes("equation")
   );
 
 } catch (
