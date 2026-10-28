@@ -62,7 +62,7 @@ import {
   getGameConfig,
   getGameName,
   getModeName
-} from "./game-config.js?v=20261028-equation5";
+} from "./game-config.js?v=20261029-3133";
 
 
 import {
