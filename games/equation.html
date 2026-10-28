@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>一元一次方程式挑戰賽｜生活有解．心中有數</title>
+<title>3-2 解一元一次方程式大挑戰｜生活有解．心中有數</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%237b1fa2%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2244%22%20font-size%3D%2239%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-weight%3D%22bold%22%20fill%3D%22white%22%3E%E6%96%B9%3C%2Ftext%3E%3C%2Fsvg%3E">
 
 <link rel="stylesheet" href="../css/scratchpad.css">
@@ -845,6 +845,17 @@ body.equation-home .example{color:#557b77}
 #equation-answer-mount .mei-main-row{align-items:flex-start!important}
 #equation-answer-mount .mei-editor-wrap{min-height:64px}
 @media(max-width:640px){.unified-row>.answer-x{height:62px;font-size:25px}}
+
+/* 七上 3-2：概念判斷題與原有數值輸入共用版面 */
+.concept-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:900px;margin:8px auto 18px}
+.concept-option{border:2px solid #d5c5e2;border-radius:13px;background:white;color:#36213f;min-height:70px;padding:14px 12px;font-family:'Cambria Math','Microsoft JhengHei',sans-serif;font-size:clamp(16px,2vw,21px);font-weight:750;line-height:1.6;text-align:center;cursor:pointer;overflow-wrap:anywhere}
+.concept-option:hover{border-color:#7b1fa2;background:#fbf4fd}
+.concept-option.selected{border-color:#7b1fa2;background:#eedbf4;box-shadow:0 0 0 2px #a65abb33}
+.concept-option:disabled{cursor:default;opacity:.85}
+.concept-option.correct-option{border-color:#16a34a;background:#f0fdf4}
+#problem-text.concept-prompt{font-family:'Microsoft JhengHei','Noto Sans TC',sans-serif;font-size:clamp(18px,2.5vw,28px);white-space:normal;overflow-wrap:anywhere;text-align:center;line-height:1.8}
+#problem-text.concept-prompt .math-expression{white-space:normal;min-width:0;display:inline;line-height:1.8}
+@media(max-width:620px){.concept-choices{grid-template-columns:1fr}.concept-option{min-height:56px}}
 </style>
 
 <script
@@ -870,36 +881,21 @@ body.equation-home .example{color:#557b77}
   <div class="inner">
     <header class="equation-game-header">
       <a class="grade-return" href="../index.html?semester=grade7-first">↩ 重返七年級上學期</a>
-      <h1 class="title">⚡ 一元一次方程式挑戰賽</h1>
-      <p class="subtitle">四種模式涵蓋基本方程式、移項合併、括號運算與分數係數方程式。</p>
-      <div class="concept-strip"><span>基本方程式</span><span>移項與合併</span><span>括號與負號</span><span>分數係數</span></div>
+      <h1 class="title">⚡ 3-2 解一元一次方程式大挑戰</h1>
+      <p class="subtitle">五種模式依照七上 3-2 教材編排：列式與解的檢驗、等量公理、移項、括號化簡及含分數方程式。</p>
+      <div class="concept-strip"><span>列式與檢驗</span><span>等量公理</span><span>移項與合併</span><span>括號與負號</span><span>分數係數</span></div>
     </header>
     <section id="start-screen">
 
       <div class="modes">
 
         <label class="mode-card">
-
-          <input
-            type="radio"
-            name="mode"
-            value="1"
-            checked
-          >
-
+          <input type="radio" name="mode" value="1" checked>
           <span>
-
             <div class="mode-count">10 題</div>
-            <div class="mode-title">
-              模式一｜基本一元一次方程式
-            </div>
-
-            <div class="example">
-              例如：6x = 7、−3x = 6
-            </div>
-
+            <div class="mode-title">模式一｜認識方程式與解的檢驗</div>
+            <div class="example">主題一概念 1、2：依文字敘述列式，並將候選值代入左右兩邊檢驗。</div>
           </span>
-
         </label>
 
         <label class="mode-card">
@@ -908,17 +904,18 @@ body.equation-home .example{color:#557b77}
             type="radio"
             name="mode"
             value="2"
+            checked
           >
 
           <span>
 
             <div class="mode-count">10 題</div>
             <div class="mode-title">
-              模式二｜移項與合併同類項
+              模式二｜基本一元一次方程式
             </div>
 
             <div class="example">
-              例如：3x − 5 = 2x + 4
+              例如：6x = 7、−3x = 6
             </div>
 
           </span>
@@ -937,11 +934,11 @@ body.equation-home .example{color:#557b77}
 
             <div class="mode-count">10 題</div>
             <div class="mode-title">
-              模式三｜括號、負號與化簡
+              模式三｜移項與合併同類項
             </div>
 
             <div class="example">
-              例如：(x − 2) − (−3x + 5) = 5
+              例如：3x − 5 = 2x + 4
             </div>
 
           </span>
@@ -958,9 +955,32 @@ body.equation-home .example{color:#557b77}
 
           <span>
 
+            <div class="mode-count">10 題</div>
+            <div class="mode-title">
+              模式四｜括號、負號與化簡
+            </div>
+
+            <div class="example">
+              例如：(x − 2) − (−3x + 5) = 5
+            </div>
+
+          </span>
+
+        </label>
+
+        <label class="mode-card">
+
+          <input
+            type="radio"
+            name="mode"
+            value="5"
+          >
+
+          <span>
+
             <div class="mode-count">6 題</div>
             <div class="mode-title">
-              模式四｜分數係數方程式
+              模式五｜分數係數方程式
             </div>
 
             <div class="example">
@@ -1034,11 +1054,12 @@ body.equation-home .example{color:#557b77}
 
           <div class="answer-wrap">
 
-            <div class="label">
-              請求出方程式的解
-            </div>
+            <div class="label" id="question-instruction">請求出方程式的解</div>
 
+            <div id="concept-choices" class="concept-choices hidden" role="group" aria-label="選擇答案"></div>
+            <div id="numeric-answer-area">
             <div class="answer-entry-row unified-row"><span class="answer-x">x ＝</span><div id="equation-answer-mount"></div></div>
+            </div>
             <div id="normalized-preview" class="preview" style="display:none"></div>
 
             <div class="actions">
@@ -1246,10 +1267,11 @@ const GAME_ID =
   "equation";
 
 const MODE_NAMES = {
-  1:"模式一",
-  2:"模式二",
-  3:"模式三",
-  4:"模式四"
+  1:"模式一｜認識方程式與解的檢驗",
+  2:"模式二｜基本一元一次方程式",
+  3:"模式三｜移項與合併同類項",
+  4:"模式四｜括號、負號與化簡",
+  5:"模式五｜分數係數方程式"
 };
 
 const $ =
@@ -1286,7 +1308,7 @@ let equationAudioContext =
 
 function totalQuestions() {
   return (
-    mode === 4
+    mode === 5
       ? 6
       : 10
   );
@@ -1940,6 +1962,7 @@ function normalizeSingleTermParentheses(
 }
 
 function questionHTML(q) {
+  if(q.kind==='choice')return `<span class="math-expression">${q.prompt}</span>`;
   return (
     `<span class="math-expression">` +
       `${normalizeSingleTermParentheses(
@@ -2597,7 +2620,69 @@ function makeMode4Question(
 ==================================================
 */
 
-function makeQuestions(
+
+/* 主題 1：以符號列出方程式、解的檢驗。依 PDF 概念設計同型隨機類題，非直接照搬。 */
+let chosenConceptIndex = -1;
+function makeWordingQuestion(){
+  const x=rand(2,14), b=rand(2,11), a=rand(2,9), t=rand(2,5);
+  const kind=rand(0,7);
+  let statement, correctEquation, wrong;
+  if(kind===0){statement=`x 加 ${b} 是 ${x+b}。`;correctEquation=`x + ${b} = ${x+b}`;wrong=[`x − ${b} = ${x+b}`,`${b}x = ${x+b}`,`x + ${x+b} = ${b}`];}
+  else if(kind===1){statement=`x 減 ${b} 等於 ${x-b}。`;correctEquation=`x − ${b} = ${x-b}`;wrong=[`x + ${b} = ${x-b}`,`${b} − x = ${x-b}`,`x ÷ ${b} = ${x-b}`];}
+  else if(kind===2){statement=`x 的 ${a} 倍再加 ${b} 是 ${a*x+b}。`;correctEquation=`${a}x + ${b} = ${a*x+b}`;wrong=[`${a}(x + ${b}) = ${a*x+b}`,`${a}x − ${b} = ${a*x+b}`,`x + ${a} + ${b} = ${a*x+b}`];}
+  else if(kind===3){statement=`${a*x-b} 等於 x 的 ${a} 倍少 ${b}。`;correctEquation=`${a*x-b} = ${a}x − ${b}`;wrong=[`${a*x-b} = ${a}x + ${b}`,`${a*x-b} = ${a}(x − ${b})`,`${a*x-b} = x − ${a*b}`];}
+  else if(kind===4){statement=`把 x 平均分成 ${a} 等分，每一等分等於 ${t}。`;correctEquation=`x ÷ ${a} = ${t}`;wrong=[`x × ${a} = ${t}`,`x − ${a} = ${t}`,`${a} ÷ x = ${t}`];}
+  else if(kind===5){statement=`x 加 ${b} 之後的 ${a} 倍是 ${a*(x+b)}。`;correctEquation=`${a}(x + ${b}) = ${a*(x+b)}`;wrong=[`${a}x + ${b} = ${a*(x+b)}`,`${a}(x − ${b}) = ${a*(x+b)}`,`x + ${a*b} = ${a*(x+b)}`];}
+  else if(kind===6){statement=`x 減 ${b} 之後的 ${a} 倍是 ${a*(x-b)}。`;correctEquation=`${a}(x − ${b}) = ${a*(x-b)}`;wrong=[`${a}x − ${b} = ${a*(x-b)}`,`${a}(x + ${b}) = ${a*(x-b)}`,`x − ${a*b} = ${a*(x-b)}`];}
+  else{statement=`x 的三分之二等於 ${2*t}。`;correctEquation=`2x ÷ 3 = ${2*t}`;wrong=[`3x ÷ 2 = ${2*t}`,`2x − 3 = ${2*t}`,`x + 2 ÷ 3 = ${2*t}`];}
+  const options=shuffle([correctEquation,...wrong]);
+  return {kind:'choice',subtype:'word',prompt:`依照下列文字敘述，選出正確的一元一次方程式：<div class="concept-statement">${statement}</div>`,options,correctIndex:options.indexOf(correctEquation),answerLabel:correctEquation,solutionNotes:[['找出未知數','用 x 表示題目中不知道的數。'],['將文字逐段翻譯成算式',`「${statement}」表示 ${correctEquation}。要注意「之後的倍數」應將整個括號一起相乘。`],['核對等號兩邊','等號代表兩個數量相等；請檢查倍數、加減順序與括號範圍。']]};
+}
+function makeVerificationQuestion(){
+  const root=rand(-9,9),a=rand(2,7),c=rand(-5,5),b=rand(-15,15);
+  if(a===c)return makeVerificationQuestion();
+  const d=(a-c)*root+b;
+  const eq=`${linear(a,b)} = ${linear(c,d)}`;
+  const choices=shuffle([root,root+rand(1,4),root-rand(1,4),root+rand(5,9)]);
+  const options=choices.map(v=>`x = ${integerText(v)}`);
+  const steps=choices.map(v=>{
+    const l=a*v+b,r=c*v+d;
+    return `將 x = ${integerText(v)} 代入：左邊 = ${integerText(a)} × (${integerText(v)}) ${b<0?'−':'+'} ${Math.abs(b)} = ${integerText(l)}；右邊 = ${integerText(c)} × (${integerText(v)}) ${d<0?'−':'+'} ${Math.abs(d)} = ${integerText(r)}；${l===r?'左右相等，是方程式的解。':'左右不相等，不是方程式的解。'}`;
+  });
+  return {kind:'choice',subtype:'verify',prompt:`下列哪一個數是方程式 <strong>${eq}</strong> 的解？<div class="concept-statement">請將候選值代入等號左右兩邊比較。</div>`,options,correctIndex:options.indexOf(`x = ${integerText(root)}`),answerLabel:`x = ${integerText(root)}`,solutionNotes:[['解的意義','只有代入後讓等號左邊與右邊數值相同的 x，才是方程式的解。'],['逐一代入檢查',steps.join('<hr style="border:0;border-top:1px solid #e5e7eb;margin:9px 0">')],['最後判定',`只有 x = ${integerText(root)} 使兩邊相等，所以選這個答案。`]]};
+}
+function makeConceptQuestions(){
+  const out=[],used=new Set();
+  for(let i=0;i<10;i++){
+    for(let attempt=0;attempt<200;attempt++){
+      const q=i<5?makeWordingQuestion():makeVerificationQuestion();
+      const key=q.prompt;
+      if(used.has(key))continue;
+      used.add(key);out.push(q);break;
+    }
+  }
+  if(out.length!==10)throw Error('概念題目不足');
+  return shuffle(out);
+}
+function makeQuestions(selectedMode){
+  if(selectedMode===1)return makeConceptQuestions();
+  return makeLegacyQuestions(selectedMode-1);
+}
+function updateConceptSelection(){
+  document.querySelectorAll('.concept-option').forEach((button,i)=>{
+    button.classList.toggle('selected',i===chosenConceptIndex);
+    button.setAttribute('aria-pressed',String(i===chosenConceptIndex));
+  });
+}
+function showConceptOptions(q){
+  const box=$('concept-choices');box.innerHTML='';chosenConceptIndex=-1;
+  q.options.forEach((option,i)=>{
+    const button=document.createElement('button');button.type='button';button.className='concept-option';button.textContent=`${String.fromCharCode(65+i)}. ${option}`;
+    button.addEventListener('click',()=>{if(locked)return;chosenConceptIndex=i;updateConceptSelection();});
+    box.appendChild(button);
+  });
+}
+function makeLegacyQuestions(
   selectedMode
 ) {
   const output = [];
@@ -3639,7 +3724,13 @@ function loadQuestion() {
     .width =
       `${index / total * 100}%`;
 
-  clearAnswerInputs();
+  const isChoice=q.kind==='choice';
+  $('question-instruction').textContent=isChoice?'請選出正確答案':'請求出方程式的解';
+  $('question-instruction').textContent=isChoice?'請選出正確答案':'請求出方程式的解';
+  $('concept-choices').classList.toggle('hidden',!isChoice);
+  $('numeric-answer-area').classList.toggle('hidden',isChoice);
+  $('problem-text').classList.toggle('concept-prompt',isChoice);
+  if(isChoice){showConceptOptions(q);}else{clearAnswerInputs();}
 
   configureAnswerInputs(
     q
@@ -3649,7 +3740,7 @@ function loadQuestion() {
 
   setTimeout(
     () => {
-      equationInput?.focus?.();
+      if(mode!==1)equationInput?.focus?.();
     },
     0
   );
@@ -3841,6 +3932,12 @@ function scaledDisplay(terms,multiple){
   }).join("")||"0";
 }
 function buildEquationSolution(q){
+  if(q.kind==='choice'){
+    return `<div class="solution-title">📘 完整詳解</div>`+
+      equationStep('原題',q.prompt)+
+      q.solutionNotes.map(([title,detail],i)=>equationStep(`步驟${i+1}｜${title}`,detail)).join('')+
+      equationStep('正確答案',`<strong>${q.answerLabel}</strong>`);
+  }
   const out=[];
   const add=(title,math)=>{
     if(math&&String(math).trim())out.push(equationStep(`步驟${out.length+1}｜${title}`,math));
@@ -3881,7 +3978,7 @@ function buildEquationSolution(q){
       }else if(stripped(q.qStr)!==stripped(simplified)){
         add('去括號、分配律乘開',`${expandedExpression(leftTerms)} ＝ ${expandedExpression(rightTerms)}`);
       }
-    }else if(mode===3 && stripped(q.qStr)!==stripped(simplified)){
+    }else if(mode===4 && stripped(q.qStr)!==stripped(simplified)){
       add('去括號，利用分配律乘開',`${expandedExpression(leftTerms)} ＝ ${expandedExpression(rightTerms)}`);
     }
 
@@ -3922,7 +4019,25 @@ function buildEquationSolution(q){
 ==================================================
 */
 
+function checkConceptAnswer(){
+  if(locked)return;
+  const q=questions[index];
+  if(chosenConceptIndex<0){$('feedback').textContent='請先選擇一個答案。';return;}
+  const ok=chosenConceptIndex===q.correctIndex;locked=true;
+  if(ok){correct++;playGameSound('playCorrect');}else{wrong++;playGameSound('playWrong');}
+  records.push({number:index+1,question:q,userParsed:null,userRaw:q.options[chosenConceptIndex],ok});
+  document.querySelectorAll('.concept-option').forEach((button,i)=>{button.disabled=true;if(i===q.correctIndex)button.classList.add('correct-option');});
+  $('feedback').innerHTML=ok?'<span style="color:#15803d">✨ 正確！</span>':`<span style="color:#b91c1c">❌ 答案不正確。正確答案：${q.answerLabel}</span>`;
+  $('full-solution').innerHTML=buildEquationSolution(q);
+  $('full-solution').classList.remove('hidden');
+  nextTimer=setTimeout(()=>{
+    $('submit-btn').classList.add('hidden');$('next-btn').classList.remove('hidden');
+    $('next-btn').textContent=index===totalQuestions()-1?'查看測驗結果（Enter）':'下一題（Enter）';
+    nextReady=true;$('next-btn').focus();
+  },ok?850:1200);
+}
 function check() {
+  if(mode===1){checkConceptAnswer();return;}
   if (
     locked
   ) {
@@ -4170,10 +4285,7 @@ async function saveCurrentScore(
         playTime:
           finalElapsed,
 
-        mode:
-          String(
-            mode
-          )
+        mode: `v2-${mode}`
       });
 
     if (
@@ -4351,18 +4463,12 @@ function showReview() {
                 `</div>` +
 
                 `<div class="review-problem">` +
-                  `${normalizeUnitBracketCoefficients(
-                    record.question.qStr
-                  )}` +
+                  `${(record.question.kind==='choice'?record.question.prompt:normalizeUnitBracketCoefficients(record.question.qStr))}` +
                 `</div>` +
 
                 `<div class="review-answer">` +
-                  `你的答案：<b>x ＝ ${mathFracHTML(
-                    record.userParsed
-                  )}</b><br>` +
-                  `正確答案：<b>x ＝ ${mathFracHTML(
-                    record.question.ans
-                  )}</b>` +
+                  `你的答案：<b>${record.question.kind==='choice'?'':'x ＝ '}${(record.question.kind==='choice'?record.userRaw:mathFracHTML(record.userParsed))}</b><br>` +
+                  `正確答案：<b>${record.question.kind==='choice'?'':'x ＝ '}${(record.question.kind==='choice'?record.question.answerLabel:mathFracHTML(record.question.ans))}</b>` +
                 `</div>` +
                 `<div class="review-explanation">${buildEquationSolution(record.question)}</div>` +
               `</article>`
