@@ -554,6 +554,38 @@ export const GAME_CONFIG = {
 
 
 
+  "expression-operations": {
+    section: "3-1", id: "expression-operations", name: "3-1 式子的運算大挑戰", shortName: "式子的運算大挑戰",
+    semester: "grade7-first", grade: 7, order: 6.5, icon: "📘",
+    file: "games/expression-operations.html",
+    description: "依七上 3-1 教材設計，含詳細解析、計算紙與錯題回顧。",
+    finished: true, difficulty: 2, recommended: false, isNew: true,
+    ranking: {type: "timed"}, modes: {
+      "1": "模式一｜符號簡記與乘除表示",
+      "2": "模式二｜文字敘述與生活列式",
+      "3": "模式三｜代入求式子的值",
+      "4": "模式四｜加減與合併同類項",
+      "5": "模式五｜乘除與分配律",
+      "6": "模式六｜含分數式子的化簡"
+    },
+    theme: {primary: "#7b1fa2",dark: "#4a148c",light: "#f3e5f5",border: "#ce93d8"}
+  },
+
+  "equation-applications": {
+    section: "3-3", id: "equation-applications", name: "3-3 一元一次方程式應用問題大挑戰", shortName: "一元一次方程式應用問題大挑戰",
+    semester: "grade7-first", grade: 7, order: 7.5, icon: "📘",
+    file: "games/equation-applications.html",
+    description: "依七上 3-3 教材設計，含詳細解析、計算紙與錯題回顧。",
+    finished: true, difficulty: 3, recommended: false, isNew: true,
+    ranking: {type: "timed"}, modes: {
+      "1": "模式一｜依題意列方程式",
+      "2": "模式二｜分配與金錢問題",
+      "3": "模式三｜幾何與年齡問題",
+      "4": "模式四｜折扣、行程與合理性"
+    },
+    theme: {primary: "#7b1fa2",dark: "#4a148c",light: "#f3e5f5",border: "#ce93d8"}
+  },
+
   equation: {
 
     section: "3-2",
