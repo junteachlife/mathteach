@@ -3,7 +3,7 @@
 生活有解．心中有數｜我的成績
 檔案位置：js/my-scores.js
 
-版本：3.13
+版本：3.14｜七上 3-2 五模式及歷史模式相容
 章節名稱簡化顯示＋公開暱稱同步版
 ==================================================
 
@@ -62,7 +62,7 @@ import {
   getGameConfig,
   getGameName,
   getModeName
-} from "./game-config.js?v=10.1";
+} from "./game-config.js?v=20261028-equation5";
 
 
 import {
@@ -3130,5 +3130,5 @@ function showError(
 
 
 console.log(
-  "my-scores.js v3.13 呼叫堆疊修復版已成功載入"
+  "my-scores.js v3.14 七上3-2五模式相容版已成功載入"
 );
