@@ -3839,13 +3839,29 @@ function expressionTerms(expr){
     b:equationEval(source,0)
   }));
 }
+function equationNumeratorForDisplay(numerator){
+  // 分數線已經表示整個分子；但分子有多項相加減時，再明確補括號，
+  // 例如 (-41-x)/2，而非讓學生誤會只有最後一項除以 2。
+  const raw=String(numerator).trim();
+  let depth=0, hasTopLevelAddSubtract=false;
+  for(let i=0;i<raw.length;i++){
+    const ch=raw[i];
+    if(ch==="(")depth++;
+    else if(ch===")")depth--;
+    else if(depth===0&&i>0&&(ch==="+"||ch==="-"||ch==="−")){
+      hasTopLevelAddSubtract=true;
+    }
+  }
+  const pretty=raw.replace(/\*/g,"×").replace(/-/g,"−");
+  return hasTopLevelAddSubtract ? `(${pretty})` : pretty;
+}
 function equationPrettySource(source){
   let s=source.trim().replace(/\*/g,"×").replace(/-/g,"−");
-  // 保留上下分數；完整分式先還原為可閱讀的直式版面。
+  // 分數線上方若是多項式，將整個分子括起來。
   s=s.replace(/\(\((.*?)\)\/\((\d+)\)\)/g,(_,numerator,denominator)=>
-    stackedFractionHTML(numerator,denominator));
+    stackedFractionHTML(equationNumeratorForDisplay(numerator),denominator));
   s=s.replace(/\(([^()]*)\)\/(\d+)/g,(_,numerator,denominator)=>
-    stackedFractionHTML(numerator,denominator));
+    stackedFractionHTML(equationNumeratorForDisplay(numerator),denominator));
   return s;
 }
 function mathOuterBracket(content,source=""){
@@ -3926,8 +3942,9 @@ function scaledDisplay(terms,multiple){
     const source=equationPrettySource(t.source);
     const neg=t.source[0]==="-";
     const positive=source.replace(/^[＋+−-]/,"").trim();
-    // 分式保持直式；第一層小括號，已有數學小括號才使用中括號。
-    const item=`${mathOuterBracket(positive,t.source)} × ${multiple}`;
+    // 統一顯示「最小公倍數 × 每一項」。分數線已自帶分組，
+    // 只有一般多項式才視需要再加外括號。
+    const item=`${multiple} × ${positive.includes('class="math-frac"')?positive:mathOuterBracket(positive,t.source)}`;
     return (i===0?(neg?"−":""):(neg?" − ":" + "))+item;
   }).join("")||"0";
 }
@@ -3950,7 +3967,7 @@ function buildEquationSolution(q){
     const result=ratDiv(rhs,coef);
     if(!ratEq(result,q.ans))throw Error('題目係數與答案不符');
     add('原方程式',questionHTML(q));
-    if(mode===1){
+    if(mode===2){
       add('兩邊同除以 x 的係數',`x ＝ ${mathFracHTML(d)} ÷ (${mathFracHTML(a)}) ＝ <strong>${mathFracHTML(result)}</strong>`);
       return root+out.join('');
     }
@@ -3962,21 +3979,22 @@ function buildEquationSolution(q){
     const simplified=`${originalLeft} ＝ ${originalRight}`;
     const stripped=(t)=>t.replace(/<[^>]+>/g,'').replace(/\s+/g,'').replace(/[−－]/g,'-');
 
-    if(mode===4){
+    if(mode===5){
       const allDen=[...scaledDenominators(source),...leftTerms.flatMap(t=>[t.a.d,t.b.d]),...rightTerms.flatMap(t=>[t.a.d,t.b.d])];
       const lcm=allDen.reduce((n,x)=>equationLCM(n,x),1);
       if(lcm>1){
-        add(`兩邊各項同乘 ${lcm}`,`${scaledDisplay(leftTerms,lcm)} ＝ ${scaledDisplay(rightTerms,lcm)}`);
+        add(`找最小公倍數，等號兩邊同乘 ${lcm}`,`分母的最小公倍數是 <strong>${lcm}</strong>。依等量公理，等號左右兩邊每一項都乘以 ${lcm}：<div style="margin-top:6px">${scaledDisplay(leftTerms,lcm)} ＝ ${scaledDisplay(rightTerms,lcm)}</div>`);
         leftTerms=scaledExpressionTerms(leftTerms,lcm);
         rightTerms=scaledExpressionTerms(rightTerms,lcm);
+        if([...leftTerms,...rightTerms].some(t=>t.a.d!==1||t.b.d!==1))throw Error("去分母後仍有非整數係數");
         // Distribute and retain individual x and constant terms; only combine in the following step.
-        add('消去分母，先整理乘法與括號',`${cancelledExpression(expressionTerms(sides[0]),lcm)} ＝ ${cancelledExpression(expressionTerms(sides[1]),lcm)}`);
+        add('約去分母，保留尚未乘開的括號',`${cancelledExpression(expressionTerms(sides[0]),lcm)} ＝ ${cancelledExpression(expressionTerms(sides[1]),lcm)}`);
         const distributed=`${expandedExpression(leftTerms)} ＝ ${expandedExpression(rightTerms)}`;
         if(stripped(distributed)!==stripped(`${cancelledExpression(expressionTerms(sides[0]),lcm)} ＝ ${cancelledExpression(expressionTerms(sides[1]),lcm)}`)){
-          add('利用分配律乘開',distributed);
+          add('利用分配律去括號，逐項乘開',distributed);
         }
       }else if(stripped(q.qStr)!==stripped(simplified)){
-        add('去括號、分配律乘開',`${expandedExpression(leftTerms)} ＝ ${expandedExpression(rightTerms)}`);
+        add('分母已消去，再用分配律去括號',`${expandedExpression(leftTerms)} ＝ ${expandedExpression(rightTerms)}`);
       }
     }else if(mode===4 && stripped(q.qStr)!==stripped(simplified)){
       add('去括號，利用分配律乘開',`${expandedExpression(leftTerms)} ＝ ${expandedExpression(rightTerms)}`);
