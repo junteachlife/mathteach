@@ -3,7 +3,7 @@
 數學遊戲樂園：遊戲共用設定
 檔案位置：js/game-config.js
 
-版本：10.1
+版本：11.0（六學期單一資料來源）
 七年級下學期 1-1～6 正式上線同步版
 ＋七下 4-1／4-2／第 5 章／第 6 章
 ＋八年級上學期完整遊戲設定
@@ -1658,6 +1658,248 @@ export const GAME_CONFIG = {
     modes:{basic:"基礎概念",factor:"因式分解法",completeSquare:"平方根與配方法",formula:"公式解與判別式",application:"一元二次應用問題",mixed:"全章綜合挑戰"},
     theme:{primary:"#64748B",dark:"#475569",light:"#F1F5F9",border:"#CBD5E1"}
   }
+,
+  /* 八下及九下：由首頁搬移至單一設定檔；保留既有遊戲識別碼與檔名 */
+  "linear-function": {
+    id: "linear-function",
+    name: "線型函數與圖形大挑戰",
+    shortName: "線型函數與圖形",
+    semester: "grade8-second",
+    grade: 8,
+    order: 4,
+    icon: "📈",
+    file: "games/linear-function.html",
+    description: "練習線型函數、座標代入與圖形判讀。",
+    finished: false,
+    difficulty: 2,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#F57C00","dark":"#E65100","light":"#FFF3E0","border":"#FFCC80"}
+  },
+  "triangle-angles": {
+    id: "triangle-angles",
+    name: "三角形內角與外角大挑戰",
+    shortName: "三角形內角與外角",
+    semester: "grade8-second",
+    grade: 8,
+    order: 5,
+    icon: "📐",
+    file: "games/triangle-angles.html",
+    description: "運用內角和與外角性質進行角度計算。",
+    finished: false,
+    difficulty: 2,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#D81B60","dark":"#AD1457","light":"#FCE4EC","border":"#F48FB1"}
+  },
+  "compass-straightedge": {
+    id: "compass-straightedge",
+    name: "基本尺規作圖大挑戰",
+    shortName: "基本尺規作圖",
+    semester: "grade8-second",
+    grade: 8,
+    order: 6,
+    icon: "📏",
+    file: "games/compass-straightedge.html",
+    description: "練習垂直平分線、角平分線與基本尺規作圖。",
+    finished: false,
+    difficulty: 2,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#3949AB","dark":"#283593","light":"#E8EAF6","border":"#9FA8DA"}
+  },
+  "triangle-congruence": {
+    id: "triangle-congruence",
+    name: "三角形全等大挑戰",
+    shortName: "三角形全等",
+    semester: "grade8-second",
+    grade: 8,
+    order: 7,
+    icon: "🔺",
+    file: "games/triangle-congruence.html",
+    description: "練習三角形全等性質與判別條件。",
+    finished: false,
+    difficulty: 3,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#00838F","dark":"#006064","light":"#E0F7FA","border":"#80DEEA"}
+  },
+  "bisector-perpendicular": {
+    id: "bisector-perpendicular",
+    name: "中垂線與角平分線大挑戰",
+    shortName: "中垂線與角平分線",
+    semester: "grade8-second",
+    grade: 8,
+    order: 8,
+    icon: "🎯",
+    file: "games/bisector-perpendicular.html",
+    description: "練習中垂線、角平分線與等距性質。",
+    finished: false,
+    difficulty: 3,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#43A047","dark":"#2E7D32","light":"#E8F5E9","border":"#A5D6A7"}
+  },
+  "triangle-side-angle": {
+    id: "triangle-side-angle",
+    name: "三角形邊角關係大挑戰",
+    shortName: "三角形邊角關係",
+    semester: "grade8-second",
+    grade: 8,
+    order: 9,
+    icon: "📐",
+    file: "games/triangle-side-angle.html",
+    description: "練習三角形邊長、角度大小與三角形不等式。",
+    finished: false,
+    difficulty: 3,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#EF6C00","dark":"#E65100","light":"#FFF3E0","border":"#FFB74D"}
+  },
+  "parallel-transversal": {
+    id: "parallel-transversal",
+    name: "平行線與截角大挑戰",
+    shortName: "平行線與截角",
+    semester: "grade8-second",
+    grade: 8,
+    order: 10,
+    icon: "∥",
+    file: "games/parallel-transversal.html",
+    description: "練習同位角、內錯角、同側內角與平行線判別。",
+    finished: false,
+    difficulty: 2,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#1976D2","dark":"#125CA6","light":"#E3F2FD","border":"#90CAF9"}
+  },
+  "parallelogram": {
+    id: "parallelogram",
+    name: "平行四邊形大挑戰",
+    shortName: "平行四邊形",
+    semester: "grade8-second",
+    grade: 8,
+    order: 11,
+    icon: "▱",
+    file: "games/parallelogram.html",
+    description: "練習平行四邊形的性質與判別。",
+    finished: false,
+    difficulty: 2,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#5E35B1","dark":"#4527A0","light":"#EDE7F6","border":"#B39DDB"}
+  },
+  "special-quadrilateral": {
+    id: "special-quadrilateral",
+    name: "特殊四邊形大挑戰",
+    shortName: "特殊四邊形",
+    semester: "grade8-second",
+    grade: 8,
+    order: 12,
+    icon: "◇",
+    file: "games/special-quadrilateral.html",
+    description: "練習長方形、菱形與正方形的性質與判別。",
+    finished: false,
+    difficulty: 3,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#C2185B","dark":"#880E4F","light":"#FCE4EC","border":"#F48FB1"}
+  },
+  "quadratic-function-graph": {
+    id: "quadratic-function-graph",
+    name: "二次函數圖形大挑戰",
+    shortName: "二次函數圖形",
+    semester: "grade9-second",
+    grade: 9,
+    order: 1,
+    icon: "📈",
+    file: "games/quadratic-function-graph.html",
+    description: "認識基本二次函數圖形、開口方向、頂點與對稱軸。",
+    finished: false,
+    difficulty: 2,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#1565C0","dark":"#0D47A1","light":"#E3F2FD","border":"#90CAF9"}
+  },
+  "quadratic-function-extrema": {
+    id: "quadratic-function-extrema",
+    name: "二次函數最值大挑戰",
+    shortName: "二次函數最值",
+    semester: "grade9-second",
+    grade: 9,
+    order: 2,
+    icon: "🎢",
+    file: "games/quadratic-function-extrema.html",
+    description: "練習二次函數圖形與最大值、最小值。",
+    finished: false,
+    difficulty: 3,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#7B1FA2","dark":"#6A1B9A","light":"#F3E5F5","border":"#CE93D8"}
+  },
+  "quartile-boxplot": {
+    id: "quartile-boxplot",
+    name: "四分位數與盒狀圖大挑戰",
+    shortName: "四分位數與盒狀圖",
+    semester: "grade9-second",
+    grade: 9,
+    order: 3,
+    icon: "📊",
+    file: "games/quartile-boxplot.html",
+    description: "練習四分位數、四分位距以及盒狀圖判讀。",
+    finished: false,
+    difficulty: 2,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#D81B60","dark":"#AD1457","light":"#FCE4EC","border":"#F48FB1"}
+  },
+  "probability": {
+    id: "probability",
+    name: "機率大挑戰",
+    shortName: "機率",
+    semester: "grade9-second",
+    grade: 9,
+    order: 4,
+    icon: "🎲",
+    file: "games/probability.html",
+    description: "練習樣本空間、事件與基本機率計算。",
+    finished: false,
+    difficulty: 2,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#F57C00","dark":"#E65100","light":"#FFF3E0","border":"#FFCC80"}
+  },
+  "prism-cylinder": {
+    id: "prism-cylinder",
+    name: "角柱與圓柱大挑戰",
+    shortName: "角柱與圓柱",
+    semester: "grade9-second",
+    grade: 9,
+    order: 5,
+    icon: "🥫",
+    file: "games/prism-cylinder.html",
+    description: "練習角柱、圓柱的展開圖、表面積與體積。",
+    finished: false,
+    difficulty: 2,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#0288D1","dark":"#0277BD","light":"#E1F5FE","border":"#81D4FA"}
+  },
+  "pyramid-cone": {
+    id: "pyramid-cone",
+    name: "角錐與圓錐大挑戰",
+    shortName: "角錐與圓錐",
+    semester: "grade9-second",
+    grade: 9,
+    order: 6,
+    icon: "🔺",
+    file: "games/pyramid-cone.html",
+    description: "練習角錐、圓錐的展開圖、表面積與體積。",
+    finished: false,
+    difficulty: 3,
+    ranking: {"type":"speed"},
+    modes: {},
+    theme: {"primary":"#E53935","dark":"#C62828","light":"#FFEBEE","border":"#EF9A9A"}
+  },
 
 };
 
@@ -2133,7 +2375,8 @@ export function getFinishedGamesBySemester(
             semester &&
 
           game.finished ===
-            true
+            true &&
+          game.archived !== true
 
         );
 
@@ -2430,7 +2673,7 @@ export function getGameDisplayName(
 
 
 console.log(
-  "game-config.js v10.1 已成功載入"
+  "game-config.js v11.0 已成功載入"
 );
 
 
