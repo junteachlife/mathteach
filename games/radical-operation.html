@@ -5471,9 +5471,12 @@ function makeMode4B() {
     );
 
 
+  // 題目改用橫式，完整分子以括號圈起來；詳解仍保留直式分數供有理化教學。
+  const horizontalQuestion = `<span class="math-expression">(${radicalDisplay(a,rs)} ＋ ${radicalDisplay(s,r)}) ÷ ${sqrtDisplay(s)}</span>`;
+
   return expressionQuestion(
 
-    originalFraction,
+    horizontalQuestion,
 
     0,
 
@@ -6578,7 +6581,8 @@ function makeM5DivideBracket(){
  const joined=joinRootParts(parts);
  const op=s>0?'＋':'−';
  const numerator=`${radicalDisplay(c,first)} ${op} ${radicalDisplay(d,second)}`;
- const original=`${fractionDisplay(`(${numerator})`,sqrtDisplay(a))}`;
+ // 分子是完整二項式時題目顯示橫式，括號不可省略。
+ const original=`<span class="math-expression">(${numerator}) ÷ ${sqrtDisplay(a)}</span>`;
  const firstQuotientDisplay=radicalDisplay(c,a);
  const secondBeforeSimplify=radicalDisplay(d,secondQuotient);
  const secondSimplified=simplifyRadicalData(d,secondQuotient);
