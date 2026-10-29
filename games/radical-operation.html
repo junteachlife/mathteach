@@ -2034,6 +2034,69 @@
     .question-scratchpad #scratchpadOpenButton,.question-scratchpad .scratchpad-open-button{min-width:0!important;width:auto!important;padding:8px 13px!important;font-size:13px!important}
     @media(max-width:760px){.quiz-topbar{display:flex;gap:4px}.quiz-topbar .timer-box{grid-column:auto}.quiz-topbar .status-box{min-width:57px;font-size:10px;padding:4px}.quiz-topbar .status-value{font-size:12px}.quiz-topbar .mode-status{display:none}.quiz-top-actions .compact-action{font-size:11px;padding:7px 5px}.question-content{font-size:clamp(23px,5vw,34px)}}
   
+/* 2026-10-29：八上 2-2 測驗操作列，與乘法公式遊戲統一尺寸。
+   五個資訊格與兩個操作按鈕全程同行、同高度。
+   小螢幕允許操作列橫向滑動，不裁切按鈕。 */
+#quiz-screen .quiz-topbar {
+  display: grid;
+  grid-template-columns: minmax(150px, 1.65fr) repeat(4, minmax(82px, 1fr)) repeat(2, minmax(116px, 1.16fr));
+  gap: 8px;
+  align-items: stretch;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  padding: 0 0 7px;
+}
+#quiz-screen .quiz-topbar .status-box,
+#quiz-screen .quiz-top-actions .compact-action {
+  box-sizing: border-box;
+  min-height: 58px;
+  height: 58px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+}
+#quiz-screen .quiz-topbar .status-box {
+  min-width: 0;
+  padding: 7px 8px;
+  flex-direction: column;
+  white-space: normal;
+  font-size: 12px;
+}
+#quiz-screen .quiz-topbar .status-value {
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+#quiz-screen .quiz-topbar .mode-status { min-width: 0; }
+#quiz-screen .quiz-top-actions {
+  display: contents;
+}
+#quiz-screen .quiz-top-actions .compact-action {
+  min-width: 0;
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.3;
+  white-space: nowrap;
+  box-shadow: 0 3px 0 rgba(0,0,0,.16);
+}
+@media (max-width: 900px) {
+  #quiz-screen .quiz-topbar {
+    grid-template-columns: 150px repeat(4, 86px) repeat(2, 120px);
+  }
+  #quiz-screen .quiz-topbar .mode-status { display: flex; }
+  #quiz-screen .quiz-top-actions .compact-action {
+    font-size: 13px;
+    padding: 8px;
+  }
+}
+
 /* 八上2-2：連續分數除法題橫向排列，完整保留上下分數線。 */
 .math-expression:has(.display-fraction){
   display:inline-flex;
