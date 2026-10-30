@@ -2661,7 +2661,7 @@
         >
 
           <span class="mode-tag">
-            模式1｜10 題
+            模式1｜5 題
           </span>
 
           <h2>
@@ -2685,7 +2685,7 @@
         >
 
           <span class="mode-tag">
-            模式2｜10 題
+            模式2｜5 題
           </span>
 
           <h2>
@@ -2709,7 +2709,7 @@
         >
 
           <span class="mode-tag">
-            模式3｜10 題
+            模式3｜5 題
           </span>
 
           <h2>
@@ -2733,7 +2733,7 @@
         >
 
           <span class="mode-tag">
-            模式4｜10 題
+            模式4｜5 題
           </span>
 
           <h2>
@@ -2757,7 +2757,7 @@
         >
 
           <span class="mode-tag">
-            模式5｜10 題
+            模式5｜5 題
           </span>
 
           <h2>
@@ -2781,7 +2781,7 @@
         >
 
           <span class="mode-tag">
-            模式6｜10 題
+            模式6｜5 題
           </span>
 
           <h2>
@@ -2823,7 +2823,7 @@
 
           <div class="status-box">
             進度
-            <span id="question-number" class="status-value">1 / 10</span>
+            <span id="question-number" class="status-value">1 / 5</span>
           </div>
         </div>
 
@@ -3106,7 +3106,7 @@ const GAME_TITLE =
   "4-3 一元二次方程式應用問題大挑戰";
 
 const TOTAL_QUESTIONS =
-  10;
+  5;
 
 const MODE_NAMES = {
   equationModel:
@@ -3124,12 +3124,12 @@ const MODE_NAMES = {
 };
 
 const MODES = {
-  equationModel: {id:"equationModel",name:"📝 由題意列方程式",count:10,difficultyWeight:1.08},
-  integerAge: {id:"integerAge",name:"🔢 整數與年齡問題",count:10,difficultyWeight:1.12},
-  geometry: {id:"geometry",name:"📐 面積與路寬問題",count:10,difficultyWeight:1.16},
-  priceRevenue: {id:"priceRevenue",name:"💰 售價、數量與收入",count:10,difficultyWeight:1.18},
-  validityApprox: {id:"validityApprox",name:"✅ 合理根與近似值",count:10,difficultyWeight:1.22},
-  comprehensive: {id:"comprehensive",name:"🏆 4-3 綜合挑戰",count:10,difficultyWeight:1.34}
+  equationModel: {id:"equationModel",name:"📝 由題意列方程式",count:5,difficultyWeight:1.08},
+  integerAge: {id:"integerAge",name:"🔢 整數與年齡問題",count:5,difficultyWeight:1.12},
+  geometry: {id:"geometry",name:"📐 面積與路寬問題",count:5,difficultyWeight:1.16},
+  priceRevenue: {id:"priceRevenue",name:"💰 售價、數量與收入",count:5,difficultyWeight:1.18},
+  validityApprox: {id:"validityApprox",name:"✅ 合理根與近似值",count:5,difficultyWeight:1.22},
+  comprehensive: {id:"comprehensive",name:"🏆 4-3 綜合挑戰",count:5,difficultyWeight:1.34}
 };
 
 window.MathGameSessionMeta = {
@@ -8899,7 +8899,10 @@ function createQuestions() {
     validityApprox: make43ValidityApprox,
     comprehensive: make43Comprehensive
   };
-  return (map[mode] || make43Model)();
+  // 保留各模式原有的題型比例與隨機產生邏輯，
+  // 先產生原本的候選題組，再隨機抽取五題。
+  // 每次重新測驗都重新抽題；其餘功能不變。
+  return (map[mode] || make43Model)().slice(0, TOTAL_QUESTIONS);
 }
 
 /*
