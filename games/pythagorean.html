@@ -5622,122 +5622,78 @@ function makeAltitudeQuestion() {
 
 
 function makeRadicalAltitudeQuestion() {
-
-  const root11 =
-    rootHTML(
-      11
-    );
-
-
-  const answerHTML =
-    radicalFractionHTML(
-      5,
-      11,
-      6
-    );
-
+  // c² = a² + b。b 不是完全平方數，避免出現一模一樣的固定題。
+  const pairs = [
+    [3,4],[4,5],[5,6],[6,7],[7,8],[8,9],
+    [9,10],[10,11],[11,12],[12,13],[13,14],
+    [5,7],[7,9],[9,11],[11,13]
+  ];
+  const [a,c] = pick(pairs.filter(([leg,hyp]) => isSimplestRadicand(hyp*hyp-leg*leg)));
+  const b = c*c-a*a;
+  const rootB = rootHTML(b);
+  const g = gcd(a,c);
+  const numerator = a/g;
+  const denominator = c/g;
+  const answerHTML = denominator===1
+    ? radicalHTML(numerator,b)
+    : radicalFractionHTML(numerator,b,denominator);
 
   return question({
-
-    typeLabel:
-      "斜邊上的高｜根式",
-
-    label:
-      "先求斜邊，再求斜邊上的高",
-
-    html:
-      `兩股長為 5 與 ${root11}，求斜邊上的高 h。`,
-
-    hint:
-      "💡 先求斜邊，再使用 h＝兩股乘積÷斜邊",
-
-    diagram:
-      altitudeSVG(
-        5,
-        "√11",
-        "c"
-      ),
-
-    answerType:
-      "radicalFraction",
-
-    coefficient:
-      5,
-
-    radicand:
-      11,
-
-    denominator:
-      6,
-
-    method:
-      "這題要分成兩段：先用畢氏定理求斜邊 c，再用三角形面積關係求斜邊上的高 h。",
-
-    explanation:
-      [
-
-        `先求斜邊 c。兩股為 5 與 ${root11}：
-        <span class="explanation-math-line">
-          c²＝5²＋(${root11})²
-        </span>`,
-
-        `因為 (${root11})²＝11，所以：
-        <span class="explanation-math-line">
-          c²＝25＋11＝36
-        </span>`,
-
-        `c 是長度，只取正值：
-        <span class="explanation-math-line">
-          c＝6
-        </span>`,
-
-        `再用面積表示同一個三角形：
-        <span class="explanation-math-line">
-          ½×5×${root11}＝½×6×h
-        </span>`,
-
-        `兩邊同乘 2：
-        <span class="explanation-math-line">
-          5${root11}＝6h
-        </span>`,
-
-        `兩邊再同除以 6：
-        <span class="explanation-math-line">
-          h＝${answerHTML}
-        </span>`
-      ],
-
-    pitfall:
-      `注意 (${root11})²＝11，不是 121；求出斜邊後，還要再用面積關係求 h，不能把斜邊直接當成高。`,
-
-    summary:
-      `最後答案：h＝${answerHTML}`
+    typeLabel:'斜邊上的高｜根式',
+    label:'先求斜邊，再求斜邊上的高',
+    html:`兩股長為 ${a} 與 ${rootB}，求斜邊上的高 h。`,
+    hint:'💡 先求斜邊，再使用 h＝兩股乘積÷斜邊',
+    diagram:altitudeSVG(a,`√${b}`,'c'),
+    answerType:denominator===1?'radical':'radicalFraction',
+    coefficient:numerator,
+    radicand:b,
+    denominator,
+    method:'先用畢氏定理求斜邊 c，再用同一個三角形的兩種面積公式求高 h。',
+    explanation:[
+      `先求斜邊：<span class="explanation-math-line">c²＝${a}²＋(${rootB})²＝${a*a}＋${b}＝${c*c}</span>`,
+      `c 為正長度，所以 <span class="explanation-math-line">c＝${c}</span>`,
+      `同一個三角形的面積相等：<span class="explanation-math-line">½×${a}×${rootB}＝½×${c}×h</span>`,
+      `兩邊同乘 2：<span class="explanation-math-line">${a}${rootB}＝${c}h</span>`,
+      `兩邊同除 ${c}，並把係數約成最簡：<span class="explanation-math-line">h＝${answerHTML}</span>`
+    ],
+    pitfall:'根式邊長平方時必須將根號一起平方；求出斜邊後，還要用面積關係求高。',
+    summary:`最後答案：h＝${answerHTML}`
   });
 }
 
-
-function makeMode2() {
-
-  return shuffle(
-    [
-
-      makeRectangleQuestion(),
-      makeRectangleQuestion(),
-
-      makeLadderQuestion(),
-      makeLadderQuestion(),
-      makeLadderQuestion(),
-
-      makeAltitudeQuestion(),
-      makeAltitudeQuestion(),
-      makeAltitudeQuestion(),
-
-      makeRadicalAltitudeQuestion(),
-      makeRadicalAltitudeQuestion()
-    ]
-  );
+function generateDistinctQuestions(factories) {
+  const seen = new Set();
+  const list = [];
+  for (const factory of factories) {
+    let q, key;
+    for (let tries=0;tries<160;tries++) {
+      q = factory();
+      // 題意與參數相同視為重複，不靠答案區分（答案相同仍可有不同題）。
+      key = String(q.typeLabel||'')+'|'+String(q.html||'').replace(/\s+/g,' ').trim();
+      if (!seen.has(key)) break;
+    }
+    seen.add(key);
+    list.push(q);
+  }
+  // 盡量避免同一種題型連續出現；在保留各類數量的前提下選取重複最少的排序。
+  let best = shuffle(list), bestAdj = Infinity;
+  for (let i=0;i<100;i++) {
+    const test=shuffle(list);
+    const adjacent=test.slice(1).reduce((sum,q,j)=>sum+(q.typeLabel===test[j].typeLabel?1:0),0);
+    if(adjacent<bestAdj) {bestAdj=adjacent;best=test;}
+    if(bestAdj===0)break;
+  }
+  return best;
 }
 
+function makeMode2() {
+  return generateDistinctQuestions([
+    makeRectangleQuestion, makeRectangleQuestion,
+    makeLadderQuestion, makeLadderQuestion, makeLadderQuestion,
+    makeAltitudeQuestion, makeAltitudeQuestion, makeAltitudeQuestion,
+    makeRadicalAltitudeQuestion, makeRadicalAltitudeQuestion
+  ]);
+}
 
 /* ==================================================
 模式三
@@ -6507,7 +6463,7 @@ function renderAnswer(
             ? '需要分數時按「分數」'
             : ""
         }。
-        系統會提醒尚可化簡或約分的答案。
+        根號請寫成最簡根式；一般數值答案會先收下再判斷正確與否。
       </p>
 
       <div id="math-expression-answer-mount"></div>
@@ -6550,7 +6506,7 @@ function renderAnswer(
           true,
 
         requireSimplifiedFraction:
-          true,
+          false,
 
         requireRationalDenominator:
           true,
@@ -6763,281 +6719,83 @@ function displayQuestion() {
 讀取答案
 ================================================== */
 
-function readAnswer(
-  q
-) {
-
-  if (
-    q.answerType !==
-    "choice"
-  ) {
-
-    const result =
-      mathExpressionInput
-        ?.validate();
-
-
-    if (
-      !result?.valid
-    ) {
-
-      return {
-        valid: false,
-        message:
-          result?.message ||
-          "請把答案輸入完整。"
-      };
+function readAnswer(q) {
+  if (q.answerType === "choice") {
+    if (!selectedChoice) {
+      return {valid:false, message:"請先選擇答案。"};
     }
-
-
-    const terms =
-      result.terms ||
-      [];
-
-
-    if (
-      q.answerType ===
-      "number"
-    ) {
-
-      if (
-        terms.length !== 1 ||
-        terms[0].radicand !== 1 ||
-        terms[0].denominator !== 1
-      ) {
-
-        return {
-          valid: false,
-          message:
-            "本題答案應為整數。"
-        };
-      }
-
-
-      return {
-        valid: true,
-        value:
-          terms[0].numerator,
-        display:
-          result.display
-      };
-    }
-
-
-    if (
-      q.answerType ===
-      "fraction"
-    ) {
-
-      if (
-        terms.length !== 1 ||
-        terms[0].radicand !== 1
-      ) {
-
-        return {
-          valid: false,
-          message:
-            "本題答案應為最簡分數。"
-        };
-      }
-
-
-      return {
-        valid: true,
-        value: {
-          numerator:
-            terms[0].numerator,
-          denominator:
-            terms[0].denominator
-        },
-        display:
-          result.display
-      };
-    }
-
-
-    if (
-      q.answerType ===
-      "radical"
-    ) {
-
-      if (
-        terms.length !== 1 ||
-        terms[0].radicand === 1 ||
-        terms[0].denominator !== 1
-      ) {
-
-        return {
-          valid: false,
-          message:
-            "本題答案應為一個最簡根式。"
-        };
-      }
-
-
-      return {
-        valid: true,
-        value: {
-          coefficient:
-            terms[0].numerator,
-          radicand:
-            terms[0].radicand
-        },
-        display:
-          result.display
-      };
-    }
-
-
-    if (
-      q.answerType ===
-      "radicalFraction"
-    ) {
-
-      if (
-        terms.length !== 1 ||
-        terms[0].radicand === 1
-      ) {
-
-        return {
-          valid: false,
-          message:
-            "本題答案應為最簡根式分數。"
-        };
-      }
-
-
-      return {
-        valid: true,
-        value: {
-          coefficient:
-            terms[0].numerator,
-          radicand:
-            terms[0].radicand,
-          denominator:
-            terms[0].denominator
-        },
-        display:
-          result.display
-      };
-    }
-
-
     return {
-      valid: false,
-      message:
-        "目前無法讀取這個答案。"
+      valid:true,
+      value:selectedChoice,
+      display:q.choices.find(item=>item.value===selectedChoice)?.text || selectedChoice
     };
   }
 
-
-  if (
-    !selectedChoice
-  ) {
-
-    return {
-      valid: false,
-      message:
-        "請先選擇答案。"
-    };
+  // 輸入是否可送出，不能由題目的正確答案型態決定。
+  // 例如正解為 √26，學生輸入 5 仍應記為一次錯誤作答。
+  const result = mathExpressionInput?.validate();
+  if (!result?.valid) {
+    return {valid:false, message:result?.message || "請把答案輸入完整。"};
   }
-
-
-  return {
-    valid: true,
-    value:
-      selectedChoice,
-    display:
-      q.choices
-        .find(
-          item =>
-            item.value ===
-            selectedChoice
-        )
-        ?.text ||
-      selectedChoice
-  };
+  const terms = Array.isArray(result.terms) ? result.terms : [];
+  if (!terms.length || terms.some(t =>
+    !Number.isFinite(Number(t.numerator)) ||
+    !Number.isFinite(Number(t.denominator)) ||
+    Number(t.denominator) === 0 ||
+    !Number.isInteger(Number(t.radicand)) ||
+    Number(t.radicand) < 1
+  )) {
+    return {valid:false, message:"請輸入有效的數值答案。"};
+  }
+  return {valid:true, value:terms, display:result.display};
 }
-
 
 /* ==================================================
-判定
+判定：接受各種有效輸入，再以數值的精確形式比較
 ================================================== */
-
-function checkCorrect(
-  q,
-  answer
-) {
-
-  if (
-    q.answerType ===
-    "number"
-  ) {
-
-    return (
-      answer.value ===
-      q.answer
-    );
+function normalizedAnswerTerms(terms) {
+  // 相同根式項合併，分數用最大公因數化成既約形式。
+  const sums = new Map();
+  for (const term of terms) {
+    let n = Number(term.numerator);
+    let d = Number(term.denominator);
+    const r = Number(term.radicand);
+    if (!Number.isInteger(n) || !Number.isInteger(d) || d === 0) return null;
+    if (d < 0) { n=-n; d=-d; }
+    const old = sums.get(r) || {n:0,d:1};
+    const nn = old.n*d + n*old.d;
+    const dd = old.d*d;
+    const g = gcd(nn,dd);
+    sums.set(r,{n:nn/g,d:dd/g});
   }
-
-
-  if (
-    q.answerType ===
-    "fraction"
-  ) {
-
-    return (
-
-      answer.value.numerator ===
-        q.numerator &&
-
-      answer.value.denominator ===
-        q.denominator
-    );
-  }
-
-
-  if (
-    q.answerType ===
-    "radical"
-  ) {
-
-    return (
-
-      answer.value.coefficient ===
-        q.coefficient &&
-
-      answer.value.radicand ===
-        q.radicand
-    );
-  }
-
-
-  if (
-    q.answerType ===
-    "radicalFraction"
-  ) {
-
-    return (
-
-      answer.value.coefficient ===
-        q.coefficient &&
-
-      answer.value.radicand ===
-        q.radicand &&
-
-      answer.value.denominator ===
-        q.denominator
-    );
-  }
-
-
-  return (
-    answer.value ===
-    q.answer
-  );
+  return [...sums.entries()]
+    .filter(([,v])=>v.n!==0)
+    .map(([r,v])=>`${r}:${v.n}/${v.d}`)
+    .sort()
+    .join('|') || '0';
 }
 
+function expectedAnswerTerms(q) {
+  switch(q.answerType) {
+    case 'number':
+      return [{numerator:q.answer,denominator:1,radicand:1}];
+    case 'fraction':
+      return [{numerator:q.numerator,denominator:q.denominator,radicand:1}];
+    case 'radical':
+      return [{numerator:q.coefficient,denominator:1,radicand:q.radicand}];
+    case 'radicalFraction':
+      return [{numerator:q.coefficient,denominator:q.denominator,radicand:q.radicand}];
+    default:
+      return [];
+  }
+}
+
+function checkCorrect(q, answer) {
+  if (q.answerType === 'choice') return answer.value === q.answer;
+  const provided = normalizedAnswerTerms(answer.value);
+  const expected = normalizedAnswerTerms(expectedAnswerTerms(q));
+  return provided !== null && provided === expected;
+}
 
 /* ==================================================
 正確答案
