@@ -239,7 +239,9 @@ export const GAME_CONFIG = {
       "先複習最小公倍數，再挑戰正負分數的同分母與異分母加減。",
 
     finished:
-      true,
+      false,
+
+    archived: true,
 
     difficulty:
       2,
@@ -562,6 +564,15 @@ export const GAME_CONFIG = {
     finished:true,difficulty:2,recommended:true,isNew:true,ranking:{type:"timed"},
     modes:{concept:"公因數、公倍數與互質",gcd:"最大公因數",lcm:"最小公倍數",standardForm:"標準分解式求公因公倍",application:"因倍數生活應用",speed:"公因公倍快手",comprehensive:"2-2 綜合挑戰"},
     theme:{primary:"#1565c0",dark:"#0d47a1",light:"#e3f2fd",border:"#90caf9"}
+  },
+
+  fractionNew: {
+    id:"fractionNew",section:"2-3",name:"2-3 分數的四則運算大挑戰",shortName:"分數的四則運算",
+    semester:"grade7-first",grade:7,order:6.2,icon:"➗",file:"games/grade7-1/fractionnew.html",
+    description:"七上 2-3：等值分數與比較、正負分數加減、乘法、倒數與除法、去括號、分配律及綜合運算。動態出題、共用分數輸入與詳細解析。",
+    finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},
+    modes:{concept:"等值分數、最簡分數與大小比較",addSubtract:"正負分數加減",multiply:"正負分數乘法",divide:"倒數與正負分數除法",mixed:"分數四則、去括號與分配律",speed:"分數快手",comprehensive:"2-3 綜合挑戰"},
+    theme:{primary:"#2e7d32",dark:"#1b5e20",light:"#e8f5e9",border:"#a5d6a7"}
   },
 
   "expression-operations": {
