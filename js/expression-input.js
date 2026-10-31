@@ -110,6 +110,9 @@ validate() 會回傳提醒，
     operator:
       "×",
 
+    // Opt-in: each expression connector can be chosen from a compact dropdown.
+    allowOperatorSelect: false,
+
     requireAscendingBases:
       false,
 
@@ -1548,7 +1551,8 @@ validate() 會回傳提醒，
             null,
 
           exponent:
-            1
+            1,
+          operator: "×"
         }
       ];
 
@@ -2309,6 +2313,31 @@ validate() 會回傳提醒，
         group
       );
 
+      // Optional operator selector. The first item has no preceding operator.
+      if (this.options.allowOperatorSelect) {
+        const operatorGroup = this.createControlGroup("運算符號（選取第二項以後可修改）");
+        const operatorRow = operatorGroup.querySelector(".expression-input__button-row");
+        const select = document.createElement("select");
+        select.className = "expression-input__operator-select";
+        select.setAttribute("aria-label", "選擇運算符號");
+        select.style.cssText = "min-width:104px;min-height:44px;padding:8px 12px;border:2px solid var(--expression-border,#90caf9);border-radius:10px;background:#fff;font:inherit;font-weight:800;";
+        [["×","×"],["＋","+"],["－","-"]].forEach(([label,value]) => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = label;
+          select.appendChild(option);
+        });
+        select.addEventListener("change", () => {
+          if (this.activeTermIndex === 0) return;
+          this.terms[this.activeTermIndex].operator = select.value;
+          this.clearMessage();
+          this.renderExpressionTerms();
+          this.emitChange();
+        });
+        this.expressionOperatorSelect = select;
+        operatorRow.appendChild(select);
+        this.expressionPanel.appendChild(operatorGroup);
+      }
 
       /*
       Edit
@@ -2462,7 +2491,8 @@ validate() 會回傳提醒，
             null,
 
           exponent:
-            1
+            1,
+          operator: this.options.operator
         }
       );
 
@@ -2490,7 +2520,8 @@ validate() 會回傳提醒，
             null,
 
           exponent:
-            1
+            1,
+          operator: this.options.operator
         };
 
       } else {
@@ -2532,7 +2563,8 @@ validate() 會回傳提醒，
             null,
 
           exponent:
-            1
+            1,
+          operator: this.options.operator
         }
       ];
 
@@ -2560,6 +2592,10 @@ validate() 會回傳提醒，
       this.expressionDisplay.innerHTML =
         "";
 
+      if (this.expressionOperatorSelect) {
+        this.expressionOperatorSelect.disabled = this.activeTermIndex === 0;
+        this.expressionOperatorSelect.value = this.activeTermIndex === 0 ? "×" : (this.terms[this.activeTermIndex].operator || this.options.operator);
+      }
 
       this.terms.forEach(
         (
@@ -2582,7 +2618,7 @@ validate() 會回傳提醒，
 
 
             operator.textContent =
-              this.options.operator;
+              this.options.allowOperatorSelect ? ({"+":"＋","-":"－","×":"×"}[term.operator] || "×") : this.options.operator;
 
 
             this.expressionDisplay.appendChild(
@@ -4165,12 +4201,12 @@ validate() 會回傳提醒，
 
           valid
 
-            ? termsToHtml(
+            ? (this.options.allowOperatorSelect ? this.terms.map((t,i) => (i ? ` ${{"+":"＋","-":"－","×":"×"}[t.operator] || "×"} ` : "") + `${t.base}${t.exponent===1 && this.options.omitExponentOne ? "" : `<sup>${t.exponent}</sup>`}`).join("") : termsToHtml(
 
                 this.terms,
                 this.options.operator,
                 this.options.omitExponentOne
-              )
+              ))
 
             : "",
 
@@ -4178,11 +4214,11 @@ validate() 會回傳提醒，
 
           valid
 
-            ? termsToPlain(
+            ? (this.options.allowOperatorSelect ? this.terms.map((t,i) => (i ? (t.operator || "×") : "") + `${t.base}^${t.exponent}`).join("") : termsToPlain(
 
                 this.terms,
                 this.options.operator
-              )
+              ))
 
             : "",
 
