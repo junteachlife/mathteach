@@ -39,7 +39,7 @@ import {
 
 import {
   getGameConfig
-} from "./game-config.js?v=10.0";
+} from "./game-config.js?v=20261101-gcdlcm";
 
 
 /*
