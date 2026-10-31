@@ -4519,266 +4519,105 @@ function altitudeSVG(
 座標平面
 ================================================== */
 
-function coordinateSVG(
-  x1,
-  y1,
-  x2,
-  y2
-) {
+function coordinateSVG(x1, y1, x2, y2) {
+  // 只保留真正用於畢氏定理的輔助線：水平／鉛直題不畫虛線。
+  const width = 380;
+  const height = 300;
+  const originX = width / 2;
+  const originY = height / 2;
+  const maxValue = Math.max(4, Math.abs(x1), Math.abs(x2), Math.abs(y1), Math.abs(y2)) + 1;
+  const scale = Math.min(150 / maxValue, 115 / maxValue);
+  const mapX = x => originX + x * scale;
+  const mapY = y => originY - y * scale;
+  const ax = mapX(x1);
+  const ay = mapY(y1);
+  const bx = mapX(x2);
+  const by = mapY(y2);
+  const hasRightTriangle = x1 !== x2 && y1 !== y2;
+  // C=(B_x,A_y)，AC 為水平股、CB 為鉛直股，AB 為斜邊。
+  const cx = bx;
+  const cy = ay;
 
-  const width =
-    380;
-
-
-  const height =
-    300;
-
-
-  const originX =
-    width /
-    2;
-
-
-  const originY =
-    height /
-    2;
-
-
-  const maxValue =
-    Math.max(
-      4,
-      Math.abs(
-        x1
-      ),
-      Math.abs(
-        x2
-      ),
-      Math.abs(
-        y1
-      ),
-      Math.abs(
-        y2
-      )
-    ) +
-    1;
-
-
-  const scale =
-    Math.min(
-      150 /
-      maxValue,
-      115 /
-      maxValue
-    );
-
-
-  const mapX =
-    x =>
-      originX +
-      x *
-      scale;
-
-
-  const mapY =
-    y =>
-      originY -
-      y *
-      scale;
-
-
-  const ax =
-    mapX(
-      x1
-    );
-
-
-  const ay =
-    mapY(
-      y1
-    );
-
-
-  const bx =
-    mapX(
-      x2
-    );
-
-
-  const by =
-    mapY(
-      y2
-    );
-
-
-  let grid =
-    "";
-
-
-  for (
-    let i =
-      -maxValue;
-
-    i <=
-      maxValue;
-
-    i++
-  ) {
-
-    const gx =
-      mapX(
-        i
-      );
-
-
-    const gy =
-      mapY(
-        i
-      );
-
-
+  let grid = "";
+  for (let i = -maxValue; i <= maxValue; i++) {
+    const gx = mapX(i);
+    const gy = mapY(i);
     grid += `
-
-      <line
-        x1="${gx}"
-        y1="20"
-        x2="${gx}"
-        y2="${height - 20}"
-        stroke="#dcebed"
-        stroke-width="1"
-      />
-
-      <line
-        x1="20"
-        y1="${gy}"
-        x2="${width - 20}"
-        y2="${gy}"
-        stroke="#dcebed"
-        stroke-width="1"
-      />
-    `;
+      <line x1="${gx}" y1="20" x2="${gx}" y2="${height - 20}"
+            stroke="#dcebed" stroke-width="1" />
+      <line x1="20" y1="${gy}" x2="${width - 20}" y2="${gy}"
+            stroke="#dcebed" stroke-width="1" />`;
   }
 
+  const helper = hasRightTriangle ? `
+    <path d="M ${ax} ${ay} H ${cx} V ${by}"
+          fill="none" stroke="#dc8a15" stroke-width="2.8"
+          stroke-dasharray="7 5" stroke-linejoin="round" />
+    <path d="M ${cx + Math.sign(ax - cx) * 12} ${cy}
+             V ${cy + Math.sign(by - cy) * 12}
+             H ${cx}"
+          fill="none" stroke="#dc8a15" stroke-width="2.2" />
+  ` : "";
+
+  // 座標標籤使用白底，並避開兩點／輔助線交點及畫布邊界。
+  function pointLabel(name, x, y, px, py, otherX, otherY) {
+    const label = `${name}(${x}, ${y})`;
+    const labelWidth = Math.max(72, label.length * 9.5 + 12);
+    const labelHeight = 26;
+    const candidates = [
+      {dx: -labelWidth - 13, dy: -labelHeight - 12},
+      {dx: 13, dy: -labelHeight - 12},
+      {dx: -labelWidth - 13, dy: 12},
+      {dx: 13, dy: 12}
+    ];
+    const score = candidate => {
+      const lx = px + candidate.dx;
+      const ly = py + candidate.dy;
+      const centerX = lx + labelWidth / 2;
+      const centerY = ly + labelHeight / 2;
+      let penalty = 0;
+      if (lx < 5 || lx + labelWidth > width - 5 || ly < 5 || ly + labelHeight > height - 5) penalty += 1000;
+      // 避開另一端點與直角頂點的文字遮擋。
+      if (Math.abs(centerX - otherX) < labelWidth / 2 + 11 &&
+          Math.abs(centerY - otherY) < labelHeight / 2 + 11) penalty += 200;
+      if (hasRightTriangle && Math.abs(centerX - cx) < labelWidth / 2 + 9 &&
+          Math.abs(centerY - cy) < labelHeight / 2 + 9) penalty += 160;
+      // 優先選擇相對於另一點向外側的位置。
+      const outwardX = px - otherX;
+      const outwardY = py - otherY;
+      if (candidate.dx * outwardX < 0) penalty += 8;
+      if (candidate.dy * outwardY < 0) penalty += 8;
+      return penalty;
+    };
+    candidates.sort((a, b) => score(a) - score(b));
+    const choice = candidates[0];
+    const lx = Math.max(5, Math.min(width - labelWidth - 5, px + choice.dx));
+    const ly = Math.max(5, Math.min(height - labelHeight - 5, py + choice.dy));
+    return `<g>
+      <rect x="${lx}" y="${ly}" width="${labelWidth}" height="${labelHeight}"
+            rx="5" fill="#ffffff" fill-opacity=".93" />
+      <text x="${lx + 6}" y="${ly + 19}" font-size="17"
+            font-family="Arial, sans-serif" font-weight="700"
+            fill="#17324d">${label}</text>
+    </g>`;
+  }
 
   return `
-
-    <svg
-      class="geometry-svg"
-      viewBox="0 0 ${width} ${height}"
-    >
-
+    <svg class="geometry-svg" viewBox="0 0 ${width} ${height}"
+         role="img" aria-label="座標平面 A(${x1}, ${y1})、B(${x2}, ${y2})${hasRightTriangle ? ' 與直角三角形輔助線' : ''}">
       ${grid}
-
-      <line
-        x1="20"
-        y1="${originY}"
-        x2="${width - 20}"
-        y2="${originY}"
-        stroke="#64748b"
-        stroke-width="3"
-      />
-
-      <line
-        x1="${originX}"
-        y1="20"
-        x2="${originX}"
-        y2="${height - 20}"
-        stroke="#64748b"
-        stroke-width="3"
-      />
-
-
-      <line
-        x1="${ax}"
-        y1="${ay}"
-        x2="${bx}"
-        y2="${by}"
-        stroke="#149b92"
-        stroke-width="5"
-        stroke-linecap="round"
-      />
-
-
-      <line
-        x1="${ax}"
-        y1="${ay}"
-        x2="${ax}"
-        y2="${originY}"
-        stroke="#94a3b8"
-        stroke-width="2.5"
-        stroke-dasharray="7 6"
-      />
-
-      <line
-        x1="${ax}"
-        y1="${ay}"
-        x2="${originX}"
-        y2="${ay}"
-        stroke="#94a3b8"
-        stroke-width="2.5"
-        stroke-dasharray="7 6"
-      />
-
-
-      <line
-        x1="${bx}"
-        y1="${by}"
-        x2="${bx}"
-        y2="${originY}"
-        stroke="#94a3b8"
-        stroke-width="2.5"
-        stroke-dasharray="7 6"
-      />
-
-      <line
-        x1="${bx}"
-        y1="${by}"
-        x2="${originX}"
-        y2="${by}"
-        stroke="#94a3b8"
-        stroke-width="2.5"
-        stroke-dasharray="7 6"
-      />
-
-
-      <circle
-        cx="${ax}"
-        cy="${ay}"
-        r="8"
-        fill="#3182ce"
-      />
-
-
-      <circle
-        cx="${bx}"
-        cy="${by}"
-        r="8"
-        fill="#f59e0b"
-      />
-
-
-      <text
-        x="${ax - 54}"
-        y="${ay + 30}"
-        font-size="18"
-        font-weight="900"
-        fill="#17324d"
-      >
-        A(${x1}, ${y1})
-      </text>
-
-
-      <text
-        x="${bx + 8}"
-        y="${by - 15}"
-        font-size="18"
-        font-weight="900"
-        fill="#17324d"
-      >
-        B(${x2}, ${y2})
-      </text>
-
-    </svg>
-  `;
+      <line x1="20" y1="${originY}" x2="${width - 20}" y2="${originY}"
+            stroke="#64748b" stroke-width="3" />
+      <line x1="${originX}" y1="20" x2="${originX}" y2="${height - 20}"
+            stroke="#64748b" stroke-width="3" />
+      ${helper}
+      <line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}"
+            stroke="#149b92" stroke-width="5" stroke-linecap="round" />
+      <circle cx="${ax}" cy="${ay}" r="8" fill="#3182ce" />
+      <circle cx="${bx}" cy="${by}" r="8" fill="#f59e0b" />
+      ${pointLabel('A', x1, y1, ax, ay, bx, by)}
+      ${pointLabel('B', x2, y2, bx, by, ax, ay)}
+    </svg>`;
 }
 
 
