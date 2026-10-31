@@ -556,6 +556,35 @@ export const GAME_CONFIG = {
 
 
 
+  exponentScientificNotation: {
+    id: "exponentScientificNotation",
+    section: "1-4",
+    name: "1-4 指數記法與科學記號大挑戰",
+    shortName: "指數與科學記號",
+    semester: "grade7-first",
+    grade: 7,
+    order: 4.4,
+    icon: "🔢",
+    file: "games/grade7-1/exponent-scientific-notation.html",
+    description: "七上 1-4：指數記法、負數次方、含指數四則運算、10 的次方、科學記號轉換與大小比較；動態出題、詳解與競速。",
+    finished: true,
+    difficulty: 2,
+    recommended: false,
+    isNew: true,
+    ranking: { type: "timed" },
+    modes: {
+      notation: "指數記法基礎",
+      negativePower: "負數次方與符號",
+      operations: "含指數四則運算",
+      tenPower: "10 的次方與位值",
+      scientific: "科學記號轉換",
+      scientificCompare: "科學記號判讀比較",
+      speed: "指數快手",
+      comprehensive: "1-4 綜合挑戰"
+    },
+    theme: { primary: "#0f766e", dark: "#115e59", light: "#ccfbf1", border: "#5eead4" }
+  },
+
   gcdLcm: {
     id:"gcdLcm", section:"2-2", name:"2-2 最大公因數與最小公倍數大挑戰",
     shortName:"最大公因數與最小公倍數",semester:"grade7-first",grade:7,order:6.25,
