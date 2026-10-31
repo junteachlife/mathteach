@@ -710,6 +710,29 @@
       .game-button { width: 100%; }
     }
 
+/* 題目與提示層次：題目為主視覺；提示為次要資訊。僅套用於具有提示的題型。 */
+.question-card.has-question-hint .question-label{
+  color:#0f172a;
+  font-size:clamp(24px,3.4vw,32px);
+  font-weight:900;
+  line-height:1.55;
+  margin-bottom:6px;
+}
+.question-card.has-question-hint .question-content{
+  min-height:0;
+  color:#64748b;
+  font-size:clamp(15px,1.8vw,18px);
+  font-weight:500;
+  line-height:1.65;
+  margin:4px 0 12px;
+  padding:0 10px;
+}
+.question-card.has-question-hint .question-content .math-expression{font-weight:inherit;letter-spacing:0}
+@media(max-width:420px){
+  .question-card.has-question-hint .question-label{font-size:clamp(22px,5.7vw,27px)}
+  .question-card.has-question-hint .question-content{font-size:15px}
+}
+
 /* 2-2 最新統一遊戲介面 */
 .quiz-topbar{grid-template-columns:minmax(190px,1.5fr) repeat(3,minmax(90px,1fr)) minmax(118px,1fr) minmax(118px,1fr);align-items:stretch;overflow-x:auto;padding-bottom:3px}
 .quiz-topbar .status-box,.quiz-topbar .top-action{min-height:65px;height:100%;min-width:105px}
@@ -2310,7 +2333,8 @@ function numberQuestion({
   answer,
   explanation,
   note = "",
-  topic = ""
+  topic = "",
+  displayHint = false
 }) {
   return {
     key,
@@ -2320,7 +2344,8 @@ function numberQuestion({
     answer: Number(answer),
     explanation,
     note,
-    topic
+    topic,
+    displayHint
   };
 }
 
@@ -2537,7 +2562,7 @@ function makeGcdConceptQuestion() {
     label:
       `${a} 和 ${b} 的最大公因數是多少？`,
     html:
-      `<div class="math-expression">從公因數中找最大的數</div>`,
+      `<div class="math-expression">使用短除法求最大公因數</div>`,
     choices:
       shuffle([
         {
@@ -2558,18 +2583,15 @@ function makeGcdConceptQuestion() {
     topic:
       "最大公因數概念",
     explanation: `
-      <strong>第 1 步｜先找公因數</strong>
+      <strong>第 1 步｜使用短除法</strong>
+      <div class="rule-box">求最大公因數時，每一步必須讓所有數都能被同一個質數整除。</div>
+      ${shortDivisionTable([a,b], "gcd")}
+      ${shortDivisionStepExplanation([a,b], "gcd")}
+      <strong>第 2 步｜將左邊共同除數相乘</strong>
       <div class="calculation-box">
-        ${a} 和 ${b} 的公因數：
-        ${common.join("、")}
+        （${a} , ${b}）＝${gcdShortDivisionData([a,b]).divisors.join(" × ") || "1"}＝<strong>${g}</strong>
       </div>
-
-      <strong>第 2 步｜找其中最大的</strong>
-      <div class="rule-box">
-        公因數中最大的一個，稱為<strong>最大公因數</strong>。
-      </div>
-
-      因此（${a} , ${b}）＝<strong>${g}</strong>。
+      <div class="rule-box">求最大公因數，只乘左邊的共同除數，不必乘最底下一排。</div>
     `
   });
 }
@@ -2621,6 +2643,9 @@ function makeCoprimeQuestion() {
         互質的兩個數<strong>不一定都是質數</strong>。
       </div>
 
+      <strong>使用短除法檢查兩數是否有共同質因數：</strong>
+      ${shortDivisionTable([a,b], "gcd")}
+      ${shortDivisionStepExplanation([a,b], "gcd")}
       本題（${a} , ${b}）＝${g}，
       所以 ${a} 和 ${b}
       <strong>${isCoprime ? "互質" : "不互質"}</strong>。
@@ -2764,7 +2789,7 @@ function makeLcmConceptQuestion() {
     label:
       `${a} 和 ${b} 的最小公倍數是多少？`,
     html:
-      `<div class="math-expression">從共同倍數中找最小的數</div>`,
+      `<div class="math-expression">使用短除法求最小公倍數</div>`,
     choices:
       shuffle([
         {
@@ -2786,18 +2811,15 @@ function makeLcmConceptQuestion() {
     topic:
       "最小公倍數概念",
     explanation: `
-      <strong>第 1 步｜找公倍數</strong>
+      <strong>第 1 步｜使用短除法</strong>
+      <div class="rule-box">求兩數最小公倍數時，持續除以共同的質因數，直到最下面兩數互質。</div>
+      ${shortDivisionTable([a,b], "lcm")}
+      ${shortDivisionStepExplanation([a,b], "lcm")}
+      <strong>第 2 步｜左邊除數與底下一排全部相乘</strong>
       <div class="calculation-box">
-        ${a} 的倍數：${a}、${a*2}、${a*3}、${a*4}、……<br>
-        ${b} 的倍數：${b}、${b*2}、${b*3}、${b*4}、……
+        〔${a} , ${b}〕＝${[...lcmShortDivisionData([a,b]).divisors, ...lcmShortDivisionData([a,b]).finalValues].join(" × ")}＝<strong>${l}</strong>
       </div>
-
-      <strong>第 2 步｜找最小的共同倍數</strong>
-      <div class="rule-box">
-        公倍數中最小的一個，稱為<strong>最小公倍數</strong>。
-      </div>
-
-      因此〔${a} , ${b}〕＝<strong>${l}</strong>。
+      <div class="rule-box">注意：求最小公倍數，最後一排的數也必須乘進答案。</div>
     `
   });
 }
@@ -2891,7 +2913,16 @@ function makeProductRelationQuestion() {
       l,
     topic:
       "最大公因數與最小公倍數的關係",
+    displayHint: true,
     explanation: `
+      <strong>第 1 步｜先用短除法計算最小公倍數</strong>
+      ${shortDivisionTable([a,b], "lcm")}
+      ${shortDivisionStepExplanation([a,b], "lcm")}
+      <div class="calculation-box">
+        〔${a} , ${b}〕＝${[...lcmShortDivisionData([a,b]).divisors, ...lcmShortDivisionData([a,b]).finalValues].join(" × ")}＝<strong>${l}</strong>
+      </div>
+      <strong>第 2 步｜利用已知最大公因數核對答案</strong>
+      <div class="rule-box">下列乘積關係可作為另一種解法或檢查方法。</div>
       <strong>兩個正整數有一個重要關係：</strong>
       <div class="rule-box">
         最大公因數 × 最小公倍數 ＝ 兩數的乘積
@@ -4341,6 +4372,8 @@ function renderQuestion() {
 
   $("question-content").innerHTML =
     q.html;
+  $("question-content").closest(".question-card")
+    ?.classList.toggle("has-question-hint", q.displayHint === true);
   const el=$("question-content");
   el.classList.toggle("multi-line", /<br\s*\/?\s*>/i.test(q.html) || (el.textContent||"").length>75);
   el.classList.toggle("single-line",!el.classList.contains("multi-line"));
@@ -4370,6 +4403,8 @@ function renderSpeedQuestion() {
 
   $("question-content").innerHTML =
     q.html;
+  $("question-content").closest(".question-card")
+    ?.classList.toggle("has-question-hint", q.displayHint === true);
   const el=$("question-content");
   el.classList.toggle("multi-line", /<br\s*\/?\s*>/i.test(q.html) || (el.textContent||"").length>75);
   el.classList.toggle("single-line",!el.classList.contains("multi-line"));
