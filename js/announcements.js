@@ -1,301 +1,90 @@
 /*
-==================================================
-生活有解．心中有數
-首頁公告與最新消息
-
-檔案位置：
-js/announcements.js
-
-使用方式：
-1. 新增公告時，只要在 ANNOUNCEMENTS 最前面新增一筆
-2. important: true 代表可成為首頁上方重要公告
-3. 首頁會自動依日期排序
-==================================================
-*/
-
+ * 生活有解．心中有數｜首頁公告資料
+ * 位置：mathteach/js/announcements.js
+ * 更新：2026-11-01
+ * 此檔只管理公告與最新消息，不影響遊戲、Firebase 或排行。
+ */
+"use strict";
 
 export const ANNOUNCEMENTS = [
-
-  /*
-  ==================================================
-  2026 / 09 / 29
-  ==================================================
-  */
-
-
   {
-    id:
-      "20260929-grade9-games",
-
-    date:
-      "2026-09-29",
-
-    type:
-      "new-game",
-
-    typeName:
-      "新遊戲",
-
-    icon:
-      "🆕",
-
-    title:
-      "九年級上學期遊戲全面上線",
-
-    content:
-      "九年級上學期數學遊戲已全面開放！目前涵蓋 1-1 連比、1-2 比例線段、1-3 相似多邊形、1-4 相似三角形與三角比、2-1 點線圓、2-2 圓心角與圓周角、3-1 推理證明，以及 3-2 三角形的外心、內心與重心。各章節皆設計多種挑戰模式、完整詳解與錯題學習，歡迎逐章挑戰自己的學習成果。",
-
-    important:
-      true
+    id: "grade7-2-3-new-20261101",
+    date: "2026-11-01",
+    type: "new-game",
+    typeName: "新遊戲",
+    icon: "🧮",
+    title: "七上 2-3 分數的四則運算新版登場",
+    content: "新版 2-3 整合等值分數、正負分數加減乘除、倒數、括號及分配律；題目採動態數值設計，並導入共用分數輸入介面。舊版遊戲已自首頁下架，歷史成績仍保留。",
+    important: true
   },
-
-
   {
-    id:
-      "20260929-grade8-game-update",
-
-    date:
-      "2026-09-29",
-
-    type:
-      "game-update",
-
-    typeName:
-      "遊戲更新",
-
-    icon:
-      "🎮",
-
-    title:
-      "八年級上學期遊戲全面優化",
-
-    content:
-      "八年級上學期數學遊戲持續進行整體優化，依課本、習作與附錄內容重新檢視題型、難度與解題步驟，並加強作答後的完整詳解。第 4 章一元二次方程式也重新依 4-1、4-2、4-3 分章設計，第 5 章統計資料處理同步加入，讓練習內容更貼近課堂學習進度。",
-
-    important:
-      false
+    id: "grade7-2-2-update-20261101",
+    date: "2026-11-01",
+    type: "game-update",
+    typeName: "遊戲優化",
+    icon: "🔢",
+    title: "七上 2-2 最大公因數與最小公倍數題庫更新",
+    content: "新增更多隨機數值與教材題型；計算題詳解以國中短除法為主，並調整題目對齊、提示文字及返回按鈕。"
   },
-
-
-  /*
-  ==================================================
-  2026 / 08 / 24
-  ==================================================
-  */
-
-
   {
-    id:
-      "20260824-site-brand",
-
-    date:
-      "2026-08-24",
-
-    type:
-      "notice",
-
-    typeName:
-      "網站公告",
-
-    icon:
-      "📌",
-
-    title:
-      "「生活有解．心中有數」正式啟用",
-
-    content:
-      "網站正式使用全新名稱，持續提供數學遊戲、挑戰練習、排行榜與個人成績紀錄。",
-
-    important:
-      false
+    id: "grade8-2-3-update-20261031",
+    date: "2026-10-31",
+    type: "game-update",
+    typeName: "遊戲優化",
+    icon: "📐",
+    title: "八上 2-3 畢氏定理題目與座標圖優化",
+    content: "修正答案提交判斷、減少模式二題目重複，並將座標平面的輔助虛線調整為清楚的直角三角形。"
   },
-
-
   {
-    id:
-      "20260824-quadratic",
-
-    date:
-      "2026-08-24",
-
-    type:
-      "new-game",
-
-    typeName:
-      "歷史更新",
-
-    icon:
-      "🗂️",
-
-    title:
-      "一元二次方程式遊戲初版上線",
-
-    content:
-      "一元二次方程式初版遊戲正式加入網站；目前已於新版中進一步依 4-1、4-2、4-3 課程內容重新拆分與設計。",
-
-    important:
-      false
+    id: "grade7-2-1-update-20261031",
+    date: "2026-10-31",
+    type: "game-update",
+    typeName: "遊戲優化",
+    icon: "🧩",
+    title: "七上 2-1 質因數分解介面統一",
+    content: "統一遊戲操作列、返回按鈕及計算紙位置，標準分解式改為共用次方答案輸入，運算符號可用下拉選單選取。"
   },
-
-
-  /*
-  ==================================================
-  2026 / 08 / 23
-  ==================================================
-  */
-
-
   {
-    id:
-      "20260823-factorization",
-
-    date:
-      "2026-08-23",
-
-    type:
-      "game-update",
-
-    typeName:
-      "遊戲更新",
-
-    icon:
-      "🎮",
-
-    title:
-      "因式分解與十字交乘遊戲持續優化",
-
-    content:
-      "詳解增加更完整的因式分解步驟，幫助作答者從錯誤中找到需要修正的地方。",
-
-    important:
-      false
+    id: "grade8-2-2-update-20261029",
+    date: "2026-10-29",
+    type: "game-update",
+    typeName: "遊戲優化",
+    icon: "√",
+    title: "八上 2-2 根式運算顯示與操作優化",
+    content: "複合分子除法題改成容易閱讀的橫式，並統一重新測驗、重選模式按鈕大小。"
   },
-
-
   {
-    id:
-      "20260823-score-system",
-
-    date:
-      "2026-08-23",
-
-    type:
-      "system",
-
-    typeName:
-      "系統更新",
-
-    icon:
-      "🔧",
-
-    title:
-      "排行榜與我的成績功能更新",
-
-    content:
-      "登入 Google 帳號後，完成遊戲即可記錄成績，並可查看排行榜與個人歷次表現。",
-
-    important:
-      false
+    id: "grade8-4-3-update-20261030",
+    date: "2026-10-30",
+    type: "game-update",
+    typeName: "遊戲優化",
+    icon: "✏️",
+    title: "八上 4-3 應用問題調整為每模式五題",
+    content: "六個模式每次各五題，同步更新進度及計分，保留原有詳細解析與錯題回顧。"
+  },
+  {
+    id: "site-launch-20260824",
+    date: "2026-08-24",
+    type: "system",
+    typeName: "網站公告",
+    icon: "📌",
+    title: "生活有解．心中有數｜數學遊戲平台",
+    content: "透過分模式練習、錯題回顧、排行榜與我的成績，逐步累積數學學習成果。"
   }
-
 ];
 
-
-/*
-==================================================
-日期排序
-最新日期排前面
-==================================================
-*/
-
-function sortByDateDescending(
-  items
-) {
-
-  return [
-    ...items
-  ].sort(
-    (
-      a,
-      b
-    ) =>
-      String(
-        b.date || ""
-      )
-        .localeCompare(
-          String(
-            a.date || ""
-          )
-        )
-  );
+function newestFirst(items) {
+  return [...items].sort((a, b) => b.date.localeCompare(a.date));
 }
 
-
-/*
-==================================================
-取得所有公告
-==================================================
-*/
-
-export function getAllAnnouncements() {
-
-  return sortByDateDescending(
-    ANNOUNCEMENTS
-  );
-}
-
-
-/*
-==================================================
-取得首頁重要公告
-
-若同一天有多則 important，
-會取陣列中排在較前面的那一則。
-==================================================
-*/
-
+/** 首頁上方的大公告。 */
 export function getImportantAnnouncement() {
-
-  return (
-    getAllAnnouncements()
-      .find(
-        item =>
-          item.important ===
-          true
-      ) ||
-    null
-  );
+  return newestFirst(ANNOUNCEMENTS.filter(item => item.important))[0] || null;
 }
 
-
-/*
-==================================================
-取得最近消息
-==================================================
-*/
-
-export function getLatestAnnouncements(
-  limit = 4
-) {
-
-  const safeLimit =
-    Math.max(
-      1,
-      Number(
-        limit
-      ) ||
-      4
-    );
-
-
-  return getAllAnnouncements()
-    .slice(
-      0,
-      safeLimit
-    );
+/** 首頁最新消息區；不重複顯示大公告，避免占掉兩格。 */
+export function getLatestAnnouncements(limit = 4) {
+  const count = Number.isFinite(Number(limit)) ? Math.max(0, Math.trunc(Number(limit))) : 4;
+  const important = getImportantAnnouncement();
+  return newestFirst(ANNOUNCEMENTS.filter(item => item.id !== important?.id)).slice(0, count);
 }
-
-
-console.log(
-  "announcements.js 已成功載入"
-);
