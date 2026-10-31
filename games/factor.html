@@ -6,7 +6,7 @@
   <title>2-1 質因數分解大挑戰</title>
 
   <link rel="stylesheet" href="../css/scratchpad.css">
-  <link rel="stylesheet" href="../css/expression-input.css">
+  
 
   <style>
     * { box-sizing: border-box; }
@@ -562,6 +562,37 @@
       .status-value { font-size: 16px; }
       .game-button { width: 100%; }
     }
+
+/* 七上 2-1 最新統一介面 */
+.game-card{position:relative;overflow:visible}
+.game-header{padding-top:70px}
+.semester-return{position:absolute;top:14px;right:16px;z-index:30;min-height:40px;padding:9px 13px;border:2px solid var(--primary-border);border-radius:12px;background:#fff;color:var(--primary-dark);font-weight:900;cursor:pointer}
+.quiz-topbar{grid-template-columns:minmax(175px,1.7fr) repeat(3,minmax(92px,1fr)) repeat(2,minmax(120px,1.1fr));align-items:stretch;gap:9px;overflow-x:auto;padding-bottom:6px}
+.quiz-topbar>.status-box,.quiz-topbar>.game-button{height:68px;min-height:68px;min-width:0;margin:0;box-shadow:none}
+.quiz-topbar>.game-button{font-size:15px;padding:8px 9px;border-radius:14px;box-shadow:0 4px 0 rgba(0,0,0,.16)}
+.question-card{position:relative;padding-bottom:82px;min-height:210px}
+.question-card .scratchpad-row{position:absolute;right:16px;bottom:14px;margin:0;z-index:5}
+.question-card #scratchpad-mobile-button{justify-content:flex-end}
+.question-content{overflow-wrap:normal;min-width:0}
+.question-content.multi-line{justify-content:flex-end;text-align:right;align-items:flex-start}
+.question-content .math-expression{max-width:100%;white-space:normal;overflow-wrap:normal}
+.question-content .math-expression:has(br){text-align:right}
+.button-row.submit-actions{margin:18px auto 0}
+.power-editor{max-width:750px;margin:auto}
+.power-hint{font-size:14px;text-align:center;color:var(--muted);margin:0 0 12px}
+.power-terms{display:flex;flex-wrap:wrap;align-items:end;justify-content:center;gap:10px}
+.power-term{display:flex;gap:7px;align-items:end;padding:8px;border:1px solid var(--primary-border);border-radius:12px;background:white}
+.power-term label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:900;color:var(--primary-dark)}
+.power-term input{width:80px;height:45px;max-width:22vw;border:1.5px solid var(--primary-border);border-radius:8px;font-size:20px;text-align:center;color:var(--text)}
+.power-term select{width:65px;height:45px;border:1.5px solid var(--primary-border);border-radius:8px;background:#fff;font-size:20px;text-align:center}
+.power-actions{display:flex;justify-content:center;gap:10px;margin:12px 0}
+.power-actions button,.power-remove{cursor:pointer;border:1.5px solid var(--primary-border);border-radius:9px;background:#fff;color:var(--primary-dark);font-weight:900;padding:10px}
+.power-remove{min-height:40px}
+.power-preview{text-align:center;background:#e0f2f1;border-radius:12px;padding:12px;min-height:45px;font-size:20px;font-weight:800}
+.power-message{text-align:center;color:#b45309;font-weight:800;min-height:26px;margin-top:6px}
+@media(max-width:1080px){.page-shell{width:100%}.quiz-topbar{grid-template-columns:180px repeat(3,100px) repeat(2,128px);}}
+@media(max-width:760px){.game-header{padding-top:66px}.quiz-topbar{grid-template-columns:170px repeat(3,92px) repeat(2,120px)}.question-content{font-size:clamp(21px,5vw,32px)}.power-terms{flex-direction:column;align-items:stretch}.power-term{justify-content:center}.power-term input{max-width:none}}
+
   </style>
 </head>
 
@@ -572,6 +603,7 @@
 
   <main class="game-card">
 
+    <button id="semester-return-button" type="button" class="semester-return">↩ 返回七年級上學期</button>
     <header class="game-header">
       <h1 class="game-title">🧩 2-1 質因數分解大挑戰</h1>
       <p class="game-subtitle">
@@ -662,6 +694,8 @@
           <span class="status-label">連擊</span>
           <span id="combo-display" class="status-value">0</span>
         </div>
+        <button id="restart-button" class="game-button restart" type="button">🔄 重新測驗</button>
+        <button id="mode-button" class="game-button secondary" type="button">重選模式</button>
       </div>
 
       <div class="progress-shell">
@@ -672,10 +706,7 @@
         <div id="question-label" class="question-label"></div>
         <div id="question-content" class="question-content"></div>
         <div id="question-note" class="mini-note"></div>
-      </div>
-
-      <div class="scratchpad-row">
-        <div id="scratchpad-mobile-button"></div>
+        <div class="scratchpad-row"><div id="scratchpad-mobile-button"></div></div>
       </div>
 
       <div class="answer-panel">
@@ -693,10 +724,9 @@
       <div id="feedback" class="feedback"></div>
       <div id="explanation" class="explanation hidden"></div>
 
-      <div class="button-row">
-        <button id="submit-button" class="game-button" type="button">送出答案</button>
-        <button id="next-button" class="game-button secondary hidden" type="button">下一題</button>
-        <button id="quit-button" class="game-button orange" type="button">選擇模式</button>
+      <div class="button-row submit-actions">
+        <button id="submit-button" class="game-button" type="button">送出答案（Enter）</button>
+        <button id="next-button" class="game-button secondary hidden" type="button">下一題（Enter）</button>
       </div>
     </section>
 
@@ -752,7 +782,7 @@
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
-<script src="../js/expression-input.js?v=7"></script>
+<script src="../js/expression-input.js?v=20261101-operator"></script>
 
 <script type="module">
 "use strict";
@@ -1337,109 +1367,47 @@ ExpressionInput
 */
 
 function initExpressionInput() {
-  if (
-    answerInput ||
-    typeof window.ExpressionInput !== "function"
-  ) {
-    return;
-  }
-
-  answerInput =
-    new window.ExpressionInput({
-      mountId: "answerMount",
-      allowNumber: false,
-      allowExpression: true,
-      defaultMode: "expression",
-      baseOptions: PRIME_INPUT_OPTIONS,
-      exponentOptions: [1,2,3,4,5,6],
-      allowCustomBase: true,
-      maxTerms: 8,
-      requireAscendingBases: true,
-      disallowDuplicateBases: true,
-      omitExponentOne: true,
-      theme: {
-        primary: "#00897b",
-        light: "#f0fdfa",
-        border: "#80cbc4"
-      },
-      labels: {
-        expressionLabel: "請輸入標準分解式",
-        baseLabel: "選擇質因數",
-        exponentLabel: "選擇指數",
-        editLabel: "編輯答案"
-      }
-    });
+  if (answerInput || typeof window.MathExpressionInput !== "function") return;
+  answerInput = new window.MathExpressionInput({
+    mountId: "answerMount",
+    placeholder: "例：2^3×3^2×5（次方可按功能鍵）",
+    validationMode: "polynomial",
+    allowPower: true,
+    allowRadical: false,
+    allowFraction: false,
+    allowVariable: false,
+    allowPlusMinus: false,
+    allowOperatorSelect: true,
+    showPreview: true,
+    theme: { primary: "#00897b", dark: "#00695c", light: "#e0f2f1", border: "#80cbc4" }
+  });
 }
 
 function readExpressionAnswer() {
   initExpressionInput();
-
-  if (!answerInput) {
-    return {
-      valid: false,
-      message: "標準分解式輸入器尚未完成載入，請重新整理頁面。"
-    };
+  if (!answerInput) return {valid:false,message:"數學共用輸入元件尚未載入，請重新整理頁面。"};
+  // 此模式要求的是標準分解式，不以數值相等取代質因數、指數及順序的檢查。
+  let raw = String(answerInput.getRawValue() || "")
+    .replace(/[\s\u3000]/g, "")
+    .replaceAll("＊", "×").replaceAll("*", "×")
+    .replaceAll("·", "×").replaceAll("＋", "+")
+    .replaceAll("−", "-").replaceAll("－", "-");
+  if (!raw) return {valid:false,message:"請先輸入標準分解式。"};
+  if (/[+\-]/.test(raw)) return {valid:false,message:"標準分解式只能使用乘號 ×，不能使用加號或減號。"};
+  if (!/^[0-9^×]+$/.test(raw)) return {valid:false,message:"請用質數底數、次方及乘號 × 輸入標準分解式。"};
+  const pieces=raw.split("×");
+  if (pieces.some(p=>!/^\d+(?:\^\d+)?$/.test(p))) return {valid:false,message:"請檢查乘號、底數和指數是否完整。"};
+  const map={}; let previous=1; const terms=[];
+  for(const piece of pieces){
+    const [b,e="1"]=piece.split("^"); const base=Number(b), exponent=Number(e);
+    if(!Number.isSafeInteger(base)||base<2||!Number.isSafeInteger(exponent)||exponent<1||exponent>20)
+      return {valid:false,message:"底數須為大於 1 的整數，指數須為 1～20 的正整數。"};
+    if(!isPrime(base)) return {valid:false,message:`${base} 不是質數，標準分解式只能使用質數作為底數。`};
+    if(base<=previous) return {valid:false,message:"質因數請由小到大排列；相同質因數必須合併成次方。"};
+    map[base]=exponent; terms.push({base,exponent}); previous=base;
   }
-
-  const validation =
-    answerInput.validate();
-
-  if (!validation.valid) {
-    return {
-      valid: false,
-      message: "請完成標準分解式後再送出。"
-    };
-  }
-
-  const terms =
-    validation.value.terms;
-
-  const utils =
-    window.ExpressionInputUtils;
-
-  if (
-    utils?.isStandardPrimeFactorization &&
-    !utils.isStandardPrimeFactorization(terms)
-  ) {
-    return {
-      valid: false,
-      message: "標準分解式的質因數要由小到大排列，且相同質因數要合併成次方。"
-    };
-  }
-
-  let map = {};
-
-  if (utils?.termsToFactorMap) {
-    map =
-      utils.termsToFactorMap(terms);
-  } else {
-    terms.forEach(term => {
-      const base =
-        Number(
-          term.base ??
-          term.value ??
-          0
-        );
-
-      const exponent =
-        Number(
-          term.exponent ??
-          1
-        );
-
-      if (base > 1) {
-        map[base] = exponent;
-      }
-    });
-  }
-
-  return {
-    valid: true,
-    map,
-    html:
-      validation.value.html ||
-      factorMapToHTML(map)
-  };
+  const html=terms.map(t=>String(t.base)+(t.exponent===1?"":`<sup>${t.exponent}</sup>`)).join("×");
+  return {valid:true,map,html};
 }
 
 /*
@@ -2934,6 +2902,7 @@ function renderQuestion() {
 
   $("question-content").innerHTML =
     q.html;
+  updateQuestionAlignment();
 
   $("question-note").textContent =
     q.note || "";
@@ -2974,6 +2943,7 @@ function renderSpeedQuestion() {
 
   $("question-content").innerHTML =
     q.html;
+  updateQuestionAlignment();
 
   $("question-note").textContent =
     "競速模式會在作答後自動進入下一題；完整解析可於錯題回顧查看。";
@@ -3166,9 +3136,7 @@ function submitAnswer() {
       q.kind === "primeExpression" &&
       answerInput
     ) {
-      answerInput.showMessage(
-        answer.message
-      );
+      $("input-message").textContent = answer.message;
     }
 
     return;
@@ -3813,6 +3781,32 @@ function showReview() {
   showOnly("review-screen");
 }
 
+
+function updateQuestionAlignment() {
+  const el=$("question-content");
+  if(!el)return;
+  el.classList.remove("multi-line");
+  requestAnimationFrame(()=>{
+    const child=el.firstElementChild;
+    if(!child)return;
+    const range=document.createRange();range.selectNodeContents(child);
+    const lines=[...range.getClientRects()].filter(r=>r.width>0&&r.height>0);
+    const uniqueTops=new Set(lines.map(r=>Math.round(r.top/5)*5));
+    const isMultiline=uniqueTops.size>1 || child.scrollWidth>el.clientWidth+2;
+    el.classList.toggle("multi-line",isMultiline);
+  });
+}
+window.addEventListener("resize",updateQuestionAlignment);
+
+function confirmModeChange(){
+  if(!window.confirm("確定要重選模式嗎？目前尚未完成的作答進度將不會儲存。"))return;
+  stopTimer();showOnly("start-screen");
+}
+function confirmRestart(){
+  if(!window.confirm("確定要重新測驗嗎？目前的作答進度將重新開始。"))return;
+  stopTimer();startGame(modeId);
+}
+
 /*
 ==================================================
 事件
@@ -3844,14 +3838,12 @@ $("next-button")
     nextQuestion
   );
 
-$("quit-button")
-  .addEventListener(
-    "click",
-    () => {
-      stopTimer();
-      showOnly("start-screen");
-    }
-  );
+$("restart-button").addEventListener("click",confirmRestart);
+$("mode-button").addEventListener("click",confirmModeChange);
+$("semester-return-button").addEventListener("click",()=>{
+  if(!$('quiz-screen').classList.contains('hidden') && !window.confirm('確定要離開遊戲，返回七年級上學期嗎？'))return;
+  stopTimer();window.location.href='../index.html?semester=grade7-first';
+});
 
 $("again-button")
   .addEventListener(
