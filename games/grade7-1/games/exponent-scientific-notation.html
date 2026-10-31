@@ -17,10 +17,8 @@
   href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f766e'/%3E%3Ctext x='9' y='36' font-family='Arial' font-size='30' font-weight='700' fill='white'%3Ex%3C/text%3E%3Ctext x='31' y='19' font-family='Arial' font-size='16' font-weight='700' fill='%23fde68a'%3En%3C/text%3E%3Ctext x='33' y='48' font-family='Arial' font-size='18' font-weight='700' fill='%2399f6e4'%3E10%3C/text%3E%3C/svg%3E"
 >
 
-<link
-  rel="stylesheet"
-  href="../css/scratchpad.css"
->
+<link rel="stylesheet" href="../css/scratchpad.css">
+<link rel="stylesheet" href="../css/expression-input.css">
 
 <style>
 
@@ -37,7 +35,7 @@
   --blue:#2563eb;
   --purple:#7c3aed;
   --orange:#ea580c;
-
+QC
   --text:#1e293b;
   --muted:#64748b;
 
@@ -1166,6 +1164,14 @@ RWD
 
 }
 
+
+/* 最新統一介面與題目顯示 */
+.return-wrap{display:flex;justify-content:flex-end;margin:0 2px 8px}.return-wrap a{display:inline-block;text-decoration:none;background:#fff;color:#115e59;border:2px solid #5eead4;border-radius:12px;padding:9px 13px;font-weight:800}
+.quiz-top{grid-template-columns:minmax(0,1fr) auto auto;align-items:center}.quiz-stats{display:flex;flex-wrap:wrap}.quiz-controls{display:flex;gap:8px;align-items:stretch}.quiz-controls .game-button{min-height:58px;min-width:116px;font-size:15px;padding:10px 12px}.stat-pill{min-height:58px;min-width:86px;display:flex;flex-direction:column;justify-content:center}
+.question-card{position:relative}.question-content{min-width:0;overflow-wrap:anywhere}.math-expression{max-width:100%;white-space:normal;overflow-wrap:normal;line-height:1.8}.question-note{max-width:100%;overflow-wrap:anywhere}.scratchpad-row{min-height:42px}.button-row{justify-content:center}#quit-button{display:none}
+.mode-card{cursor:pointer}.question-content .math{max-width:100%}
+@media(max-width:1000px){.quiz-top{grid-template-columns:1fr}.quiz-stats{overflow-x:auto;flex-wrap:nowrap}.quiz-controls{justify-content:center}.quiz-controls .game-button{min-width:130px}}
+@media(max-width:560px){.quiz-controls .game-button{min-width:0;flex:1}.question-content{font-size:clamp(20px,5vw,28px)}.math-expression{padding:7px 8px}}
 </style>
 
 </head>
@@ -1174,7 +1180,7 @@ RWD
 <body>
 
 <div class="page-shell">
-
+<div class="return-wrap"><a id="return-grade7" href="../index.html?semester=grade7-first">↩ 返回七年級上學期</a></div>
 <div id="commonHeaderMount"></div>
 
 <main class="game-card">
@@ -1597,9 +1603,8 @@ RWD
 </div>
 
 </div>
-
+<div class="quiz-controls"><button id="restart-quiz-button" class="game-button primary" type="button">🔄 重新測驗</button><button id="reselect-mode-button" class="game-button secondary" type="button">重選模式</button></div>
 </div>
-
 
 <div class="progress-track">
 
@@ -1619,13 +1624,6 @@ RWD
 </div>
 
 
-<div class="scratchpad-row">
-
-<div id="scratchpad-mobile-button"></div>
-
-</div>
-
-
 <div class="question-card">
 
 <div
@@ -1638,6 +1636,7 @@ RWD
   class="question-content"
 ></div>
 
+<div class="scratchpad-row" style="margin-top:12px;margin-bottom:0"><div id="scratchpad-mobile-button"></div></div>
 <div
   id="answer-area"
   class="answer-area"
@@ -1841,6 +1840,7 @@ RWD
 
 
 <script src="../js/common-header.js"></script>
+<script src="../js/expression-input.js?v=20261101-v51-operators"></script>
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
 <script src="../js/sound-manager.js?v=1"></script>
@@ -1934,6 +1934,9 @@ let records =
 
 let answered =
   false;
+
+let sharedInput = null;
+let recentSpeedKeys = [];
 
 let selectedChoice =
   null;
@@ -3667,7 +3670,7 @@ function createNegativePowerQuestions(){
     outsideNegativePower(),
 
     negativePowerContrast(),
-    negativePowerContrast(),
+    exponentOrderQuestion(),
 
     negativePowerSign(),
     negativePowerSign(),
@@ -3684,299 +3687,23 @@ function createNegativePowerQuestions(){
 ================================================== */
 
 function exponentOperationA(){
-
-  const sets =
-    [
-
-      {
-        a:-3,
-        p:2,
-        b:-2,
-        q:3,
-        c:2
-      },
-
-      {
-        a:-4,
-        p:2,
-        b:-3,
-        q:2,
-        c:2
-      },
-
-      {
-        a:-2,
-        p:4,
-        b:-3,
-        q:3,
-        c:1
-      }
-
-    ];
-
-  const q =
-    pick(sets);
-
-  const first =
-    q.a **
-    q.p;
-
-  const second =
-    q.b **
-    q.q;
-
-  const answer =
-    first +
-    second *
-    q.c;
-
-  const display =
-    `${powerHTML(q.a,q.p)}＋${powerHTML(q.b,q.q)}×${q.c}`;
-
-  return numberQuestion({
-
-    modeId:"operations",
-
-    family:"powerFirst",
-
-    label:"先指數再乘除",
-
-    html:`
-
-      <div class="math math-expression">
-        ${display}＝？
-      </div>
-    `,
-
-    explanation:
-      makeExplanation({
-
-        answer:
-          fmt(answer),
-
-        observe:
-          "算式中同時有次方、乘法與加法。",
-
-        think:
-          "先算次方，再乘法，最後加法。",
-
-        steps:[
-          rich(
-            `${powerHTML(q.a,q.p)}＝${fmt(first)}。`
-          ),
-
-          rich(
-            `${powerHTML(q.b,q.q)}＝${fmt(second)}。`
-          ),
-
-          `${operand(second)}×${q.c}＝${fmt(second*q.c)}。`,
-
-          `${operand(first)}＋${operand(second*q.c)}＝${fmt(answer)}。`
-        ],
-
-        why:
-          "含指數的四則運算，指數運算要先完成。",
-
-        mistake:
-          "不能先做最左邊看到的加法。"
-      })
-
-  },answer);
+  const a=-rand(2,5), p=rand(2,4), b=-rand(2,4), q=rand(2,4), c=rand(2,7);
+  const x=a**p,y=b**q,answer=x+y*c;
+  return numberQuestion({modeId:"operations",family:"powerFirst",label:"先次方，再乘除、加減",html:`<div class="math math-expression">${powerHTML(a,p)}＋${powerHTML(b,q)}×${c}＝？</div>`,explanation:makeExplanation({answer:fmt(answer),observe:"算式含次方、乘法及加法。",think:"先完成兩個次方，再計算乘法，最後做加法。",steps:[rich(`${powerHTML(a,p)}＝${fmt(x)}，${powerHTML(b,q)}＝${fmt(y)}。`),`${fmt(x)}＋${operand(y)}×${c}`,`${fmt(x)}＋${operand(y*c)}＝${fmt(answer)}。`],why:"有多種運算時依先指數、再乘除、後加減的順序。",mistake:"負數作底數要保留括號。"})},answer);
 }
 
 
 function exponentOperationB(){
-
-  const sets =
-    [
-
-      {
-        a:16,
-        b:-2,
-        p:2,
-        c:-5,
-        q:3
-      },
-
-      {
-        a:48,
-        b:-2,
-        p:3,
-        c:-3,
-        q:3
-      },
-
-      {
-        a:72,
-        b:-3,
-        p:2,
-        c:-4,
-        q:2
-      }
-
-    ];
-
-  const q =
-    pick(sets);
-
-  const powerB =
-    q.b **
-    q.p;
-
-  const powerC =
-    q.c **
-    q.q;
-
-  const answer =
-    q.a /
-    powerB +
-    powerC;
-
-  const display =
-    `${q.a}÷${powerHTML(q.b,q.p)}＋${powerHTML(q.c,q.q)}`;
-
-  return numberQuestion({
-
-    modeId:"operations",
-
-    family:"divisionPower",
-
-    label:"指數＋除法＋加法",
-
-    html:`
-
-      <div class="math math-expression">
-        ${display}＝？
-      </div>
-    `,
-
-    explanation:
-      makeExplanation({
-
-        answer:
-          fmt(answer),
-
-        observe:
-          "先看到兩個次方，再有除法與加法。",
-
-        think:
-          "先算所有次方，再做除法，最後做加法。",
-
-        steps:[
-          rich(
-            `${powerHTML(q.b,q.p)}＝${fmt(powerB)}。`
-          ),
-
-          rich(
-            `${powerHTML(q.c,q.q)}＝${fmt(powerC)}。`
-          ),
-
-          `${q.a}÷${operand(powerB)}＝${fmt(q.a/powerB)}。`,
-
-          `${operand(q.a/powerB)}＋${operand(powerC)}＝${fmt(answer)}。`
-        ],
-
-        why:
-          "每一個次方都是比乘除更優先的運算。",
-
-        mistake:
-          "負數底數的括號不能省略。"
-      })
-
-  },answer);
+  const b=-rand(2,5),p=rand(2,3),c=-rand(2,4),q=rand(2,3),k=rand(2,8),a=(b**p)*k;
+  const answer=k+c**q;
+  return numberQuestion({modeId:"operations",family:"divisionPower",label:"次方、除法與加法",html:`<div class="math math-expression">${fmt(a)}÷${powerHTML(b,p)}＋${powerHTML(c,q)}＝？</div>`,explanation:makeExplanation({answer:fmt(answer),observe:"分母為一個完整的次方。",think:"先分別算次方，再算除法，最後加法。",steps:[rich(`${powerHTML(b,p)}＝${fmt(b**p)}，${powerHTML(c,q)}＝${fmt(c**q)}。`),`${fmt(a)}÷${operand(b**p)}＝${k}。`,`${k}＋${operand(c**q)}＝${fmt(answer)}。`],why:"同級的乘除由左至右計算。",mistake:"不要把次方誤認為只作用在數字的負號外。"})},answer);
 }
 
 
 function exponentOperationC(){
-
-  const a =
-    pick([
-      -3,
-      -2
-    ]);
-
-  const p =
-    pick([
-      3,
-      4
-    ]);
-
-  const b =
-    -2;
-
-  const q =
-    pick([
-      3,
-      4
-    ]);
-
-  const multiplier =
-    pick([
-      4,
-      9
-    ]);
-
-  const answer =
-    a **
-    p -
-    (
-      b **
-      q
-    ) *
-    multiplier;
-
-  const display =
-    `${powerHTML(a,p)}－${powerHTML(b,q)}×${multiplier}`;
-
-  return numberQuestion({
-
-    modeId:"operations",
-
-    family:"subtractPower",
-
-    label:"次方＋乘法＋減法",
-
-    html:`
-
-      <div class="math math-expression">
-        ${display}＝？
-      </div>
-    `,
-
-    explanation:
-      makeExplanation({
-
-        answer:
-          fmt(answer),
-
-        observe:
-          "次方必須先算，之後才處理乘法與減法。",
-
-        think:
-          "依運算順序逐層完成。",
-
-        steps:[
-          rich(
-            `${powerHTML(a,p)}＝${fmt(a**p)}。`
-          ),
-
-          rich(
-            `${powerHTML(b,q)}＝${fmt(b**q)}。`
-          ),
-
-          `${operand(b**q)}×${multiplier}＝${fmt((b**q)*multiplier)}。`,
-
-          `${operand(a**p)}－${operand((b**q)*multiplier)}＝${fmt(answer)}。`
-        ],
-
-        why:
-          "順序固定後，複雜算式就能拆成幾個簡單步驟。",
-
-        mistake:
-          "減去負數時，減數應完整加括號。"
-      })
-
-  },answer);
+  const a=-rand(2,4),p=rand(2,4),b=-rand(2,4),q=rand(2,4),multiplier=rand(2,8);
+  const x=a**p,y=b**q,answer=x-y*multiplier;
+  return numberQuestion({modeId:"operations",family:"subtractPower",label:"含次方的減法算式",html:`<div class="math math-expression">${powerHTML(a,p)}－${powerHTML(b,q)}×${multiplier}＝？</div>`,explanation:makeExplanation({answer:fmt(answer),observe:"同時包含次方、乘法、減法。",think:"先算次方，再算乘法，最後做減法。",steps:[rich(`${powerHTML(a,p)}＝${fmt(x)}，${powerHTML(b,q)}＝${fmt(y)}。`),`${fmt(x)}－${operand(y*multiplier)}＝${fmt(answer)}。`],why:"不論左右位置，次方優先於乘除加減。",mistake:"減去負數時應先將減數加括號。"})},answer);
 }
 
 
@@ -4483,7 +4210,7 @@ function createTenPowerQuestions(){
     tenPlaceValue(),
 
     tenUnitQuestion(),
-    tenUnitQuestion()
+    tenthPowerFractionQuestion()
 
   ]);
 }
@@ -4496,38 +4223,7 @@ function createTenPowerQuestions(){
 
 function scientificLargeInput(){
 
-  const sets =
-    [
-
-      {
-        c:1.2,
-        e:5
-      },
-
-      {
-        c:3.6,
-        e:7
-      },
-
-      {
-        c:9.81,
-        e:8
-      },
-
-      {
-        c:2.35,
-        e:6
-      },
-
-      {
-        c:4.72,
-        e:9
-      }
-
-    ];
-
-  const q =
-    pick(sets);
+  const q={c:rand(100,999)/100,e:rand(4,10)};
 
   const plain =
     scientificToPlainString(
@@ -4600,38 +4296,7 @@ function scientificLargeInput(){
 
 function scientificSmallInput(){
 
-  const sets =
-    [
-
-      {
-        c:3.7,
-        e:-7
-      },
-
-      {
-        c:2.1,
-        e:-4
-      },
-
-      {
-        c:8,
-        e:-6
-      },
-
-      {
-        c:3.02,
-        e:-5
-      },
-
-      {
-        c:7.5,
-        e:-8
-      }
-
-    ];
-
-  const q =
-    pick(sets);
+  const q={c:rand(100,999)/100,e:-rand(3,10)};
 
   const plain =
     scientificToPlainString(
@@ -4702,35 +4367,7 @@ function scientificSmallInput(){
 
 function scientificToPlain(){
 
-  const q =
-    pick([
-
-      {
-        c:3.14,
-        e:7
-      },
-
-      {
-        c:7.68,
-        e:4
-      },
-
-      {
-        c:5.3,
-        e:-6
-      },
-
-      {
-        c:2.345,
-        e:-9
-      },
-
-      {
-        c:6.85,
-        e:7
-      }
-
-    ]);
+  const q={c:rand(100,999)/100,e:pick([-8,-7,-6,-5,-4,3,4,5,6,7,8])};
 
   const plain =
     scientificToPlainString(
@@ -4940,48 +4577,7 @@ function createScientificQuestions(){
 
 function scientificCompare(){
 
-  const sets =
-    [
-
-      {
-        a:3.2,
-        m:12,
-        b:1.7,
-        n:12
-      },
-
-      {
-        a:6.1,
-        m:8,
-        b:9.35,
-        n:7
-      },
-
-      {
-        a:9.5,
-        m:-5,
-        b:8.7,
-        n:-3
-      },
-
-      {
-        a:1.234,
-        m:-6,
-        b:9.87,
-        n:-5
-      },
-
-      {
-        a:7.53,
-        m:5,
-        b:5.49,
-        n:6
-      }
-
-    ];
-
-  const q =
-    pick(sets);
+  const q={a:rand(100,999)/100,m:rand(-10,11),b:rand(100,999)/100,n:rand(-10,11)};
 
   const valueA =
     q.a *
@@ -5242,31 +4838,7 @@ function scientificFirstNonZero(){
 
 function scientificSpecificDigit(){
 
-  const q =
-    pick([
-
-      {
-        c:3.874,
-        e:-5,
-        digit:"7",
-        place:7
-      },
-
-      {
-        c:3.874,
-        e:-5,
-        digit:"8",
-        place:6
-      },
-
-      {
-        c:3.874,
-        e:-50,
-        digit:"8",
-        place:51
-      }
-
-    ]);
+  const e=-rand(4,55); const digit=pick(["8","7","4"]); const q={c:3.874,e,digit,place:Math.abs(e)+({"8":1,"7":2,"4":3}[digit])};
 
   return numberQuestion({
 
@@ -5607,34 +5179,59 @@ function createComprehensiveQuestions(){
 }
 
 
+
+function exponentOrderQuestion(){
+ const b=pick([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.1,1.2,1.5,2,3,4]);
+ const k=rand(2,5), exps=[k,k+1,k+2], letters=shuffle(exps.map((e,i)=>({label:["a","b","c"][i],e})));
+ const sorted=[...letters].sort((a,c)=>(b>1?c.e-a.e:a.e-c.e));
+ const correct=sorted.map(x=>x.label).join('＞');
+ const opts=[correct,[...sorted].reverse().map(x=>x.label).join('＞'),[sorted[1],sorted[0],sorted[2]].map(x=>x.label).join('＞')];
+ return choiceQuestion({modeId:"negativePower",family:"exponentOrder",label:"利用指數比較大小",html:`<div class="question-note">已知 ${letters.map(x=>`${x.label}＝(${b})<sup>${x.e}</sup>`).join('，')}，請將 a、b、c 由大到小排列。</div>`,explanation:makeExplanation({answer:correct,observe:`底數 ${b} ${b>1?'大於 1':'介於 0 與 1 之間'}。`,think:b>1?'底數大於 1，次方愈大，數值愈大。':'底數介於 0 與 1，指數愈大，數值反而愈小。',steps:[`比較三個指數：${exps.join('、')}。`,`由大到小為 ${correct}。`],why:"相同正底數的指數比較，應先判斷底數與 1 的關係。",mistake:"底數小於 1 時，大小順序會與指數順序相反。"})},opts.map((x,i)=>({value:String(i),html:x})),"0");
+}
+function tenthPowerFractionQuestion(){
+ const k=rand(1,7),n=10**k;
+ return choiceQuestion({modeId:"tenPower",family:"tenFraction",label:"10 的負次方化為分數",html:`<div class="question-note">${powerHTML(10,-k)} 可以表示成哪一個分數？</div>`,explanation:makeExplanation({answer:rich(fractionHTML(1,n)),observe:`10 的指數是－${k}。`,think:"負指數表示 1 除以對應的正次方。",steps:[rich(`${powerHTML(10,-k)}＝1÷${powerHTML(10,k)}＝${fractionHTML(1,n)}。`)],why:"10 的負 k 次方等於 1／10 的 k 次方。",mistake:"負指數不是把答案變成負數。"})},[{value:"correct",html:fractionHTML(1,n)},{value:"a",html:fractionHTML(1,10**(k+1))},{value:"b",html:fractionHTML(1,10**Math.max(k-1,0))}],"correct");
+}
+
 /* ==================================================
 建立題組
 ================================================== */
 
+function uniqueQuestionSet(generator,count){
+ const keys=new Set(),result=[]; let attempts=0;
+ while(result.length<count && attempts++<300){
+  const group=generator();
+  for(const q of group){
+   const key=q.family+'|'+String(q.html).replace(/\s+/g,'');
+   if(!keys.has(key)){keys.add(key);result.push(q);if(result.length>=count)break;}
+  }
+ }
+ return shuffle(result);
+}
 function createQuestions(){
 
   switch(mode){
 
     case "notation":
-      return createNotationQuestions();
+      return uniqueQuestionSet(createNotationQuestions,10);
 
     case "negativePower":
-      return createNegativePowerQuestions();
+      return uniqueQuestionSet(createNegativePowerQuestions,10);
 
     case "operations":
-      return createOperationQuestions();
+      return uniqueQuestionSet(createOperationQuestions,10);
 
     case "tenPower":
-      return createTenPowerQuestions();
+      return uniqueQuestionSet(createTenPowerQuestions,10);
 
     case "scientific":
-      return createScientificQuestions();
+      return uniqueQuestionSet(createScientificQuestions,10);
 
     case "scientificCompare":
-      return createScientificCompareQuestions();
+      return uniqueQuestionSet(createScientificCompareQuestions,10);
 
     case "comprehensive":
-      return createComprehensiveQuestions();
+      return uniqueQuestionSet(createComprehensiveQuestions,8);
 
     default:
       return [];
@@ -5871,15 +5468,17 @@ function renderAnswer(
     "number"
   ){
 
-    area.innerHTML =
-      numberInputHTML();
-
-    bindNumberSignButtons();
+    area.innerHTML = window.ExpressionInput ? '<div id="shared-numeric-answer"></div>' : numberInputHTML();
+    sharedInput = null;
+    if(window.ExpressionInput){
+      sharedInput = new window.ExpressionInput({mountId:"shared-numeric-answer",defaultMode:"number",allowNumber:true,allowExpression:false,allowPolynomial:false,numberInputMode:"decimal",numberPlaceholder:"請輸入數值答案"});
+    }else{
+      bindNumberSignButtons();
+    }
 
     setTimeout(
       () => {
-        $("number-answer")
-          ?.focus();
+        (sharedInput?.numberInput || $("number-answer"))?.focus();
       },
       0
     );
@@ -6088,11 +5687,7 @@ function readAnswer(
     "number"
   ){
 
-    const raw =
-      $("number-answer")
-        ?.value
-        .trim() ||
-      "";
+    const raw = sharedInput ? (sharedInput.getValue().raw || "") : ($( "number-answer" )?.value.trim() || "");
 
     if(
       !/^[+\-－]?(?:\d+(?:\.\d+)?|\.\d+)$/
@@ -6620,7 +6215,7 @@ function displayQuestion(){
     mode ===
     "speed"
 
-      ? speedQuestion()
+      ? (function(){let q,tries=0,key; do {q=speedQuestion();key=q.family+'|'+q.html.replace(/\s+/g,'');tries++;} while(recentSpeedKeys.includes(key)&&tries<45);recentSpeedKeys.push(key);if(recentSpeedKeys.length>35)recentSpeedKeys.shift();return q;})()
 
       : questions[index];
 
@@ -7531,6 +7126,7 @@ function startGame(
 
     speedAttempts =
       0;
+    recentSpeedKeys=[];
 
     speedLocked =
       false;
@@ -8109,6 +7705,10 @@ function bindGameEvents(){
     );
 
 
+  document.querySelectorAll('.mode-card').forEach(card=>card.addEventListener('click',event=>{if(event.target.closest('button'))return;const b=card.querySelector('[data-mode]');if(b)b.click();}));
+  $("restart-quiz-button")?.addEventListener("click",()=>{if(confirm("確定要重新測驗嗎？目前的作答進度將重新開始。")) startGame(mode);});
+  $("reselect-mode-button")?.addEventListener("click",()=>{if(confirm("確定要重選模式嗎？目前作答進度將不會保留。")){stopTimer(false);showOnly("start-screen");}});
+  $("return-grade7")?.addEventListener("click",e=>{if(!$('quiz-screen').classList.contains('hidden')&&!confirm('確定要離開目前測驗並返回七年級上學期嗎？'))e.preventDefault();});
   $("submit-button")
     ?.addEventListener(
       "click",
@@ -8128,11 +7728,9 @@ function bindGameEvents(){
       "click",
       () => {
 
+        if(!confirm("確定要重選模式嗎？目前作答進度不會保留。"))return;
         stopTimer(false);
-
-        showOnly(
-          "start-screen"
-        );
+        showOnly("start-screen");
       }
     );
 
