@@ -62,7 +62,7 @@ import {
   getGameConfig,
   getGameName,
   getModeName
-} from "./game-config.js?v=20261029-3133";
+} from "./game-config.js?v=20261101-gcdlcm";
 
 
 import {
