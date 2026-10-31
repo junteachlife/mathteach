@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2-2 最大公因數與最小公倍數大挑戰</title>
+  <title>2-2 最大公因數與最小公倍數大挑戰｜生活有解．心中有數</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231565c0'/%3E%3Ctext x='32' y='45' font-size='42' fill='white' text-anchor='middle'%3E公%3C/text%3E%3C/svg%3E">
 
-  <link rel="stylesheet" href="../css/scratchpad.css">
-  <link rel="stylesheet" href="../css/expression-input.css">
+  <link rel="stylesheet" href="../../css/scratchpad.css">
+  <link rel="stylesheet" href="../../css/expression-input.css">
 
   <style>
     * { box-sizing: border-box; }
@@ -708,6 +709,21 @@
       .status-value { font-size: 16px; }
       .game-button { width: 100%; }
     }
+
+/* 2-2 最新統一遊戲介面 */
+.quiz-topbar{grid-template-columns:minmax(190px,1.5fr) repeat(3,minmax(90px,1fr)) minmax(118px,1fr) minmax(118px,1fr);align-items:stretch;overflow-x:auto;padding-bottom:3px}
+.quiz-topbar .status-box,.quiz-topbar .top-action{min-height:65px;height:100%;min-width:105px}
+.quiz-topbar .top-action{padding:8px 12px;font-size:15px;white-space:nowrap}
+.question-card{position:relative;min-height:245px;display:flex;flex-direction:column;align-items:stretch;justify-content:center}
+.question-content{max-width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere}
+.question-content.multi-line{text-align:right;align-items:flex-start;justify-content:flex-end}
+.question-content.single-line{text-align:center;justify-content:center}
+.scratchpad-row{justify-content:flex-end;margin-top:auto;padding-top:12px}
+#submit-button,#next-button{min-height:58px;padding:13px 24px;font-size:19px}
+.button-row{justify-content:center}
+@media(max-width:760px){.quiz-topbar{grid-template-columns:repeat(6,minmax(125px,1fr));}.status-box{min-height:65px}.question-card{min-height:220px}}
+@media(max-width:420px){.quiz-topbar .top-action{width:auto}.game-button{max-width:100%}.question-content{font-size:clamp(20px,5vw,30px)}}
+
   </style>
 </head>
 
@@ -765,7 +781,7 @@
           <h2>🧩 因倍數生活應用</h2>
           <p>從題意判斷要用最大公因數或最小公倍數，再完成分組、裁切、等距與週期問題。</p>
           <div class="mode-meta">
-            <span class="mode-badge">10 題</span>
+            <span class="mode-badge">5 題</span>
           </div>
         </button>
 
@@ -807,6 +823,8 @@
           <span class="status-label">連擊</span>
           <span id="combo-display" class="status-value">0</span>
         </div>
+        <button id="top-restart-button" class="game-button restart top-action" type="button">🔄 重新測驗</button>
+        <button id="top-mode-button" class="game-button secondary top-action" type="button">重選模式</button>
       </div>
 
       <div class="progress-shell">
@@ -817,11 +835,10 @@
         <div id="question-label" class="question-label"></div>
         <div id="question-content" class="question-content"></div>
         <div id="question-note" class="mini-note"></div>
+        <div class="scratchpad-row"><div id="scratchpad-mobile-button"></div></div>
       </div>
 
-      <div class="scratchpad-row">
-        <div id="scratchpad-mobile-button"></div>
-      </div>
+      
 
       <div class="answer-panel">
         <div class="answer-title">請作答</div>
@@ -852,7 +869,7 @@
       <div class="button-row">
         <button id="submit-button" class="game-button" type="button">送出答案</button>
         <button id="next-button" class="game-button secondary hidden" type="button">下一題</button>
-        <button id="quit-button" class="game-button orange" type="button">選擇模式</button>
+
       </div>
     </section>
 
@@ -904,11 +921,11 @@
   </main>
 </div>
 
-<script src="../js/common-header.js"></script>
-<script src="../js/scratchpad.js"></script>
-<script src="../js/scratchpad-template.js"></script>
-<script src="../js/sound-manager.js?v=1"></script>
-<script src="../js/expression-input.js?v=7"></script>
+<script src="../../js/common-header.js"></script>
+<script src="../../js/scratchpad.js"></script>
+<script src="../../js/scratchpad-template.js"></script>
+<script src="../../js/sound-manager.js?v=1"></script>
+<script src="../../js/expression-input.js?v=7"></script>
 
 <script type="module">
 "use strict";
@@ -955,7 +972,7 @@ const MODE_CONFIG = {
   },
   application: {
     name: "🧩 因倍數生活應用",
-    count: 10,
+    count: 5,
     difficultyWeight: 1.30
   },
   speed: {
@@ -1248,7 +1265,7 @@ window.addEventListener(
     if (window.MathGameCommonHeader) {
       window.MathGameCommonHeader.init({
         mountId: "commonHeaderMount",
-        basePath: "../"
+        basePath: "../../"
       });
     }
 
@@ -2892,7 +2909,7 @@ function makeProductRelationQuestion() {
 }
 
 function createConceptSet() {
-  return shuffle([
+  return deduplicateQuestionSet(shuffle([
     makeCommonFactorQuestion(),
     makeCommonFactorQuestion(),
     makeGcdConceptQuestion(),
@@ -2907,7 +2924,7 @@ function createConceptSet() {
         : "multiple"
     ),
     makeProductRelationQuestion()
-  ]);
+  ]),()=>pick([makeCommonFactorQuestion,makeGcdConceptQuestion,makeCoprimeQuestion,makeCommonMultipleQuestion,makeLcmConceptQuestion,makeProductRelationQuestion])(),10);
 }
 
 /*
@@ -2938,22 +2955,9 @@ function makeGcdNumberQuestion(
 }
 
 function createGcdSet() {
-  const pairCandidates =
-    shuffle(
-      PAIR_POOL
-        .filter(
-          ([a,b]) =>
-            a <= 600 &&
-            b <= 600
-        )
-    )
-      .slice(0,7);
+  const pairCandidates = Array.from({length:7},()=>makeRandomPair(4800));
 
-  const tripleCandidates =
-    shuffle(
-      TRIPLE_POOL
-    )
-      .slice(0,3);
+  const tripleCandidates = Array.from({length:3},()=>makeRandomTriple(7200));
 
   return shuffle([
     ...pairCandidates.map(
@@ -2999,25 +3003,9 @@ function makeLcmNumberQuestion(
 }
 
 function createLcmSet() {
-  const pairCandidates =
-    shuffle(
-      PAIR_POOL.filter(
-        values =>
-          lcmArray(values) <=
-          6000
-      )
-    )
-      .slice(0,7);
+  const pairCandidates = Array.from({length:7},()=>makeRandomPair(4800));
 
-  const tripleCandidates =
-    shuffle(
-      TRIPLE_POOL.filter(
-        values =>
-          lcmArray(values) <=
-          10000
-      )
-    )
-      .slice(0,3);
+  const tripleCandidates = Array.from({length:3},()=>makeRandomTriple(7200));
 
   return shuffle([
     ...pairCandidates.map(
@@ -3190,28 +3178,9 @@ function makeStandardQuestion(
 }
 
 function createStandardFormSet() {
-  const selected =
-    shuffle(
-      STANDARD_TEMPLATES
-    )
-      .slice(0,10);
-
-  const result = [];
-
-  selected.forEach(
-    (maps, i) => {
-      result.push(
-        makeStandardQuestion(
-          maps,
-          i < 5
-            ? "gcd"
-            : "lcm"
-        )
-      );
-    }
-  );
-
-  return shuffle(result);
+ const result=[];
+ for(let i=0;i<10;i++)result.push(makeStandardQuestion(makeRandomStandardMaps(),i<5?'gcd':'lcm'));
+ return deduplicateQuestionSet(result,()=>makeStandardQuestion(makeRandomStandardMaps(),Math.random()<.5?'gcd':'lcm'),10);
 }
 
 /*
@@ -3707,19 +3676,43 @@ function makeEventApplication() {
   });
 }
 
+
+// 教材第 46、50 頁：瓷磚/切割、兩邊獨立端點的燈桿、指定位置附近的共同標誌。
+function makeDynamicTileApplication(){
+ const side=pick([4,6,8,9,12,14,15,18,21,24]);
+ const a=side*rand(4,13),b=side*rand(3,12);
+ const g=gcd2(a,b),askCount=Math.random()<.5;
+ return numberQuestion({key:`tile-${a}-${b}-${askCount}`,topic:'最大公因數應用｜瓷磚',label:'正方形瓷磚應用',
+ html:`<div class="math-expression">長方形地面長 ${a} 公分、寬 ${b} 公分，要用相同的正方形瓷磚鋪滿且不裁切。<br>${askCount?'使用最大邊長的瓷磚時，最少需要幾片？':'瓷磚的最大邊長是多少公分？'}</div>`,
+ answer:askCount?(a/g)*(b/g):g,
+ explanation:`<strong>先求最大公因數</strong>${gcdExplanation([a,b])}<div class="calculation-box">最大邊長 ${g} 公分；長邊 ${a}÷${g}＝${a/g} 片，寬邊 ${b}÷${g}＝${b/g} 片。<br>總共 ${a/g}×${b/g}＝${(a/g)*(b/g)} 片。</div>`});
+}
+function makeDynamicLampApplication(){
+ const gap=rand(4,20),a=gap*rand(3,10),b=gap*rand(3,10),g=gcd2(a,b);
+ const count=(a/g+1)+(b/g+1);
+ return numberQuestion({key:`lamp-${a}-${b}`,label:'兩條分開的邊設置燈桿',topic:'最大公因數應用｜燈桿',
+ html:`<div class="math-expression">兩條<strong>彼此分開</strong>的直線步道，長 ${a} 公尺與 ${b} 公尺。要以相同最大間距設燈，兩端都要設燈。<br>兩條步道一共最少需要幾支燈？</div>`,
+ answer:count,explanation:`<strong>第 1 步｜求最大間距</strong>${gcdExplanation([a,b])}<strong>第 2 步｜端點都須計入</strong><div class="calculation-box">間距＝${g} 公尺。<br>第一條 ${a}÷${g}＋1＝${a/g+1} 支；第二條 ${b}÷${g}＋1＝${b/g+1} 支。<br>兩條步道彼此分開，沒有共用端點，合計 <strong>${count}</strong> 支。</div>`});
+}
+function makeDynamicOffsetApplication(){
+ const p=rand(3,14),q=rand(3,14),period=lcm2(p,q),start=rand(10,80),target=start+period*rand(2,8)+rand(-Math.floor(period/3),Math.floor(period/3));
+ const n=Math.max(1,Math.round((target-start)/period)),answer=start+n*period;
+ return numberQuestion({key:`offset-${p}-${q}-${start}-${target}`,label:'最接近指定位置的共同標誌',topic:'最小公倍數應用｜偏移位置',
+ html:`<div class="math-expression">在 ${start} 公尺處同時有兩種標誌。往前第一種每 ${p} 公尺設一個，第二種每 ${q} 公尺設一個。<br>在 ${target} 公尺附近，離它最近的下一個共同標誌位於幾公尺處？</div>`,
+ answer,explanation:`<strong>第 1 步｜共同間距</strong>${lcmExplanation([p,q])}<strong>第 2 步｜從原有起點推算</strong><div class="calculation-box">共同位置＝${start}＋${period}×n（n 為非負整數）。<br>距離 ${target} 最近的候選位置由前後倍數比較，得到 <strong>${answer} 公尺</strong>。</div>`});
+}
+function makeDynamicCycleApplication(){
+ const periods=makeRandomTriple(900),l=lcmArray(periods),fromOne=Math.random()<.5;
+ return numberQuestion({key:`cycle-${periods.join('-')}-${fromOne}`,label:'週期與發生次數',topic:'最小公倍數應用｜週期',
+ html:`<div class="math-expression">三項動作每隔 ${periods.join('、')} 次執行一次，而且${fromOne?'在第 1 次':'在第 0 次'}同時執行。<br>下一次三項動作同時執行，發生在第幾次？</div>`,
+ answer:l+(fromOne?1:0),explanation:`<strong>第 1 步｜求共同週期</strong>${lcmExplanation(periods)}<strong>第 2 步｜加上起始次數</strong><div class="calculation-box">下次共同發生距離起始點 ${l} 次；因此是在第 ${fromOne?1:0}＋${l}＝<strong>${l+(fromOne?1:0)}</strong> 次。</div>`});
+}
+
 function createApplicationSet() {
-  return shuffle([
-    makeFruitGroupingApplication(),
-    makeSquareCutApplication(),
-    makeEqualSpacingApplication(),
-    makeRibbonApplication(),
-    makePackageApplication(),
-    makeMeetingApplication(),
-    makeRoadApplication(),
-    makeCubeApplication(),
-    makeCarpetApplication(),
-    makeEventApplication()
-  ]);
+ const gcdFactories=[makeFruitGroupingApplication,makeSquareCutApplication,makeEqualSpacingApplication,makeRibbonApplication,makePackageApplication,makeDynamicTileApplication,makeDynamicLampApplication];
+ const lcmFactories=[makeMeetingApplication,makeRoadApplication,makeCubeApplication,makeCarpetApplication,makeEventApplication,makeDynamicOffsetApplication,makeDynamicCycleApplication];
+ const pool=[...shuffle(gcdFactories).slice(0,2),...shuffle(lcmFactories).slice(0,3)].map(fn=>fn());
+ return deduplicateQuestionSet(pool,()=>pick([...gcdFactories,...lcmFactories])(),5);
 }
 
 /*
@@ -4035,7 +4028,12 @@ function makeQuickDecisionQuestion() {
   });
 }
 
+const speedSeen = new Set();
 function makeSpeedQuestion() {
+ for(let tries=0;tries<40;tries++){ const q=makeSpeedQuestionCandidate();const sig=questionSignature(q);if(!speedSeen.has(sig)){speedSeen.add(sig);return q;} }
+ speedSeen.clear();return makeSpeedQuestionCandidate();
+}
+function makeSpeedQuestionCandidate() {
   const type =
     rand(1,5);
 
@@ -4132,6 +4130,50 @@ function createComprehensiveSet() {
 ==================================================
 */
 
+
+// 2-2 以數學條件生成多樣化數據，避免只反覆抽 PDF 固定數字。
+function makeRandomPair(maxLCM=4800){
+  for(let tries=0;tries<500;tries++){
+    const shared=rand(1,18), x=rand(2,22), y=rand(2,22);
+    const a=shared*x,b=shared*y;
+    if(a!==b && Math.max(a,b)<=520 && lcm2(a,b)<=maxLCM && a>=8 && b>=8)
+      return [a,b];
+  }
+  return [36,60];
+}
+function makeRandomTriple(maxLCM=7200){
+  for(let tries=0;tries<500;tries++){
+    const g=rand(1,14), ns=[rand(2,12),rand(2,12),rand(2,12)];
+    const v=ns.map(n=>g*n);
+    if(new Set(v).size===3 && lcmArray(v)<=maxLCM && Math.max(...v)<=360) return v;
+  }
+  return [24,36,60];
+}
+function makeRandomStandardMaps(){
+  const primes=shuffle([2,3,5,7,11,13]).slice(0,rand(2,4)).sort((a,b)=>a-b);
+  const count=rand(2,3);
+  for(let tries=0;tries<150;tries++){
+    const maps=Array.from({length:count},()=>{
+      const map={};primes.forEach(p=>{if(Math.random()<.76)map[p]=rand(1,p<=3?4:2);});
+      if(!Object.keys(map).length)map[primes[0]]=1;
+      return map;
+    });
+    if(factorMapValue(lcmFactorMap(maps))<=250000 && factorMapValue(lcmFactorMap(maps))>=15) return maps;
+  }
+  return [{2:3,3:2},{2:2,3:3}];
+}
+// 用實際題幹與條件作去重，不以 Date.now() 或 Math.random() 偽裝成不同題目。
+function questionSignature(q){
+  return [q.kind,String(q.label||'').replace(/<[^>]*>/g,''),String(q.html||'').replace(/<[^>]*>/g,''),q.topic||''].join('|').replace(/\s+/g,'');
+}
+function deduplicateQuestionSet(list, generator, wanted){
+  const seen=new Set(),result=[];
+  const attempt=q=>{if(!q)return; const sig=questionSignature(q);if(!seen.has(sig)){seen.add(sig);result.push(q);}};
+  list.forEach(attempt);
+  for(let tries=0;result.length<wanted && tries<500;tries++)attempt(generator());
+  return shuffle(result).slice(0,wanted);
+}
+
 function createQuestionSet(
   selectedMode
 ) {
@@ -4201,11 +4243,14 @@ function startGame(
   ) {
     questions = [];
   } else {
-    questions =
-      createQuestionSet(
-        modeId
-      );
+    const initial = createQuestionSet(modeId);
+    const want = MODE_CONFIG[modeId].count;
+    questions = deduplicateQuestionSet(initial,()=>{
+       const next=createQuestionSet(modeId);
+       return pick(next);
+    },want);
   }
+  speedSeen.clear();
 
   $("mode-display").textContent =
     MODE_CONFIG[modeId].name;
@@ -4296,6 +4341,9 @@ function renderQuestion() {
 
   $("question-content").innerHTML =
     q.html;
+  const el=$("question-content");
+  el.classList.toggle("multi-line", /<br\s*\/?\s*>/i.test(q.html) || (el.textContent||"").length>75);
+  el.classList.toggle("single-line",!el.classList.contains("multi-line"));
 
   $("question-note").textContent =
     q.note || "";
@@ -4322,6 +4370,9 @@ function renderSpeedQuestion() {
 
   $("question-content").innerHTML =
     q.html;
+  const el=$("question-content");
+  el.classList.toggle("multi-line", /<br\s*\/?\s*>/i.test(q.html) || (el.textContent||"").length>75);
+  el.classList.toggle("single-line",!el.classList.contains("multi-line"));
 
   $("question-note").textContent =
     "競速模式作答後會自動進入下一題；錯題可於測驗結果中回顧完整解析。";
@@ -5229,7 +5280,7 @@ async function saveScoreRecord({
   try {
     const scoreModule =
       await import(
-        "../js/scores.js?v=7"
+        "../../js/scores.js?v=7"
       );
 
     if (
@@ -5346,7 +5397,7 @@ async function completeRpgBridge({
   try {
     const progressModule =
       await import(
-        "../js/progress-system.js?v=1"
+        "../../js/progress-system.js?v=1"
       );
 
     const handler =
@@ -5517,6 +5568,13 @@ document
     );
   });
 
+$("top-restart-button").addEventListener("click",()=>{
+ if(window.confirm("確定重新測驗？目前的作答進度將不保留。")){stopTimer();$("number-input").disabled=false;startGame(modeId);}
+});
+$("top-mode-button").addEventListener("click",()=>{
+ if(window.confirm("確定重選模式？目前的作答進度將不保留。")){stopTimer();$("number-input").disabled=false;showOnly("start-screen");}
+});
+
 $("submit-button")
   .addEventListener(
     "click",
@@ -5527,21 +5585,6 @@ $("next-button")
   .addEventListener(
     "click",
     nextQuestion
-  );
-
-$("quit-button")
-  .addEventListener(
-    "click",
-    () => {
-      stopTimer();
-
-      $("number-input").disabled =
-        false;
-
-      showOnly(
-        "start-screen"
-      );
-    }
   );
 
 $("again-button")
