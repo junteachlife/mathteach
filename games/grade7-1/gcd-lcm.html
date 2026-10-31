@@ -739,13 +739,63 @@
 .quiz-topbar .top-action{padding:8px 12px;font-size:15px;white-space:nowrap}
 .question-card{position:relative;min-height:245px;display:flex;flex-direction:column;align-items:stretch;justify-content:center}
 .question-content{max-width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere}
-.question-content.multi-line{text-align:right;align-items:flex-start;justify-content:flex-end}
+.question-content.multi-line{text-align:left;align-items:flex-start;justify-content:flex-start}
 .question-content.single-line{text-align:center;justify-content:center}
 .scratchpad-row{justify-content:flex-end;margin-top:auto;padding-top:12px}
 #submit-button,#next-button{min-height:58px;padding:13px 24px;font-size:19px}
 .button-row{justify-content:center}
 @media(max-width:760px){.quiz-topbar{grid-template-columns:repeat(6,minmax(125px,1fr));}.status-box{min-height:65px}.question-card{min-height:220px}}
 @media(max-width:420px){.quiz-topbar .top-action{width:auto}.game-button{max-width:100%}.question-content{font-size:clamp(20px,5vw,30px)}}
+
+
+/* 一般多行文字靠左；標準分解式整組置中，各行等號對齊。 */
+.question-content.standard-form-question,
+.question-content.standard-form-question.multi-line{
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+.question-content.standard-form-question .math-expression{
+  display:block;
+  width:max-content;
+  max-width:100%;
+  margin-inline:auto;
+  text-align:left;
+  line-height:1.8;
+  overflow-wrap:normal;
+  white-space:normal;
+}
+/* 標準分解式：整組置中，但 A／B／C 標籤與等號在每行固定對齊 */
+.question-content.standard-form-question .standard-form-lines{
+  display:grid;
+  grid-template-columns:max-content minmax(0,max-content);
+  column-gap:.16em;
+  row-gap:.10em;
+  width:max-content;
+  max-width:100%;
+  margin-inline:auto;
+  text-align:left;
+  justify-content:center;
+}
+.standard-form-lines .standard-form-label{text-align:right;white-space:nowrap}
+.standard-form-lines .standard-form-term{text-align:left;white-space:nowrap}
+@media(max-width:520px){
+  .question-content.standard-form-question .standard-form-lines{font-size:clamp(18px,4.3vw,26px)}
+  .standard-form-lines .standard-form-term{white-space:normal;overflow-wrap:normal}
+}
+/* 右上角學期返回鍵 */
+.game-header{position:relative;padding-top:58px}
+.semester-return-link{
+  position:absolute;right:16px;top:12px;
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:42px;padding:8px 13px;
+  border:2px solid var(--primary-border);border-radius:12px;
+  color:var(--primary-dark);background:#fff;
+  font-size:15px;font-weight:800;text-decoration:none;
+  transition:background .15s ease;
+}
+.semester-return-link:hover{background:var(--primary-light)}
+@media(max-width:520px){.game-header{padding-top:70px}.semester-return-link{right:12px;top:10px;font-size:13px;padding:7px 9px}}
 
   </style>
 </head>
@@ -758,6 +808,7 @@
   <main class="game-card">
 
     <header class="game-header">
+      <a id="semester-return-link" class="semester-return-link" href="../../index.html?semester=grade7-first">↩ 返回七年級上學期</a>
       <h1 class="game-title">🔵 2-2 最大公因數與最小公倍數大挑戰</h1>
       <p class="game-subtitle">
         對應七年級上學期 2-2：公因數、最大公因數、互質、公倍數、最小公倍數、
@@ -1294,6 +1345,11 @@ window.addEventListener(
 
     ensureScratchpadButtonMounted();
     initExpressionInput();
+    document.getElementById("semester-return-link")?.addEventListener("click", event => {
+      if (!document.getElementById("quiz-screen")?.classList.contains("hidden")) {
+        if (!window.confirm("目前測驗尚未結束，確定要返回七年級上學期嗎？")) event.preventDefault();
+      }
+    });
   }
 );
 
@@ -3065,11 +3121,11 @@ function mapsDisplayHTML(maps) {
     ["A","B","C"];
 
   return `
-    <div class="math-expression">
+    <div class="math-expression standard-form-lines">
       ${maps.map(
         (map, i) =>
-          `${labels[i]}＝${factorMapToHTML(map)}`
-      ).join("<br>")}
+          `<span class="standard-form-label">${labels[i]}＝</span><span class="standard-form-term">${factorMapToHTML(map)}</span>`
+      ).join("")}
     </div>
   `;
 }
@@ -4377,6 +4433,7 @@ function renderQuestion() {
   const el=$("question-content");
   el.classList.toggle("multi-line", /<br\s*\/?\s*>/i.test(q.html) || (el.textContent||"").length>75);
   el.classList.toggle("single-line",!el.classList.contains("multi-line"));
+  el.classList.toggle("standard-form-question",q.kind === "primeExpression");
 
   $("question-note").textContent =
     q.note || "";
@@ -4408,6 +4465,7 @@ function renderSpeedQuestion() {
   const el=$("question-content");
   el.classList.toggle("multi-line", /<br\s*\/?\s*>/i.test(q.html) || (el.textContent||"").length>75);
   el.classList.toggle("single-line",!el.classList.contains("multi-line"));
+  el.classList.toggle("standard-form-question",q.kind === "primeExpression");
 
   $("question-note").textContent =
     "競速模式作答後會自動進入下一題；錯題可於測驗結果中回顧完整解析。";
