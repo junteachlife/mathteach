@@ -554,6 +554,16 @@ export const GAME_CONFIG = {
 
 
 
+  gcdLcm: {
+    id:"gcdLcm", section:"2-2", name:"2-2 最大公因數與最小公倍數大挑戰",
+    shortName:"最大公因數與最小公倍數",semester:"grade7-first",grade:7,order:6.25,
+    icon:"🔵",file:"games/grade7-1/gcd-lcm.html",
+    description:"公因數、公倍數與互質、兩數與三數短除法、標準分解式、生活應用及快手競速。",
+    finished:true,difficulty:2,recommended:true,isNew:true,ranking:{type:"timed"},
+    modes:{concept:"公因數、公倍數與互質",gcd:"最大公因數",lcm:"最小公倍數",standardForm:"標準分解式求公因公倍",application:"因倍數生活應用",speed:"公因公倍快手",comprehensive:"2-2 綜合挑戰"},
+    theme:{primary:"#1565c0",dark:"#0d47a1",light:"#e3f2fd",border:"#90caf9"}
+  },
+
   "expression-operations": {
     section: "3-1", id: "expression-operations", name: "3-1 式子的運算大挑戰", shortName: "式子的運算大挑戰",
     semester: "grade7-first", grade: 7, order: 6.5, icon: "📘",
