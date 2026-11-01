@@ -296,7 +296,7 @@ export const GAME_CONFIG = {
     shortName: "指數律",
     semester: "grade7-first",
     grade: 7,
-    order: 8,
+    order: 6.3,
     icon: "🔢",
     file: "games/grade7-1/exponent.html",
     description: "七上 2-4：分數次方、同底數乘除、零次方、冪的乘方、積的乘方與綜合指數律。",
@@ -535,7 +535,7 @@ export const GAME_CONFIG = {
 
   gcdLcm: {
     id:"gcdLcm", section:"2-2", name:"2-2 最大公因數與最小公倍數大挑戰",
-    shortName:"最大公因數與最小公倍數",semester:"grade7-first",grade:7,order:6.25,
+    shortName:"最大公因數與最小公倍數",semester:"grade7-first",grade:7,order:6.1,
     icon:"🔵",file:"games/grade7-1/gcd-lcm.html",
     description:"公因數、公倍數與互質、兩數與三數短除法、標準分解式、生活應用及快手競速。",
     finished:true,difficulty:2,recommended:true,isNew:true,ranking:{type:"timed"},
