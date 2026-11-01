@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2-3 分數的四則運算大挑戰</title>
-<link rel="stylesheet" href="../../css/scratchpad.css"><link rel="stylesheet" href="../../css/math-expression-input.css"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%232e7d32'/%3E%3Ctext x='32' y='47' font-size='40' text-anchor='middle' fill='white'%3E分%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../css/scratchpad.css"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%232e7d32'/%3E%3Ctext x='32' y='47' font-size='40' text-anchor='middle' fill='white'%3E分%3C/text%3E%3C/svg%3E">
 <style>
 *{box-sizing:border-box}:root{--p:#2e7d32;--pd:#1b5e20;--pl:#e8f5e9;--pb:#a5d6a7;--t:#1f2937;--m:#64748b;--d:#b91c1c;--o:#f57c00}body{margin:0;min-height:100vh;padding:16px;font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;color:var(--t);background:linear-gradient(135deg,#eaf8ec,#fff8e8)}button,input{font-family:inherit;-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}.page{width:min(100%,1040px);margin:auto}#commonHeaderMount{margin-bottom:14px}.game{overflow:hidden;border:1px solid #d7ead8;border-top:8px solid var(--p);border-radius:26px;background:#fff;box-shadow:0 14px 34px rgba(15,23,42,.13)}header{padding:26px 24px 20px;text-align:center;background:linear-gradient(180deg,var(--pl),#fff)}h1{margin:0;color:var(--pd);font-size:clamp(28px,5vw,42px);line-height:1.35}.sub{max-width:900px;margin:10px auto 0;color:var(--m);line-height:1.8}.screen{padding:24px}.hidden{display:none!important}.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.mode{min-height:190px;padding:20px;border:2px solid var(--pb);border-radius:20px;background:linear-gradient(180deg,var(--pl),#fff);text-align:left;cursor:pointer;transition:.16s}.mode:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(15,23,42,.11);border-color:var(--p)}.mode h2{margin:0 0 8px;color:var(--pd);font-size:21px;line-height:1.45}.mode p{margin:0;color:var(--m);line-height:1.68}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.badge{padding:5px 9px;border-radius:999px;background:#fff;border:1px solid var(--pb);color:var(--pd);font-size:13px;font-weight:900}.mode.speed{border-color:#ffcc80;background:linear-gradient(180deg,#fff3e0,#fff)}.mode.speed h2{color:#e65100}.mode.comp{border-color:#ffe082;background:linear-gradient(180deg,#fff8e1,#fff)}.mode.comp h2{color:#9a6700}.top{display:grid;grid-template-columns:1.5fr repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}.status{min-height:74px;display:flex;flex-direction:column;justify-content:center;padding:10px 8px;border-radius:14px;background:var(--pl);color:var(--pd);text-align:center;font-weight:900}.status small{color:var(--m)}.status span{margin-top:4px;font-size:18px}.danger{background:#fee2e2!important;color:#991b1b!important;animation:pulse .75s infinite alternate}@keyframes pulse{to{transform:scale(1.025)}}.prog{height:12px;margin-bottom:18px;overflow:hidden;border-radius:999px;background:#e2e8f0}.bar{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--p),#66bb6a);transition:.2s}.qcard{padding:24px 18px;border:2px solid var(--pb);border-radius:20px;text-align:center}.qlabel{margin-bottom:12px;color:var(--m);font-size:clamp(16px,2.1vw,20px);font-weight:900;line-height:1.65}.qcontent{min-height:110px;display:flex;align-items:center;justify-content:center;font-size:clamp(22px,3.4vw,32px);font-weight:900;line-height:1.7;overflow-x:auto}.note{margin-top:12px;color:var(--m);font-size:14px;line-height:1.65}.fraction{display:inline-grid;grid-template-rows:auto auto;min-width:1.55em;margin:0 .12em;vertical-align:-.55em;text-align:center;line-height:1.05}.fraction .num{padding:0 .16em .08em;border-bottom:.075em solid currentColor}.fraction .den{padding:.08em .16em 0}.mixed{white-space:nowrap}.scratch{display:flex;justify-content:center;margin:14px 0 2px}.answer{margin-top:16px;padding:18px;border:1px solid #d8ead9;border-radius:18px;background:#f8fcf8}.answer-title{text-align:center;color:var(--pd);font-weight:900;margin-bottom:12px}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choice{min-height:68px;padding:12px;border:2px solid #cbd5e1;border-radius:16px;background:#fff;font-size:17px;font-weight:800;line-height:1.55;cursor:pointer}.choice.selected{border-color:var(--p);background:var(--pl);color:var(--pd)}.choice.correct-choice{border-color:#22c55e!important;background:#dcfce7!important;color:#166534!important}.choice.wrong-choice{border-color:#ef4444!important;background:#fee2e2!important;color:#991b1b!important}.fwrap{display:flex;flex-direction:column;align-items:center;gap:10px}.finput{width:min(100%,430px);min-height:58px;padding:10px 16px;border:2px solid var(--pb);border-radius:15px;text-align:center;font-size:24px;font-weight:900;outline:none}.finput:focus{border-color:var(--p);box-shadow:0 0 0 4px rgba(46,125,50,.1)}.help{color:var(--m);font-size:13px;line-height:1.55;text-align:center}.keys{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.key{min-width:48px;min-height:42px;border:1px solid #cbd5e1;border-radius:11px;background:#fff;color:var(--pd);font-size:18px;font-weight:900;cursor:pointer}.msg{min-height:24px;margin-top:10px;color:var(--d);text-align:center;font-weight:800}.feedback{min-height:48px;margin-top:16px;padding:12px 14px;border-radius:14px;text-align:center;font-size:18px;font-weight:900;line-height:1.55}.feedback:empty{min-height:0;padding:0;margin-top:0}.feedback.correct{background:#dcfce7;color:#166534}.feedback.wrong{background:#fee2e2;color:#991b1b}.explain{margin-top:14px;padding:18px;border-left:6px solid var(--p);border-radius:14px;background:#f8fafc;color:#334155;line-height:1.88;font-size:16px}.explain strong{color:#0f172a}.box{margin:10px 0;padding:12px 14px;border-radius:12px;line-height:1.85}.rule{background:#e8f5e9;border:1px solid #a5d6a7}.calc{background:#f1f5f9;border:1px solid #cbd5e1}.tip{background:#eff6ff;border:1px solid #93c5fd}.buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:18px}.btn{min-height:48px;padding:10px 18px;border:0;border-radius:13px;background:var(--p);color:#fff;font-weight:900;font-size:16px;cursor:pointer}.btn.gray{background:#64748b}.btn.orange{background:var(--o)}.btn.green{background:#16a34a}.btn:disabled{opacity:.55;cursor:not-allowed}.result{text-align:center}.score{margin:10px 0 4px;color:var(--pd);font-size:clamp(40px,8vw,66px);font-weight:1000}.stars{font-size:28px;letter-spacing:3px}.comment{max-width:740px;margin:12px auto;color:var(--m);line-height:1.75}.rgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0}.ritem{padding:14px 8px;border-radius:14px;background:var(--pl)}.ritem small{display:block;color:var(--m);font-weight:800}.ritem b{display:block;margin-top:5px;color:var(--pd);font-size:24px}.save{min-height:24px;margin:10px 0 0;font-weight:800}.review-list{display:grid;gap:16px}.review-card{padding:16px;border:1px solid #d8ead9;border-radius:16px}.review-title{margin-bottom:10px;color:var(--d);font-weight:1000}.review-question{font-weight:800;line-height:1.7}.review-answer{margin:10px 0;line-height:1.7}@media(max-width:760px){body{padding:8px}.screen{padding:16px}header{padding:22px 16px 16px}.mode-grid{grid-template-columns:1fr}.top{grid-template-columns:repeat(2,minmax(0,1fr))}.choices{grid-template-columns:1fr}.rgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.qcard{padding:20px 12px}}@media(max-width:420px){.status span{font-size:16px}.btn{width:100%}}
 
@@ -49,6 +49,1037 @@ header{padding-top:60px}.top{display:flex;flex-wrap:nowrap;align-items:stretch;g
 .answer-negative-note{color:#64748b;font-size:13px}
 .msg.ok{color:#15803d}
 @media(max-width:600px){.qcontent{font-size:clamp(21px,5vw,29px)}.qcontent>div{max-width:100%}.answer{padding:12px}.answer-fraction-pane #fractionNumeratorMount,.answer-fraction-pane #fractionDenominatorMount{width:min(100%,245px)}}
+
+.local-paper-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:7px 14px;background:linear-gradient(#fffbdc,#f6b944);color:#70460d;border:1.5px solid #d49b26;border-radius:12px;box-shadow:0 3px 0 #bd8721;font-size:14px;font-weight:800;cursor:pointer}
+#local-paper-dialog{position:fixed;inset:0;z-index:100000;background:rgba(15,23,42,.62);display:flex;align-items:center;justify-content:center;padding:12px}
+#local-paper-dialog[hidden]{display:none!important}
+.local-paper-panel{width:min(96vw,950px);height:min(88vh,780px);border-radius:18px;background:white;padding:12px;display:flex;flex-direction:column;gap:8px}
+.local-paper-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap}
+.local-paper-actions button{padding:9px 16px;border-radius:10px;border:1px solid #94a3b8;background:#fff;font-weight:800;cursor:pointer}
+#local-paper-canvas{width:100%;flex:1;min-height:0;border:1px solid #cbd5e1;border-radius:10px;background:white;touch-action:none;cursor:crosshair}
+</style>
+<style id="built-in-mei-v23">
+/*
+==================================================
+MathExpressionInput 共用數學運算式輸入元件
+版本：2.3.0
+==================================================
+*/
+
+.mei-shell{
+  --mei-primary:#7b1fa2;
+  --mei-primary-dark:#4a148c;
+  --mei-primary-light:#f3e5f5;
+  --mei-primary-border:#ce93d8;
+
+  width:min(100%,860px);
+  margin:0 auto;
+
+  font-family:
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif;
+}
+
+.mei-main-row{
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+  gap:10px;
+}
+
+.mei-editor-wrap{
+  position:relative;
+  flex:1 1 360px;
+  min-width:0;
+  min-height:66px;
+
+  border:
+    2px solid
+    var(--mei-primary-border);
+
+  border-radius:14px;
+
+  background:#fff;
+
+  box-shadow:
+    0 2px 0
+    rgba(15,23,42,.04);
+}
+
+.mei-editor-wrap:focus-within{
+  border-color:
+    var(--mei-primary);
+
+  box-shadow:
+    0 0 0 3px
+    color-mix(
+      in srgb,
+      var(--mei-primary) 14%,
+      transparent
+    );
+}
+
+.mei-source-input{
+  position:relative;
+  z-index:2;
+
+  width:100%;
+  height:100%;
+  min-height:62px;
+
+  padding:
+    10px 14px;
+
+  border:0;
+  outline:0;
+
+  background:transparent;
+
+  color:transparent !important;
+  -webkit-text-fill-color:transparent;
+
+  caret-color:
+    var(--mei-primary);
+
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    serif;
+
+  font-size:
+    clamp(
+      21px,
+      3.8vw,
+      29px
+    );
+
+  font-weight:900;
+}
+
+.mei-source-input::selection{
+  background:
+    rgba(123,31,162,.16);
+}
+
+.mei-rich-display{
+  position:absolute;
+  inset:0;
+  z-index:1;
+
+  display:flex;
+  align-items:center;
+
+  min-width:0;
+
+  padding:
+    8px 14px;
+
+  overflow-x:auto;
+  overflow-y:hidden;
+
+  pointer-events:none;
+
+  color:#0f172a;
+
+  white-space:nowrap;
+
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    serif;
+
+  font-size:
+    clamp(
+      22px,
+      3.8vw,
+      30px
+    );
+
+  font-weight:900;
+}
+
+.mei-rich-display--placeholder{
+  color:#94a3b8;
+
+  font-family:
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif;
+
+  font-size:16px;
+  font-weight:800;
+}
+
+.mei-toolbar{
+  display:flex;
+  align-items:stretch;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.mei-tool-button{
+  min-width:84px;
+  min-height:62px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  padding:
+    8px 11px;
+
+  border:
+    2px solid
+    var(--mei-primary-border);
+
+  border-radius:13px;
+
+  background:#fff;
+
+  color:
+    var(--mei-primary-dark);
+
+  font-size:14px;
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+.mei-tool-button:hover{
+  background:
+    var(--mei-primary-light);
+}
+
+.mei-tool-button:active{
+  transform:
+    translateY(1px);
+}
+
+.mei-tool-symbol{
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    serif;
+
+  font-size:23px;
+  line-height:1;
+}
+
+.mei-tool-symbol sup{
+  font-size:.58em;
+}
+
+.mei-mini-fraction{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:stretch;
+
+  min-width:20px;
+
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    serif;
+
+  font-size:12px;
+  line-height:1;
+}
+
+.mei-mini-fraction span{
+  display:block;
+  padding:1px 4px;
+  text-align:center;
+}
+
+.mei-mini-fraction span:first-child{
+  border-bottom:
+    1.8px solid
+    currentColor;
+}
+
+.mei-hint{
+  margin-top:7px;
+
+  color:#64748b;
+
+  font-size:13px;
+  font-weight:700;
+
+  text-align:center;
+}
+
+.mei-preview{
+  margin-top:12px;
+
+  min-height:58px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+
+  padding:
+    11px 13px;
+
+  border:
+    2px solid
+    var(--mei-primary-border);
+
+  border-radius:13px;
+
+  background:
+    var(--mei-primary-light);
+
+  color:#334155;
+
+  text-align:center;
+
+  font-size:17px;
+  font-weight:900;
+}
+
+.mei-preview--valid{
+  border-color:#86efac;
+  background:#f0fdf4;
+  color:#166534;
+}
+
+.mei-preview--incomplete{
+  color:#475569;
+}
+
+.mei-preview-value{
+  display:inline-flex;
+  align-items:center;
+
+  color:
+    var(--mei-primary);
+
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    serif;
+
+  font-size:24px;
+  font-weight:900;
+}
+
+.mei-preview-message{
+  width:100%;
+  margin-top:2px;
+
+  color:#b45309;
+
+  font-size:13px;
+  font-weight:800;
+}
+
+.mei-slot{
+  min-width:1.9em;
+  min-height:1.5em;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:
+    .08em .28em;
+
+  border:
+    1.5px dashed
+    var(--mei-primary-border);
+
+  border-radius:7px;
+
+  color:#94a3b8;
+
+  font-family:
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif;
+
+  font-size:.62em;
+  font-weight:800;
+}
+
+.mei-op{
+  display:inline-block;
+  margin:
+    0 .12em;
+}
+
+.mei-variable{
+  font-style:italic;
+}
+
+.mei-fraction{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:center;
+
+  min-width:1.8em;
+
+  margin:
+    0 .10em;
+
+  vertical-align:middle;
+}
+
+.mei-fraction-top,
+.mei-fraction-bottom{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  padding:
+    .06em .16em;
+}
+
+.mei-fraction-top{
+  border-bottom:
+    2.2px solid
+    currentColor;
+}
+
+.mei-fallback-root{
+  display:inline-flex;
+  align-items:flex-start;
+  vertical-align:middle;
+}
+
+.mei-fallback-root-sign{
+  font-size:1.45em;
+  line-height:1;
+}
+
+.mei-fallback-root-content{
+  padding:
+    .04em .08em 0;
+
+  border-top:
+    2px solid
+    currentColor;
+}
+
+.mei-shell--disabled{
+  opacity:.72;
+}
+
+.mei-shell--disabled
+.mei-tool-button{
+  cursor:not-allowed;
+}
+
+@media(max-width:640px){
+  .mei-main-row{
+    align-items:stretch;
+    gap:8px;
+  }
+
+  .mei-editor-wrap{
+    flex-basis:240px;
+  }
+
+  .mei-toolbar{
+    gap:6px;
+  }
+
+  .mei-tool-button{
+    min-width:68px;
+    min-height:60px;
+
+    padding:
+      7px 8px;
+
+    font-size:13px;
+  }
+
+  .mei-rich-display{
+    font-size:
+      clamp(
+        21px,
+        6vw,
+        28px
+      );
+  }
+}
+
+@media(max-width:460px){
+  .mei-main-row{
+    display:grid;
+    grid-template-columns:
+      minmax(0,1fr)
+      auto;
+  }
+
+  .mei-toolbar{
+    display:grid;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(64px,1fr)
+      );
+  }
+
+  .mei-tool-button{
+    min-width:0;
+  }
+}
+
+
+/*
+==================================================
+v1.1｜精準游標編輯模式
+Focus 時顯示「可讀數學符號」本身：
+√、+、−、/、^
+不再讓學生看到 sqrt(...) / frac(...) 等內部文字碼。
+
+Blur 後再切回正式數學排版。
+==================================================
+*/
+
+.mei-shell--editing .mei-rich-display{
+  display:none;
+}
+
+.mei-shell--editing .mei-source-input{
+  color:#0f172a !important;
+  -webkit-text-fill-color:#0f172a;
+
+  caret-color:
+    var(--mei-primary);
+
+  background:#fff;
+}
+
+.mei-shell--editing .mei-source-input::selection{
+  color:#0f172a;
+  -webkit-text-fill-color:#0f172a;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--mei-primary) 18%,
+      transparent
+    );
+}
+
+/*
+編輯狀態仍保留同一個答案框，不額外展開第二層介面。
+*/
+.mei-shell--editing .mei-editor-wrap{
+  border-color:
+    var(--mei-primary);
+}
+
+
+/*
+==================================================
+v1.2｜分數答案自動增高
+==================================================
+*/
+
+.mei-shell--has-fraction .mei-editor-wrap{
+  min-height:94px;
+}
+
+.mei-shell--has-fraction .mei-source-input{
+  min-height:90px;
+  padding-top:18px;
+  padding-bottom:18px;
+}
+
+.mei-shell--has-fraction .mei-rich-display{
+  min-height:90px;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+/*
+正式上下分數在主答案框中保留足夠垂直空間。
+*/
+.mei-shell--has-fraction
+.rd-fraction,
+.mei-shell--has-fraction
+.mei-fraction{
+  margin-top:.10em;
+  margin-bottom:.10em;
+}
+
+/*
+編輯中雖採線性可讀格式，
+答案框仍維持加高，避免切換時高度跳動。
+*/
+.mei-shell--editing.mei-shell--has-fraction
+.mei-source-input{
+  line-height:1.55;
+}
+
+@media(max-width:640px){
+  .mei-shell--has-fraction .mei-editor-wrap{
+    min-height:88px;
+  }
+
+  .mei-shell--has-fraction .mei-source-input,
+  .mei-shell--has-fraction .mei-rich-display{
+    min-height:84px;
+  }
+}
+
+
+/*
+==================================================
+v1.3｜分數待輸入框
+==================================================
+*/
+
+.mei-slot{
+  min-width:1.15em;
+  min-height:1.15em;
+  padding:.02em .16em;
+}
+
+
+/*
+==================================================
+v1.5｜分數／次方專用小編輯器
+==================================================
+*/
+
+.mei-special-editor{
+  width:min(100%,360px);
+  margin:10px auto 0;
+  padding:12px;
+  border:2px solid var(--mei-primary-border);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(15,23,42,.10);
+}
+
+.mei-special-editor[hidden]{
+  display:none !important;
+}
+
+.mei-special-editor-title{
+  margin-bottom:8px;
+  color:var(--mei-primary-dark);
+  text-align:center;
+  font-size:14px;
+  font-weight:900;
+}
+
+.mei-fraction-editor{
+  width:150px;
+  margin:0 auto;
+  display:grid;
+  grid-template-rows:auto 2px auto;
+  gap:4px;
+}
+
+.mei-special-input{
+  width:100%;
+  min-width:0;
+  height:42px;
+  padding:6px 8px;
+  border:2px solid var(--mei-primary-border);
+  border-radius:10px;
+  outline:0;
+  background:#fff;
+  color:#0f172a;
+  text-align:center;
+  font-size:20px;
+  font-weight:900;
+}
+
+.mei-special-input:focus{
+  border-color:var(--mei-primary);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--mei-primary) 14%,transparent);
+}
+
+.mei-fraction-editor-line{
+  display:block;
+  width:100%;
+  border-top:2px solid #334155;
+}
+
+.mei-special-editor-actions{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:10px;
+}
+
+.mei-special-confirm,
+.mei-special-cancel{
+  min-height:38px;
+  padding:7px 14px;
+  border:2px solid var(--mei-primary-border);
+  border-radius:10px;
+  background:#fff;
+  color:var(--mei-primary-dark);
+  font-weight:900;
+  cursor:pointer;
+}
+
+.mei-special-confirm{
+  background:var(--mei-primary-light);
+}
+
+.mei-power-editor-preview{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:58px;
+  color:#0f172a;
+  font-family:"Cambria Math","Times New Roman",serif;
+  font-size:30px;
+  font-weight:900;
+}
+
+.mei-power-editor-preview sup{
+  position:relative;
+  top:-.2em;
+}
+
+.mei-power-value{
+  width:68px;
+  height:34px;
+  padding:2px 5px;
+  font-size:18px;
+}
+
+
+/*
+==================================================
+v1.6｜分數內可插入根號
+==================================================
+*/
+
+.mei-shell--special-open
+.mei-tool-button[data-tool="sqrt"]{
+  position:relative;
+}
+
+.mei-special-editor--fraction::after{
+  content:"分子、分母都可直接輸入；需要時可繼續使用 √ 根號、x、次方。";
+  display:block;
+  margin-top:8px;
+  color:#64748b;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.5;
+}
+
+
+/*
+==================================================
+v1.7｜正負號
+==================================================
+*/
+
+.mei-tool-button[data-tool="plusMinus"]
+.mei-tool-symbol{
+  font-size:1.22em;
+  font-weight:900;
+}
+
+.mei-op--plus-minus{
+  padding:0 .12em;
+  font-weight:900;
+}
+
+
+/*
+==================================================
+v1.8｜單一預覽＋自然次方顯示
+==================================================
+*/
+
+.mei-preview[hidden]{
+  display:none !important;
+}
+
+/*
+主答案框保留學生看得懂的 Unicode 上標：
+x²、x³、(x−2)²。
+內部解析時才轉為 ^(2)、^(3)。
+*/
+.mei-source-input{
+  font-variant-numeric:lining-nums;
+}
+
+
+/*
+==================================================
+v1.9｜分數編輯器完整工具延伸
+==================================================
+*/
+
+.mei-shell--special-open
+.mei-tool-button[data-tool="variable"],
+.mei-shell--special-open
+.mei-tool-button[data-tool="power"],
+.mei-shell--special-open
+.mei-tool-button[data-tool="sqrt"]{
+  position:relative;
+}
+
+.mei-special-editor--fraction
+.mei-special-input{
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    serif;
+}
+
+
+/*
+==================================================
+v2.0｜次方視覺強化
+==================================================
+
+按下「次方」完成後，主答案框立即使用 rich display
+的真正 <sup> 呈現，避免 Android 對 Unicode ²、³
+顯示太小而看起來像一般數字。
+==================================================
+*/
+
+.mei-shell--power-display
+.mei-rich-display{
+  display:flex !important;
+}
+
+.mei-shell--power-display
+.mei-source-input{
+  color:transparent !important;
+  -webkit-text-fill-color:transparent !important;
+  caret-color:transparent !important;
+  background:transparent !important;
+}
+
+/*
+正式數學排版中的次方：
+比瀏覽器預設 sup 稍大、稍高。
+*/
+.mei-rich-display sup{
+  position:relative;
+  top:-.50em;
+
+  display:inline-block;
+
+  margin-left:.04em;
+
+  font-size:.72em !important;
+  font-weight:900 !important;
+
+  line-height:1;
+  vertical-align:baseline;
+}
+
+/*
+即使學生再次點入編輯，
+Unicode ²、³ 本身也放在較大的數學字體中，
+在手機上辨識度會更高。
+*/
+.mei-shell--editing
+.mei-source-input{
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      25px,
+      4.6vw,
+      35px
+    );
+
+  font-weight:900;
+  letter-spacing:.012em;
+}
+
+/*
+次方按鈕上的小 n 也同步加強。
+*/
+.mei-tool-button[data-tool="power"]
+.mei-tool-symbol sup{
+  position:relative;
+  top:-.30em;
+
+  font-size:.74em !important;
+  font-weight:900 !important;
+
+  vertical-align:baseline;
+}
+
+
+/*
+==================================================
+v2.1｜答案預覽同步修正
+==================================================
+
+功能鍵插入 x、根號、分數、次方、± 後，
+共用元件會主動送出 input event。
+
+因此：
+- 主答案框
+- 系統判斷
+- 遊戲本身的「目前答案」
+
+會立即保持同步。
+==================================================
+*/
+
+
+/*
+==================================================
+v2.2｜外部答案預覽同步
+==================================================
+共用元件在程式化插入分數、次方、根號、x、± 後：
+1. 先更新自身正式數學排版
+2. 派發 input
+3. 派發 change
+4. 呼叫 onChange callback
+==================================================
+*/
+
+
+/*
+==================================================
+v2.3｜特殊符號就地輸入
+==================================================
+
+根號、分數、次方都不再向下撐開大型面板，
+而是在答案框游標附近以浮動小編輯器出現。
+==================================================
+*/
+
+.mei-shell{
+  position:relative;
+}
+
+.mei-special-editor{
+  position:absolute !important;
+  z-index:40;
+
+  width:auto !important;
+  max-width:min(88vw,320px);
+
+  margin:0 !important;
+  padding:8px 10px !important;
+
+  border:2px solid var(--mei-primary-border);
+  border-radius:12px;
+
+  background:#fff;
+
+  box-shadow:
+    0 10px 28px
+    rgba(15,23,42,.16);
+}
+
+.mei-special-editor--power{
+  min-width:138px;
+}
+
+.mei-special-editor--root{
+  min-width:176px;
+}
+
+.mei-special-editor--fraction{
+  min-width:190px;
+}
+
+.mei-special-editor-title{
+  display:none;
+}
+
+.mei-inline-root-editor{
+  display:flex;
+  align-items:flex-start;
+  gap:2px;
+}
+
+.mei-inline-root-symbol{
+  display:inline-block;
+
+  margin-top:2px;
+
+  font-family:
+    "Cambria Math",
+    "STIX Two Math",
+    "Times New Roman",
+    serif;
+
+  font-size:34px;
+  font-weight:900;
+  line-height:1;
+}
+
+.mei-root-value{
+  width:118px;
+  height:42px;
+  border-radius:8px 8px 4px 4px;
+  border-top:3px solid #334155;
+}
+
+.mei-fraction-editor{
+  width:150px !important;
+}
+
+.mei-power-editor-preview{
+  min-height:42px !important;
+  font-size:28px !important;
+}
+
+.mei-special-editor-actions{
+  margin-top:6px !important;
+  gap:6px !important;
+}
+
+.mei-special-confirm,
+.mei-special-cancel{
+  min-height:32px !important;
+  padding:4px 9px !important;
+  font-size:12px;
+}
+
+/*
+特殊編輯器開啟時不再改變答案區高度。
+*/
+.mei-shell--special-open{
+  overflow:visible;
+}
+
+@media(max-width:600px){
+  .mei-special-editor{
+    max-width:76vw;
+  }
+
+  .mei-special-editor--fraction{
+    min-width:174px;
+  }
+
+  .mei-root-value{
+    width:102px;
+  }
+}
 </style>
 </head>
 <body>
@@ -66,7 +1097,7 @@ header{padding-top:60px}.top{display:flex;flex-wrap:nowrap;align-items:stretch;g
 <section id="quiz-screen" class="screen hidden">
 <div class="top"><div class="status"><small>模式</small><span id="mode-display">—</span></div><div id="time-box" class="status"><small>時間</small><span id="time-display">00:00</span></div><div class="status"><small>分數</small><span id="score-display">0</span></div><div class="status"><small>最高連擊</small><span id="combo-display">0</span></div><button id="restart-top" class="btn" type="button">🔄 重新測驗</button><button id="reselect-top" class="btn gray" type="button">重選模式</button></div>
 <div class="prog"><div id="progress-bar" class="bar"></div></div>
-<div class="qcard"><div id="question-label" class="qlabel"></div><div id="question-content" class="qcontent"></div><div id="question-note" class="note"></div><div class="scratch"><div id="scratchpad-mobile-button"></div></div></div>
+<div class="qcard"><div id="question-label" class="qlabel"></div><div id="question-content" class="qcontent"></div><div id="question-note" class="note"></div><div class="scratch"><div id="scratchpad-mobile-button"><button id="local-scratchpad-button" type="button" class="local-paper-btn">✏️ 計算紙</button></div></div></div>
 <div class="answer"><div class="answer-title">請作答</div><div id="choiceMount" class="choices"></div><div id="fractionAnswerWrap" class="fwrap hidden"><div id="answerMount"></div><div class="help">使用共用數學答案框；點「分數」可輸入分子、分母。完成後自動檢查最簡分數，送出後才判斷對錯。</div></div><div id="input-message" class="msg"></div></div>
 <div id="feedback" class="feedback"></div><div id="explanation" class="explain hidden"></div>
 <div class="buttons"><button id="submit-button" class="btn">送出答案（Enter）</button><button id="next-button" class="btn gray hidden">下一題</button><button id="quit-button" class="btn orange hidden">選擇模式</button></div>
@@ -75,7 +1106,5359 @@ header{padding-top:60px}.top{display:flex;flex-wrap:nowrap;align-items:stretch;g
 <section id="review-screen" class="screen hidden"><h2>📝 錯題回顧</h2><div id="review-list" class="review-list"></div><div class="buttons"><button id="review-again-button" class="btn green">🔄 重新挑戰</button><button id="review-result-button" class="btn gray">回到測驗結果</button></div></section>
 </main></div>
 <script src="../../js/common-header.js"></script><script src="../../js/scratchpad.js"></script><script src="../../js/scratchpad-template.js"></script><script src="../../js/sound-manager.js?v=1"></script>
-<script src="../../js/math-expression-input.js?v=2.3.0"></script><script type="module">
+<script id="built-in-mei-v23">
+/*
+==================================================
+MathExpressionInput 共用數學運算式輸入元件
+版本：2.3.0
+==================================================
+
+設計原則：
+- 介面只保留「一個答案框＋必要功能鍵」。
+- 數字、+、- 直接用鍵盤輸入。
+- 特殊符號才使用按鈕：√ 根號、分數、± 正負號、次方、x。
+- 次方是通用功能，可接在數字、x、括號、根號或其他完整底數後。
+- 分數內可以再插入根號；根號內也可以再插入分數。
+- 主答案框直接顯示正式數學排版。
+- 實際鍵盤輸入仍使用原生 input，避免 Android contenteditable 問題。
+
+編輯時直接使用可讀數學符號：
+√5
+(2√5)/(3)
+√((3)/(5))
+2√3+√7
+==================================================
+*/
+
+(function () {
+  "use strict";
+
+  const PLACEHOLDER = "□";
+
+  const DEFAULTS = {
+    mountId: "",
+    placeholder: "請輸入答案",
+    allowRadical: true,
+    allowFraction: true,
+    allowPower: false,
+    allowVariable: false,
+    allowPlusMinus: false,
+    variable: "x",
+
+    /*
+    numeric-radical：
+      原本數值／根式模式
+
+    polynomial：
+      支援 x、多項式、括號、乘法、分數係數與任意整數次方
+    */
+    validationMode: "numeric-radical",
+
+    /*
+    是否顯示元件內建的「系統判斷」預覽。
+    如果遊戲本身已有「目前答案」區塊，
+    可設為 false，避免出現兩個預覽視窗。
+    */
+    showPreview: true,
+
+    /*
+    外部遊戲可直接接收元件值改變通知，
+    不必只依賴原生 input event。
+    */
+    onChange: null,
+
+    /*
+    工具列順序可依遊戲調整。
+    */
+    toolOrder: [
+      "radical",
+      "fraction",
+      "plusMinus",
+      "power",
+      "variable"
+    ],
+    requireSimplifiedRadical: true,
+    requireSimplifiedFraction: true,
+    requireRationalDenominator: true,
+    autoFocus: true,
+    theme: {
+      primary: "#7b1fa2",
+      dark: "#4a148c",
+      light: "#f3e5f5",
+      border: "#ce93d8"
+    }
+  };
+
+  function escapeHTML(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  const SUPERSCRIPT_DIGITS = {
+    "0":"⁰","1":"¹","2":"²","3":"³","4":"⁴",
+    "5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"
+  };
+
+  function toSuperscriptDigits(value) {
+    return String(value ?? "")
+      .split("")
+      .map(ch => SUPERSCRIPT_DIGITS[ch] || "")
+      .join("");
+  }
+
+  function needsGrouping(source) {
+    source = String(source ?? "").trim();
+
+    if (!source) {
+      return false;
+    }
+
+    let depth = 0;
+
+    for (let i = 0; i < source.length; i++) {
+      const ch = source[i];
+
+      if (ch === "(") {
+        depth++;
+      } else if (ch === ")") {
+        depth = Math.max(0, depth - 1);
+      } else if (
+        depth === 0 &&
+        (
+          ch === "+" ||
+          ch === "±" ||
+          (
+            ch === "-" &&
+            i > 0
+          )
+        )
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function gcd(a, b) {
+    a = Math.abs(Math.trunc(Number(a) || 0));
+    b = Math.abs(Math.trunc(Number(b) || 0));
+
+    while (b) {
+      const t = a % b;
+      a = b;
+      b = t;
+    }
+
+    return a || 1;
+  }
+
+  function gcdMany(values) {
+    const nums = values
+      .map(v => Math.abs(Math.trunc(Number(v) || 0)))
+      .filter(v => v !== 0);
+
+    if (!nums.length) {
+      return 1;
+    }
+
+    return nums.reduce((a, b) => gcd(a, b));
+  }
+
+  function largestSquareFactor(n) {
+    n = Math.abs(Math.trunc(Number(n)));
+
+    if (!Number.isFinite(n) || n <= 1) {
+      return 1;
+    }
+
+    let largest = 1;
+
+    for (let i = 2; i * i <= n; i++) {
+      const sq = i * i;
+
+      if (n % sq === 0) {
+        largest = sq;
+      }
+    }
+
+    return largest;
+  }
+
+  function simplifySquareRoot(n) {
+    n = Math.trunc(Number(n));
+
+    if (!Number.isFinite(n) || n < 0) {
+      return null;
+    }
+
+    if (n === 0) {
+      return {
+        coefficient: 0,
+        radicand: 1
+      };
+    }
+
+    const square =
+      largestSquareFactor(n);
+
+    return {
+      coefficient:
+        Math.sqrt(square),
+      radicand:
+        n / square
+    };
+  }
+
+  class Fraction {
+    constructor(numerator = 0, denominator = 1) {
+      numerator = Number(numerator);
+      denominator = Number(denominator);
+
+      if (
+        !Number.isInteger(numerator) ||
+        !Number.isInteger(denominator)
+      ) {
+        throw new Error("Fraction 只接受整數分子與分母。");
+      }
+
+      if (denominator === 0) {
+        throw new Error("分母不能是 0。");
+      }
+
+      if (denominator < 0) {
+        numerator *= -1;
+        denominator *= -1;
+      }
+
+      const d =
+        gcd(
+          Math.abs(numerator),
+          denominator
+        );
+
+      this.numerator =
+        numerator / d;
+
+      this.denominator =
+        denominator / d;
+    }
+
+    add(other) {
+      other = Fraction.from(other);
+
+      return new Fraction(
+        this.numerator * other.denominator +
+          other.numerator * this.denominator,
+        this.denominator * other.denominator
+      );
+    }
+
+    subtract(other) {
+      return this.add(
+        Fraction.from(other).negate()
+      );
+    }
+
+    multiply(other) {
+      other = Fraction.from(other);
+
+      return new Fraction(
+        this.numerator * other.numerator,
+        this.denominator * other.denominator
+      );
+    }
+
+    divide(other) {
+      other = Fraction.from(other);
+
+      if (other.numerator === 0) {
+        throw new Error("不能除以 0。");
+      }
+
+      return new Fraction(
+        this.numerator * other.denominator,
+        this.denominator * other.numerator
+      );
+    }
+
+    negate() {
+      return new Fraction(
+        -this.numerator,
+        this.denominator
+      );
+    }
+
+    isZero() {
+      return this.numerator === 0;
+    }
+
+    isInteger() {
+      return this.denominator === 1;
+    }
+
+    equals(other) {
+      other = Fraction.from(other);
+
+      return (
+        this.numerator === other.numerator &&
+        this.denominator === other.denominator
+      );
+    }
+
+    static from(value) {
+      return value instanceof Fraction
+        ? value
+        : new Fraction(value, 1);
+    }
+  }
+
+  function normalizeEditableSource(raw) {
+    return String(raw ?? "")
+      .replace(/[＋﹢]/g, "+")
+      .replace(/[－−–—]/g, "-")
+      .replace(/[×＊]/g, "*")
+      .replace(/[÷／]/g, "/")
+      .replace(/[ＸｘX]/g, "x")
+      .replace(/sqrt\s*/gi, "√")
+      .replace(/\s+/g, "");
+  }
+
+
+  function normalizeSource(raw) {
+    return String(raw ?? "")
+      .replace(/[＋﹢]/g, "+")
+      .replace(/[－−–—]/g, "-")
+      .replace(/[×＊]/g, "*")
+      .replace(/[÷／]/g, "/")
+      .replace(/[ＸｘX]/g, "x")
+      .replace(/sqrt\s*/gi, "√")
+      .replace(
+        /[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,
+        superscriptRun => {
+          const map = {
+            "⁰":"0","¹":"1","²":"2","³":"3","⁴":"4",
+            "⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"
+          };
+
+          const digits =
+            [...superscriptRun]
+              .map(ch => map[ch] || "")
+              .join("");
+
+          return digits
+            ? `^(${digits})`
+            : "";
+        }
+      )
+      .replace(/\s+/g, "");
+  }
+
+  function tokenize(source) {
+    const tokens = [];
+    let i = 0;
+
+    while (i < source.length) {
+      const ch = source[i];
+
+      if (/\d/.test(ch)) {
+        let text = ch;
+        i++;
+
+        while (
+          i < source.length &&
+          /\d/.test(source[i])
+        ) {
+          text += source[i++];
+        }
+
+        tokens.push({
+          type: "number",
+          value: Number(text),
+          raw: text
+        });
+
+        continue;
+      }
+
+      if (
+        /[a-zA-Z]/.test(ch)
+      ) {
+        let word = ch;
+        i++;
+
+        while (
+          i < source.length &&
+          /[a-zA-Z]/.test(source[i])
+        ) {
+          word += source[i++];
+        }
+
+        tokens.push({
+          type: "word",
+          value: word.toLowerCase()
+        });
+
+        continue;
+      }
+
+      if (ch === PLACEHOLDER) {
+        tokens.push({
+          type: "placeholder",
+          value: ch
+        });
+        i++;
+        continue;
+      }
+
+      if (ch === "√") {
+        tokens.push({
+          type: "sqrtSymbol",
+          value: ch
+        });
+        i++;
+        continue;
+      }
+
+      if ("+-*/^(),±".includes(ch)) {
+        tokens.push({
+          type: ch,
+          value: ch
+        });
+        i++;
+        continue;
+      }
+
+      throw new Error(
+        `無法辨識的符號：${ch}`
+      );
+    }
+
+    tokens.push({
+      type: "eof",
+      value: ""
+    });
+
+    return tokens;
+  }
+
+  class Parser {
+    constructor(source, variable = "x") {
+      this.source =
+        normalizeSource(source);
+
+      this.variable =
+        String(variable || "x")
+          .toLowerCase();
+
+      this.tokens =
+        tokenize(this.source);
+
+      this.index = 0;
+    }
+
+    peek(offset = 0) {
+      return (
+        this.tokens[
+          this.index + offset
+        ] ||
+        {
+          type: "eof"
+        }
+      );
+    }
+
+    consume(type) {
+      const token =
+        this.peek();
+
+      if (
+        type &&
+        token.type !== type
+      ) {
+        throw new Error(
+          `預期 ${type}，但讀到 ${token.type}。`
+        );
+      }
+
+      this.index++;
+
+      return token;
+    }
+
+    match(type) {
+      if (
+        this.peek().type ===
+        type
+      ) {
+        this.index++;
+        return true;
+      }
+
+      return false;
+    }
+
+    isFactorStart(token = this.peek()) {
+      return (
+        token.type === "number" ||
+        token.type === "placeholder" ||
+        token.type === "sqrtSymbol" ||
+        token.type === "(" ||
+        (
+          token.type === "word" &&
+          [
+            "sqrt",
+            "frac",
+            this.variable
+          ].includes(
+            token.value
+          )
+        )
+      );
+    }
+
+    parse() {
+      const ast =
+        this.parseExpression();
+
+      if (
+        this.peek().type !==
+        "eof"
+      ) {
+        throw new Error(
+          "答案後方還有無法辨識的內容。"
+        );
+      }
+
+      return ast;
+    }
+
+    parseExpression() {
+      let node =
+        this.parseTerm();
+
+      while (
+        this.peek().type === "+" ||
+        this.peek().type === "-" ||
+        this.peek().type === "±"
+      ) {
+        const op =
+          this.consume().type;
+
+        const right =
+          this.parseTerm();
+
+        node = {
+          type: "binary",
+          op,
+          left: node,
+          right
+        };
+      }
+
+      return node;
+    }
+
+    parseTerm() {
+      let node =
+        this.parseUnary();
+
+      while (true) {
+        if (
+          this.peek().type === "*" ||
+          this.peek().type === "/"
+        ) {
+          const op =
+            this.consume().type;
+
+          const right =
+            this.parseUnary();
+
+          node = {
+            type: "binary",
+            op,
+            left: node,
+            right
+          };
+
+          continue;
+        }
+
+        if (
+          this.isFactorStart(
+            this.peek()
+          )
+        ) {
+          const right =
+            this.parseUnary();
+
+          node = {
+            type: "binary",
+            op: "*",
+            implicit: true,
+            left: node,
+            right
+          };
+
+          continue;
+        }
+
+        break;
+      }
+
+      return node;
+    }
+
+    parseUnary() {
+      if (
+        this.match("+")
+      ) {
+        return {
+          type: "unary",
+          op: "+",
+          value:
+            this.parseUnary()
+        };
+      }
+
+      if (
+        this.match("-")
+      ) {
+        return {
+          type: "unary",
+          op: "-",
+          value:
+            this.parseUnary()
+        };
+      }
+
+      return this.parsePower();
+    }
+
+    parsePower() {
+      let node =
+        this.parsePrimary();
+
+      while (
+        this.match("^")
+      ) {
+        let exponent;
+
+        if (
+          this.match("(")
+        ) {
+          exponent =
+            this.parseExpression();
+
+          this.consume(")");
+        } else {
+          exponent =
+            this.parsePrimary();
+        }
+
+        node = {
+          type: "power",
+          base: node,
+          exponent
+        };
+      }
+
+      return node;
+    }
+
+    parsePrimary() {
+      const token =
+        this.peek();
+
+      if (
+        token.type ===
+        "number"
+      ) {
+        this.consume();
+
+        return {
+          type: "number",
+          value:
+            token.value
+        };
+      }
+
+      if (
+        token.type ===
+        "placeholder"
+      ) {
+        this.consume();
+
+        return {
+          type: "placeholder"
+        };
+      }
+
+      if (
+        token.type ===
+        "sqrtSymbol"
+      ) {
+        this.consume();
+
+        let value;
+
+        if (
+          this.match("(")
+        ) {
+          value =
+            this.parseExpression();
+
+          this.consume(")");
+        } else {
+          value =
+            this.parsePrimary();
+        }
+
+        return {
+          type: "sqrt",
+          value
+        };
+      }
+
+      if (
+        token.type ===
+        "word"
+      ) {
+        if (
+          token.value ===
+          this.variable
+        ) {
+          this.consume();
+
+          return {
+            type: "variable",
+            name:
+              this.variable
+          };
+        }
+
+        if (
+          token.value ===
+          "sqrt"
+        ) {
+          this.consume();
+          this.consume("(");
+
+          const value =
+            this.parseExpression();
+
+          this.consume(")");
+
+          return {
+            type: "sqrt",
+            value
+          };
+        }
+
+        if (
+          token.value ===
+          "frac"
+        ) {
+          this.consume();
+          this.consume("(");
+
+          const numerator =
+            this.parseExpression();
+
+          this.consume(",");
+
+          const denominator =
+            this.parseExpression();
+
+          this.consume(")");
+
+          return {
+            type: "fraction",
+            numerator,
+            denominator
+          };
+        }
+
+        throw new Error(
+          `不支援的文字：${token.value}`
+        );
+      }
+
+      if (
+        this.match("(")
+      ) {
+        const value =
+          this.parseExpression();
+
+        this.consume(")");
+
+        return {
+          type: "group",
+          value
+        };
+      }
+
+      throw new Error(
+        "答案尚未輸入完整。"
+      );
+    }
+  }
+
+
+  function containsPlusMinus(
+    ast
+  ) {
+
+    if (!ast) {
+      return false;
+    }
+
+    if (
+      ast.type === "binary" &&
+      ast.op === "±"
+    ) {
+      return true;
+    }
+
+    switch (
+      ast.type
+    ) {
+
+      case "group":
+      case "sqrt":
+      case "unary":
+
+        return containsPlusMinus(
+          ast.value
+        );
+
+      case "power":
+
+        return (
+          containsPlusMinus(
+            ast.base
+          ) ||
+          containsPlusMinus(
+            ast.exponent
+          )
+        );
+
+      case "fraction":
+
+        return (
+          containsPlusMinus(
+            ast.numerator
+          ) ||
+          containsPlusMinus(
+            ast.denominator
+          )
+        );
+
+      case "binary":
+
+        return (
+          containsPlusMinus(
+            ast.left
+          ) ||
+          containsPlusMinus(
+            ast.right
+          )
+        );
+
+      default:
+
+        return false;
+    }
+  }
+
+
+  function cloneAst(
+    ast
+  ) {
+
+    if (
+      typeof structuredClone ===
+      "function"
+    ) {
+      return structuredClone(
+        ast
+      );
+    }
+
+    return JSON.parse(
+      JSON.stringify(
+        ast
+      )
+    );
+  }
+
+
+  function expandPlusMinusAst(
+    ast
+  ) {
+
+    if (!ast) {
+      return [];
+    }
+
+    if (
+      ast.type === "binary" &&
+      ast.op === "±"
+    ) {
+
+      const leftBranches =
+        expandPlusMinusAst(
+          ast.left
+        );
+
+      const rightBranches =
+        expandPlusMinusAst(
+          ast.right
+        );
+
+      const results =
+        [];
+
+      for (
+        const left of
+        leftBranches
+      ) {
+
+        for (
+          const right of
+          rightBranches
+        ) {
+
+          results.push({
+            type:
+              "binary",
+            op:
+              "+",
+            left:
+              cloneAst(
+                left
+              ),
+            right:
+              cloneAst(
+                right
+              )
+          });
+
+          results.push({
+            type:
+              "binary",
+            op:
+              "-",
+            left:
+              cloneAst(
+                left
+              ),
+            right:
+              cloneAst(
+                right
+              )
+          });
+        }
+      }
+
+      return results;
+    }
+
+
+    const expandChild =
+      child =>
+        expandPlusMinusAst(
+          child
+        );
+
+
+    switch (
+      ast.type
+    ) {
+
+      case "group":
+      case "sqrt":
+      case "unary": {
+
+        return expandChild(
+          ast.value
+        )
+          .map(
+            value => ({
+              ...cloneAst(
+                ast
+              ),
+              value
+            })
+          );
+      }
+
+
+      case "power": {
+
+        const bases =
+          expandChild(
+            ast.base
+          );
+
+        const exponents =
+          expandChild(
+            ast.exponent
+          );
+
+        const result =
+          [];
+
+        for (
+          const base of
+          bases
+        ) {
+
+          for (
+            const exponent of
+            exponents
+          ) {
+
+            result.push({
+              ...cloneAst(
+                ast
+              ),
+              base,
+              exponent
+            });
+          }
+        }
+
+        return result;
+      }
+
+
+      case "fraction": {
+
+        const numerators =
+          expandChild(
+            ast.numerator
+          );
+
+        const denominators =
+          expandChild(
+            ast.denominator
+          );
+
+        const result =
+          [];
+
+        for (
+          const numerator of
+          numerators
+        ) {
+
+          for (
+            const denominator of
+            denominators
+          ) {
+
+            result.push({
+              ...cloneAst(
+                ast
+              ),
+              numerator,
+              denominator
+            });
+          }
+        }
+
+        return result;
+      }
+
+
+      case "binary": {
+
+        const lefts =
+          expandChild(
+            ast.left
+          );
+
+        const rights =
+          expandChild(
+            ast.right
+          );
+
+        const result =
+          [];
+
+        for (
+          const left of
+          lefts
+        ) {
+
+          for (
+            const right of
+            rights
+          ) {
+
+            result.push({
+              ...cloneAst(
+                ast
+              ),
+              left,
+              right
+            });
+          }
+        }
+
+        return result;
+      }
+
+
+      default:
+
+        return [
+          cloneAst(
+            ast
+          )
+        ];
+    }
+  }
+
+
+  function containsPlaceholder(ast) {
+    if (!ast) {
+      return true;
+    }
+
+    switch (ast.type) {
+      case "placeholder":
+        return true;
+
+      case "number":
+      case "variable":
+        return false;
+
+      case "group":
+      case "sqrt":
+      case "unary":
+        return containsPlaceholder(
+          ast.value
+        );
+
+      case "power":
+        return (
+          containsPlaceholder(
+            ast.base
+          ) ||
+          containsPlaceholder(
+            ast.exponent
+          )
+        );
+
+      case "fraction":
+        return (
+          containsPlaceholder(
+            ast.numerator
+          ) ||
+          containsPlaceholder(
+            ast.denominator
+          )
+        );
+
+      case "binary":
+        return (
+          containsPlaceholder(
+            ast.left
+          ) ||
+          containsPlaceholder(
+            ast.right
+          )
+        );
+
+      default:
+        return true;
+    }
+  }
+
+  function renderFraction(top, bottom) {
+    if (
+      window.RadicalDisplay?.fraction
+    ) {
+      return window.RadicalDisplay.fraction(
+        top,
+        bottom
+      );
+    }
+
+    return `
+      <span class="mei-fraction">
+        <span class="mei-fraction-top">${top}</span>
+        <span class="mei-fraction-bottom">${bottom}</span>
+      </span>
+    `;
+  }
+
+  function renderSqrt(content) {
+    if (
+      window.RadicalDisplay?.sqrt
+    ) {
+      return window.RadicalDisplay.sqrt(
+        content
+      );
+    }
+
+    return `
+      <span class="mei-fallback-root">
+        <span class="mei-fallback-root-sign">√</span>
+        <span class="mei-fallback-root-content">${content}</span>
+      </span>
+    `;
+  }
+
+  function renderAst(ast, parentPrecedence = 0) {
+    if (!ast) {
+      return "";
+    }
+
+    switch (ast.type) {
+      case "number":
+        return escapeHTML(
+          ast.value
+        );
+
+      case "placeholder":
+        return `<span class="mei-slot" aria-label="待輸入"></span>`;
+
+      case "variable":
+        return `<span class="mei-variable">${escapeHTML(ast.name)}</span>`;
+
+      case "group":
+        return `(${renderAst(ast.value, 0)})`;
+
+      case "sqrt":
+        return renderSqrt(
+          renderAst(
+            ast.value,
+            0
+          )
+        );
+
+      case "fraction":
+        return renderFraction(
+          renderAst(
+            ast.numerator,
+            0
+          ),
+          renderAst(
+            ast.denominator,
+            0
+          )
+        );
+
+      case "unary": {
+        const body =
+          renderAst(
+            ast.value,
+            4
+          );
+
+        return (
+          ast.op === "-"
+            ? `−${body}`
+            : body
+        );
+      }
+
+      case "power": {
+        const base =
+          renderAst(
+            ast.base,
+            4
+          );
+
+        const exponent =
+          renderAst(
+            ast.exponent,
+            0
+          );
+
+        return `${base}<sup>${exponent}</sup>`;
+      }
+
+      case "binary": {
+        const precedence =
+          ast.op === "+" ||
+          ast.op === "-" ||
+          ast.op === "±"
+            ? 1
+            : 2;
+
+        const left =
+          renderAst(
+            ast.left,
+            precedence
+          );
+
+        const right =
+          renderAst(
+            ast.right,
+            precedence + (
+              ast.op === "-" ||
+              ast.op === "/"
+                ? 1
+                : 0
+            )
+          );
+
+        let html;
+
+        if (
+          ast.op === "+"
+        ) {
+          html =
+            `${left}<span class="mei-op">＋</span>${right}`;
+        } else if (
+          ast.op === "-"
+        ) {
+          html =
+            `${left}<span class="mei-op">−</span>${right}`;
+        } else if (
+          ast.op === "±"
+        ) {
+          html =
+            `${left}<span class="mei-op mei-op--plus-minus">±</span>${right}`;
+        } else if (
+          ast.op === "/"
+        ) {
+          html =
+            renderFraction(
+              left,
+              right
+            );
+        } else {
+          const showMultiply =
+            !ast.implicit ||
+            (
+              ast.left?.type === "sqrt" &&
+              ast.right?.type === "sqrt"
+            ) ||
+            ast.left?.type === "fraction" ||
+            ast.right?.type === "fraction";
+
+          html =
+            `${left}${showMultiply ? '<span class="mei-op">×</span>' : ""}${right}`;
+        }
+
+        if (
+          precedence <
+          parentPrecedence
+        ) {
+          return `(${html})`;
+        }
+
+        return html;
+      }
+
+      default:
+        return "";
+    }
+  }
+
+  function cloneLinear(linear) {
+    const result =
+      new Map();
+
+    linear.forEach(
+      (coefficient, radicand) => {
+        result.set(
+          Number(radicand),
+          new Fraction(
+            coefficient.numerator,
+            coefficient.denominator
+          )
+        );
+      }
+    );
+
+    return result;
+  }
+
+  function addTerm(
+    target,
+    radicand,
+    coefficient
+  ) {
+    radicand =
+      Number(radicand);
+
+    coefficient =
+      Fraction.from(
+        coefficient
+      );
+
+    const old =
+      target.get(radicand) ||
+      new Fraction(0, 1);
+
+    const next =
+      old.add(
+        coefficient
+      );
+
+    if (
+      next.isZero()
+    ) {
+      target.delete(
+        radicand
+      );
+    } else {
+      target.set(
+        radicand,
+        next
+      );
+    }
+  }
+
+  function addLinear(a, b, sign = 1) {
+    const result =
+      cloneLinear(a);
+
+    b.forEach(
+      (coefficient, radicand) => {
+        addTerm(
+          result,
+          radicand,
+          sign === 1
+            ? coefficient
+            : coefficient.negate()
+        );
+      }
+    );
+
+    return result;
+  }
+
+  function multiplyLinear(a, b) {
+    const result =
+      new Map();
+
+    a.forEach(
+      (ca, ra) => {
+        b.forEach(
+          (cb, rb) => {
+            const productRadicand =
+              Number(ra) *
+              Number(rb);
+
+            const simplified =
+              simplifySquareRoot(
+                productRadicand
+              );
+
+            if (!simplified) {
+              throw new Error(
+                "目前不支援負數根號。"
+              );
+            }
+
+            const coefficient =
+              ca
+                .multiply(cb)
+                .multiply(
+                  new Fraction(
+                    simplified.coefficient,
+                    1
+                  )
+                );
+
+            addTerm(
+              result,
+              simplified.radicand,
+              coefficient
+            );
+          }
+        );
+      }
+    );
+
+    return result;
+  }
+
+  function scalarFromLinear(linear) {
+    if (
+      linear.size !== 1 ||
+      !linear.has(1)
+    ) {
+      return null;
+    }
+
+    return linear.get(1);
+  }
+
+
+  /*
+  ==================================================
+  Polynomial mode
+  ==================================================
+  Map<exponent, Fraction>
+  ==================================================
+  */
+
+  function normalizePolynomialMap(poly) {
+    const result =
+      new Map();
+
+    poly.forEach(
+      (coefficient, exponent) => {
+        coefficient =
+          Fraction.from(
+            coefficient
+          );
+
+        exponent =
+          Number(
+            exponent
+          );
+
+        if (
+          !coefficient.isZero()
+        ) {
+          result.set(
+            exponent,
+            coefficient
+          );
+        }
+      }
+    );
+
+    return result;
+  }
+
+
+  function polynomialConstant(value) {
+    const result =
+      new Map();
+
+    const coefficient =
+      Fraction.from(
+        value
+      );
+
+    if (
+      !coefficient.isZero()
+    ) {
+      result.set(
+        0,
+        coefficient
+      );
+    }
+
+    return result;
+  }
+
+
+  function polynomialVariable() {
+    return new Map([
+      [
+        1,
+        new Fraction(
+          1,
+          1
+        )
+      ]
+    ]);
+  }
+
+
+  function addPolynomial(
+    a,
+    b,
+    sign = 1
+  ) {
+    const result =
+      new Map();
+
+    a.forEach(
+      (coefficient, exponent) => {
+        result.set(
+          exponent,
+          Fraction.from(
+            coefficient
+          )
+        );
+      }
+    );
+
+    b.forEach(
+      (coefficient, exponent) => {
+        const old =
+          result.get(
+            exponent
+          ) ||
+          new Fraction(
+            0,
+            1
+          );
+
+        const next =
+          sign === 1
+            ? old.add(
+                coefficient
+              )
+            : old.subtract(
+                coefficient
+              );
+
+        if (
+          next.isZero()
+        ) {
+          result.delete(
+            exponent
+          );
+        } else {
+          result.set(
+            exponent,
+            next
+          );
+        }
+      }
+    );
+
+    return normalizePolynomialMap(
+      result
+    );
+  }
+
+
+  function multiplyPolynomial(
+    a,
+    b
+  ) {
+    const result =
+      new Map();
+
+    a.forEach(
+      (
+        coefficientA,
+        exponentA
+      ) => {
+
+        b.forEach(
+          (
+            coefficientB,
+            exponentB
+          ) => {
+
+            const exponent =
+              Number(
+                exponentA
+              ) +
+              Number(
+                exponentB
+              );
+
+            const old =
+              result.get(
+                exponent
+              ) ||
+              new Fraction(
+                0,
+                1
+              );
+
+            const next =
+              old.add(
+                coefficientA
+                  .multiply(
+                    coefficientB
+                  )
+              );
+
+            if (
+              next.isZero()
+            ) {
+              result.delete(
+                exponent
+              );
+            } else {
+              result.set(
+                exponent,
+                next
+              );
+            }
+          }
+        );
+      }
+    );
+
+    return normalizePolynomialMap(
+      result
+    );
+  }
+
+
+  function dividePolynomialByScalar(
+    polynomial,
+    scalar
+  ) {
+    scalar =
+      Fraction.from(
+        scalar
+      );
+
+    if (
+      scalar.isZero()
+    ) {
+      throw new Error(
+        "分母不能是 0。"
+      );
+    }
+
+    const result =
+      new Map();
+
+    polynomial.forEach(
+      (
+        coefficient,
+        exponent
+      ) => {
+        result.set(
+          exponent,
+          coefficient.divide(
+            scalar
+          )
+        );
+      }
+    );
+
+    return normalizePolynomialMap(
+      result
+    );
+  }
+
+
+  function scalarFromPolynomial(
+    polynomial
+  ) {
+    polynomial =
+      normalizePolynomialMap(
+        polynomial
+      );
+
+    if (
+      polynomial.size ===
+      0
+    ) {
+      return new Fraction(
+        0,
+        1
+      );
+    }
+
+    if (
+      polynomial.size !==
+      1 ||
+      !polynomial.has(
+        0
+      )
+    ) {
+      return null;
+    }
+
+    return polynomial.get(
+      0
+    );
+  }
+
+
+  function polynomialPower(
+    base,
+    exponent
+  ) {
+    exponent =
+      Number(
+        exponent
+      );
+
+    if (
+      !Number.isInteger(
+        exponent
+      ) ||
+      exponent < 0 ||
+      exponent > 12
+    ) {
+      throw new Error(
+        "次方目前支援 0～12 的整數。"
+      );
+    }
+
+    let result =
+      polynomialConstant(
+        1
+      );
+
+    let current =
+      normalizePolynomialMap(
+        base
+      );
+
+    let power =
+      exponent;
+
+    while (
+      power >
+      0
+    ) {
+      if (
+        power %
+        2 ===
+        1
+      ) {
+        result =
+          multiplyPolynomial(
+            result,
+            current
+          );
+      }
+
+      power =
+        Math.floor(
+          power /
+          2
+        );
+
+      if (
+        power >
+        0
+      ) {
+        current =
+          multiplyPolynomial(
+            current,
+            current
+          );
+      }
+    }
+
+    return result;
+  }
+
+
+  function polynomialize(ast) {
+    switch (
+      ast.type
+    ) {
+
+      case "number":
+
+        return polynomialConstant(
+          new Fraction(
+            ast.value,
+            1
+          )
+        );
+
+
+      case "variable":
+
+        return polynomialVariable();
+
+
+      case "group":
+
+        return polynomialize(
+          ast.value
+        );
+
+
+      case "unary": {
+
+        const inner =
+          polynomialize(
+            ast.value
+          );
+
+        if (
+          ast.op === "+"
+        ) {
+          return inner;
+        }
+
+        return multiplyPolynomial(
+          polynomialConstant(
+            new Fraction(
+              -1,
+              1
+            )
+          ),
+          inner
+        );
+      }
+
+
+      case "fraction": {
+
+        const numerator =
+          polynomialize(
+            ast.numerator
+          );
+
+        const denominator =
+          polynomialize(
+            ast.denominator
+          );
+
+        const scalar =
+          scalarFromPolynomial(
+            denominator
+          );
+
+        if (
+          !scalar
+        ) {
+          throw new Error(
+            "多項式分母目前只能是數值。"
+          );
+        }
+
+        return dividePolynomialByScalar(
+          numerator,
+          scalar
+        );
+      }
+
+
+      case "binary": {
+
+        const left =
+          polynomialize(
+            ast.left
+          );
+
+        const right =
+          polynomialize(
+            ast.right
+          );
+
+        if (
+          ast.op === "+"
+        ) {
+          return addPolynomial(
+            left,
+            right,
+            1
+          );
+        }
+
+        if (
+          ast.op === "-"
+        ) {
+          return addPolynomial(
+            left,
+            right,
+            -1
+          );
+        }
+
+        if (
+          ast.op === "*"
+        ) {
+          return multiplyPolynomial(
+            left,
+            right
+          );
+        }
+
+        if (
+          ast.op === "/"
+        ) {
+          const scalar =
+            scalarFromPolynomial(
+              right
+            );
+
+          if (
+            !scalar
+          ) {
+            throw new Error(
+              "多項式分母目前只能是數值。"
+            );
+          }
+
+          return dividePolynomialByScalar(
+            left,
+            scalar
+          );
+        }
+
+        throw new Error(
+          "目前不支援這個多項式運算。"
+        );
+      }
+
+
+      case "power": {
+
+        const exponentPolynomial =
+          polynomialize(
+            ast.exponent
+          );
+
+        const exponentFraction =
+          scalarFromPolynomial(
+            exponentPolynomial
+          );
+
+        if (
+          !exponentFraction ||
+          !exponentFraction.isInteger()
+        ) {
+          throw new Error(
+            "次方請輸入整數。"
+          );
+        }
+
+        return polynomialPower(
+          polynomialize(
+            ast.base
+          ),
+          exponentFraction.numerator
+        );
+      }
+
+
+      case "sqrt":
+
+        throw new Error(
+          "這個題型目前不需要根號。"
+        );
+
+
+      case "placeholder":
+
+        throw new Error(
+          "答案尚未輸入完整。"
+        );
+
+
+      default:
+
+        throw new Error(
+          "目前無法解析這個多項式答案。"
+        );
+    }
+  }
+
+
+  function polynomialMapToTerms(
+    polynomial
+  ) {
+
+    return [
+      ...normalizePolynomialMap(
+        polynomial
+      )
+        .entries()
+    ]
+      .map(
+        (
+          [
+            exponent,
+            coefficient
+          ]
+        ) => ({
+          exponent:
+            Number(
+              exponent
+            ),
+
+          numerator:
+            coefficient.numerator,
+
+          denominator:
+            coefficient.denominator,
+
+          coefficient: {
+            numerator:
+              coefficient.numerator,
+            denominator:
+              coefficient.denominator
+          }
+        })
+      )
+      .sort(
+        (
+          a,
+          b
+        ) =>
+          b.exponent -
+          a.exponent
+      );
+  }
+
+
+  /*
+  判斷「有沒有真的寫成乘積／次方形式」。
+  防止學生直接把原多項式照抄回去。
+  */
+  function isFactorizedAst(
+    ast
+  ) {
+
+    if (!ast) {
+      return false;
+    }
+
+    if (
+      ast.type ===
+      "group"
+    ) {
+      return isFactorizedAst(
+        ast.value
+      );
+    }
+
+    if (
+      ast.type ===
+      "unary"
+    ) {
+      return isFactorizedAst(
+        ast.value
+      );
+    }
+
+    if (
+      ast.type ===
+      "binary" &&
+      ast.op === "*"
+    ) {
+      return true;
+    }
+
+    if (
+      ast.type ===
+      "power"
+    ) {
+      try {
+        const exponentPolynomial =
+          polynomialize(
+            ast.exponent
+          );
+
+        const scalar =
+          scalarFromPolynomial(
+            exponentPolynomial
+          );
+
+        return Boolean(
+          scalar &&
+          scalar.isInteger() &&
+          scalar.numerator >= 2
+        );
+      } catch (_) {
+        return false;
+      }
+    }
+
+    return false;
+  }
+
+
+  function linearize(ast) {
+    switch (ast.type) {
+      case "number": {
+        const result =
+          new Map();
+
+        addTerm(
+          result,
+          1,
+          new Fraction(
+            ast.value,
+            1
+          )
+        );
+
+        return result;
+      }
+
+      case "group":
+        return linearize(
+          ast.value
+        );
+
+      case "unary": {
+        const inner =
+          linearize(
+            ast.value
+          );
+
+        if (
+          ast.op === "+"
+        ) {
+          return inner;
+        }
+
+        const result =
+          new Map();
+
+        inner.forEach(
+          (coefficient, radicand) => {
+            addTerm(
+              result,
+              radicand,
+              coefficient.negate()
+            );
+          }
+        );
+
+        return result;
+      }
+
+      case "sqrt": {
+        const inner =
+          linearize(
+            ast.value
+          );
+
+        const scalar =
+          scalarFromLinear(
+            inner
+          );
+
+        if (
+          !scalar ||
+          !scalar.isInteger() ||
+          scalar.numerator < 0
+        ) {
+          throw new Error(
+            "根號內目前請輸入可判定的非負整數。"
+          );
+        }
+
+        const simplified =
+          simplifySquareRoot(
+            scalar.numerator
+          );
+
+        const result =
+          new Map();
+
+        addTerm(
+          result,
+          simplified.radicand,
+          new Fraction(
+            simplified.coefficient,
+            1
+          )
+        );
+
+        return result;
+      }
+
+      case "fraction": {
+        const numerator =
+          linearize(
+            ast.numerator
+          );
+
+        const denominator =
+          linearize(
+            ast.denominator
+          );
+
+        const scalar =
+          scalarFromLinear(
+            denominator
+          );
+
+        if (
+          !scalar
+        ) {
+          throw new Error(
+            "分母仍含根號或多個項，請先完成有理化。"
+          );
+        }
+
+        if (
+          scalar.isZero()
+        ) {
+          throw new Error(
+            "分母不能是 0。"
+          );
+        }
+
+        const result =
+          new Map();
+
+        numerator.forEach(
+          (coefficient, radicand) => {
+            addTerm(
+              result,
+              radicand,
+              coefficient.divide(
+                scalar
+              )
+            );
+          }
+        );
+
+        return result;
+      }
+
+      case "binary": {
+        const left =
+          linearize(
+            ast.left
+          );
+
+        const right =
+          linearize(
+            ast.right
+          );
+
+        if (
+          ast.op === "+"
+        ) {
+          return addLinear(
+            left,
+            right,
+            1
+          );
+        }
+
+        if (
+          ast.op === "-"
+        ) {
+          return addLinear(
+            left,
+            right,
+            -1
+          );
+        }
+
+        if (
+          ast.op === "*"
+        ) {
+          return multiplyLinear(
+            left,
+            right
+          );
+        }
+
+        if (
+          ast.op === "/"
+        ) {
+          const scalar =
+            scalarFromLinear(
+              right
+            );
+
+          if (!scalar) {
+            throw new Error(
+              "分母仍含根號或多個項，請先完成有理化。"
+            );
+          }
+
+          if (
+            scalar.isZero()
+          ) {
+            throw new Error(
+              "分母不能是 0。"
+            );
+          }
+
+          const result =
+            new Map();
+
+          left.forEach(
+            (coefficient, radicand) => {
+              addTerm(
+                result,
+                radicand,
+                coefficient.divide(
+                  scalar
+                )
+              );
+            }
+          );
+
+          return result;
+        }
+
+        throw new Error(
+          "目前不支援這個運算。"
+        );
+      }
+
+      case "power": {
+        const exponentLinear =
+          linearize(
+            ast.exponent
+          );
+
+        const exponentFraction =
+          scalarFromLinear(
+            exponentLinear
+          );
+
+        if (
+          !exponentFraction ||
+          !exponentFraction.isInteger()
+        ) {
+          throw new Error(
+            "次方目前請輸入整數。"
+          );
+        }
+
+        const exponent =
+          exponentFraction.numerator;
+
+        if (
+          exponent < 0 ||
+          exponent > 8
+        ) {
+          throw new Error(
+            "次方目前支援 0～8。"
+          );
+        }
+
+        let result =
+          new Map();
+
+        addTerm(
+          result,
+          1,
+          new Fraction(1, 1)
+        );
+
+        const base =
+          linearize(
+            ast.base
+          );
+
+        for (
+          let i = 0;
+          i < exponent;
+          i++
+        ) {
+          result =
+            multiplyLinear(
+              result,
+              base
+            );
+        }
+
+        return result;
+      }
+
+      case "variable":
+        throw new Error(
+          "這個題型目前不需要 x。"
+        );
+
+      case "placeholder":
+        throw new Error(
+          "答案尚未輸入完整。"
+        );
+
+      default:
+        throw new Error(
+          "目前無法判定這個答案。"
+        );
+    }
+  }
+
+  function astIntegerValue(ast) {
+    try {
+      const linear =
+        linearize(ast);
+
+      const scalar =
+        scalarFromLinear(
+          linear
+        );
+
+      if (
+        scalar &&
+        scalar.isInteger()
+      ) {
+        return scalar.numerator;
+      }
+    } catch (_) {
+      return null;
+    }
+
+    return null;
+  }
+
+  function collectSimplificationIssues(
+    ast,
+    options,
+    issues
+  ) {
+    if (!ast) {
+      return;
+    }
+
+    if (
+      ast.type === "sqrt"
+    ) {
+      const integer =
+        astIntegerValue(
+          ast.value
+        );
+
+      if (
+        options.requireSimplifiedRadical &&
+        Number.isInteger(integer) &&
+        integer > 0 &&
+        largestSquareFactor(integer) > 1
+      ) {
+        issues.push(
+          `√${integer} 還可以化簡。`
+        );
+      }
+
+      collectSimplificationIssues(
+        ast.value,
+        options,
+        issues
+      );
+
+      return;
+    }
+
+    if (
+      ast.type === "fraction"
+    ) {
+      if (
+        options.requireSimplifiedFraction
+      ) {
+        try {
+          const numerator =
+            linearize(
+              ast.numerator
+            );
+
+          const denominator =
+            linearize(
+              ast.denominator
+            );
+
+          const d =
+            scalarFromLinear(
+              denominator
+            );
+
+          if (
+            d &&
+            d.isInteger()
+          ) {
+            const denominatorInteger =
+              Math.abs(
+                d.numerator
+              );
+
+            const integerCoefficients =
+              [];
+
+            let allInteger =
+              true;
+
+            numerator.forEach(
+              coefficient => {
+                if (
+                  !coefficient.isInteger()
+                ) {
+                  allInteger =
+                    false;
+                } else {
+                  integerCoefficients.push(
+                    coefficient.numerator
+                  );
+                }
+              }
+            );
+
+            if (
+              allInteger &&
+              denominatorInteger > 1
+            ) {
+              const common =
+                gcd(
+                  gcdMany(
+                    integerCoefficients
+                  ),
+                  denominatorInteger
+                );
+
+              if (
+                common > 1
+              ) {
+                issues.push(
+                  `分數還可以約分（公因數 ${common}）。`
+                );
+              }
+            }
+          }
+        } catch (_) {
+          // 真正錯誤由 linearize() 統一回報。
+        }
+      }
+
+      collectSimplificationIssues(
+        ast.numerator,
+        options,
+        issues
+      );
+
+      collectSimplificationIssues(
+        ast.denominator,
+        options,
+        issues
+      );
+
+      return;
+    }
+
+    if (
+      ast.type === "binary"
+    ) {
+      collectSimplificationIssues(
+        ast.left,
+        options,
+        issues
+      );
+
+      collectSimplificationIssues(
+        ast.right,
+        options,
+        issues
+      );
+
+      return;
+    }
+
+    if (
+      ast.type === "unary" ||
+      ast.type === "group"
+    ) {
+      collectSimplificationIssues(
+        ast.value,
+        options,
+        issues
+      );
+
+      return;
+    }
+
+    if (
+      ast.type === "power"
+    ) {
+      collectSimplificationIssues(
+        ast.base,
+        options,
+        issues
+      );
+
+      collectSimplificationIssues(
+        ast.exponent,
+        options,
+        issues
+      );
+    }
+  }
+
+  function linearToTerms(linear) {
+    return [
+      ...linear.entries()
+    ]
+      .map(
+        ([radicand, coefficient]) => ({
+          radicand:
+            Number(radicand),
+
+          numerator:
+            coefficient.numerator,
+
+          denominator:
+            coefficient.denominator
+        })
+      )
+      .sort(
+        (a, b) => {
+          if (
+            a.radicand === 1 &&
+            b.radicand !== 1
+          ) {
+            return -1;
+          }
+
+          if (
+            b.radicand === 1 &&
+            a.radicand !== 1
+          ) {
+            return 1;
+          }
+
+          return (
+            a.radicand -
+            b.radicand
+          );
+        }
+      );
+  }
+
+  function locateFunctionContext(
+    source,
+    caret
+  ) {
+    const stack = [];
+
+    for (
+      let i = 0;
+      i < caret;
+      i++
+    ) {
+      const rest =
+        source.slice(i);
+
+      let match =
+        rest.match(
+          /^(sqrt|frac)\(/
+        );
+
+      if (match) {
+        stack.push({
+          type:
+            match[1],
+          open:
+            i + match[1].length,
+          start:
+            i,
+          commaSeen:
+            false
+        });
+
+        i +=
+          match[0].length -
+          1;
+
+        continue;
+      }
+
+      if (
+        source.startsWith(
+          "^(",
+          i
+        )
+      ) {
+        stack.push({
+          type: "power",
+          open:
+            i + 1,
+          start:
+            i,
+          commaSeen:
+            false
+        });
+
+        i += 1;
+
+        continue;
+      }
+
+      if (
+        source[i] === "," &&
+        stack.length &&
+        stack[
+          stack.length - 1
+        ].type === "frac"
+      ) {
+        stack[
+          stack.length - 1
+        ].commaSeen =
+          true;
+
+        continue;
+      }
+
+      if (
+        source[i] === ")" &&
+        stack.length
+      ) {
+        stack.pop();
+      }
+    }
+
+    return (
+      stack[
+        stack.length - 1
+      ] ||
+      null
+    );
+  }
+
+
+  function hasTopLevelAddSubtract(source) {
+    let depth = 0;
+
+    for (
+      let i = 0;
+      i < source.length;
+      i++
+    ) {
+      const ch =
+        source[i];
+
+      if (
+        ch === "("
+      ) {
+        depth++;
+        continue;
+      }
+
+      if (
+        ch === ")"
+      ) {
+        depth =
+          Math.max(
+            0,
+            depth - 1
+          );
+        continue;
+      }
+
+      if (
+        depth === 0 &&
+        (
+          ch === "+" ||
+          (
+            ch === "-" &&
+            i > 0
+          )
+        )
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function stripOuterParentheses(source) {
+    source =
+      String(source ?? "")
+        .trim();
+
+    if (
+      !source.startsWith("(") ||
+      !source.endsWith(")")
+    ) {
+      return source;
+    }
+
+    let depth = 0;
+
+    for (
+      let i = 0;
+      i < source.length;
+      i++
+    ) {
+      const ch =
+        source[i];
+
+      if (
+        ch === "("
+      ) {
+        depth++;
+      } else if (
+        ch === ")"
+      ) {
+        depth--;
+
+        if (
+          depth === 0 &&
+          i <
+            source.length - 1
+        ) {
+          return source;
+        }
+      }
+    }
+
+    return (
+      depth === 0
+        ? source.slice(
+            1,
+            -1
+          )
+        : source
+    );
+  }
+
+  function cleanupEditableFractionText(source) {
+    source =
+      String(source ?? "")
+        .trim();
+
+    /*
+    新版不再產生括號。
+    只相容舊版：
+    (2√3)/(3) → 2√3/3
+    */
+    const oldStyle =
+      source.match(
+        /^\((.+)\)\/\((.+)\)$/
+      );
+
+    if (
+      oldStyle
+    ) {
+      return (
+        `${oldStyle[1]}/${oldStyle[2]}`
+      );
+    }
+
+    return source;
+  }
+
+
+  class MathExpressionInput {
+    constructor(options = {}) {
+      this.options = {
+        ...DEFAULTS,
+        ...options,
+        theme: {
+          ...DEFAULTS.theme,
+          ...(
+            options.theme ||
+            {}
+          )
+        }
+      };
+
+      this.mount =
+        document.getElementById(
+          this.options.mountId
+        );
+
+      if (!this.mount) {
+        throw new Error(
+          `MathExpressionInput 找不到 mountId：${this.options.mountId}`
+        );
+      }
+
+      this.disabled = false;
+      this.lastSelection = {
+        start: 0,
+        end: 0
+      };
+
+      this.render();
+      this.bind();
+      this.updateEditorLayout();
+      this.update();
+
+      if (
+        this.options.autoFocus
+      ) {
+        setTimeout(
+          () => this.focus(),
+          0
+        );
+      }
+    }
+
+    render() {
+      const tools = [];
+
+      if (
+        this.options.allowRadical
+      ) {
+        tools.push(`
+          <button
+            type="button"
+            class="mei-tool-button"
+            data-tool="sqrt"
+            title="插入根號"
+          >
+            <span class="mei-tool-symbol">√</span>
+            根號
+          </button>
+        `);
+      }
+
+      if (
+        this.options.allowFraction
+      ) {
+        tools.push(`
+          <button
+            type="button"
+            class="mei-tool-button"
+            data-tool="fraction"
+            title="插入分數"
+          >
+            <span class="mei-mini-fraction">
+              <span>□</span>
+              <span>□</span>
+            </span>
+            分數
+          </button>
+        `);
+      }
+
+      if (
+        this.options.allowPlusMinus
+      ) {
+        tools.push(`
+          <button
+            type="button"
+            class="mei-tool-button"
+            data-tool="plusMinus"
+            title="插入正負號"
+          >
+            <span class="mei-tool-symbol">±</span>
+            正負號
+          </button>
+        `);
+      }
+
+      if (
+        this.options.allowPower
+      ) {
+        tools.push(`
+          <button
+            type="button"
+            class="mei-tool-button"
+            data-tool="power"
+            title="在目前底數後插入次方"
+          >
+            <span class="mei-tool-symbol">
+              □<sup>n</sup>
+            </span>
+            次方
+          </button>
+        `);
+      }
+
+      if (
+        this.options.allowVariable
+      ) {
+        tools.push(`
+          <button
+            type="button"
+            class="mei-tool-button"
+            data-tool="variable"
+            title="插入 ${escapeHTML(this.options.variable)}"
+          >
+            <span class="mei-tool-symbol">
+              ${escapeHTML(this.options.variable)}
+            </span>
+          </button>
+        `);
+      }
+
+      this.mount.innerHTML = `
+        <div
+          class="mei-shell"
+          style="
+            --mei-primary:${escapeHTML(this.options.theme.primary)};
+            --mei-primary-dark:${escapeHTML(this.options.theme.dark)};
+            --mei-primary-light:${escapeHTML(this.options.theme.light)};
+            --mei-primary-border:${escapeHTML(this.options.theme.border)};
+          "
+        >
+          <div class="mei-main-row">
+            <div class="mei-editor-wrap">
+              <div
+                class="mei-rich-display mei-rich-display--placeholder"
+                aria-hidden="true"
+              >
+                ${escapeHTML(this.options.placeholder)}
+              </div>
+
+              <input
+                class="mei-source-input"
+                type="text"
+                inputmode="decimal"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+                aria-label="數學答案輸入"
+              >
+            </div>
+
+            ${
+              tools.length
+                ? `
+                  <div class="mei-toolbar">
+                    ${
+                      this.options.toolOrder
+                        .map(
+                          toolName =>
+                            tools.find(
+                              html =>
+                                html.includes(
+                                  `data-tool="${toolName === "radical" ? "sqrt" : toolName}"`
+                                )
+                            ) || ""
+                        )
+                        .join("")
+                    }
+                  </div>
+                `
+                : ""
+            }
+          </div>
+
+          <div
+            class="mei-special-editor mei-special-editor--root"
+            data-special-editor="root"
+            hidden
+          >
+            <div class="mei-inline-root-editor">
+              <span class="mei-inline-root-symbol">√</span>
+              <input
+                class="mei-special-input mei-root-value"
+                type="text"
+                inputmode="decimal"
+                autocomplete="off"
+                placeholder="根號內"
+                aria-label="根號內"
+              >
+            </div>
+
+            <div class="mei-special-editor-actions">
+              <button
+                type="button"
+                class="mei-special-confirm"
+                data-special-confirm="root"
+              >
+                插入
+              </button>
+
+              <button
+                type="button"
+                class="mei-special-cancel"
+                data-special-cancel
+              >
+                取消
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="mei-special-editor mei-special-editor--fraction"
+            data-special-editor="fraction"
+            hidden
+          >
+            <div class="mei-special-editor-title">
+              分數
+            </div>
+
+            <div class="mei-fraction-editor">
+              <input
+                class="mei-special-input mei-fraction-numerator"
+                type="text"
+                inputmode="decimal"
+                autocomplete="off"
+                placeholder="分子"
+                aria-label="分子"
+              >
+              <span class="mei-fraction-editor-line"></span>
+              <input
+                class="mei-special-input mei-fraction-denominator"
+                type="text"
+                inputmode="decimal"
+                autocomplete="off"
+                placeholder="分母"
+                aria-label="分母"
+              >
+            </div>
+
+            <div class="mei-special-editor-actions">
+              <button
+                type="button"
+                class="mei-special-confirm"
+                data-special-confirm="fraction"
+              >
+                插入
+              </button>
+
+              <button
+                type="button"
+                class="mei-special-cancel"
+                data-special-cancel
+              >
+                取消
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="mei-special-editor mei-special-editor--power"
+            data-special-editor="power"
+            hidden
+          >
+            <div class="mei-special-editor-title">
+              次方
+            </div>
+
+            <div class="mei-power-editor-preview">
+              □<sup>
+                <input
+                  class="mei-special-input mei-power-value"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  placeholder="n"
+                  aria-label="次方"
+                >
+              </sup>
+            </div>
+
+            <div class="mei-special-editor-actions">
+              <button
+                type="button"
+                class="mei-special-confirm"
+                data-special-confirm="power"
+              >
+                插入
+              </button>
+
+              <button
+                type="button"
+                class="mei-special-cancel"
+                data-special-cancel
+              >
+                取消
+              </button>
+            </div>
+          </div>
+
+          <div class="mei-hint">
+            數字、＋、−、括號可直接輸入；需要特殊符號時再按功能鍵。
+          </div>
+
+          <div
+            class="mei-preview mei-preview--empty"
+            ${this.options.showPreview ? "" : "hidden"}
+          >
+            系統判斷：目前尚未完成答案。
+          </div>
+        </div>
+      `;
+
+      this.shell =
+        this.mount.querySelector(
+          ".mei-shell"
+        );
+
+      this.input =
+        this.mount.querySelector(
+          ".mei-source-input"
+        );
+
+      this.display =
+        this.mount.querySelector(
+          ".mei-rich-display"
+        );
+
+      this.preview =
+        this.mount.querySelector(
+          ".mei-preview"
+        );
+
+      this.toolButtons =
+        [
+          ...this.mount.querySelectorAll(
+            ".mei-tool-button"
+          )
+        ];
+
+      this.rootEditor =
+        this.mount.querySelector(
+          '[data-special-editor="root"]'
+        );
+
+      this.rootValueInput =
+        this.mount.querySelector(
+          ".mei-root-value"
+        );
+
+      this.fractionEditor =
+        this.mount.querySelector(
+          '[data-special-editor="fraction"]'
+        );
+
+      this.powerEditor =
+        this.mount.querySelector(
+          '[data-special-editor="power"]'
+        );
+
+      this.fractionNumerator =
+        this.mount.querySelector(
+          ".mei-fraction-numerator"
+        );
+
+      this.fractionDenominator =
+        this.mount.querySelector(
+          ".mei-fraction-denominator"
+        );
+
+      this.powerValueInput =
+        this.mount.querySelector(
+          ".mei-power-value"
+        );
+
+      this.activeFractionInput =
+        null;
+
+      this.powerTargetInput =
+        null;
+
+      this.powerTargetSelection =
+        null;
+
+      this.rootTargetInput =
+        null;
+
+      this.rootTargetSelection =
+        null;
+    }
+
+    bind() {
+      const rememberSelection =
+        () => {
+          if (!this.input) {
+            return;
+          }
+
+          this.lastSelection = {
+            start:
+              this.input.selectionStart ??
+              this.input.value.length,
+
+            end:
+              this.input.selectionEnd ??
+              this.input.value.length
+          };
+        };
+
+      [
+        "click",
+        "keyup",
+        "select"
+      ].forEach(
+        eventName => {
+          this.input.addEventListener(
+            eventName,
+            rememberSelection
+          );
+        }
+      );
+
+      this.input.addEventListener(
+        "focus",
+        () => {
+          rememberSelection();
+
+          this.shell
+            ?.classList
+            .remove(
+              "mei-shell--power-display"
+            );
+
+          this.shell
+            ?.classList
+            .add(
+              "mei-shell--editing"
+            );
+        }
+      );
+
+      this.input.addEventListener(
+        "blur",
+        () => {
+          this.shell
+            ?.classList
+            .remove(
+              "mei-shell--editing"
+            );
+
+          const cleaned =
+            cleanupEditableFractionText(
+              this.input.value
+            );
+
+          if (
+            cleaned !==
+            this.input.value
+          ) {
+            this.input.value =
+              cleaned;
+
+            const caret =
+              this.input.value.length;
+
+            this.lastSelection = {
+              start: caret,
+              end: caret
+            };
+          }
+
+          this.updateEditorLayout();
+
+          this.update();
+        }
+      );
+
+      this.input.addEventListener(
+        "input",
+        () => {
+          let value =
+            normalizeEditableSource(
+              this.input.value
+            );
+
+          /*
+          v1.3：
+          分子／分母框框只做「待輸入提示」。
+          一旦旁邊已經出現數字、x 或根號內容，
+          自動移除該 □。
+          */
+          value =
+            value
+              .replace(
+                /□(?=[0-9x√])/gi,
+                ""
+              )
+              .replace(
+                /(?<=[0-9x√])□/gi,
+                ""
+              );
+
+          this.input.value =
+            value;
+
+          rememberSelection();
+
+          this.updateEditorLayout();
+
+          this.update();
+        }
+      );
+
+      this.input.addEventListener(
+        "keydown",
+        () => {}
+      );
+
+
+      this.toolButtons.forEach(
+        button => {
+          button.addEventListener(
+            "pointerdown",
+            event => {
+              event.preventDefault();
+            }
+          );
+
+          button.addEventListener(
+            "click",
+            () => {
+              const tool =
+                button.dataset.tool;
+
+              if (
+                tool === "sqrt"
+              ) {
+
+                this.openRootEditor();
+
+              } else if (
+                tool === "fraction"
+              ) {
+                this.openFractionEditor();
+              } else if (
+                tool === "plusMinus"
+              ) {
+
+                if (
+                  this.fractionEditor &&
+                  !this.fractionEditor.hidden
+                ) {
+
+                  this.insertIntoFractionField(
+                    "±",
+                    0
+                  );
+
+                } else {
+
+                  this.insertText(
+                    "±",
+                    {
+                      selectPlaceholder:
+                        false
+                    }
+                  );
+                }
+
+              } else if (
+                tool === "power"
+              ) {
+
+                if (
+                  this.fractionEditor &&
+                  !this.fractionEditor.hidden
+                ) {
+
+                  this.openPowerEditor(
+                    this.activeFractionInput ||
+                    this.fractionNumerator
+                  );
+
+                } else {
+
+                  this.openPowerEditor();
+                }
+
+              } else if (
+                tool === "variable"
+              ) {
+
+                if (
+                  this.fractionEditor &&
+                  !this.fractionEditor.hidden
+                ) {
+
+                  this.insertIntoFractionField(
+                    this.options.variable,
+                    0
+                  );
+
+                } else {
+
+                  this.insertText(
+                    this.options.variable,
+                    {
+                      selectPlaceholder:
+                        false
+                    }
+                  );
+                }
+              }
+            }
+          );
+        }
+      );
+
+
+      this.mount
+        .querySelectorAll(
+          "[data-special-cancel]"
+        )
+        .forEach(
+          button => {
+            button.addEventListener(
+              "click",
+              () =>
+                this.closeSpecialEditors()
+            );
+          }
+        );
+
+      this.mount
+        .querySelector(
+          '[data-special-confirm="root"]'
+        )
+        ?.addEventListener(
+          "click",
+          () =>
+            this.confirmRootEditor()
+        );
+
+
+      this.mount
+        .querySelector(
+          '[data-special-confirm="fraction"]'
+        )
+        ?.addEventListener(
+          "click",
+          () =>
+            this.confirmFractionEditor()
+        );
+
+      this.mount
+        .querySelector(
+          '[data-special-confirm="power"]'
+        )
+        ?.addEventListener(
+          "click",
+          () =>
+            this.confirmPowerEditor()
+        );
+
+      [
+        this.fractionNumerator,
+        this.fractionDenominator
+      ]
+        .filter(Boolean)
+        .forEach(
+          input => {
+
+            input.addEventListener(
+              "focus",
+              () => {
+                this.activeFractionInput =
+                  input;
+              }
+            );
+
+            input.addEventListener(
+              "click",
+              () => {
+                this.activeFractionInput =
+                  input;
+              }
+            );
+          }
+        );
+
+
+      this.rootValueInput
+        ?.addEventListener(
+          "keydown",
+          event => {
+            if (
+              event.key === "Enter"
+            ) {
+              event.preventDefault();
+
+              this.confirmRootEditor();
+            }
+          }
+        );
+
+
+      this.fractionNumerator?.addEventListener("keydown",event=>{
+        if(event.key==="Enter"){
+          event.preventDefault();
+          this.confirmFractionEditor();
+        } else if(event.key==="ArrowDown"){
+          event.preventDefault();
+          this.fractionDenominator?.focus();
+        }
+      });
+      this.fractionDenominator?.addEventListener("keydown",event=>{
+        if(event.key==="Enter"||event.key==="ArrowUp"){
+          event.preventDefault();
+          this.fractionNumerator?.focus();
+        }
+      });
+
+      this.powerValueInput
+        ?.addEventListener(
+          "keydown",
+          event => {
+            if (
+              event.key === "Enter"
+            ) {
+              event.preventDefault();
+
+              this.confirmPowerEditor();
+            }
+          }
+        );
+    }
+
+    getSelection() {
+      let start =
+        this.input.selectionStart;
+
+      let end =
+        this.input.selectionEnd;
+
+      if (
+        start == null ||
+        end == null
+      ) {
+        start =
+          this.lastSelection.start;
+
+        end =
+          this.lastSelection.end;
+      }
+
+      return {
+        start:
+          Math.max(
+            0,
+            Number(start) || 0
+          ),
+
+        end:
+          Math.max(
+            0,
+            Number(end) || 0
+          )
+      };
+    }
+
+    notifyValueChanged() {
+
+      if (
+        !this.input
+      ) {
+        return;
+      }
+
+      /*
+      先同步元件自己的解析／正式顯示，
+      再通知遊戲外部。
+      */
+      this.updateEditorLayout();
+      this.update();
+
+      /*
+      原生事件：
+      相容既有遊戲的 input/change listener。
+      */
+      this.input.dispatchEvent(
+        new Event(
+          "input",
+          {
+            bubbles: true
+          }
+        )
+      );
+
+      this.input.dispatchEvent(
+        new Event(
+          "change",
+          {
+            bubbles: true
+          }
+        )
+      );
+
+      /*
+      共用元件正式 callback：
+      新版遊戲建議使用這個，
+      不再依賴瀏覽器是否對程式化輸入送事件。
+      */
+      if (
+        typeof this.options.onChange ===
+        "function"
+      ) {
+
+        let parsed =
+          null;
+
+        try {
+          parsed =
+            this.parse();
+        } catch (_) {}
+
+        this.options.onChange(
+          {
+            raw:
+              this.input.value,
+
+            parsed,
+
+            instance:
+              this
+          }
+        );
+      }
+    }
+
+
+    insertText(
+      text,
+      options = {}
+    ) {
+      if (
+        this.disabled
+      ) {
+        return;
+      }
+
+      const {
+        start,
+        end
+      } =
+        this.getSelection();
+
+      const current =
+        this.input.value;
+
+      const next =
+        current.slice(
+          0,
+          start
+        ) +
+        text +
+        current.slice(
+          end
+        );
+
+      this.input.value =
+        next;
+
+      const caret =
+        start +
+        text.length;
+
+      this.input.focus();
+
+      this.input.setSelectionRange(
+        caret,
+        caret
+      );
+
+      this.lastSelection = {
+        start: caret,
+        end: caret
+      };
+
+      this.notifyValueChanged();
+    }
+
+    getInlineEditorAnchor(
+      targetInput = null
+    ) {
+
+      const input =
+        targetInput ||
+        this.input;
+
+      if (
+        !input ||
+        !this.shell
+      ) {
+        return {
+          left: 16,
+          top: 12
+        };
+      }
+
+      const style =
+        window.getComputedStyle(
+          input
+        );
+
+      const canvas =
+        document.createElement(
+          "canvas"
+        );
+
+      const context =
+        canvas.getContext(
+          "2d"
+        );
+
+      context.font =
+        `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+
+      const caret =
+        input.selectionStart ??
+        input.value.length;
+
+      const before =
+        String(
+          input.value ||
+          ""
+        )
+          .slice(
+            0,
+            caret
+          );
+
+      const measured =
+        context.measureText(
+          before
+        ).width;
+
+      const inputRect =
+        input.getBoundingClientRect();
+
+      const shellRect =
+        this.shell.getBoundingClientRect();
+
+      const paddingLeft =
+        parseFloat(
+          style.paddingLeft
+        ) ||
+        0;
+
+      let left =
+        (
+          inputRect.left -
+          shellRect.left
+        ) +
+        paddingLeft +
+        measured -
+        input.scrollLeft;
+
+      const maxLeft =
+        Math.max(
+          12,
+          this.shell.clientWidth -
+          190
+        );
+
+      left =
+        Math.max(
+          12,
+          Math.min(
+            left,
+            maxLeft
+          )
+        );
+
+      const top =
+        Math.max(
+          8,
+          (
+            inputRect.top -
+            shellRect.top
+          ) +
+          4
+        );
+
+      return {
+        left,
+        top
+      };
+    }
+
+
+    positionSpecialEditor(
+      editor,
+      targetInput = null
+    ) {
+
+      if (
+        !editor
+      ) {
+        return;
+      }
+
+      const {
+        left,
+        top
+      } =
+        this.getInlineEditorAnchor(
+          targetInput
+        );
+
+      editor.style.left =
+        `${left}px`;
+
+      editor.style.top =
+        `${top}px`;
+    }
+
+
+    openRootEditor() {
+
+      if (
+        this.disabled
+      ) {
+        return;
+      }
+
+      const fractionOpen =
+        this.fractionEditor &&
+        !this.fractionEditor.hidden;
+
+      const targetInput =
+        fractionOpen
+          ? (
+              this.activeFractionInput ||
+              this.fractionNumerator
+            )
+          : null;
+
+      this.rootTargetInput =
+        targetInput;
+
+      if (
+        targetInput
+      ) {
+
+        this.rootTargetSelection = {
+          start:
+            targetInput.selectionStart ??
+            targetInput.value.length,
+          end:
+            targetInput.selectionEnd ??
+            targetInput.value.length
+        };
+
+      } else {
+
+        this.lastSelection =
+          this.getSelection();
+      }
+
+      if (
+        !this.rootEditor
+      ) {
+        return;
+      }
+
+      this.rootValueInput.value =
+        "";
+
+      this.rootEditor.hidden =
+        false;
+
+      this.positionSpecialEditor(
+        this.rootEditor,
+        targetInput
+      );
+
+      this.shell
+        ?.classList
+        .add(
+          "mei-shell--special-open"
+        );
+
+      window.setTimeout(
+        () =>
+          this.rootValueInput
+            ?.focus(),
+        0
+      );
+    }
+
+
+    confirmRootEditor() {
+
+      const rootContent =
+        normalizeEditableSource(
+          this.rootValueInput
+            ?.value ||
+          ""
+        );
+
+      if (
+        !rootContent
+      ) {
+        return;
+      }
+
+      const insertion =
+        `√(${rootContent})`;
+
+      if (
+        this.rootTargetInput
+      ) {
+
+        const target =
+          this.rootTargetInput;
+
+        const selection =
+          this.rootTargetSelection || {
+            start:
+              target.selectionStart ??
+              target.value.length,
+            end:
+              target.selectionEnd ??
+              target.value.length
+          };
+
+        target.value =
+          target.value.slice(
+            0,
+            selection.start
+          ) +
+          insertion +
+          target.value.slice(
+            selection.end
+          );
+
+        const caret =
+          selection.start +
+          insertion.length;
+
+        target.focus();
+
+        target.setSelectionRange(
+          caret,
+          caret
+        );
+
+        this.activeFractionInput =
+          target;
+
+        this.rootEditor.hidden =
+          true;
+
+        this.rootTargetInput =
+          null;
+
+        this.rootTargetSelection =
+          null;
+
+        return;
+      }
+
+      const {
+        start,
+        end
+      } =
+        this.lastSelection;
+
+      this.input.value =
+        this.input.value.slice(
+          0,
+          start
+        ) +
+        insertion +
+        this.input.value.slice(
+          end
+        );
+
+      const caret =
+        start +
+        insertion.length;
+
+      this.lastSelection = {
+        start: caret,
+        end: caret
+      };
+
+      this.rootEditor.hidden =
+        true;
+
+      this.input.focus();
+
+      this.input.setSelectionRange(
+        caret,
+        caret
+      );
+
+      this.notifyValueChanged();
+    }
+
+
+    insertIntoFractionField(
+      template,
+      placeholderOffset = 0
+    ) {
+
+      const input =
+        this.activeFractionInput ||
+        this.fractionNumerator;
+
+      if (
+        !input
+      ) {
+        return;
+      }
+
+      const start =
+        input.selectionStart ??
+        input.value.length;
+
+      const end =
+        input.selectionEnd ??
+        start;
+
+      const current =
+        input.value;
+
+      const next =
+        current.slice(
+          0,
+          start
+        ) +
+        template +
+        current.slice(
+          end
+        );
+
+      input.value =
+        next;
+
+      const placeholderIndex =
+        next.indexOf(
+          PLACEHOLDER,
+          start
+        );
+
+      input.focus();
+
+      if (
+        placeholderIndex >=
+        0
+      ) {
+
+        input.setSelectionRange(
+          placeholderIndex,
+          placeholderIndex + 1
+        );
+
+      } else {
+
+        const caret =
+          start +
+          template.length +
+          placeholderOffset;
+
+        input.setSelectionRange(
+          caret,
+          caret
+        );
+      }
+
+      this.activeFractionInput =
+        input;
+    }
+
+
+    closeSpecialEditors() {
+
+      if (
+        this.rootEditor
+      ) {
+        this.rootEditor.hidden =
+          true;
+      }
+
+      if (
+        this.fractionEditor
+      ) {
+        this.fractionEditor.hidden =
+          true;
+      }
+
+      if (
+        this.powerEditor
+      ) {
+        this.powerEditor.hidden =
+          true;
+      }
+
+      this.shell
+        ?.classList
+        .remove(
+          "mei-shell--special-open"
+        );
+    
+
+      this.powerTargetInput =
+        null;
+
+      this.powerTargetSelection =
+        null;
+    }
+
+
+    openFractionEditor() {
+
+      if (
+        this.disabled
+      ) {
+        return;
+      }
+
+      this.lastSelection =
+        this.getSelection();
+
+      this.closeSpecialEditors();
+
+      if (
+        !this.fractionEditor
+      ) {
+        return;
+      }
+
+      const {
+        start,
+        end
+      } =
+        this.lastSelection;
+
+      const selected =
+        end > start
+          ? this.input.value.slice(
+              start,
+              end
+            )
+          : "";
+
+      this.fractionNumerator.value =
+        selected;
+
+      this.fractionDenominator.value =
+        "";
+
+      // 分數開啟時先輸入分母，再輸入分子。
+      this.activeFractionInput = this.fractionDenominator;
+
+      this.fractionEditor.hidden =
+        false;
+
+      this.positionSpecialEditor(
+        this.fractionEditor,
+        null
+      );
+
+      this.shell
+        ?.classList
+        .add(
+          "mei-shell--special-open"
+        );
+
+      window.setTimeout(
+        () => {
+          this.fractionDenominator?.focus();
+        },
+        0
+      );
+    }
+
+
+    confirmFractionEditor() {
+
+      const numerator =
+        normalizeEditableSource(
+          (
+            this.fractionNumerator
+              ?.value ||
+            ""
+          )
+            .replaceAll(
+              PLACEHOLDER,
+              ""
+            )
+        );
+
+      const denominator =
+        normalizeEditableSource(
+          (
+            this.fractionDenominator
+              ?.value ||
+            ""
+          )
+            .replaceAll(
+              PLACEHOLDER,
+              ""
+            )
+        );
+
+      if (
+        !numerator ||
+        !denominator
+      ) {
+        return;
+      }
+
+      const safeNumerator =
+        needsGrouping(
+          numerator
+        )
+          ? `(${numerator})`
+          : numerator;
+
+      const safeDenominator =
+        needsGrouping(
+          denominator
+        )
+          ? `(${denominator})`
+          : denominator;
+
+      const {
+        start,
+        end
+      } =
+        this.lastSelection;
+
+      const current =
+        this.input.value;
+
+      const insertion =
+        `${safeNumerator}/${safeDenominator}`;
+
+      this.input.value =
+        current.slice(
+          0,
+          start
+        ) +
+        insertion +
+        current.slice(
+          end
+        );
+
+      const caret =
+        start +
+        insertion.length;
+
+      this.lastSelection = {
+        start: caret,
+        end: caret
+      };
+
+      this.closeSpecialEditors();
+
+      this.input.focus();
+
+      this.input.setSelectionRange(
+        caret,
+        caret
+      );
+
+      this.updateEditorLayout();
+      this.notifyValueChanged();
+    }
+
+
+    openPowerEditor(
+      targetInput = null
+    ) {
+
+      if (
+        this.disabled
+      ) {
+        return;
+      }
+
+      /*
+      targetInput 有值：
+      代表目前正在分數編輯器中，
+      次方要套用在分子／分母。
+
+      targetInput 為 null：
+      代表次方作用在主答案框。
+      */
+
+      this.powerTargetInput =
+        targetInput || null;
+
+      if (
+        targetInput
+      ) {
+
+        this.powerTargetSelection = {
+          start:
+            targetInput.selectionStart ??
+            targetInput.value.length,
+
+          end:
+            targetInput.selectionEnd ??
+            (
+              targetInput.selectionStart ??
+              targetInput.value.length
+            )
+        };
+
+        /*
+        分數編輯器保持開啟，
+        只另外打開次方小格。
+        */
+        if (
+          this.powerEditor
+        ) {
+          this.powerEditor.hidden =
+            false;
+
+          this.positionSpecialEditor(
+            this.powerEditor,
+            targetInput
+          );
+        }
+
+        this.shell
+          ?.classList
+          .add(
+            "mei-shell--special-open"
+          );
+
+      } else {
+
+        this.lastSelection =
+          this.getSelection();
+
+        if (
+          this.powerEditor
+        ) {
+          this.powerEditor.hidden =
+            false;
+
+          this.positionSpecialEditor(
+            this.powerEditor,
+            null
+          );
+        }
+
+        this.shell
+          ?.classList
+          .add(
+            "mei-shell--special-open"
+          );
+      }
+
+      if (
+        this.powerValueInput
+      ) {
+        this.powerValueInput.value =
+          "";
+      }
+
+      window.setTimeout(
+        () =>
+          this.powerValueInput
+            ?.focus(),
+        0
+      );
+    }
+
+
+    confirmPowerEditor() {
+
+      const raw =
+        String(
+          this.powerValueInput
+            ?.value ||
+          ""
+        )
+          .trim();
+
+      if (
+        !/^\d+$/.test(
+          raw
+        )
+      ) {
+        return;
+      }
+
+      const superscript =
+        toSuperscriptDigits(
+          raw
+        );
+
+      if (
+        !superscript
+      ) {
+        return;
+      }
+
+
+      /*
+      ==================================================
+      A. 次方作用在分數的分子／分母
+      ==================================================
+      */
+
+      if (
+        this.powerTargetInput
+      ) {
+
+        const target =
+          this.powerTargetInput;
+
+        const selection =
+          this.powerTargetSelection || {
+            start:
+              target.selectionStart ??
+              target.value.length,
+            end:
+              target.selectionEnd ??
+              target.value.length
+          };
+
+        const start =
+          selection.start;
+
+        const end =
+          selection.end;
+
+        const current =
+          target.value;
+
+        let insertion =
+          superscript;
+
+        if (
+          end >
+          start
+        ) {
+
+          const selected =
+            current.slice(
+              start,
+              end
+            );
+
+          insertion =
+            `(${selected})${superscript}`;
+        }
+
+        target.value =
+          current.slice(
+            0,
+            start
+          ) +
+          insertion +
+          current.slice(
+            end
+          );
+
+        const caret =
+          start +
+          insertion.length;
+
+        target.focus();
+
+        target.setSelectionRange(
+          caret,
+          caret
+        );
+
+        this.activeFractionInput =
+          target;
+
+        /*
+        只關閉次方小格，
+        保留分數編輯器繼續編輯。
+        */
+        if (
+          this.powerEditor
+        ) {
+          this.powerEditor.hidden =
+            true;
+        }
+
+        this.powerTargetInput =
+          null;
+
+        this.powerTargetSelection =
+          null;
+
+        return;
+      }
+
+
+      /*
+      ==================================================
+      B. 次方作用在主答案框
+      ==================================================
+      */
+
+      const {
+        start,
+        end
+      } =
+        this.lastSelection;
+
+      const current =
+        this.input.value;
+
+      let insertion =
+        superscript;
+
+      if (
+        end >
+        start
+      ) {
+
+        const selected =
+          current.slice(
+            start,
+            end
+          );
+
+        insertion =
+          `(${selected})${superscript}`;
+      }
+
+      this.input.value =
+        current.slice(
+          0,
+          start
+        ) +
+        insertion +
+        current.slice(
+          end
+        );
+
+      const caret =
+        start +
+        insertion.length;
+
+      this.lastSelection = {
+        start:
+          caret,
+        end:
+          caret
+      };
+
+      if (
+        this.powerEditor
+      ) {
+        this.powerEditor.hidden =
+          true;
+      }
+
+      this.shell
+        ?.classList
+        .remove(
+          "mei-shell--special-open"
+        );
+
+      this.lastSelection = {
+        start:
+          caret,
+        end:
+          caret
+      };
+
+      /*
+      主動觸發 input event，
+      讓遊戲外部的「目前答案」立即讀到最新次方。
+      */
+      this.notifyValueChanged();
+
+      /*
+      再切換正式數學排版，
+      讓學生看到清楚的真正上標 <sup>。
+      */
+      this.shell
+        ?.classList
+        .remove(
+          "mei-shell--editing"
+        );
+
+      this.shell
+        ?.classList
+        .add(
+          "mei-shell--power-display"
+        );
+
+      this.input.blur();
+    }
+
+
+    insertTemplate(
+      template,
+      placeholderOffset
+    ) {
+      if (
+        this.disabled
+      ) {
+        return;
+      }
+
+      const {
+        start,
+        end
+      } =
+        this.getSelection();
+
+      const current =
+        this.input.value;
+
+      let insertion =
+        template;
+
+      if (
+        end >
+        start
+      ) {
+        const selected =
+          current.slice(
+            start,
+            end
+          );
+
+        insertion =
+          template.replace(
+            PLACEHOLDER,
+            selected
+          );
+      }
+
+      const next =
+        current.slice(
+          0,
+          start
+        ) +
+        insertion +
+        current.slice(
+          end
+        );
+
+      this.input.value =
+        next;
+
+      const placeholderIndex =
+        next.indexOf(
+          PLACEHOLDER,
+          start
+        );
+
+      this.input.focus();
+
+      if (
+        placeholderIndex >= 0
+      ) {
+        this.input.setSelectionRange(
+          placeholderIndex,
+          placeholderIndex + 1
+        );
+
+        this.lastSelection = {
+          start:
+            placeholderIndex,
+          end:
+            placeholderIndex + 1
+        };
+      } else {
+        const caret =
+          start +
+          insertion.length;
+
+        this.input.setSelectionRange(
+          caret,
+          caret
+        );
+
+        this.lastSelection = {
+          start: caret,
+          end: caret
+        };
+      }
+
+      this.notifyValueChanged();
+    }
+
+    moveToFractionDenominator() {
+      return false;
+    }
+
+
+    parse() {
+      const raw =
+        normalizeSource(
+          this.input?.value ||
+          ""
+        );
+
+      if (!raw) {
+        return {
+          valid: false,
+          empty: true,
+          message:
+            "目前尚未完成答案。"
+        };
+      }
+
+      let ast;
+
+      try {
+        ast =
+          new Parser(
+            raw,
+            this.options.variable
+          )
+            .parse();
+      } catch (error) {
+        return {
+          valid: false,
+          message:
+            error.message ||
+            "答案格式尚未完成。"
+        };
+      }
+
+      const display =
+        renderAst(ast);
+
+      if (
+        containsPlaceholder(
+          ast
+        )
+      ) {
+        return {
+          valid: false,
+          incomplete: true,
+          ast,
+          display,
+          message:
+            "答案尚未輸入完整。"
+        };
+      }
+
+      return {
+        valid: true,
+        ast,
+        display,
+        raw
+      };
+    }
+
+    validate() {
+      const parsed =
+        this.parse();
+
+      if (
+        !parsed.valid
+      ) {
+        return parsed;
+      }
+
+      const issues =
+        [];
+
+      collectSimplificationIssues(
+        parsed.ast,
+        this.options,
+        issues
+      );
+
+      if (
+        issues.length
+      ) {
+        return {
+          valid: false,
+          ast:
+            parsed.ast,
+          display:
+            parsed.display,
+          message:
+            `⚠️ ${issues[0]}`
+        };
+      }
+
+      if (
+        this.options.validationMode !==
+          "polynomial" &&
+        containsPlusMinus(
+          parsed.ast
+        )
+      ) {
+
+        try {
+
+          const expandedAsts =
+            expandPlusMinusAst(
+              parsed.ast
+            );
+
+          const branches =
+            expandedAsts.map(
+              branchAst => {
+
+                const linear =
+                  linearize(
+                    branchAst
+                  );
+
+                const terms =
+                  linearToTerms(
+                    linear
+                  );
+
+                return {
+                  ast:
+                    branchAst,
+                  display:
+                    renderAst(
+                      branchAst
+                    ),
+                  terms,
+                  value: {
+                    terms,
+                    display:
+                      renderAst(
+                        branchAst
+                      )
+                  }
+                };
+              }
+            );
+
+
+          return {
+            valid: true,
+            ast:
+              parsed.ast,
+            raw:
+              parsed.raw,
+            display:
+              parsed.display,
+            plusMinus:
+              true,
+            branches,
+            values:
+              branches
+                .map(
+                  branch =>
+                    branch.value
+                )
+          };
+
+        } catch (
+          error
+        ) {
+
+          return {
+            valid: false,
+            ast:
+              parsed.ast,
+            display:
+              parsed.display,
+            message:
+              error.message ||
+              "正負號答案目前無法判定。"
+          };
+        }
+      }
+
+
+      if (
+        this.options.validationMode ===
+        "polynomial"
+      ) {
+
+        try {
+
+          const polynomial =
+            polynomialize(
+              parsed.ast
+            );
+
+          const polynomialTerms =
+            polynomialMapToTerms(
+              polynomial
+            );
+
+          return {
+            valid: true,
+            ast:
+              parsed.ast,
+            raw:
+              parsed.raw,
+            display:
+              parsed.display,
+            polynomialTerms,
+            terms:
+              polynomialTerms,
+            factorized:
+              isFactorizedAst(
+                parsed.ast
+              ),
+            value: {
+              polynomialTerms,
+              terms:
+                polynomialTerms,
+              factorized:
+                isFactorizedAst(
+                  parsed.ast
+                ),
+              display:
+                parsed.display
+            }
+          };
+
+        } catch (
+          error
+        ) {
+
+          return {
+            valid: false,
+            ast:
+              parsed.ast,
+            display:
+              parsed.display,
+            message:
+              error.message ||
+              "目前無法判定這個多項式答案。"
+          };
+        }
+      }
+
+
+      let linear;
+
+      try {
+        linear =
+          linearize(
+            parsed.ast
+          );
+      } catch (error) {
+        return {
+          valid: false,
+          ast:
+            parsed.ast,
+          display:
+            parsed.display,
+          message:
+            error.message ||
+            "目前無法判定這個答案。"
+        };
+      }
+
+      const terms =
+        linearToTerms(
+          linear
+        );
+
+      return {
+        valid: true,
+        ast:
+          parsed.ast,
+        raw:
+          parsed.raw,
+        display:
+          parsed.display,
+        terms,
+        value: {
+          terms,
+          display:
+            parsed.display
+        }
+      };
+    }
+
+    updateEditorLayout() {
+      if (
+        !this.shell ||
+        !this.input
+      ) {
+        return;
+      }
+
+      const hasFraction =
+        this.input.value
+          .includes("/");
+
+      this.shell
+        .classList
+        .toggle(
+          "mei-shell--has-fraction",
+          hasFraction
+        );
+    }
+
+    update() {
+      const parsed =
+        this.parse();
+
+      const raw =
+        this.input.value;
+
+      if (!raw) {
+        this.display.classList.add(
+          "mei-rich-display--placeholder"
+        );
+
+        this.display.textContent =
+          this.options.placeholder;
+
+        this.preview.className =
+          "mei-preview mei-preview--empty";
+
+        this.preview.textContent =
+          "系統判斷：目前尚未完成答案。";
+
+        return;
+      }
+
+      this.display.classList.remove(
+        "mei-rich-display--placeholder"
+      );
+
+      if (
+        parsed.display
+      ) {
+        this.display.innerHTML =
+          parsed.display;
+
+        window.RadicalDisplay
+          ?.mount(
+            this.display
+          );
+      } else {
+        this.display.textContent =
+          raw;
+      }
+
+      const validation =
+        this.validate();
+
+      if (
+        validation.valid
+      ) {
+        this.preview.className =
+          "mei-preview mei-preview--valid";
+
+        this.preview.innerHTML =
+          `
+            系統判斷目前填入的答案：
+            <span class="mei-preview-value">
+              ${validation.display}
+            </span>
+          `;
+
+        window.RadicalDisplay
+          ?.mount(
+            this.preview
+          );
+
+        return;
+      }
+
+      this.preview.className =
+        "mei-preview mei-preview--incomplete";
+
+      this.preview.innerHTML =
+        parsed.display
+          ? `
+              目前答案：
+              <span class="mei-preview-value">
+                ${parsed.display}
+              </span>
+              <span class="mei-preview-message">
+                ${escapeHTML(validation.message || parsed.message || "")}
+              </span>
+            `
+          : escapeHTML(
+              validation.message ||
+              parsed.message ||
+              "答案尚未完成。"
+            );
+
+      window.RadicalDisplay
+        ?.mount(
+          this.preview
+        );
+    }
+
+    focus() {
+      this.input
+        ?.focus();
+    }
+
+    reset() {
+      if (!this.input) {
+        return;
+      }
+
+      this.input.value = "";
+      this.lastSelection = {
+        start: 0,
+        end: 0
+      };
+
+      this.updateEditorLayout();
+
+      this.update();
+    }
+
+    setDisabled(disabled) {
+      this.disabled =
+        Boolean(disabled);
+
+      if (this.input) {
+        this.input.disabled =
+          this.disabled;
+      }
+
+      this.toolButtons
+        ?.forEach(
+          button => {
+            button.disabled =
+              this.disabled;
+          }
+        );
+
+      this.shell
+        ?.classList
+        .toggle(
+          "mei-shell--disabled",
+          this.disabled
+        );
+    }
+
+    getRawValue() {
+      return (
+        this.input?.value ||
+        ""
+      );
+    }
+
+    setRawValue(value) {
+      if (!this.input) {
+        return;
+      }
+
+      this.input.value =
+        normalizeSource(
+          value
+        );
+
+      const caret =
+        this.input.value.length;
+
+      this.input.setSelectionRange(
+        caret,
+        caret
+      );
+
+      this.lastSelection = {
+        start: caret,
+        end: caret
+      };
+
+      this.updateEditorLayout();
+
+      this.update();
+    }
+
+    destroy() {
+      if (this.mount) {
+        this.mount.innerHTML = "";
+      }
+
+      this.shell = null;
+      this.input = null;
+      this.display = null;
+      this.preview = null;
+      this.toolButtons = [];
+    }
+  }
+
+  window.MathExpressionInput =
+    MathExpressionInput;
+
+  window.MathExpressionInputUtils = {
+    Fraction,
+    Parser,
+    normalizeSource,
+    renderAst,
+    linearize,
+    linearToTerms,
+    largestSquareFactor,
+    simplifySquareRoot,
+    cleanupEditableFractionText,
+    polynomialize,
+    polynomialMapToTerms,
+    isFactorizedAst,
+    containsPlusMinus,
+    expandPlusMinusAst
+  };
+})();
+</script><script type="module">
 "use strict";
 const GAME_ID="fractionNew";
 const MODE_CONFIG={concept:{name:"🧠 等值分數、最簡分數與大小比較",count:10,difficultyWeight:1},addSubtract:{name:"➕ 正負分數加減",count:10,difficultyWeight:1.16},multiply:{name:"✖️ 正負分數乘法",count:10,difficultyWeight:1.18},divide:{name:"➗ 倒數與正負分數除法",count:10,difficultyWeight:1.22},mixed:{name:"🔄 分數四則、去括號與分配律",count:10,difficultyWeight:1.34},speed:{name:"⚡ 分數快手",seconds:60,difficultyWeight:1.16},comprehensive:{name:"🏆 2-3 綜合挑戰",count:10,difficultyWeight:1.42}};
@@ -83,7 +6466,27 @@ const $=id=>document.getElementById(id);let modeId="concept",questions=[],index=
 window.MathGameSessionMeta={gameId:GAME_ID,chapter:"2-3",title:"分數的四則運算大挑戰",modes:MODE_CONFIG};
 const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a,pick=a=>a[Math.floor(Math.random()*a.length)];
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function formatTime(s){s=Math.max(0,Math.floor(s));return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}function showOnly(id){["start-screen","quiz-screen","result-screen","review-screen"].forEach(x=>$(x).classList.toggle("hidden",x!==id));window.scrollTo({top:0,behavior:"smooth"})}function createAttemptId(){return [GAME_ID,modeId,Date.now(),Math.random().toString(36).slice(2,10)].join("-")}
-function mountScratch(){const m=$("scratchpad-mobile-button"),b=$("scratchpadOpenButton");if(!m||!b)return false;if(b.parentElement!==m)m.appendChild(b);return true}window.addEventListener("DOMContentLoaded",()=>{window.MathGameCommonHeader?.init({mountId:"commonHeaderMount",basePath:"../../"});if(!mountScratch()){let n=0,t=setInterval(()=>{n++;if(mountScratch()||n>=50)clearInterval(t)},50)}});
+function mountScratch(){const m=$("scratchpad-mobile-button"),b=$("scratchpadOpenButton"),fallback=$("local-scratchpad-button");if(!m||!b)return false;if(b.parentElement!==m)m.appendChild(b);if(fallback)fallback.hidden=true;return true}
+window.addEventListener("DOMContentLoaded",()=>{window.MathGameCommonHeader?.init({mountId:"commonHeaderMount",basePath:"../../"});setupLocalScratchpad();if(!mountScratch()){let n=0,t=setInterval(()=>{n++;if(mountScratch()||n>=40)clearInterval(t)},80)}});
+function setupLocalScratchpad(){
+ if($("local-paper-dialog"))return;
+ const dialog=document.createElement("div");dialog.id="local-paper-dialog";dialog.hidden=true;
+ dialog.innerHTML='<div class="local-paper-panel" role="dialog" aria-modal="true" aria-label="計算紙"><div class="local-paper-actions"><strong style="margin-right:auto">✏️ 計算紙</strong><button type="button" id="local-paper-clear">清除筆跡</button><button type="button" id="local-paper-close">關閉</button></div><canvas id="local-paper-canvas"></canvas></div>';
+ document.body.appendChild(dialog);
+ const canvas=$("local-paper-canvas"),ctx=canvas.getContext("2d");let drawing=false,previous=null;
+ const resize=()=>{const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;const previousImage=document.createElement("canvas");previousImage.width=canvas.width;previousImage.height=canvas.height;previousImage.getContext("2d").drawImage(canvas,0,0);const ratio=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(rect.width*ratio);canvas.height=Math.round(rect.height*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);ctx.drawImage(previousImage,0,0,previousImage.width,previousImage.height,0,0,rect.width,rect.height);ctx.strokeStyle="#18283e";ctx.lineWidth=2.5;ctx.lineCap="round";ctx.lineJoin="round";};
+ const position=e=>{const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+ canvas.addEventListener("pointerdown",e=>{drawing=true;previous=position(e);canvas.setPointerCapture(e.pointerId);});
+ canvas.addEventListener("pointermove",e=>{if(!drawing)return;const p=position(e);ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(p.x,p.y);ctx.stroke();previous=p;});
+ ["pointerup","pointercancel","lostpointercapture"].forEach(x=>canvas.addEventListener(x,()=>{drawing=false;previous=null;}));
+ $("local-paper-clear").addEventListener("click",()=>ctx.clearRect(0,0,canvas.width,canvas.height));
+ $("local-paper-close").addEventListener("click",()=>{dialog.hidden=true});
+ dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.hidden=true});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!dialog.hidden)dialog.hidden=true});
+ $("local-scratchpad-button").addEventListener("click",()=>{dialog.hidden=false;requestAnimationFrame(resize)});
+ window.addEventListener("resize",()=>{if(!dialog.hidden)resize()});
+}
+
 function sound(method){try{const s=window.GameSound||window.MathGameSound,f=s?.[method];if(typeof f!=="function")return false;const r=f.call(s);r?.catch?.(()=>{});return true}catch{return false}}function urgent(){const s=window.GameSound||window.MathGameSound;for(const m of ["playCountdown","playTick","playTimer","playUrgent"]){if(typeof s?.[m]==="function"){try{s[m]();return}catch{}}}try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.frequency.value=880;g.gain.setValueAtTime(.06,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.08);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.08);o.onended=()=>c.close().catch(()=>{})}catch{}}
 function gcd(a,b){a=Math.abs(Math.trunc(a));b=Math.abs(Math.trunc(b));while(b){const r=a%b;a=b;b=r}return a||1}function lcm(a,b){return Math.abs(a*b)/gcd(a,b)}function rat(n,d=1){if(!d)throw Error("分母不可為0");if(d<0){n=-n;d=-d}const g=gcd(n,d);return{n:n/g,d:d/g}}function raw(n,d=1){if(d<0){n=-n;d=-d}return{n,d}}const add=(a,b)=>rat(a.n*b.d+b.n*a.d,a.d*b.d),sub=(a,b)=>rat(a.n*b.d-b.n*a.d,a.d*b.d),mul=(a,b)=>rat(a.n*b.n,a.d*b.d),div=(a,b)=>rat(a.n*b.d,a.d*b.n),neg=a=>({n:-a.n,d:a.d}),abs=a=>({n:Math.abs(a.n),d:a.d}),eq=(a,b)=>a.n===b.n&&a.d===b.d,cmp=(a,b)=>Math.sign(a.n*b.d-b.n*a.d),recip=a=>a.n?rat(a.d,a.n):null;
 function improper(w,n,d,s=1){return rat(s*(w*d+n),d)}
