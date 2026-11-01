@@ -1123,6 +1123,16 @@
  }
 
 .math-signed-frac{display:inline-flex;align-items:center;gap:.05em;vertical-align:middle;white-space:nowrap}.math-expr .math-frac,.explanation .math-frac{vertical-align:middle}.math-expr{overflow-wrap:normal;word-break:normal}
+
+/* 教材第七頁：雙空格題的獨立作答欄，不替代數學式共用元件 */
+.pair-answer{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.pair-answer.hidden{display:none!important}
+.pair-answer label{display:flex;flex-direction:column;gap:8px;font-weight:900;color:var(--primary-dark);align-items:center}
+.pair-answer input{width:140px;min-height:54px;border:2px solid var(--primary-border);border-radius:12px;text-align:center;font-size:23px;font-weight:800;background:white;color:#172033}
+.pair-answer input:focus{outline:3px solid #e6d8ff}
+.math-frac{white-space:nowrap;flex-shrink:0}
+.math-expr{overflow-wrap:normal;line-height:2.1}
+.question-content{overflow-x:auto;-webkit-overflow-scrolling:touch}
 </style>
 </head>
 
@@ -1136,7 +1146,7 @@
     <header class="game-header">
       <a class="grade-return" href="../../index.html?semester=grade7-first">↩ 返回七年級上學期</a>
       <h1 class="game-title">2-4 指數律大挑戰</h1>
-      <p class="game-subtitle">依 115 課本與習作編排：分數次方 → 同底數乘除 → 0 次方 → 冪的乘方 → 積的乘方 → 綜合運算。題目只使用具體數字，不出負整數指數。</p>
+      <p class="game-subtitle">依 115 課本與習作編排：分數次方與含指數運算 → 同底數乘除（包含分數底數）→ 0 次方 → 冪的乘方 → 積的乘方雙空格 → 換底與綜合運算。題目只使用具體數字，不出負整數指數。</p>
     </header>
 
     <section id="start-screen" class="screen">
@@ -1225,7 +1235,7 @@
 
         <div id="numberMountWrap" class="number-wrap hidden"><div id="answerMount" style="width:100%"></div></div>
         <div id="fractionMountWrap" class="hidden"></div>
-        <div id="expressionMountWrap" class="hidden"></div>
+        <div id="expressionMountWrap" class="hidden"></div><div id="pairMount" class="hidden pair-answer"><label>□ 指數<input id="pairFirst" inputmode="numeric" autocomplete="off" aria-label="方框指數" placeholder="填入整數"></label><label>△ 指數<input id="pairSecond" inputmode="numeric" autocomplete="off" aria-label="三角形指數" placeholder="填入整數"></label></div>
         <div id="input-message" class="input-message"></div>
 
         <div
@@ -1325,26 +1335,18 @@ const MODE_CONFIG={
 const $ = (id) => document.getElementById(id);
 const screens = ["start-screen", "quiz-screen", "result-screen", "review-screen"];
 function makeQuestion(requestedMode, sequence = 0) {
-  switch (requestedMode) {
-    case "fractionPower":
-      return [makeFractionPower, makeSignParity, makeIndexFirst, makeFractionPowerRewrite][sequence % 4]();
-    case "sameBaseMultiply":
-      return sequence%3===0?makeFractionBaseLaw("multiply"):makeSameBaseMultiply();
-    case "sameBaseDivide":
-      return sequence%3===0?makeFractionBaseLaw("divide"):makeSameBaseDivide();
-    case "powerOfPower":
-      return sequence%3===0?makeFractionPowerOfPower():makePowerOfPower();
-    case "powerOfProduct":
-      return makePowerOfProduct();
-    case "comprehensive":
-      return makeCombined();
-    case "speed":
-      return [makeSameBaseMultiply, makeSameBaseDivide, makePowerOfPower][Math.floor(Math.random() * 3)]();
-    default:
-      throw new Error(`無效的遊戲模式：${requestedMode}`);
-  }
+ const groups={
+  fractionPower:[makeFractionPower,makeSignParity,makeIndexFirst,makeFractionPowerRewrite,makeFractionArithmeticGO],
+  sameBaseMultiply:[makeSameBaseMultiply,()=>makeFractionBaseLaw("multiply")],
+  sameBaseDivide:[makeSameBaseDivide,()=>makeFractionBaseLaw("divide"),makeZeroExponent],
+  powerOfPower:[makePowerOfPower,makeFractionPowerOfPower],
+  powerOfProduct:[makePowerOfProduct,makeProductDoubleBlankGO,makeFractionProductDoubleBlankGO,makeFractionTimesPowerGO],
+  comprehensive:[makeCombined,makeProductQuotientCombinedGO,makeEqualExponentFractionGO,makeFractionArithmeticGO,makeFractionProductDoubleBlankGO,makeFractionBaseMultiplyOrDivide,makeFractionPowerOfPower]
+ };
+ if(requestedMode==="speed")return [makeSameBaseMultiply,makeSameBaseDivide,makePowerOfPower,makeFractionBaseMultiplyOrDivide,makeEqualExponentFractionGO][ri(0,4)]();
+ const fns=groups[requestedMode];if(!fns)throw new Error("無效模式："+requestedMode);
+ return fns[sequence%fns.length]();
 }
-
 function igcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1}
 function R(n,d=1){if(!d)throw new Error("分母不可為 0");if(d<0){n=-n;d=-d}const g=igcd(n,d);return {n:n/g,d:d/g}}
 function ratEq(a,b){return !!a&&!!b&&a.n===b.n&&a.d===b.d}
@@ -2432,6 +2434,43 @@ function makeFractionBaseLaw(op){
 }
 function makeFractionPowerOfPower(){const b=fractionLawBase(),m=ri(2,5),n=ri(2,5),result=m*n;return {kind:"integer",html:`<div class="math-expr">[${pRat(b,m)}]${sup(n)} ＝ ${mathGroupHTML(ratHTML(b))}${sup("□")}，□＝？</div>`,answer:result,explanation:calcBox("冪的乘方，指數相乘。", [`[${pRat(b,m)}]${sup(n)} ＝ ${mathGroupHTML(ratHTML(b))}${sup(`${m}×${n}`)} ＝ ${pRat(b,result)}。`],String(result))}}
 function makeFractionPowerRewrite(){const b=fractionLawBase(),n=ri(2,6),terms=Array.from({length:n},()=>mathGroupHTML(ratHTML(b))).join(" × ");return makeChoiceQ(`<div class="math-expr">${terms}，以指數記法表示為何？</div>`,[pRat(b,n),pRat(b,n+1),pRat(b,n-1)],0,calcBox("相同分數連乘 n 次，寫成這個分數的 n 次方。",[`共有 ${n} 個相同分數，所以是 ${pRat(b,n)}。`],pRat(b,n)));}
+
+/* 115 基礎 GO 2-4 八頁概念擴充：所有係數、指數、組合均於每次出題重新生成 */
+function makeFractionArithmeticGO(){
+ const b=fractionLawBase(),e=ri(2,3),den=ipow(b.d,e),num=ipow(b.n,e),multiply=Math.random()<.5;
+ const factor=multiply?den:Math.abs(num)*pick([2,3,4]);
+ if(multiply){const ans=num;return {kind:"integer",html:`<div class="math-expr">計算：${pRat(b,e)} × ${factor} ＝？</div>`,answer:ans,explanation:calcBox("先計算分數次方，再做乘法。",[`${pRat(b,e)} ＝ ${ratHTML(R(num,den))}。`,`${ratHTML(R(num,den))} × ${factor} ＝ ${ans}。`],String(ans))};}
+ // 整數 ÷ 分數次方；設計為整數解且分母不為零
+ const ans=factor*den/num;
+ return {kind:"integer",html:`<div class="math-expr">計算：${factor} ÷ ${pRat(b,e)} ＝？</div>`,answer:ans,explanation:calcBox("先算次方，再將除以分數改成乘以倒數。",[`${pRat(b,e)} ＝ ${ratHTML(R(num,den))}。`,`${factor} ÷ ${ratHTML(R(num,den))} ＝ ${factor} × ${ratHTML(R(den,num))} ＝ ${ans}。`],String(ans))};
+}
+function makeFractionBaseMultiplyOrDivide(){return makeFractionBaseLaw(Math.random()<.5?"multiply":"divide")}
+function makeProductDoubleBlankGO(){
+ const a=pick([2,3,4,5,6,7,8,-2,-3,-4]),b=pick([2,3,5,6,7,-2,-3]);const e=ri(2,10);
+ const b1= a<0?`(${a})`:String(a),b2=b<0?`(${b})`:String(b);
+ return {kind:"pair",html:`<div class="math-expr">(${b1} × ${b2})${sup(e)} ＝ ${b1}${sup('□')} × ${b2}${sup('△')}<div class="answer-hint">求 □ 與 △ 的值</div></div>`,answer:[e,e],explanation:calcBox("積的乘方：括號內每一個因數都要取相同次方。",[`(${b1} × ${b2})${sup(e)} ＝ ${b1}${sup(e)} × ${b2}${sup(e)}。`,`所以 □＝${e}，△＝${e}。`],`□＝${e}，△＝${e}`,'不要把指數拆開或只給其中一個因數。')};
+}
+function makeFractionProductDoubleBlankGO(){
+ const b=fractionLawBase(),a=pick([2,3,5,-2,-3]),e=ri(2,9);const x=a<0?`(${a})`:String(a),f=mathGroupHTML(ratHTML(b));
+ return {kind:"pair",html:`<div class="math-expr">[${x} × ${f}]${sup(e)} ＝ ${x}${sup('□')} × ${f}${sup('△')}<div class="answer-hint">求 □ 與 △ 的值</div></div>`,answer:[e,e],explanation:calcBox("積的乘方也適用於負數與分數因數。",[`[${x} × ${f}]${sup(e)} ＝ ${x}${sup(e)} × ${f}${sup(e)}。`,`因此兩個指數都等於 ${e}。`],`□＝${e}，△＝${e}`)};
+}
+function makeProductQuotientCombinedGO(){
+ const a=pick([2,3,4]),b=pick([2,3,5]);
+ // bounded numeric answers; reduce exponent if too large
+ const k=ri(1,3), base=a*b, j=k+ri(1,3), ans=ipow(base,k);
+ return {kind:"integer",html:`<div class="math-expr">計算：${pInt(a,j)} × ${pInt(b,j)} ÷ ${pInt(base,j-k)} ＝？</div>`,answer:ans,explanation:calcBox("先把同次方的兩個因數合併，再做同底數相除。",[`${pInt(a,j)} × ${pInt(b,j)} ＝ (${a} × ${b})${sup(j)} ＝ ${pInt(base,j)}。`,`${pInt(base,j)} ÷ ${pInt(base,j-k)} ＝ ${pInt(base,k)} ＝ ${ans}。`],String(ans))};
+}
+function makeEqualExponentFractionGO(){
+ const a=pick([2,3,4,5,6,9]),div=pick([2,3]),e=ri(2,5),b=a*div;
+ const ans=ipow(div,e);
+ return {kind:"integer",html:`<div class="math-expr">計算：${pInt(b,e)} ÷ ${pInt(a,e)} ＝？</div>`,answer:ans,explanation:calcBox("指數相同時，可以先把底數相除再取次方。",[`${pInt(b,e)} ÷ ${pInt(a,e)} ＝ (${b} ÷ ${a})${sup(e)}。`,`＝ ${div}${sup(e)} ＝ ${ans}。`],String(ans))};
+}
+function makeFractionTimesPowerGO(){
+ const a=pick([2,3,4,5]),b=pick([2,3,5]),e=ri(2,4),fraction=R(a,b),raw=ipow(a,e);
+ const ans=ipow(a,e);const times=ipow(b,e);
+ return {kind:"integer",html:`<div class="math-expr">計算：${pRat(fraction,e)} × ${times} ＝？</div>`,answer:ipow(fraction.n,e)*ipow(b,e)/ipow(fraction.d,e),explanation:calcBox("先計算分數的次方，再做乘法並約分。",[`${pRat(fraction,e)} ＝ ${ratHTML(rpow(fraction,e))}。`,`${ratHTML(rpow(fraction,e))} × ${times} ＝ ${ipow(fraction.n,e)*ipow(b,e)/ipow(fraction.d,e)}。`],String(ipow(fraction.n,e)*ipow(b,e)/ipow(fraction.d,e)))};
+}
+
 function mountScratchpadButton(){
   const mount=$("scratchpad-mobile-button"),button=$("scratchpadOpenButton");
   if(!mount||!button)return false;if(button.parentElement!==mount)mount.appendChild(button);return true;
@@ -2446,7 +2485,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 });
 let modeId="", questions=[], index=0, correct=0, wrong=0, combo=0, maxCombo=0;
 let records=[], startAt=0, timerHandle=null, speedRemaining=0, speedScore=0, speedAttempts=0;
-let selectedChoice=null, locked=false, attemptId="";
+let selectedChoice=null, locked=false, attemptId="";let recentSpeedQuestions=[];
 
 function setScratchpadVisible(visible){
   const apply=()=>{
@@ -2524,7 +2563,7 @@ function buildQuestions(mode){
 }
 function startGame(mode){
   modeId=mode; questions=buildQuestions(mode); index=0; correct=wrong=combo=maxCombo=0;
-  records=[];speedScore=speedAttempts=0;selectedChoice=null;locked=false;attemptId=newAttemptId();startAt=Date.now();
+  records=[];recentSpeedQuestions=[];speedScore=speedAttempts=0;selectedChoice=null;locked=false;attemptId=newAttemptId();startAt=Date.now();
   $("mode-display").textContent=MODE_CONFIG[mode].name.replace(/^[^\s]+\s/,"");
   showScreen("quiz-screen"); updateStatus(); setTimer(); 
   mode==="speed"?renderSpeedQuestion():renderQuestion();
@@ -2544,7 +2583,9 @@ function renderQuestion(){
   resetAnswerUI(); renderAnswerUI(q);
 }
 function renderSpeedQuestion(){
-  locked=false; selectedChoice=null; questions[0]=makeQuestion("speed");
+  locked=false; selectedChoice=null;
+ let nextSpeedQ;for(let tries=0;tries<40;tries++){nextSpeedQ=makeQuestion("speed",speedAttempts+tries);if(!recentSpeedQuestions.includes(nextSpeedQ.html))break;}
+ questions[0]=nextSpeedQ;recentSpeedQuestions.push(nextSpeedQ.html);if(recentSpeedQuestions.length>15)recentSpeedQuestions.shift();
   resetScratchpadForQuestion();
   const q=questions[0];
   $("question-label").textContent=`第 ${speedAttempts+1} 題｜60 秒快手`;
@@ -2563,7 +2604,15 @@ function ensureMathWidget(){
  return mathAnswerWidget;
 }
 let liveCheckFrame=0;
-function queueLiveCheck(){cancelAnimationFrame(liveCheckFrame);liveCheckFrame=requestAnimationFrame(()=>{liveCheckFrame=0;const q=modeId==="speed"?questions[0]:questions[index];if(locked||!q||q.kind==="choice")return;const a=readMathAnswer(q);$("input-message").textContent=a.empty?"":a.ok?"✓ 答案格式正確，可以送出。":a.msg;$("submit-button").disabled=!a.ok;});}
+function queueLiveCheck(){cancelAnimationFrame(liveCheckFrame);liveCheckFrame=requestAnimationFrame(()=>{liveCheckFrame=0;const q=modeId==="speed"?questions[0]:questions[index];if(locked||!q||q.kind==="choice")return;const a=q.kind==="pair"?readPairAnswer(q):readMathAnswer(q);$("input-message").textContent=a.empty?"":a.ok?"✓ 答案格式正確，可以送出。":a.msg;$("submit-button").disabled=!a.ok;});}
+function readPairAnswer(q){
+ const s=$("pairFirst").value.trim(),t=$("pairSecond").value.trim();
+ if(!s||!t)return {ok:false,empty:!s&&!t,msg:"請填寫 □ 與 △ 兩個指數。"};
+ if(!/^\d+$/.test(s)||!/^\d+$/.test(t))return {ok:false,msg:"指數請填非負整數。"};
+ const a=Number(s),b=Number(t);
+ if(!Number.isSafeInteger(a)||!Number.isSafeInteger(b))return {ok:false,msg:"指數超出可判定範圍。"};
+ return {ok:true,correct:a===q.answer[0]&&b===q.answer[1],display:`□＝${a}，△＝${b}`};
+}
 function readMathAnswer(q){
  const w=ensureMathWidget();if(!w)return {ok:false,msg:"共用答案元件未載入。"};
  let raw=w.getRawValue().trim().replace(/[－−]/g,"-").replace(/\s/g,"");
@@ -2580,10 +2629,11 @@ function readMathAnswer(q){
  return {ok:true,correct:ratEq(v,right),display:raw.replace(/-/g,"−"),systemDisplay:raw};
 }
 function resetAnswerUI(){
- $("choiceMount").innerHTML="";$("choiceMount").classList.add("hidden");$("numberMountWrap").classList.add("hidden");$("fractionMountWrap").classList.add("hidden");$("expressionMountWrap").classList.add("hidden");
+ $("choiceMount").innerHTML="";$("choiceMount").classList.add("hidden");$("numberMountWrap").classList.add("hidden");$("fractionMountWrap").classList.add("hidden");$("expressionMountWrap").classList.add("hidden");$("pairMount").classList.add("hidden");$("pairFirst").value="";$("pairSecond").value="";$("pairFirst").disabled=false;$("pairSecond").disabled=false;
  mathAnswerWidget?.reset();mathAnswerWidget?.setDisabled(false);$("input-message").textContent="";clearSystemRead();$("feedback").textContent="";$("feedback").className="feedback";$("explanation").innerHTML="";$("explanation").classList.add("hidden");$("submit-button").disabled=false;$("submit-button").classList.remove("hidden");$("next-button").classList.add("hidden");
 }
 function renderAnswerUI(q){
+ if(q.kind==="pair"){$("pairMount").classList.remove("hidden");$("submit-button").disabled=true;return;}
  if(q.kind==="choice"){$("choiceMount").classList.remove("hidden");$("choiceMount").style.setProperty("--choice-count",String(Math.max(1,q.choices.length)));q.choices.forEach((label,i)=>{const b=document.createElement("button");b.type="button";b.className="choice-button";b.innerHTML=label;b.addEventListener("click",()=>{if(locked)return;selectedChoice=i;[...$("choiceMount").children].forEach((x,j)=>x.classList.toggle("selected",j===i))});$("choiceMount").appendChild(b)});return;}
  $("numberMountWrap").classList.remove("hidden");ensureMathWidget();queueLiveCheck();
 }
@@ -2598,7 +2648,7 @@ function escapeSystemText(value){
 
 function getAnswer(q){
  if(q.kind==="choice"){if(selectedChoice===null)return {ok:false,msg:"請先選擇答案。"};const display=q.choices[selectedChoice].replace(/<[^>]+>/g,"");return {ok:true,correct:selectedChoice===q.answerIndex,display,systemDisplay:display};}
- return readMathAnswer(q);
+ return q.kind==="pair"?readPairAnswer(q):readMathAnswer(q);
 }
 function clearSystemRead(){
   const row=$("system-read-row");
@@ -2698,7 +2748,7 @@ function submitAnswer(){
 
     locked=
       true;
-    mathAnswerWidget?.setDisabled(true);
+    mathAnswerWidget?.setDisabled(true);$("pairFirst").disabled=true;$("pairSecond").disabled=true;
 
     
 
@@ -2827,7 +2877,7 @@ function submitAnswer(){
 
     locked=
       false;
-    mathAnswerWidget?.setDisabled(false);
+    mathAnswerWidget?.setDisabled(false);$("pairFirst").disabled=false;$("pairSecond").disabled=false;
 
     submitButton.disabled=
       false;
@@ -2887,7 +2937,7 @@ function renderReview(){
   list.innerHTML=bad.length?bad.map(r=>`<article class="review-item"><h3>第 ${r.number} 題</h3><div class="review-question">${r.question.html}</div><p><b>你的答案：</b>${r.userAnswerHTML?r.userAnswer:esc(r.userAnswer)}</p><p><b>正確答案：</b>${answerHTML(r.question)}</p><div class="review-explanation">${explanationHTML(r.question)}</div></article>`).join(""):"<p>本次沒有錯題，太棒了！</p>";
   showScreen("review-screen");
 }
-function answerHTML(q){return q.kind==="choice"?q.choices[q.answerIndex]:(q.kind==="integer"?esc(q.answer):ratHTML(q.answer))}
+function answerHTML(q){return q.kind==="choice"?q.choices[q.answerIndex]:q.kind==="pair"?`□＝${q.answer[0]}，△＝${q.answer[1]}`:(q.kind==="integer"?esc(q.answer):ratHTML(q.answer))}
 document.querySelectorAll(".mode-card").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));
 $("submit-button").addEventListener("click",submitAnswer);$("next-button").addEventListener("click",nextQuestion);
 $("restart-button").addEventListener("click",()=>{
@@ -2905,6 +2955,7 @@ $("quit-button").addEventListener("click",()=>{
 $("again-button").addEventListener("click",()=>startGame(modeId));$("review-button").addEventListener("click",renderReview);
 $("result-mode-button").addEventListener("click",()=>showScreen("start-screen"));
 $("review-again-button").addEventListener("click",()=>startGame(modeId));$("review-result-button").addEventListener("click",()=>showScreen("result-screen"));
+["pairFirst","pairSecond"].forEach(id=>{$(id).addEventListener("input",queueLiveCheck);$(id).addEventListener("keydown",e=>{if(e.key==="Enter"&&!locked){e.preventDefault();if(id==="pairFirst")$("pairSecond").focus();else submitAnswer();}})});
 window.MathGameSessionMeta={gameId:GAME_ID,chapter:CHAPTER,title:GAME_TITLE,modes:MODE_CONFIG};
 
 </script>
