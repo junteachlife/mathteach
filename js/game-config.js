@@ -290,88 +290,36 @@ export const GAME_CONFIG = {
 
 
   exponent: {
-
-    id:
-      "exponent",
-
-    name:
-      "指數律大挑戰",
-
-    shortName:
-      "指數律",
-
-    semester:
-      "grade7-first",
-
-    grade:
-      7,
-
-    order:
-      4,
-
-    icon:
-      "🔢",
-
-    file:
-      "games/exponent.html",
-
-    description:
-      "練習同底數相乘、相除、冪的乘方、零次方與綜合指數律。",
-
-    finished:
-      true,
-
-    difficulty:
-      2,
-
-    recommended:
-      false,
-
-    isNew:
-      true,
-
-    ranking: {
-
-      type:
-        "speed"
-
-    },
-
+    id: "exponent",
+    section: "2-4",
+    name: "2-4 指數律大挑戰",
+    shortName: "指數律",
+    semester: "grade7-first",
+    grade: 7,
+    order: 8,
+    icon: "🔢",
+    file: "games/grade7-1/exponent.html",
+    description: "七上 2-4：分數次方、同底數乘除、零次方、冪的乘方、積的乘方與綜合指數律。",
+    finished: true,
+    difficulty: 2,
+    recommended: false,
+    isNew: true,
+    ranking: { type: "speed" },
     modes: {
-
-      multiplication:
-        "同底數相乘",
-
-      division:
-        "同底數相除",
-
-      powerOfPower:
-        "冪的乘方",
-
-      zeroExponent:
-        "零次方",
-
-      mixed:
-        "綜合指數律"
-
+      fractionPower: "分數次方與正負號",
+      sameBaseMultiply: "同底數相乘",
+      sameBaseDivide: "同底數相除與零次方",
+      powerOfPower: "冪的乘方",
+      powerOfProduct: "積的乘方與分數次方",
+      speed: "指數律快手",
+      comprehensive: "綜合指數律挑戰",
+      // 舊版模式識別碼只保留標籤，方便既有歷史紀錄顯示。
+      multiplication: "同底數相乘（舊版）",
+      division: "同底數相除（舊版）",
+      zeroExponent: "零次方（舊版）",
+      mixed: "綜合指數律（舊版）"
     },
-
-    theme: {
-
-      primary:
-        "#5E35B1",
-
-      dark:
-        "#4527A0",
-
-      light:
-        "#EDE7F6",
-
-      border:
-        "#B39DDB"
-
-    }
-
+    theme: { primary: "#6644ad", dark: "#482d80", light: "#f0eafb", border: "#c9b9e9" }
   },
 
 
