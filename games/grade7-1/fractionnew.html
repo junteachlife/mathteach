@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2-3 分數的四則運算大挑戰</title>
-<link rel="stylesheet" href="../../css/scratchpad.css"><link rel="stylesheet" href="../../css/expression-input.css"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%232e7d32'/%3E%3Ctext x='32' y='47' font-size='40' text-anchor='middle' fill='white'%3E分%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../css/scratchpad.css"><link rel="stylesheet" href="../../css/math-expression-input.css"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%232e7d32'/%3E%3Ctext x='32' y='47' font-size='40' text-anchor='middle' fill='white'%3E分%3C/text%3E%3C/svg%3E">
 <style>
 *{box-sizing:border-box}:root{--p:#2e7d32;--pd:#1b5e20;--pl:#e8f5e9;--pb:#a5d6a7;--t:#1f2937;--m:#64748b;--d:#b91c1c;--o:#f57c00}body{margin:0;min-height:100vh;padding:16px;font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;color:var(--t);background:linear-gradient(135deg,#eaf8ec,#fff8e8)}button,input{font-family:inherit;-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}.page{width:min(100%,1040px);margin:auto}#commonHeaderMount{margin-bottom:14px}.game{overflow:hidden;border:1px solid #d7ead8;border-top:8px solid var(--p);border-radius:26px;background:#fff;box-shadow:0 14px 34px rgba(15,23,42,.13)}header{padding:26px 24px 20px;text-align:center;background:linear-gradient(180deg,var(--pl),#fff)}h1{margin:0;color:var(--pd);font-size:clamp(28px,5vw,42px);line-height:1.35}.sub{max-width:900px;margin:10px auto 0;color:var(--m);line-height:1.8}.screen{padding:24px}.hidden{display:none!important}.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.mode{min-height:190px;padding:20px;border:2px solid var(--pb);border-radius:20px;background:linear-gradient(180deg,var(--pl),#fff);text-align:left;cursor:pointer;transition:.16s}.mode:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(15,23,42,.11);border-color:var(--p)}.mode h2{margin:0 0 8px;color:var(--pd);font-size:21px;line-height:1.45}.mode p{margin:0;color:var(--m);line-height:1.68}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.badge{padding:5px 9px;border-radius:999px;background:#fff;border:1px solid var(--pb);color:var(--pd);font-size:13px;font-weight:900}.mode.speed{border-color:#ffcc80;background:linear-gradient(180deg,#fff3e0,#fff)}.mode.speed h2{color:#e65100}.mode.comp{border-color:#ffe082;background:linear-gradient(180deg,#fff8e1,#fff)}.mode.comp h2{color:#9a6700}.top{display:grid;grid-template-columns:1.5fr repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}.status{min-height:74px;display:flex;flex-direction:column;justify-content:center;padding:10px 8px;border-radius:14px;background:var(--pl);color:var(--pd);text-align:center;font-weight:900}.status small{color:var(--m)}.status span{margin-top:4px;font-size:18px}.danger{background:#fee2e2!important;color:#991b1b!important;animation:pulse .75s infinite alternate}@keyframes pulse{to{transform:scale(1.025)}}.prog{height:12px;margin-bottom:18px;overflow:hidden;border-radius:999px;background:#e2e8f0}.bar{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--p),#66bb6a);transition:.2s}.qcard{padding:24px 18px;border:2px solid var(--pb);border-radius:20px;text-align:center}.qlabel{margin-bottom:12px;color:var(--m);font-size:clamp(16px,2.1vw,20px);font-weight:900;line-height:1.65}.qcontent{min-height:110px;display:flex;align-items:center;justify-content:center;font-size:clamp(22px,3.4vw,32px);font-weight:900;line-height:1.7;overflow-x:auto}.note{margin-top:12px;color:var(--m);font-size:14px;line-height:1.65}.fraction{display:inline-grid;grid-template-rows:auto auto;min-width:1.55em;margin:0 .12em;vertical-align:-.55em;text-align:center;line-height:1.05}.fraction .num{padding:0 .16em .08em;border-bottom:.075em solid currentColor}.fraction .den{padding:.08em .16em 0}.mixed{white-space:nowrap}.scratch{display:flex;justify-content:center;margin:14px 0 2px}.answer{margin-top:16px;padding:18px;border:1px solid #d8ead9;border-radius:18px;background:#f8fcf8}.answer-title{text-align:center;color:var(--pd);font-weight:900;margin-bottom:12px}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choice{min-height:68px;padding:12px;border:2px solid #cbd5e1;border-radius:16px;background:#fff;font-size:17px;font-weight:800;line-height:1.55;cursor:pointer}.choice.selected{border-color:var(--p);background:var(--pl);color:var(--pd)}.choice.correct-choice{border-color:#22c55e!important;background:#dcfce7!important;color:#166534!important}.choice.wrong-choice{border-color:#ef4444!important;background:#fee2e2!important;color:#991b1b!important}.fwrap{display:flex;flex-direction:column;align-items:center;gap:10px}.finput{width:min(100%,430px);min-height:58px;padding:10px 16px;border:2px solid var(--pb);border-radius:15px;text-align:center;font-size:24px;font-weight:900;outline:none}.finput:focus{border-color:var(--p);box-shadow:0 0 0 4px rgba(46,125,50,.1)}.help{color:var(--m);font-size:13px;line-height:1.55;text-align:center}.keys{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.key{min-width:48px;min-height:42px;border:1px solid #cbd5e1;border-radius:11px;background:#fff;color:var(--pd);font-size:18px;font-weight:900;cursor:pointer}.msg{min-height:24px;margin-top:10px;color:var(--d);text-align:center;font-weight:800}.feedback{min-height:48px;margin-top:16px;padding:12px 14px;border-radius:14px;text-align:center;font-size:18px;font-weight:900;line-height:1.55}.feedback:empty{min-height:0;padding:0;margin-top:0}.feedback.correct{background:#dcfce7;color:#166534}.feedback.wrong{background:#fee2e2;color:#991b1b}.explain{margin-top:14px;padding:18px;border-left:6px solid var(--p);border-radius:14px;background:#f8fafc;color:#334155;line-height:1.88;font-size:16px}.explain strong{color:#0f172a}.box{margin:10px 0;padding:12px 14px;border-radius:12px;line-height:1.85}.rule{background:#e8f5e9;border:1px solid #a5d6a7}.calc{background:#f1f5f9;border:1px solid #cbd5e1}.tip{background:#eff6ff;border:1px solid #93c5fd}.buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:18px}.btn{min-height:48px;padding:10px 18px;border:0;border-radius:13px;background:var(--p);color:#fff;font-weight:900;font-size:16px;cursor:pointer}.btn.gray{background:#64748b}.btn.orange{background:var(--o)}.btn.green{background:#16a34a}.btn:disabled{opacity:.55;cursor:not-allowed}.result{text-align:center}.score{margin:10px 0 4px;color:var(--pd);font-size:clamp(40px,8vw,66px);font-weight:1000}.stars{font-size:28px;letter-spacing:3px}.comment{max-width:740px;margin:12px auto;color:var(--m);line-height:1.75}.rgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0}.ritem{padding:14px 8px;border-radius:14px;background:var(--pl)}.ritem small{display:block;color:var(--m);font-weight:800}.ritem b{display:block;margin-top:5px;color:var(--pd);font-size:24px}.save{min-height:24px;margin:10px 0 0;font-weight:800}.review-list{display:grid;gap:16px}.review-card{padding:16px;border:1px solid #d8ead9;border-radius:16px}.review-title{margin-bottom:10px;color:var(--d);font-weight:1000}.review-question{font-weight:800;line-height:1.7}.review-answer{margin:10px 0;line-height:1.7}@media(max-width:760px){body{padding:8px}.screen{padding:16px}header{padding:22px 16px 16px}.mode-grid{grid-template-columns:1fr}.top{grid-template-columns:repeat(2,minmax(0,1fr))}.choices{grid-template-columns:1fr}.rgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.qcard{padding:20px 12px}}@media(max-width:420px){.status span{font-size:16px}.btn{width:100%}}
 
@@ -34,7 +34,7 @@ header{padding-top:60px}.top{display:flex;flex-wrap:nowrap;align-items:stretch;g
 .fraction-unit .fraction .num{display:block;text-align:center;padding:0 .18em .10em;border-bottom:2px solid currentColor}
 .fraction-unit .fraction .den{display:block;text-align:center;padding:.10em .18em 0}
 .math-group{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;white-space:nowrap;gap:.04em}
-.math-bracket{display:inline-flex;align-items:center;justify-content:center;align-self:stretch;font-size:1.12em;line-height:1}
+.math-bracket{display:inline-flex;align-items:center;justify-content:center;align-self:stretch;font-size:1.6em;line-height:1;transform:scaleY(1.08)}
 .mixed{display:inline-flex;align-items:center;vertical-align:middle;gap:.10em;white-space:nowrap}
 .qcontent>div{max-width:100%;min-width:0;line-height:2;overflow-wrap:normal}
 .qcontent .fraction-unit{font-size:.95em}
@@ -67,7 +67,7 @@ header{padding-top:60px}.top{display:flex;flex-wrap:nowrap;align-items:stretch;g
 <div class="top"><div class="status"><small>模式</small><span id="mode-display">—</span></div><div id="time-box" class="status"><small>時間</small><span id="time-display">00:00</span></div><div class="status"><small>分數</small><span id="score-display">0</span></div><div class="status"><small>最高連擊</small><span id="combo-display">0</span></div><button id="restart-top" class="btn" type="button">🔄 重新測驗</button><button id="reselect-top" class="btn gray" type="button">重選模式</button></div>
 <div class="prog"><div id="progress-bar" class="bar"></div></div>
 <div class="qcard"><div id="question-label" class="qlabel"></div><div id="question-content" class="qcontent"></div><div id="question-note" class="note"></div><div class="scratch"><div id="scratchpad-mobile-button"></div></div></div>
-<div class="answer"><div class="answer-title">請作答</div><div id="choiceMount" class="choices"></div><div id="fractionAnswerWrap" class="fwrap hidden"><div class="answer-mode-toolbar"><button id="answerModeNumber" class="answer-mode-btn active" type="button">整數</button><button id="answerModeFraction" class="answer-mode-btn" type="button">分數</button></div><div id="answerNumberPane" class="answer-number-pane"><div id="answerMount"></div></div><div id="answerFractionPane" class="answer-fraction-pane hidden"><span class="answer-negative-note">負數請將負號輸入在分子</span><div id="fractionNumeratorMount"></div><div class="answer-fraction-bar"></div><div id="fractionDenominatorMount"></div></div><div class="help">沿用 ExpressionInput 5.1 共用數字輸入元件。完成時自動檢查最簡分數；答案正確與否只在送出後公布。</div></div><div id="input-message" class="msg"></div></div>
+<div class="answer"><div class="answer-title">請作答</div><div id="choiceMount" class="choices"></div><div id="fractionAnswerWrap" class="fwrap hidden"><div id="answerMount"></div><div class="help">使用共用數學答案框；點「分數」可輸入分子、分母。完成後自動檢查最簡分數，送出後才判斷對錯。</div></div><div id="input-message" class="msg"></div></div>
 <div id="feedback" class="feedback"></div><div id="explanation" class="explain hidden"></div>
 <div class="buttons"><button id="submit-button" class="btn">送出答案（Enter）</button><button id="next-button" class="btn gray hidden">下一題</button><button id="quit-button" class="btn orange hidden">選擇模式</button></div>
 </section>
@@ -75,7 +75,7 @@ header{padding-top:60px}.top{display:flex;flex-wrap:nowrap;align-items:stretch;g
 <section id="review-screen" class="screen hidden"><h2>📝 錯題回顧</h2><div id="review-list" class="review-list"></div><div class="buttons"><button id="review-again-button" class="btn green">🔄 重新挑戰</button><button id="review-result-button" class="btn gray">回到測驗結果</button></div></section>
 </main></div>
 <script src="../../js/common-header.js"></script><script src="../../js/scratchpad.js"></script><script src="../../js/scratchpad-template.js"></script><script src="../../js/sound-manager.js?v=1"></script>
-<script src="../../js/expression-input.js?v=20261101-v51-operators"></script><script type="module">
+<script src="../../js/math-expression-input.js?v=2.3.0"></script><script type="module">
 "use strict";
 const GAME_ID="fractionNew";
 const MODE_CONFIG={concept:{name:"🧠 等值分數、最簡分數與大小比較",count:10,difficultyWeight:1},addSubtract:{name:"➕ 正負分數加減",count:10,difficultyWeight:1.16},multiply:{name:"✖️ 正負分數乘法",count:10,difficultyWeight:1.18},divide:{name:"➗ 倒數與正負分數除法",count:10,difficultyWeight:1.22},mixed:{name:"🔄 分數四則、去括號與分配律",count:10,difficultyWeight:1.34},speed:{name:"⚡ 分數快手",seconds:60,difficultyWeight:1.16},comprehensive:{name:"🏆 2-3 綜合挑戰",count:10,difficultyWeight:1.42}};
@@ -92,80 +92,34 @@ function fracHTML(n,d){if(d===1)return String(n);const sign=n<0?'<span class="fr
 let answerWidgets = null;
 let answerInputMode = "number";
 let answerLocked = false;
-let liveValidationFrame = null;
-function createNumberWidget(mountId, placeholder){
-  if(typeof window.ExpressionInput!=="function") return null;
-  return new window.ExpressionInput({
-    mountId, defaultMode:"number", allowNumber:true, allowExpression:false, allowPolynomial:false,
-    numberPlaceholder:placeholder, numberInputMode:"numeric",
-    onChange:()=>scheduleFractionValidation(),
-    theme:{primary:"#2e7d32",light:"#e8f5e9",border:"#a5d6a7"}
-  });
-}
+let liveValidationFrame=null;
 function ensureFractionWidget(){
-  if(answerWidgets) return answerWidgets;
-  if(typeof window.ExpressionInput!=="function") {
-    $("input-message").textContent="共用輸入元件尚未載入，請確認 js/expression-input.js 檔案。";
-    return null;
-  }
-  answerWidgets={
-    number:createNumberWidget("answerMount","請輸入整數答案"),
-    numerator:createNumberWidget("fractionNumeratorMount","分子"),
-    denominator:createNumberWidget("fractionDenominatorMount","分母")
-  };
+  if(answerWidgets?.number)return answerWidgets;
+  if(typeof window.MathExpressionInput!=="function") {$("input-message").textContent="缺少共用元件 math-expression-input.js，請同步上傳更新包中的 js 與 css。";return null;}
+  answerWidgets={number:new window.MathExpressionInput({mountId:"answerMount",placeholder:"輸入整數或最簡分數，例如 -3/7",allowRadical:false,allowFraction:true,allowPower:true,allowVariable:false,allowPlusMinus:false,validationMode:"numeric-radical",requireSimplifiedFraction:true,requireSimplifiedRadical:false,showPreview:true,autoFocus:false,toolOrder:["fraction","power"],theme:{primary:"#2e7d32",dark:"#1b5e20",light:"#e8f5e9",border:"#a5d6a7"},onChange:()=>scheduleFractionValidation()})};
+  const inp=answerWidgets.number.input;inp.addEventListener("input",scheduleFractionValidation);inp.addEventListener("keydown",e=>{if(e.key==="Enter"&&!answered){e.preventDefault();submitAnswer()}});
   return answerWidgets;
 }
-function setAnswerInputMode(next){
-  if(answerLocked)return;
-  answerInputMode=next;
-  $("answerNumberPane").classList.toggle("hidden",next!=="number");
-  $("answerFractionPane").classList.toggle("hidden",next!=="fraction");
-  $("answerModeNumber").classList.toggle("active",next==="number");
-  $("answerModeFraction").classList.toggle("active",next==="fraction");
-  scheduleFractionValidation();
-}
+function setAnswerInputMode(next){} // 已統一為單一答案框
 function readSharedFraction(){
-  const widgets=ensureFractionWidget();
-  if(!widgets)return {valid:false,message:"共用輸入元件載入失敗。"};
-  let n,d;
-  if(answerInputMode==="number"){
-    const raw=String(widgets.number?.getValue()?.raw??"").trim().replace(/[−－]/g,"-");
-    if(!raw)return {valid:false,empty:true,message:"請輸入答案。"};
-    if(!/^[+-]?\d+$/.test(raw))return {valid:false,message:"請輸入整數；若答案是分數，請按右側「分數」。"};
-    n=Number(raw);d=1;
-  }else{
-    const a=String(widgets.numerator?.getValue()?.raw??"").trim().replace(/[−－]/g,"-");
-    const b=String(widgets.denominator?.getValue()?.raw??"").trim().replace(/[−－]/g,"-");
-    if(!a&&!b)return {valid:false,empty:true,message:"請填寫分子及分母。"};
-    if(!/^[+-]?\d+$/.test(a)||!/^[+-]?\d+$/.test(b))return {valid:false,message:"分子與分母都必須填寫完整整數。"};
-    n=Number(a);d=Number(b);
-    if(d===0)return {valid:false,message:"分母不能為 0。"};
-    if(d<0)return {valid:false,message:"請將負號放在分子，分母使用正整數。"};
-    if(d===1)return {valid:false,message:"分母是 1，請改用整數模式直接輸入答案。"};
-    if(n===0)return {valid:false,message:"分子是 0，請改用整數模式輸入 0。"};
-    if(gcd(n,d)!==1)return {valid:false,message:"這個分數還能約分，請先化成最簡分數再送出。"};
-  }
-  if(!Number.isSafeInteger(n)||!Number.isSafeInteger(d))return {valid:false,message:"數字過大，請縮小輸入範圍。"};
-  const r=rat(n,d);
-  return {valid:true,value:r,display:answerInputMode==="number"?String(n):`${n}/${d}`,simplest:true};
+  const widget=ensureFractionWidget();if(!widget)return {valid:false,message:"共用元件尚未載入。"};
+  const raw=widget.number.getRawValue().trim();if(!raw)return {valid:false,empty:true,message:"請輸入答案。"};
+  const v=widget.number.validate();if(!v.valid)return {valid:false,message:v.message||"請輸入完整的最簡分數。"};
+  // 題目要求最終答案，不接受尚未計算的四則式，且禁止分母為 1、0 與負數。
+  const canonical=raw.replace(/[−－]/g,"-").replace(/\s/g,"");
+  let n,d;if(/^[+-]?\d+$/.test(canonical)){n=Number(canonical);d=1;}
+  else {const m=canonical.match(/^([+-]?)(?:\(([-+]?\d+)\))?\(?([+-]?\d+)\)?\/\(?([+-]?\d+)\)?$/);if(!m||m[2]!==undefined)return {valid:false,message:"請寫出計算後的整數或最簡分數，不要留下運算式。"};n=(m[1]==="-"?-1:1)*Number(m[3]);d=Number(m[4]);}
+  if(!Number.isSafeInteger(n)||!Number.isSafeInteger(d))return {valid:false,message:"答案數值超出範圍。"};
+  if(d===0)return {valid:false,message:"分母不能為 0。"};
+  if(d<0)return {valid:false,message:"分母請寫正整數，負號放在分數前方。"};
+  if(d===1&&canonical.includes("/"))return {valid:false,message:"分母為 1，請直接寫成整數。"};
+  if(n===0&&d!==1)return {valid:false,message:"答案為 0，請直接寫 0。"};
+  if(gcd(n,d)!==1)return {valid:false,message:"這個分數還能約分，請先化成最簡分數。"};
+  return {valid:true,value:rat(n,d),display:d===1?String(n):`${n}/${d}`,simplest:true};
 }
-function scheduleFractionValidation(){
-  if(liveValidationFrame!==null)cancelAnimationFrame(liveValidationFrame);
-  liveValidationFrame=requestAnimationFrame(()=>{liveValidationFrame=null;validateLiveFraction()});
-}
-function validateLiveFraction(){
-  if($("fractionAnswerWrap").classList.contains("hidden")||answered)return;
-  const a=readSharedFraction();const msg=$("input-message");
-  msg.textContent=a.empty?"":a.valid?"✓ 格式正確，已是最簡形式，可以送出答案。":a.message;
-  msg.classList.toggle("ok",a.valid);
-  $("submit-button").disabled=!a.valid;
-}
-function freezeAnswerWidgets(){
-  answerLocked=true;
-  document.querySelectorAll("#fractionAnswerWrap input, #fractionAnswerWrap button").forEach(el=>el.disabled=true);
-}
-function updateQuestionLayout(){const el=$("question-content");if(!el)return;const txt=el.textContent||"";el.classList.toggle("question-multiline",/距離|某|每位|每月|木板|判斷下列|說明/.test(txt)&&txt.length>28);el.classList.toggle("math-expression-long",el.querySelectorAll(".fraction").length>=4||txt.length>60);}
-
+function scheduleFractionValidation(){if(liveValidationFrame!==null)cancelAnimationFrame(liveValidationFrame);liveValidationFrame=requestAnimationFrame(()=>{liveValidationFrame=null;validateLiveFraction()})}
+function validateLiveFraction(){if($("fractionAnswerWrap").classList.contains("hidden")||answered)return;const a=readSharedFraction();const msg=$("input-message");msg.textContent=a.empty?"":a.valid?"✓ 格式正確，已是最簡形式，可以送出。":a.message;msg.classList.toggle("ok",a.valid);$("submit-button").disabled=!a.valid;}
+function freezeAnswerWidgets(){answerLocked=true;answerWidgets?.number?.setDisabled(true);}
 function parseAnswer(x){x=String(x||"").trim().replaceAll("－","-").replaceAll("−","-").replace(/\s+/g," ");if(!x)return{valid:false,message:"請先輸入答案。"};if(/^[-+]?\d+$/.test(x))return{valid:true,value:rat(+x),display:x,simplest:true};let m=x.match(/^([+-]?)(\d+)\s+(\d+)\/(\d+)$/);if(m){const s=m[1]==="-"?-1:1,w=+m[2],n=+m[3],d=+m[4];if(!d)return{valid:false,message:"分母不能是 0。"};if(n>=d)return{valid:false,message:"帶分數的分數部分要是真分數，例如 -1 2/3。"};return{valid:true,value:rat(s*(w*d+n),d),display:x,simplest:gcd(n,d)===1}}m=x.match(/^([+-]?\d+)\/([+-]?\d+)$/);if(m){const n=+m[1],d=+m[2];if(!d)return{valid:false,message:"分母不能是 0。"};return{valid:true,value:rat(n,d),display:x,simplest:gcd(n,d)===1}}return{valid:false,message:"格式無法辨識。請輸入整數、分數或帶分數，例如 -3、-2/5、-1 2/3。"}}
 function cq(o){return{...o,kind:"choice",answer:String(o.answer)}}function fq(o){return{...o,kind:"fraction"}}function choices(correct,wrong){return shuffle([{value:"correct",text:correct},...wrong.map((x,i)=>({value:`wrong${i+1}`,text:x}))])}
 function simplifyBox(r){const g=gcd(r.n,r.d),s=rat(r.n,r.d);if(g===1)return `<div class="box rule">分子 ${Math.abs(r.n)} 與分母 ${r.d} 互質，所以 ${fracHTML(r.n,r.d)} 已是最簡分數。</div>`;return `<div class="box calc">分子、分母同除以 ${g}：${fracHTML(r.n,r.d)}＝${fracHTML(r.n/g,r.d/g)}</div><div class="box rule">最簡分數為 <strong>${ratHTML(s)}</strong>。</div>`}
@@ -270,7 +224,7 @@ function startGame(m){
   showOnly("quiz-screen"); startTime=Date.now(); startTimer(); m==="speed"?renderSpeed():renderQuestion();
 }
 function resetUI(){
-  window.resetGameScratchpad?.(); answered=false; selectedChoice=null; $("feedback").textContent=""; $("feedback").className="feedback"; $("explanation").innerHTML=""; $("explanation").classList.add("hidden"); $("input-message").textContent=""; $("submit-button").classList.remove("hidden"); $("next-button").classList.add("hidden"); answerLocked=false; answerWidgets?.number?.reset();answerWidgets?.numerator?.reset();answerWidgets?.denominator?.reset();setAnswerInputMode("number");$("submit-button").disabled=false;
+  window.resetGameScratchpad?.(); answered=false; selectedChoice=null; $("feedback").textContent=""; $("feedback").className="feedback"; $("explanation").innerHTML=""; $("explanation").classList.add("hidden"); $("input-message").textContent=""; $("submit-button").classList.remove("hidden"); $("next-button").classList.add("hidden"); answerLocked=false; answerWidgets?.number?.reset();answerWidgets?.number?.setDisabled(false);$("submit-button").disabled=false;
 }
 function renderQuestion(){
   resetUI(); const q=questions[index]; $("question-label").innerHTML=q.label; $("question-content").innerHTML=q.html; $("question-note").textContent=q.note||"";updateQuestionLayout(); renderAnswer(q); $("progress-bar").style.width=`${index/questions.length*100}%`; updateStatus();
@@ -302,7 +256,7 @@ function markChoices(q,a){
   document.querySelectorAll(".choice").forEach(b=>{b.disabled=true;const v=String(b.dataset.value);if(v===String(q.answer))b.classList.add("correct-choice");if(v===String(a.value)&&v!==String(q.answer))b.classList.add("wrong-choice")});
 }
 function submitAnswer(){
-  if(answered)return; const q=modeId==="speed"?questions[0]:questions[index],a=readAns(q); if(!a.valid){$("input-message").textContent=a.message;return} const ok=isCorrect(q,a); answered=true; if(q.kind==="fraction")freezeAnswerWidgets(); markChoices(q,a);
+  if(answered)return; const q=modeId==="speed"?questions[0]:questions[index],a=readAns(q); if(!a.valid){$("input-message").textContent=a.message;return} const ok=isCorrect(q,a); answered=true; if(q.kind!=="choice")freezeAnswerWidgets(); markChoices(q,a);
   if(ok){correct++;combo++;maxCombo=Math.max(maxCombo,combo);sound("playCorrect")}else{wrong++;combo=0;sound("playWrong")}
   records.push({number:modeId==="speed"?speedAttempts+1:index+1,question:q,userAnswer:a.display,correct:ok});
   if(modeId==="speed"){
@@ -357,7 +311,6 @@ function showReview(){
 }
 // 事件
  document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));
-$("submit-button").addEventListener("click",submitAnswer); $("next-button").addEventListener("click",nextQuestion); $("quit-button").addEventListener("click",()=>{if(!confirm("確定要放棄目前測驗並重新選擇模式嗎？"))return;stopTimer();showOnly("start-screen")}); $("again-button").addEventListener("click",()=>startGame(modeId)); $("review-button").addEventListener("click",showReview); $("result-mode-button").addEventListener("click",()=>showOnly("start-screen")); $("review-again-button").addEventListener("click",()=>startGame(modeId)); $("review-result-button").addEventListener("click",()=>showOnly("result-screen")); $("answerModeNumber").addEventListener("click",()=>setAnswerInputMode("number"));$("answerModeFraction").addEventListener("click",()=>setAnswerInputMode("fraction"));
 
 $("restart-top").addEventListener("click",()=>{if(!confirm("確定重新測驗嗎？目前進度不會保留。"))return;stopTimer();startGame(modeId)});
 $("reselect-top").addEventListener("click",()=>{if(!confirm("確定要重選模式嗎？目前進度不會保留。"))return;stopTimer();showOnly("start-screen")});
