@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>5 統計圖表與統計數據大挑戰｜生活有解．心中有數</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230891b2'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-size='24' fill='white'%3E5%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="../css/scratchpad.css">
-<link rel="stylesheet" href="../css/math-expression-input.css?v=23">
-<link rel="stylesheet" href="../css/question-layout.css?v=2">
+<link rel="stylesheet" href="../../css/scratchpad.css">
+<link rel="stylesheet" href="../../css/math-expression-input.css?v=23">
+<link rel="stylesheet" href="../../css/question-layout.css?v=2">
 <style>
 :root{--primary:#0891b2;--primary-dark:#0e7490;--primary-light:#ecfeff;--primary-border:#67e8f9;}
 
@@ -173,7 +173,7 @@ button,input{font:inherit}
 <div id="common-header-root"></div>
 <main class="page-shell">
   <section class="game-card">
-    <div class="game-card-return-row"><a id="semester-return-link" class="semester-return-link" href="../index.html?semester=grade7-second">↩️ 重返七年級下學期</a></div>
+    <div class="game-card-return-row"><a id="semester-return-link" class="semester-return-link" href="../../index.html?semester=grade7-second">↩️ 重返七年級下學期</a></div>
     <header class="game-header">
       <h1 class="game-title">📊 5 統計圖表與統計數據大挑戰</h1>
       <p class="game-subtitle">練習生活統計圖表、圓形圖、列聯表、次數分配圖，以及平均數、中位數與眾數。</p>
@@ -276,12 +276,12 @@ button,input{font:inherit}
     </section>
   </section>
 </main>
-<script src="../js/common-header.js"></script>
-<script src="../js/scratchpad.js"></script>
-<script src="../js/scratchpad-template.js"></script>
-<script src="../js/sound-manager.js?v=1"></script>
-<script src="../js/math-expression-input.js?v=23"></script>
-<script src="../js/question-layout.js?v=2"></script>
+<script src="../../js/common-header.js"></script>
+<script src="../../js/scratchpad.js"></script>
+<script src="../../js/scratchpad-template.js"></script>
+<script src="../../js/sound-manager.js?v=1"></script>
+<script src="../../js/math-expression-input.js?v=23"></script>
+<script src="../../js/question-layout.js?v=2"></script>
 
 <script>
 (() => {
@@ -771,7 +771,7 @@ function rating(score){if(score>=90)return["★★★★★","太棒了！觀念
 async function saveScore(score){
   if(scoreSaved)return;scoreSaved=true;const status=$("save-status");status.textContent="⏳ 正在儲存成績…";
   try{
-    const m=await import("../js/scores.js?v=9");
+    const m=await import("../../js/scores.js?v=9");
     if(typeof m.saveGameScore!=="function")throw new Error("找不到 saveGameScore");
     const r=await m.saveGameScore({game:GAME_ID,mode:modeId,score,correctCount:correct,wrongCount:wrong,maxCombo,playTime:elapsed,totalQuestions:questions.length,accuracy:score});
     if(r?.success){
