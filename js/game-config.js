@@ -81,7 +81,7 @@ export const GAME_CONFIG = {
       "🎮",
 
     file:
-      "games/integer.html",
+      "games/grade7-1/integer.html",
 
     description:
       "七年級正負整數加減法，挑戰計算速度與正確率。",
@@ -152,7 +152,7 @@ export const GAME_CONFIG = {
       "⚖️",
 
     file:
-      "games/compare.html",
+      "games/grade7-1/compare.html",
 
     description:
       "挑戰整數、分數與小數的大小比較，選出正確的 ＞、＝或＜。",
@@ -348,7 +348,7 @@ export const GAME_CONFIG = {
       "➕",
 
     file:
-      "games/integer-operations.html",
+      "games/grade7-1/integer-operations.html",
 
     description:
       "練習正負數乘除、絕對值、乘方，以及整數與分數混合四則運算。",
@@ -435,7 +435,7 @@ export const GAME_CONFIG = {
       "🧩",
 
     file:
-      "games/factor.html",
+      "games/grade7-1/factor.html",
 
     description:
       "練習因數與倍數、2／3／4／5／9／11 倍數判別、質數與合數、埃拉托賽尼篩法、質因數、標準分解式，以及利用標準分解式判斷因數與倍數。",
@@ -555,7 +555,7 @@ export const GAME_CONFIG = {
   "expression-operations": {
     section: "3-1", id: "expression-operations", name: "3-1 式子的運算大挑戰", shortName: "式子的運算大挑戰",
     semester: "grade7-first", grade: 7, order: 6.5, icon: "📘",
-    file: "games/expression-operations.html",
+    file: "games/grade7-1/expression-operations.html",
     description: "依七上 3-1 教材設計，含詳細解析、計算紙與錯題回顧。",
     finished: true, difficulty: 2, recommended: false, isNew: true,
     ranking: {type: "timed"}, modes: {
@@ -572,7 +572,7 @@ export const GAME_CONFIG = {
   "equation-applications": {
     section: "3-3", id: "equation-applications", name: "3-3 一元一次方程式應用問題大挑戰", shortName: "一元一次方程式應用問題大挑戰",
     semester: "grade7-first", grade: 7, order: 7.5, icon: "📘",
-    file: "games/equation-applications.html",
+    file: "games/grade7-1/equation-applications.html",
     description: "依七上 3-3 教材設計，含詳細解析、計算紙與錯題回顧。",
     finished: true, difficulty: 3, recommended: false, isNew: true,
     ranking: {type: "timed"}, modes: {
@@ -609,7 +609,7 @@ export const GAME_CONFIG = {
       "🧮",
 
     file:
-      "games/equation.html",
+      "games/grade7-1/equation.html",
 
     description:
       "解方程式闖關，練習移項、等量公理與分數方程式。",
