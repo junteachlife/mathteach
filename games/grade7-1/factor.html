@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2-1 質因數分解大挑戰</title>
 
-  <link rel="stylesheet" href="../css/scratchpad.css">
+  <link rel="stylesheet" href="../../css/scratchpad.css">
   
 
   <style>
@@ -778,11 +778,11 @@
   </main>
 </div>
 
-<script src="../js/common-header.js"></script>
-<script src="../js/scratchpad.js"></script>
-<script src="../js/scratchpad-template.js"></script>
-<script src="../js/sound-manager.js?v=1"></script>
-<script src="../js/expression-input.js?v=20261101-operator"></script>
+<script src="../../js/common-header.js"></script>
+<script src="../../js/scratchpad.js"></script>
+<script src="../../js/scratchpad-template.js"></script>
+<script src="../../js/sound-manager.js?v=1"></script>
+<script src="../../js/expression-input.js?v=20261101-operator"></script>
 
 <script type="module">
 "use strict";
@@ -3534,7 +3534,7 @@ async function saveScoreRecord({
   try {
     const scoreModule =
       await import(
-        "../js/scores.js?v=7"
+        "../../js/scores.js?v=7"
       );
 
     if (
@@ -3644,7 +3644,7 @@ async function completeRpgBridge({
   try {
     const progressModule =
       await import(
-        "../js/progress-system.js?v=1"
+        "../../js/progress-system.js?v=1"
       );
 
     const handler =
@@ -3842,7 +3842,7 @@ $("restart-button").addEventListener("click",confirmRestart);
 $("mode-button").addEventListener("click",confirmModeChange);
 $("semester-return-button").addEventListener("click",()=>{
   if(!$('quiz-screen').classList.contains('hidden') && !window.confirm('確定要離開遊戲，返回七年級上學期嗎？'))return;
-  stopTimer();window.location.href='../index.html?semester=grade7-first';
+  stopTimer();window.location.href='../../index.html?semester=grade7-first';
 });
 
 $("again-button")
