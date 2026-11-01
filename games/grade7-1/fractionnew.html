@@ -6629,11 +6629,22 @@ function startGame(m){
 function resetUI(){
   window.resetGameScratchpad?.(); answered=false; selectedChoice=null; $("feedback").textContent=""; $("feedback").className="feedback"; $("explanation").innerHTML=""; $("explanation").classList.add("hidden"); $("input-message").textContent=""; $("submit-button").classList.remove("hidden"); $("next-button").classList.add("hidden"); answerLocked=false; answerWidgets?.number?.reset();answerWidgets?.number?.setDisabled(false);$("submit-button").disabled=false;
 }
+// 修復：題目排版函式不得中斷答案元件的建立。
+function updateQuestionLayout(){
+  const area=$("question-content");
+  if(!area)return;
+  area.classList.remove("question-multiline","math-expression-long");
+  const content=(area.textContent||"").trim();
+  const explicitLines=!!area.querySelector("br, p, ul, ol") || /[\r\n]/.test(content);
+  const isLong=content.length>75;
+  if(explicitLines || content.length>120)area.classList.add("question-multiline");
+  if(isLong)area.classList.add("math-expression-long");
+}
 function renderQuestion(){
-  resetUI(); const q=questions[index]; $("question-label").innerHTML=q.label; $("question-content").innerHTML=q.html; $("question-note").textContent=q.note||"";updateQuestionLayout(); renderAnswer(q); $("progress-bar").style.width=`${index/questions.length*100}%`; updateStatus();
+  resetUI(); const q=questions[index]; $("question-label").innerHTML=q.label; $("question-content").innerHTML=q.html; $("question-note").textContent=q.note||"";try{updateQuestionLayout()}catch(err){console.warn("題目排版調整失敗",err)} renderAnswer(q); $("progress-bar").style.width=`${index/questions.length*100}%`; updateStatus();
 }
 function renderSpeed(){
-  resetUI(); const q=speedQ(); questions=[q]; $("question-label").innerHTML=q.label; $("question-content").innerHTML=q.html; $("question-note").textContent="競速模式答題後會自動進入下一題；錯題可於測驗結果中回顧完整解析。";updateQuestionLayout(); renderAnswer(q); updateStatus();
+  resetUI(); const q=speedQ(); questions=[q]; $("question-label").innerHTML=q.label; $("question-content").innerHTML=q.html; $("question-note").textContent="競速模式答題後會自動進入下一題；錯題可於測驗結果中回顧完整解析。";try{updateQuestionLayout()}catch(err){console.warn("題目排版調整失敗",err)} renderAnswer(q); updateStatus();
 }
 function renderAnswer(q){
   $("choiceMount").innerHTML=""; $("choiceMount").classList.add("hidden"); $("fractionAnswerWrap").classList.add("hidden");
