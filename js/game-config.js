@@ -677,7 +677,7 @@ export const GAME_CONFIG = {
     id:"two-variable-linear-equation", section:"1-1",
     name:"1-1 二元一次方程式大挑戰", shortName:"二元一次方程式",
     semester:"grade7-second", grade:7, order:1, icon:"🧮",
-    file:"games/two-variable-linear-equation.html",
+    file:"games/grade7-2/two-variable-linear-equation.html",
     description:"練習二元一次式、代入求值、同類項化簡、二元一次方程式與解，以及正整數解的合理性。",
     finished:true, difficulty:2, recommended:true, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -694,7 +694,7 @@ export const GAME_CONFIG = {
     id:"linear-system-solve", section:"1-2",
     name:"1-2 解二元一次聯立方程式大挑戰", shortName:"解二元一次聯立方程式",
     semester:"grade7-second", grade:7, order:2, icon:"🔁",
-    file:"games/linear-system-solve.html",
+    file:"games/grade7-2/linear-system-solve.html",
     description:"練習聯立方程式共同解、代入消去法、加減消去法，以及調整係數與先化簡再求解。",
     finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -711,7 +711,7 @@ export const GAME_CONFIG = {
     id:"linear-system-applications", section:"1-3",
     name:"1-3 二元一次聯立方程式應用大挑戰", shortName:"聯立方程式應用",
     semester:"grade7-second", grade:7, order:3, icon:"💡",
-    file:"games/linear-system-applications.html",
+    file:"games/grade7-2/linear-system-applications.html",
     description:"練習總和、價格數量、年齡倍數、分組配置與合理性問題，依課本四步驟建立並解聯立方程式。",
     finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -742,7 +742,7 @@ export const GAME_CONFIG = {
     id:"coordinate-plane", section:"2-1",
     name:"2-1 直角坐標平面大挑戰", shortName:"直角坐標平面",
     semester:"grade7-second", grade:7, order:4, icon:"📍",
-    file:"games/coordinate-plane.html",
+    file:"games/grade7-2/coordinate-plane.html",
     description:"練習坐標與描點、坐標軸與象限、點到兩軸的距離、坐標反推，以及移動與圖形位置判讀。",
     finished:true, difficulty:2, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -759,7 +759,7 @@ export const GAME_CONFIG = {
     id:"linear-equation-graph", section:"2-2",
     name:"2-2 二元一次方程式的圖形大挑戰", shortName:"二元一次方程式圖形",
     semester:"grade7-second", grade:7, order:5, icon:"📈",
-    file:"games/linear-equation-graph.html",
+    file:"games/grade7-2/linear-equation-graph.html",
     description:"練習方程式的解與點、畫直線與兩軸交點、水平線與鉛垂線、由點求方程式，以及聯立方程式與交點。",
     finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -777,7 +777,7 @@ export const GAME_CONFIG = {
     id:"proportion-equation", section:"3-1",
     name:"3-1 比例式大挑戰", shortName:"比例式",
     semester:"grade7-second", grade:7, order:6, icon:"⚖️",
-    file:"games/proportion-equation.html",
+    file:"games/grade7-2/proportion-equation.html",
     description:"練習比與比值、最簡整數比、比例式求未知數、比例關係與倍數，以及比例的生活應用。",
     finished:true, difficulty:2, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -795,7 +795,7 @@ export const GAME_CONFIG = {
     id:"direct-inverse-proportion", section:"3-2",
     name:"3-2 正比與反比大挑戰", shortName:"正比與反比",
     semester:"grade7-second", grade:7, order:7, icon:"🔄",
-    file:"games/direct-inverse-proportion.html",
+    file:"games/grade7-2/direct-inverse-proportion.html",
     description:"練習正比與反比判別、正比關係、反比關係與生活應用，並能由已知條件求關係式與未知量。",
     finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -835,7 +835,7 @@ export const GAME_CONFIG = {
     id:"linear-inequality-basics", section:"4-1",
     name:"4-1 一元一次不等式的解及圖示大挑戰", shortName:"一元一次不等式的解及圖示",
     semester:"grade7-second", grade:7, order:8, icon:"🚦",
-    file:"games/linear-inequality-basics.html",
+    file:"games/grade7-2/linear-inequality-basics.html",
     description:"練習不等式語句、解的檢驗，以及空心點／實心點和數線圖示的判讀。",
     finished:true, difficulty:2, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -852,7 +852,7 @@ export const GAME_CONFIG = {
     id:"linear-inequality-solve", section:"4-2",
     name:"4-2 解一元一次不等式及其應用大挑戰", shortName:"解一元一次不等式及其應用",
     semester:"grade7-second", grade:7, order:9, icon:"⚖️",
-    file:"games/linear-inequality-solve.html",
+    file:"games/grade7-2/linear-inequality-solve.html",
     description:"練習移項、正負數乘除、不等號反向、多步驟不等式、整數邊界與生活應用。",
     finished:true, difficulty:3, recommended:true, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -870,7 +870,7 @@ export const GAME_CONFIG = {
     id:"statistics-data", section:"5",
     name:"5 統計圖表與統計數據大挑戰", shortName:"統計圖表與統計數據",
     semester:"grade7-second", grade:7, order:10, icon:"📊",
-    file:"games/statistics-data.html",
+    file:"games/grade7-2/statistics-data.html",
     description:"練習生活統計圖表、圓形圖、列聯表、次數分配，以及平均數、中位數與眾數。",
     finished:true, difficulty:2, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -887,7 +887,7 @@ export const GAME_CONFIG = {
     id:"symmetry-three-views", section:"6",
     name:"6 線對稱與三視圖大挑戰", shortName:"線對稱與三視圖",
     semester:"grade7-second", grade:7, order:11, icon:"🪞",
-    file:"games/symmetry-three-views.html",
+    file:"games/grade7-2/symmetry-three-views.html",
     description:"練習點線角與垂直平分、線對稱、對稱點，以及正方體積木的前視圖、上視圖與右視圖。",
     finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{
@@ -943,7 +943,7 @@ export const GAME_CONFIG = {
       "🧩",
 
     file:
-      "games/multiplication-formula.html",
+      "games/grade8-1/multiplication-formula.html",
 
     description:
       "練習平方公式、平方差公式，以及乘法公式的展開與判讀。",
@@ -1027,7 +1027,7 @@ export const GAME_CONFIG = {
       "➕",
 
     file:
-      "games/polynomial-add-subtract.html",
+      "games/grade8-1/polynomial-add-subtract.html",
 
     description:
       "練習同類項合併、去括號，以及多項式的加法與減法。",
@@ -1111,7 +1111,7 @@ export const GAME_CONFIG = {
       "✖️",
 
     file:
-      "games/polynomial-multiply-divide.html",
+      "games/grade8-1/polynomial-multiply-divide.html",
 
     description:
       "練習單項式乘除、分配律、乘法公式、多項式乘法與多項式除法。",
@@ -1195,7 +1195,7 @@ export const GAME_CONFIG = {
       "√",
 
     file:
-      "games/square-root.html",
+      "games/grade8-1/square-root.html",
 
     description:
       "認識平方根、根號表示，以及平方與平方根之間的關係。",
@@ -1282,7 +1282,7 @@ export const GAME_CONFIG = {
       "🌱",
 
     file:
-      "games/radical-operation.html",
+      "games/grade8-1/radical-operation.html",
 
     description:
       "六模式隨機練習根式乘除、大小比較、同類方根、四則運算與乘法公式。",
@@ -1372,7 +1372,7 @@ export const GAME_CONFIG = {
       "📐",
 
     file:
-      "games/pythagorean.html",
+      "games/grade8-1/pythagorean.html",
 
     description:
       "利用畢氏定理求邊長，並挑戰直角三角形、生活應用與兩點間距離。",
@@ -1453,7 +1453,7 @@ export const GAME_CONFIG = {
       "🧩",
 
     file:
-      "games/factorization-challenge.html",
+      "games/grade8-1/factorization-challenge.html",
 
     description:
       "練習提單項公因式、提兩項公因式、變號後提公因式，以及利用乘法公式進行因式分解。",
@@ -1534,7 +1534,7 @@ export const GAME_CONFIG = {
       "❌",
 
     file:
-      "games/cross-factorization.html",
+      "games/grade8-1/cross-factorization.html",
 
     description:
       "練習二次項係數為 1、一般十字交乘，以及先提公因式、乘法公式與分數型態的綜合因式分解。",
@@ -1599,7 +1599,7 @@ export const GAME_CONFIG = {
     id:"quadratic-factorization", section:"4-1",
     name:"4-1 因式分解法解一元二次方程式大挑戰", shortName:"因式分解法解一元二次方程式", cardTitleLines:["4-1 因式分解法","解一元二次方程式大挑戰"],
     semester:"grade8-first", grade:8, order:9, icon:"✂️",
-    file:"games/quadratic-factorization.html",
+    file:"games/grade8-1/quadratic-factorization.html",
     description:"練習一元二次方程式的意義與根、零乘積性質、提公因式、乘法公式與十字交乘求解。",
     finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{equationRoot:"標準式與根",zeroProduct:"零乘積與已分解方程式",commonFactor:"提公因式求解",identityFactor:"乘法公式因式分解",crossFactor:"十字交乘求解",comprehensive:"4-1 綜合挑戰"},
@@ -1610,7 +1610,7 @@ export const GAME_CONFIG = {
     id:"quadratic-completing-formula", section:"4-2",
     name:"4-2 配方法與公式解大挑戰", shortName:"配方法與公式解",
     semester:"grade8-first", grade:8, order:10, icon:"🧮",
-    file:"games/quadratic-completing-formula.html",
+    file:"games/grade8-1/quadratic-completing-formula.html",
     description:"練習平方根解法、配成完全平方式、配方法、一元二次方程式公式解與判別式。",
     finished:true, difficulty:3, recommended:true, isNew:true, ranking:{type:"speed"},
     modes:{squareRoot:"平方根解法",completeSquareForm:"配成完全平方式",completeSquareSolve:"配方法解方程式",formulaSolve:"一元二次方程式公式解",discriminant:"判別式與根的情形",comprehensive:"4-2 綜合挑戰"},
@@ -1621,7 +1621,7 @@ export const GAME_CONFIG = {
     id:"quadratic-applications", section:"4-3",
     name:"4-3 一元二次方程式應用問題", shortName:"一元二次方程式應用", cardTitleLines:["4-3 一元二次方程式應用問題"],
     semester:"grade8-first", grade:8, order:11, icon:"🌍",
-    file:"games/quadratic-applications.html",
+    file:"games/grade8-1/quadratic-applications.html",
     description:"練習由題意列方程式、整數與年齡、面積與路寬、售價收入，以及合理根與近似值。",
     finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{equationModel:"由題意列方程式",integerAge:"整數與年齡問題",geometry:"面積與路寬問題",priceRevenue:"售價、數量與收入",validityApprox:"合理根與近似值",comprehensive:"4-3 綜合挑戰"},
@@ -1632,7 +1632,7 @@ export const GAME_CONFIG = {
     id:"statistics-data-processing", section:"5",
     name:"5 統計資料處理大挑戰", shortName:"統計資料處理",
     semester:"grade8-first", grade:8, order:12, icon:"📊",
-    file:"games/statistics-data-processing.html",
+    file:"games/grade8-1/statistics-data-processing.html",
     description:"練習相對次數分配、組中點、累積次數、累積相對次數，以及折線圖判讀與比較。",
     finished:true, difficulty:3, recommended:false, isNew:true, ranking:{type:"speed"},
     modes:{relativeFrequency:"相對次數分配表",relativeGraph:"相對次數折線圖",cumulativeFrequency:"累積次數分配",cumulativeRelative:"累積相對次數分配",graphInterpretation:"統計圖表判讀與比較",comprehensive:"第 5 章綜合挑戰"},
@@ -1682,7 +1682,7 @@ export const GAME_CONFIG = {
     id:"quadraticEquation", section:"4",
     name:"舊版 一元二次方程式大挑戰", shortName:"舊版一元二次方程式",
     semester:"grade8-first", grade:8, order:99, icon:"x²",
-    file:"games/quadratic-equation.html", description:"舊版歷史成績相容用。",
+    file:"games/grade8-1/quadratic-equation.html", description:"舊版歷史成績相容用。",
     finished:false, archived:true, difficulty:3, recommended:false, isNew:false, ranking:{type:"speed"},
     modes:{basic:"基礎概念",factor:"因式分解法",completeSquare:"平方根與配方法",formula:"公式解與判別式",application:"一元二次應用問題",mixed:"全章綜合挑戰"},
     theme:{primary:"#64748B",dark:"#475569",light:"#F1F5F9",border:"#CBD5E1"}
