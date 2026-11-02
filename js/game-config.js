@@ -37,14 +37,14 @@ modes 的 key
 
 
 export const GAME_CONFIG = {
-  "continued-ratio": {id:"continued-ratio",section:"1-1",name:"1-1 連比大挑戰",shortName:"連比",semester:"grade9-first",grade:9,order:1,icon:"🔗",file:"games/grade9-1/continued-ratio.html",description:"九上第1章：連比",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{merge:"連比合併",parts:"按比例分配",inverse:"反比例與幾何",mixed:"綜合挑戰"},theme:{primary:"#205d9b",dark:"#163f70",light:"#e8f2ff",border:"#91b8e1"}},
-  "proportional-segments": {id:"proportional-segments",section:"1-2",name:"1-2 比例線段大挑戰",shortName:"比例線段",semester:"grade9-first",grade:9,order:2,icon:"📐",file:"games/grade9-1/proportional-segments.html",description:"九上 1-2：等高三角形面積比、平行線截比例線段、平行判別與中點連線段。",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{areaRatio:"等高三角形面積比",parallelSegments:"平行線截比例線段",parallelJudge:"比例線段判別平行",midpoint:"中點連線段",comprehensive:"1-2 綜合挑戰"},theme:{primary:"#0f766e",dark:"#115e59",light:"#ecfdf5",border:"#5eead4"}},
-  "similar-polygons": {id:"similar-polygons",section:"1-3",name:"1-3 相似多邊形大挑戰",shortName:"相似多邊形",semester:"grade9-first",grade:9,order:3,icon:"🔷",file:"games/grade9-1/similar-polygons.html",description:"九上 1-3：圖形縮放、相似多邊形，以及 AA／SAS／SSS 三角形相似性質。",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{scaling:"圖形縮放",polygonSimilarity:"相似多邊形",aaSimilarity:"AA 相似",sasSimilarity:"SAS 相似",sssSimilarity:"SSS 相似",comprehensive:"1-3 綜合挑戰"},theme:{primary:"#7c3aed",dark:"#5b21b6",light:"#f5f3ff",border:"#c4b5fd"}},
-  "similar-triangle-trig": {id:"similar-triangle-trig",section:"1-4",name:"1-4 相似三角形應用與三角比大挑戰",shortName:"相似三角形與三角比",semester:"grade9-first",grade:9,order:4,icon:"📐",file:"games/grade9-1/similar-triangle-trig.html",description:"九上 1-4：相似三角形比例、簡易測量、特殊直角三角形與 sin／cos／tan 應用。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{similarityRelations:"相似三角形比例關係",measurement:"簡易測量",specialRight:"特殊直角三角形",trigRatio:"三角比",trigApplication:"三角比應用",comprehensive:"1-4 綜合挑戰"},theme:{primary:"#c2410c",dark:"#9a3412",light:"#fff7ed",border:"#fdba74"}},
-  "point-line-circle": {id:"point-line-circle",section:"2-1",name:"2-1 點、線、圓大挑戰",shortName:"點、線、圓",semester:"grade9-first",grade:9,order:5,icon:"⭕",file:"games/grade9-1/point-line-circle.html",description:"九上 2-1：圓弧長與扇形、點與圓、直線與圓、切線與切線段、弦與弦心距。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{sectorArc:"圓弧長與扇形",pointCircle:"點與圓的位置",lineCircle:"直線與圓的位置",tangent:"切線與切線段",chordDistance:"弦與弦心距",comprehensive:"2-1 綜合挑戰"},theme:{primary:"#205d9b",dark:"#163f70",light:"#e8f2ff",border:"#91b8e1"}},
-  "central-inscribed-angle": {id:"central-inscribed-angle",section:"2-2",name:"2-2 圓心角與圓周角大挑戰",shortName:"圓心角與圓周角",semester:"grade9-first",grade:9,order:6,icon:"🟠",file:"games/grade9-1/central-inscribed-angle.html",description:"九上 2-2：圓心角、弧與弦、半徑與弧長、圓周角、直徑與平行線截弧、圓內接四邊形。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{centralArc:"圓心角、弧與弦",arcRadius:"半徑、弧長與弦",inscribedAngle:"圓周角與弧",diameterParallel:"直徑與平行線截弧",cyclicQuadrilateral:"圓內接四邊形",comprehensive:"2-2 綜合挑戰"},theme:{primary:"#c2410c",dark:"#9a3412",light:"#fff7ed",border:"#fdba74"}},
-  "geometric-proof": {id:"geometric-proof",section:"3-1",name:"3-1 推理證明大挑戰",shortName:"推理證明",semester:"grade9-first",grade:9,order:7,icon:"🧠",file:"games/grade9-1/geometric-proof.html",description:"九上 3-1：證明結構、幾何推理、輔助線、奇偶數與代數證明。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{proofStructure:"證明結構與理由",geometryProof:"幾何推理證明",auxiliaryLine:"輔助線與思路分析",parityProof:"奇偶數證明",algebraProof:"代數推理與因數倍數",comprehensive:"3-1 綜合挑戰"},theme:{primary:"#7c3aed",dark:"#5b21b6",light:"#f5f3ff",border:"#c4b5fd"}},
-  "triangle-centers": {id:"triangle-centers",section:"3-2",name:"3-2 三角形的外心、內心與重心大挑戰",shortName:"三角形三心",semester:"grade9-first",grade:9,order:8,icon:"🎯",file:"games/grade9-1/triangle-centers.html",description:"九上 3-2：外心與外接圓、內心與內切圓、重心比例與重心面積應用。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{circumcenter:"外心與外接圓",incenter:"內心與角度",incircle:"內切圓半徑與面積",centroidRatio:"重心比例",centroidArea:"重心與面積",comprehensive:"3-2 綜合挑戰"},theme:{primary:"#0f766e",dark:"#115e59",light:"#ecfdf5",border:"#5eead4"}},
+  "continued-ratio": {id:"continued-ratio",section:"1-1",name:"1-1 連比",shortName:"連比",semester:"grade9-first",grade:9,order:1,icon:"🔗",file:"games/grade9-1/continued-ratio.html",description:"九上第1章：連比",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{merge:"連比合併",parts:"按比例分配",inverse:"反比例與幾何",mixed:"綜合挑戰"},theme:{primary:"#205d9b",dark:"#163f70",light:"#e8f2ff",border:"#91b8e1"}},
+  "proportional-segments": {id:"proportional-segments",section:"1-2",name:"1-2 比例線段",shortName:"比例線段",semester:"grade9-first",grade:9,order:2,icon:"📐",file:"games/grade9-1/proportional-segments.html",description:"九上 1-2：等高三角形面積比、平行線截比例線段、平行判別與中點連線段。",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{areaRatio:"等高三角形面積比",parallelSegments:"平行線截比例線段",parallelJudge:"比例線段判別平行",midpoint:"中點連線段",comprehensive:"1-2 綜合挑戰"},theme:{primary:"#0f766e",dark:"#115e59",light:"#ecfdf5",border:"#5eead4"}},
+  "similar-polygons": {id:"similar-polygons",section:"1-3",name:"1-3 相似多邊形",shortName:"相似多邊形",semester:"grade9-first",grade:9,order:3,icon:"🔷",file:"games/grade9-1/similar-polygons.html",description:"九上 1-3：圖形縮放、相似多邊形，以及 AA／SAS／SSS 三角形相似性質。",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{scaling:"圖形縮放",polygonSimilarity:"相似多邊形",aaSimilarity:"AA 相似",sasSimilarity:"SAS 相似",sssSimilarity:"SSS 相似",comprehensive:"1-3 綜合挑戰"},theme:{primary:"#7c3aed",dark:"#5b21b6",light:"#f5f3ff",border:"#c4b5fd"}},
+  "similar-triangle-trig": {id:"similar-triangle-trig",section:"1-4",name:"1-4 相似三角形應用與三角比",shortName:"相似三角形與三角比",semester:"grade9-first",grade:9,order:4,icon:"📐",file:"games/grade9-1/similar-triangle-trig.html",description:"九上 1-4：相似三角形比例、簡易測量、特殊直角三角形與 sin／cos／tan 應用。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{similarityRelations:"相似三角形比例關係",measurement:"簡易測量",specialRight:"特殊直角三角形",trigRatio:"三角比",trigApplication:"三角比應用",comprehensive:"1-4 綜合挑戰"},theme:{primary:"#c2410c",dark:"#9a3412",light:"#fff7ed",border:"#fdba74"}},
+  "point-line-circle": {id:"point-line-circle",section:"2-1",name:"2-1 點、線、圓",shortName:"點、線、圓",semester:"grade9-first",grade:9,order:5,icon:"⭕",file:"games/grade9-1/point-line-circle.html",description:"九上 2-1：圓弧長與扇形、點與圓、直線與圓、切線與切線段、弦與弦心距。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{sectorArc:"圓弧長與扇形",pointCircle:"點與圓的位置",lineCircle:"直線與圓的位置",tangent:"切線與切線段",chordDistance:"弦與弦心距",comprehensive:"2-1 綜合挑戰"},theme:{primary:"#205d9b",dark:"#163f70",light:"#e8f2ff",border:"#91b8e1"}},
+  "central-inscribed-angle": {id:"central-inscribed-angle",section:"2-2",name:"2-2 圓心角與圓周角",shortName:"圓心角與圓周角",semester:"grade9-first",grade:9,order:6,icon:"🟠",file:"games/grade9-1/central-inscribed-angle.html",description:"九上 2-2：圓心角、弧與弦、半徑與弧長、圓周角、直徑與平行線截弧、圓內接四邊形。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{centralArc:"圓心角、弧與弦",arcRadius:"半徑、弧長與弦",inscribedAngle:"圓周角與弧",diameterParallel:"直徑與平行線截弧",cyclicQuadrilateral:"圓內接四邊形",comprehensive:"2-2 綜合挑戰"},theme:{primary:"#c2410c",dark:"#9a3412",light:"#fff7ed",border:"#fdba74"}},
+  "geometric-proof": {id:"geometric-proof",section:"3-1",name:"3-1 推理證明",shortName:"推理證明",semester:"grade9-first",grade:9,order:7,icon:"🧠",file:"games/grade9-1/geometric-proof.html",description:"九上 3-1：證明結構、幾何推理、輔助線、奇偶數與代數證明。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{proofStructure:"證明結構與理由",geometryProof:"幾何推理證明",auxiliaryLine:"輔助線與思路分析",parityProof:"奇偶數證明",algebraProof:"代數推理與因數倍數",comprehensive:"3-1 綜合挑戰"},theme:{primary:"#7c3aed",dark:"#5b21b6",light:"#f5f3ff",border:"#c4b5fd"}},
+  "triangle-centers": {id:"triangle-centers",section:"3-2",name:"3-2 三角形的外心、內心與重心",shortName:"三角形三心",semester:"grade9-first",grade:9,order:8,icon:"🎯",file:"games/grade9-1/triangle-centers.html",description:"九上 3-2：外心與外接圓、內心與內切圓、重心比例與重心面積應用。",finished:true,difficulty:3,recommended:false,isNew:true,ranking:{type:"speed"},modes:{circumcenter:"外心與外接圓",incenter:"內心與角度",incircle:"內切圓半徑與面積",centroidRatio:"重心比例",centroidArea:"重心與面積",comprehensive:"3-2 綜合挑戰"},theme:{primary:"#0f766e",dark:"#115e59",light:"#ecfdf5",border:"#5eead4"}},
 
 
 
@@ -63,7 +63,7 @@ export const GAME_CONFIG = {
       "integer",
 
     name:
-      "正負整數大挑戰",
+      "正負整數",
 
     shortName:
       "正負整數",
@@ -215,7 +215,7 @@ export const GAME_CONFIG = {
       "fraction",
 
     name:
-      "正負分數加減大挑戰",
+      "正負分數加減",
 
     shortName:
       "正負分數加減",
@@ -292,7 +292,7 @@ export const GAME_CONFIG = {
   exponent: {
     id: "exponent",
     section: "2-4",
-    name: "2-4 指數律大挑戰",
+    name: "2-4 指數律",
     shortName: "指數律",
     semester: "grade7-first",
     grade: 7,
@@ -330,7 +330,7 @@ export const GAME_CONFIG = {
       "integer-operations",
 
     name:
-      "正負數四則運算大挑戰",
+      "正負數四則運算",
 
     shortName:
       "正負數四則運算",
@@ -417,7 +417,7 @@ export const GAME_CONFIG = {
       "factor",
 
     name:
-      "2-1 質因數分解大挑戰",
+      "2-1 質因數分解",
 
     shortName:
       "2-1 質因數分解",
@@ -507,7 +507,7 @@ export const GAME_CONFIG = {
   exponentScientificNotation: {
     id: "exponentScientificNotation",
     section: "1-4",
-    name: "1-4 指數記法與科學記號大挑戰",
+    name: "1-4 指數記法與科學記號",
     shortName: "指數與科學記號",
     semester: "grade7-first",
     grade: 7,
@@ -534,7 +534,7 @@ export const GAME_CONFIG = {
   },
 
   gcdLcm: {
-    id:"gcdLcm", section:"2-2", name:"2-2 最大公因數與最小公倍數大挑戰",
+    id:"gcdLcm", section:"2-2", name:"2-2 最大公因數與最小公倍數",
     shortName:"最大公因數與最小公倍數",semester:"grade7-first",grade:7,order:6.1,
     icon:"🔵",file:"games/grade7-1/gcd-lcm.html",
     description:"公因數、公倍數與互質、兩數與三數短除法、標準分解式、生活應用及快手競速。",
@@ -544,7 +544,7 @@ export const GAME_CONFIG = {
   },
 
   fractionNew: {
-    id:"fractionNew",section:"2-3",name:"2-3 分數的四則運算大挑戰",shortName:"分數的四則運算",
+    id:"fractionNew",section:"2-3",name:"2-3 分數的四則運算",shortName:"分數的四則運算",
     semester:"grade7-first",grade:7,order:6.2,icon:"➗",file:"games/grade7-1/fractionnew.html",
     description:"七上 2-3：等值分數與比較、正負分數加減、乘法、倒數與除法、去括號、分配律及綜合運算。動態出題、共用分數輸入與詳細解析。",
     finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},
@@ -553,7 +553,7 @@ export const GAME_CONFIG = {
   },
 
   "expression-operations": {
-    section: "3-1", id: "expression-operations", name: "3-1 式子的運算大挑戰", shortName: "式子的運算大挑戰",
+    section: "3-1", id: "expression-operations", name: "3-1 式子的運算", shortName: "式子的運算",
     semester: "grade7-first", grade: 7, order: 6.5, icon: "📘",
     file: "games/grade7-1/expression-operations.html",
     description: "依七上 3-1 教材設計，含詳細解析、計算紙與錯題回顧。",
@@ -570,7 +570,7 @@ export const GAME_CONFIG = {
   },
 
   "equation-applications": {
-    section: "3-3", id: "equation-applications", name: "3-3 一元一次方程式應用問題大挑戰", shortName: "一元一次方程式應用問題大挑戰",
+    section: "3-3", id: "equation-applications", name: "3-3 一元一次方程式應用問題", shortName: "一元一次方程式應用問題",
     semester: "grade7-first", grade: 7, order: 7.5, icon: "📘",
     file: "games/grade7-1/equation-applications.html",
     description: "依七上 3-3 教材設計，含詳細解析、計算紙與錯題回顧。",
@@ -591,7 +591,7 @@ export const GAME_CONFIG = {
       "equation",
 
     name:
-      "3-2 解一元一次方程式大挑戰",
+      "3-2 解一元一次方程式",
 
     shortName:
       "一元一次方程式",
@@ -675,7 +675,7 @@ export const GAME_CONFIG = {
 
   "two-variable-linear-equation": {
     id:"two-variable-linear-equation", section:"1-1",
-    name:"1-1 二元一次方程式大挑戰", shortName:"二元一次方程式",
+    name:"1-1 二元一次方程式", shortName:"二元一次方程式",
     semester:"grade7-second", grade:7, order:1, icon:"🧮",
     file:"games/grade7-2/two-variable-linear-equation.html",
     description:"練習二元一次式、代入求值、同類項化簡、二元一次方程式與解，以及正整數解的合理性。",
@@ -692,7 +692,7 @@ export const GAME_CONFIG = {
 
   "linear-system-solve": {
     id:"linear-system-solve", section:"1-2",
-    name:"1-2 解二元一次聯立方程式大挑戰", shortName:"解二元一次聯立方程式",
+    name:"1-2 解二元一次聯立方程式", shortName:"解二元一次聯立方程式",
     semester:"grade7-second", grade:7, order:2, icon:"🔁",
     file:"games/grade7-2/linear-system-solve.html",
     description:"練習聯立方程式共同解、代入消去法、加減消去法，以及調整係數與先化簡再求解。",
@@ -709,7 +709,7 @@ export const GAME_CONFIG = {
 
   "linear-system-applications": {
     id:"linear-system-applications", section:"1-3",
-    name:"1-3 二元一次聯立方程式應用大挑戰", shortName:"聯立方程式應用",
+    name:"1-3 二元一次聯立方程式應用", shortName:"聯立方程式應用",
     semester:"grade7-second", grade:7, order:3, icon:"💡",
     file:"games/grade7-2/linear-system-applications.html",
     description:"練習總和、價格數量、年齡倍數、分組配置與合理性問題，依課本四步驟建立並解聯立方程式。",
@@ -740,7 +740,7 @@ export const GAME_CONFIG = {
 
   "coordinate-plane": {
     id:"coordinate-plane", section:"2-1",
-    name:"2-1 直角坐標平面大挑戰", shortName:"直角坐標平面",
+    name:"2-1 直角坐標平面", shortName:"直角坐標平面",
     semester:"grade7-second", grade:7, order:4, icon:"📍",
     file:"games/grade7-2/coordinate-plane.html",
     description:"練習坐標與描點、坐標軸與象限、點到兩軸的距離、坐標反推，以及移動與圖形位置判讀。",
@@ -757,7 +757,7 @@ export const GAME_CONFIG = {
 
   "linear-equation-graph": {
     id:"linear-equation-graph", section:"2-2",
-    name:"2-2 二元一次方程式的圖形大挑戰", shortName:"二元一次方程式圖形",
+    name:"2-2 二元一次方程式的圖形", shortName:"二元一次方程式圖形",
     semester:"grade7-second", grade:7, order:5, icon:"📈",
     file:"games/grade7-2/linear-equation-graph.html",
     description:"練習方程式的解與點、畫直線與兩軸交點、水平線與鉛垂線、由點求方程式，以及聯立方程式與交點。",
@@ -775,7 +775,7 @@ export const GAME_CONFIG = {
 
   "proportion-equation": {
     id:"proportion-equation", section:"3-1",
-    name:"3-1 比例式大挑戰", shortName:"比例式",
+    name:"3-1 比例式", shortName:"比例式",
     semester:"grade7-second", grade:7, order:6, icon:"⚖️",
     file:"games/grade7-2/proportion-equation.html",
     description:"練習比與比值、最簡整數比、比例式求未知數、比例關係與倍數，以及比例的生活應用。",
@@ -793,7 +793,7 @@ export const GAME_CONFIG = {
 
   "direct-inverse-proportion": {
     id:"direct-inverse-proportion", section:"3-2",
-    name:"3-2 正比與反比大挑戰", shortName:"正比與反比",
+    name:"3-2 正比與反比", shortName:"正比與反比",
     semester:"grade7-second", grade:7, order:7, icon:"🔄",
     file:"games/grade7-2/direct-inverse-proportion.html",
     description:"練習正比與反比判別、正比關係、反比關係與生活應用，並能由已知條件求關係式與未知量。",
@@ -833,7 +833,7 @@ export const GAME_CONFIG = {
 
   "linear-inequality-basics": {
     id:"linear-inequality-basics", section:"4-1",
-    name:"4-1 一元一次不等式的解及圖示大挑戰", shortName:"一元一次不等式的解及圖示",
+    name:"4-1 一元一次不等式的解及圖示", shortName:"一元一次不等式的解及圖示",
     semester:"grade7-second", grade:7, order:8, icon:"🚦",
     file:"games/grade7-2/linear-inequality-basics.html",
     description:"練習不等式語句、解的檢驗，以及空心點／實心點和數線圖示的判讀。",
@@ -850,7 +850,7 @@ export const GAME_CONFIG = {
 
   "linear-inequality-solve": {
     id:"linear-inequality-solve", section:"4-2",
-    name:"4-2 解一元一次不等式及其應用大挑戰", shortName:"解一元一次不等式及其應用",
+    name:"4-2 解一元一次不等式及其應用", shortName:"解一元一次不等式及其應用",
     semester:"grade7-second", grade:7, order:9, icon:"⚖️",
     file:"games/grade7-2/linear-inequality-solve.html",
     description:"練習移項、正負數乘除、不等號反向、多步驟不等式、整數邊界與生活應用。",
@@ -868,7 +868,7 @@ export const GAME_CONFIG = {
 
   "statistics-data": {
     id:"statistics-data", section:"5",
-    name:"5 統計圖表與統計數據大挑戰", shortName:"統計圖表與統計數據",
+    name:"5 統計圖表與統計數據", shortName:"統計圖表與統計數據",
     semester:"grade7-second", grade:7, order:10, icon:"📊",
     file:"games/grade7-2/statistics-data.html",
     description:"練習生活統計圖表、圓形圖、列聯表、次數分配，以及平均數、中位數與眾數。",
@@ -885,7 +885,7 @@ export const GAME_CONFIG = {
 
   "symmetry-three-views": {
     id:"symmetry-three-views", section:"6",
-    name:"6 線對稱與三視圖大挑戰", shortName:"線對稱與三視圖",
+    name:"6 線對稱與三視圖", shortName:"線對稱與三視圖",
     semester:"grade7-second", grade:7, order:11, icon:"🪞",
     file:"games/grade7-2/symmetry-three-views.html",
     description:"練習點線角與垂直平分、線對稱、對稱點，以及正方體積木的前視圖、上視圖與右視圖。",
@@ -925,7 +925,7 @@ export const GAME_CONFIG = {
       "multiplicationFormula",section:"1-1",
 
     name:
-      "乘法公式大挑戰",
+      "乘法公式",
 
     shortName:
       "乘法公式",
@@ -1009,7 +1009,7 @@ export const GAME_CONFIG = {
       "polynomialAddSubtract",section:"1-2",
 
     name:
-      "多項式加減大挑戰",
+      "多項式加減",
 
     shortName:
       "多項式加減",
@@ -1093,7 +1093,7 @@ export const GAME_CONFIG = {
       "polynomialMultiplyDivide",section:"1-3",
 
     name:
-      "多項式乘除大挑戰",
+      "多項式乘除",
 
     shortName:
       "多項式乘除",
@@ -1177,7 +1177,7 @@ export const GAME_CONFIG = {
       "squareRoot",section:"2-1",
 
     name:
-      "平方根概念大挑戰",
+      "平方根概念",
 
     shortName:
       "平方根",
@@ -1264,7 +1264,7 @@ export const GAME_CONFIG = {
       "radicalOperation",section:"2-2",
 
     name:
-      "根式運算大挑戰",
+      "根式運算",
 
     shortName:
       "根式運算",
@@ -1354,7 +1354,7 @@ export const GAME_CONFIG = {
       "pythagorean",section:"2-3",
 
     name:
-      "畢氏定理大挑戰",
+      "畢氏定理",
 
     shortName:
       "畢氏定理",
@@ -1435,7 +1435,7 @@ export const GAME_CONFIG = {
       "factorization",section:"3-1",
 
     name:
-      "因式分解大挑戰",
+      "因式分解",
 
     shortName:
       "因式分解",
@@ -1516,7 +1516,7 @@ export const GAME_CONFIG = {
       "crossMultiplication",section:"3-2",
 
     name:
-      "十字交乘因式分解大挑戰",
+      "十字交乘因式分解",
 
     shortName:
       "十字交乘",
@@ -1597,7 +1597,7 @@ export const GAME_CONFIG = {
 
   "quadratic-factorization": {
     id:"quadratic-factorization", section:"4-1",
-    name:"4-1 因式分解法解一元二次方程式大挑戰", shortName:"因式分解法解一元二次方程式", cardTitleLines:["4-1 因式分解法","解一元二次方程式大挑戰"],
+    name:"4-1 因式分解法解一元二次方程式", shortName:"因式分解法解一元二次方程式", cardTitleLines:["4-1 因式分解法","解一元二次方程式"],
     semester:"grade8-first", grade:8, order:9, icon:"✂️",
     file:"games/grade8-1/quadratic-factorization.html",
     description:"練習一元二次方程式的意義與根、零乘積性質、提公因式、乘法公式與十字交乘求解。",
@@ -1608,7 +1608,7 @@ export const GAME_CONFIG = {
 
   "quadratic-completing-formula": {
     id:"quadratic-completing-formula", section:"4-2",
-    name:"4-2 配方法與公式解大挑戰", shortName:"配方法與公式解",
+    name:"4-2 配方法與公式解", shortName:"配方法與公式解",
     semester:"grade8-first", grade:8, order:10, icon:"🧮",
     file:"games/grade8-1/quadratic-completing-formula.html",
     description:"練習平方根解法、配成完全平方式、配方法、一元二次方程式公式解與判別式。",
@@ -1630,7 +1630,7 @@ export const GAME_CONFIG = {
 
   "statistics-data-processing": {
     id:"statistics-data-processing", section:"5",
-    name:"5 統計資料處理大挑戰", shortName:"統計資料處理",
+    name:"5 統計資料處理", shortName:"統計資料處理",
     semester:"grade8-first", grade:8, order:12, icon:"📊",
     file:"games/grade8-1/statistics-data-processing.html",
     description:"練習相對次數分配、組中點、累積次數、累積相對次數，以及折線圖判讀與比較。",
@@ -1646,7 +1646,7 @@ export const GAME_CONFIG = {
 
   "sequence-arithmetic": {
     id:"sequence-arithmetic", section:"1-1",
-    name:"1-1 認識數列與等差數列大挑戰", shortName:"數列與等差數列",
+    name:"1-1 認識數列與等差數列", shortName:"數列與等差數列",
     semester:"grade8-second", grade:8, order:1, icon:"🔢",
     file:"games/sequence-arithmetic.html",
     description:"練習數列與一般項、等差數列、公差、第 n 項、等差中項與規律生活應用。",
@@ -1657,7 +1657,7 @@ export const GAME_CONFIG = {
 
   "arithmetic-series": {
     id:"arithmetic-series", section:"1-2",
-    name:"1-2 等差級數大挑戰", shortName:"等差級數",
+    name:"1-2 等差級數", shortName:"等差級數",
     semester:"grade8-second", grade:8, order:2, icon:"➕",
     file:"games/arithmetic-series.html",
     description:"練習級數觀念、等差級數兩種求和公式、未知量反推與生活情境應用。",
@@ -1668,7 +1668,7 @@ export const GAME_CONFIG = {
 
   "geometric-sequence": {
     id:"geometric-sequence", section:"1-3",
-    name:"1-3 等比數列大挑戰", shortName:"等比數列",
+    name:"1-3 等比數列", shortName:"等比數列",
     semester:"grade8-second", grade:8, order:3, icon:"✖️",
     file:"games/geometric-sequence.html",
     description:"練習等比數列、公比、第 n 項、缺項與條件反推、等比中項，以及生活應用。",
@@ -1680,7 +1680,7 @@ export const GAME_CONFIG = {
   /* 舊版一元二次方程式 GAME_ID：僅保留舊 Firestore 紀錄辨識，不顯示在首頁。 */
   quadraticEquation: {
     id:"quadraticEquation", section:"4",
-    name:"舊版 一元二次方程式大挑戰", shortName:"舊版一元二次方程式",
+    name:"舊版 一元二次方程式", shortName:"舊版一元二次方程式",
     semester:"grade8-first", grade:8, order:99, icon:"x²",
     file:"games/grade8-1/quadratic-equation.html", description:"舊版歷史成績相容用。",
     finished:false, archived:true, difficulty:3, recommended:false, isNew:false, ranking:{type:"speed"},
@@ -1691,7 +1691,7 @@ export const GAME_CONFIG = {
   /* 八下及九下：由首頁搬移至單一設定檔；保留既有遊戲識別碼與檔名 */
   "linear-function": {
     id: "linear-function",
-    name: "線型函數與圖形大挑戰",
+    name: "線型函數與圖形",
     shortName: "線型函數與圖形",
     semester: "grade8-second",
     grade: 8,
@@ -1707,7 +1707,7 @@ export const GAME_CONFIG = {
   },
   "triangle-angles": {
     id: "triangle-angles",
-    name: "三角形內角與外角大挑戰",
+    name: "三角形內角與外角",
     shortName: "三角形內角與外角",
     semester: "grade8-second",
     grade: 8,
@@ -1723,7 +1723,7 @@ export const GAME_CONFIG = {
   },
   "compass-straightedge": {
     id: "compass-straightedge",
-    name: "基本尺規作圖大挑戰",
+    name: "基本尺規作圖",
     shortName: "基本尺規作圖",
     semester: "grade8-second",
     grade: 8,
@@ -1739,7 +1739,7 @@ export const GAME_CONFIG = {
   },
   "triangle-congruence": {
     id: "triangle-congruence",
-    name: "三角形全等大挑戰",
+    name: "三角形全等",
     shortName: "三角形全等",
     semester: "grade8-second",
     grade: 8,
@@ -1755,7 +1755,7 @@ export const GAME_CONFIG = {
   },
   "bisector-perpendicular": {
     id: "bisector-perpendicular",
-    name: "中垂線與角平分線大挑戰",
+    name: "中垂線與角平分線",
     shortName: "中垂線與角平分線",
     semester: "grade8-second",
     grade: 8,
@@ -1771,7 +1771,7 @@ export const GAME_CONFIG = {
   },
   "triangle-side-angle": {
     id: "triangle-side-angle",
-    name: "三角形邊角關係大挑戰",
+    name: "三角形邊角關係",
     shortName: "三角形邊角關係",
     semester: "grade8-second",
     grade: 8,
@@ -1787,7 +1787,7 @@ export const GAME_CONFIG = {
   },
   "parallel-transversal": {
     id: "parallel-transversal",
-    name: "平行線與截角大挑戰",
+    name: "平行線與截角",
     shortName: "平行線與截角",
     semester: "grade8-second",
     grade: 8,
@@ -1803,7 +1803,7 @@ export const GAME_CONFIG = {
   },
   "parallelogram": {
     id: "parallelogram",
-    name: "平行四邊形大挑戰",
+    name: "平行四邊形",
     shortName: "平行四邊形",
     semester: "grade8-second",
     grade: 8,
@@ -1819,7 +1819,7 @@ export const GAME_CONFIG = {
   },
   "special-quadrilateral": {
     id: "special-quadrilateral",
-    name: "特殊四邊形大挑戰",
+    name: "特殊四邊形",
     shortName: "特殊四邊形",
     semester: "grade8-second",
     grade: 8,
@@ -1835,7 +1835,7 @@ export const GAME_CONFIG = {
   },
   "quadratic-function-graph": {
     id: "quadratic-function-graph",
-    name: "二次函數圖形大挑戰",
+    name: "二次函數圖形",
     shortName: "二次函數圖形",
     semester: "grade9-second",
     grade: 9,
@@ -1851,7 +1851,7 @@ export const GAME_CONFIG = {
   },
   "quadratic-function-extrema": {
     id: "quadratic-function-extrema",
-    name: "二次函數最值大挑戰",
+    name: "二次函數最值",
     shortName: "二次函數最值",
     semester: "grade9-second",
     grade: 9,
@@ -1867,7 +1867,7 @@ export const GAME_CONFIG = {
   },
   "quartile-boxplot": {
     id: "quartile-boxplot",
-    name: "四分位數與盒狀圖大挑戰",
+    name: "四分位數與盒狀圖",
     shortName: "四分位數與盒狀圖",
     semester: "grade9-second",
     grade: 9,
@@ -1883,7 +1883,7 @@ export const GAME_CONFIG = {
   },
   "probability": {
     id: "probability",
-    name: "機率大挑戰",
+    name: "機率",
     shortName: "機率",
     semester: "grade9-second",
     grade: 9,
@@ -1899,7 +1899,7 @@ export const GAME_CONFIG = {
   },
   "prism-cylinder": {
     id: "prism-cylinder",
-    name: "角柱與圓柱大挑戰",
+    name: "角柱與圓柱",
     shortName: "角柱與圓柱",
     semester: "grade9-second",
     grade: 9,
@@ -1915,7 +1915,7 @@ export const GAME_CONFIG = {
   },
   "pyramid-cone": {
     id: "pyramid-cone",
-    name: "角錐與圓錐大挑戰",
+    name: "角錐與圓錐",
     shortName: "角錐與圓錐",
     semester: "grade9-second",
     grade: 9,
