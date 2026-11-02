@@ -1174,7 +1174,26 @@
 
     }
 
-  </style>
+  
+/* RPG 五項資源測試區：不影響既有測試中心 */
+.rpg-wallet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
+.rpg-wallet-stat{padding:17px;border:1px solid #ddd6fe;background:#faf5ff;border-radius:15px}
+.rpg-wallet-stat small{display:block;color:#64748b;margin-bottom:8px}
+.rpg-wallet-stat strong{font-size:22px;color:#5b21b6;overflow-wrap:anywhere}
+.rpg-wallet-forms{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:18px}
+.rpg-wallet-panel{border:1px solid #e2e8f0;border-radius:14px;padding:15px;background:#f8fafc}
+.rpg-wallet-panel label{display:block;font-weight:700;margin-bottom:9px}
+.rpg-wallet-panel input,.rpg-wallet-panel select{display:block;width:100%;padding:11px;margin-bottom:10px;border-radius:9px;border:1px solid #cbd5e1;background:white;font-size:16px}
+.rpg-wallet-panel button,.rpg-wallet-toolbar button{background:#6d28d9;color:#fff;border:0;border-radius:9px;padding:10px 13px;margin:3px 5px 3px 0;cursor:pointer;font-weight:700}
+.rpg-wallet-panel button.secondary,.rpg-wallet-toolbar button.secondary{background:#475569}
+.rpg-wallet-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.rpg-wallet-toolbar button.danger{background:#b91c1c}
+.rpg-wallet-message{padding:10px 12px;border-radius:9px;margin:12px 0;background:#eff6ff;color:#1e40af;min-height:40px}
+.rpg-wallet-table{width:100%;border-collapse:collapse;font-size:14px}
+.rpg-wallet-table th,.rpg-wallet-table td{border-bottom:1px solid #e2e8f0;padding:9px 7px;text-align:left}
+.rpg-wallet-scroll{overflow-x:auto;max-height:290px;overflow-y:auto}
+
+</style>
 
 </head>
 
@@ -1911,6 +1930,44 @@
 
   </section>
 
+
+  <section class="card" id="rpg-wallet-lab">
+    <h2 class="card-title">🧪 RPG 五項資源整合測試</h2>
+    <p>沿用本專案的 <code>progress-system.js</code> 與 <code>title-system.js</code> 計算等級、稱號。這裡的加減值屬於<strong>手動模擬</strong>，尚未和實際測驗獎勵綁定。</p>
+    <div class="safety-box">僅儲存於本機瀏覽器（localStorage），不連接 Firebase；不會更動正式 XP、元寶、鑽石或遊戲成績。不同裝置不會同步。</div>
+    <div class="rpg-wallet-grid" style="margin-top:16px">
+      <div class="rpg-wallet-stat"><small>✨ 永久 XP</small><strong id="rw-xp">0</strong></div>
+      <div class="rpg-wallet-stat"><small>🛡️ 等級</small><strong id="rw-level">Lv.1</strong></div>
+      <div class="rpg-wallet-stat"><small>🏅 稱號</small><strong id="rw-title">—</strong></div>
+      <div class="rpg-wallet-stat"><small>🪙 元寶</small><strong id="rw-ingot">0</strong></div>
+      <div class="rpg-wallet-stat"><small>💎 鑽石</small><strong id="rw-diamond">0</strong></div>
+    </div>
+    <p id="rw-progress" style="color:#475569;margin:12px 0 0"></p>
+    <div class="rpg-wallet-forms">
+      <div class="rpg-wallet-panel">
+        <label for="rw-xp-amount">✨ XP 增加（模擬測驗／獎勵）</label>
+        <input id="rw-xp-amount" type="number" min="1" max="100000" step="1" value="100">
+        <button type="button" id="rw-add-xp">取得 XP</button>
+      </div>
+      <div class="rpg-wallet-panel">
+        <label for="rw-currency">🪙💎 貨幣類型</label>
+        <select id="rw-currency"><option value="ingot">元寶</option><option value="diamond">鑽石</option></select>
+        <label for="rw-amount">每筆收支數量</label>
+        <input id="rw-amount" type="number" min="1" max="100000" step="1" value="10">
+        <label for="rw-reason">原因（測試備註）</label>
+        <input id="rw-reason" maxlength="60" value="測試獎勵">
+        <button type="button" id="rw-add">取得</button>
+        <button type="button" class="secondary" id="rw-spend">花費</button>
+      </div>
+    </div>
+    <div class="rpg-wallet-message" id="rw-message" role="status" aria-live="polite">測試環境已就緒。</div>
+    <div class="rpg-wallet-toolbar">
+      <button type="button" class="secondary" id="rw-export">匯出測試紀錄 JSON</button>
+      <button type="button" class="danger" id="rw-reset">清除本機 RPG 測試資料</button>
+    </div>
+    <h3 style="margin:20px 0 10px">📜 最近交易（最新在前）</h3>
+    <div class="rpg-wallet-scroll"><table class="rpg-wallet-table"><thead><tr><th>時間</th><th>項目</th><th>變動</th><th>原因</th><th>變動後</th></tr></thead><tbody id="rw-history"><tr><td colspan="5">尚無紀錄</td></tr></tbody></table></div>
+  </section>
 
 </div>
 
@@ -3750,6 +3807,64 @@
 
 </script>
 
+
+<script type="module">
+import { getLevelProgressFromTotalXp } from './js/rpg/progress-system.js';
+import { getTitleForLevel } from './js/rpg/title-system.js';
+
+const KEY = 'mathteach:rpg:five-resources:local-test:v1';
+const $ = id => document.getElementById(id);
+const blank = () => ({xp:0, ingot:0, diamond:0, transactions:[]});
+const safeInt = x => Number.isSafeInteger(x) && x >= 0 && x <= 1000000000;
+function load(){
+  try {
+    const v=JSON.parse(localStorage.getItem(KEY));
+    if (!v || !['xp','ingot','diamond'].every(k=>safeInt(v[k])) || !Array.isArray(v.transactions)) return blank();
+    return {xp:v.xp,ingot:v.ingot,diamond:v.diamond,transactions:v.transactions.slice(0,100)};
+  }catch{return blank();}
+}
+let data=load();
+const fmt=x=>x.toLocaleString('zh-TW');
+function message(s,err=false){$('rw-message').textContent=s;$('rw-message').style.color=err?'#b91c1c':'#1e40af';}
+function draw(){
+  const p=getLevelProgressFromTotalXp(data.xp);
+  const title=getTitleForLevel(p.level);
+  $('rw-xp').textContent=fmt(data.xp);
+  $('rw-level').textContent='Lv.'+p.level;
+  $('rw-title').textContent=(title.icon||'🏅')+' '+title.name;
+  $('rw-ingot').textContent=fmt(data.ingot);
+  $('rw-diamond').textContent=fmt(data.diamond);
+  $('rw-progress').textContent=`本級 XP：${fmt(p.levelXp)}／${fmt(p.nextRequirement)}｜距下一級：${fmt(p.xpToNextLevel)} XP`;
+  const body=$('rw-history');body.replaceChildren();
+  if(!data.transactions.length){const tr=body.insertRow();const td=tr.insertCell();td.colSpan=5;td.textContent='尚無紀錄';return;}
+  for(const t of data.transactions.slice(0,60)){
+    const tr=body.insertRow();
+    for(const v of [t.time,t.label,(t.delta>0?'+':'')+fmt(t.delta),t.reason,fmt(t.balance)]) tr.insertCell().textContent=String(v);
+  }
+}
+function commit(type,delta,reason){
+  if(!Number.isSafeInteger(delta)||delta===0||Math.abs(delta)>100000)return message('請輸入 1～100,000 的整數。',true);
+  const next=data[type]+delta;
+  if(!safeInt(next))return message('餘額不足，或已超出測試上限。',true);
+  data[type]=next;
+  data.transactions.unshift({id:crypto.randomUUID(),time:new Date().toLocaleString('zh-TW'),label:{xp:'XP',ingot:'元寶',diamond:'鑽石'}[type],delta,reason,balance:next});
+  data.transactions=data.transactions.slice(0,100);
+  try {localStorage.setItem(KEY,JSON.stringify(data));}catch(e){return message('本機儲存失敗，資料仍暫存在本頁。',true);}
+  draw();message(`${reason}：${delta>0?'+':''}${fmt(delta)} ${type==='xp'?'XP':type==='ingot'?'元寶':'鑽石'}`);
+}
+function amount(id){const s=$(id).value.trim();const v=Number(s);return /^\d+$/.test(s)&&Number.isSafeInteger(v)&&v>=1&&v<=100000?v:null;}
+$('rw-add-xp').addEventListener('click',()=>{const n=amount('rw-xp-amount');if(n===null)return message('XP 請輸入 1～100,000 的整數。',true);commit('xp',n,'手動模擬 XP 獎勵');});
+for(const [button,sign] of [['rw-add',1],['rw-spend',-1]]) $(button).addEventListener('click',()=>{
+  const n=amount('rw-amount');if(n===null)return message('貨幣數量請輸入 1～100,000 的整數。',true);
+  commit($('rw-currency').value,sign*n,$('rw-reason').value.trim().slice(0,60)||'手動測試');
+});
+$('rw-reset').addEventListener('click',()=>{if(!confirm('確定清除這個瀏覽器的 RPG 五項資源測試資料？這不影響 Firebase。'))return;data=blank();localStorage.removeItem(KEY);draw();message('本機測試資料已清除。');});
+$('rw-export').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify({format:'mathteach-rpg-local-test-v1',exportedAt:new Date().toISOString(),...data},null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='rpg-local-test-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+try{draw();}catch(err){message('RPG 核心模組載入異常：'+err.message,true);console.error(err);}
+</script>
 
 </body>
 
