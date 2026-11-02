@@ -1539,7 +1539,20 @@
   } from "./js/rpg/title-system.js";
 
 
-  import { readTestWallet, changeTestWallet } from "./js/rpg/rpg-currency-test.js";
+  let currencyApi = null;
+  let currencyLoadError = null;
+  async function loadCurrencyApi() {
+    if (currencyApi) return currencyApi;
+    try {
+      currencyApi = await import("./js/rpg/rpg-currency-test.js?v=20261102b");
+      currencyLoadError = null;
+      return currencyApi;
+    } catch(error) {
+      currencyLoadError = error;
+      console.error("RPG currency module load failed:", error);
+      throw error;
+    }
+  }
   "use strict";
 
 
@@ -1633,6 +1646,11 @@
           .disabled =
             false;
 
+        // 與原 XP TEST 共用登入狀態；貨幣模組故障不阻止登入與 XP 功能。
+        $("currency-commit").disabled = false;
+        $("currency-refresh").disabled = false;
+        await refreshCurrency();
+
       } else {
 
         box.className =
@@ -1657,6 +1675,9 @@
       error
     ) {
 
+      $("currency-commit").disabled = true;
+      $("currency-refresh").disabled = true;
+      currencyStatus("登入檢查失敗：" + (error?.message || String(error)));
       box.className =
         "auth-box logged-out";
 
@@ -2223,14 +2244,6 @@
 
 
       await refreshAuthState();
-  if(authState?.loggedIn){
-    $("currency-commit").disabled=false;
-    $("currency-refresh").disabled=false;
-    await refreshCurrency();
-  }
-
-
-
       return;
 
     }
@@ -2916,7 +2929,8 @@
   async function refreshCurrency(){
     if(!authState?.loggedIn){currencyStatus('請先登入 Firebase。');return;}
     try {
-      const w=await readTestWallet();
+      const api=await loadCurrencyApi();
+      const w=await api.readTestWallet();
       $("currency-yuanbao").textContent=w.yuanbao.toLocaleString('zh-TW');
       $("currency-diamonds").textContent=w.diamonds.toLocaleString('zh-TW');
       currencyStatus('✅ 已讀取 Firestore TEST 餘額');
@@ -2937,7 +2951,8 @@
     $("currency-retry").disabled=true;
     currencyStatus('正在執行 Firestore TEST 交易……');
     try{
-      const result=await changeTestWallet(request);
+      const api=await loadCurrencyApi();
+      const result=await api.changeTestWallet(request);
       currencyStatus((result.duplicate?'⛔ 相同交易已處理，不重複計入':'✅ Firestore TEST 交易成功')+'\n交易 ID：'+request.transactionId+'\n元寶：'+result.after.yuanbao+'；鑽石：'+result.after.diamonds);
       await refreshCurrency();
       if(result.duplicate)currencyStatus('⛔ 重送成功攔截：同一交易沒有重複發放。\n交易 ID：'+request.transactionId);
@@ -2949,7 +2964,6 @@
   $("currency-retry").addEventListener('click',()=>submitCurrency(true));
 
   populateGames();
-
 
   await refreshAuthState();
 
