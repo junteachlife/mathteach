@@ -1448,6 +1448,26 @@
 </div>
 
 
+
+<section class="card" id="currency-test-panel" style="margin-top:24px;padding:22px;border:2px solid #c9b5ec;border-radius:15px">
+  <h2>🪙💎 RPG 元寶／鑽石 Firestore TEST</h2>
+  <p>此區只使用 rpgTest 測試資料，不影響正式遊戲。XP 結算功能與此區相互獨立。</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:14px 0">
+    <div style="padding:16px;background:#fff7e6;border-radius:10px"><strong>🪙 元寶</strong><p id="currency-yuanbao" style="font-size:26px;font-weight:800">—</p></div>
+    <div style="padding:16px;background:#f3f0ff;border-radius:10px"><strong>💎 鑽石</strong><p id="currency-diamonds" style="font-size:26px;font-weight:800">—</p></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:end">
+    <label>資源<br><select id="currency-kind"><option value="yuanbao">🪙 元寶</option><option value="diamonds">💎 鑽石</option></select></label>
+    <label>操作<br><select id="currency-operation"><option value="add">增加</option><option value="spend">花費</option></select></label>
+    <label>數量<br><input id="currency-amount" type="number" min="1" max="100000" step="1" value="50" style="width:120px"></label>
+    <button type="button" id="currency-commit" disabled>執行雲端測試交易</button>
+    <button type="button" id="currency-refresh" disabled>重新讀取雲端餘額</button>
+    <button type="button" id="currency-retry" disabled>重送上一筆交易（防重測試）</button>
+  </div>
+  <p id="currency-message" role="status" style="margin:14px 0;white-space:pre-wrap">請先確認登入狀態。</p>
+  <p style="font-size:13px;color:#64748b">交易上限為每筆 100,000；同一筆交易 ID 只會計入一次。此版不會自動發放測驗獎勵，也沒有清空雲端餘額的捷徑。</p>
+</section>
+
 <script type="module">
 
 
@@ -1519,6 +1539,7 @@
   } from "./js/rpg/title-system.js";
 
 
+  import { readTestWallet, changeTestWallet } from "./js/rpg/rpg-currency-test.js";
   "use strict";
 
 
@@ -2202,6 +2223,12 @@
 
 
       await refreshAuthState();
+  if(authState?.loggedIn){
+    $("currency-commit").disabled=false;
+    $("currency-refresh").disabled=false;
+    await refreshCurrency();
+  }
+
 
 
       return;
@@ -2881,6 +2908,45 @@
   Init
   ==================================================
   */
+
+
+  // RPG currency test buttons use the same Firebase login; never production collections.
+  let currencyLastRequest=null;
+  const currencyStatus = msg => { $("currency-message").textContent=msg; };
+  async function refreshCurrency(){
+    if(!authState?.loggedIn){currencyStatus('請先登入 Firebase。');return;}
+    try {
+      const w=await readTestWallet();
+      $("currency-yuanbao").textContent=w.yuanbao.toLocaleString('zh-TW');
+      $("currency-diamonds").textContent=w.diamonds.toLocaleString('zh-TW');
+      currencyStatus('✅ 已讀取 Firestore TEST 餘額');
+    }catch(e){currencyStatus('❌ 讀取失敗：'+e.message);}
+  }
+  async function submitCurrency(reuse){
+    if(!authState?.loggedIn){currencyStatus('請先登入 Firebase。');return;}
+    let request;
+    if(reuse){request=currencyLastRequest;if(!request)return;}
+    else {
+      const amount=Number($("currency-amount").value);
+      if(!Number.isSafeInteger(amount)||amount<1||amount>100000){currencyStatus('數量必須是 1～100000 的整數');return;}
+      const transactionId='ct_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,12);
+      request={kind:$("currency-kind").value,operation:$("currency-operation").value,amount,reason:'RPG Firestore TEST 頁面操作',transactionId};
+      currencyLastRequest=request;
+    }
+    $("currency-commit").disabled=true;
+    $("currency-retry").disabled=true;
+    currencyStatus('正在執行 Firestore TEST 交易……');
+    try{
+      const result=await changeTestWallet(request);
+      currencyStatus((result.duplicate?'⛔ 相同交易已處理，不重複計入':'✅ Firestore TEST 交易成功')+'\n交易 ID：'+request.transactionId+'\n元寶：'+result.after.yuanbao+'；鑽石：'+result.after.diamonds);
+      await refreshCurrency();
+      if(result.duplicate)currencyStatus('⛔ 重送成功攔截：同一交易沒有重複發放。\n交易 ID：'+request.transactionId);
+    }catch(e){currencyStatus('❌ 操作失敗：'+e.message);}
+    finally{$("currency-commit").disabled=false;$("currency-retry").disabled=false;}
+  }
+  $("currency-commit").addEventListener('click',()=>submitCurrency(false));
+  $("currency-refresh").addEventListener('click',refreshCurrency);
+  $("currency-retry").addEventListener('click',()=>submitCurrency(true));
 
   populateGames();
 
