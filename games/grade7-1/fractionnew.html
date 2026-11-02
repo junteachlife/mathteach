@@ -6521,7 +6521,7 @@ function readSharedFraction(){
   return {valid:true,value:rat(n,d),display:d===1?String(n):`${n}/${d}`,simplest:true};
 }
 function scheduleFractionValidation(){if(liveValidationFrame!==null)cancelAnimationFrame(liveValidationFrame);liveValidationFrame=requestAnimationFrame(()=>{liveValidationFrame=null;validateLiveFraction()})}
-function validateLiveFraction(){if($("fractionAnswerWrap").classList.contains("hidden")||answered)return;const a=readSharedFraction();const msg=$("input-message");msg.textContent=a.empty?"":a.valid?"✓ 格式正確，已是最簡形式，可以送出。":a.message;msg.classList.toggle("ok",a.valid);$("submit-button").disabled=!a.valid;}
+function validateLiveFraction(){if($("fractionAnswerWrap").classList.contains("hidden")||answered)return;const a=readSharedFraction();const msg=$("input-message");msg.textContent=a.empty?"":a.valid?"✓ 格式正確，已是最簡形式，可以送出。":a.message;msg.classList.toggle("ok",a.valid);$("submit-button").disabled=false;}
 function freezeAnswerWidgets(){answerLocked=true;answerWidgets?.number?.setDisabled(true);}
 function parseAnswer(x){x=String(x||"").trim().replaceAll("－","-").replaceAll("−","-").replace(/\s+/g," ");if(!x)return{valid:false,message:"請先輸入答案。"};if(/^[-+]?\d+$/.test(x))return{valid:true,value:rat(+x),display:x,simplest:true};let m=x.match(/^([+-]?)(\d+)\s+(\d+)\/(\d+)$/);if(m){const s=m[1]==="-"?-1:1,w=+m[2],n=+m[3],d=+m[4];if(!d)return{valid:false,message:"分母不能是 0。"};if(n>=d)return{valid:false,message:"帶分數的分數部分要是真分數，例如 -1 2/3。"};return{valid:true,value:rat(s*(w*d+n),d),display:x,simplest:gcd(n,d)===1}}m=x.match(/^([+-]?\d+)\/([+-]?\d+)$/);if(m){const n=+m[1],d=+m[2];if(!d)return{valid:false,message:"分母不能是 0。"};return{valid:true,value:rat(n,d),display:x,simplest:gcd(n,d)===1}}return{valid:false,message:"格式無法辨識。請輸入整數、分數或帶分數，例如 -3、-2/5、-1 2/3。"}}
 function cq(o){return{...o,kind:"choice",answer:String(o.answer)}}function fq(o){return{...o,kind:"fraction"}}function choices(correct,wrong){return shuffle([{value:"correct",text:correct},...wrong.map((x,i)=>({value:`wrong${i+1}`,text:x}))])}
@@ -6723,6 +6723,13 @@ async function saveCompletion({score,accuracy,total}){
 function showReview(){
   const wr=records.filter(x=>!x.correct); if(!wr.length)$("review-list").innerHTML='<div class="review-card">全部答對，沒有需要回顧的錯題！</div>';else $("review-list").innerHTML=wr.map(r=>{const q=r.question;return `<article class="review-card"><div class="review-title">第 ${r.number} 題 ❌</div><div class="review-question">${q.label}<br>${q.html}</div><div class="review-answer">你的答案：<strong>${r.userAnswer||"未作答"}</strong><br>正確答案：<strong>${correctAnswerHTML(q)}</strong></div><div class="explain">${q.explanation}</div></article>`}).join(""); showOnly("review-screen");
 }
+// 事件：送出與下一題皆須明確綁定點擊（保留 Enter 快捷鍵）。
+$("submit-button").addEventListener("click",()=>{
+  if(!$("quiz-screen").classList.contains("hidden") && !$("submit-button").classList.contains("hidden")) submitAnswer();
+});
+$("next-button").addEventListener("click",()=>{
+  if(!$("quiz-screen").classList.contains("hidden") && !$("next-button").classList.contains("hidden")) nextQuestion();
+});
 // 事件
  document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));
 
