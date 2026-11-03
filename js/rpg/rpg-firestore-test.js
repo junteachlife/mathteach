@@ -155,7 +155,8 @@ function assertTestEnvironment() {
 
       collections.xpTransactions,
 
-      collections.attempts
+      collections.attempts,
+      collections.currencyTransactions
 
     ];
 
@@ -361,7 +362,8 @@ await settleTestAttempt({
 
 async function settleTestAttempt({
 
-  attempt
+  attempt,
+  awardCurrencyTest = false
 
 } = {}) {
 
@@ -649,6 +651,9 @@ async function settleTestAttempt({
               gainedXp:
                 0,
 
+              currencyGains: {yuanbao: 0, diamonds: 0},
+              currencyDuplicate: true,
+
               originalXp:
                 safeNumber(
                   existing.finalXp
@@ -678,6 +683,14 @@ async function settleTestAttempt({
 
               : {};
 
+
+          // Same progress snapshot owns XP and test wallet; all writes commit atomically.
+          const oldWallet = progressData.rpgCurrencyTest || {};
+          const safeWallet = value => Number.isSafeInteger(value) && value >= 0 && value <= 1000000000 ? value : 0;
+          const walletBefore = {
+            yuanbao: safeWallet(oldWallet.yuanbao),
+            diamonds: safeWallet(oldWallet.diamonds)
+          };
 
           const currentTotalXp =
             Math.max(
@@ -820,6 +833,21 @@ async function settleTestAttempt({
               100;
 
 
+          // Temporary TEST reward proposal; not a production earning rule.
+          // Bonus is derived exclusively from this attempt and historic milestone snapshot.
+          const currencyGains = awardCurrencyTest ? {
+            yuanbao: 10 + Math.floor(score / 10) * 2 +
+              (firstCompletion ? 10 : 0) + (first80 ? 10 : 0) + (first100 ? 20 : 0),
+            diamonds: (first80 ? 1 : 0) + (first100 ? 3 : 0)
+          } : {yuanbao: 0, diamonds: 0};
+          const walletAfter = {
+            yuanbao: walletBefore.yuanbao + currencyGains.yuanbao,
+            diamonds: walletBefore.diamonds + currencyGains.diamonds
+          };
+          if (walletAfter.yuanbao > 1000000000 || walletAfter.diamonds > 1000000000) {
+            throw new Error('RPG TEST 貨幣餘額超過上限');
+          }
+
           /*
           ============================================
           轉成 Progress System 格式
@@ -900,6 +928,37 @@ async function settleTestAttempt({
           const level =
             progressResult.level;
 
+
+          // Currency ledger IDs derive from the unique Attempt ID and are written
+          // in the SAME Firestore transaction as XP/attempt/progress/mode stats.
+          // Existing security rules allow only the UID-prefixed test currency documents.
+          if (awardCurrencyTest) {
+            for (const kind of ['yuanbao', 'diamonds']) {
+              const amount = currencyGains[kind];
+              if (amount === 0) continue;
+              const tag = kind === 'yuanbao' ? 'y' : 'd';
+              const attemptKey = attempt.attemptId;
+              // Attempt IDs are normally short; hash fallback preserves document ID limit.
+              const hash = str => {
+                let h = 2166136261;
+                for (let i = 0; i < str.length; i++) {
+                  h ^= str.charCodeAt(i);
+                  h = Math.imul(h, 16777619);
+                }
+                return (h >>> 0).toString(36);
+              };
+              const txId = (`rw_${tag}_${attemptKey}`).length <= 100
+                ? `rw_${tag}_${attemptKey}`
+                : `rw_${tag}_${attemptKey.slice(0, 70)}_${hash(attemptKey)}`;
+              const ledgerRef = doc(db, collections.currencyTransactions, `${uid}_${txId}`);
+              transaction.set(ledgerRef, {
+                uid, transactionId: txId, kind, operation: 'add', amount,
+                delta: amount, before: walletBefore[kind], after: walletAfter[kind],
+                reason: 'RPG Firestore TEST 同局獎勵', environment: 'test',
+                createdAt: serverTimestamp()
+              });
+            }
+          }
 
           /*
           ============================================
@@ -1192,6 +1251,10 @@ async function settleTestAttempt({
             };
 
 
+          if (awardCurrencyTest) {
+            progressWrite.rpgCurrencyTest = walletAfter;
+          }
+
           /*
           新玩家才建立 createdAt。
           */
@@ -1434,6 +1497,11 @@ async function settleTestAttempt({
 
             gainedXp:
               xp.finalXP,
+
+            currencyGains,
+            currencyBefore: walletBefore,
+            currencyAfter: walletAfter,
+            currencyIntegrated: !!awardCurrencyTest,
 
             totalXpBefore:
               currentTotalXp,
