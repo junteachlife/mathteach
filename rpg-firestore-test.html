@@ -1190,6 +1190,11 @@
       </button>
 
 
+      <button id="integrated-attempt-button" class="primary" type="button" disabled
+        style="background:#7451b9;border-color:#7451b9">
+        ✨ RPG 五項資源同局結算 TEST
+      </button>
+
       <button
         id="resend-button"
         class="secondary"
@@ -1449,15 +1454,21 @@
 
 
 
+<section class="card" id="integrated-reward-panel" style="margin-top:18px;padding:18px;border:1px solid #d9c6f0;border-radius:14px">
+  <h2>✨ 同場 XP ＋ 元寶 ＋ 鑽石獎勵 TEST</h2>
+  <p>上方紫色按鈕會建立新的 Attempt，並在同一筆 Firestore Transaction 內更新 XP、等級、稱號及貨幣；既有的 XP 單獨測試按鈕不變。</p>
+  <p><strong>測試用暫定規則：</strong>元寶 10＋分數每 10 分給 2＋首次完成 10＋首次 80 分 10＋首次滿分 20；鑽石首次 80 分給 1、首次滿分給 3。正式規則尚未定案。</p>
+  <p id="integrated-reward-status" role="status" style="white-space:pre-wrap">尚未執行整合結算。</p>
+</section>
 <section class="card" id="currency-test-panel" style="margin-top:24px;padding:22px;border:2px solid #c9b5ec;border-radius:15px">
-  <h2>🪙💎 RPG 元寶／鑽石 Firestore TEST</h2>
+  <h2><svg class="yuanbao-svg" viewBox="0 0 48 36" role="img" aria-label="元寶" xmlns="http://www.w3.org/2000/svg" style="width:1.45em;height:1.1em;vertical-align:-.16em;display:inline-block;flex:none"><path d="M5 20c7 6 14 2 19-10 5 12 12 16 19 10 1 9-7 13-19 13S4 29 5 20Z" fill="#eab308" stroke="#9a6700" stroke-width="2"/><ellipse cx="24" cy="12" rx="9" ry="6" fill="#ffdf65" stroke="#9a6700" stroke-width="1.8"/><path d="M9 23c7 7 23 8 30 0" fill="none" stroke="#fff3a0" stroke-width="2.3" stroke-linecap="round"/></svg> 💎 RPG 元寶／鑽石 Firestore TEST</h2>
   <p>此區只使用 rpgTest 測試資料，不影響正式遊戲。XP 結算功能與此區相互獨立。</p>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:14px 0">
-    <div style="padding:16px;background:#fff7e6;border-radius:10px"><strong>🪙 元寶</strong><p id="currency-yuanbao" style="font-size:26px;font-weight:800">—</p></div>
+    <div style="padding:16px;background:#fff7e6;border-radius:10px"><strong><svg class="yuanbao-svg" viewBox="0 0 48 36" role="img" aria-label="元寶" xmlns="http://www.w3.org/2000/svg" style="width:1.45em;height:1.1em;vertical-align:-.16em;display:inline-block;flex:none"><path d="M5 20c7 6 14 2 19-10 5 12 12 16 19 10 1 9-7 13-19 13S4 29 5 20Z" fill="#eab308" stroke="#9a6700" stroke-width="2"/><ellipse cx="24" cy="12" rx="9" ry="6" fill="#ffdf65" stroke="#9a6700" stroke-width="1.8"/><path d="M9 23c7 7 23 8 30 0" fill="none" stroke="#fff3a0" stroke-width="2.3" stroke-linecap="round"/></svg> 元寶</strong><p id="currency-yuanbao" style="font-size:26px;font-weight:800">—</p></div>
     <div style="padding:16px;background:#f3f0ff;border-radius:10px"><strong>💎 鑽石</strong><p id="currency-diamonds" style="font-size:26px;font-weight:800">—</p></div>
   </div>
   <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:end">
-    <label>資源<br><select id="currency-kind"><option value="yuanbao">🪙 元寶</option><option value="diamonds">💎 鑽石</option></select></label>
+    <label>資源（<svg class="yuanbao-svg" viewBox="0 0 48 36" role="img" aria-label="元寶" xmlns="http://www.w3.org/2000/svg" style="width:1.45em;height:1.1em;vertical-align:-.16em;display:inline-block;flex:none"><path d="M5 20c7 6 14 2 19-10 5 12 12 16 19 10 1 9-7 13-19 13S4 29 5 20Z" fill="#eab308" stroke="#9a6700" stroke-width="2"/><ellipse cx="24" cy="12" rx="9" ry="6" fill="#ffdf65" stroke="#9a6700" stroke-width="1.8"/><path d="M9 23c7 7 23 8 30 0" fill="none" stroke="#fff3a0" stroke-width="2.3" stroke-linecap="round"/></svg>／💎）<br><select id="currency-kind"><option value="yuanbao">元寶</option><option value="diamonds">💎 鑽石</option></select></label>
     <label>操作<br><select id="currency-operation"><option value="add">增加</option><option value="spend">花費</option></select></label>
     <label>數量<br><input id="currency-amount" type="number" min="1" max="100000" step="1" value="50" style="width:120px"></label>
     <button type="button" id="currency-commit" disabled>執行雲端測試交易</button>
@@ -1569,6 +1580,7 @@
 
   let lastFirestoreAttempt =
     null;
+  let lastWasIntegrated = false;
 
 
   /*
@@ -1602,6 +1614,7 @@
     $("new-attempt-button")
       .disabled =
         true;
+    $("integrated-attempt-button").disabled = true;
 
 
     try {
@@ -1645,6 +1658,7 @@
         $("new-attempt-button")
           .disabled =
             false;
+        $("integrated-attempt-button").disabled = false;
 
         // 與原 XP TEST 共用登入狀態；貨幣模組故障不阻止登入與 XP 功能。
         $("currency-commit").disabled = false;
@@ -2143,6 +2157,7 @@
 
       lastFirestoreAttempt =
         attempt;
+      lastWasIntegrated = false;
 
 
       await processFirestoreAttempt(
@@ -2184,7 +2199,8 @@
   */
 
   async function processFirestoreAttempt(
-    attempt
+    attempt,
+    awardCurrencyTest = false
   ) {
 
     showLoading(
@@ -2195,7 +2211,7 @@
     const result =
       await settleTestAttempt({
 
-        attempt
+        attempt, awardCurrencyTest
 
       });
 
@@ -2208,6 +2224,15 @@
         attempt,
         result
       );
+      if (awardCurrencyTest) {
+        $("integrated-reward-status").textContent =
+          `✅ 同局交易成功！ XP +${result.gainedXp}；元寶 +${result.currencyGains.yuanbao}；鑽石 +${result.currencyGains.diamonds}。
+` +
+          `元寶：${result.currencyBefore.yuanbao} → ${result.currencyAfter.yuanbao}；鑽石：${result.currencyBefore.diamonds} → ${result.currencyAfter.diamonds}。
+` +
+          `Attempt ID：${attempt.attemptId}`;
+        await refreshCurrency();
+      }
 
 
       return;
@@ -2226,6 +2251,8 @@
         attempt,
         result
       );
+      $("integrated-reward-status").textContent =
+        '⛔ 同一 Attempt 已經處理，不再發放 XP、元寶或鑽石。';
 
 
       return;
@@ -2249,6 +2276,9 @@
     }
 
 
+    if (awardCurrencyTest) {
+      $("integrated-reward-status").textContent = '❌ 同局交易失敗，全部獎勵均未入帳。請檢查 Firestore 權限與錯誤訊息。';
+    }
     renderError(
 
       result.message
@@ -2292,7 +2322,7 @@
     try {
 
       await processFirestoreAttempt(
-        lastFirestoreAttempt
+        lastFirestoreAttempt, lastWasIntegrated
       );
 
     } finally {
@@ -2901,6 +2931,25 @@
       updateModeInfo
     );
 
+
+  $("integrated-attempt-button").addEventListener("click", async () => {
+    if (!authState?.loggedIn) return;
+    const form = readForm();
+    if (!form) return;
+    const button = $("integrated-attempt-button");
+    button.disabled = true;
+    $("integrated-reward-status").textContent = "正在執行 XP、元寶、鑽石同局交易……";
+    try {
+      const attempt = createGameAttempt({...form, metadata: {source: "rpg-firestore-integrated-test"}});
+      lastFirestoreAttempt = attempt;
+      lastWasIntegrated = true;
+      await processFirestoreAttempt(attempt, true);
+      $("resend-button").disabled = false;
+    } catch (error) {
+      $("integrated-reward-status").textContent = "❌ 整合測試失敗：" + (error?.message || String(error));
+      renderError(error?.message || String(error));
+    } finally { button.disabled = false; }
+  });
 
   $("new-attempt-button")
     .addEventListener(
