@@ -1144,6 +1144,58 @@ await saveGameScore({
 ==================================================
 */
 
+
+/*
+==================================================
+RPG TEST 共用成績橋接（第一階段：八上 1-1）
+
+- 只在 ?rpgPilot=1 且 multiplicationFormula 生效。
+- rpg-game-pilot.js 內還會驗證啟用中的最高管理員。
+- 本橋接僅在「原本成績成功儲存後」執行。
+- RPG 錯誤絕不影響 scores.js 的成功回傳與排行榜。
+- 避免改動原本數學遊戲 HTML。
+==================================================
+*/
+async function runRpgScoreBridgeTest({ game, mode, score, correctCount, wrongCount, maxCombo, playTime }) {
+  if (
+    game !== "multiplicationFormula" ||
+    new URLSearchParams(window.location.search).get("rpgPilot") !== "1"
+  ) return;
+
+  let target = document.getElementById("rpg-shared-score-pilot-status");
+  if (!target) {
+    target = document.createElement("section");
+    target.id = "rpg-shared-score-pilot-status";
+    target.setAttribute("role", "status");
+    target.style.cssText = "box-sizing:border-box;max-width:760px;margin:18px auto;padding:15px;border:2px solid #b8a4eb;border-radius:14px;background:#faf7ff;color:#32245a;font-size:15px;line-height:1.65;";
+    target.textContent = "🧪 RPG TEST 正在檢查最高管理員身分…";
+    const leaderboard = document.getElementById("game-leaderboard-result");
+    const anchor = leaderboard || document.querySelector("#resultScreen, #result-screen, #resultPage, .result-screen, .result-page");
+    if (anchor?.parentElement) anchor.insertAdjacentElement("afterend", target);
+    else document.body.appendChild(target);
+  }
+
+  try {
+    const { createRpgGamePilot } = await import("./rpg/rpg-game-pilot.js?v=20261103-shared-entry");
+    const pilot = createRpgGamePilot({ gameId: game, statusElement: target });
+    const totalQuestions = correctCount + wrongCount;
+    if (totalQuestions < 1) throw new Error("無法從成績取得有效總題數");
+    // 只讓 RPG 端看到標準化、已成功儲存的測驗結果。
+    await pilot.settle({
+      modeId: mode,
+      score: score,
+      correctCount: correctCount,
+      wrongCount: wrongCount,
+      totalQuestions: totalQuestions,
+      maxCombo: maxCombo,
+      playTime: playTime
+    });
+  } catch (error) {
+    console.warn("[RPG 共用入口 TEST] 不影響原有成績：", error);
+    target.textContent = "⚠️ RPG TEST 連動尚未完成：" + (error?.message || String(error)) + "（原本成績不受影響）";
+  }
+}
+
 export async function saveGameScore({
   game,
   mode = "",
@@ -1440,6 +1492,16 @@ export async function saveGameScore({
       leaderboardStatus
     );
 
+    // 只有測試網址和指定遊戲才進入 RPG；不等待、不阻擋正式成績結果。
+    void runRpgScoreBridgeTest({
+      game: safeGame,
+      mode: safeMode,
+      score: safeScore,
+      correctCount: safeCorrectCount,
+      wrongCount: safeWrongCount,
+      maxCombo: safeMaxCombo,
+      playTime: safePlayTime
+    });
 
     return {
       success: true,
