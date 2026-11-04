@@ -50,13 +50,6 @@ header{padding-top:60px}.top{display:flex;flex-wrap:nowrap;align-items:stretch;g
 .msg.ok{color:#15803d}
 @media(max-width:600px){.qcontent{font-size:clamp(21px,5vw,29px)}.qcontent>div{max-width:100%}.answer{padding:12px}.answer-fraction-pane #fractionNumeratorMount,.answer-fraction-pane #fractionDenominatorMount{width:min(100%,245px)}}
 
-.local-paper-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:7px 14px;background:linear-gradient(#fffbdc,#f6b944);color:#70460d;border:1.5px solid #d49b26;border-radius:12px;box-shadow:0 3px 0 #bd8721;font-size:14px;font-weight:800;cursor:pointer}
-#local-paper-dialog{position:fixed;inset:0;z-index:100000;background:rgba(15,23,42,.62);display:flex;align-items:center;justify-content:center;padding:12px}
-#local-paper-dialog[hidden]{display:none!important}
-.local-paper-panel{width:min(96vw,950px);height:min(88vh,780px);border-radius:18px;background:white;padding:12px;display:flex;flex-direction:column;gap:8px}
-.local-paper-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap}
-.local-paper-actions button{padding:9px 16px;border-radius:10px;border:1px solid #94a3b8;background:#fff;font-weight:800;cursor:pointer}
-#local-paper-canvas{width:100%;flex:1;min-height:0;border:1px solid #cbd5e1;border-radius:10px;background:white;touch-action:none;cursor:crosshair}
 </style>
 <style id="built-in-mei-v23">
 /*
@@ -1097,7 +1090,7 @@ v2.3｜特殊符號就地輸入
 <section id="quiz-screen" class="screen hidden">
 <div class="top"><div class="status"><small>模式</small><span id="mode-display">—</span></div><div id="time-box" class="status"><small>時間</small><span id="time-display">00:00</span></div><div class="status"><small>分數</small><span id="score-display">0</span></div><div class="status"><small>最高連擊</small><span id="combo-display">0</span></div><button id="restart-top" class="btn" type="button">🔄 重新測驗</button><button id="reselect-top" class="btn gray" type="button">重選模式</button></div>
 <div class="prog"><div id="progress-bar" class="bar"></div></div>
-<div class="qcard"><div id="question-label" class="qlabel"></div><div id="question-content" class="qcontent"></div><div id="question-note" class="note"></div><div class="scratch"><div id="scratchpad-mobile-button"><button id="local-scratchpad-button" type="button" class="local-paper-btn">✏️ 計算紙</button></div></div></div>
+<div class="qcard"><div id="question-label" class="qlabel"></div><div id="question-content" class="qcontent"></div><div id="question-note" class="note"></div><div class="scratch"><div id="scratchpad-mobile-button"></div></div></div>
 <div class="answer"><div class="answer-title">請作答</div><div id="choiceMount" class="choices"></div><div id="fractionAnswerWrap" class="fwrap hidden"><div id="answerMount"></div><div class="help">使用共用數學答案框；點「分數」可輸入分子、分母。完成後自動檢查最簡分數，送出後才判斷對錯。</div></div><div id="input-message" class="msg"></div></div>
 <div id="feedback" class="feedback"></div><div id="explanation" class="explain hidden"></div>
 <div class="buttons"><button id="submit-button" class="btn">送出答案（Enter）</button><button id="next-button" class="btn gray hidden">下一題</button><button id="quit-button" class="btn orange hidden">選擇模式</button></div>
@@ -6465,27 +6458,32 @@ const MODE_CONFIG={concept:{name:"🧠 等值分數、最簡分數與大小比�
 const $=id=>document.getElementById(id);let modeId="concept",questions=[],index=0,correct=0,wrong=0,combo=0,maxCombo=0,records=[],selectedChoice=null,answered=false,startTime=0,elapsed=0,timerId=null,speedRemaining=60,speedAttempts=0,speedScore=0,scoreSaved=false,attemptId="";
 window.MathGameSessionMeta={gameId:GAME_ID,chapter:"2-3",title:"分數的四則運算大挑戰",modes:MODE_CONFIG};
 const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a,pick=a=>a[Math.floor(Math.random()*a.length)];
-function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function formatTime(s){s=Math.max(0,Math.floor(s));return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}function showOnly(id){["start-screen","quiz-screen","result-screen","review-screen"].forEach(x=>$(x).classList.toggle("hidden",x!==id));window.scrollTo({top:0,behavior:"smooth"})}function createAttemptId(){return [GAME_ID,modeId,Date.now(),Math.random().toString(36).slice(2,10)].join("-")}
-function mountScratch(){const m=$("scratchpad-mobile-button"),b=$("scratchpadOpenButton"),fallback=$("local-scratchpad-button");if(!m||!b)return false;if(b.parentElement!==m)m.appendChild(b);if(fallback)fallback.hidden=true;return true}
-window.addEventListener("DOMContentLoaded",()=>{window.MathGameCommonHeader?.init({mountId:"commonHeaderMount",basePath:"../../"});setupLocalScratchpad();if(!mountScratch()){let n=0,t=setInterval(()=>{n++;if(mountScratch()||n>=40)clearInterval(t)},80)}});
-function setupLocalScratchpad(){
- if($("local-paper-dialog"))return;
- const dialog=document.createElement("div");dialog.id="local-paper-dialog";dialog.hidden=true;
- dialog.innerHTML='<div class="local-paper-panel" role="dialog" aria-modal="true" aria-label="計算紙"><div class="local-paper-actions"><strong style="margin-right:auto">✏️ 計算紙</strong><button type="button" id="local-paper-clear">清除筆跡</button><button type="button" id="local-paper-close">關閉</button></div><canvas id="local-paper-canvas"></canvas></div>';
- document.body.appendChild(dialog);
- const canvas=$("local-paper-canvas"),ctx=canvas.getContext("2d");let drawing=false,previous=null;
- const resize=()=>{const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;const previousImage=document.createElement("canvas");previousImage.width=canvas.width;previousImage.height=canvas.height;previousImage.getContext("2d").drawImage(canvas,0,0);const ratio=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(rect.width*ratio);canvas.height=Math.round(rect.height*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);ctx.drawImage(previousImage,0,0,previousImage.width,previousImage.height,0,0,rect.width,rect.height);ctx.strokeStyle="#18283e";ctx.lineWidth=2.5;ctx.lineCap="round";ctx.lineJoin="round";};
- const position=e=>{const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
- canvas.addEventListener("pointerdown",e=>{drawing=true;previous=position(e);canvas.setPointerCapture(e.pointerId);});
- canvas.addEventListener("pointermove",e=>{if(!drawing)return;const p=position(e);ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(p.x,p.y);ctx.stroke();previous=p;});
- ["pointerup","pointercancel","lostpointercapture"].forEach(x=>canvas.addEventListener(x,()=>{drawing=false;previous=null;}));
- $("local-paper-clear").addEventListener("click",()=>ctx.clearRect(0,0,canvas.width,canvas.height));
- $("local-paper-close").addEventListener("click",()=>{dialog.hidden=true});
- dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.hidden=true});
- document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!dialog.hidden)dialog.hidden=true});
- $("local-scratchpad-button").addEventListener("click",()=>{dialog.hidden=false;requestAnimationFrame(resize)});
- window.addEventListener("resize",()=>{if(!dialog.hidden)resize()});
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function formatTime(s){s=Math.max(0,Math.floor(s));return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}function showOnly(id){["start-screen","quiz-screen","result-screen","review-screen"].forEach(x=>$(x).classList.toggle("hidden",x!==id));if(id==="quiz-screen"){mountScratch();window.showGameScratchpadButton?.()}else{window.hideGameScratchpadButton?.();window.closeGameScratchpad?.()}window.scrollTo({top:0,behavior:"smooth"})}function createAttemptId(){return [GAME_ID,modeId,Date.now(),Math.random().toString(36).slice(2,10)].join("-")}
+// 與全站其他遊戲相同：僅掛載共用 scratchpad-template.js 產生的計算紙。
+// 不建立第二套本機 Canvas，也不更動共用畫筆、橡皮擦、Undo/Redo、下載功能。
+function mountScratch(){
+  const mount=$("scratchpad-mobile-button");
+  const button=$("scratchpadOpenButton");
+  if(!mount||!button)return false;
+  if(button.parentElement!==mount)mount.appendChild(button);
+  button.style.position="static";
+  button.style.inset="auto";
+  button.style.transform="none";
+  if(!$("quiz-screen").classList.contains("hidden")){
+    window.showGameScratchpadButton?.();
+  }
+  return true;
 }
+window.addEventListener("DOMContentLoaded",()=>{
+  window.MathGameCommonHeader?.init({mountId:"commonHeaderMount",basePath:"../../"});
+  if(!mountScratch()){
+    let count=0;
+    const retry=setInterval(()=>{
+      count++;
+      if(mountScratch()||count>=40)clearInterval(retry);
+    },80);
+  }
+});
 
 function sound(method){try{const s=window.GameSound||window.MathGameSound,f=s?.[method];if(typeof f!=="function")return false;const r=f.call(s);r?.catch?.(()=>{});return true}catch{return false}}function urgent(){const s=window.GameSound||window.MathGameSound;for(const m of ["playCountdown","playTick","playTimer","playUrgent"]){if(typeof s?.[m]==="function"){try{s[m]();return}catch{}}}try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.frequency.value=880;g.gain.setValueAtTime(.06,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.08);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.08);o.onended=()=>c.close().catch(()=>{})}catch{}}
 function gcd(a,b){a=Math.abs(Math.trunc(a));b=Math.abs(Math.trunc(b));while(b){const r=a%b;a=b;b=r}return a||1}function lcm(a,b){return Math.abs(a*b)/gcd(a,b)}function rat(n,d=1){if(!d)throw Error("分母不可為0");if(d<0){n=-n;d=-d}const g=gcd(n,d);return{n:n/g,d:d/g}}function raw(n,d=1){if(d<0){n=-n;d=-d}return{n,d}}const add=(a,b)=>rat(a.n*b.d+b.n*a.d,a.d*b.d),sub=(a,b)=>rat(a.n*b.d-b.n*a.d,a.d*b.d),mul=(a,b)=>rat(a.n*b.n,a.d*b.d),div=(a,b)=>rat(a.n*b.d,a.d*b.n),neg=a=>({n:-a.n,d:a.d}),abs=a=>({n:Math.abs(a.n),d:a.d}),eq=(a,b)=>a.n===b.n&&a.d===b.d,cmp=(a,b)=>Math.sign(a.n*b.d-b.n*a.d),recip=a=>a.n?rat(a.d,a.n):null;
