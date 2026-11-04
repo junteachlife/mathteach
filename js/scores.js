@@ -1147,20 +1147,18 @@ await saveGameScore({
 
 /*
 ==================================================
-RPG TEST 共用成績橋接（第一階段：八上 1-1）
+RPG TEST 共用成績橋接（第二階段：已登錄遊戲跨學期測試）
 
-- 只在 ?rpgPilot=1 且 multiplicationFormula 生效。
-- rpg-game-pilot.js 內還會驗證啟用中的最高管理員。
+- 只在 ?rpgPilot=1 啟動；RPG 模組再驗證 TEST 環境與最高管理員。
+- 僅允許 game-registry.js 已登錄的遊戲／模式，不猜測舊 ID。
 - 本橋接僅在「原本成績成功儲存後」執行。
 - RPG 錯誤絕不影響 scores.js 的成功回傳與排行榜。
-- 避免改動原本數學遊戲 HTML。
+- 不改動任何數學遊戲 HTML，也不更改正式成績資料。
 ==================================================
 */
 async function runRpgScoreBridgeTest({ game, mode, score, correctCount, wrongCount, maxCombo, playTime }) {
-  if (
-    game !== "multiplicationFormula" ||
-    new URLSearchParams(window.location.search).get("rpgPilot") !== "1"
-  ) return;
+  // 未開啟測試開關時完全不載入 RPG 程式，維持原本遊戲速度。
+  if (new URLSearchParams(window.location.search).get("rpgPilot") !== "1") return;
 
   let target = document.getElementById("rpg-shared-score-pilot-status");
   if (!target) {
@@ -1176,6 +1174,17 @@ async function runRpgScoreBridgeTest({ game, mode, score, correctCount, wrongCou
   }
 
   try {
+    // 註冊表是唯一可參與 RPG 結算的遊戲／模式清單。
+    // 尚未登錄的遊戲或新版模式，明確略過；不自行產生新 ID。
+    const { isRegisteredGame, isRegisteredMode } = await import("./rpg/game-registry.js");
+    if (!isRegisteredGame(game)) {
+      target.textContent = `ℹ️ RPG TEST 尚未登錄遊戲「${game}」，此次只儲存原本的成績。`;
+      return;
+    }
+    if (!isRegisteredMode(game, mode)) {
+      target.textContent = `ℹ️ RPG TEST 尚未登錄模式「${game} / ${mode || "（空白）"}」，此次只儲存原本的成績。`;
+      return;
+    }
     const { createRpgGamePilot } = await import("./rpg/rpg-game-pilot.js?v=20261103-shared-entry");
     const pilot = createRpgGamePilot({ gameId: game, statusElement: target });
     const totalQuestions = correctCount + wrongCount;
@@ -1492,7 +1501,8 @@ export async function saveGameScore({
       leaderboardStatus
     );
 
-    // 只有測試網址和指定遊戲才進入 RPG；不等待、不阻擋正式成績結果。
+    // 只有測試網址才進入 RPG，且必須通過註冊表與最高管理員驗證。
+    // 不等待 RPG 結算；不阻擋原本的成績儲存成功結果。
     void runRpgScoreBridgeTest({
       game: safeGame,
       mode: safeMode,
