@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>數學拔河王 V2.1｜自適應雙人觸控競賽</title>
+<title>數學拔河王 V2.2｜桌機首屏優化版</title>
 <style>
 :root{font-family:'Microsoft JhengHei','Noto Sans TC',system-ui,sans-serif;color:#1f2a44;background:#f1f5fa}*{box-sizing:border-box}body{margin:0}button,select{font:inherit;touch-action:manipulation}button{cursor:pointer}.app{min-height:100vh;display:flex;flex-direction:column;gap:10px;padding:10px}.top{display:grid;grid-template-columns:1fr minmax(280px,2.3fr) 1fr;align-items:center;gap:12px;background:white;border-radius:16px;padding:10px 16px;box-shadow:0 3px 16px #22344b10}.score{text-align:center;font-weight:900;font-size:clamp(20px,3vw,38px)}.score.blue{color:#2872c6}.score.red{color:#cd4854}.center{text-align:center}.center h1{font-size:clamp(18px,2vw,28px);margin:0}.sub{font-size:12px;color:#66748a}.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:20px}.rope-stage{position:relative;height:105px;overflow:hidden;border-radius:14px;background:linear-gradient(90deg,#dceaff 0 50%,#ffe5e7 50%);border:1px solid #dbe2eb}.centerline{position:absolute;left:50%;height:100%;border-left:2px dashed #8190a1}.rope{position:absolute;top:47%;height:8px;left:7%;right:7%;background:repeating-linear-gradient(90deg,#a87648 0 10px,#be9869 10px 20px);border-radius:10px}.rope-group{position:absolute;top:20px;left:50%;transform:translateX(-50%);transition:left .5s ease;width:100%;height:78px;pointer-events:none}.flag{position:absolute;left:50%;top:0;transform:translateX(-50%);height:69px;border-left:5px solid #fbba3a}.flag:after{content:'⚑';color:#e0aa0f;position:absolute;left:3px;top:-13px;font-size:34px}.players{position:absolute;font-size:35px;top:22px;white-space:nowrap;text-shadow:1px 2px #fff}.players.left{right:54%}.players.right{left:54%}.track{display:flex;align-items:center;gap:10px;font-weight:bold;font-size:13px}.bar{height:12px;background:#f6ccd0;border-radius:20px;flex:1;overflow:hidden}.barfill{width:50%;height:100%;background:#4490e4;transition:width .5s}.arena{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:0}.side{display:flex;flex-direction:column;gap:8px;padding:12px;min-width:0;background:white;border-radius:17px;border-top:6px solid}.side.blue{border-color:#2d80d8}.side.red{border-color:#d85b66}.side-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.side-title{font-size:21px;font-weight:900}.blue .side-title{color:#2673c8}.red .side-title{color:#c84b55}.question{background:#f2f6fa;border-radius:12px;display:grid;place-items:center;text-align:center;min-height:70px;padding:12px;font-weight:800;font-size:clamp(20px,2.5vw,33px)}.scratch{position:relative;flex:1;min-height:110px;border:1px solid #cdd6e2;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(#fff 0 26px,#e6eef6 27px 28px)}.scratch canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}.scratch-label{position:absolute;top:4px;left:8px;font-size:11px;color:#8090a0;pointer-events:none}.clear{position:absolute;right:5px;top:5px;border:1px solid #cfd9e3;background:#fff;border-radius:6px;font-size:12px;padding:4px 7px}.answer{display:grid;grid-template-columns:1fr auto;gap:8px}.answer-display{border:2px solid #cbd7e6;background:#fff;border-radius:10px;padding:10px;font-size:25px;min-height:50px;word-break:break-all}.submit{border:0;border-radius:10px;color:#fff;font-weight:bold;padding:8px 16px;background:#2d80d8}.red .submit{background:#d85b66}.submit:disabled{opacity:.5}.pad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.pad button{min-height:43px;border:1px solid #d3dde9;background:#f8fbff;border-radius:9px;font-weight:800;font-size:clamp(16px,1.5vw,23px)}.pad button:active{background:#c4e1ff}.status{height:23px;color:#56677e;font-size:14px;font-weight:bold;text-align:center}.footer{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.btn{border:0;background:#334e72;color:#fff;padding:9px 14px;border-radius:8px;font-weight:bold}.btn.alt{background:#fff;color:#34425c;border:1px solid #b7c4d6}.mode-note{font-size:12px;color:#69788a}.dialog-wrap{position:fixed;inset:0;background:#142238aa;display:grid;place-items:center;z-index:10;padding:16px}.dialog{background:white;max-width:560px;width:100%;padding:25px;border-radius:20px;text-align:center;box-shadow:0 12px 42px #16253855}.dialog h2{margin-top:0}.options{display:grid;gap:10px;text-align:left}.option{border:1px solid #d9e1ea;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;gap:8px}.option select{border:0;min-width:130px}.hidden{display:none!important}@media (max-width:700px){.top{grid-template-columns:1fr 2fr 1fr;padding:8px}.arena{gap:5px}.side{padding:6px}.side-title{font-size:16px}.question{font-size:18px;min-height:65px}.answer{grid-template-columns:1fr}.answer-display{font-size:21px}.pad{gap:3px}.pad button{min-height:40px}.players{font-size:27px}.rope-stage{height:90px}.scratch{min-height:85px}.app{padding:5px}}@media (max-height:800px) and (min-width:800px){.scratch{min-height:85px}.pad button{min-height:36px}.question{min-height:55px}.rope-stage{height:83px}.top{padding:5px 12px}}
 
@@ -154,6 +154,59 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
   .pad button{min-height:46px}
 }
 @media(prefers-reduced-motion:reduce){.mascot{animation:none}.rope-group,.barfill{transition:none}}
+/* V2.2 Desktop / electronic-whiteboard first-screen layout.
+   Content is sized by available viewport height; the scratchpads absorb remaining space. */
+@media (min-width: 1000px) and (min-height: 620px) and (orientation: landscape) {
+  html,body{height:100%;}
+  .app{height:100vh;height:100dvh;min-height:0;max-width:1900px;
+       display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;
+       gap:clamp(4px,.65vh,9px);padding:clamp(6px,.7vw,13px) clamp(8px,1vw,18px);
+       overflow:hidden;}
+  .top{min-height:0;height:clamp(72px,10vh,97px);padding:4px 14px;
+       grid-template-columns:minmax(155px,1fr) minmax(360px,2.5fr) minmax(155px,1fr);border-radius:18px;}
+  .score{height:clamp(44px,6vh,62px);min-height:0;max-width:240px;
+         border-width:2px;font-size:clamp(25px,2.6vw,36px);}
+  .score:before{font-size:19px;top:-15px;}
+  .score-dot{height:26px;width:26px;}
+  .center h1{font-size:clamp(21px,2.1vw,31px);line-height:1.08;margin:0 4px 0 0;letter-spacing:1px;}
+  .center h1:before{font-size:.65em;margin-right:5px;vertical-align:2px;}
+  .sub{font-size:clamp(10px,1vw,13px);padding:2px 8px;}
+  .timer{font-size:clamp(17px,1.55vw,21px);padding:0 11px;min-width:106px;margin:3px auto 0;}
+  .rope-stage{height:clamp(95px,13vh,135px);border-radius:21px;border-width:3px;}
+  .mascot{width:clamp(41px,4.2vw,63px);height:clamp(70px,10.8vh,99px);}
+  .players.left{right:calc(50% + 22px)}.players.right{left:calc(50% + 22px)}
+  .flag{top:16%;height:72%;}
+  .track{padding:0 5px;font-size:11px;height:16px;}
+  .bar{height:11px;}
+  .arena{height:100%;min-height:0;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px;overflow:hidden;}
+  .side{height:100%;min-height:0;overflow:hidden;gap:clamp(3px,.65vh,7px);
+        padding:clamp(6px,.8vh,10px) clamp(8px,.85vw,13px);border-top-width:5px;border-radius:16px;}
+  .side-head{min-height:24px;}
+  .side-title{font-size:clamp(18px,1.55vw,23px);}
+  .question{min-height:0;height:clamp(48px,7vh,65px);flex:none;
+            padding:5px 10px;font-size:clamp(21px,2vw,29px);border-radius:11px;}
+  .scratch{flex:1 1 0;min-height:45px;border-radius:10px;}
+  .scratch-label{font-size:10px;}
+  .clear{font-size:11px;padding:3px 6px;}
+  .answer{flex:none;grid-template-columns:minmax(0,1fr) auto;gap:6px;}
+  .answer-display{min-height:0;height:clamp(39px,5.2vh,48px);font-size:clamp(19px,1.8vw,24px);
+                  padding:5px 10px;}
+  .submit{padding:5px 14px;font-size:clamp(14px,1.2vw,17px);min-width:98px;}
+  .pad{flex:none;gap:clamp(3px,.45vh,6px);}
+  .pad button{min-height:0;height:clamp(32px,4.4vh,45px);font-size:clamp(17px,1.45vw,22px);border-radius:8px;}
+  .status{height:clamp(17px,2.5vh,23px);min-height:0;font-size:12px;}
+  .footer{height:clamp(30px,4vh,40px);gap:8px;}
+  .btn{padding:5px 12px;font-size:13px;}
+  .mode-note{font-size:11px;}
+}
+/* Short screens: preserve usable key targets and allow scrolling instead of clipping. */
+@media (min-width:1000px) and (max-height:619px) and (orientation:landscape) {
+ .app{height:auto;min-height:100dvh;overflow:visible;}
+ .rope-stage{height:90px}.top{min-height:70px}
+ .scratch{flex:none;height:100px;min-height:100px}
+ .pad button{min-height:38px}.side{overflow:visible}
+}
+
 </style>
 </head>
 <body><div class="app">
