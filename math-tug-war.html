@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>數學拔河王 V2｜Q版雙人觸控競賽</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>數學拔河王 V2.1｜自適應雙人觸控競賽</title>
 <style>
 :root{font-family:'Microsoft JhengHei','Noto Sans TC',system-ui,sans-serif;color:#1f2a44;background:#f1f5fa}*{box-sizing:border-box}body{margin:0}button,select{font:inherit;touch-action:manipulation}button{cursor:pointer}.app{min-height:100vh;display:flex;flex-direction:column;gap:10px;padding:10px}.top{display:grid;grid-template-columns:1fr minmax(280px,2.3fr) 1fr;align-items:center;gap:12px;background:white;border-radius:16px;padding:10px 16px;box-shadow:0 3px 16px #22344b10}.score{text-align:center;font-weight:900;font-size:clamp(20px,3vw,38px)}.score.blue{color:#2872c6}.score.red{color:#cd4854}.center{text-align:center}.center h1{font-size:clamp(18px,2vw,28px);margin:0}.sub{font-size:12px;color:#66748a}.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:20px}.rope-stage{position:relative;height:105px;overflow:hidden;border-radius:14px;background:linear-gradient(90deg,#dceaff 0 50%,#ffe5e7 50%);border:1px solid #dbe2eb}.centerline{position:absolute;left:50%;height:100%;border-left:2px dashed #8190a1}.rope{position:absolute;top:47%;height:8px;left:7%;right:7%;background:repeating-linear-gradient(90deg,#a87648 0 10px,#be9869 10px 20px);border-radius:10px}.rope-group{position:absolute;top:20px;left:50%;transform:translateX(-50%);transition:left .5s ease;width:100%;height:78px;pointer-events:none}.flag{position:absolute;left:50%;top:0;transform:translateX(-50%);height:69px;border-left:5px solid #fbba3a}.flag:after{content:'⚑';color:#e0aa0f;position:absolute;left:3px;top:-13px;font-size:34px}.players{position:absolute;font-size:35px;top:22px;white-space:nowrap;text-shadow:1px 2px #fff}.players.left{right:54%}.players.right{left:54%}.track{display:flex;align-items:center;gap:10px;font-weight:bold;font-size:13px}.bar{height:12px;background:#f6ccd0;border-radius:20px;flex:1;overflow:hidden}.barfill{width:50%;height:100%;background:#4490e4;transition:width .5s}.arena{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:0}.side{display:flex;flex-direction:column;gap:8px;padding:12px;min-width:0;background:white;border-radius:17px;border-top:6px solid}.side.blue{border-color:#2d80d8}.side.red{border-color:#d85b66}.side-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.side-title{font-size:21px;font-weight:900}.blue .side-title{color:#2673c8}.red .side-title{color:#c84b55}.question{background:#f2f6fa;border-radius:12px;display:grid;place-items:center;text-align:center;min-height:70px;padding:12px;font-weight:800;font-size:clamp(20px,2.5vw,33px)}.scratch{position:relative;flex:1;min-height:110px;border:1px solid #cdd6e2;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(#fff 0 26px,#e6eef6 27px 28px)}.scratch canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}.scratch-label{position:absolute;top:4px;left:8px;font-size:11px;color:#8090a0;pointer-events:none}.clear{position:absolute;right:5px;top:5px;border:1px solid #cfd9e3;background:#fff;border-radius:6px;font-size:12px;padding:4px 7px}.answer{display:grid;grid-template-columns:1fr auto;gap:8px}.answer-display{border:2px solid #cbd7e6;background:#fff;border-radius:10px;padding:10px;font-size:25px;min-height:50px;word-break:break-all}.submit{border:0;border-radius:10px;color:#fff;font-weight:bold;padding:8px 16px;background:#2d80d8}.red .submit{background:#d85b66}.submit:disabled{opacity:.5}.pad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.pad button{min-height:43px;border:1px solid #d3dde9;background:#f8fbff;border-radius:9px;font-weight:800;font-size:clamp(16px,1.5vw,23px)}.pad button:active{background:#c4e1ff}.status{height:23px;color:#56677e;font-size:14px;font-weight:bold;text-align:center}.footer{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.btn{border:0;background:#334e72;color:#fff;padding:9px 14px;border-radius:8px;font-weight:bold}.btn.alt{background:#fff;color:#34425c;border:1px solid #b7c4d6}.mode-note{font-size:12px;color:#69788a}.dialog-wrap{position:fixed;inset:0;background:#142238aa;display:grid;place-items:center;z-index:10;padding:16px}.dialog{background:white;max-width:560px;width:100%;padding:25px;border-radius:20px;text-align:center;box-shadow:0 12px 42px #16253855}.dialog h2{margin-top:0}.options{display:grid;gap:10px;text-align:left}.option{border:1px solid #d9e1ea;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;gap:8px}.option select{border:0;min-width:130px}.hidden{display:none!important}@media (max-width:700px){.top{grid-template-columns:1fr 2fr 1fr;padding:8px}.arena{gap:5px}.side{padding:6px}.side-title{font-size:16px}.question{font-size:18px;min-height:65px}.answer{grid-template-columns:1fr}.answer-display{font-size:21px}.pad{gap:3px}.pad button{min-height:40px}.players{font-size:27px}.rope-stage{height:90px}.scratch{min-height:85px}.app{padding:5px}}@media (max-height:800px) and (min-width:800px){.scratch{min-height:85px}.pad button{min-height:36px}.question{min-height:55px}.rope-stage{height:83px}.top{padding:5px 12px}}
 
@@ -46,6 +46,114 @@ body{background:linear-gradient(155deg,#e6f6ff,#f7f8ff 48%,#fff2f5);}
 @media(max-height:800px) and (min-width:800px){.top{min-height:86px}.rope-stage{height:120px}.mascot{height:100px;width:60px}.side{padding:7px 12px}}
 @media(prefers-reduced-motion:reduce){.mascot{animation:none!important}.rope-group,.barfill{transition:none}}
 
+
+/* V2.1 Responsive upgrade: screen width, orientation and touch-safe layout. */
+html{width:100%;-webkit-text-size-adjust:100%}
+body{min-width:0;overflow-x:hidden}
+.app{width:100%;min-height:100vh;min-height:100dvh;max-width:1900px}
+.top,.rope-stage,.arena,.side,.question,.scratch,.answer,.pad{min-width:0}
+button{ -webkit-tap-highlight-color:transparent }
+button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offset:2px}
+.side{min-height:0}
+.question{overflow-wrap:anywhere;line-height:1.4}
+.answer-display{overflow-wrap:anywhere;min-width:0}
+.pad button,.submit,.clear,.btn{touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.scratch{touch-action:none}
+/* Full-size electronic whiteboards / desktop landscape */
+@media(min-width:1200px) and (min-height:850px){
+  .app{gap:clamp(8px,1vh,16px);padding:clamp(8px,1vw,20px)}
+  .top{min-height:clamp(104px,13vh,165px)}
+  .rope-stage{height:clamp(125px,18vh,225px)}
+  .side{gap:clamp(7px,1vh,12px)}
+  .scratch{min-height:130px}
+  .pad button{min-height:clamp(46px,5.5vh,72px)}
+}
+/* Tablets and narrower interactive displays: keep genuine split-screen */
+@media(min-width:701px) and (max-width:1199px){
+  .app{padding:8px;gap:7px}
+  .top{grid-template-columns:minmax(85px,1fr) minmax(230px,2fr) minmax(85px,1fr);padding:10px 8px}
+  .score{width:100%;min-height:62px;font-size:clamp(24px,3.2vw,36px)}
+  .score-dot{width:24px;height:24px}
+  .center h1{font-size:clamp(23px,3.2vw,38px)}
+  .sub{font-size:clamp(10px,1.25vw,15px);padding:3px 8px}
+  .arena{gap:8px}
+  .side{padding:9px;gap:7px}
+  .question{font-size:clamp(18px,2.2vw,28px)}
+  .pad button{min-height:44px}
+  .scratch{min-height:110px}
+}
+/* Portrait tablet: retain two competitors while allocating content height */
+@media(min-width:701px) and (orientation:portrait){
+  .arena{align-items:stretch}
+  .side{min-height:560px}
+  .scratch{flex:1;min-height:200px}
+  .pad button{min-height:52px}
+}
+/* Narrow smartphone portrait: vertical team cards, accessible 44px keys */
+@media(max-width:700px) and (orientation:portrait){
+  .app{padding:6px;gap:7px}
+  .top{grid-template-columns:minmax(65px,1fr) minmax(0,2.4fr) minmax(65px,1fr);gap:5px;min-height:92px;padding:9px 5px}
+  .score{width:100%;min-height:52px;padding:2px;gap:4px;font-size:clamp(20px,6vw,33px);border-width:2px}
+  .score:before{font-size:17px;top:-15px}
+  .score-dot{width:17px;height:17px;border-width:2px}
+  .center h1{font-size:clamp(19px,5.4vw,29px);letter-spacing:0;line-height:1.2}
+  .center h1:before{display:none}
+  .sub{font-size:clamp(9px,2.5vw,12px);padding:2px 5px;line-height:1.35}
+  .timer{font-size:18px;min-width:0;padding:1px 10px;margin-top:3px}
+  .rope-stage{height:112px;border-radius:17px;border-width:3px}
+  .rope{height:8px}
+  .mascot{width:clamp(27px,8vw,44px);height:clamp(49px,15vw,74px)}
+  .players.left{right:calc(50% + 12px)}.players.right{left:calc(50% + 12px)}
+  .flag{height:65%}
+  .track{padding:0 4px;font-size:12px}
+  .arena{display:flex;flex-direction:column;gap:10px;min-height:auto}
+  .side{width:100%;padding:11px;gap:8px;flex:none}
+  .side-title{font-size:21px}
+  .question{min-height:74px;font-size:clamp(22px,5vw,30px)}
+  .scratch{flex:none;height:160px;min-height:160px}
+  .answer{grid-template-columns:minmax(0,1fr) auto;gap:8px}
+  .answer-display{font-size:24px;min-height:52px}
+  .submit{min-width:78px;min-height:50px}
+  .pad{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+  .pad button{min-height:50px;font-size:20px}
+  .status{min-height:23px;height:auto}
+  .footer{padding:5px;gap:8px}
+  .mode-note{text-align:center;width:100%}
+  .dialog{max-height:calc(100dvh - 24px);overflow:auto;padding:18px}
+}
+/* Small phones landscape: split view remains, vertically scroll if necessary */
+@media(max-width:950px) and (orientation:landscape) and (max-height:550px){
+  .app{padding:5px;gap:5px}
+  .top{min-height:68px;padding:4px 9px}
+  .center h1{font-size:21px}
+  .sub{font-size:10px}
+  .timer{font-size:17px;margin-top:2px}
+  .score{min-height:47px;font-size:23px;border-width:2px}
+  .score:before{font-size:16px;top:-14px}
+  .score-dot{width:19px;height:19px}
+  .rope-stage{height:86px;border-width:3px;border-radius:16px}
+  .mascot{height:60px;width:36px}
+  .arena{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;flex:none}
+  .side{padding:7px;gap:5px}
+  .side-title{font-size:17px}
+  .question{min-height:55px;font-size:18px;padding:7px}
+  .scratch{height:95px;flex:none;min-height:95px}
+  .answer{grid-template-columns:minmax(0,1fr) auto}
+  .answer-display{min-height:42px;font-size:19px;padding:6px}
+  .submit{min-height:42px;padding:5px 10px}
+  .pad{gap:4px}
+  .pad button{min-height:42px;font-size:17px}
+  .status{height:auto;min-height:20px}
+}
+@media(max-width:360px) and (orientation:portrait){
+  .top{grid-template-columns:60px minmax(0,1fr) 60px}
+  .score{font-size:20px;gap:2px}
+  .score-dot{width:13px;height:13px}
+  .center h1{font-size:18px}
+  .mascot{width:27px;height:48px}
+  .pad button{min-height:46px}
+}
+@media(prefers-reduced-motion:reduce){.mascot{animation:none}.rope-group,.barfill{transition:none}}
 </style>
 </head>
 <body><div class="app">
