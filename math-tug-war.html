@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>數學拔河王 V2.3｜桌機首屏優化版</title>
+<title>數學拔河王 V2.2｜桌機首屏優化版</title>
 <style>
 :root{font-family:'Microsoft JhengHei','Noto Sans TC',system-ui,sans-serif;color:#1f2a44;background:#f1f5fa}*{box-sizing:border-box}body{margin:0}button,select{font:inherit;touch-action:manipulation}button{cursor:pointer}.app{min-height:100vh;display:flex;flex-direction:column;gap:10px;padding:10px}.top{display:grid;grid-template-columns:1fr minmax(280px,2.3fr) 1fr;align-items:center;gap:12px;background:white;border-radius:16px;padding:10px 16px;box-shadow:0 3px 16px #22344b10}.score{text-align:center;font-weight:900;font-size:clamp(20px,3vw,38px)}.score.blue{color:#2872c6}.score.red{color:#cd4854}.center{text-align:center}.center h1{font-size:clamp(18px,2vw,28px);margin:0}.sub{font-size:12px;color:#66748a}.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:20px}.rope-stage{position:relative;height:105px;overflow:hidden;border-radius:14px;background:linear-gradient(90deg,#dceaff 0 50%,#ffe5e7 50%);border:1px solid #dbe2eb}.centerline{position:absolute;left:50%;height:100%;border-left:2px dashed #8190a1}.rope{position:absolute;top:47%;height:8px;left:7%;right:7%;background:repeating-linear-gradient(90deg,#a87648 0 10px,#be9869 10px 20px);border-radius:10px}.rope-group{position:absolute;top:20px;left:50%;transform:translateX(-50%);transition:left .5s ease;width:100%;height:78px;pointer-events:none}.flag{position:absolute;left:50%;top:0;transform:translateX(-50%);height:69px;border-left:5px solid #fbba3a}.flag:after{content:'⚑';color:#e0aa0f;position:absolute;left:3px;top:-13px;font-size:34px}.players{position:absolute;font-size:35px;top:22px;white-space:nowrap;text-shadow:1px 2px #fff}.players.left{right:54%}.players.right{left:54%}.track{display:flex;align-items:center;gap:10px;font-weight:bold;font-size:13px}.bar{height:12px;background:#f6ccd0;border-radius:20px;flex:1;overflow:hidden}.barfill{width:50%;height:100%;background:#4490e4;transition:width .5s}.arena{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:0}.side{display:flex;flex-direction:column;gap:8px;padding:12px;min-width:0;background:white;border-radius:17px;border-top:6px solid}.side.blue{border-color:#2d80d8}.side.red{border-color:#d85b66}.side-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.side-title{font-size:21px;font-weight:900}.blue .side-title{color:#2673c8}.red .side-title{color:#c84b55}.question{background:#f2f6fa;border-radius:12px;display:grid;place-items:center;text-align:center;min-height:70px;padding:12px;font-weight:800;font-size:clamp(20px,2.5vw,33px)}.scratch{position:relative;flex:1;min-height:110px;border:1px solid #cdd6e2;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(#fff 0 26px,#e6eef6 27px 28px)}.scratch canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}.scratch-label{position:absolute;top:4px;left:8px;font-size:11px;color:#8090a0;pointer-events:none}.clear{position:absolute;right:5px;top:5px;border:1px solid #cfd9e3;background:#fff;border-radius:6px;font-size:12px;padding:4px 7px}.answer{display:grid;grid-template-columns:1fr auto;gap:8px}.answer-display{border:2px solid #cbd7e6;background:#fff;border-radius:10px;padding:10px;font-size:25px;min-height:50px;word-break:break-all}.submit{border:0;border-radius:10px;color:#fff;font-weight:bold;padding:8px 16px;background:#2d80d8}.red .submit{background:#d85b66}.submit:disabled{opacity:.5}.pad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.pad button{min-height:43px;border:1px solid #d3dde9;background:#f8fbff;border-radius:9px;font-weight:800;font-size:clamp(16px,1.5vw,23px)}.pad button:active{background:#c4e1ff}.status{height:23px;color:#56677e;font-size:14px;font-weight:bold;text-align:center}.footer{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.btn{border:0;background:#334e72;color:#fff;padding:9px 14px;border-radius:8px;font-weight:bold}.btn.alt{background:#fff;color:#34425c;border:1px solid #b7c4d6}.mode-note{font-size:12px;color:#69788a}.dialog-wrap{position:fixed;inset:0;background:#142238aa;display:grid;place-items:center;z-index:10;padding:16px}.dialog{background:white;max-width:560px;width:100%;padding:25px;border-radius:20px;text-align:center;box-shadow:0 12px 42px #16253855}.dialog h2{margin-top:0}.options{display:grid;gap:10px;text-align:left}.option{border:1px solid #d9e1ea;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;gap:8px}.option select{border:0;min-width:130px}.hidden{display:none!important}@media (max-width:700px){.top{grid-template-columns:1fr 2fr 1fr;padding:8px}.arena{gap:5px}.side{padding:6px}.side-title{font-size:16px}.question{font-size:18px;min-height:65px}.answer{grid-template-columns:1fr}.answer-display{font-size:21px}.pad{gap:3px}.pad button{min-height:40px}.players{font-size:27px}.rope-stage{height:90px}.scratch{min-height:85px}.app{padding:5px}}@media (max-height:800px) and (min-width:800px){.scratch{min-height:85px}.pad button{min-height:36px}.question{min-height:55px}.rope-stage{height:83px}.top{padding:5px 12px}}
 
@@ -212,6 +212,27 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
 .catalog-hint{grid-column:1/-1;font-size:12px;line-height:1.5;color:#52647b;background:#eef5ff;border:1px solid #d6e5fc;border-radius:10px;padding:8px 12px}
 .options .option select{max-width:100%;min-width:0}
 @media(max-width:700px){.catalog-hint{font-size:11px}}
+
+/* V2.4: unmistakable team-specific answer feedback without disturbing layout */
+.side{position:relative;isolation:isolate}
+.answer-feedback{
+  position:absolute;left:50%;top:45%;transform:translate(-50%,-50%) scale(.9);
+  z-index:6;opacity:0;visibility:hidden;pointer-events:none;
+  min-width:min(78%,270px);max-width:94%;text-align:center;
+  padding:17px 22px;border-radius:22px;border:4px solid white;
+  box-shadow:0 9px 28px #14223855;font-size:clamp(25px,2.7vw,38px);
+  line-height:1.2;font-weight:1000;text-shadow:0 2px 0 #0000000c;
+  transition:opacity .15s ease,transform .15s ease,visibility .15s;
+}
+.answer-feedback.show{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+.answer-feedback.correct{background:#e5f9ee;color:#087b44;outline:3px solid #27b875}
+.answer-feedback.wrong{background:#fff0f0;color:#c02139;outline:3px solid #ef5268}
+.answer-feedback small{display:block;font-size:clamp(13px,1.3vw,17px);margin-top:7px;font-weight:800}
+.status{font-weight:900}
+.side .status.good{color:#087b44}
+.side .status.bad{color:#c02139}
+@media(max-width:700px){.answer-feedback{font-size:26px;min-width:70%;padding:12px 14px}}
+@media(prefers-reduced-motion:reduce){.answer-feedback{transition:none}}
 </style>
 </head>
 <body><div class="app">
@@ -219,7 +240,7 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
 <div class="rope-stage"><div class="centerline"></div><div class="rope"></div><div class="rope-group" id="ropeGroup"><div class="players left"><svg class="mascot" viewBox="0 0 76 126" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M26 86L20 109L11 114L34 115L39 94M48 87L53 110L44 116L67 116L55 90" fill="#273959" stroke="#26304f" stroke-width="4" stroke-linejoin="round"/>
       <path d="M17 112Q11 119 27 119L37 117L33 110ZM43 112Q41 120 58 120L68 117L61 110Z" fill="#fff" stroke="#26304f" stroke-width="3"/>
-      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#ff644f" stroke="#26304f" stroke-width="3"/>
+      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#2d80d8" stroke="#26304f" stroke-width="3"/>
       <path d="M31 74L34 95M48 74L46 94" stroke="#fff" stroke-width="3" opacity=".7"/>
       <path d="M16 33Q9 14 28 10Q39 -1 51 10Q72 11 66 38L57 48L18 46Z" fill="#503329" stroke="#26304f" stroke-width="3"/>
       <ellipse cx="38" cy="47" rx="27" ry="28" fill="#ffd6ad" stroke="#26304f" stroke-width="3"/>
@@ -227,14 +248,14 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
       <ellipse cx="18" cy="55" rx="6" ry="4" fill="#ff9b9d" opacity=".72"/><ellipse cx="58" cy="55" rx="6" ry="4" fill="#ff9b9d" opacity=".72"/>
       <path d="M26 44Q29 39 32 44M45 44Q48 39 51 44" fill="none" stroke="#26304f" stroke-width="2.8" stroke-linecap="round"/>
       <path d="M31 56Q38 68 46 56Z" fill="#a94458" stroke="#26304f" stroke-width="2.2" stroke-linejoin="round"/>
-      <path d="M18 36 Q37 22 59 32" stroke="#ed3f52" stroke-width="7" fill="none"/><path d="M15 35L6 47L20 45" fill="#ed3f52"/>
+      <path d="M18 36 Q37 22 59 32" stroke="#2477d3" stroke-width="7" fill="none"/><path d="M15 35L6 47L20 45" fill="#2477d3"/>
       <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#26304f" stroke-width="9" fill="none" stroke-linecap="round"/>
-      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#ff644f" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#2d80d8" stroke-width="5" fill="none" stroke-linecap="round"/>
       <ellipse cx="11" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/><ellipse cx="65" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/>
     </svg><svg class="mascot" viewBox="0 0 76 126" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M26 86L20 109L11 114L34 115L39 94M48 87L53 110L44 116L67 116L55 90" fill="#273959" stroke="#26304f" stroke-width="4" stroke-linejoin="round"/>
       <path d="M17 112Q11 119 27 119L37 117L33 110ZM43 112Q41 120 58 120L68 117L61 110Z" fill="#fff" stroke="#26304f" stroke-width="3"/>
-      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#ff644f" stroke="#26304f" stroke-width="3"/>
+      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#2d80d8" stroke="#26304f" stroke-width="3"/>
       <path d="M31 74L34 95M48 74L46 94" stroke="#fff" stroke-width="3" opacity=".7"/>
       <path d="M16 33Q9 14 28 10Q39 -1 51 10Q72 11 66 38L57 48L18 46Z" fill="#7c4a2a" stroke="#26304f" stroke-width="3"/>
       <ellipse cx="38" cy="47" rx="27" ry="28" fill="#ffd6ad" stroke="#26304f" stroke-width="3"/>
@@ -242,14 +263,14 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
       <ellipse cx="18" cy="55" rx="6" ry="4" fill="#ff9b9d" opacity=".72"/><ellipse cx="58" cy="55" rx="6" ry="4" fill="#ff9b9d" opacity=".72"/>
       <path d="M26 44Q29 39 32 44M45 44Q48 39 51 44" fill="none" stroke="#26304f" stroke-width="2.8" stroke-linecap="round"/>
       <path d="M31 56Q38 68 46 56Z" fill="#a94458" stroke="#26304f" stroke-width="2.2" stroke-linejoin="round"/>
-      <path d="M33 23L23 12Q15 20 27 29M39 23L50 11Q60 18 46 30" fill="#f28d35" stroke="#714123" stroke-width="2"/>
+      <path d="M33 23L23 12Q15 20 27 29M39 23L50 11Q60 18 46 30" fill="#4d9ff1" stroke="#15518b" stroke-width="2"/>
       <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#26304f" stroke-width="9" fill="none" stroke-linecap="round"/>
-      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#ff644f" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#2d80d8" stroke-width="5" fill="none" stroke-linecap="round"/>
       <ellipse cx="11" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/><ellipse cx="65" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/>
     </svg><svg class="mascot" viewBox="0 0 76 126" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M26 86L20 109L11 114L34 115L39 94M48 87L53 110L44 116L67 116L55 90" fill="#273959" stroke="#26304f" stroke-width="4" stroke-linejoin="round"/>
       <path d="M17 112Q11 119 27 119L37 117L33 110ZM43 112Q41 120 58 120L68 117L61 110Z" fill="#fff" stroke="#26304f" stroke-width="3"/>
-      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#ff644f" stroke="#26304f" stroke-width="3"/>
+      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#2d80d8" stroke="#26304f" stroke-width="3"/>
       <path d="M31 74L34 95M48 74L46 94" stroke="#fff" stroke-width="3" opacity=".7"/>
       <path d="M16 33Q9 14 28 10Q39 -1 51 10Q72 11 66 38L57 48L18 46Z" fill="#282f42" stroke="#26304f" stroke-width="3"/>
       <ellipse cx="38" cy="47" rx="27" ry="28" fill="#ffd6ad" stroke="#26304f" stroke-width="3"/>
@@ -259,12 +280,12 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
       <path d="M31 56Q38 68 46 56Z" fill="#a94458" stroke="#26304f" stroke-width="2.2" stroke-linejoin="round"/>
       <circle cx="30" cy="43" r="11" fill="none" stroke="#333" stroke-width="3"/><circle cx="51" cy="43" r="11" fill="none" stroke="#333" stroke-width="3"/><path d="M41 42H40" stroke="#333" stroke-width="3"/>
       <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#26304f" stroke-width="9" fill="none" stroke-linecap="round"/>
-      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#ff644f" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#2d80d8" stroke-width="5" fill="none" stroke-linecap="round"/>
       <ellipse cx="11" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/><ellipse cx="65" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/>
     </svg></div><div class="flag"></div><div class="players right"><svg class="mascot" viewBox="0 0 76 126" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M26 86L20 109L11 114L34 115L39 94M48 87L53 110L44 116L67 116L55 90" fill="#273959" stroke="#26304f" stroke-width="4" stroke-linejoin="round"/>
       <path d="M17 112Q11 119 27 119L37 117L33 110ZM43 112Q41 120 58 120L68 117L61 110Z" fill="#fff" stroke="#26304f" stroke-width="3"/>
-      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#8b68f3" stroke="#26304f" stroke-width="3"/>
+      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#e25360" stroke="#26304f" stroke-width="3"/>
       <path d="M31 74L34 95M48 74L46 94" stroke="#fff" stroke-width="3" opacity=".7"/>
       <path d="M16 33Q9 14 28 10Q39 -1 51 10Q72 11 66 38L57 48L18 46Z" fill="#503329" stroke="#26304f" stroke-width="3"/>
       <ellipse cx="38" cy="47" rx="27" ry="28" fill="#ffd6ad" stroke="#26304f" stroke-width="3"/>
@@ -272,14 +293,14 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
       <ellipse cx="18" cy="55" rx="6" ry="4" fill="#ff9b9d" opacity=".72"/><ellipse cx="58" cy="55" rx="6" ry="4" fill="#ff9b9d" opacity=".72"/>
       <path d="M26 44Q29 39 32 44M45 44Q48 39 51 44" fill="none" stroke="#26304f" stroke-width="2.8" stroke-linecap="round"/>
       <path d="M31 56Q38 68 46 56Z" fill="#a94458" stroke="#26304f" stroke-width="2.2" stroke-linejoin="round"/>
-      <path d="M16 34Q35 21 59 33" stroke="#6241ca" stroke-width="7" fill="none"/>
+      <path d="M16 34Q35 21 59 33" stroke="#bf3347" stroke-width="7" fill="none"/>
       <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#26304f" stroke-width="9" fill="none" stroke-linecap="round"/>
-      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#8b68f3" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#e25360" stroke-width="5" fill="none" stroke-linecap="round"/>
       <ellipse cx="11" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/><ellipse cx="65" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/>
     </svg><svg class="mascot" viewBox="0 0 76 126" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M26 86L20 109L11 114L34 115L39 94M48 87L53 110L44 116L67 116L55 90" fill="#273959" stroke="#26304f" stroke-width="4" stroke-linejoin="round"/>
       <path d="M17 112Q11 119 27 119L37 117L33 110ZM43 112Q41 120 58 120L68 117L61 110Z" fill="#fff" stroke="#26304f" stroke-width="3"/>
-      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#8b68f3" stroke="#26304f" stroke-width="3"/>
+      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#e25360" stroke="#26304f" stroke-width="3"/>
       <path d="M31 74L34 95M48 74L46 94" stroke="#fff" stroke-width="3" opacity=".7"/>
       <path d="M16 33Q9 14 28 10Q39 -1 51 10Q72 11 66 38L57 48L18 46Z" fill="#7c4a2a" stroke="#26304f" stroke-width="3"/>
       <ellipse cx="38" cy="47" rx="27" ry="28" fill="#ffd6ad" stroke="#26304f" stroke-width="3"/>
@@ -287,14 +308,14 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
       <ellipse cx="18" cy="55" rx="6" ry="4" fill="#ff9b9d" opacity=".72"/><ellipse cx="58" cy="55" rx="6" ry="4" fill="#ff9b9d" opacity=".72"/>
       <path d="M26 44Q29 39 32 44M45 44Q48 39 51 44" fill="none" stroke="#26304f" stroke-width="2.8" stroke-linecap="round"/>
       <path d="M31 56Q38 68 46 56Z" fill="#a94458" stroke="#26304f" stroke-width="2.2" stroke-linejoin="round"/>
-      <path d="M31 23L17 10Q11 20 28 30M43 23L57 9Q64 21 47 30" fill="#b46bfa" stroke="#6e40a5" stroke-width="2"/>
+      <path d="M31 23L17 10Q11 20 28 30M43 23L57 9Q64 21 47 30" fill="#f47e89" stroke="#9d3143" stroke-width="2"/>
       <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#26304f" stroke-width="9" fill="none" stroke-linecap="round"/>
-      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#8b68f3" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#e25360" stroke-width="5" fill="none" stroke-linecap="round"/>
       <ellipse cx="11" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/><ellipse cx="65" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/>
     </svg><svg class="mascot" viewBox="0 0 76 126" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M26 86L20 109L11 114L34 115L39 94M48 87L53 110L44 116L67 116L55 90" fill="#273959" stroke="#26304f" stroke-width="4" stroke-linejoin="round"/>
       <path d="M17 112Q11 119 27 119L37 117L33 110ZM43 112Q41 120 58 120L68 117L61 110Z" fill="#fff" stroke="#26304f" stroke-width="3"/>
-      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#8b68f3" stroke="#26304f" stroke-width="3"/>
+      <path d="M23 73Q39 64 55 74L58 97L18 97Z" fill="#e25360" stroke="#26304f" stroke-width="3"/>
       <path d="M31 74L34 95M48 74L46 94" stroke="#fff" stroke-width="3" opacity=".7"/>
       <path d="M16 33Q9 14 28 10Q39 -1 51 10Q72 11 66 38L57 48L18 46Z" fill="#282f42" stroke="#26304f" stroke-width="3"/>
       <ellipse cx="38" cy="47" rx="27" ry="28" fill="#ffd6ad" stroke="#26304f" stroke-width="3"/>
@@ -302,14 +323,14 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
       <ellipse cx="18" cy="55" rx="6" ry="4" fill="#ff9b9d" opacity=".72"/><ellipse cx="58" cy="55" rx="6" ry="4" fill="#ff9b9d" opacity=".72"/>
       <path d="M26 44Q29 39 32 44M45 44Q48 39 51 44" fill="none" stroke="#26304f" stroke-width="2.8" stroke-linecap="round"/>
       <path d="M31 56Q38 68 46 56Z" fill="#a94458" stroke="#26304f" stroke-width="2.2" stroke-linejoin="round"/>
-      <path d="M13 32Q37 8 63 30L62 39H14Z" fill="#eee8ff" stroke="#3c3b72" stroke-width="3"/><path d="M13 36Q39 25 63 36" fill="none" stroke="#7f57ed" stroke-width="5"/>
+      <path d="M13 32Q37 8 63 30L62 39H14Z" fill="#ffe4e7" stroke="#3c3b72" stroke-width="3"/><path d="M13 36Q39 25 63 36" fill="none" stroke="#d64352" stroke-width="5"/>
       <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#26304f" stroke-width="9" fill="none" stroke-linecap="round"/>
-      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#8b68f3" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M23 81Q9 75 8 66Q7 60 15 59L30 72M53 81Q67 75 68 66Q69 60 62 59L47 72" stroke="#e25360" stroke-width="5" fill="none" stroke-linecap="round"/>
       <ellipse cx="11" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/><ellipse cx="65" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/>
     </svg></div></div></div><div class="track"><span>藍隊</span><div class="bar"><div id="barfill" class="barfill"></div></div><span>紅隊</span></div>
 <main class="arena">
-<section class="side blue" id="blue"><div class="side-head"><div class="side-title">藍隊</div><small id="blueCount">第 1 題</small></div><div class="question" id="blueQuestion">準備開始</div><div class="scratch"><span class="scratch-label">✎ 計算紙（直接用觸控筆或手指書寫）</span><canvas id="blueCanvas"></canvas><button class="clear" data-clear="blue">清除筆跡</button></div><div class="answer"><div class="answer-display" id="blueAnswer">x = ？</div><button class="submit" id="blueSubmit" data-submit="blue">送出</button></div><div class="pad" id="bluePad"></div><div class="status" id="blueStatus"></div></section>
-<section class="side red" id="red"><div class="side-head"><div class="side-title">紅隊</div><small id="redCount">第 1 題</small></div><div class="question" id="redQuestion">準備開始</div><div class="scratch"><span class="scratch-label">✎ 計算紙（直接用觸控筆或手指書寫）</span><canvas id="redCanvas"></canvas><button class="clear" data-clear="red">清除筆跡</button></div><div class="answer"><div class="answer-display" id="redAnswer">x = ？</div><button class="submit" id="redSubmit" data-submit="red">送出</button></div><div class="pad" id="redPad"></div><div class="status" id="redStatus"></div></section>
+<section class="side blue" id="blue"><div class="side-head"><div class="side-title">藍隊</div><small id="blueCount">第 1 題</small></div><div class="question" id="blueQuestion">準備開始</div><div class="scratch"><span class="scratch-label">✎ 計算紙（直接用觸控筆或手指書寫）</span><canvas id="blueCanvas"></canvas><button class="clear" data-clear="blue">清除筆跡</button></div><div class="answer"><div class="answer-display" id="blueAnswer">x = ？</div><button class="submit" id="blueSubmit" data-submit="blue">送出</button></div><div class="pad" id="bluePad"></div><div class="status" id="blueStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="blueFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
+<section class="side red" id="red"><div class="side-head"><div class="side-title">紅隊</div><small id="redCount">第 1 題</small></div><div class="question" id="redQuestion">準備開始</div><div class="scratch"><span class="scratch-label">✎ 計算紙（直接用觸控筆或手指書寫）</span><canvas id="redCanvas"></canvas><button class="clear" data-clear="red">清除筆跡</button></div><div class="answer"><div class="answer-display" id="redAnswer">x = ？</div><button class="submit" id="redSubmit" data-submit="red">送出</button></div><div class="pad" id="redPad"></div><div class="status" id="redStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="redFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
 </main><footer class="footer"><button class="btn alt" id="pauseBtn">暫停</button><button class="btn" id="resetBtn">重新開始／設定</button><span class="mode-note" id="modeNote">雙人共用觸控螢幕｜同難度不同題｜答錯冷卻 3 秒｜測試版（未連接既有遊戲）</span></footer></div>
 <div class="dialog-wrap" id="modal"><div class="dialog"><h2 id="modalTitle">數學拔河王</h2><p id="modalDesc">左右雙方獨立解題，答對拉繩子一格。先拉滿 5 格或時間結束領先者獲勝。</p><div id="settings" class="options"><label class="option">學期 <select id="semesterSelect" aria-label="選擇學期"></select></label><label class="option">數學單元 <select id="gameSelect" aria-label="選擇數學單元"></select></label><label class="option">練習模式 <select id="modeSelect" aria-label="選擇練習模式"></select></label><div class="catalog-hint" id="catalogHint">目前使用示範題庫；原有遊戲不會被修改。</div><label class="option">比賽時間 <select id="duration"><option value="180" selected>180 秒（3 分鐘）</option><option value="120">120 秒</option><option value="300">300 秒</option></select></label><label class="option">勝利進度 <select id="winSteps"><option value="5" selected>5 格</option><option value="3">3 格</option><option value="7">7 格</option></select></label><label class="option">答錯冷卻 <select id="cooldown"><option value="3" selected>3 秒</option><option value="0">不冷卻</option><option value="5">5 秒</option></select></label><label class="option">題目模式 <span>同難度不同題目</span></label></div><p><button class="btn" id="modalButton">開始競賽</button></p></div></div>
 <script>
@@ -391,22 +412,64 @@ function createPools(){
  }
  state.blue.pool=b;state.red.pool=r;
 }
-function nextQuestion(side){const s=state[side];s.question=s.pool[s.index%s.pool.length];s.index++;s.answer='';s.lockedUntil=0;$(side+'Question').textContent=s.question.question;$(side+'Count').textContent=`第 ${s.index} 題`;$(side+'Status').textContent='';renderSide(side);clearPaper(side);}
+function nextQuestion(side){const s=state[side];s.question=s.pool[s.index%s.pool.length];s.index++;s.answer='';s.lockedUntil=0;$(side+'Question').textContent=s.question.question;$(side+'Count').textContent=`第 ${s.index} 題`;$(side+'Status').textContent='';$(side+'Status').className='status';renderSide(side);clearPaper(side);}
 function renderSide(side){const s=state[side];$(side+'Score').textContent=s.score;$(side+'Answer').textContent='x = '+(s.answer||'？');$(side+'Submit').disabled=!state.running||state.paused||state.ended||Date.now()<s.lockedUntil;}
 function drawRope(){const ratio=state.pull/settings.steps;$('ropeGroup').style.left=`${50-ratio*33}%`;$('ropeGroup').dataset.leading=state.pull>0?'blue':state.pull<0?'red':'tie';$('barfill').style.width=`${50+ratio*50}%`;}
 function renderTime(){const m=Math.floor(state.remain/60),sec=state.remain%60;$('timer').textContent=`${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;}
-function begin(){clearInterval(interval);activeAdapter=adapters.get($('gameSelect').value);activeMode=$('modeSelect').value;if(!activeAdapter){alert('請先選擇可用題庫');return;} $('unitText').textContent=activeAdapter.semester+'｜'+activeAdapter.title+'｜'+activeAdapter.modes.find(m=>m.id===activeMode)?.name; $('modeNote').textContent='雙人共用觸控螢幕｜同難度不同題｜答錯冷卻 '+$('cooldown').value+' 秒｜'+activeAdapter.title;settings.duration=+$('duration').value;settings.steps=+$('winSteps').value;settings.cooldown=+$('cooldown').value;state.running=true;state.paused=false;state.ended=false;state.remain=settings.duration;state.pull=0;createPools();for(const side of sides){let s=state[side];s.score=0;s.index=0;s.lockedUntil=0;clearTimeout(s.timer);nextQuestion(side);}renderTime();drawRope();$('pauseBtn').textContent='暫停';$('modal').classList.add('hidden');interval=setInterval(tick,1000);}
+function begin(){clearInterval(interval);activeAdapter=adapters.get($('gameSelect').value);activeMode=$('modeSelect').value;if(!activeAdapter){alert('請先選擇可用題庫');return;} $('unitText').textContent=activeAdapter.semester+'｜'+activeAdapter.title+'｜'+activeAdapter.modes.find(m=>m.id===activeMode)?.name; $('modeNote').textContent='雙人共用觸控螢幕｜同難度不同題｜答錯冷卻 '+$('cooldown').value+' 秒｜'+activeAdapter.title;settings.duration=+$('duration').value;settings.steps=+$('winSteps').value;settings.cooldown=+$('cooldown').value;state.running=true;state.paused=false;state.ended=false;state.remain=settings.duration;state.pull=0;createPools();for(const side of sides){let s=state[side];s.score=0;s.index=0;s.lockedUntil=0;clearTimeout(s.timer);hideFeedback(side);nextQuestion(side);$(side+'Status').className='status';}renderTime();drawRope();$('pauseBtn').textContent='暫停';$('modal').classList.add('hidden');interval=setInterval(tick,1000);}
 function tick(){if(!state.running||state.paused||state.ended)return;state.remain=Math.max(0,state.remain-1);renderTime();if(state.remain===0)finish();}
 function finish(){if(state.ended)return;state.running=false;state.ended=true;clearInterval(interval);sides.forEach(renderSide);let who=state.pull>0?'藍隊獲勝！':state.pull<0?'紅隊獲勝！':'平手！';$('modalTitle').textContent='競賽結束｜'+who;$('modalDesc').textContent=`藍隊答對 ${state.blue.score} 題，紅隊答對 ${state.red.score} 題；最終拔河位移 ${Math.abs(state.pull)} 格。`;$('settings').classList.add('hidden');$('modalButton').textContent='重新比賽';$('modal').classList.remove('hidden');}
 function type(side,key){const s=state[side];if(!state.running||state.paused||state.ended||Date.now()<s.lockedUntil)return;if(key==='⌫')s.answer=s.answer.slice(0,-1);else if(key==='清除')s.answer='';else if(s.answer.length<20)s.answer+=key;renderSide(side);}
-function submit(side){const s=state[side];if(!state.running||state.paused||state.ended||Date.now()<s.lockedUntil||!s.answer)return;if(activeAdapter.validate(s.question,s.answer)){s.score++;state.pull+=side==='blue'?1:-1;renderSide(side);drawRope();$(side+'Status').textContent='✅ 答對！拉動一格';if(Math.abs(state.pull)>=settings.steps){finish();return;}nextQuestion(side);}else{const seconds=settings.cooldown;s.lockedUntil=Date.now()+seconds*1000;$(side+'Status').textContent=seconds?`❌ 答錯，冷卻 ${seconds} 秒`:'❌ 答錯，請再試一次';renderSide(side);if(seconds){clearTimeout(s.timer);s.timer=setTimeout(()=>{s.lockedUntil=0;if(!state.ended){$(side+'Status').textContent='可重新作答';renderSide(side);}},seconds*1000);}}}
+
+const feedbackTimers={blue:null,red:null};
+function hideFeedback(side){
+ clearTimeout(feedbackTimers[side]);
+ const el=$(side+'Feedback');el.className='answer-feedback';el.replaceChildren();
+}
+function showFeedback(side,correct,subtext){
+ const el=$(side+'Feedback');clearTimeout(feedbackTimers[side]);
+ el.className='answer-feedback '+(correct?'correct':'wrong');
+ const title=document.createElement('div');title.textContent=correct?'✅ 答對！':'❌ 答錯！';
+ const smaller=document.createElement('small');smaller.textContent=subtext;
+ el.replaceChildren(title,smaller);
+ // Force a frame before transition, ensuring repeated taps animate anew.
+ void el.offsetWidth;el.classList.add('show');
+ feedbackTimers[side]=setTimeout(()=>hideFeedback(side),1150);
+}
+function submit(side){
+ const s=state[side];
+ if(!state.running||state.paused||state.ended||Date.now()<s.lockedUntil||!s.answer)return;
+ // Each actual submitted answer clears ONLY its own scratchpad, regardless of correctness.
+ clearPaper(side);
+ if(activeAdapter.validate(s.question,s.answer)){
+  s.score++;state.pull+=side==='blue'?1:-1;
+  renderSide(side);drawRope();
+  nextQuestion(side);
+  $(side+'Status').textContent='✅ 答對！繩子前進一格';
+  $(side+'Status').className='status good';
+  showFeedback(side,true,'拉動繩子 +1 格');
+  if(Math.abs(state.pull)>=settings.steps){finish();return;}
+ }else{
+  const seconds=settings.cooldown;
+  s.lockedUntil=Date.now()+seconds*1000;
+  $(side+'Status').textContent=seconds?`❌ 答錯！冷卻 ${seconds} 秒`:'❌ 答錯！請再試一次';
+  $(side+'Status').className='status bad';
+  showFeedback(side,false,seconds?`暫停作答 ${seconds} 秒`:'再試一次');
+  renderSide(side);
+  if(seconds){clearTimeout(s.timer);s.timer=setTimeout(()=>{
+   s.lockedUntil=0;
+   if(!state.ended){$(side+'Status').textContent='可以重新作答';$(side+'Status').className='status';renderSide(side);}
+  },seconds*1000);}
+ }
+}
+
 for(const side of sides){const pad=$(side+'Pad');for(const key of ['7','8','9','⌫','4','5','6','−','1','2','3','/','清除','0','.','送出']){const b=document.createElement('button');b.textContent=key;b.type='button';b.addEventListener('click',()=>key==='送出'?submit(side):type(side,key));pad.appendChild(b);}$(side+'Submit').addEventListener('click',()=>submit(side));document.querySelector(`[data-clear="${side}"]`).addEventListener('click',()=>clearPaper(side));}
 $('pauseBtn').addEventListener('click',()=>{if(!state.running||state.ended)return;state.paused=!state.paused;$('pauseBtn').textContent=state.paused?'繼續':'暫停';sides.forEach(renderSide);});
-$('resetBtn').addEventListener('click',()=>{state.running=false;state.paused=false;clearInterval(interval);$('settings').classList.remove('hidden');$('modalTitle').textContent='競賽設定';$('modalDesc').textContent='按下開始即可進行雙人觸控競賽。';$('modalButton').textContent='開始競賽';$('modal').classList.remove('hidden');sides.forEach(renderSide);});
+$('resetBtn').addEventListener('click',()=>{state.running=false;state.paused=false;clearInterval(interval);$('settings').classList.remove('hidden');$('modalTitle').textContent='競賽設定';$('modalDesc').textContent='按下開始即可進行雙人觸控競賽。';$('modalButton').textContent='開始競賽';$('modal').classList.remove('hidden');sides.forEach(side=>{hideFeedback(side);renderSide(side);});});
 $('modalButton').addEventListener('click',()=>{if($('settings').classList.contains('hidden'))$('settings').classList.remove('hidden');begin();});
 // 每隊各自保存 Pointer ID，可同時在兩個 canvas 寫字。
 const pens={blue:new Map(),red:new Map()};function fitCanvas(side){const canvas=$(side+'Canvas'),rect=canvas.getBoundingClientRect(),dpr=window.devicePixelRatio||1;const old=document.createElement('canvas');if(canvas.width&&canvas.height){old.width=canvas.width;old.height=canvas.height;old.getContext('2d').drawImage(canvas,0,0);}canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);if(old.width){ctx.drawImage(old,0,0,rect.width,rect.height);}ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#2b425e';}
-function clearPaper(side){const canvas=$(side+'Canvas');const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);}
+function clearPaper(side){if(typeof pens!=='undefined')pens[side].clear();const canvas=$(side+'Canvas');const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);}
 for(const side of sides){const canvas=$(side+'Canvas');const pts=pens[side];function loc(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}canvas.addEventListener('pointerdown',e=>{if(!state.running||state.paused||state.ended)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);pts.set(e.pointerId,loc(e));});canvas.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;e.preventDefault();const p=pts.get(e.pointerId),n=loc(e),ctx=canvas.getContext('2d');ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(n.x,n.y);ctx.stroke();pts.set(e.pointerId,n);});for(const ev of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(ev,e=>pts.delete(e.pointerId));}
 window.addEventListener('resize',()=>sides.forEach(fitCanvas));requestAnimationFrame(()=>sides.forEach(fitCanvas));
 </script></body></html>
