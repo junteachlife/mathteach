@@ -837,6 +837,53 @@
     }
 
 
+
+    /* 數學拔河王｜首頁專屬入口，獨立於原有遊戲卡與 Firebase */
+    .tug-war-entry {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      border: 2px solid #f1bd57;
+      border-radius: 20px;
+      background: linear-gradient(115deg, #fff5d9, #fffdf5 72%);
+      box-shadow: 0 8px 22px rgba(151, 101, 13, .11);
+      color: #74420f;
+      text-decoration: none;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .tug-war-entry:hover, .tug-war-entry:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(151, 101, 13, .19);
+      outline-offset: 3px;
+    }
+    .tug-war-entry:active { transform: translateY(1px); }
+    .tug-war-entry-icon {
+      width: 58px;
+      height: 58px;
+      flex: 0 0 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: #fff0b9;
+      font-size: 32px;
+    }
+    .tug-war-entry-main { flex: 1; min-width: 0; }
+    .tug-war-entry-title { display: block; font-size: 20px; font-weight: 900; }
+    .tug-war-entry-description {
+      display: block;
+      margin-top: 5px;
+      font-size: 13px;
+      color: #92652c;
+      line-height: 1.5;
+    }
+    .tug-war-entry-arrow { flex: 0 0 auto; font-size: 23px; font-weight: 900; }
+    @media (max-width: 420px) {
+      .tug-war-entry { gap: 10px; padding: 14px; }
+      .tug-war-entry-icon { width: 48px; height: 48px; flex-basis: 48px; font-size: 27px; }
+      .tug-war-entry-title { font-size: 18px; }
+    }
+
     /*
     ==================================================
     公告欄
@@ -2317,6 +2364,17 @@
 
 
           </section>
+
+
+          <!-- 數學拔河王｜置於排行榜／我的成績下方、公告欄上方 -->
+          <a class="tug-war-entry" href="./math-tug-war.html" aria-label="進入數學拔河王雙人競賽模式">
+            <span class="tug-war-entry-icon" aria-hidden="true">🏆</span>
+            <span class="tug-war-entry-main">
+              <strong class="tug-war-entry-title">數學拔河競賽</strong>
+              <span class="tug-war-entry-description">雙人即時對戰，答對題目，拉向勝利！</span>
+            </span>
+            <span class="tug-war-entry-arrow" aria-hidden="true">➜</span>
+          </a>
 
 
           <!-- 公告＋最新消息 -->
