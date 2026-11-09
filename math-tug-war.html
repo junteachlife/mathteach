@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>數學拔河王 V2.2｜桌機首屏優化版</title>
+<title>數學拔河王 V2.6｜正式題庫第一款</title>
 <style>
 :root{font-family:'Microsoft JhengHei','Noto Sans TC',system-ui,sans-serif;color:#1f2a44;background:#f1f5fa}*{box-sizing:border-box}body{margin:0}button,select{font:inherit;touch-action:manipulation}button{cursor:pointer}.app{min-height:100vh;display:flex;flex-direction:column;gap:10px;padding:10px}.top{display:grid;grid-template-columns:1fr minmax(280px,2.3fr) 1fr;align-items:center;gap:12px;background:white;border-radius:16px;padding:10px 16px;box-shadow:0 3px 16px #22344b10}.score{text-align:center;font-weight:900;font-size:clamp(20px,3vw,38px)}.score.blue{color:#2872c6}.score.red{color:#cd4854}.center{text-align:center}.center h1{font-size:clamp(18px,2vw,28px);margin:0}.sub{font-size:12px;color:#66748a}.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:20px}.rope-stage{position:relative;height:105px;overflow:hidden;border-radius:14px;background:linear-gradient(90deg,#dceaff 0 50%,#ffe5e7 50%);border:1px solid #dbe2eb}.centerline{position:absolute;left:50%;height:100%;border-left:2px dashed #8190a1}.rope{position:absolute;top:47%;height:8px;left:7%;right:7%;background:repeating-linear-gradient(90deg,#a87648 0 10px,#be9869 10px 20px);border-radius:10px}.rope-group{position:absolute;top:20px;left:50%;transform:translateX(-50%);transition:left .5s ease;width:100%;height:78px;pointer-events:none}.flag{position:absolute;left:50%;top:0;transform:translateX(-50%);height:69px;border-left:5px solid #fbba3a}.flag:after{content:'⚑';color:#e0aa0f;position:absolute;left:3px;top:-13px;font-size:34px}.players{position:absolute;font-size:35px;top:22px;white-space:nowrap;text-shadow:1px 2px #fff}.players.left{right:54%}.players.right{left:54%}.track{display:flex;align-items:center;gap:10px;font-weight:bold;font-size:13px}.bar{height:12px;background:#f6ccd0;border-radius:20px;flex:1;overflow:hidden}.barfill{width:50%;height:100%;background:#4490e4;transition:width .5s}.arena{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:0}.side{display:flex;flex-direction:column;gap:8px;padding:12px;min-width:0;background:white;border-radius:17px;border-top:6px solid}.side.blue{border-color:#2d80d8}.side.red{border-color:#d85b66}.side-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.side-title{font-size:21px;font-weight:900}.blue .side-title{color:#2673c8}.red .side-title{color:#c84b55}.question{background:#f2f6fa;border-radius:12px;display:grid;place-items:center;text-align:center;min-height:70px;padding:12px;font-weight:800;font-size:clamp(20px,2.5vw,33px)}.scratch{position:relative;flex:1;min-height:110px;border:1px solid #cdd6e2;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(#fff 0 26px,#e6eef6 27px 28px)}.scratch canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}.scratch-label{position:absolute;top:4px;left:8px;font-size:11px;color:#8090a0;pointer-events:none}.clear{position:absolute;right:5px;top:5px;border:1px solid #cfd9e3;background:#fff;border-radius:6px;font-size:12px;padding:4px 7px}.answer{display:grid;grid-template-columns:1fr auto;gap:8px}.answer-display{border:2px solid #cbd7e6;background:#fff;border-radius:10px;padding:10px;font-size:25px;min-height:50px;word-break:break-all}.submit{border:0;border-radius:10px;color:#fff;font-weight:bold;padding:8px 16px;background:#2d80d8}.red .submit{background:#d85b66}.submit:disabled{opacity:.5}.pad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.pad button{min-height:43px;border:1px solid #d3dde9;background:#f8fbff;border-radius:9px;font-weight:800;font-size:clamp(16px,1.5vw,23px)}.pad button:active{background:#c4e1ff}.status{height:23px;color:#56677e;font-size:14px;font-weight:bold;text-align:center}.footer{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.btn{border:0;background:#334e72;color:#fff;padding:9px 14px;border-radius:8px;font-weight:bold}.btn.alt{background:#fff;color:#34425c;border:1px solid #b7c4d6}.mode-note{font-size:12px;color:#69788a}.dialog-wrap{position:fixed;inset:0;background:#142238aa;display:grid;place-items:center;z-index:10;padding:16px}.dialog{background:white;max-width:560px;width:100%;padding:25px;border-radius:20px;text-align:center;box-shadow:0 12px 42px #16253855}.dialog h2{margin-top:0}.options{display:grid;gap:10px;text-align:left}.option{border:1px solid #d9e1ea;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;gap:8px}.option select{border:0;min-width:130px}.hidden{display:none!important}@media (max-width:700px){.top{grid-template-columns:1fr 2fr 1fr;padding:8px}.arena{gap:5px}.side{padding:6px}.side-title{font-size:16px}.question{font-size:18px;min-height:65px}.answer{grid-template-columns:1fr}.answer-display{font-size:21px}.pad{gap:3px}.pad button{min-height:40px}.players{font-size:27px}.rope-stage{height:90px}.scratch{min-height:85px}.app{padding:5px}}@media (max-height:800px) and (min-width:800px){.scratch{min-height:85px}.pad button{min-height:36px}.question{min-height:55px}.rope-stage{height:83px}.top{padding:5px 12px}}
 
@@ -233,6 +233,19 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
 .side .status.bad{color:#c02139}
 @media(max-width:700px){.answer-feedback{font-size:26px;min-width:70%;padding:12px 14px}}
 @media(prefers-reduced-motion:reduce){.answer-feedback{transition:none}}
+
+/* 原始方程式題庫：直式分式及模式一選擇題 */
+.question.choice-question{height:auto;min-height:clamp(90px,15vh,165px);max-height:27vh;overflow-y:auto;display:block;font-size:clamp(13px,1.2vw,17px);text-align:left;padding:8px}
+.question-stem{width:100%;text-align:center}
+.tug-options{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}
+.tug-option{border:1.5px solid #a8bdd4;background:#fff;border-radius:8px;padding:7px 5px;line-height:1.3;font-size:clamp(12px,1vw,15px);font-weight:700;color:#243b58;text-align:left;min-height:38px;touch-action:manipulation}
+.tug-option.selected{background:#f9eab5;border-color:#ce961e;box-shadow:inset 0 0 0 1px #ce961e}
+.math-frac{display:inline-flex;vertical-align:middle;flex-direction:column;text-align:center;align-items:stretch;line-height:1.05;font-size:.87em;margin:0 3px}
+.math-frac .top,.math-frac .bottom{display:block;padding:1px 4px}
+.math-frac .bar{display:block;height:1.5px;background:currentColor;width:100%}
+.concept-statement{font-weight:700;color:#274c7c;margin:4px 0}
+@media(max-width:700px){.tug-options{grid-template-columns:1fr}.question.choice-question{max-height:35vh}}
+
 </style>
 </head>
 <body><div class="app">
@@ -383,7 +396,7 @@ const exampleEquation={
  },
  validate(question,answer){const n=numericAnswer(answer);return Number.isFinite(n)&&Math.abs(n-question.numeric)<1e-8;}
 };
-window.TugWar.register(exampleEquation);
+// 示範轉接器保留於原始碼，但不顯示；優先載入真實的七上 3-2。
 function refreshCatalog(){
  const sem=$('semesterSelect'),game=$('gameSelect'),mode=$('modeSelect');
  const prevSem=sem.value,prevGame=game.value,prevMode=mode.value;
@@ -397,14 +410,14 @@ function refreshCatalog(){
  const selected=adapters.get(game.value);
  mode.replaceChildren(...(selected?.modes||[]).map(m=>new Option(m.name,m.id)));
  mode.value=selected?.modes.some(m=>m.id===prevMode)?prevMode:selected?.modes[0]?.id||'';
- $('catalogHint').textContent=selected?.description||'示範題庫：用於測試選單與雙人競賽，尚未連接原遊戲。';
+ $('catalogHint').textContent=selected?.description||'正在載入原始遊戲題庫…';
 }
 $('semesterSelect').addEventListener('change',()=>{ $('gameSelect').value='';refreshCatalog();});
 $('gameSelect').addEventListener('change',()=>{ $('modeSelect').value='';refreshCatalog();});
 refreshCatalog();
 function createPools(){
  const b=[],r=[];
- for(let i=0;i<80;i++){
+ for(let i=0;i<36;i++){
   const pair=activeAdapter.generatePair(activeMode,i%6);
   if(!Array.isArray(pair)||pair.length!==2 || !pair.every(q=>q&&typeof q.question==='string'))throw Error('轉接器必須回傳兩道題目');
   if(pair[0].question===pair[1].question)throw Error('同一輪抽到相同題目，請調整轉接器');
@@ -412,8 +425,16 @@ function createPools(){
  }
  state.blue.pool=b;state.red.pool=r;
 }
-function nextQuestion(side){const s=state[side];s.question=s.pool[s.index%s.pool.length];s.index++;s.answer='';s.lockedUntil=0;$(side+'Question').textContent=s.question.question;$(side+'Count').textContent=`第 ${s.index} 題`;$(side+'Status').textContent='';$(side+'Status').className='status';renderSide(side);clearPaper(side);}
-function renderSide(side){const s=state[side];$(side+'Score').textContent=s.score;$(side+'Answer').textContent='x = '+(s.answer||'？');$(side+'Submit').disabled=!state.running||state.paused||state.ended||Date.now()<s.lockedUntil;}
+function nextQuestion(side){const s=state[side];s.question=s.pool[s.index%s.pool.length];s.index++;s.answer='';s.lockedUntil=0;const qbox=$(side+'Question');qbox.replaceChildren();qbox.classList.toggle('choice-question',s.question.inputType==='choice');
+if(s.question.questionHTML){const stem=document.createElement('div');stem.className='question-stem';stem.innerHTML=s.question.questionHTML;qbox.appendChild(stem);}else{qbox.textContent=s.question.question;}
+if(s.question.inputType==='choice'){
+ const choices=document.createElement('div');choices.className='tug-options';
+ for(const option of s.question.options){const btn=document.createElement('button');btn.type='button';btn.className='tug-option';btn.textContent=option.label+'．'+option.text;btn.addEventListener('click',()=>{if(!state.running||state.paused||state.ended||Date.now()<s.lockedUntil)return;s.answer=option.label;renderSide(side);});choices.appendChild(btn);}
+ qbox.appendChild(choices);
+}$(side+'Count').textContent=`第 ${s.index} 題`;$(side+'Status').textContent='';$(side+'Status').className='status';renderSide(side);clearPaper(side);}
+function renderSide(side){const s=state[side];$(side+'Score').textContent=s.score;$(side+'Answer').textContent=(s.question?.inputType==='choice'?'選項：':'x = ')+(s.answer||'？');
+const isChoice=s.question?.inputType==='choice';$(side+'Pad').style.display=isChoice?'none':'';
+$(side+'Question').querySelectorAll('.tug-option').forEach(btn=>btn.classList.toggle('selected',btn.textContent.startsWith(s.answer+'．')&&!!s.answer));$(side+'Submit').disabled=!state.running||state.paused||state.ended||Date.now()<s.lockedUntil;}
 function drawRope(){const ratio=state.pull/settings.steps;$('ropeGroup').style.left=`${50-ratio*33}%`;$('ropeGroup').dataset.leading=state.pull>0?'blue':state.pull<0?'red':'tie';$('barfill').style.width=`${50+ratio*50}%`;}
 function renderTime(){const m=Math.floor(state.remain/60),sec=state.remain%60;$('timer').textContent=`${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;}
 function begin(){clearInterval(interval);activeAdapter=adapters.get($('gameSelect').value);activeMode=$('modeSelect').value;if(!activeAdapter){alert('請先選擇可用題庫');return;} $('unitText').textContent=activeAdapter.semester+'｜'+activeAdapter.title+'｜'+activeAdapter.modes.find(m=>m.id===activeMode)?.name; $('modeNote').textContent='雙人共用觸控螢幕｜同難度不同題｜答錯冷卻 '+$('cooldown').value+' 秒｜'+activeAdapter.title;settings.duration=+$('duration').value;settings.steps=+$('winSteps').value;settings.cooldown=+$('cooldown').value;state.running=true;state.paused=false;state.ended=false;state.remain=settings.duration;state.pull=0;createPools();for(const side of sides){let s=state[side];s.score=0;s.index=0;s.lockedUntil=0;clearTimeout(s.timer);hideFeedback(side);nextQuestion(side);$(side+'Status').className='status';}renderTime();drawRope();$('pauseBtn').textContent='暫停';$('modal').classList.add('hidden');interval=setInterval(tick,1000);}
@@ -472,4 +493,5 @@ const pens={blue:new Map(),red:new Map()};function fitCanvas(side){const canvas=
 function clearPaper(side){if(typeof pens!=='undefined')pens[side].clear();const canvas=$(side+'Canvas');const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);}
 for(const side of sides){const canvas=$(side+'Canvas');const pts=pens[side];function loc(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}canvas.addEventListener('pointerdown',e=>{if(!state.running||state.paused||state.ended)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);pts.set(e.pointerId,loc(e));});canvas.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;e.preventDefault();const p=pts.get(e.pointerId),n=loc(e),ctx=canvas.getContext('2d');ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(n.x,n.y);ctx.stroke();pts.set(e.pointerId,n);});for(const ev of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(ev,e=>pts.delete(e.pointerId));}
 window.addEventListener('resize',()=>sides.forEach(fitCanvas));requestAnimationFrame(()=>sides.forEach(fitCanvas));
-</script></body></html>
+</script><script src="./tug-war/adapters/equation-original.js"></script>
+</body></html>
