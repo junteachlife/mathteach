@@ -371,7 +371,9 @@ window.TugWar = {
  register(adapter){
   if(!adapter || typeof adapter.id!=='string' || typeof adapter.generatePair!=='function' || typeof adapter.validate!=='function' || !Array.isArray(adapter.modes))throw Error('題庫轉接器格式錯誤');
   adapters.set(adapter.id,adapter);
-  if(document.readyState!=='loading')refreshCatalog();
+  // 轉接器在頁面底部載入時，document.readyState 仍可能是 loading。
+  // 此時選單元素已建立，因此應直接更新，而非略過初始化。
+  refreshCatalog();
  },
  list(){return [...adapters.values()].map(a=>({id:a.id,semester:a.semester,title:a.title,modes:a.modes}))}
 };
