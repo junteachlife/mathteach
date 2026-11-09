@@ -256,6 +256,47 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
 @media(max-height:800px) and (min-width:701px){.tug-home-nav{min-height:29px}.tug-home-link{padding:5px 10px;font-size:12px}.app{gap:6px}}
 @media(max-width:700px){.tug-home-nav{min-height:32px}.tug-home-link{padding:7px 10px}}
 
+
+/* V3.0：原始題庫分式／長題自適應修正。
+   取消桌機固定 65px 題目高度；讓內容完整佔有空間，不再覆蓋計算紙。 */
+.question {
+  box-sizing: border-box;
+  height: auto;
+  max-height: min(35vh, 260px);
+  min-height: 76px;
+  overflow-x: auto;
+  overflow-y: auto;
+  flex: 0 0 auto;
+  align-content: center;
+  line-height: 1.5;
+  scrollbar-width: thin;
+}
+.question-stem { display:block; width:100%; line-height:1.6; overflow-wrap:normal; }
+.question.has-fraction { min-height:118px; padding:12px 10px; font-size:clamp(20px,1.8vw,29px); }
+.question .math-expression { display:inline-block; max-width:100%; line-height:1.55; }
+.question .math-frac { line-height:1.15; vertical-align:middle; font-size:.85em; white-space:nowrap; }
+.question .math-frac .top,.question .math-frac .bottom { padding:3px 5px; }
+.question .math-frac .bar { height:2px; min-height:2px; }
+.question.choice-question { max-height:min(37vh, 280px); min-height:110px; }
+/* 若題目很長，應優先壓縮計算紙；絕不把題目畫到計算紙背後。 */
+.side { min-height:0; }
+.scratch { flex:1 1 70px; min-height:48px; }
+@media (min-width:1000px) and (min-height:620px) and (orientation:landscape) {
+  .app { overflow-y:auto; }
+  .arena { overflow:visible; }
+  .side { overflow-y:auto; scrollbar-width:thin; }
+  .question { height:auto; min-height:76px; max-height:min(32vh,215px); flex:0 0 auto; font-size:clamp(19px,1.9vw,29px); }
+  .question.has-fraction { min-height:120px; max-height:min(34vh,225px); }
+  .question.choice-question { height:auto; min-height:120px; max-height:min(34vh,250px); }
+  .scratch { flex:1 1 55px; min-height:48px; }
+}
+@media(max-width:700px) {
+  .question { height:auto; min-height:80px; max-height:40vh; font-size:19px; }
+  .question.has-fraction { min-height:118px; font-size:19px; }
+  .question.choice-question { max-height:42vh; }
+  .side { overflow:visible; }
+}
+
 </style>
 </head>
 <body><div class="app">
@@ -438,13 +479,13 @@ function createPools(){
  }
  state.blue.pool=b;state.red.pool=r;
 }
-function nextQuestion(side){const s=state[side];s.question=s.pool[s.index%s.pool.length];s.index++;s.answer='';s.lockedUntil=0;const qbox=$(side+'Question');qbox.replaceChildren();qbox.classList.toggle('choice-question',s.question.inputType==='choice');
+function nextQuestion(side){const s=state[side];s.question=s.pool[s.index%s.pool.length];s.index++;s.answer='';s.lockedUntil=0;const qbox=$(side+'Question');qbox.replaceChildren();qbox.classList.toggle('choice-question',s.question.inputType==='choice');qbox.classList.remove('has-fraction');
 if(s.question.questionHTML){const stem=document.createElement('div');stem.className='question-stem';stem.innerHTML=s.question.questionHTML;qbox.appendChild(stem);}else{qbox.textContent=s.question.question;}
 if(s.question.inputType==='choice'){
  const choices=document.createElement('div');choices.className='tug-options';
  for(const option of s.question.options){const btn=document.createElement('button');btn.type='button';btn.className='tug-option';btn.textContent=option.label+'．'+option.text;btn.addEventListener('click',()=>{if(!state.running||state.paused||state.ended||Date.now()<s.lockedUntil)return;s.answer=option.label;renderSide(side);});choices.appendChild(btn);}
  qbox.appendChild(choices);
-}$(side+'Count').textContent=`第 ${s.index} 題`;$(side+'Status').textContent='';$(side+'Status').className='status';renderSide(side);clearPaper(side);}
+}qbox.classList.toggle('has-fraction',!!qbox.querySelector('.math-frac'));$(side+'Count').textContent=`第 ${s.index} 題`;$(side+'Status').textContent='';$(side+'Status').className='status';renderSide(side);clearPaper(side);}
 function renderSide(side){const s=state[side];$(side+'Score').textContent=s.score;$(side+'Answer').textContent=(s.question?.inputType==='choice'?'選項：':'x = ')+(s.answer||'？');
 const isChoice=s.question?.inputType==='choice';$(side+'Pad').style.display=isChoice?'none':'';
 $(side+'Question').querySelectorAll('.tug-option').forEach(btn=>btn.classList.toggle('selected',btn.textContent.startsWith(s.answer+'．')&&!!s.answer));$(side+'Submit').disabled=!state.running||state.paused||state.ended||Date.now()<s.lockedUntil;}
