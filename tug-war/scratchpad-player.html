@@ -1,42 +1,88 @@
 <!doctype html>
-<html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <link rel="stylesheet" href="../css/scratchpad.css">
-<style>
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent!important;font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif}
-#scratchpadComponent{position:static!important;width:100%!important;height:100%!important}
-#scratchpadPanel{inset:0!important;width:100%!important;height:100%!important;max-height:100%!important;border-radius:0!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
-/* 僅影響競賽橋接頁，不修改主網站的共用計算紙 */
-.scratchpad-panel,.scratchpad-panel--open,.scratchpad-panel--fullscreen{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important}
-.scratchpad-header{min-height:34px!important;padding:2px 6px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:6px!important;background:rgba(245,167,24,.96)!important}
-.scratchpad-header__title-area{gap:4px!important;min-width:0!important;flex:1 1 auto!important}
-.scratchpad-header__title{font-size:15px!important;line-height:1.1!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
-.scratchpad-header__desc,.scratchpad-header p, .scratchpad-header small{display:none!important}
-#scratchpadCloseButton,.scratchpad-close-button{flex:0 0 auto!important;min-width:auto!important;padding:6px 10px!important;font-size:13px!important;border-radius:10px!important}
-.scratchpad-toolbar{padding:4px 6px!important;display:flex!important;align-items:center!important;gap:4px!important;flex-wrap:nowrap!important;overflow:hidden!important;white-space:nowrap!important;background:rgba(247,241,214,.96)!important}
-.scratchpad-toolbar > *{flex-shrink:1!important;min-width:0!important}
-.scratchpad-toolbar button,.scratchpad-toolbar .btn,.scratchpad-toolbar [role="button"]{padding:5px 8px!important;font-size:12px!important;line-height:1.1!important;border-radius:10px!important;min-height:34px!important}
-.scratchpad-toolbar label,.scratchpad-toolbar span{font-size:12px!important}
-.scratchpad-toolbar input[type="color"],.scratchpad-toolbar .color-btn,.scratchpad-toolbar .color-swatch{width:26px!important;height:26px!important;min-width:26px!important;padding:0!important}
-.scratchpad-toolbar input[type="range"]{max-width:56px!important}
-.scratchpad-toolbar select{font-size:12px!important;padding:4px 6px!important;max-width:66px!important}
-.scratchpad-canvas-container{padding:0!important;background:transparent!important;flex:1 1 auto!important;min-height:120px!important;height:100%!important;overflow:hidden!important}
-#scratchpadCanvas,.scratchpad-canvas,canvas{background:transparent!important;background-color:transparent!important;background-image:none!important;border:0!important;border-color:transparent!important;width:100%!important;height:100%!important}
+<style id="tug-layout">
+html,body{margin:0!important;width:100%!important;height:100%!important;overflow:hidden!important;background:#fff!important;font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;}
+#scratchpadComponent{position:static!important;width:100%!important;height:100%!important;}
+#scratchpadPanel,#scratchpadPanel.scratchpad-panel--open,#scratchpadPanel.scratchpad-panel--fullscreen{
+ position:absolute!important;inset:0!important;top:0!important;left:0!important;right:0!important;bottom:0!important;
+ width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;
+ margin:0!important;padding:0!important;min-width:0!important;min-height:0!important;
+ border:0!important;border-radius:0!important;box-shadow:none!important;backdrop-filter:none!important;
+ background:#fff!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;
+}
+#scratchpadPanel[hidden]{display:none!important;}
+/* 原本共用元件的橘色標題會佔題目空間；競賽版只使用一行工具列。 */
+#scratchpadHeader{display:none!important;}
+.scratchpad-content{min-width:0!important;min-height:0!important;flex:1 1 auto!important;width:100%!important;height:100%!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;}
+.scratchpad-toolbar{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:space-between!important;
+ height:46px!important;max-height:46px!important;min-height:46px!important;width:100%!important;
+ padding:3px 5px!important;gap:1px!important;overflow:hidden!important;box-sizing:border-box!important;
+ background:rgba(255,239,202,.98)!important;border-bottom:1px solid #e8d6b0!important;}
+.scratchpad-tool-group{display:flex!important;flex-wrap:nowrap!important;gap:2px!important;margin:0!important;padding:0!important;align-items:center!important;min-width:0!important;flex:0 1 auto!important;}
+.scratchpad-tool-group__label,.scratchpad-tool-button__text,.scratchpad-close-button__text,.scratchpad-close-button__long{display:none!important;}
+.scratchpad-tool-button,.scratchpad-close-button,.scratchpad-size-button{flex:0 0 auto!important;min-width:27px!important;width:29px!important;max-width:29px!important;min-height:32px!important;height:32px!important;padding:2px!important;margin:0!important;font-size:17px!important;line-height:1!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;border-radius:7px!important;position:static!important;transform:none!important;}
+.scratchpad-close-button{width:31px!important;min-width:31px!important;border:1px solid #e5b3b5!important;background:white!important;color:#9c2941!important;}
+.scratchpad-color-button{flex:0 0 auto!important;min-width:19px!important;width:19px!important;height:19px!important;padding:0!important;margin:0!important;border-radius:50%!important;}
+.scratchpad-size-dot{max-width:12px!important;max-height:12px!important;}
+.scratchpad-tool-group--close{margin-left:0!important;position:static!important;right:auto!important;top:auto!important;}
+.scratchpad-tool-group--close::before{display:none!important;}
+#scratchpadCloseButton{position:static!important;inset:auto!important;right:auto!important;top:auto!important;transform:none!important;z-index:5!important;}
+/* 題目位於工具列之下，書寫畫布在題目之下。 */
+#tugQuestionSlot{flex:0 0 auto;min-height:86px;max-height:42%;overflow:auto;display:flex;align-items:center;justify-content:center;
+ padding:7px 10px;background:var(--tug-question-bg,#f2f7ff);border-bottom:1px solid #d8e2ed;
+ text-align:center;font-size:clamp(17px,1.8vw,28px);font-weight:800;line-height:1.5;}
+#tugQuestionSlot.red{--tug-question-bg:#fff1f5;}
+#tugQuestionSlot .math-expression{display:inline-block;line-height:1.6;white-space:nowrap;}
+#tugQuestionSlot .math-frac{display:inline-flex!important;vertical-align:middle!important;flex-direction:column!important;align-items:stretch!important;text-align:center!important;margin:0 4px!important;line-height:1.1!important;font-size:.9em!important;white-space:nowrap!important;}
+#tugQuestionSlot .math-frac>.top,#tugQuestionSlot .math-frac>.bottom{display:block!important;padding:2px 5px!important;all:unset!important;display:block!important;white-space:nowrap!important;text-align:center!important;padding:3px 5px!important;}
+#tugQuestionSlot .math-frac>.bar{all:unset!important;display:block!important;min-height:2px!important;height:2px!important;width:100%!important;background:currentColor!important;}
+#tugQuestionSlot .question-stem{width:100%;line-height:1.55;}
+#tugQuestionSlot .concept-statement{color:#345a85;margin:3px 0;}
+#tugQuestionSlot .tug-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin-top:5px;}
+#tugQuestionSlot .tug-option{font:inherit;font-size:clamp(11px,.9vw,15px);line-height:1.25;padding:5px 7px;border:1px solid #bed0e6;border-radius:8px;background:white;text-align:left;color:#273c59;}
+#tugQuestionSlot .tug-option.selected{background:#fff2b8;border-color:#e6b64b;}
+.scratchpad-canvas-container{flex:1 1 auto!important;min-height:100px!important;width:100%!important;height:auto!important;position:relative!important;padding:0!important;overflow:hidden!important;background:transparent!important;}
+#scratchpadCanvas,.scratchpad-canvas{width:100%!important;height:100%!important;touch-action:none!important;background:transparent!important;background-image:none!important;}
+.scratchpad-canvas-hint{opacity:.38!important;pointer-events:none!important;font-size:12px!important;}
+@media(max-width:570px){
+ .scratchpad-toolbar{padding:2px 2px!important;gap:0!important;}
+ .scratchpad-tool-group{gap:0!important;}
+ .scratchpad-color-button{min-width:16px!important;width:16px!important;height:16px!important;}
+ .scratchpad-tool-button,.scratchpad-close-button,.scratchpad-size-button{min-width:24px!important;width:24px!important;max-width:24px!important;height:30px!important;min-height:30px!important;font-size:15px!important;}
+ #scratchpadCloseButton{min-width:25px!important;width:25px!important;}
+ #tugQuestionSlot{font-size:17px!important;}
+}
 </style>
 </head><body>
-<script src="../js/scratchpad.js"></script>
-<script src="../js/scratchpad-template.js"></script>
+<script src="../js/scratchpad.js"></script><script src="../js/scratchpad-template.js"></script>
 <script>
-window.addEventListener('message',function(e){
- if(e.origin!==location.origin||!e.data?.tugPaperAction)return;
- const cmd=e.data.tugPaperAction;
- if(cmd==='open' && typeof window.openGameScratchpad==='function')window.openGameScratchpad();
- if(cmd==='reset' && typeof window.resetGameScratchpad==='function')window.resetGameScratchpad();
- if(cmd==='close' && typeof window.closeGameScratchpad==='function')window.closeGameScratchpad();
-});
-document.addEventListener('click', function(e){
- const closeButton=e.target.closest?.('#scratchpadCloseButton');
- if(closeButton) parent.postMessage({tugPaperAction:'close'},location.origin);
-}, true);
-window.addEventListener('load',()=>parent.postMessage({tugPaperAction:'ready'},location.origin));
-</script>
-</body></html>
+(function(){
+ let lastHTML='';
+ let lastType='';
+ function ensureSlot(){
+  const content=document.querySelector('.scratchpad-content');
+  if(!content)return null;
+  let slot=document.getElementById('tugQuestionSlot');
+  if(!slot){slot=document.createElement('div');slot.id='tugQuestionSlot';const toolbar=content.querySelector('.scratchpad-toolbar'); if(toolbar)toolbar.insertAdjacentElement('afterend',slot);else content.prepend(slot);}
+  slot.classList.toggle('red',new URLSearchParams(location.search).get('team')==='red');
+  slot.classList.toggle('choice-question',lastType.includes('choice-question'));
+  if(lastHTML)slot.innerHTML=lastHTML;
+  return slot;
+ }
+ function applyQuestion(html,kind){lastHTML=String(html||'');lastType=String(kind||'');ensureSlot();}
+ window.addEventListener('message',e=>{
+  if(e.origin!==location.origin||!e.data?.tugPaperAction)return;
+  if(e.data.tugPaperAction==='question')applyQuestion(e.data.questionHTML,e.data.questionType);
+  if(e.data.tugPaperAction==='open'){ensureSlot();window.openGameScratchpad?.();}
+  if(e.data.tugPaperAction==='reset')window.resetGameScratchpad?.();
+  if(e.data.tugPaperAction==='close')window.closeGameScratchpad?.();
+ });
+ document.addEventListener('click',e=>{
+  if(e.target.closest?.('#scratchpadCloseButton'))parent.postMessage({tugPaperAction:'close'},location.origin);
+ },true);
+ // 某些瀏覽器會在動態開啟時才建立元件。
+ document.addEventListener('DOMContentLoaded',ensureSlot);
+ window.addEventListener('load',()=>{ensureSlot();parent.postMessage({tugPaperAction:'ready'},location.origin);});
+})();
+</script></body></html>
