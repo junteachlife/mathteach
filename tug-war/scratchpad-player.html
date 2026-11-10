@@ -2,18 +2,25 @@
 <html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="../css/scratchpad.css">
 <style>
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent!important}
-#scratchpadComponent{position:static!important}
-#scratchpadPanel{inset:0!important;width:100%!important;height:100%!important;max-height:100%!important;border-radius:0!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent!important;font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif}
+#scratchpadComponent{position:static!important;width:100%!important;height:100%!important}
+#scratchpadPanel{inset:0!important;width:100%!important;height:100%!important;max-height:100%!important;border-radius:0!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
 /* 僅影響競賽橋接頁，不修改主網站的共用計算紙 */
 .scratchpad-panel,.scratchpad-panel--open,.scratchpad-panel--fullscreen{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important}
-.scratchpad-header{min-height:38px!important;padding:4px 8px!important}
-.scratchpad-header__title-area{gap:4px!important}
-.scratchpad-toolbar{padding:5px 6px!important;overflow-x:auto!important;white-space:nowrap!important}
-.scratchpad-toolbar > *{flex-shrink:0}
-.scratchpad-canvas-container{padding:0!important;background:transparent!important;flex:1 1 auto!important;min-height:0!important}
-#scratchpadCanvas,.scratchpad-canvas{background:transparent!important;background-color:transparent!important;background-image:none!important;border-color:rgba(80,110,150,.15)!important}
-#scratchpadPanel{display:flex!important;flex-direction:column!important}
+.scratchpad-header{min-height:34px!important;padding:2px 6px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:6px!important;background:rgba(245,167,24,.96)!important}
+.scratchpad-header__title-area{gap:4px!important;min-width:0!important;flex:1 1 auto!important}
+.scratchpad-header__title{font-size:15px!important;line-height:1.1!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.scratchpad-header__desc,.scratchpad-header p, .scratchpad-header small{display:none!important}
+#scratchpadCloseButton,.scratchpad-close-button{flex:0 0 auto!important;min-width:auto!important;padding:6px 10px!important;font-size:13px!important;border-radius:10px!important}
+.scratchpad-toolbar{padding:4px 6px!important;display:flex!important;align-items:center!important;gap:4px!important;flex-wrap:nowrap!important;overflow:hidden!important;white-space:nowrap!important;background:rgba(247,241,214,.96)!important}
+.scratchpad-toolbar > *{flex-shrink:1!important;min-width:0!important}
+.scratchpad-toolbar button,.scratchpad-toolbar .btn,.scratchpad-toolbar [role="button"]{padding:5px 8px!important;font-size:12px!important;line-height:1.1!important;border-radius:10px!important;min-height:34px!important}
+.scratchpad-toolbar label,.scratchpad-toolbar span{font-size:12px!important}
+.scratchpad-toolbar input[type="color"],.scratchpad-toolbar .color-btn,.scratchpad-toolbar .color-swatch{width:26px!important;height:26px!important;min-width:26px!important;padding:0!important}
+.scratchpad-toolbar input[type="range"]{max-width:56px!important}
+.scratchpad-toolbar select{font-size:12px!important;padding:4px 6px!important;max-width:66px!important}
+.scratchpad-canvas-container{padding:0!important;background:transparent!important;flex:1 1 auto!important;min-height:120px!important;height:100%!important;overflow:hidden!important}
+#scratchpadCanvas,.scratchpad-canvas,canvas{background:transparent!important;background-color:transparent!important;background-image:none!important;border:0!important;border-color:transparent!important;width:100%!important;height:100%!important}
 </style>
 </head><body>
 <script src="../js/scratchpad.js"></script>
