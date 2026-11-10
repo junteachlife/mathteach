@@ -352,7 +352,7 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
  .question{font-size:18px!important;}
 }
 
-/* V3.8：保留原題目尺寸與排版，透明畫布疊加在原題目和鍵盤上。 */
+/* V3.9：保留原題目尺寸與排版，透明畫布疊加在原題目和鍵盤上。 */
 html,body{max-width:100%;overflow-x:hidden;}
 .app{width:100%;max-width:1900px;margin-inline:auto;}
 .arena,.side,.paper-surface,.paperzone{min-width:0;}
@@ -375,7 +375,7 @@ html,body{max-width:100%;overflow-x:hidden;}
 .question{max-width:100%;}
 @media(max-width:700px){.paper-surface{gap:4px;}}
 
-/* V3.8 transparent scratchpad – original question and font remain unchanged */
+/* V3.9 transparent scratchpad – original question and font remain unchanged */
 .team-paper-overlay,.side.blue .team-paper-overlay,.side.red .team-paper-overlay{
   background:transparent!important;
   border:0!important;
@@ -393,6 +393,11 @@ html,body{max-width:100%;overflow-x:hidden;}
 .paper-surface.paper-open .answer,
 .paper-surface.paper-open .pad,
 .paper-surface.paper-open .scratch-launch{visibility:visible!important;}
+
+/* V3.9：移除計算紙提示文字與淺藍底框 */
+.scratch-launch{display:flex!important;justify-content:flex-end!important;align-items:center!important;flex-wrap:nowrap!important;min-height:0!important;gap:0!important;padding:2px 0!important;margin:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.scratch-launch-note{display:none!important}
+.open-paper{min-height:34px!important;padding:6px 12px!important}
 </style>
 </head>
 <body><div class="app">
@@ -490,8 +495,8 @@ html,body{max-width:100%;overflow-x:hidden;}
       <ellipse cx="11" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/><ellipse cx="65" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/>
     </svg></div></div></div><div class="track"><span>藍隊</span><div class="bar"><div id="barfill" class="barfill"></div></div><span>紅隊</span></div>
 <main class="arena">
-<section class="side blue" id="blue"><div class="side-head"><div class="side-title">藍隊</div><small id="blueCount">第 1 題</small></div><div class="paper-surface" id="bluePaperSurface"><div class="question" id="blueQuestion">準備開始</div><div class="paperzone" id="bluePaperzone"><div class="scratch-launch"><span class="scratch-launch-note">📝 共用計算紙｜獨立書寫區</span><button type="button" class="open-paper" data-open-paper="blue">✏️ 展開藍隊計算紙</button></div><div class="answer"><div class="answer-display" id="blueAnswer">x = ？</div><button class="submit" id="blueSubmit" data-submit="blue">送出</button></div><div class="pad" id="bluePad"></div></div></div><div class="status" id="blueStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="blueFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
-<section class="side red" id="red"><div class="side-head"><div class="side-title">紅隊</div><small id="redCount">第 1 題</small></div><div class="paper-surface" id="redPaperSurface"><div class="question" id="redQuestion">準備開始</div><div class="paperzone" id="redPaperzone"><div class="scratch-launch"><span class="scratch-launch-note">📝 共用計算紙｜獨立書寫區</span><button type="button" class="open-paper" data-open-paper="red">✏️ 展開紅隊計算紙</button></div><div class="answer"><div class="answer-display" id="redAnswer">x = ？</div><button class="submit" id="redSubmit" data-submit="red">送出</button></div><div class="pad" id="redPad"></div></div></div><div class="status" id="redStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="redFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
+<section class="side blue" id="blue"><div class="side-head"><div class="side-title">藍隊</div><small id="blueCount">第 1 題</small></div><div class="paper-surface" id="bluePaperSurface"><div class="question" id="blueQuestion">準備開始</div><div class="paperzone" id="bluePaperzone"><div class="scratch-launch"><button type="button" class="open-paper" data-open-paper="blue">✏️ 展開藍隊計算紙</button></div><div class="answer"><div class="answer-display" id="blueAnswer">x = ？</div><button class="submit" id="blueSubmit" data-submit="blue">送出</button></div><div class="pad" id="bluePad"></div></div></div><div class="status" id="blueStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="blueFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
+<section class="side red" id="red"><div class="side-head"><div class="side-title">紅隊</div><small id="redCount">第 1 題</small></div><div class="paper-surface" id="redPaperSurface"><div class="question" id="redQuestion">準備開始</div><div class="paperzone" id="redPaperzone"><div class="scratch-launch"><button type="button" class="open-paper" data-open-paper="red">✏️ 展開紅隊計算紙</button></div><div class="answer"><div class="answer-display" id="redAnswer">x = ？</div><button class="submit" id="redSubmit" data-submit="red">送出</button></div><div class="pad" id="redPad"></div></div></div><div class="status" id="redStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="redFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
 </main><footer class="footer"><button class="btn alt" id="pauseBtn">暫停</button><button class="btn" id="resetBtn">重新開始／設定</button><span class="mode-note" id="modeNote">雙人共用觸控螢幕｜同難度不同題｜答錯冷卻 3 秒｜七上 3-2 正式題庫已內建</span></footer></div>
 <div class="dialog-wrap" id="modal"><div class="dialog"><h2 id="modalTitle">數學拔河王</h2><p id="modalDesc">左右雙方獨立解題，答對拉繩子一格。先拉滿 5 格或時間結束領先者獲勝。</p><div id="settings" class="options"><label class="option">學期 <select id="semesterSelect" aria-label="選擇學期"></select></label><label class="option">數學單元 <select id="gameSelect" aria-label="選擇數學單元"></select></label><label class="option">練習模式 <select id="modeSelect" aria-label="選擇練習模式"></select></label><div class="catalog-hint" id="catalogHint">目前使用示範題庫；原有遊戲不會被修改。</div><label class="option">比賽時間 <select id="duration"><option value="180" selected>180 秒（3 分鐘）</option><option value="120">120 秒</option><option value="300">300 秒</option></select></label><label class="option">勝利進度 <select id="winSteps"><option value="5" selected>5 格</option><option value="3">3 格</option><option value="7">7 格</option></select></label><label class="option">答錯冷卻 <select id="cooldown"><option value="3" selected>3 秒</option><option value="0">不冷卻</option><option value="5">5 秒</option></select></label><label class="option">題目模式 <span>同難度不同題目</span></label></div><p><button class="btn" id="modalButton">開始競賽</button></p></div></div>
 <script>
@@ -653,7 +658,7 @@ function paperFrame(side) {
   frame.className='team-paper-frame';
   frame.title=(side==='blue'?'藍隊':'紅隊')+'計算紙';
   frame.setAttribute('allowtransparency','true');
-  frame.src='./tug-war/scratchpad-player.html?team='+side+'&v=3.8';
+  frame.src='./tug-war/scratchpad-player.html?team='+side+'&v=3.9';
   wrap.appendChild(frame);
   host.appendChild(wrap);
   const record={wrap,frame,ready:false,pendingClear:false};
