@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../css/scratchpad.css">
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}#scratchpadComponent{position:static!important}#scratchpadPanel{inset:0!important;width:100%!important;height:100%!important;max-height:100%!important;border-radius:0!important}</style>
+</head><body>
+<script src="../js/scratchpad.js"></script>
+<script src="../js/scratchpad-template.js"></script>
+<script>
+window.addEventListener('message',function(e){
+ if(e.origin!==location.origin||!e.data?.tugPaperAction)return;
+ const cmd=e.data.tugPaperAction;
+ if(cmd==='open' && typeof window.openGameScratchpad==='function')window.openGameScratchpad();
+ if(cmd==='reset' && typeof window.resetGameScratchpad==='function')window.resetGameScratchpad();
+ if(cmd==='close' && typeof window.closeGameScratchpad==='function')window.closeGameScratchpad();
+});
+// 通知父頁：元件已準備，可安全開啟
+window.addEventListener('load',()=>parent.postMessage({tugPaperAction:'ready'},location.origin));
+</script>
+</body></html>
