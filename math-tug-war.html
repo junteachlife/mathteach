@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>數學拔河王 V3.6｜大書寫區計算紙優化版</title>
+<title>數學拔河王 V3.7｜工具列置頂與全區計算紙</title>
 <style>
 :root{font-family:'Microsoft JhengHei','Noto Sans TC',system-ui,sans-serif;color:#1f2a44;background:#f1f5fa}*{box-sizing:border-box}body{margin:0}button,select{font:inherit;touch-action:manipulation}button{cursor:pointer}.app{min-height:100vh;display:flex;flex-direction:column;gap:10px;padding:10px}.top{display:grid;grid-template-columns:1fr minmax(280px,2.3fr) 1fr;align-items:center;gap:12px;background:white;border-radius:16px;padding:10px 16px;box-shadow:0 3px 16px #22344b10}.score{text-align:center;font-weight:900;font-size:clamp(20px,3vw,38px)}.score.blue{color:#2872c6}.score.red{color:#cd4854}.center{text-align:center}.center h1{font-size:clamp(18px,2vw,28px);margin:0}.sub{font-size:12px;color:#66748a}.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:20px}.rope-stage{position:relative;height:105px;overflow:hidden;border-radius:14px;background:linear-gradient(90deg,#dceaff 0 50%,#ffe5e7 50%);border:1px solid #dbe2eb}.centerline{position:absolute;left:50%;height:100%;border-left:2px dashed #8190a1}.rope{position:absolute;top:47%;height:8px;left:7%;right:7%;background:repeating-linear-gradient(90deg,#a87648 0 10px,#be9869 10px 20px);border-radius:10px}.rope-group{position:absolute;top:20px;left:50%;transform:translateX(-50%);transition:left .5s ease;width:100%;height:78px;pointer-events:none}.flag{position:absolute;left:50%;top:0;transform:translateX(-50%);height:69px;border-left:5px solid #fbba3a}.flag:after{content:'⚑';color:#e0aa0f;position:absolute;left:3px;top:-13px;font-size:34px}.players{position:absolute;font-size:35px;top:22px;white-space:nowrap;text-shadow:1px 2px #fff}.players.left{right:54%}.players.right{left:54%}.track{display:flex;align-items:center;gap:10px;font-weight:bold;font-size:13px}.bar{height:12px;background:#f6ccd0;border-radius:20px;flex:1;overflow:hidden}.barfill{width:50%;height:100%;background:#4490e4;transition:width .5s}.arena{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:0}.side{display:flex;flex-direction:column;gap:8px;padding:12px;min-width:0;background:white;border-radius:17px;border-top:6px solid}.side.blue{border-color:#2d80d8}.side.red{border-color:#d85b66}.side-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.side-title{font-size:21px;font-weight:900}.blue .side-title{color:#2673c8}.red .side-title{color:#c84b55}.question{background:#f2f6fa;border-radius:12px;display:grid;place-items:center;text-align:center;min-height:70px;padding:12px;font-weight:800;font-size:clamp(20px,2.5vw,33px)}.scratch{position:relative;flex:1;min-height:110px;border:1px solid #cdd6e2;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(#fff 0 26px,#e6eef6 27px 28px)}.scratch canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}.scratch-label{position:absolute;top:4px;left:8px;font-size:11px;color:#8090a0;pointer-events:none}.clear{position:absolute;right:5px;top:5px;border:1px solid #cfd9e3;background:#fff;border-radius:6px;font-size:12px;padding:4px 7px}.answer{display:grid;grid-template-columns:1fr auto;gap:8px}.answer-display{border:2px solid #cbd7e6;background:#fff;border-radius:10px;padding:10px;font-size:25px;min-height:50px;word-break:break-all}.submit{border:0;border-radius:10px;color:#fff;font-weight:bold;padding:8px 16px;background:#2d80d8}.red .submit{background:#d85b66}.submit:disabled{opacity:.5}.pad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.pad button{min-height:43px;border:1px solid #d3dde9;background:#f8fbff;border-radius:9px;font-weight:800;font-size:clamp(16px,1.5vw,23px)}.pad button:active{background:#c4e1ff}.status{height:23px;color:#56677e;font-size:14px;font-weight:bold;text-align:center}.footer{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.btn{border:0;background:#334e72;color:#fff;padding:9px 14px;border-radius:8px;font-weight:bold}.btn.alt{background:#fff;color:#34425c;border:1px solid #b7c4d6}.mode-note{font-size:12px;color:#69788a}.dialog-wrap{position:fixed;inset:0;background:#142238aa;display:grid;place-items:center;z-index:10;padding:16px}.dialog{background:white;max-width:560px;width:100%;padding:25px;border-radius:20px;text-align:center;box-shadow:0 12px 42px #16253855}.dialog h2{margin-top:0}.options{display:grid;gap:10px;text-align:left}.option{border:1px solid #d9e1ea;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;gap:8px}.option select{border:0;min-width:130px}.hidden{display:none!important}@media (max-width:700px){.top{grid-template-columns:1fr 2fr 1fr;padding:8px}.arena{gap:5px}.side{padding:6px}.side-title{font-size:16px}.question{font-size:18px;min-height:65px}.answer{grid-template-columns:1fr}.answer-display{font-size:21px}.pad{gap:3px}.pad button{min-height:40px}.players{font-size:27px}.rope-stage{height:90px}.scratch{min-height:85px}.app{padding:5px}}@media (max-height:800px) and (min-width:800px){.scratch{min-height:85px}.pad button{min-height:36px}.question{min-height:55px}.rope-stage{height:83px}.top{padding:5px 12px}}
 
@@ -351,6 +351,29 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
  .scratch-launch{flex-wrap:wrap;justify-content:center;text-align:center;}
  .question{font-size:18px!important;}
 }
+
+/* V3.7：計算紙工具列在題目上方，整片書寫區位於題目之下 */
+html,body{max-width:100%;overflow-x:hidden;}
+.app{width:100%;max-width:1900px;margin-inline:auto;}
+.arena,.side,.paper-surface,.paperzone{min-width:0;}
+.paper-surface{position:relative;display:flex;flex-direction:column;gap:6px;min-width:0;isolation:isolate;}
+/* 桌面高度限制不應使兩隊卡片向下拉出多餘空間 */
+@media(min-width:1000px) and (min-height:620px) and (orientation:landscape){
+ .app{height:auto!important;min-height:100dvh!important;display:flex!important;overflow:visible!important;gap:5px!important;}
+ .arena{height:auto!important;min-height:0!important;align-items:start!important;overflow:visible!important;}
+ .side{height:auto!important;min-height:0!important;overflow:visible!important;}
+}
+.team-paper-overlay{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:none!important;pointer-events:none!important;overflow:hidden!important;z-index:60!important;border-radius:12px!important;background:#fff!important;}
+.side.blue .team-paper-overlay{border:2px solid #8cbcf0!important;}
+.side.red .team-paper-overlay{border:2px solid #f3a7b6!important;}
+.team-paper-overlay.is-open{display:block!important;pointer-events:auto!important;}
+.team-paper-overlay[hidden],.team-paper-overlay:not(.is-open){display:none!important;pointer-events:none!important;}
+.team-paper-frame{display:block!important;width:100%!important;height:100%!important;border:0!important;background:#fff!important;}
+.paper-surface.paper-open > .question{visibility:hidden!important;}
+.paper-surface.paper-open > .paperzone{visibility:hidden!important;}
+.paper-surface.paper-open .team-paper-overlay{visibility:visible!important;}
+.question{max-width:100%;}
+@media(max-width:700px){.paper-surface{gap:4px;}}
 </style>
 </head>
 <body><div class="app">
@@ -448,8 +471,8 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
       <ellipse cx="11" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/><ellipse cx="65" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/>
     </svg></div></div></div><div class="track"><span>藍隊</span><div class="bar"><div id="barfill" class="barfill"></div></div><span>紅隊</span></div>
 <main class="arena">
-<section class="side blue" id="blue"><div class="side-head"><div class="side-title">藍隊</div><small id="blueCount">第 1 題</small></div><div class="question" id="blueQuestion">準備開始</div><div class="paperzone" id="bluePaperzone"><div class="scratch-launch"><span class="scratch-launch-note">📝 共用計算紙｜獨立書寫區</span><button type="button" class="open-paper" data-open-paper="blue">✏️ 展開藍隊計算紙</button></div><div class="answer"><div class="answer-display" id="blueAnswer">x = ？</div><button class="submit" id="blueSubmit" data-submit="blue">送出</button></div><div class="pad" id="bluePad"></div></div><div class="status" id="blueStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="blueFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
-<section class="side red" id="red"><div class="side-head"><div class="side-title">紅隊</div><small id="redCount">第 1 題</small></div><div class="question" id="redQuestion">準備開始</div><div class="paperzone" id="redPaperzone"><div class="scratch-launch"><span class="scratch-launch-note">📝 共用計算紙｜獨立書寫區</span><button type="button" class="open-paper" data-open-paper="red">✏️ 展開紅隊計算紙</button></div><div class="answer"><div class="answer-display" id="redAnswer">x = ？</div><button class="submit" id="redSubmit" data-submit="red">送出</button></div><div class="pad" id="redPad"></div></div><div class="status" id="redStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="redFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
+<section class="side blue" id="blue"><div class="side-head"><div class="side-title">藍隊</div><small id="blueCount">第 1 題</small></div><div class="paper-surface" id="bluePaperSurface"><div class="question" id="blueQuestion">準備開始</div><div class="paperzone" id="bluePaperzone"><div class="scratch-launch"><span class="scratch-launch-note">📝 共用計算紙｜獨立書寫區</span><button type="button" class="open-paper" data-open-paper="blue">✏️ 展開藍隊計算紙</button></div><div class="answer"><div class="answer-display" id="blueAnswer">x = ？</div><button class="submit" id="blueSubmit" data-submit="blue">送出</button></div><div class="pad" id="bluePad"></div></div></div><div class="status" id="blueStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="blueFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
+<section class="side red" id="red"><div class="side-head"><div class="side-title">紅隊</div><small id="redCount">第 1 題</small></div><div class="paper-surface" id="redPaperSurface"><div class="question" id="redQuestion">準備開始</div><div class="paperzone" id="redPaperzone"><div class="scratch-launch"><span class="scratch-launch-note">📝 共用計算紙｜獨立書寫區</span><button type="button" class="open-paper" data-open-paper="red">✏️ 展開紅隊計算紙</button></div><div class="answer"><div class="answer-display" id="redAnswer">x = ？</div><button class="submit" id="redSubmit" data-submit="red">送出</button></div><div class="pad" id="redPad"></div></div></div><div class="status" id="redStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="redFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
 </main><footer class="footer"><button class="btn alt" id="pauseBtn">暫停</button><button class="btn" id="resetBtn">重新開始／設定</button><span class="mode-note" id="modeNote">雙人共用觸控螢幕｜同難度不同題｜答錯冷卻 3 秒｜七上 3-2 正式題庫已內建</span></footer></div>
 <div class="dialog-wrap" id="modal"><div class="dialog"><h2 id="modalTitle">數學拔河王</h2><p id="modalDesc">左右雙方獨立解題，答對拉繩子一格。先拉滿 5 格或時間結束領先者獲勝。</p><div id="settings" class="options"><label class="option">學期 <select id="semesterSelect" aria-label="選擇學期"></select></label><label class="option">數學單元 <select id="gameSelect" aria-label="選擇數學單元"></select></label><label class="option">練習模式 <select id="modeSelect" aria-label="選擇練習模式"></select></label><div class="catalog-hint" id="catalogHint">目前使用示範題庫；原有遊戲不會被修改。</div><label class="option">比賽時間 <select id="duration"><option value="180" selected>180 秒（3 分鐘）</option><option value="120">120 秒</option><option value="300">300 秒</option></select></label><label class="option">勝利進度 <select id="winSteps"><option value="5" selected>5 格</option><option value="3">3 格</option><option value="7">7 格</option></select></label><label class="option">答錯冷卻 <select id="cooldown"><option value="3" selected>3 秒</option><option value="0">不冷卻</option><option value="5">5 秒</option></select></label><label class="option">題目模式 <span>同難度不同題目</span></label></div><p><button class="btn" id="modalButton">開始競賽</button></p></div></div>
 <script>
@@ -539,7 +562,7 @@ if(s.question.inputType==='choice'){
  const choices=document.createElement('div');choices.className='tug-options';
  for(const option of s.question.options){const btn=document.createElement('button');btn.type='button';btn.className='tug-option';btn.textContent=option.label+'．'+option.text;btn.addEventListener('click',()=>{if(!state.running||state.paused||state.ended||Date.now()<s.lockedUntil)return;s.answer=option.label;renderSide(side);});choices.appendChild(btn);}
  qbox.appendChild(choices);
-}qbox.classList.toggle('has-fraction',!!qbox.querySelector('.math-frac'));$(side+'Count').textContent=`第 ${s.index} 題`;$(side+'Status').textContent='';$(side+'Status').className='status';renderSide(side);clearPaper(side);}
+}qbox.classList.toggle('has-fraction',!!qbox.querySelector('.math-frac'));$(side+'Count').textContent=`第 ${s.index} 題`;$(side+'Status').textContent='';$(side+'Status').className='status';renderSide(side);closePaper(side);clearPaper(side);}
 function renderSide(side){const s=state[side];$(side+'Score').textContent=s.score;$(side+'Answer').textContent=(s.question?.inputType==='choice'?'選項：':'x = ')+(s.answer||'？');
 const isChoice=s.question?.inputType==='choice';$(side+'Pad').style.display=isChoice?'none':'';
 $(side+'Question').querySelectorAll('.tug-option').forEach(btn=>btn.classList.toggle('selected',btn.textContent.startsWith(s.answer+'．')&&!!s.answer));$(side+'Submit').disabled=!state.running||state.paused||state.ended||Date.now()<s.lockedUntil;}
@@ -601,7 +624,7 @@ $('modalButton').addEventListener('click',()=>{if($('settings').classList.contai
 const paperFrames = {};
 function paperFrame(side) {
   if (paperFrames[side]) return paperFrames[side];
-  const host = $(side+'Paperzone');
+  const host = $(side+'PaperSurface');
   const wrap = document.createElement('div');
   wrap.className = 'team-paper-overlay';
   wrap.dataset.side = side;
@@ -611,7 +634,7 @@ function paperFrame(side) {
   frame.className='team-paper-frame';
   frame.title=(side==='blue'?'藍隊':'紅隊')+'計算紙';
   frame.setAttribute('allowtransparency','true');
-  frame.src='./tug-war/scratchpad-player.html?team='+side+'&v=3.4';
+  frame.src='./tug-war/scratchpad-player.html?team='+side+'&v=3.7';
   wrap.appendChild(frame);
   host.appendChild(wrap);
   const record={wrap,frame,ready:false,pendingClear:false};
@@ -619,28 +642,30 @@ function paperFrame(side) {
   frame.addEventListener('load',()=>{
     record.ready=true;
     if(record.pendingClear){record.pendingClear=false;sendPaper(side,'reset');}
-    if(!wrap.hidden)sendPaper(side,'open');
+    if(!wrap.hidden){ sendPaper(side,'question'); sendPaper(side,'open'); }
   });
   return record;
 }
 function sendPaper(side,action){
   const p=paperFrames[side];
   if(!p||!p.frame.contentWindow)return;
-  p.frame.contentWindow.postMessage({tugPaperAction:action},location.origin);
+  p.frame.contentWindow.postMessage({tugPaperAction:action, questionHTML:action==='question'?$(side+'Question').innerHTML:undefined, questionType:action==='question'?$(side+'Question').className:undefined},location.origin);
 }
 function openPaper(side){
   if(!state.running||state.paused||state.ended)return;
   const p=paperFrame(side);
   p.wrap.hidden=false;
+  $(side+'PaperSurface').classList.add('paper-open');
   p.wrap.classList.add('is-open');
   p.wrap.style.pointerEvents='auto';
-  if(p.ready)sendPaper(side,'open');
+  if(p.ready){sendPaper(side,'question');sendPaper(side,'open');}
 }
 function closePaper(side){
   const p=paperFrames[side];
   if(!p)return;
   p.wrap.classList.remove('is-open');
   p.wrap.hidden=true;
+  $(side+'PaperSurface').classList.remove('paper-open');
   p.wrap.style.pointerEvents='none';
   try{ if(p.frame.contentWindow) p.frame.contentWindow.blur(); }catch(error){}
   try{ if(p.frame.contentDocument?.activeElement) p.frame.contentDocument.activeElement.blur(); }catch(error){}
