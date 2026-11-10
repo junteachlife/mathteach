@@ -257,7 +257,7 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
 @media(max-width:700px){.tug-home-nav{min-height:32px}.tug-home-link{padding:7px 10px}}
 
 
-/* V3.0：原始題庫分式／長題自適應修正。
+/* V3.1：原始題庫分式／長題自適應修正。
    取消桌機固定 65px 題目高度；讓內容完整佔有空間，不再覆蓋計算紙。 */
 .question {
   box-sizing: border-box;
@@ -297,6 +297,41 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
   .side { overflow:visible; }
 }
 
+
+/* V3.1：題目與分式不受計分板 .top / 進度條 .bar 樣式干擾 */
+.question{height:auto!important; min-height:105px!important; max-height:none!important; overflow-x:auto!important; overflow-y:visible!important; flex:0 0 auto!important; display:flex!important; align-items:center!important; justify-content:center!important; padding:15px 12px!important; line-height:1.65!important; font-size:clamp(19px,1.8vw,29px)!important;}
+.question.choice-question{display:block!important; max-height:min(42vh,350px)!important; overflow-y:auto!important; font-size:clamp(15px,1.2vw,20px)!important;}
+.question-stem{width:max-content; min-width:100%; text-align:center; white-space:nowrap; line-height:1.55;}
+.question .math-expression{display:inline-block; max-width:none; white-space:nowrap; vertical-align:middle; line-height:1.6;}
+.question .math-frac{display:inline-flex!important; flex-direction:column!important; align-items:stretch!important; vertical-align:middle!important; width:auto!important; min-width:20px; height:auto!important; flex:none!important; margin:0 5px!important; line-height:1.1!important; white-space:nowrap!important; background:none!important; border:0!important; box-shadow:none!important; overflow:visible!important;}
+.question .math-frac > .top{all:unset!important; display:block!important; text-align:center!important; white-space:nowrap!important; padding:2px 6px 4px!important; color:inherit!important; font:inherit!important; line-height:1.25!important;}
+.question .math-frac > .bar{all:unset!important; display:block!important; height:2px!important; min-height:2px!important; width:100%!important; background:currentColor!important; border:0!important; border-radius:0!important; box-shadow:none!important; flex:none!important;}
+.question .math-frac > .bottom{all:unset!important; display:block!important; text-align:center!important; white-space:nowrap!important; padding:4px 6px 2px!important; color:inherit!important; font:inherit!important; line-height:1.25!important;}
+/* 使用原本的共用計算紙，不再以縮小的內嵌 canvas 佔據題目空間 */
+.scratch-launch{flex:0 0 auto; min-height:54px; display:flex; align-items:center; justify-content:space-between; gap:8px; border:1px dashed #adc6e3; background:#f8fbff; border-radius:12px; padding:8px 12px;}
+.scratch-launch-note{font-size:13px;color:#657790;font-weight:700;}
+.open-paper{border:1px solid #95b9e9;border-radius:11px;background:#eaf4ff;color:#1558a1;font-weight:900;padding:10px 16px;min-height:42px;white-space:nowrap;}
+.red .open-paper{background:#fff0f4;color:#aa3150;border-color:#efb2c3;}
+.open-paper:focus-visible,.team-paper-exit:focus-visible{outline:3px solid #f5b927;outline-offset:2px;}
+.team-paper-overlay[hidden]{display:none!important;}
+.team-paper-overlay{position:fixed;z-index:100000;top:0;bottom:0;width:50vw;background:white;display:flex;flex-direction:column;box-shadow:0 0 28px #12264c35;overflow:hidden;}
+.team-paper-overlay[data-side="blue"]{left:0;border-right:3px solid #2685de;}
+.team-paper-overlay[data-side="red"]{right:0;border-left:3px solid #e55071;}
+.team-paper-top{flex:0 0 auto;height:48px;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 10px;background:#e8f2ff;color:#174878;}
+.team-paper-overlay[data-side="red"] .team-paper-top{background:#fff0f4;color:#a72e50;}
+.team-paper-exit{border:1px solid #b5c7dd;border-radius:9px;background:white;color:#2c476c;padding:8px 12px;font-size:13px;font-weight:900;}
+.team-paper-frame{display:block;min-height:0;flex:1;width:100%;border:0;background:white;}
+/* 遇到長題請讓單隊垂直捲動，不犧牲方程式的可讀性 */
+@media (min-width:1000px) and (min-height:620px) and (orientation:landscape){
+ .side{overflow-y:auto!important; min-height:0!important;}
+ .arena{overflow:hidden!important;}
+ .question{min-height:105px!important;}
+}
+@media(max-width:700px){
+ .scratch-launch{flex-wrap:wrap;justify-content:center;text-align:center;}
+ .team-paper-overlay{width:100vw!important;left:0!important;right:0!important;border:0!important;}
+ .question{font-size:18px!important;}
+}
 </style>
 </head>
 <body><div class="app">
@@ -394,8 +429,8 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
       <ellipse cx="11" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/><ellipse cx="65" cy="62" rx="7" ry="6" fill="#ffd6ad" stroke="#26304f" stroke-width="2"/>
     </svg></div></div></div><div class="track"><span>藍隊</span><div class="bar"><div id="barfill" class="barfill"></div></div><span>紅隊</span></div>
 <main class="arena">
-<section class="side blue" id="blue"><div class="side-head"><div class="side-title">藍隊</div><small id="blueCount">第 1 題</small></div><div class="question" id="blueQuestion">準備開始</div><div class="scratch"><span class="scratch-label">✎ 計算紙（直接用觸控筆或手指書寫）</span><canvas id="blueCanvas"></canvas><button class="clear" data-clear="blue">清除筆跡</button></div><div class="answer"><div class="answer-display" id="blueAnswer">x = ？</div><button class="submit" id="blueSubmit" data-submit="blue">送出</button></div><div class="pad" id="bluePad"></div><div class="status" id="blueStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="blueFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
-<section class="side red" id="red"><div class="side-head"><div class="side-title">紅隊</div><small id="redCount">第 1 題</small></div><div class="question" id="redQuestion">準備開始</div><div class="scratch"><span class="scratch-label">✎ 計算紙（直接用觸控筆或手指書寫）</span><canvas id="redCanvas"></canvas><button class="clear" data-clear="red">清除筆跡</button></div><div class="answer"><div class="answer-display" id="redAnswer">x = ？</div><button class="submit" id="redSubmit" data-submit="red">送出</button></div><div class="pad" id="redPad"></div><div class="status" id="redStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="redFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
+<section class="side blue" id="blue"><div class="side-head"><div class="side-title">藍隊</div><small id="blueCount">第 1 題</small></div><div class="question" id="blueQuestion">準備開始</div><div class="scratch-launch"><span class="scratch-launch-note">📝 共用計算紙｜獨立書寫區</span><button type="button" class="open-paper" data-open-paper="blue">✏️ 展開藍隊計算紙</button></div><div class="answer"><div class="answer-display" id="blueAnswer">x = ？</div><button class="submit" id="blueSubmit" data-submit="blue">送出</button></div><div class="pad" id="bluePad"></div><div class="status" id="blueStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="blueFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
+<section class="side red" id="red"><div class="side-head"><div class="side-title">紅隊</div><small id="redCount">第 1 題</small></div><div class="question" id="redQuestion">準備開始</div><div class="scratch-launch"><span class="scratch-launch-note">📝 共用計算紙｜獨立書寫區</span><button type="button" class="open-paper" data-open-paper="red">✏️ 展開紅隊計算紙</button></div><div class="answer"><div class="answer-display" id="redAnswer">x = ？</div><button class="submit" id="redSubmit" data-submit="red">送出</button></div><div class="pad" id="redPad"></div><div class="status" id="redStatus" role="status" aria-live="polite"></div><div class="answer-feedback" id="redFeedback" role="status" aria-live="assertive" aria-atomic="true"></div></section>
 </main><footer class="footer"><button class="btn alt" id="pauseBtn">暫停</button><button class="btn" id="resetBtn">重新開始／設定</button><span class="mode-note" id="modeNote">雙人共用觸控螢幕｜同難度不同題｜答錯冷卻 3 秒｜七上 3-2 正式題庫已內建</span></footer></div>
 <div class="dialog-wrap" id="modal"><div class="dialog"><h2 id="modalTitle">數學拔河王</h2><p id="modalDesc">左右雙方獨立解題，答對拉繩子一格。先拉滿 5 格或時間結束領先者獲勝。</p><div id="settings" class="options"><label class="option">學期 <select id="semesterSelect" aria-label="選擇學期"></select></label><label class="option">數學單元 <select id="gameSelect" aria-label="選擇數學單元"></select></label><label class="option">練習模式 <select id="modeSelect" aria-label="選擇練習模式"></select></label><div class="catalog-hint" id="catalogHint">目前使用示範題庫；原有遊戲不會被修改。</div><label class="option">比賽時間 <select id="duration"><option value="180" selected>180 秒（3 分鐘）</option><option value="120">120 秒</option><option value="300">300 秒</option></select></label><label class="option">勝利進度 <select id="winSteps"><option value="5" selected>5 格</option><option value="3">3 格</option><option value="7">7 格</option></select></label><label class="option">答錯冷卻 <select id="cooldown"><option value="3" selected>3 秒</option><option value="0">不冷卻</option><option value="5">5 秒</option></select></label><label class="option">題目模式 <span>同難度不同題目</span></label></div><p><button class="btn" id="modalButton">開始競賽</button></p></div></div>
 <script>
@@ -538,15 +573,54 @@ function submit(side){
  }
 }
 
-for(const side of sides){const pad=$(side+'Pad');for(const key of ['7','8','9','⌫','4','5','6','−','1','2','3','/','清除','0','.','送出']){const b=document.createElement('button');b.textContent=key;b.type='button';b.addEventListener('click',()=>key==='送出'?submit(side):type(side,key));pad.appendChild(b);}$(side+'Submit').addEventListener('click',()=>submit(side));document.querySelector(`[data-clear="${side}"]`).addEventListener('click',()=>clearPaper(side));}
+for(const side of sides){const pad=$(side+'Pad');for(const key of ['7','8','9','⌫','4','5','6','−','1','2','3','/','清除','0','.','送出']){const b=document.createElement('button');b.textContent=key;b.type='button';b.addEventListener('click',()=>key==='送出'?submit(side):type(side,key));pad.appendChild(b);}$(side+'Submit').addEventListener('click',()=>submit(side));}
 $('pauseBtn').addEventListener('click',()=>{if(!state.running||state.ended)return;state.paused=!state.paused;$('pauseBtn').textContent=state.paused?'繼續':'暫停';sides.forEach(renderSide);});
 $('resetBtn').addEventListener('click',()=>{state.running=false;state.paused=false;clearInterval(interval);$('settings').classList.remove('hidden');$('modalTitle').textContent='競賽設定';$('modalDesc').textContent='按下開始即可進行雙人觸控競賽。';$('modalButton').textContent='開始競賽';$('modal').classList.remove('hidden');sides.forEach(side=>{hideFeedback(side);renderSide(side);});});
 $('modalButton').addEventListener('click',()=>{if($('settings').classList.contains('hidden'))$('settings').classList.remove('hidden');try{begin();}catch(error){console.error('產題失敗',error);state.running=false;clearInterval(interval);$('settings').classList.remove('hidden');$('catalogHint').textContent='❌ 無法開始競賽：'+(error?.message||String(error));$('catalogHint').style.color='#b91c1c';$('catalogHint').style.background='#fff1f2';$('modal').classList.remove('hidden');}});
-// 每隊各自保存 Pointer ID，可同時在兩個 canvas 寫字。
-const pens={blue:new Map(),red:new Map()};function fitCanvas(side){const canvas=$(side+'Canvas'),rect=canvas.getBoundingClientRect(),dpr=window.devicePixelRatio||1;const old=document.createElement('canvas');if(canvas.width&&canvas.height){old.width=canvas.width;old.height=canvas.height;old.getContext('2d').drawImage(canvas,0,0);}canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);if(old.width){ctx.drawImage(old,0,0,rect.width,rect.height);}ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#2b425e';}
-function clearPaper(side){if(typeof pens!=='undefined')pens[side].clear();const canvas=$(side+'Canvas');const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);}
-for(const side of sides){const canvas=$(side+'Canvas');const pts=pens[side];function loc(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}canvas.addEventListener('pointerdown',e=>{if(!state.running||state.paused||state.ended)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);pts.set(e.pointerId,loc(e));});canvas.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;e.preventDefault();const p=pts.get(e.pointerId),n=loc(e),ctx=canvas.getContext('2d');ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(n.x,n.y);ctx.stroke();pts.set(e.pointerId,n);});for(const ev of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(ev,e=>pts.delete(e.pointerId));}
-window.addEventListener('resize',()=>sides.forEach(fitCanvas));requestAnimationFrame(()=>sides.forEach(fitCanvas));
+// V3.1：每隊的共用計算紙使用獨立 iframe，避免原始 singleton 元件 ID 衝突。
+// 只載入既有 js/scratchpad.js、js/scratchpad-template.js、css/scratchpad.css，不修改其原始內容。
+const paperFrames = {};
+function paperFrame(side) {
+  if (paperFrames[side]) return paperFrames[side];
+  const wrap=document.createElement('div');
+  wrap.className='team-paper-overlay';
+  wrap.dataset.side=side;
+  wrap.hidden=true;
+  wrap.innerHTML='<div class="team-paper-top"><strong>'+ (side==='blue'?'🔵 藍隊':'🔴 紅隊')+'獨立計算紙</strong><button type="button" class="team-paper-exit">✕ 返回答題區</button></div>';
+  const frame=document.createElement('iframe');
+  frame.className='team-paper-frame';
+  frame.title=(side==='blue'?'藍隊':'紅隊')+'共用計算紙';
+  frame.src='./tug-war/scratchpad-player.html?team='+side;
+  frame.setAttribute('allow','fullscreen');
+  wrap.appendChild(frame);
+  document.body.appendChild(wrap);
+  wrap.querySelector('.team-paper-exit').addEventListener('click',()=>{wrap.hidden=true;});
+  frame.addEventListener('load',()=>{
+    if(!wrap.hidden) frame.contentWindow.postMessage({tugPaperAction:'open'},location.origin);
+  });
+  paperFrames[side]={wrap,frame,loaded:false};
+  return paperFrames[side];
+}
+function openPaper(side){
+  if(!state.running || state.ended)return;
+  const {wrap,frame}=paperFrame(side);
+  wrap.hidden=false;
+  if(frame.contentDocument && frame.contentDocument.readyState==='complete')
+    frame.contentWindow.postMessage({tugPaperAction:'open'},location.origin);
+}
+function clearPaper(side){
+  const p=paperFrames[side];
+  if(p) p.frame.contentWindow.postMessage({tugPaperAction:'reset'},location.origin);
+}
+for (const side of sides) {
+  document.querySelector('[data-open-paper="'+side+'"]').addEventListener('click',()=>openPaper(side));
+}
+window.addEventListener('message',e=>{
+ if(e.origin!==location.origin)return;
+ if(e.data?.tugPaperAction==='close'){
+  for(const p of Object.values(paperFrames)) if(p.frame.contentWindow===e.source)p.wrap.hidden=true;
+ }
+});
 </script><script>
 // V2.9 七上 3-2 正式題庫：直接內嵌，避免 GitHub Pages 額外檔案載入失敗。
 try {
