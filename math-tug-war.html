@@ -352,7 +352,7 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
  .question{font-size:18px!important;}
 }
 
-/* V3.7：計算紙工具列在題目上方，整片書寫區位於題目之下 */
+/* V3.8：保留原題目尺寸與排版，透明畫布疊加在原題目和鍵盤上。 */
 html,body{max-width:100%;overflow-x:hidden;}
 .app{width:100%;max-width:1900px;margin-inline:auto;}
 .arena,.side,.paper-surface,.paperzone{min-width:0;}
@@ -374,6 +374,25 @@ html,body{max-width:100%;overflow-x:hidden;}
 .paper-surface.paper-open .team-paper-overlay{visibility:visible!important;}
 .question{max-width:100%;}
 @media(max-width:700px){.paper-surface{gap:4px;}}
+
+/* V3.8 transparent scratchpad – original question and font remain unchanged */
+.team-paper-overlay,.side.blue .team-paper-overlay,.side.red .team-paper-overlay{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.team-paper-frame{background:transparent!important;}
+.paper-surface.paper-open > .question,
+.paper-surface.paper-open > .paperzone{
+  visibility:visible!important;
+}
+/* Extra height belongs only to the toolbar; question itself is not resized. */
+.paper-surface.paper-open{padding-top:46px;}
+.paper-surface.paper-open .team-paper-overlay{visibility:visible!important;}
+/* Hide answer controls visually during handwriting while keeping the question visible. */
+.paper-surface.paper-open .answer,
+.paper-surface.paper-open .pad,
+.paper-surface.paper-open .scratch-launch{visibility:visible!important;}
 </style>
 </head>
 <body><div class="app">
@@ -634,7 +653,7 @@ function paperFrame(side) {
   frame.className='team-paper-frame';
   frame.title=(side==='blue'?'藍隊':'紅隊')+'計算紙';
   frame.setAttribute('allowtransparency','true');
-  frame.src='./tug-war/scratchpad-player.html?team='+side+'&v=3.7';
+  frame.src='./tug-war/scratchpad-player.html?team='+side+'&v=3.8';
   wrap.appendChild(frame);
   host.appendChild(wrap);
   const record={wrap,frame,ready:false,pendingClear:false};
@@ -642,7 +661,7 @@ function paperFrame(side) {
   frame.addEventListener('load',()=>{
     record.ready=true;
     if(record.pendingClear){record.pendingClear=false;sendPaper(side,'reset');}
-    if(!wrap.hidden){ sendPaper(side,'question'); sendPaper(side,'open'); }
+    if(!wrap.hidden){ sendPaper(side,'open'); }
   });
   return record;
 }
@@ -658,7 +677,7 @@ function openPaper(side){
   $(side+'PaperSurface').classList.add('paper-open');
   p.wrap.classList.add('is-open');
   p.wrap.style.pointerEvents='auto';
-  if(p.ready){sendPaper(side,'question');sendPaper(side,'open');}
+  if(p.ready){sendPaper(side,'open');}
 }
 function closePaper(side){
   const p=paperFrames[side];
