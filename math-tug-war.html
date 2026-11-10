@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>數學拔河王 V2.7｜返回首頁</title>
+<title>數學拔河王 V3.3｜隊伍內透明計算紙</title>
 <style>
 :root{font-family:'Microsoft JhengHei','Noto Sans TC',system-ui,sans-serif;color:#1f2a44;background:#f1f5fa}*{box-sizing:border-box}body{margin:0}button,select{font:inherit;touch-action:manipulation}button{cursor:pointer}.app{min-height:100vh;display:flex;flex-direction:column;gap:10px;padding:10px}.top{display:grid;grid-template-columns:1fr minmax(280px,2.3fr) 1fr;align-items:center;gap:12px;background:white;border-radius:16px;padding:10px 16px;box-shadow:0 3px 16px #22344b10}.score{text-align:center;font-weight:900;font-size:clamp(20px,3vw,38px)}.score.blue{color:#2872c6}.score.red{color:#cd4854}.center{text-align:center}.center h1{font-size:clamp(18px,2vw,28px);margin:0}.sub{font-size:12px;color:#66748a}.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:20px}.rope-stage{position:relative;height:105px;overflow:hidden;border-radius:14px;background:linear-gradient(90deg,#dceaff 0 50%,#ffe5e7 50%);border:1px solid #dbe2eb}.centerline{position:absolute;left:50%;height:100%;border-left:2px dashed #8190a1}.rope{position:absolute;top:47%;height:8px;left:7%;right:7%;background:repeating-linear-gradient(90deg,#a87648 0 10px,#be9869 10px 20px);border-radius:10px}.rope-group{position:absolute;top:20px;left:50%;transform:translateX(-50%);transition:left .5s ease;width:100%;height:78px;pointer-events:none}.flag{position:absolute;left:50%;top:0;transform:translateX(-50%);height:69px;border-left:5px solid #fbba3a}.flag:after{content:'⚑';color:#e0aa0f;position:absolute;left:3px;top:-13px;font-size:34px}.players{position:absolute;font-size:35px;top:22px;white-space:nowrap;text-shadow:1px 2px #fff}.players.left{right:54%}.players.right{left:54%}.track{display:flex;align-items:center;gap:10px;font-weight:bold;font-size:13px}.bar{height:12px;background:#f6ccd0;border-radius:20px;flex:1;overflow:hidden}.barfill{width:50%;height:100%;background:#4490e4;transition:width .5s}.arena{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:0}.side{display:flex;flex-direction:column;gap:8px;padding:12px;min-width:0;background:white;border-radius:17px;border-top:6px solid}.side.blue{border-color:#2d80d8}.side.red{border-color:#d85b66}.side-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.side-title{font-size:21px;font-weight:900}.blue .side-title{color:#2673c8}.red .side-title{color:#c84b55}.question{background:#f2f6fa;border-radius:12px;display:grid;place-items:center;text-align:center;min-height:70px;padding:12px;font-weight:800;font-size:clamp(20px,2.5vw,33px)}.scratch{position:relative;flex:1;min-height:110px;border:1px solid #cdd6e2;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(#fff 0 26px,#e6eef6 27px 28px)}.scratch canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}.scratch-label{position:absolute;top:4px;left:8px;font-size:11px;color:#8090a0;pointer-events:none}.clear{position:absolute;right:5px;top:5px;border:1px solid #cfd9e3;background:#fff;border-radius:6px;font-size:12px;padding:4px 7px}.answer{display:grid;grid-template-columns:1fr auto;gap:8px}.answer-display{border:2px solid #cbd7e6;background:#fff;border-radius:10px;padding:10px;font-size:25px;min-height:50px;word-break:break-all}.submit{border:0;border-radius:10px;color:#fff;font-weight:bold;padding:8px 16px;background:#2d80d8}.red .submit{background:#d85b66}.submit:disabled{opacity:.5}.pad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.pad button{min-height:43px;border:1px solid #d3dde9;background:#f8fbff;border-radius:9px;font-weight:800;font-size:clamp(16px,1.5vw,23px)}.pad button:active{background:#c4e1ff}.status{height:23px;color:#56677e;font-size:14px;font-weight:bold;text-align:center}.footer{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}.btn{border:0;background:#334e72;color:#fff;padding:9px 14px;border-radius:8px;font-weight:bold}.btn.alt{background:#fff;color:#34425c;border:1px solid #b7c4d6}.mode-note{font-size:12px;color:#69788a}.dialog-wrap{position:fixed;inset:0;background:#142238aa;display:grid;place-items:center;z-index:10;padding:16px}.dialog{background:white;max-width:560px;width:100%;padding:25px;border-radius:20px;text-align:center;box-shadow:0 12px 42px #16253855}.dialog h2{margin-top:0}.options{display:grid;gap:10px;text-align:left}.option{border:1px solid #d9e1ea;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;gap:8px}.option select{border:0;min-width:130px}.hidden{display:none!important}@media (max-width:700px){.top{grid-template-columns:1fr 2fr 1fr;padding:8px}.arena{gap:5px}.side{padding:6px}.side-title{font-size:16px}.question{font-size:18px;min-height:65px}.answer{grid-template-columns:1fr}.answer-display{font-size:21px}.pad{gap:3px}.pad button{min-height:40px}.players{font-size:27px}.rope-stage{height:90px}.scratch{min-height:85px}.app{padding:5px}}@media (max-height:800px) and (min-width:800px){.scratch{min-height:85px}.pad button{min-height:36px}.question{min-height:55px}.rope-stage{height:83px}.top{padding:5px 12px}}
 
@@ -339,6 +339,29 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
 /* 只保留頂端導航作為不透明可辨識控制列 */
 .team-paper-top { background:rgba(232,242,255,.96)!important; }
 .team-paper-overlay[data-side="red"] .team-paper-top { background:rgba(255,240,244,.96)!important; }
+
+/* V3.3｜計算紙只覆蓋自己隊伍卡片，不再遮蓋整個視窗 */
+.arena .side {position:relative!important;isolation:isolate;}
+.team-paper-overlay {
+ position:absolute!important;inset:0!important;top:0!important;right:0!important;
+ bottom:0!important;left:0!important;width:100%!important;height:100%!important;
+ max-width:100%!important;z-index:50!important;box-shadow:none!important;
+ border:2px solid #86baf1!important;border-radius:15px!important;
+ background:rgba(255,255,255,.015)!important;overflow:hidden!important;
+ pointer-events:auto;
+}
+.side.red .team-paper-overlay {border-color:#f4a0b0!important;}
+.team-paper-overlay[hidden],.team-paper-overlay:not(.is-open) {display:none!important;pointer-events:none!important;visibility:hidden!important;}
+.team-paper-overlay.is-open {display:flex!important;pointer-events:auto!important;visibility:visible!important;}
+.team-paper-top {height:38px!important;min-height:38px!important;padding:3px 8px!important;background:rgba(229,241,255,.95)!important;}
+.side.red .team-paper-top {background:rgba(255,231,238,.95)!important;}
+.team-paper-top strong {font-size:13px!important;}
+.team-paper-exit {min-height:30px!important;padding:5px 10px!important;}
+.team-paper-frame {flex:1 1 0!important;min-height:0!important;height:0!important;width:100%!important;background:transparent!important;pointer-events:auto!important;}
+@media(max-width:700px) {
+ .team-paper-overlay {width:100%!important;left:0!important;right:0!important;}
+ .team-paper-top {height:40px!important;}
+}
 </style>
 </head>
 <body><div class="app">
@@ -584,50 +607,92 @@ for(const side of sides){const pad=$(side+'Pad');for(const key of ['7','8','9','
 $('pauseBtn').addEventListener('click',()=>{if(!state.running||state.ended)return;state.paused=!state.paused;$('pauseBtn').textContent=state.paused?'繼續':'暫停';sides.forEach(renderSide);});
 $('resetBtn').addEventListener('click',()=>{state.running=false;state.paused=false;clearInterval(interval);$('settings').classList.remove('hidden');$('modalTitle').textContent='競賽設定';$('modalDesc').textContent='按下開始即可進行雙人觸控競賽。';$('modalButton').textContent='開始競賽';$('modal').classList.remove('hidden');sides.forEach(side=>{hideFeedback(side);renderSide(side);});});
 $('modalButton').addEventListener('click',()=>{if($('settings').classList.contains('hidden'))$('settings').classList.remove('hidden');try{begin();}catch(error){console.error('產題失敗',error);state.running=false;clearInterval(interval);$('settings').classList.remove('hidden');$('catalogHint').textContent='❌ 無法開始競賽：'+(error?.message||String(error));$('catalogHint').style.color='#b91c1c';$('catalogHint').style.background='#fff1f2';$('modal').classList.remove('hidden');}});
-// V3.2：每隊的透明共用計算紙使用獨立 iframe，避免原始 singleton 元件 ID 衝突。
-// 只載入既有 js/scratchpad.js、js/scratchpad-template.js、css/scratchpad.css，不修改其原始內容。
+// V3.3：透明共用計算紙限制在各隊答題卡片內，徹底釋放關閉後的鍵盤觸控。
+// 原本 js/scratchpad.js、scratchpad-template.js、css/scratchpad.css 完全不修改。
 const paperFrames = {};
 function paperFrame(side) {
   if (paperFrames[side]) return paperFrames[side];
-  const wrap=document.createElement('div');
-  wrap.className='team-paper-overlay';
-  wrap.dataset.side=side;
-  wrap.hidden=true;
-  wrap.innerHTML='<div class="team-paper-top"><strong>'+ (side==='blue'?'🔵 藍隊':'🔴 紅隊')+'獨立計算紙</strong><button type="button" class="team-paper-exit">✕ 返回答題區</button></div>';
-  const frame=document.createElement('iframe');
+  const teamCard = $(side);
+  const wrap = document.createElement('div');
+  wrap.className = 'team-paper-overlay';
+  wrap.dataset.side = side;
+  wrap.hidden = true;
+  wrap.setAttribute('aria-label', (side==='blue'?'藍隊':'紅隊')+'計算紙');
+  const bar = document.createElement('div');
+  bar.className = 'team-paper-top';
+  const title = document.createElement('strong');
+  title.textContent = side==='blue'?'🔵 藍隊計算紙':'🔴 紅隊計算紙';
+  const closeBtn = document.createElement('button');
+  closeBtn.type='button';
+  closeBtn.className='team-paper-exit';
+  closeBtn.textContent='✕ 關閉計算紙';
+  bar.append(title,closeBtn);
+  const frame = document.createElement('iframe');
   frame.className='team-paper-frame';
+  frame.title=title.textContent;
   frame.setAttribute('allowtransparency','true');
-  frame.title=(side==='blue'?'藍隊':'紅隊')+'共用計算紙';
-  frame.src='./tug-war/scratchpad-player.html?team='+side;
-  frame.setAttribute('allow','fullscreen');
-  wrap.appendChild(frame);
-  document.body.appendChild(wrap);
-  wrap.querySelector('.team-paper-exit').addEventListener('click',()=>{wrap.hidden=true;});
+  frame.src='./tug-war/scratchpad-player.html?team='+side+'&v=3.3';
+  wrap.append(bar,frame);
+  teamCard.appendChild(wrap);
+  const record={wrap,frame,ready:false,pendingClear:false};
+  paperFrames[side]=record;
+  closeBtn.addEventListener('click',()=>closePaper(side));
   frame.addEventListener('load',()=>{
-    if(!wrap.hidden) frame.contentWindow.postMessage({tugPaperAction:'open'},location.origin);
+    record.ready=true;
+    if(record.pendingClear){record.pendingClear=false;sendPaper(side,'reset');}
+    if(!wrap.hidden)sendPaper(side,'open');
   });
-  paperFrames[side]={wrap,frame,loaded:false};
-  return paperFrames[side];
+  return record;
+}
+function sendPaper(side,action){
+  const p=paperFrames[side];
+  if(!p||!p.frame.contentWindow)return;
+  p.frame.contentWindow.postMessage({tugPaperAction:action},location.origin);
 }
 function openPaper(side){
-  if(!state.running || state.ended)return;
-  const {wrap,frame}=paperFrame(side);
-  wrap.hidden=false;
-  if(frame.contentDocument && frame.contentDocument.readyState==='complete')
-    frame.contentWindow.postMessage({tugPaperAction:'open'},location.origin);
+  if(!state.running||state.paused||state.ended)return;
+  const p=paperFrame(side);
+  p.wrap.hidden=false;
+  p.wrap.classList.add('is-open');
+  p.wrap.style.pointerEvents='auto';
+  if(p.ready)sendPaper(side,'open');
+}
+function closePaper(side){
+  const p=paperFrames[side];
+  if(!p)return;
+  // 停用 iframe、覆蓋層的滑鼠與觸控攔截，避免關閉後數字鍵盤無法操作。
+  p.wrap.classList.remove('is-open');
+  p.wrap.hidden=true;
+  p.wrap.style.pointerEvents='none';
+  if(p.frame.contentDocument?.activeElement){
+    try{p.frame.contentDocument.activeElement.blur();}catch(error){}
+  }
+  sendPaper(side,'close');
+  // 先把焦點移回競賽頁，數字按鍵仍由自己的 click handler 接收。
+  const teamButton=$(side+'Submit');
+  if(teamButton&&typeof teamButton.focus==='function')teamButton.focus({preventScroll:true});
 }
 function clearPaper(side){
   const p=paperFrames[side];
-  if(p) p.frame.contentWindow.postMessage({tugPaperAction:'reset'},location.origin);
+  if(!p)return;
+  if(!p.ready){p.pendingClear=true;return;}
+  sendPaper(side,'reset');
 }
-for (const side of sides) {
+for(const side of sides){
   document.querySelector('[data-open-paper="'+side+'"]').addEventListener('click',()=>openPaper(side));
 }
 window.addEventListener('message',e=>{
- if(e.origin!==location.origin)return;
- if(e.data?.tugPaperAction==='close'){
-  for(const p of Object.values(paperFrames)) if(p.frame.contentWindow===e.source)p.wrap.hidden=true;
- }
+  if(e.origin!==location.origin)return;
+  for(const side of sides){
+    const p=paperFrames[side];
+    if(!p||p.frame.contentWindow!==e.source)continue;
+    if(e.data?.tugPaperAction==='close')closePaper(side);
+    if(e.data?.tugPaperAction==='ready'){
+      p.ready=true;
+      if(p.pendingClear){p.pendingClear=false;sendPaper(side,'reset');}
+      if(!p.wrap.hidden)sendPaper(side,'open');
+    }
+  }
 });
 </script><script>
 // V2.9 七上 3-2 正式題庫：直接內嵌，避免 GitHub Pages 額外檔案載入失敗。
