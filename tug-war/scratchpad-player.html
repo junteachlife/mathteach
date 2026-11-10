@@ -20,6 +20,12 @@ html,body {background:transparent!important;}
  border-color:rgba(80,110,150,.18)!important;
 }
 /* 操作工具保留清晰底色，只有畫布透明 */
+/* 小尺寸隊伍卡片的工具列允許捲動／換行，不讓高度擠掉書寫區 */
+.scratchpad-header{min-height:42px!important;padding:5px 8px!important;}
+.scratchpad-header__title-area{gap:5px!important;}
+.scratchpad-toolbar{padding:5px!important;}
+.scratchpad-canvas-container{padding:3px!important;}
+#scratchpadPanel{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;}
 </style>
 </head><body>
 <script src="../js/scratchpad.js"></script>
@@ -32,6 +38,12 @@ window.addEventListener('message',function(e){
  if(cmd==='reset' && typeof window.resetGameScratchpad==='function')window.resetGameScratchpad();
  if(cmd==='close' && typeof window.closeGameScratchpad==='function')window.closeGameScratchpad();
 });
+// 原始共用計算紙自帶的「關閉計算紙」按鈕也通知競賽頁解除遮罩。
+document.addEventListener('click', function(e){
+ const closeButton=e.target.closest?.('#scratchpadCloseButton');
+ if(closeButton) parent.postMessage({tugPaperAction:'close'},location.origin);
+}, true);
+// 避免其餘工具的事件或焦點影響競賽頁；關閉只能由這個明確訊息觸發。
 // 通知父頁：元件已準備，可安全開啟
 window.addEventListener('load',()=>parent.postMessage({tugPaperAction:'ready'},location.origin));
 </script>
