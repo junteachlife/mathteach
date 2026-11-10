@@ -314,13 +314,13 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
 .red .open-paper{background:#fff0f4;color:#aa3150;border-color:#efb2c3;}
 .open-paper:focus-visible,.team-paper-exit:focus-visible{outline:3px solid #f5b927;outline-offset:2px;}
 .team-paper-overlay[hidden]{display:none!important;}
-.team-paper-overlay{position:fixed;z-index:100000;top:0;bottom:0;width:50vw;background:white;display:flex;flex-direction:column;box-shadow:0 0 28px #12264c35;overflow:hidden;}
+.team-paper-overlay{position:fixed;z-index:100000;top:0;bottom:0;width:50vw;background:transparent;display:flex;flex-direction:column;box-shadow:0 0 12px #12264c18;overflow:hidden;}
 .team-paper-overlay[data-side="blue"]{left:0;border-right:3px solid #2685de;}
 .team-paper-overlay[data-side="red"]{right:0;border-left:3px solid #e55071;}
 .team-paper-top{flex:0 0 auto;height:48px;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 10px;background:#e8f2ff;color:#174878;}
 .team-paper-overlay[data-side="red"] .team-paper-top{background:#fff0f4;color:#a72e50;}
 .team-paper-exit{border:1px solid #b5c7dd;border-radius:9px;background:white;color:#2c476c;padding:8px 12px;font-size:13px;font-weight:900;}
-.team-paper-frame{display:block;min-height:0;flex:1;width:100%;border:0;background:white;}
+.team-paper-frame{display:block;min-height:0;flex:1;width:100%;border:0;background:transparent;}
 /* 遇到長題請讓單隊垂直捲動，不犧牲方程式的可讀性 */
 @media (min-width:1000px) and (min-height:620px) and (orientation:landscape){
  .side{overflow-y:auto!important; min-height:0!important;}
@@ -332,6 +332,13 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffc33b;outline-offs
  .team-paper-overlay{width:100vw!important;left:0!important;right:0!important;border:0!important;}
  .question{font-size:18px!important;}
 }
+
+/* V3.2：競賽版透明計算紙：保留對戰題目可見 */
+.team-paper-overlay { background:transparent!important; backdrop-filter:none!important; -webkit-backdrop-filter:none!important; }
+.team-paper-frame { background:transparent!important; }
+/* 只保留頂端導航作為不透明可辨識控制列 */
+.team-paper-top { background:rgba(232,242,255,.96)!important; }
+.team-paper-overlay[data-side="red"] .team-paper-top { background:rgba(255,240,244,.96)!important; }
 </style>
 </head>
 <body><div class="app">
@@ -577,7 +584,7 @@ for(const side of sides){const pad=$(side+'Pad');for(const key of ['7','8','9','
 $('pauseBtn').addEventListener('click',()=>{if(!state.running||state.ended)return;state.paused=!state.paused;$('pauseBtn').textContent=state.paused?'繼續':'暫停';sides.forEach(renderSide);});
 $('resetBtn').addEventListener('click',()=>{state.running=false;state.paused=false;clearInterval(interval);$('settings').classList.remove('hidden');$('modalTitle').textContent='競賽設定';$('modalDesc').textContent='按下開始即可進行雙人觸控競賽。';$('modalButton').textContent='開始競賽';$('modal').classList.remove('hidden');sides.forEach(side=>{hideFeedback(side);renderSide(side);});});
 $('modalButton').addEventListener('click',()=>{if($('settings').classList.contains('hidden'))$('settings').classList.remove('hidden');try{begin();}catch(error){console.error('產題失敗',error);state.running=false;clearInterval(interval);$('settings').classList.remove('hidden');$('catalogHint').textContent='❌ 無法開始競賽：'+(error?.message||String(error));$('catalogHint').style.color='#b91c1c';$('catalogHint').style.background='#fff1f2';$('modal').classList.remove('hidden');}});
-// V3.1：每隊的共用計算紙使用獨立 iframe，避免原始 singleton 元件 ID 衝突。
+// V3.2：每隊的透明共用計算紙使用獨立 iframe，避免原始 singleton 元件 ID 衝突。
 // 只載入既有 js/scratchpad.js、js/scratchpad-template.js、css/scratchpad.css，不修改其原始內容。
 const paperFrames = {};
 function paperFrame(side) {
@@ -589,6 +596,7 @@ function paperFrame(side) {
   wrap.innerHTML='<div class="team-paper-top"><strong>'+ (side==='blue'?'🔵 藍隊':'🔴 紅隊')+'獨立計算紙</strong><button type="button" class="team-paper-exit">✕ 返回答題區</button></div>';
   const frame=document.createElement('iframe');
   frame.className='team-paper-frame';
+  frame.setAttribute('allowtransparency','true');
   frame.title=(side==='blue'?'藍隊':'紅隊')+'共用計算紙';
   frame.src='./tug-war/scratchpad-player.html?team='+side;
   frame.setAttribute('allow','fullscreen');
