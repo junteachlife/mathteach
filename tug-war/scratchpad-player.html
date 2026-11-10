@@ -1,7 +1,26 @@
 <!doctype html>
 <html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="../css/scratchpad.css">
-<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}#scratchpadComponent{position:static!important}#scratchpadPanel{inset:0!important;width:100%!important;height:100%!important;max-height:100%!important;border-radius:0!important}</style>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent!important}#scratchpadComponent{position:static!important}#scratchpadPanel{inset:0!important;width:100%!important;height:100%!important;max-height:100%!important;border-radius:0!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}</style>
+
+<style id="tug-transparent-paper">
+/* 僅影響競賽橋接頁，不修改主網站的共用計算紙 */
+html,body {background:transparent!important;}
+#scratchpadPanel,.scratchpad-panel,.scratchpad-panel--open,.scratchpad-panel--fullscreen {
+ background:transparent!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+ box-shadow:none!important;
+}
+.scratchpad-canvas-container {background:transparent!important;}
+#scratchpadCanvas,.scratchpad-canvas {
+ background:transparent!important;
+ background-color:transparent!important;
+ background-image:none!important;
+ border-color:rgba(80,110,150,.18)!important;
+}
+/* 操作工具保留清晰底色，只有畫布透明 */
+</style>
 </head><body>
 <script src="../js/scratchpad.js"></script>
 <script src="../js/scratchpad-template.js"></script>
