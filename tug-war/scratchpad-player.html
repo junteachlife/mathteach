@@ -45,6 +45,14 @@ html,body{margin:0!important;width:100%!important;height:100%!important;overflow
 .scratchpad-content,.scratchpad-panel,.scratchpad-canvas-container,#scratchpadCanvas,.scratchpad-canvas{background:transparent!important;background-color:transparent!important;background-image:none!important;}
 .scratchpad-canvas{border:0!important;box-shadow:none!important;}
 .scratchpad-canvas-hint{display:none!important;}
+
+/* V3.9：沿用原站的 24px 淡灰方格，計算紙仍為透明 */
+#scratchpadCanvas,.scratchpad-canvas{
+ background-color:transparent!important;
+ background-image:linear-gradient(rgba(100,116,139,.075) 1px,transparent 1px),linear-gradient(90deg,rgba(100,116,139,.075) 1px,transparent 1px)!important;
+ background-size:24px 24px!important;background-repeat:repeat!important;
+}
+.scratchpad-canvas-container{background:transparent!important}
 </style>
 </head><body>
 <script src="../js/scratchpad.js"></script><script src="../js/scratchpad-template.js"></script>
