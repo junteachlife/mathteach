@@ -1,0 +1,7207 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
+九上 1-1 連比大挑戰｜生活有解．心中有數
+</title>
+<!--
+==================================================
+獨立 favicon
+==================================================
+-->
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23205d9b'/%3E%3Ctext x='8' y='39' font-family='Arial' font-size='23' font-weight='700' fill='white'%3E1%3A2%3A3%3C/text%3E%3C/svg%3E" rel="icon" type="image/svg+xml"/>
+<link href="../../../../css/scratchpad.css" rel="stylesheet"/>
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+
+:root{
+
+  --primary:#205d9b;
+  --primary-dark:#163f70;
+  --primary-light:#e8f2ff;
+  --primary-border:#91b8e1;
+
+  --purple:#7c3aed;
+  --orange:#d97706;
+
+  --text:#1e293b;
+  --muted:#64748b;
+
+  --success:#15803d;
+  --danger:#dc2626;
+  --warning:#b45309;
+}
+
+
+html{
+  scroll-behavior:smooth;
+}
+
+
+body{
+
+  margin:0;
+
+  min-height:100vh;
+
+  padding:16px;
+
+  font-family:
+    "Microsoft JhengHei",
+    "Noto Sans TC",
+    sans-serif;
+
+  color:
+    var(--text);
+
+  background:
+    radial-gradient(
+      circle at 8% 8%,
+      rgba(96,165,250,.20),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 92% 4%,
+      rgba(245,158,11,.13),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #f8fafc 52%,
+      #fffbeb
+    );
+}
+
+
+button,
+input{
+  font-family:inherit;
+}
+
+
+button{
+  touch-action:manipulation;
+}
+
+
+.hidden{
+  display:none!important;
+}
+
+
+.page-shell{
+
+  width:min(
+    100%,
+    1060px
+  );
+
+  margin:0 auto;
+}
+
+
+#commonHeaderMount{
+  margin-bottom:14px;
+}
+
+
+/*
+==================================================
+主體
+==================================================
+*/
+
+.game-card{
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    #d8dee8;
+
+  border-top:
+    8px solid
+    var(--primary);
+
+  border-radius:26px;
+
+  background:#fff;
+
+  box-shadow:
+    0 18px 45px
+    rgba(15,23,42,.13);
+}
+
+
+.game-header{
+
+  padding:
+    28px
+    20px
+    22px;
+
+  text-align:center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #dbeafe,
+      #fff
+    );
+}
+
+
+.game-title{
+
+  margin:0;
+
+  color:
+    var(--primary-dark);
+
+  font-size:
+    clamp(
+      30px,
+      5vw,
+      44px
+    );
+
+  line-height:1.2;
+}
+
+
+.game-subtitle{
+
+  max-width:900px;
+
+  margin:
+    12px auto 0;
+
+  color:
+    var(--muted);
+
+  font-weight:700;
+
+  line-height:1.8;
+}
+
+
+.concept-strip{
+
+  display:flex;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  gap:8px;
+
+  margin-top:15px;
+}
+
+
+.concept-chip{
+
+  padding:
+    7px
+    12px;
+
+  border:
+    1px solid
+    var(--primary-border);
+
+  border-radius:999px;
+
+  background:#fff;
+
+  color:
+    var(--primary-dark);
+
+  font-size:14px;
+
+  font-weight:900;
+}
+
+
+.screen{
+  padding:22px;
+}
+
+
+/*
+==================================================
+模式
+==================================================
+*/
+
+.mode-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:16px;
+}
+
+
+.mode-card{
+
+  display:flex;
+
+  flex-direction:column;
+
+  min-height:238px;
+
+  padding:21px;
+
+  border:
+    2px solid
+    #d9e0e9;
+
+  border-radius:20px;
+
+  background:#fff;
+
+  box-shadow:
+    0 8px 22px
+    rgba(15,23,42,.06);
+
+  transition:.15s ease;
+}
+
+
+.mode-card:hover{
+
+  transform:
+    translateY(-2px);
+
+  border-color:
+    var(--primary-border);
+
+  box-shadow:
+    0 12px 28px
+    rgba(15,23,42,.10);
+}
+
+
+.mode-card.final{
+
+  border-color:#f59e0b;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fffbeb,
+      #fff
+    );
+}
+
+
+.mode-icon{
+  font-size:34px;
+}
+
+
+.mode-title{
+
+  margin:
+    9px 0 6px;
+
+  color:
+    var(--primary-dark);
+
+  font-size:21px;
+
+  font-weight:900;
+}
+
+
+.mode-meta{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:7px;
+
+  margin-bottom:10px;
+}
+
+
+.mode-tag{
+
+  padding:
+    4px 8px;
+
+  border-radius:999px;
+
+  background:#f1f5f9;
+
+  color:#475569;
+
+  font-size:12px;
+
+  font-weight:900;
+}
+
+
+.mode-description{
+
+  flex:1;
+
+  margin:
+    0 0 16px;
+
+  color:
+    var(--muted);
+
+  line-height:1.7;
+}
+
+
+/*
+==================================================
+按鈕
+==================================================
+*/
+
+.mode-button,
+.game-button{
+
+  min-height:48px;
+
+  padding:
+    11px 18px;
+
+  border:none;
+
+  border-radius:14px;
+
+  color:#fff;
+
+  font-size:16px;
+
+  font-weight:900;
+
+  cursor:pointer;
+}
+
+
+.mode-button,
+.game-button.primary{
+  background:var(--primary);
+}
+
+
+.mode-card.final
+.mode-button{
+  background:var(--orange);
+}
+
+
+.game-button.secondary{
+  background:#475569;
+}
+
+
+.game-button.orange{
+  background:var(--orange);
+}
+
+
+.game-button.purple{
+  background:var(--purple);
+}
+
+
+.game-button.restart{
+  background:#16a34a;
+}
+
+
+button:disabled{
+
+  opacity:.48;
+
+  cursor:not-allowed;
+}
+
+
+/*
+==================================================
+測驗頂部
+==================================================
+*/
+
+.quiz-top{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr auto;
+
+  gap:14px;
+
+  align-items:start;
+}
+
+
+.mode-name{
+
+  color:
+    var(--primary-dark);
+
+  font-size:20px;
+
+  font-weight:900;
+}
+
+
+.question-number{
+
+  margin-top:4px;
+
+  color:
+    var(--muted);
+
+  font-size:14px;
+
+  font-weight:800;
+}
+
+
+.quiz-stats{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,auto);
+
+  gap:8px;
+}
+
+
+.stat-pill{
+
+  min-width:86px;
+
+  padding:
+    8px 10px;
+
+  border:
+    1px solid
+    #e2e8f0;
+
+  border-radius:12px;
+
+  background:#f8fafc;
+
+  text-align:center;
+
+  color:#475569;
+
+  font-size:12px;
+
+  font-weight:800;
+}
+
+
+.stat-pill strong{
+
+  display:block;
+
+  margin-top:2px;
+
+  color:#0f172a;
+
+  font-size:18px;
+}
+
+
+.progress-track{
+
+  height:10px;
+
+  margin:
+    16px 0 20px;
+
+  overflow:hidden;
+
+  border-radius:999px;
+
+  background:#e2e8f0;
+}
+
+
+.progress-bar{
+
+  width:0;
+
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #60a5fa,
+      #1d4ed8
+    );
+
+  transition:
+    width .2s ease;
+}
+
+
+/*
+==================================================
+計算紙
+==================================================
+*/
+
+.scratchpad-row{
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  margin:
+    14px 0
+    10px;
+}
+
+
+#scratchpad-mobile-button
+#scratchpadOpenButton,
+
+#scratchpad-mobile-button
+.scratchpad-open-button{
+
+  position:static!important;
+
+  inset:auto!important;
+
+  transform:none!important;
+
+  margin:0!important;
+
+  z-index:auto!important;
+}
+
+
+/*
+==================================================
+題目
+==================================================
+*/
+
+.question-card{
+
+  overflow:hidden;
+
+  padding:24px;
+
+  border:
+    2px solid
+    #bfdbfe;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #eff6ff,
+      #fff
+    );
+}
+
+
+.question-label{
+
+  margin-bottom:12px;
+
+  color:
+    var(--primary-dark);
+
+  font-size:14px;
+
+  font-weight:900;
+}
+
+
+.question-content{
+
+  min-height:96px;
+
+  text-align:left;
+
+  color:#0f172a;
+
+  font-size:
+    clamp(
+      21px,
+      2.8vw,
+      28px
+    );
+
+  font-weight:900;
+
+  line-height:1.55;
+}
+
+
+.question-stack{
+
+  width:100%;
+
+  display:flex;
+
+  flex-direction:row;
+
+  flex-wrap:wrap;
+
+  justify-content:flex-start;
+
+  align-items:center;
+
+  gap:8px 10px;
+
+  text-align:left;
+}
+
+
+/*
+==================================================
+題目文字與換行規則
+
+1. 所有換行都從同一個左邊界開始。
+2. 重要條件視為完整單位，不拆成兩行。
+3. 標點符號和重要條件放在同一組，避免標點掉到下一行。
+4. 條件真的太寬時，條件本身可水平滑動。
+==================================================
+*/
+
+
+.question-sentence{
+
+  flex:
+    1 1 100%;
+
+  min-width:0;
+
+  width:100%;
+
+  margin:0;
+
+  padding:
+    2px 0;
+
+  text-align:left;
+
+  white-space:normal;
+
+  overflow-wrap:normal;
+
+  word-break:normal;
+}
+
+
+.keep-unit{
+
+  display:inline-block;
+
+  max-width:100%;
+
+  white-space:nowrap;
+
+  vertical-align:middle;
+}
+
+
+.important-line{
+
+  display:inline-block;
+
+  width:auto;
+
+  max-width:100%;
+
+  margin:0;
+
+  padding:
+    4px 0;
+
+  text-align:left;
+
+  white-space:normal;
+
+  vertical-align:middle;
+}
+
+
+.condition-pill{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  width:max-content;
+
+  max-width:100%;
+
+  margin:
+    2px 2px;
+
+  padding:
+    8px 12px;
+
+  overflow-x:auto;
+
+  overflow-y:hidden;
+
+  border:
+    1px solid
+    #dbeafe;
+
+  border-radius:12px;
+
+  background:#fff;
+
+  white-space:nowrap;
+
+  vertical-align:middle;
+
+  -webkit-overflow-scrolling:touch;
+
+  scrollbar-width:thin;
+}
+
+
+.math{
+
+  font-family:
+    "Cambria Math",
+    "Times New Roman",
+    "Microsoft JhengHei",
+    sans-serif;
+}
+
+
+.no-wrap{
+  white-space:nowrap;
+}
+
+
+/*
+==================================================
+堆疊分數
+
+畫面上的分數統一使用：
+分子
+──
+分母
+
+不使用 x/y 斜線表示。
+==================================================
+*/
+
+.math-fraction{
+
+  display:inline-flex;
+
+  flex-direction:column;
+
+  align-items:stretch;
+
+  justify-content:center;
+
+  min-width:1.5em;
+
+  margin:
+    0 .12em;
+
+  vertical-align:middle;
+
+  line-height:1.02;
+
+  white-space:nowrap;
+}
+
+
+.math-fraction-top{
+
+  min-width:1.5em;
+
+  padding:
+    0 .18em .08em;
+
+  border-bottom:
+    2px solid
+    currentColor;
+
+  text-align:center;
+}
+
+
+.math-fraction-bottom{
+
+  min-width:1.5em;
+
+  padding:
+    .08em .18em 0;
+
+  text-align:center;
+}
+
+
+/*
+==================================================
+答案
+==================================================
+*/
+
+.answer-area{
+  margin-top:20px;
+}
+
+
+.number-answer{
+
+  display:block;
+
+  width:
+    min(
+      100%,
+      340px
+    );
+
+  margin:
+    0 auto;
+
+  padding:
+    14px 16px;
+
+  border:
+    2px solid
+    #94a3b8;
+
+  border-radius:14px;
+
+  background:#fff;
+
+  color:#0f172a;
+
+  text-align:center;
+
+  font-size:25px;
+
+  font-weight:900;
+
+  outline:none;
+}
+
+
+.number-answer:focus,
+.ratio-input:focus{
+
+  border-color:
+    var(--primary);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(59,130,246,.13);
+}
+
+
+.ratio-answer{
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  flex-wrap:nowrap;
+
+  gap:10px;
+
+  width:100%;
+
+  overflow-x:auto;
+
+  padding:
+    4px 2px;
+
+  -webkit-overflow-scrolling:touch;
+}
+
+
+.ratio-input{
+
+  flex:
+    0 0 105px;
+
+  width:105px;
+
+  padding:
+    13px 10px;
+
+  border:
+    2px solid
+    #94a3b8;
+
+  border-radius:13px;
+
+  background:#fff;
+
+  text-align:center;
+
+  font-size:23px;
+
+  font-weight:900;
+
+  outline:none;
+}
+
+
+.ratio-colon{
+
+  flex:
+    0 0 auto;
+
+  color:
+    var(--primary-dark);
+
+  font-size:28px;
+
+  font-weight:900;
+}
+
+
+.answer-help{
+
+  margin-top:9px;
+
+  color:
+    var(--muted);
+
+  text-align:center;
+
+  font-size:14px;
+
+  font-weight:800;
+
+  line-height:1.7;
+}
+
+
+.answer-help strong{
+  color:#b45309;
+}
+
+
+/*
+==================================================
+選擇題
+==================================================
+*/
+
+.choice-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:10px;
+}
+
+
+.choice-button{
+
+  min-height:62px;
+
+  padding:
+    12px 14px;
+
+  overflow-x:auto;
+
+  border:
+    2px solid
+    #cbd5e1;
+
+  border-radius:14px;
+
+  background:#fff;
+
+  color:#1e293b;
+
+  font-size:17px;
+
+  font-weight:900;
+
+  line-height:1.7;
+
+  cursor:pointer;
+
+  white-space:nowrap;
+
+  -webkit-overflow-scrolling:touch;
+}
+
+
+.choice-button:hover{
+  border-color:var(--primary);
+}
+
+
+.choice-button.selected{
+
+  border-color:
+    var(--primary);
+
+  background:
+    var(--primary-light);
+
+  color:
+    var(--primary-dark);
+}
+
+
+/*
+==================================================
+回饋與詳解
+==================================================
+*/
+
+.feedback{
+
+  margin-top:16px;
+
+  padding:
+    12px 14px;
+
+  border-radius:13px;
+
+  font-weight:900;
+
+  line-height:1.7;
+}
+
+
+.feedback:empty{
+  display:none;
+}
+
+
+.feedback.correct{
+
+  background:#dcfce7;
+
+  color:#166534;
+}
+
+
+.feedback.wrong{
+
+  background:#fee2e2;
+
+  color:#991b1b;
+}
+
+
+.feedback.warning{
+
+  background:#fef3c7;
+
+  color:#92400e;
+}
+
+
+.explanation{
+
+  margin-top:16px;
+
+  text-align:left;
+
+  padding:18px;
+
+  border:
+    2px solid
+    #bfdbfe;
+
+  border-radius:18px;
+
+  background:#eff6ff;
+
+  line-height:1.8;
+}
+
+
+.explanation-title{
+
+  margin-bottom:12px;
+
+  color:#1e3a8a;
+
+  font-size:19px;
+
+  font-weight:900;
+}
+
+
+.explanation-block{
+
+  margin-top:9px;
+
+  padding:
+    10px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,.90);
+}
+
+
+.explanation-block strong{
+  color:#1e40af;
+}
+
+
+.explanation-step{
+
+  text-align:left;
+
+  margin:
+    7px 0;
+
+  padding-left:8px;
+
+  border-left:
+    3px solid
+    #93c5fd;
+}
+
+
+.explanation-tip{
+
+  margin-top:10px;
+
+  padding:
+    10px 12px;
+
+  border-radius:12px;
+
+  background:#fff7ed;
+
+  color:#9a3412;
+}
+
+
+.button-row{
+
+  display:flex;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-top:18px;
+}
+
+
+/*
+==================================================
+結果
+==================================================
+*/
+
+.result-panel{
+  text-align:center;
+}
+
+
+.result-score{
+
+  margin:
+    16px 0 6px;
+
+  color:
+    var(--orange);
+
+  font-size:56px;
+
+  font-weight:900;
+}
+
+
+.result-stars{
+  font-size:31px;
+}
+
+
+.result-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:10px;
+
+  margin:
+    20px auto;
+}
+
+
+.result-stat{
+
+  padding:
+    13px 10px;
+
+  border:
+    1px solid
+    #e2e8f0;
+
+  border-radius:15px;
+
+  background:#f8fafc;
+
+  color:#64748b;
+
+  font-weight:800;
+}
+
+
+.result-stat span{
+
+  color:#0f172a;
+
+  font-size:24px;
+
+  font-weight:900;
+}
+
+
+.save-status{
+
+  min-height:25px;
+
+  margin:
+    10px 0;
+
+  font-weight:800;
+}
+
+
+/*
+==================================================
+回顧
+==================================================
+*/
+
+.review-list{
+
+  display:grid;
+
+  gap:14px;
+
+  margin-top:14px;
+}
+
+
+.review-card{
+
+  padding:16px;
+
+  border:
+    1px solid
+    #dbeafe;
+
+  border-radius:16px;
+
+  background:#fff;
+}
+
+
+.review-card.correct-review{
+  border-left:
+    6px solid
+    #22c55e;
+}
+
+
+.review-card.wrong-review{
+  border-left:
+    6px solid
+    #ef4444;
+}
+
+
+.review-title{
+
+  margin-bottom:8px;
+
+  font-size:17px;
+
+  font-weight:900;
+}
+
+
+.review-question{
+
+  margin:
+    8px 0 12px;
+
+  color:#0f172a;
+
+  font-size:18px;
+
+  font-weight:800;
+
+  line-height:1.8;
+}
+
+
+.review-answer-line{
+
+  margin:
+    5px 0;
+
+  color:#475569;
+
+  line-height:1.7;
+}
+
+
+/*
+==================================================
+手機
+==================================================
+*/
+
+@media(max-width:760px){
+
+  body{
+    padding:8px;
+  }
+
+
+  .screen{
+    padding:14px;
+  }
+
+
+  .game-header{
+
+    padding:
+      22px
+      13px
+      17px;
+  }
+
+
+  .mode-grid{
+    grid-template-columns:1fr;
+  }
+
+
+  .mode-card{
+    min-height:0;
+  }
+
+
+  .quiz-top{
+    grid-template-columns:1fr;
+  }
+
+
+  .quiz-stats{
+
+    grid-template-columns:
+      repeat(4,1fr);
+  }
+
+
+  .stat-pill{
+
+    min-width:0;
+
+    padding:
+      7px 5px;
+  }
+
+
+  .question-card{
+
+    padding:
+      16px 8px;
+  }
+
+
+  .question-stack{
+
+    gap:
+      7px 8px;
+  }
+
+
+  .condition-pill{
+
+    padding:
+      7px 9px;
+  }
+
+
+  .choice-grid{
+    grid-template-columns:1fr;
+  }
+
+
+  .result-grid{
+
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+
+  .game-button{
+
+    flex:
+      1 1 180px;
+  }
+
+
+  .ratio-input{
+
+    flex-basis:86px;
+
+    width:86px;
+  }
+}
+
+
+@media(max-width:460px){
+
+  .quiz-stats{
+
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+
+  .question-content{
+    font-size:21px;
+  }
+
+
+  .result-score{
+    font-size:46px;
+  }
+
+
+  .ratio-input{
+
+    flex-basis:76px;
+
+    width:76px;
+
+    font-size:20px;
+  }
+
+
+  .ratio-colon{
+    font-size:23px;
+  }
+
+
+  .condition-pill{
+
+    padding:
+      9px 11px;
+  }
+}
+
+
+/* ==================================================
+九上統一：模式首頁右上角重返鍵
+================================================== */
+.semester-return-row{
+  display:flex;
+  justify-content:flex-end;
+  margin:0 0 10px;
+}
+.semester-return-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:9px 14px;
+  border:1.5px solid var(--primary);
+  border-radius:12px;
+  background:#fff;
+  color:var(--primary-dark);
+  font-size:15px;
+  font-weight:900;
+  line-height:1.2;
+  text-decoration:none;
+  box-shadow:0 5px 14px rgba(15,23,42,.08);
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
+}
+.semester-return-link:hover{
+  transform:translateY(-1px);
+  background:var(--primary-light);
+  box-shadow:0 7px 18px rgba(15,23,42,.11);
+}
+.semester-return-link:focus-visible{
+  outline:3px solid var(--primary-border);
+  outline-offset:2px;
+}
+@media(max-width:760px){
+  .semester-return-row{margin-bottom:8px}
+  .semester-return-link{
+    min-height:42px;
+    padding:9px 12px;
+    font-size:14px;
+  }
+}
+
+
+
+/* ==================================================
+九上全遊戲｜八上介面同步優化＋頂部狀態列單行同步
+2026-10-15
+================================================== */
+
+.game-card{
+  position:relative!important;
+}
+
+/* 重返學期：固定在遊戲內框右上角 */
+.semester-return-row,
+.mode-home-toolbar{
+  position:absolute!important;
+  top:12px!important;
+  right:14px!important;
+  z-index:30!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  width:auto!important;
+  margin:0!important;
+  padding:0!important;
+  pointer-events:none!important;
+}
+.semester-return-row.hidden,
+.mode-home-toolbar.hidden{
+  display:flex!important;
+}
+.semester-return-link{
+  pointer-events:auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:42px!important;
+  padding:8px 13px!important;
+  border:2px solid var(--primary-border)!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.97)!important;
+  color:var(--primary-dark)!important;
+  text-decoration:none!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  line-height:1.25!important;
+  box-shadow:0 4px 14px rgba(15,23,42,.10)!important;
+  white-space:nowrap!important;
+}
+.semester-return-link:hover{
+  background:var(--primary-light)!important;
+}
+.game-header{
+  padding-top:64px!important;
+}
+
+/* 測驗上方：左側模式資訊；右側統計＋控制 */
+.quiz-top{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  gap:12px 16px!important;
+  align-items:start!important;
+}
+.quiz-right-stack{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:8px;
+}
+.quiz-right-stack .quiz-stats{
+  justify-content:flex-end!important;
+}
+.quiz-control-row{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.quiz-control-row .game-button{
+  flex:0 0 auto!important;
+  min-width:118px!important;
+  min-height:40px!important;
+  padding:8px 12px!important;
+  border-radius:12px!important;
+  font-size:14px!important;
+}
+
+/* 題目框：計算紙統一放右下角 */
+.question-card{
+  position:relative!important;
+  padding-bottom:74px!important;
+}
+#scratchpad-mobile-button{
+  position:absolute!important;
+  right:14px!important;
+  bottom:12px!important;
+  left:auto!important;
+  top:auto!important;
+  width:auto!important;
+  min-height:46px!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  z-index:8!important;
+}
+#scratchpad-mobile-button #scratchpadOpenButton,
+#scratchpad-mobile-button .scratchpad-open-button{
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  margin:0!important;
+  z-index:auto!important;
+}
+.scratchpad-row{
+  display:none!important;
+  margin:0!important;
+  padding:0!important;
+  min-height:0!important;
+}
+
+/* 題目：單行置中；真正換行才靠左 */
+.question-content{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  text-align:center!important;
+  justify-content:center!important;
+  word-break:normal!important;
+  overflow-wrap:break-word!important;
+}
+.question-content.question-is-wrapped{
+  text-align:left!important;
+  justify-content:flex-start!important;
+  align-items:flex-start!important;
+}
+.question-content .nowrap,
+.question-content .seg,
+.question-content .math-frac,
+.question-content .ratio-pair,
+.question-content .angle-name,
+.question-content .segment-name{
+  break-inside:avoid!important;
+  white-space:nowrap!important;
+}
+.question-content .qline{
+  max-width:100%!important;
+  white-space:normal!important;
+}
+
+/* 送出與下一題繼續留在答案區下方置中 */
+#quiz-screen > .button-row,
+#quiz-screen .answer-area + .button-row{
+  justify-content:center!important;
+}
+
+@media(max-width:760px){
+  .semester-return-row,
+  .mode-home-toolbar{
+    top:9px!important;
+    right:9px!important;
+  }
+  .semester-return-link{
+    min-height:39px!important;
+    padding:7px 10px!important;
+    font-size:13px!important;
+  }
+  .game-header{
+    padding-top:58px!important;
+  }
+  .quiz-top{
+    grid-template-columns:1fr!important;
+  }
+  .quiz-right-stack{
+    width:100%;
+    align-items:stretch;
+  }
+  .quiz-right-stack .quiz-stats{
+    justify-content:stretch!important;
+  }
+  .quiz-control-row{
+    justify-content:flex-end;
+  }
+  .quiz-control-row .game-button{
+    min-width:112px!important;
+  }
+  .question-card{
+    padding-bottom:70px!important;
+  }
+}
+
+@media(max-width:460px){
+  .quiz-control-row{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;
+  }
+  .quiz-control-row .game-button{
+    width:100%!important;
+    min-width:0!important;
+  }
+}
+
+
+/* ==================================================
+九上全遊戲｜頂部狀態列單行同步版
+2026-10-15
+================================================== */
+.game-subtitle{
+  max-width:none!important;
+  width:100%!important;
+  margin:10px auto 0!important;
+  padding:0 10px!important;
+  line-height:1.45!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  font-size:clamp(13px,1.65vw,16px)!important;
+}
+.quiz-top{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  width:100%!important;
+  min-width:0!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding-bottom:2px!important;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+}
+.quiz-top > :first-child{
+  flex:0 0 auto!important;
+  min-width:145px!important;
+}
+.quiz-right-stack{
+  flex:1 0 auto!important;
+  min-width:max-content!important;
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:8px!important;
+}
+.quiz-right-stack .quiz-stats{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:stretch!important;
+  justify-content:flex-end!important;
+  gap:7px!important;
+  width:auto!important;
+}
+.quiz-right-stack .stat-pill{
+  flex:0 0 auto!important;
+  min-width:78px!important;
+  padding:7px 9px!important;
+  border-radius:12px!important;
+  white-space:nowrap!important;
+}
+.quiz-right-stack .stat-pill strong{
+  margin-top:2px!important;
+  font-size:18px!important;
+  line-height:1.15!important;
+}
+.quiz-control-row{
+  flex:0 0 auto!important;
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:8px!important;
+  width:auto!important;
+}
+.quiz-control-row .game-button{
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:112px!important;
+  min-height:44px!important;
+  padding:9px 13px!important;
+  border-radius:12px!important;
+  font-size:14px!important;
+  white-space:nowrap!important;
+}
+@media(max-width:900px){
+  .quiz-top{gap:9px!important;}
+  .quiz-top > :first-child{min-width:125px!important;}
+  .quiz-right-stack{gap:6px!important;}
+  .quiz-right-stack .quiz-stats{gap:5px!important;}
+  .quiz-right-stack .stat-pill{
+    min-width:68px!important;
+    padding:6px 7px!important;
+    font-size:12px!important;
+  }
+  .quiz-right-stack .stat-pill strong{font-size:17px!important;}
+  .quiz-control-row{gap:6px!important;}
+  .quiz-control-row .game-button{
+    min-width:101px!important;
+    min-height:42px!important;
+    padding:8px 10px!important;
+    font-size:13px!important;
+  }
+}
+@media(max-width:600px){
+  .quiz-top{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+  }
+  .quiz-right-stack{
+    width:auto!important;
+    align-items:center!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+  }
+  .quiz-right-stack .quiz-stats{
+    display:flex!important;
+    grid-template-columns:none!important;
+    flex-wrap:nowrap!important;
+    justify-content:flex-end!important;
+  }
+  .quiz-control-row{
+    display:flex!important;
+    grid-template-columns:none!important;
+    flex-wrap:nowrap!important;
+    width:auto!important;
+  }
+  .quiz-control-row .game-button{
+    width:auto!important;
+    min-width:98px!important;
+  }
+  .game-subtitle{font-size:13px!important;}
+}
+
+</style>
+</head>
+<body>
+<div class="page-shell">
+<div id="commonHeaderMount"></div>
+<main class="game-card">
+<header class="game-header">
+<h1 class="game-title">
+🔗 1-1 連比大挑戰
+</h1>
+<p class="game-subtitle">練習連比合併、比例式、生活分配與反比關係。</p>
+<div class="concept-strip">
+<span class="concept-chip">
+🔗 連比
+</span>
+<span class="concept-chip">
+🧮 最簡整數比
+</span>
+<span class="concept-chip">
+🔄 求連比
+</span>
+<span class="concept-chip">
+📐 連比例式
+</span>
+<span class="concept-chip">
+🧃 生活應用
+</span>
+<span class="concept-chip">
+📏 反比幾何
+</span>
+</div>
+</header>
+<!--
+==================================================
+模式選擇
+==================================================
+-->
+<section class="screen" id="start-screen">
+<div class="semester-return-row" id="semester-return-row">
+<a aria-label="重返九年級上學期" class="semester-return-link" href="../../index.html" id="semester-return-link">↩️ 重返九年級上學期</a>
+</div>
+<h2>
+選擇挑戰模式
+</h2>
+<div class="mode-grid">
+<article class="mode-card">
+<div class="mode-icon">
+🔗
+</div>
+<div class="mode-title">
+連比合併
+</div>
+<div class="mode-meta">
+<span class="mode-tag">
+核心模式
+</span>
+<span class="mode-tag">
+10 題
+</span>
+</div>
+<p class="mode-description">
+
+從兩個兩兩比求三數連比，
+
+包含共同項不同、分數、小數，
+
+以及等式轉換。
+
+</p>
+<button class="mode-button" data-mode="merge" type="button">
+開始挑戰
+</button>
+</article>
+<article class="mode-card">
+<div class="mode-icon">
+🧃
+</div>
+<div class="mode-title">
+按比例分配
+</div>
+<div class="mode-meta">
+<span class="mode-tag">
+核心模式
+</span>
+<span class="mode-tag">
+10 題
+</span>
+</div>
+<p class="mode-description">
+
+理解連比例式，
+
+並利用總量、線性條件，
+
+處理生活中的比例分配問題。
+
+</p>
+<button class="mode-button" data-mode="parts" type="button">
+開始挑戰
+</button>
+</article>
+<article class="mode-card">
+<div class="mode-icon">
+📐
+</div>
+<div class="mode-title">
+反比例與幾何
+</div>
+<div class="mode-meta">
+<span class="mode-tag">
+核心模式
+</span>
+<span class="mode-tag">
+10 題
+</span>
+</div>
+<p class="mode-description">
+
+處理 ax＝by＝cz、
+
+等面積三角形、等面積長方形，
+
+以及相同工作量的反比關係。
+
+</p>
+<button class="mode-button" data-mode="inverse" type="button">
+開始挑戰
+</button>
+</article>
+<article class="mode-card final">
+<div class="mode-icon">
+🏆
+</div>
+<div class="mode-title">
+1-1 綜合挑戰
+</div>
+<div class="mode-meta">
+<span class="mode-tag">
+綜合模式
+</span>
+<span class="mode-tag">
+8 題
+</span>
+</div>
+<p class="mode-description">
+
+固定涵蓋連比合併、
+
+分數與小數、連比例式、
+
+生活分配、反比與幾何。
+
+</p>
+<button class="mode-button" data-mode="mixed" type="button">
+開始綜合挑戰
+</button>
+</article>
+</div>
+</section>
+<!--
+==================================================
+測驗
+==================================================
+-->
+<section class="screen hidden" id="quiz-screen">
+<div class="quiz-top">
+<div>
+<div class="mode-name" id="mode-name">
+—
+</div>
+<div class="question-number" id="question-number">
+—
+</div>
+</div>
+<div class="quiz-stats">
+<div class="stat-pill">
+分數
+<strong id="live-score">
+0
+</strong>
+</div>
+<div class="stat-pill">
+答對
+<strong id="correct-count">
+0
+</strong>
+</div>
+<div class="stat-pill">
+連擊
+<strong id="combo-count">
+0
+</strong>
+</div>
+<div class="stat-pill">
+時間
+<strong id="timer-display">
+00:00
+</strong>
+</div>
+</div>
+</div>
+<div class="progress-track">
+<div class="progress-bar" id="progress-bar"></div>
+</div>
+<div class="question-card">
+<div class="question-label" id="question-label">
+題目
+</div>
+<div class="question-content" id="question-content"></div>
+</div>
+<!--
+==================================================
+計算紙按鈕
+固定放在「題目」與「答案格」之間
+==================================================
+-->
+<div class="scratchpad-row">
+<div id="scratchpad-mobile-button"></div>
+</div>
+<div class="answer-area" id="answer-area"></div>
+<div class="feedback" id="feedback"></div>
+<div class="explanation hidden" id="explanation"></div>
+<div class="button-row">
+<button class="game-button primary" id="submit-button" type="button">
+送出答案（Enter）
+</button>
+<button class="game-button purple hidden" id="next-button" type="button">
+下一題（Enter）
+</button>
+<button class="game-button restart" id="restart-button" type="button">
+🔄 重新測驗
+</button>
+<button class="game-button secondary" id="quit-button" type="button">
+重選模式
+</button>
+</div>
+</section>
+<!--
+==================================================
+結果
+==================================================
+-->
+<section class="screen hidden" id="result-screen">
+<div class="result-panel">
+<h2>
+🏅 本次挑戰結果
+</h2>
+<div class="result-score" id="final-score">
+0 分
+</div>
+<div class="result-stars" id="final-stars">
+★★☆☆☆
+</div>
+<p id="final-comment"></p>
+<div class="result-grid">
+<div class="result-stat">
+答對
+<br/>
+<span id="final-correct">
+0
+</span>
+題
+</div>
+<div class="result-stat">
+答錯
+<br/>
+<span id="final-wrong">
+0
+</span>
+題
+</div>
+<div class="result-stat">
+最高連擊
+<br/>
+<span id="final-combo">
+0
+</span>
+</div>
+<div class="result-stat">
+作答時間
+<br/>
+<span id="final-time">
+00:00
+</span>
+</div>
+</div>
+<div class="save-status" id="save-status"></div>
+<div class="button-row">
+<button class="game-button purple" id="again-button" type="button">
+🔄 再玩一次
+</button>
+<button class="game-button orange" id="review-button" type="button">
+📖 查看本次詳解
+</button>
+<button class="game-button secondary" id="result-mode-button" type="button">
+選擇模式
+</button>
+</div>
+</div>
+</section>
+<!--
+==================================================
+完整回顧
+==================================================
+-->
+<section class="screen hidden" id="review-screen">
+<h2>
+📖 本次詳解
+</h2>
+<p style="
+    color:#64748b;
+    font-weight:700;
+  ">
+答對、答錯都會保留完整解析。
+</p>
+<div class="review-list" id="review-list"></div>
+<div class="button-row">
+<button class="game-button purple" id="review-again-button" type="button">
+🔄 再玩一次
+</button>
+<button class="game-button secondary" id="review-result-button" type="button">
+回到測驗結果
+</button>
+</div>
+</section>
+</main>
+</div>
+<!--
+==================================================
+共用元件
+==================================================
+-->
+<script src="../../../../js/common-header.js"></script>
+<script src="../../../../js/scratchpad.js"></script>
+<script src="../../../../js/scratchpad-template.js"></script>
+<script src="../../../../js/sound-manager.js?v=1"></script>
+
+
+<script>window.MathGameSound={playCorrect(){},playWrong(){},playClick(){}};window.GameSound=window.MathGameSound;window.confirm=()=>false;</script><script>
+
+"use strict";
+
+
+/*
+==================================================
+基本設定
+==================================================
+*/
+
+const GAME_ID =
+  "continued-ratio";
+
+
+const MODES = {
+
+  merge:{
+    name:"🔗 連比合併",
+    count:10
+  },
+
+  parts:{
+    name:"🧃 按比例分配",
+    count:10
+  },
+
+  inverse:{
+    name:"📐 反比例與幾何",
+    count:10
+  },
+
+  mixed:{
+    name:"🏆 1-1 綜合挑戰",
+    count:8
+  }
+
+};
+
+
+window.MathGameSessionMeta = {
+
+  gameId:
+    GAME_ID,
+
+  chapter:
+    "1-1",
+
+  title:
+    "1-1 連比",
+
+  modes:
+    MODES
+};
+
+
+const $ =
+  id =>
+    document.getElementById(
+      id
+    );
+
+
+let mode =
+  "merge";
+
+
+let questions =
+  [];
+
+
+let index =
+  0;
+
+
+let correct =
+  0;
+
+
+let wrong =
+  0;
+
+
+let combo =
+  0;
+
+
+let maxCombo =
+  0;
+
+
+let records =
+  [];
+
+
+let answered =
+  false;
+
+
+let selectedChoice =
+  null;
+
+
+let startTime =
+  0;
+
+
+let elapsed =
+  0;
+
+
+let timerId =
+  null;
+
+
+let scoreSaved =
+  false;
+
+
+/*
+==================================================
+工具
+==================================================
+*/
+
+function rand(
+  min,
+  max
+){
+
+  return (
+    Math.floor(
+      Math.random() *
+      (
+        max -
+        min +
+        1
+      )
+    ) +
+    min
+  );
+}
+
+
+function pick(
+  array
+){
+
+  return array[
+    rand(
+      0,
+      array.length -
+      1
+    )
+  ];
+}
+
+
+function shuffle(
+  array
+){
+
+  const copy =
+    [
+      ...array
+    ];
+
+
+  for(
+    let i =
+      copy.length -
+      1;
+    i >
+      0;
+    i--
+  ){
+
+    const j =
+      rand(
+        0,
+        i
+      );
+
+
+    [
+      copy[i],
+      copy[j]
+    ] =
+    [
+      copy[j],
+      copy[i]
+    ];
+  }
+
+
+  return copy;
+}
+
+
+function escapeHTML(
+  value
+){
+
+  return String(
+    value
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+}
+
+
+function gcd(
+  a,
+  b
+){
+
+  a =
+    Math.abs(
+      Number(a)
+    );
+
+
+  b =
+    Math.abs(
+      Number(b)
+    );
+
+
+  while(
+    b !==
+    0
+  ){
+
+    const t =
+      a %
+      b;
+
+
+    a =
+      b;
+
+
+    b =
+      t;
+  }
+
+
+  return (
+    a ||
+    1
+  );
+}
+
+
+function gcdAll(
+  values
+){
+
+  if(
+    !values.length
+  ){
+
+    return 1;
+  }
+
+
+  return values
+    .reduce(
+      (
+        current,
+        value
+      ) =>
+        gcd(
+          current,
+          value
+        )
+    );
+}
+
+
+function lcm(
+  a,
+  b
+){
+
+  return (
+    Math.abs(
+      a *
+      b
+    ) /
+    gcd(
+      a,
+      b
+    )
+  );
+}
+
+
+function simplifyRatio(
+  values
+){
+
+  const nums =
+    values.map(
+      Number
+    );
+
+
+  const divisor =
+    gcdAll(
+      nums
+    );
+
+
+  return nums.map(
+    value =>
+      value /
+      divisor
+  );
+}
+
+
+function ratioText(
+  values
+){
+
+  return values
+    .join(
+      "："
+    );
+}
+
+
+function ratioHTML(
+  values
+){
+
+  return `
+    <span class="math no-wrap">
+      ${values.join("：")}
+    </span>
+  `;
+}
+
+
+/*
+==================================================
+★ 修正 NaN
+
+這個函式可以接受：
+數字、x、y、z、a、b……
+
+完全不進行 Math.abs()，
+所以不會再把文字變成 NaN。
+==================================================
+*/
+
+function keepMathHTML(
+  content
+){
+
+  return `
+    <span class="keep-unit math">
+      ${content}
+    </span>
+  `;
+}
+
+
+function fractionHTML(
+  numerator,
+  denominator
+){
+
+  return `
+
+    <span class="math-fraction">
+
+      <span class="math-fraction-top">
+        ${escapeHTML(numerator)}
+      </span>
+
+      <span class="math-fraction-bottom">
+        ${escapeHTML(denominator)}
+      </span>
+
+    </span>
+  `;
+}
+
+
+function reducedFractionHTML(
+  numerator,
+  denominator
+){
+
+  const divisor =
+    gcd(
+      numerator,
+      denominator
+    );
+
+
+  const n =
+    numerator /
+    divisor;
+
+
+  const d =
+    denominator /
+    divisor;
+
+
+  if(
+    d ===
+    1
+  ){
+
+    return String(
+      n
+    );
+  }
+
+
+  return fractionHTML(
+    n,
+    d
+  );
+}
+
+
+function parseRational(
+  raw
+){
+
+  const value =
+    String(
+      raw
+    )
+      .trim()
+      .replace(
+        /，/g,
+        ""
+      )
+      .replace(
+        /－/g,
+        "-"
+      )
+      .replace(
+        /／/g,
+        "/"
+      );
+
+
+  if(
+    /^[-+]?\d+(?:\.\d+)?$/
+      .test(
+        value
+      )
+  ){
+
+    return Number(
+      value
+    );
+  }
+
+
+  const match =
+    value.match(
+      /^([-+]?\d+)\/([-+]?\d+)$/
+    );
+
+
+  if(
+    match &&
+    Number(
+      match[2]
+    ) !==
+    0
+  ){
+
+    return (
+      Number(
+        match[1]
+      ) /
+      Number(
+        match[2]
+      )
+    );
+  }
+
+
+  return null;
+}
+
+
+function sameNumber(
+  first,
+  second
+){
+
+  return (
+    Math.abs(
+      Number(first) -
+      Number(second)
+    ) <
+    1e-9
+  );
+}
+
+
+/*
+==================================================
+判斷兩組比例是否等值
+==================================================
+*/
+
+function sameRatioValues(
+  values,
+  answer
+){
+
+  if(
+    values.length !==
+    answer.length
+  ){
+
+    return false;
+  }
+
+
+  if(
+    values.some(
+      value =>
+        !Number.isFinite(
+          value
+        ) ||
+        value <=
+        0
+    )
+  ){
+
+    return false;
+  }
+
+
+  for(
+    let i =
+      1;
+    i <
+      values.length;
+    i++
+  ){
+
+    if(
+      Math.abs(
+        values[i] *
+        answer[0] -
+        values[0] *
+        answer[i]
+      ) >
+      1e-8
+    ){
+
+      return false;
+    }
+  }
+
+
+  return true;
+}
+
+
+/*
+==================================================
+★ 比例答案檢查
+
+1. 必須等值
+2. 必須全部是正整數
+3. 最大公因數必須為 1
+==================================================
+*/
+
+function analyzeRatioAnswer(
+  rawValues,
+  answer
+){
+
+  const values =
+    rawValues.map(
+      parseRational
+    );
+
+
+  if(
+    values.some(
+      value =>
+        value ===
+        null
+    )
+  ){
+
+    return {
+
+      valid:false,
+
+      message:
+        "請輸入有效的數字。"
+    };
+  }
+
+
+  if(
+    values.some(
+      value =>
+        value <=
+        0
+    )
+  ){
+
+    return {
+
+      valid:false,
+
+      message:
+        "本單元的連比請輸入正數。"
+    };
+  }
+
+
+  const equivalent =
+    sameRatioValues(
+      values,
+      answer
+    );
+
+
+  if(
+    !equivalent
+  ){
+
+    return {
+
+      valid:true,
+
+      equivalent:false,
+
+      simplest:false,
+
+      values
+    };
+  }
+
+
+  /*
+  必須直接輸入整數。
+  例如 0.5：1：1.5
+  即使等值也要重新整理。
+  */
+
+
+  const integerFormat =
+    rawValues.every(
+      value =>
+        /^\+?\d+$/
+          .test(
+            String(value)
+              .trim()
+          )
+    );
+
+
+  if(
+    !integerFormat
+  ){
+
+    return {
+
+      valid:true,
+
+      equivalent:true,
+
+      simplest:false,
+
+      reason:
+        "not-integer",
+
+      values
+    };
+  }
+
+
+  const integers =
+    rawValues.map(
+      value =>
+        Number(
+          String(value)
+            .trim()
+        )
+    );
+
+
+  const divisor =
+    gcdAll(
+      integers
+    );
+
+
+  if(
+    divisor !==
+    1
+  ){
+
+    return {
+
+      valid:true,
+
+      equivalent:true,
+
+      simplest:false,
+
+      reason:
+        "not-simplest",
+
+      values:
+        integers,
+
+      divisor
+    };
+  }
+
+
+  return {
+
+    valid:true,
+
+    equivalent:true,
+
+    simplest:true,
+
+    values:
+      integers
+  };
+}
+
+
+function formatTime(
+  seconds
+){
+
+  const minutes =
+    Math.floor(
+      seconds /
+      60
+    );
+
+
+  const remain =
+    seconds %
+    60;
+
+
+  return (
+    `${String(minutes).padStart(2,"0")}:` +
+    `${String(remain).padStart(2,"0")}`
+  );
+}
+
+
+function makeExplanation({
+  answer,
+  observe,
+  think,
+  steps,
+  why,
+  mistake
+}){
+
+  return {
+    answer,
+    observe,
+    think,
+    steps,
+    why,
+    mistake
+  };
+}
+
+
+/*
+==================================================
+★ 產生三個互不相同的最簡整數比
+
+因此不會再產生：
+1：1
+20：20
+0.3：0.3
+0.8：0.8
+==================================================
+*/
+
+function makePrimitiveTriple(){
+
+  let values;
+
+
+  do{
+
+    values =
+      [
+        rand(2,9),
+        rand(2,9),
+        rand(2,9)
+      ];
+
+  }while(
+
+    new Set(
+      values
+    ).size !==
+      3
+
+    ||
+
+    gcdAll(
+      values
+    ) !==
+      1
+  );
+
+
+  return values;
+}
+
+
+/*
+==================================================
+題目物件
+==================================================
+*/
+
+function ratioQuestion({
+  label,
+  html,
+  answer,
+  explanation,
+  family
+}){
+
+  return {
+
+    type:
+      "ratio",
+
+    label,
+
+    html,
+
+    answer:
+      simplifyRatio(
+        answer
+      ),
+
+    explanation,
+
+    family
+  };
+}
+
+
+function numberQuestion({
+  label,
+  html,
+  answer,
+  explanation,
+  family
+}){
+
+  return {
+
+    type:
+      "number",
+
+    label,
+
+    html,
+
+    answer,
+
+    explanation,
+
+    family
+  };
+}
+
+
+function choiceQuestion({
+  label,
+  html,
+  choices,
+  answer,
+  explanation,
+  family
+}){
+
+  return {
+
+    type:
+      "choice",
+
+    label,
+
+    html,
+
+    choices,
+
+    answer:
+      String(
+        answer
+      ),
+
+    explanation,
+
+    family
+  };
+}
+
+
+/*
+==================================================
+模式一｜連比合併
+==================================================
+*/
+
+function makeMergeCommonY(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const k =
+    rand(2,5);
+
+
+  let h;
+
+
+  do{
+
+    h =
+      rand(2,5);
+
+  }while(
+    h ===
+    k
+  );
+
+
+  const leftY =
+    b *
+    k;
+
+
+  const rightY =
+    b *
+    h;
+
+
+  const common =
+    lcm(
+      leftY,
+      rightY
+    );
+
+
+  const leftScale =
+    common /
+    leftY;
+
+
+  const rightScale =
+    common /
+    rightY;
+
+
+  return ratioQuestion({
+
+    family:
+      "common-y",
+
+    label:
+      "兩個比合成連比",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：y＝${a*k}：${b*k}
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            <span class="condition-pill math">
+              y：z＝${b*h}：${c*h}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer:
+      [
+        a,
+        b,
+        c
+      ],
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          ratioHTML(
+            [
+              a,
+              b,
+              c
+            ]
+          ),
+
+        observe:
+          `兩個比都有 y，但 y 對應的數是 ${leftY} 與 ${rightY}。`,
+
+        think:
+          `先把共同項 y 統一。${leftY} 與 ${rightY} 的最小公倍數是 ${common}。`,
+
+        steps:[
+
+          `x：y＝${a*k}：${b*k}，同乘 ${leftScale}，得到 ${a*k*leftScale}：${common}。`,
+
+          `y：z＝${b*h}：${c*h}，同乘 ${rightScale}，得到 ${common}：${c*h*rightScale}。`,
+
+          `所以 x：y：z＝${a*k*leftScale}：${common}：${c*h*rightScale}。`,
+
+          `最後化成最簡整數比，得到 ${a}：${b}：${c}。`
+        ],
+
+        why:
+          "兩個兩兩比要合成三數連比時，共同文字符號所對應的數必須先相同。",
+
+        mistake:
+          "不能直接把兩個比接在一起；共同項不同時，一定要先統一。"
+      })
+
+  });
+}
+
+
+function makeMergeCommonZ(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const k =
+    rand(2,5);
+
+
+  let h;
+
+
+  do{
+
+    h =
+      rand(2,5);
+
+  }while(
+    h ===
+    k
+  );
+
+
+  const leftZ =
+    c *
+    k;
+
+
+  const rightZ =
+    c *
+    h;
+
+
+  const common =
+    lcm(
+      leftZ,
+      rightZ
+    );
+
+
+  const leftScale =
+    common /
+    leftZ;
+
+
+  const rightScale =
+    common /
+    rightZ;
+
+
+  return ratioQuestion({
+
+    family:
+      "common-z",
+
+    label:
+      "共同項不是中間文字",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：z＝${a*k}：${c*k}
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            <span class="condition-pill math">
+              y：z＝${b*h}：${c*h}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer:
+      [
+        a,
+        b,
+        c
+      ],
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          ratioHTML(
+            [
+              a,
+              b,
+              c
+            ]
+          ),
+
+        observe:
+          `兩組比的共同文字是 z，對應數分別是 ${leftZ} 與 ${rightZ}。`,
+
+        think:
+          `先把 z 統一成 ${common}。`,
+
+        steps:[
+
+          `x：z 同乘 ${leftScale}。`,
+
+          `y：z 同乘 ${rightScale}。`,
+
+          `得到 x：y：z＝${a*k*leftScale}：${b*h*rightScale}：${common}。`,
+
+          `再化成最簡整數比 ${a}：${b}：${c}。`
+        ],
+
+        why:
+          "任意兩組兩兩比，只要有共同文字，就能先統一共同項後合成連比。",
+
+        mistake:
+          "先找真正的共同文字，不一定每一題都是 y。"
+      })
+
+  });
+}
+
+
+function makeMergeFraction(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const d1 =
+    rand(2,6);
+
+
+  const d2 =
+    rand(2,6);
+
+
+  return ratioQuestion({
+
+    family:
+      "fraction",
+
+    label:
+      "分數的連比",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：y＝
+              ${reducedFractionHTML(a,d1)}
+              ：
+              ${reducedFractionHTML(b,d1)}
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            <span class="condition-pill math">
+              y：z＝
+              ${reducedFractionHTML(b,d2)}
+              ：
+              ${reducedFractionHTML(c,d2)}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer:
+      [
+        a,
+        b,
+        c
+      ],
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          ratioHTML(
+            [
+              a,
+              b,
+              c
+            ]
+          ),
+
+        observe:
+          "兩個比中出現分數。",
+
+        think:
+          "先把每一組分數比同乘適當的數，化成整數比。",
+
+        steps:[
+
+          `第一組分數比可化成 ${a}：${b}。`,
+
+          `第二組分數比可化成 ${b}：${c}。`,
+
+          `共同項 y 已一致，因此 x：y：z＝${a}：${b}：${c}。`
+        ],
+
+        why:
+          "比的每一項同乘同一個非 0 數，比值不會改變。",
+
+        mistake:
+          "不要只看分子；應把整組分數比一起化成整數比。"
+      })
+
+  });
+}
+
+
+function makeMergeDecimal(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const s1 =
+    pick(
+      [
+        0.1,
+        0.2,
+        0.5
+      ]
+    );
+
+
+  const s2 =
+    pick(
+      [
+        0.1,
+        0.2,
+        0.5
+      ]
+    );
+
+
+  const A =
+    Number(
+      (
+        a *
+        s1
+      )
+        .toFixed(2)
+    );
+
+
+  const B1 =
+    Number(
+      (
+        b *
+        s1
+      )
+        .toFixed(2)
+    );
+
+
+  const B2 =
+    Number(
+      (
+        b *
+        s2
+      )
+        .toFixed(2)
+    );
+
+
+  const C =
+    Number(
+      (
+        c *
+        s2
+      )
+        .toFixed(2)
+    );
+
+
+  return ratioQuestion({
+
+    family:
+      "decimal",
+
+    label:
+      "小數的連比",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：y＝${A}：${B1}
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            <span class="condition-pill math">
+              y：z＝${B2}：${C}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer:
+      [
+        a,
+        b,
+        c
+      ],
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          ratioHTML(
+            [
+              a,
+              b,
+              c
+            ]
+          ),
+
+        observe:
+          "兩組比中含有小數。",
+
+        think:
+          "先同乘 10、100 等適當倍數，把小數化成整數比。",
+
+        steps:[
+
+          `${A}：${B1} 可化成 ${a}：${b}。`,
+
+          `${B2}：${C} 可化成 ${b}：${c}。`,
+
+          `因此 x：y：z＝${a}：${b}：${c}。`
+        ],
+
+        why:
+          "連比最後應整理成最簡整數比。",
+
+        mistake:
+          "同一個比的每一項都必須同乘相同倍數。"
+      })
+
+  });
+}
+
+
+function makeMergeEquation(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  return ratioQuestion({
+
+    family:
+      "equation",
+
+    label:
+      "由等式求連比",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          <span class="keep-unit">
+            已知 x、y、z 皆不為 0，
+          </span>
+
+          <span class="keep-unit">
+            且
+            <span class="condition-pill math">
+              ${b}x＝${a}y
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            <span class="condition-pill math">
+              ${c}y＝${b}z
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer:
+      [
+        a,
+        b,
+        c
+      ],
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          ratioHTML(
+            [
+              a,
+              b,
+              c
+            ]
+          ),
+
+        observe:
+          "題目給的是等式，需要先轉成兩兩比。",
+
+        think:
+          "若 px＝qy，則 x：y＝q：p。",
+
+        steps:[
+
+          `${b}x＝${a}y，所以 x：y＝${a}：${b}。`,
+
+          `${c}y＝${b}z，所以 y：z＝${b}：${c}。`,
+
+          `因此 x：y：z＝${a}：${b}：${c}。`
+        ],
+
+        why:
+          "等式兩邊相等，可以利用交叉相乘的關係改寫成比例。",
+
+        mistake:
+          "係數轉成比例時方向很容易寫反。"
+      })
+
+  });
+}
+
+
+function createMergeQuestions(){
+
+  return shuffle(
+    [
+      makeMergeCommonY(),
+      makeMergeCommonY(),
+      makeMergeCommonY(),
+
+      makeMergeCommonZ(),
+      makeMergeCommonZ(),
+
+      makeMergeFraction(),
+      makeMergeFraction(),
+
+      makeMergeDecimal(),
+
+      makeMergeEquation(),
+      makeMergeEquation()
+    ]
+  );
+}
+
+
+/*
+==================================================
+模式二｜按比例分配
+==================================================
+*/
+
+function makeEquivalentForm(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  return choiceQuestion({
+
+    family:
+      "equivalent",
+
+    label:
+      "連比例式的等價表示",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：y：z＝${a}：${b}：${c}
+            </span>。
+          </span>
+
+          下列哪一個表示方式正確？
+
+        </div>
+      </div>
+    `,
+
+    answer:
+      "correct",
+
+    choices:[
+
+      {
+
+        value:
+          "correct",
+
+        html:`
+
+          <span class="math no-wrap">
+
+            ${fractionHTML(
+              "x",
+              a
+            )}
+
+            ＝
+
+            ${fractionHTML(
+              "y",
+              b
+            )}
+
+            ＝
+
+            ${fractionHTML(
+              "z",
+              c
+            )}
+
+          </span>
+        `
+      },
+
+      {
+
+        value:
+          "wrong1",
+
+        html:`
+
+          <span class="math no-wrap">
+
+            ${fractionHTML(
+              "x",
+              b
+            )}
+
+            ＝
+
+            ${fractionHTML(
+              "y",
+              a
+            )}
+
+            ＝
+
+            ${fractionHTML(
+              "z",
+              c
+            )}
+
+          </span>
+        `
+      },
+
+      {
+
+        value:
+          "wrong2",
+
+        html:`
+
+          <span class="math no-wrap">
+
+            ${fractionHTML(
+              "x",
+              a
+            )}
+
+            ＝
+
+            ${fractionHTML(
+              "y",
+              c
+            )}
+
+            ＝
+
+            ${fractionHTML(
+              "z",
+              b
+            )}
+
+          </span>
+        `
+      },
+
+      {
+
+        value:
+          "wrong3",
+
+        html:`
+
+          <span class="math no-wrap">
+
+            ${fractionHTML(
+              a,
+              "x"
+            )}
+
+            ＝
+
+            ${fractionHTML(
+              b,
+              "y"
+            )}
+
+            ＝
+
+            ${fractionHTML(
+              c,
+              "z"
+            )}
+
+          </span>
+        `
+      }
+
+    ],
+
+    explanation:
+      makeExplanation({
+
+        answer:`
+
+          ${fractionHTML(
+            "x",
+            a
+          )}
+
+          ＝
+
+          ${fractionHTML(
+            "y",
+            b
+          )}
+
+          ＝
+
+          ${fractionHTML(
+            "z",
+            c
+          )}
+        `,
+
+        observe:
+          `x、y、z 分別對應 ${a}、${b}、${c}。`,
+
+        think:
+          "把三個量都寫成同一個比例參數。",
+
+        steps:[
+
+          "設共同倍數為 r。",
+
+          `則 x＝${a}r、y＝${b}r、z＝${c}r。`,
+
+          `所以 ${keepMathHTML(
+            `${fractionHTML("x",a)}＝${fractionHTML("y",b)}＝${fractionHTML("z",c)}＝r`
+          )}。`
+        ],
+
+        why:
+          `
+          x：y：z＝a：b：c 與
+          ${keepMathHTML(
+            `${fractionHTML("x","a")}＝${fractionHTML("y","b")}＝${fractionHTML("z","c")}`
+          )}
+          是同一個連比例關係。
+        `,
+
+        mistake:
+          "分母必須和各自對應的連比數字一致。"
+      })
+
+  });
+}
+
+
+function makeLinearApplication(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const r =
+    rand(2,8);
+
+
+  const p =
+    rand(1,3);
+
+
+  const q =
+    rand(1,3);
+
+
+  const s =
+    rand(1,3);
+
+
+  const x =
+    a *
+    r;
+
+
+  const y =
+    b *
+    r;
+
+
+  const z =
+    c *
+    r;
+
+
+  const total =
+    p*x +
+    q*y +
+    s*z;
+
+
+  const target =
+    pick(
+      [
+        "x",
+        "y",
+        "z"
+      ]
+    );
+
+
+  const targetValue =
+    target ===
+    "x"
+
+      ? x
+
+      : target ===
+        "y"
+
+        ? y
+
+        : z;
+
+
+  const px =
+    p ===
+    1
+      ? "x"
+      : `${p}x`;
+
+
+  const qy =
+    q ===
+    1
+      ? "y"
+      : `${q}y`;
+
+
+  const sz =
+    s ===
+    1
+      ? "z"
+      : `${s}z`;
+
+
+  return numberQuestion({
+
+    family:
+      "linear",
+
+    label:
+      "連比例式求值",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          <span class="keep-unit">
+            已知
+            <span class="condition-pill math">
+              x：y：z＝${a}：${b}：${c}
+            </span>，
+          </span>
+
+          <span class="keep-unit">
+            且
+            <span class="condition-pill math">
+              ${px}＋${qy}＋${sz}＝${total}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">${target}</span>＝？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer:
+      targetValue,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          String(
+            targetValue
+          ),
+
+        observe:
+          `x：y：z＝${a}：${b}：${c}。`,
+
+        think:
+          "設 x＝ar、y＝br、z＝cr，再代入已知等式。",
+
+        steps:[
+
+          `設 x＝${a}r、y＝${b}r、z＝${c}r。`,
+
+          `${p}×${a}r＋${q}×${b}r＋${s}×${c}r＝${total}。`,
+
+          `${p*a+q*b+s*c}r＝${total}。`,
+
+          `r＝${r}。`,
+
+          `${target}＝${targetValue}。`
+        ],
+
+        why:
+          "連比可以用共同倍數 r 表示所有未知數。",
+
+        mistake:
+          "代入時不要漏掉題目原本 x、y、z 前面的係數。"
+      })
+
+  });
+}
+
+
+function makeDistribution(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const unit =
+    rand(3,15);
+
+
+  const total =
+    (
+      a +
+      b +
+      c
+    ) *
+    unit;
+
+
+  const targetIndex =
+    rand(0,2);
+
+
+  const names =
+    [
+      "甲",
+      "乙",
+      "丙"
+    ];
+
+
+  const answer =
+    [
+      a,
+      b,
+      c
+    ][
+      targetIndex
+    ] *
+    unit;
+
+
+  return numberQuestion({
+
+    family:
+      "distribution",
+
+    label:
+      "按比例分配",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          甲、乙、丙三人依
+
+          <span class="condition-pill math">
+            甲：乙：丙＝${a}：${b}：${c}
+          </span>
+
+          的比例分配
+
+          <span class="keep-unit">
+            ${total} 元。
+          </span>
+
+          <span class="keep-unit">
+            ${names[targetIndex]} 可以分得多少元？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          `${answer} 元`,
+
+        observe:
+          `總份數＝${a}＋${b}＋${c}＝${a+b+c} 份。`,
+
+        think:
+          "先求每一份，再乘上指定人物所占的份數。",
+
+        steps:[
+
+          `每一份＝${total}÷${a+b+c}＝${unit} 元。`,
+
+          `${names[targetIndex]}占 ${[a,b,c][targetIndex]} 份。`,
+
+          `${unit}×${[a,b,c][targetIndex]}＝${answer} 元。`
+        ],
+
+        why:
+          "連比表示各部分所占的相對份數。",
+
+        mistake:
+          "求每一份時，分母要用三個比數的總和。"
+      })
+
+  });
+}
+
+
+function makeRecipe(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const unit =
+    rand(30,90);
+
+
+  const total =
+    (
+      a +
+      b +
+      c
+    ) *
+    unit;
+
+
+  const answer =
+    a *
+    unit;
+
+
+  return numberQuestion({
+
+    family:
+      "recipe",
+
+    label:
+      "生活中的連比例式",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          茶、牛奶、糖水依
+
+          <span class="condition-pill math">
+            茶：牛奶：糖水＝${a}：${b}：${c}
+          </span>
+
+          的比例調配。
+
+          <span class="keep-unit">
+            若共調配 ${total} 毫升，
+          </span>
+
+          需要多少毫升的茶？
+
+        </div>
+      </div>
+    `,
+
+    answer,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          `${answer} 毫升`,
+
+        observe:
+          `總份數＝${a+b+c} 份。`,
+
+        think:
+          "先算一份是多少毫升，再乘茶所占的份數。",
+
+        steps:[
+
+          `每份＝${total}÷${a+b+c}＝${unit} 毫升。`,
+
+          `茶占 ${a} 份。`,
+
+          `${unit}×${a}＝${answer} 毫升。`
+        ],
+
+        why:
+          "配方比例就是連比例式在生活中的直接應用。",
+
+        mistake:
+          "題目問哪一種材料，就要乘上那個材料所占的比數。"
+      })
+
+  });
+}
+
+
+function createPartsQuestions(){
+
+  return shuffle(
+    [
+      makeEquivalentForm(),
+      makeEquivalentForm(),
+
+      makeLinearApplication(),
+      makeLinearApplication(),
+      makeLinearApplication(),
+      makeLinearApplication(),
+
+      makeDistribution(),
+      makeDistribution(),
+
+      makeRecipe(),
+      makeRecipe()
+    ]
+  );
+}
+
+
+/*
+==================================================
+模式三｜反比例與幾何
+==================================================
+*/
+
+function inverseRatio(
+  values
+){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    values;
+
+
+  return simplifyRatio(
+    [
+      b*c,
+      a*c,
+      a*b
+    ]
+  );
+}
+
+
+function makeEqualProduct(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const answer =
+    inverseRatio(
+      [
+        a,
+        b,
+        c
+      ]
+    );
+
+
+  return ratioQuestion({
+
+    family:
+      "equal-product",
+
+    label:
+      "ax＝by＝cz",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          <span class="keep-unit">
+            已知 x、y、z 皆不為 0，
+          </span>
+
+          <span class="keep-unit">
+            且
+            <span class="condition-pill math">
+              ${a}x＝${b}y＝${c}z
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求 <span class="math">x：y：z</span>＝？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          ratioHTML(
+            answer
+          ),
+
+        observe:
+          `${a}x、${b}y、${c}z 三者相等。`,
+
+        think:
+          "x、y、z 分別與前面的係數成反比。",
+
+        steps:[
+
+          `${keepMathHTML(
+            `x：y：z＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}`
+          )}。`,
+
+          "將三個分數同乘適當的公倍數。",
+
+          `得到最簡整數比 ${ratioText(answer)}。`
+        ],
+
+        why:
+          "乘積固定時，一個量越大，另一個量必須越小，所以形成反比。",
+
+        mistake:
+          `不能直接寫成 ${a}：${b}：${c}，方向會相反。`
+      })
+
+  });
+}
+
+
+function makeTriangleAreaInverse(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const answer =
+    inverseRatio(
+      [
+        a,
+        b,
+        c
+      ]
+    );
+
+
+  return ratioQuestion({
+
+    family:
+      "triangle",
+
+    label:
+      "等面積三角形",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          三個三角形的面積相等，
+
+          <span class="keep-unit">
+            底邊長比為
+            <span class="condition-pill math">
+              ${a}：${b}：${c}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求對應高的比＝？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          ratioHTML(
+            answer
+          ),
+
+        observe:
+          "三個三角形的面積相同。",
+
+        think:
+          "三角形面積＝底×高÷2，面積固定時，底與高成反比。",
+
+        steps:[
+
+          `${keepMathHTML(
+            `高的比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}`
+          )}。`,
+
+          "將分數化成整數比。",
+
+          `得到最簡整數比 ${ratioText(answer)}。`
+        ],
+
+        why:
+          "底越長，高就必須越短，才能維持相同面積。",
+
+        mistake:
+          "高的比不是直接照抄底邊長的比。"
+      })
+
+  });
+}
+
+
+function makeRectangleInverse(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const answer =
+    inverseRatio(
+      [
+        a,
+        b,
+        c
+      ]
+    );
+
+
+  return ratioQuestion({
+
+    family:
+      "rectangle",
+
+    label:
+      "等面積長方形",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          三個長方形的面積相等，
+
+          <span class="keep-unit">
+            長的比為
+            <span class="condition-pill math">
+              ${a}：${b}：${c}
+            </span>。
+          </span>
+
+          <span class="keep-unit">
+            求寬的比＝？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          ratioHTML(
+            answer
+          ),
+
+        observe:
+          "長方形面積＝長×寬，而且三個面積相等。",
+
+        think:
+          "面積固定時，長與寬成反比。",
+
+        steps:[
+
+          `${keepMathHTML(
+            `寬的比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}`
+          )}。`,
+
+          "化成最簡整數比。",
+
+          `得到 ${ratioText(answer)}。`
+        ],
+
+        why:
+          "乘積固定時，兩個量形成反比關係。",
+
+        mistake:
+          "不要把相同面積誤認成長與寬也成正比。"
+      })
+
+  });
+}
+
+
+function makeRateTimeInverse(){
+
+  const [
+    a,
+    b,
+    c
+  ] =
+    makePrimitiveTriple();
+
+
+  const answer =
+    inverseRatio(
+      [
+        a,
+        b,
+        c
+      ]
+    );
+
+
+  return ratioQuestion({
+
+    family:
+      "rate-time",
+
+    label:
+      "相同工作量",
+
+    html:`
+      <div class="question-stack">
+        <div class="question-sentence">
+
+          甲、乙、丙三臺機器的每小時產量比為
+
+          <span class="condition-pill math">
+            ${a}：${b}：${c}
+          </span>。
+
+          若完成相同數量的產品，
+
+          <span class="keep-unit">
+            求所需時間比＝？
+          </span>
+
+        </div>
+      </div>
+    `,
+
+    answer,
+
+    explanation:
+      makeExplanation({
+
+        answer:
+          ratioHTML(
+            answer
+          ),
+
+        observe:
+          "三臺機器要完成相同總工作量。",
+
+        think:
+          "產量越快，完成相同工作所需時間越短。",
+
+        steps:[
+
+          `${keepMathHTML(
+            `時間比＝${fractionHTML(1,a)}：${fractionHTML(1,b)}：${fractionHTML(1,c)}`
+          )}。`,
+
+          "將分數化成最簡整數比。",
+
+          `得到 ${ratioText(answer)}。`
+        ],
+
+        why:
+          "工作量＝效率×時間；工作量固定時，效率與時間成反比。",
+
+        mistake:
+          "題目問時間比時，不能直接把每小時產量比照抄。"
+      })
+
+  });
+}
+
+
+function createInverseQuestions(){
+
+  return shuffle(
+    [
+      makeEqualProduct(),
+      makeEqualProduct(),
+      makeEqualProduct(),
+
+      makeTriangleAreaInverse(),
+      makeTriangleAreaInverse(),
+      makeTriangleAreaInverse(),
+
+      makeRectangleInverse(),
+      makeRectangleInverse(),
+
+      makeRateTimeInverse(),
+      makeRateTimeInverse()
+    ]
+  );
+}
+
+
+/*
+==================================================
+綜合模式
+==================================================
+*/
+
+function createMixedQuestions(){
+
+  return shuffle(
+    [
+      makeMergeCommonY(),
+      makeMergeFraction(),
+      makeMergeDecimal(),
+      makeMergeEquation(),
+
+      makeEquivalentForm(),
+      makeLinearApplication(),
+      makeDistribution(),
+
+      makeRateTimeInverse()
+    ]
+  );
+}
+
+
+function createQuestions(){
+
+  if(
+    mode ===
+    "merge"
+  ){
+
+    return createMergeQuestions();
+  }
+
+
+  if(
+    mode ===
+    "parts"
+  ){
+
+    return createPartsQuestions();
+  }
+
+
+  if(
+    mode ===
+    "inverse"
+  ){
+
+    return createInverseQuestions();
+  }
+
+
+  return createMixedQuestions();
+}
+
+
+/*
+==================================================
+音效
+==================================================
+*/
+
+function playGameSound(
+  method
+){
+
+  try{
+
+    const manager =
+      window.MathGameSound ||
+      window.GameSound;
+
+
+    if(
+      manager &&
+      typeof manager[
+        method
+      ] ===
+      "function"
+    ){
+
+      Promise
+        .resolve(
+          manager[
+            method
+          ]()
+        )
+        .catch(
+          () => {}
+        );
+    }
+
+  }catch(
+    error
+  ){
+
+    console.warn(
+      "音效播放失敗：",
+      error
+    );
+  }
+}
+
+
+/*
+==================================================
+計算紙
+==================================================
+*/
+
+function moveScratchpadButtonToQuizGap(){
+
+  const mount =
+    $(
+      "scratchpad-mobile-button"
+    );
+
+
+  const button =
+    $(
+      "scratchpadOpenButton"
+    );
+
+
+  if(
+    mount &&
+    button &&
+    !mount.contains(
+      button
+    )
+  ){
+
+    mount.appendChild(
+      button
+    );
+  }
+}
+
+
+function ensureScratchpadButton(){
+
+  moveScratchpadButtonToQuizGap();
+
+
+  let count =
+    0;
+
+
+  const retry =
+    setInterval(
+      () => {
+
+        count++;
+
+        moveScratchpadButtonToQuizGap();
+
+
+        if(
+          $(
+            "scratchpadOpenButton"
+          ) ||
+          count >=
+          30
+        ){
+
+          clearInterval(
+            retry
+          );
+        }
+
+      },
+      60
+    );
+}
+
+
+/*
+==================================================
+畫面
+==================================================
+*/
+
+function showOnly(
+  id
+){
+  const semesterReturnRow = document.getElementById("semester-return-row");
+  if (semesterReturnRow) {
+    semesterReturnRow.classList.toggle("hidden", id !== "start-screen");
+  }
+
+
+  [
+    "start-screen",
+    "quiz-screen",
+    "result-screen",
+    "review-screen"
+  ]
+    .forEach(
+      screen => {
+
+        $(
+          screen
+        )
+          .classList
+          .toggle(
+            "hidden",
+            screen !==
+            id
+          );
+      }
+    );
+
+
+  if(
+    id ===
+    "quiz-screen"
+  ){
+
+    window
+      .showGameScratchpadButton
+      ?.();
+
+
+    setTimeout(
+      moveScratchpadButtonToQuizGap,
+      0
+    );
+
+
+    setTimeout(
+      moveScratchpadButtonToQuizGap,
+      100
+    );
+
+  }else{
+
+    window
+      .hideGameScratchpadButton
+      ?.();
+  }
+}
+
+
+/*
+==================================================
+答案介面
+==================================================
+*/
+
+function renderRatioAnswer(
+  count
+){
+
+  const inputs =
+    [];
+
+
+  for(
+    let i =
+      0;
+    i <
+      count;
+    i++
+  ){
+
+    inputs.push(
+      `
+        <input
+          class="ratio-input"
+          data-ratio-input="${i}"
+          type="text"
+          inputmode="decimal"
+          autocomplete="off"
+          placeholder="數字"
+          aria-label="連比第 ${i+1} 項"
+        >
+      `
+    );
+  }
+
+
+  $(
+    "answer-area"
+  )
+    .innerHTML = `
+
+      <div class="ratio-answer">
+
+        ${inputs.join(
+          '<span class="ratio-colon">：</span>'
+        )}
+
+      </div>
+
+      <div class="answer-help">
+
+        請輸入
+        <strong>
+          最簡整數比
+        </strong>。
+
+        若比例關係正確但尚未化簡，
+        系統會提示你重新整理。
+
+      </div>
+    `;
+
+
+  setTimeout(
+    () => {
+
+      document
+        .querySelector(
+          "[data-ratio-input='0']"
+        )
+        ?.focus();
+
+    },
+    0
+  );
+}
+
+
+function renderNumberAnswer(){
+
+  $(
+    "answer-area"
+  )
+    .innerHTML = `
+
+      <input
+        id="number-answer"
+        class="number-answer"
+        type="text"
+        inputmode="decimal"
+        autocomplete="off"
+        placeholder="請輸入答案"
+        aria-label="你的答案"
+      >
+    `;
+
+
+  setTimeout(
+    () => {
+
+      $(
+        "number-answer"
+      )
+        ?.focus();
+
+    },
+    0
+  );
+}
+
+
+function renderChoices(
+  question
+){
+
+  selectedChoice =
+    null;
+
+
+  $(
+    "answer-area"
+  )
+    .innerHTML = `
+
+      <div class="choice-grid">
+
+        ${shuffle(
+          question.choices
+        )
+          .map(
+            choice => `
+
+              <button
+                class="choice-button"
+                type="button"
+                data-choice="${choice.value}"
+              >
+
+                ${
+                  choice.html ??
+                  choice.text ??
+                  choice.value
+                }
+
+              </button>
+            `
+          )
+          .join("")
+        }
+
+      </div>
+    `;
+
+
+  $(
+    "answer-area"
+  )
+    .querySelectorAll(
+      "[data-choice]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            if(
+              answered
+            ){
+
+              return;
+            }
+
+
+            selectedChoice =
+              button.dataset.choice;
+
+
+            $(
+              "answer-area"
+            )
+              .querySelectorAll(
+                ".choice-button"
+              )
+              .forEach(
+                item => {
+
+                  item
+                    .classList
+                    .remove(
+                      "selected"
+                    );
+                }
+              );
+
+
+            button
+              .classList
+              .add(
+                "selected"
+              );
+          }
+        );
+      }
+    );
+}
+
+
+function renderAnswerArea(
+  question
+){
+
+  if(
+    question.type ===
+    "ratio"
+  ){
+
+    renderRatioAnswer(
+      question.answer.length
+    );
+
+    return;
+  }
+
+
+  if(
+    question.type ===
+    "number"
+  ){
+
+    renderNumberAnswer();
+
+    return;
+  }
+
+
+  renderChoices(
+    question
+  );
+}
+
+
+/*
+==================================================
+讀取答案
+==================================================
+*/
+
+function readAnswer(
+  question
+){
+
+  if(
+    question.type ===
+    "ratio"
+  ){
+
+    const rawValues =
+      [
+        ...
+        document
+          .querySelectorAll(
+            "[data-ratio-input]"
+          )
+      ]
+        .map(
+          input =>
+            input.value.trim()
+        );
+
+
+    if(
+      rawValues.some(
+        value =>
+          !value
+      )
+    ){
+
+      return {
+
+        valid:false,
+
+        message:
+          "請把連比的每一項都填完整。"
+      };
+    }
+
+
+    const analysis =
+      analyzeRatioAnswer(
+        rawValues,
+        question.answer
+      );
+
+
+    if(
+      !analysis.valid
+    ){
+
+      return analysis;
+    }
+
+
+    return {
+
+      valid:true,
+
+      value:
+        rawValues,
+
+      display:
+        rawValues.join(
+          "："
+        ),
+
+      displayHTML:
+        escapeHTML(
+          rawValues.join(
+            "："
+          )
+        ),
+
+      ratioAnalysis:
+        analysis
+    };
+  }
+
+
+  if(
+    question.type ===
+    "number"
+  ){
+
+    const raw =
+      $(
+        "number-answer"
+      )
+        ?.value
+        .trim() ??
+      "";
+
+
+    const value =
+      parseRational(
+        raw
+      );
+
+
+    if(
+      value ===
+      null
+    ){
+
+      return {
+
+        valid:false,
+
+        message:
+          "請輸入有效的數字答案。"
+      };
+    }
+
+
+    return {
+
+      valid:true,
+
+      value,
+
+      display:
+        raw,
+
+      displayHTML:
+        escapeHTML(
+          raw
+        )
+    };
+  }
+
+
+  if(
+    selectedChoice ===
+    null
+  ){
+
+    return {
+
+      valid:false,
+
+      message:
+        "請先選擇一個答案。"
+    };
+  }
+
+
+  const selected =
+    question.choices
+      .find(
+        choice =>
+          String(
+            choice.value
+          ) ===
+          String(
+            selectedChoice
+          )
+      );
+
+
+  return {
+
+    valid:true,
+
+    value:
+      selectedChoice,
+
+    display:
+      selected?.text ??
+      selectedChoice,
+
+    displayHTML:
+      selected?.html ??
+      selected?.text ??
+      selectedChoice
+  };
+}
+
+
+/*
+==================================================
+判斷答案
+==================================================
+*/
+
+function isCorrectAnswer(
+  question,
+  answer
+){
+
+  if(
+    question.type ===
+    "ratio"
+  ){
+
+    return (
+
+      answer
+        .ratioAnalysis
+        ?.equivalent ===
+        true
+
+      &&
+
+      answer
+        .ratioAnalysis
+        ?.simplest ===
+        true
+    );
+  }
+
+
+  if(
+    question.type ===
+    "number"
+  ){
+
+    return sameNumber(
+      answer.value,
+      question.answer
+    );
+  }
+
+
+  return (
+    String(
+      answer.value
+    ) ===
+    String(
+      question.answer
+    )
+  );
+}
+
+
+function correctAnswerHTML(
+  question
+){
+
+  if(
+    question.type ===
+    "ratio"
+  ){
+
+    return ratioHTML(
+      question.answer
+    );
+  }
+
+
+  if(
+    question.type ===
+    "number"
+  ){
+
+    return escapeHTML(
+      question.answer
+    );
+  }
+
+
+  const choice =
+    question.choices
+      .find(
+        item =>
+          String(
+            item.value
+          ) ===
+          String(
+            question.answer
+          )
+      );
+
+
+  return (
+    choice?.html ??
+    choice?.text ??
+    choice?.value ??
+    ""
+  );
+}
+
+
+/*
+==================================================
+詳解
+==================================================
+*/
+
+function explanationHTML(
+  question
+){
+
+  const e =
+    question.explanation;
+
+
+  return `
+
+    <div class="explanation-title">
+      📖 完整詳解
+    </div>
+
+
+    <div class="explanation-block">
+
+      <strong>
+        🎯 正確答案
+      </strong>
+
+      <br>
+
+      ${e.answer}
+
+    </div>
+
+
+    <div class="explanation-block">
+
+      <strong>
+        👀 看到什麼
+      </strong>
+
+      <br>
+
+      ${e.observe}
+
+    </div>
+
+
+    <div class="explanation-block">
+
+      <strong>
+        💡 先想什麼
+      </strong>
+
+      <br>
+
+      ${e.think}
+
+    </div>
+
+
+    <div class="explanation-block">
+
+      <strong>
+        🧮 解題步驟
+      </strong>
+
+      ${e.steps
+        .map(
+          step => `
+
+            <div class="explanation-step">
+              ${step}
+            </div>
+          `
+        )
+        .join("")
+      }
+
+    </div>
+
+
+    <div class="explanation-block">
+
+      <strong>
+        📘 為什麼
+      </strong>
+
+      <br>
+
+      ${e.why}
+
+    </div>
+
+
+    <div class="explanation-tip">
+
+      <strong>
+        ⚠️ 易錯提醒
+      </strong>
+
+      <br>
+
+      ${e.mistake}
+
+    </div>
+  `;
+}
+
+
+/*
+==================================================
+顯示題目
+==================================================
+*/
+
+function displayQuestion(){
+
+  answered =
+    false;
+
+
+  selectedChoice =
+    null;
+
+
+  const question =
+    questions[
+      index
+    ];
+
+
+  $(
+    "mode-name"
+  )
+    .textContent =
+      MODES[
+        mode
+      ]
+        .name;
+
+
+  $(
+    "question-number"
+  )
+    .textContent =
+      `第 ${index+1} 題／共 ${questions.length} 題`;
+
+
+  $(
+    "live-score"
+  )
+    .textContent =
+      index ===
+      0
+
+        ? "0"
+
+        : Math.round(
+            correct /
+            index *
+            100
+          );
+
+
+  $(
+    "correct-count"
+  )
+    .textContent =
+      correct;
+
+
+  $(
+    "combo-count"
+  )
+    .textContent =
+      combo;
+
+
+  $(
+    "progress-bar"
+  )
+    .style
+    .width =
+      `${
+        index /
+        questions.length *
+        100
+      }%`;
+
+
+  $(
+    "question-label"
+  )
+    .textContent =
+      question.label;
+
+
+  $(
+    "question-content"
+  )
+    .innerHTML =
+      question.html;
+
+
+  $(
+    "feedback"
+  )
+    .className =
+      "feedback";
+
+
+  $(
+    "feedback"
+  )
+    .innerHTML =
+      "";
+
+
+  $(
+    "explanation"
+  )
+    .innerHTML =
+      "";
+
+
+  $(
+    "explanation"
+  )
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  $(
+    "submit-button"
+  )
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $(
+    "next-button"
+  )
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  renderAnswerArea(
+    question
+  );
+
+
+  window
+    .resetGameScratchpad
+    ?.();
+}
+
+
+/*
+==================================================
+鎖定答案
+==================================================
+*/
+
+function disableAnswerArea(){
+
+  $(
+    "answer-area"
+  )
+    .querySelectorAll(
+      "input,button"
+    )
+    .forEach(
+      element => {
+
+        element.disabled =
+          true;
+      }
+    );
+}
+
+
+/*
+==================================================
+送出答案
+==================================================
+*/
+
+function submitAnswer(){
+
+  if(
+    answered
+  ){
+
+    return;
+  }
+
+
+  const question =
+    questions[
+      index
+    ];
+
+
+  const answer =
+    readAnswer(
+      question
+    );
+
+
+  if(
+    !answer.valid
+  ){
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback warning";
+
+
+    $(
+      "feedback"
+    )
+      .textContent =
+        answer.message;
+
+
+    return;
+  }
+
+
+  /*
+  ================================================
+  ★ 比例關係正確，
+    但是沒有寫成最簡整數比。
+
+  不算錯。
+  不鎖答案。
+  不進下一題。
+  ================================================
+  */
+
+  if(
+    question.type ===
+      "ratio"
+
+    &&
+
+    answer
+      .ratioAnalysis
+      ?.equivalent ===
+      true
+
+    &&
+
+    answer
+      .ratioAnalysis
+      ?.simplest ===
+      false
+  ){
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback warning";
+
+
+    $(
+      "feedback"
+    )
+      .innerHTML = `
+
+        👍 比例關係是正確的！
+
+        <br>
+
+        但本單元答案要寫成
+        <strong>
+          最簡整數比
+        </strong>。
+
+        <br>
+
+        請再約分整理後重新送出。
+
+        <br>
+
+        提示：
+
+        <strong>
+          ${ratioHTML(
+            question.answer
+          )}
+        </strong>
+
+        是整理後應有的形式。
+      `;
+
+
+    document
+      .querySelector(
+        "[data-ratio-input='0']"
+      )
+      ?.focus();
+
+
+    return;
+  }
+
+
+  answered =
+    true;
+
+
+  disableAnswerArea();
+
+
+  const ok =
+    isCorrectAnswer(
+      question,
+      answer
+    );
+
+
+  if(
+    ok
+  ){
+
+    correct++;
+
+    combo++;
+
+    maxCombo =
+      Math.max(
+        maxCombo,
+        combo
+      );
+
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback correct";
+
+
+    $(
+      "feedback"
+    )
+      .innerHTML =
+        "✨ 回答正確！";
+
+
+    playGameSound(
+      "playCorrect"
+    );
+
+  }else{
+
+    wrong++;
+
+    combo =
+      0;
+
+
+    $(
+      "feedback"
+    )
+      .className =
+        "feedback wrong";
+
+
+    $(
+      "feedback"
+    )
+      .innerHTML = `
+
+        ❌ 答案不正確。
+
+        正確答案：
+
+        <strong>
+          ${correctAnswerHTML(
+            question
+          )}
+        </strong>
+      `;
+
+
+    playGameSound(
+      "playWrong"
+    );
+  }
+
+
+  records.push({
+
+    number:
+      index +
+      1,
+
+    question,
+
+    userAnswer:
+      answer.display,
+
+    userAnswerHTML:
+      answer.displayHTML,
+
+    correct:
+      ok
+  });
+
+
+  $(
+    "live-score"
+  )
+    .textContent =
+      Math.round(
+        correct /
+        (
+          index +
+          1
+        ) *
+        100
+      );
+
+
+  $(
+    "correct-count"
+  )
+    .textContent =
+      correct;
+
+
+  $(
+    "combo-count"
+  )
+    .textContent =
+      combo;
+
+
+  $(
+    "explanation"
+  )
+    .innerHTML =
+      explanationHTML(
+        question
+      );
+
+
+  $(
+    "explanation"
+  )
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $(
+    "submit-button"
+  )
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  $(
+    "next-button"
+  )
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $(
+    "next-button"
+  )
+    .textContent =
+
+      index ===
+      questions.length -
+      1
+
+        ? "查看測驗結果（Enter）"
+
+        : "下一題（Enter）";
+
+
+  $(
+    "next-button"
+  )
+    .focus();
+}
+
+
+/*
+==================================================
+下一題
+==================================================
+*/
+
+function nextQuestion(){
+
+  if(
+    !answered
+  ){
+
+    return;
+  }
+
+
+  index++;
+
+
+  if(
+    index <
+    questions.length
+  ){
+
+    displayQuestion();
+
+  }else{
+
+    showResult();
+  }
+}
+
+
+/*
+==================================================
+計時
+==================================================
+*/
+
+function stopTimer(){
+
+  if(
+    timerId !==
+    null
+  ){
+
+    clearInterval(
+      timerId
+    );
+
+
+    timerId =
+      null;
+  }
+
+
+  if(
+    startTime
+  ){
+
+    elapsed =
+      Math.floor(
+        (
+          Date.now() -
+          startTime
+        ) /
+        1000
+      );
+  }
+}
+
+
+function startTimer(){
+
+  if(
+    timerId !==
+    null
+  ){
+
+    clearInterval(
+      timerId
+    );
+  }
+
+
+  startTime =
+    Date.now();
+
+
+  elapsed =
+    0;
+
+
+  $(
+    "timer-display"
+  )
+    .textContent =
+      "00:00";
+
+
+  timerId =
+    setInterval(
+      () => {
+
+        elapsed =
+          Math.floor(
+            (
+              Date.now() -
+              startTime
+            ) /
+            1000
+          );
+
+
+        $(
+          "timer-display"
+        )
+          .textContent =
+            formatTime(
+              elapsed
+            );
+
+      },
+      500
+    );
+}
+
+
+/*
+==================================================
+開始遊戲
+==================================================
+*/
+
+function startGame(
+  selectedMode
+){
+
+  try{
+
+    if(
+      timerId !==
+      null
+    ){
+
+      clearInterval(
+        timerId
+      );
+    }
+
+
+    mode =
+      selectedMode;
+
+
+    questions =
+      createQuestions();
+
+
+    index =
+      0;
+
+
+    correct =
+      0;
+
+
+    wrong =
+      0;
+
+
+    combo =
+      0;
+
+
+    maxCombo =
+      0;
+
+
+    records =
+      [];
+
+
+    answered =
+      false;
+
+
+    selectedChoice =
+      null;
+
+
+    scoreSaved =
+      false;
+
+
+    elapsed =
+      0;
+
+
+    $(
+      "save-status"
+    )
+      .textContent =
+        "";
+
+
+    showOnly(
+      "quiz-screen"
+    );
+
+
+    displayQuestion();
+
+
+    startTimer();
+
+
+    playGameSound(
+      "playStart"
+    );
+
+  }catch(
+    error
+  ){
+
+    console.error(
+      "1-1 連比遊戲啟動失敗：",
+      error
+    );
+
+
+    alert(
+      "遊戲啟動時發生錯誤，請重新整理頁面再試一次。"
+    );
+  }
+}
+
+
+/*
+==================================================
+評價
+==================================================
+*/
+
+function rating(
+  score
+){
+
+  if(
+    score >=
+    90
+  ){
+
+    return {
+
+      stars:
+        "★★★★★",
+
+      comment:
+        "太棒了！連比、連比例式與生活應用都掌握得很好。"
+    };
+  }
+
+
+  if(
+    score >=
+    80
+  ){
+
+    return {
+
+      stars:
+        "★★★★☆",
+
+      comment:
+        "表現很好！再注意共同項統一，以及反比例時方向不要顛倒。"
+    };
+  }
+
+
+  if(
+    score >=
+    60
+  ){
+
+    return {
+
+      stars:
+        "★★★☆☆",
+
+      comment:
+        "基本觀念已建立，建議查看本次詳解，把容易混淆的題型再練熟。"
+    };
+  }
+
+
+  return {
+
+    stars:
+      "★★☆☆☆",
+
+    comment:
+      "建議先從連比合併開始，再逐步練習連比例式與反比例應用。"
+  };
+}
+
+
+/*
+==================================================
+結果
+==================================================
+*/
+
+async function showResult(){
+
+  stopTimer();
+
+
+  const score =
+    Math.round(
+      correct /
+      questions.length *
+      1000
+    ) /
+    10;
+
+
+  const result =
+    rating(
+      score
+    );
+
+
+  $(
+    "progress-bar"
+  )
+    .style
+    .width =
+      "100%";
+
+
+  showOnly(
+    "result-screen"
+  );
+
+
+  $(
+    "final-score"
+  )
+    .textContent =
+      `${
+        Number.isInteger(
+          score
+        )
+
+          ? score
+
+          : score.toFixed(1)
+      } 分`;
+
+
+  $(
+    "final-stars"
+  )
+    .textContent =
+      result.stars;
+
+
+  $(
+    "final-comment"
+  )
+    .textContent =
+      result.comment;
+
+
+  $(
+    "final-correct"
+  )
+    .textContent =
+      correct;
+
+
+  $(
+    "final-wrong"
+  )
+    .textContent =
+      wrong;
+
+
+  $(
+    "final-combo"
+  )
+    .textContent =
+      maxCombo;
+
+
+  $(
+    "final-time"
+  )
+    .textContent =
+      formatTime(
+        elapsed
+      );
+
+
+  playGameSound(
+    "playComplete"
+  );
+
+
+  await saveCurrentScore(
+    score
+  );
+}
+
+
+/*
+==================================================
+成績儲存
+==================================================
+*/
+
+async function saveCurrentScore(
+  score
+){
+
+  if(
+    scoreSaved
+  ){
+
+    return;
+  }
+
+
+  scoreSaved =
+    true;
+
+
+  const status =
+    $(
+      "save-status"
+    );
+
+
+  status.textContent =
+    "☁️ 正在儲存本次成績……";
+
+
+  status.style.color =
+    "#1d4ed8";
+
+
+  try{
+
+    const scoreModule =
+      await import(
+        "../../js/scores.js"
+      );
+
+
+    if(
+      typeof scoreModule
+        .saveGameScore !==
+      "function"
+    ){
+
+      throw new Error(
+        "找不到 saveGameScore"
+      );
+    }
+
+
+    const result =
+      await scoreModule
+        .saveGameScore({
+
+          game:
+            GAME_ID,
+
+          mode,
+
+          score,
+
+          correctCount:
+            correct,
+
+          wrongCount:
+            wrong,
+
+          maxCombo,
+
+          playTime:
+            elapsed,
+
+          totalQuestions:
+            questions.length,
+
+          accuracy:
+            score
+        });
+
+
+    if(
+      result?.success
+    ){
+
+      status.textContent =
+        "✅ 本次成績已儲存。";
+
+
+      status.style.color =
+        "#15803d";
+
+
+      return;
+    }
+
+
+    if(
+      result?.reason ===
+      "not-logged-in"
+    ){
+
+      status.textContent =
+        "ℹ️ 尚未登入，因此本次成績沒有儲存。";
+
+
+      status.style.color =
+        "#b45309";
+
+
+      return;
+    }
+
+
+    status.textContent =
+      "⚠️ 成績暫時無法儲存。";
+
+
+    status.style.color =
+      "#b91c1c";
+
+  }catch(
+    error
+  ){
+
+    console.error(
+      "1-1 連比成績儲存失敗：",
+      error
+    );
+
+
+    status.textContent =
+      "⚠️ 本次遊戲已完成，但成績暫時無法儲存。";
+
+
+    status.style.color =
+      "#b91c1c";
+  }
+}
+
+
+/*
+==================================================
+詳解回顧
+==================================================
+*/
+
+function showReview(){
+
+  $(
+    "review-list"
+  )
+    .innerHTML =
+      records
+        .map(
+          record => `
+
+            <article
+              class="
+                review-card
+                ${
+                  record.correct
+                    ? "correct-review"
+                    : "wrong-review"
+                }
+              "
+            >
+
+              <div class="review-title">
+
+                第 ${record.number} 題
+
+                ${
+                  record.correct
+                    ? "✅"
+                    : "❌"
+                }
+
+              </div>
+
+
+              <div class="review-question">
+
+                <strong>
+                  ${record.question.label}
+                </strong>
+
+                <br><br>
+
+                ${record.question.html}
+
+              </div>
+
+
+              <div class="review-answer-line">
+
+                你的答案：
+
+                <strong>
+                  ${record.userAnswerHTML}
+                </strong>
+
+              </div>
+
+
+              <div class="review-answer-line">
+
+                正確答案：
+
+                <strong>
+                  ${correctAnswerHTML(
+                    record.question
+                  )}
+                </strong>
+
+              </div>
+
+
+              <div class="explanation">
+
+                ${explanationHTML(
+                  record.question
+                )}
+
+              </div>
+
+            </article>
+          `
+        )
+        .join("");
+
+
+  showOnly(
+    "review-screen"
+  );
+
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+
+/*
+==================================================
+事件
+==================================================
+*/
+
+document
+  .querySelectorAll(
+    "[data-mode]"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          startGame(
+            button.dataset.mode
+          );
+        }
+      );
+    }
+  );
+
+
+$(
+  "submit-button"
+)
+  .addEventListener(
+    "click",
+    submitAnswer
+  );
+
+
+$(
+  "next-button"
+)
+  .addEventListener(
+    "click",
+    nextQuestion
+  );
+
+
+$(
+  "restart-button"
+)
+  .addEventListener(
+    "click",
+    () => {
+
+      startGame(
+        mode
+      );
+    }
+  );
+
+
+$(
+  "quit-button"
+)
+  .addEventListener(
+    "click",
+    () => {
+
+      if(
+        timerId !==
+        null
+      ){
+
+        clearInterval(
+          timerId
+        );
+
+
+        timerId =
+          null;
+      }
+
+
+      showOnly(
+        "start-screen"
+      );
+    }
+  );
+
+
+$(
+  "again-button"
+)
+  .addEventListener(
+    "click",
+    () => {
+
+      startGame(
+        mode
+      );
+    }
+  );
+
+
+$(
+  "result-mode-button"
+)
+  .addEventListener(
+    "click",
+    () => {
+
+      showOnly(
+        "start-screen"
+      );
+    }
+  );
+
+
+$(
+  "review-button"
+)
+  .addEventListener(
+    "click",
+    showReview
+  );
+
+
+$(
+  "review-again-button"
+)
+  .addEventListener(
+    "click",
+    () => {
+
+      startGame(
+        mode
+      );
+    }
+  );
+
+
+$(
+  "review-result-button"
+)
+  .addEventListener(
+    "click",
+    () => {
+
+      showOnly(
+        "result-screen"
+      );
+    }
+  );
+
+
+/*
+==================================================
+Enter
+==================================================
+*/
+
+
+/*
+==================================================
+九上統一：重新測驗二次確認
+==================================================
+*/
+function confirmRestartTest(){
+  return window.confirm(
+    "確定要重新測驗目前模式嗎？\n目前的作答進度與測驗時間將重新開始。"
+  );
+}
+
+["restart-button","again-button","review-again-button"].forEach(id => {
+  const button = document.getElementById(id);
+  if (!button) return;
+
+  button.addEventListener(
+    "click",
+    event => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      if (!confirmRestartTest()) return;
+      startGame(mode);
+    },
+    true
+  );
+});
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key !==
+      "Enter"
+
+      ||
+
+      $(
+        "quiz-screen"
+      )
+        .classList
+        .contains(
+          "hidden"
+        )
+    ){
+
+      return;
+    }
+
+
+    event.preventDefault();
+
+
+    if(
+      answered
+    ){
+
+      nextQuestion();
+
+    }else{
+
+      submitAnswer();
+    }
+  }
+);
+
+
+/*
+==================================================
+共用 Header + 計算紙
+==================================================
+*/
+
+window.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    if(
+      window
+        .MathGameCommonHeader
+    ){
+
+      window
+        .MathGameCommonHeader
+        .init({
+
+          mountId:
+            "commonHeaderMount",
+
+          basePath:
+            "../"
+        });
+    }
+
+
+    ensureScratchpadButton();
+  }
+);
+
+
+showOnly(
+  "start-screen"
+);
+
+
+/* Competition-only export, injected in an isolated COPY. The original games/ file is untouched. */
+window.__TUG_SOURCE__ = {
+ generate(chosen) {
+   if(typeof mode!=='undefined')mode=chosen;
+   if(typeof modeId!=='undefined')modeId=chosen;
+   if(typeof selectedMode!=='undefined')selectedMode=chosen;
+   if(typeof createQuestions==='function')return createQuestions(chosen);
+   if(typeof makeQuestions==='function')return makeQuestions(chosen);
+   if(typeof buildQuestions==='function')return buildQuestions(chosen);
+   throw Error('原始出題函式尚未能獨立使用');
+ }
+};
+</script>
+</body>
+</html>
