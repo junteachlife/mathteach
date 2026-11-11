@@ -1,0 +1,2248 @@
+[
+  {
+    "id": "source:grade7-1-compare",
+    "semester": "七上",
+    "title": "數的大小比較王",
+    "path": "games/grade7-1/compare.html",
+    "source": "tug-war/adapters/sources/grade7-1/compare.html",
+    "modes": []
+  },
+  {
+    "id": "source:grade7-1-equation-applications",
+    "semester": "七上",
+    "title": "3-3 一元一次方程式應用問題大挑戰",
+    "path": "games/grade7-1/equation-applications.html",
+    "source": "tug-war/adapters/sources/grade7-1/equation-applications.html",
+    "modes": [
+      {
+        "id": "1",
+        "name": "依題意列方程式",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "2",
+        "name": "分配與金錢問題",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "3",
+        "name": "幾何與年齡問題",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "4",
+        "name": "折扣、行程與合理性",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-1-equation",
+    "semester": "七上",
+    "title": "3-2 解一元一次方程式大挑戰",
+    "path": "games/grade7-1/equation.html",
+    "source": "tug-war/adapters/sources/grade7-1/equation.html",
+    "modes": [
+      {
+        "id": "1",
+        "name": "模式一｜認識方程式與解的檢驗",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "2",
+        "name": "模式二｜基本一元一次方程式",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "3",
+        "name": "模式三｜移項與合併同類項",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "4",
+        "name": "模式四｜括號、負號與化簡",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "5",
+        "name": "模式五｜分數係數方程式",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-1-exponent-scientific-notation",
+    "semester": "七上",
+    "title": "指數與科學記號大挑戰｜數學遊戲樂園",
+    "path": "games/grade7-1/exponent-scientific-notation.html",
+    "source": "tug-war/adapters/sources/grade7-1/exponent-scientific-notation.html",
+    "modes": [
+      {
+        "id": "notation",
+        "name": "🔢 指數記法基礎",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "negativePower",
+        "name": "➖ 負數次方與符號",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "compare",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "operations",
+        "name": "🧮 含指數四則運算",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "tenPower",
+        "name": "🔟 10 的次方與位值",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "scientific",
+        "name": "🔬 科學記號轉換",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "scientific"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "scientificCompare",
+        "name": "⚖️ 科學記號判讀比較",
+        "status": "needs-special-input",
+        "types": [
+          "compare",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "speed",
+        "name": "⚡ 指數快手",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 1-4 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "compare",
+          "number",
+          "scientific"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-1-exponent",
+    "semester": "七上",
+    "title": "2-4 指數律大挑戰",
+    "path": "games/grade7-1/exponent.html",
+    "source": "tug-war/adapters/sources/grade7-1/exponent.html",
+    "modes": []
+  },
+  {
+    "id": "source:grade7-1-expression-operations",
+    "semester": "七上",
+    "title": "3-1 式子的運算大挑戰",
+    "path": "games/grade7-1/expression-operations.html",
+    "source": "tug-war/adapters/sources/grade7-1/expression-operations.html",
+    "modes": [
+      {
+        "id": "1",
+        "name": "符號簡記與乘除表示",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "2",
+        "name": "文字敘述與生活列式",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "3",
+        "name": "代入求式子的值",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "4",
+        "name": "加減與合併同類項",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "5",
+        "name": "乘除與分配律",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "6",
+        "name": "含分數式子的化簡",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-1-factor",
+    "semester": "七上",
+    "title": "2-1 質因數分解大挑戰",
+    "path": "games/grade7-1/factor.html",
+    "source": "tug-war/adapters/sources/grade7-1/factor.html",
+    "modes": []
+  },
+  {
+    "id": "source:grade7-1-fractionnew",
+    "semester": "七上",
+    "title": "2-3 分數的四則運算大挑戰",
+    "path": "games/grade7-1/fractionnew.html",
+    "source": "tug-war/adapters/sources/grade7-1/fractionnew.html",
+    "modes": []
+  },
+  {
+    "id": "source:grade7-1-gcd-lcm",
+    "semester": "七上",
+    "title": "2-2 最大公因數與最小公倍數大挑戰",
+    "path": "games/grade7-1/gcd-lcm.html",
+    "source": "tug-war/adapters/sources/grade7-1/gcd-lcm.html",
+    "modes": []
+  },
+  {
+    "id": "source:grade7-1-integer-operations",
+    "semester": "七上",
+    "title": "正負數四則運算大挑戰",
+    "path": "games/grade7-1/integer-operations.html",
+    "source": "tug-war/adapters/sources/grade7-1/integer-operations.html",
+    "modes": [
+      {
+        "id": "muldiv",
+        "name": "模式一｜正負數的乘除",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "absolute",
+        "name": "模式二｜絕對值運算",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "power",
+        "name": "模式三｜乘方計算",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "mixed",
+        "name": "模式四｜四則運算",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "advanced",
+        "name": "模式五｜四則運算進階挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-1-integer",
+    "semester": "七上",
+    "title": "正負整數大挑戰",
+    "path": "games/grade7-1/integer.html",
+    "source": "tug-war/adapters/sources/grade7-1/integer.html",
+    "modes": []
+  },
+  {
+    "id": "source:grade7-2-coordinate-plane",
+    "semester": "七下",
+    "title": "七下 2-1 直角坐標平面大挑戰",
+    "path": "games/grade7-2/coordinate-plane.html",
+    "source": "tug-war/adapters/sources/grade7-2/coordinate-plane.html",
+    "modes": [
+      {
+        "id": "coordinateBasics",
+        "name": "📍 坐標與描點",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "axesQuadrants",
+        "name": "🧭 坐標軸與象限",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "distancePosition",
+        "name": "📏 距離與坐標反推",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "movementGeometry",
+        "name": "🚶 移動與圖形位置",
+        "status": "needs-special-input",
+        "types": [
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 2-1 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-2-direct-inverse-proportion",
+    "semester": "七下",
+    "title": "七下 3-2 正比與反比大挑戰",
+    "path": "games/grade7-2/direct-inverse-proportion.html",
+    "source": "tug-war/adapters/sources/grade7-2/direct-inverse-proportion.html",
+    "modes": [
+      {
+        "id": "relationJudge",
+        "name": "🔍 正比／反比判別",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "directProportion",
+        "name": "📈 正比關係",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "inverseProportion",
+        "name": "🔁 反比關係",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "proportionApplication",
+        "name": "🧪 正反比生活應用",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 3-2 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-2-linear-equation-graph",
+    "semester": "七下",
+    "title": "七下 2-2 二元一次方程式的圖形大挑戰",
+    "path": "games/grade7-2/linear-equation-graph.html",
+    "source": "tug-war/adapters/sources/grade7-2/linear-equation-graph.html",
+    "modes": [
+      {
+        "id": "solutionPoints",
+        "name": "✅ 方程式的解與點",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "lineGraphIntercepts",
+        "name": "🎯 畫線與兩軸交點",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "horizontalVertical",
+        "name": "↔️ 水平線與鉛垂線",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "equationFromGraph",
+        "name": "🧩 由點求直線方程式",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "systemIntersection",
+        "name": "✚ 聯立方程式與交點",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 2-2 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-2-linear-inequality-basics",
+    "semester": "七下",
+    "title": "4-1 一元一次不等式的解及圖示大挑戰",
+    "path": "games/grade7-2/linear-inequality-basics.html",
+    "source": "tug-war/adapters/sources/grade7-2/linear-inequality-basics.html",
+    "modes": [
+      {
+        "id": "meaning",
+        "name": "不等式與語句",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "solutionCheck",
+        "name": "代入檢驗解",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "numberLineRead",
+        "name": "數線判讀",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "numberLineChoose",
+        "name": "不等式圖示",
+        "status": "needs-special-input",
+        "types": [
+          "choice"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "4-1 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-2-linear-inequality-solve",
+    "semester": "七下",
+    "title": "4-2 解一元一次不等式及其應用大挑戰",
+    "path": "games/grade7-2/linear-inequality-solve.html",
+    "source": "tug-war/adapters/sources/grade7-2/linear-inequality-solve.html",
+    "modes": [
+      {
+        "id": "addSubtract",
+        "name": "加減與移項",
+        "status": "needs-special-input",
+        "types": [
+          "inequality"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "multiplyDivide",
+        "name": "乘除與反向",
+        "status": "needs-special-input",
+        "types": [
+          "inequality"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "multiStep",
+        "name": "多步驟不等式",
+        "status": "needs-special-input",
+        "types": [
+          "inequality"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "integerBoundary",
+        "name": "整數邊界與圖示",
+        "status": "needs-special-input",
+        "types": [
+          "inequality",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "application",
+        "name": "生活應用",
+        "status": "needs-special-input",
+        "types": [
+          "inequality"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "4-2 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "inequality",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-2-linear-system-applications",
+    "semester": "七下",
+    "title": "七下 1-3 應用問題大挑戰",
+    "path": "games/grade7-2/linear-system-applications.html",
+    "source": "tug-war/adapters/sources/grade7-2/linear-system-applications.html",
+    "modes": [
+      {
+        "id": "directTotal",
+        "name": "📝 直接列式與總和問題",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "priceQuantity",
+        "name": "💰 價格與數量問題",
+        "status": "needs-special-input",
+        "types": [
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "multipleAge",
+        "name": "⏳ 倍數、年齡與數字問題",
+        "status": "needs-special-input",
+        "types": [
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "grouping",
+        "name": "👥 分組與配置問題",
+        "status": "needs-special-input",
+        "types": [
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "reasonableness",
+        "name": "✅ 合理性與無解判斷",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 1-3 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-2-linear-system-solve",
+    "semester": "七下",
+    "title": "七下 1-2 解二元一次聯立方程式大挑戰",
+    "path": "games/grade7-2/linear-system-solve.html",
+    "source": "tug-war/adapters/sources/grade7-2/linear-system-solve.html",
+    "modes": [
+      {
+        "id": "systemMeaning",
+        "name": "✅ 聯立方程式與共同解",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "substitution",
+        "name": "🔁 代入消去法",
+        "status": "needs-special-input",
+        "types": [
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "elimination",
+        "name": "➕ 加減消去法",
+        "status": "needs-special-input",
+        "types": [
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "coefficientAdjust",
+        "name": "✖️ 調整係數與化簡",
+        "status": "needs-special-input",
+        "types": [
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 1-2 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-2-proportion-equation",
+    "semester": "七下",
+    "title": "七下 3-1 比例式大挑戰",
+    "path": "games/grade7-2/proportion-equation.html",
+    "source": "tug-war/adapters/sources/grade7-2/proportion-equation.html",
+    "modes": [
+      {
+        "id": "ratioValue",
+        "name": "➗ 比與比值",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "simplifyRatio",
+        "name": "✂️ 最簡整數比",
+        "status": "needs-special-input",
+        "types": [
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "proportionSolve",
+        "name": "⚖️ 比例式求未知數",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "ratioRelation",
+        "name": "🔗 比例關係與倍數",
+        "status": "needs-special-input",
+        "types": [
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "proportionApplication",
+        "name": "🗺️ 比例應用",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 3-1 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-2-statistics-data",
+    "semester": "七下",
+    "title": "5 統計圖表與統計數據大挑戰",
+    "path": "games/grade7-2/statistics-data.html",
+    "source": "tug-war/adapters/sources/grade7-2/statistics-data.html",
+    "modes": [
+      {
+        "id": "chartsRead",
+        "name": "生活統計圖表",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "contingency",
+        "name": "列聯表",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "frequency",
+        "name": "次數分配與圖形",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "center",
+        "name": "平均數・中位數・眾數",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "第 5 章綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-2-symmetry-three-views",
+    "semester": "七下",
+    "title": "6 線對稱與三視圖大挑戰",
+    "path": "games/grade7-2/symmetry-three-views.html",
+    "source": "tug-war/adapters/sources/grade7-2/symmetry-three-views.html",
+    "modes": [
+      {
+        "id": "geometryBasics",
+        "name": "簡單圖形與垂直平分",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "symmetryJudge",
+        "name": "線對稱判斷",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "reflection",
+        "name": "對稱點與完成圖形",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "threeViews",
+        "name": "三視圖",
+        "status": "needs-special-input",
+        "types": [
+          "choice"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "第 6 章綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade7-2-two-variable-linear-equation",
+    "semester": "七下",
+    "title": "七下 1-1 二元一次方程式大挑戰",
+    "path": "games/grade7-2/two-variable-linear-equation.html",
+    "source": "tug-war/adapters/sources/grade7-2/two-variable-linear-equation.html",
+    "modes": [
+      {
+        "id": "expressionBasics",
+        "name": "🧮 二元一次式與求值",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "simplify",
+        "name": "🧹 二元一次式化簡",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "equationSolution",
+        "name": "🎯 方程式與解",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "integerSolutions",
+        "name": "🔎 正整數解與合理性",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 1-1 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-cross-factorization",
+    "semester": "八上",
+    "title": "十字交乘因式分解大挑戰｜數學遊戲樂園",
+    "path": "games/grade8-1/cross-factorization.html",
+    "source": "tug-war/adapters/sources/grade8-1/cross-factorization.html",
+    "modes": [
+      {
+        "id": "leadingOne",
+        "name": "平方項係數為 1",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "general",
+        "name": "平方項係數不為 1",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "mixed",
+        "name": "進階綜合",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-factorization-challenge",
+    "semester": "八上",
+    "title": "因式分解大挑戰｜數學遊戲樂園",
+    "path": "games/grade8-1/factorization-challenge.html",
+    "source": "tug-war/adapters/sources/grade8-1/factorization-challenge.html",
+    "modes": [
+      {
+        "id": "monomial",
+        "name": "提單項公因式",
+        "status": "needs-special-input",
+        "types": [
+          "factor"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "common",
+        "name": "提兩項／變號提公因式",
+        "status": "needs-special-input",
+        "types": [
+          "factor"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "formula",
+        "name": "乘法公式因式分解",
+        "status": "needs-special-input",
+        "types": [
+          "factor"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-multiplication-formula",
+    "semester": "八上",
+    "title": "乘法公式大挑戰",
+    "path": "games/grade8-1/multiplication-formula.html",
+    "source": "tug-war/adapters/sources/grade8-1/multiplication-formula.html",
+    "modes": [
+      {
+        "id": "numberBasic",
+        "name": "數字乘法公式",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "numberMixed",
+        "name": "數字變化計算",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "polynomial",
+        "name": "多項式與公式判讀",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "TypeError: Cannot read properties of undefined (reading 'normalizePolynomialTermsAsFractions')"
+      },
+      {
+        "id": "mixed",
+        "name": "乘法公式綜合挑戰",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "TypeError: Cannot read properties of undefined (reading 'normalizePolynomialTermsAsFractions')"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-polynomial-add-subtract",
+    "semester": "八上",
+    "title": "多項式加減大挑戰｜數學遊戲樂園",
+    "path": "games/grade8-1/polynomial-add-subtract.html",
+    "source": "tug-war/adapters/sources/grade8-1/polynomial-add-subtract.html",
+    "modes": [
+      {
+        "id": "likeTerms",
+        "name": "同類項加減",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "TypeError: Cannot read properties of undefined (reading 'normalizePolynomialTermsAsFractions')"
+      },
+      {
+        "id": "addSubtract",
+        "name": "多項式加減法",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "TypeError: Cannot read properties of undefined (reading 'normalizePolynomialTermsAsFractions')"
+      },
+      {
+        "id": "mixed",
+        "name": "多項式綜合挑戰",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "TypeError: Cannot read properties of undefined (reading 'normalizePolynomialTermsAsFractions')"
+      },
+      {
+        "id": "advanced",
+        "name": "進階綜合挑戰",
+        "status": "needs-special-input",
+        "types": [],
+        "why": "TypeError: Cannot read properties of undefined (reading 'normalizePolynomialTermsAsFractions')"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-polynomial-multiply-divide",
+    "semester": "八上",
+    "title": "多項式乘除大挑戰｜數學遊戲樂園",
+    "path": "games/grade8-1/polynomial-multiply-divide.html",
+    "source": "tug-war/adapters/sources/grade8-1/polynomial-multiply-divide.html",
+    "modes": [
+      {
+        "id": "monomial",
+        "name": "單項式乘除",
+        "status": "needs-special-input",
+        "types": [
+          "monomial"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "multiply",
+        "name": "多項式乘法",
+        "status": "needs-special-input",
+        "types": [
+          "polynomial"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "divide",
+        "name": "多項式除法",
+        "status": "needs-special-input",
+        "types": [
+          "division",
+          "polynomial"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "mixed",
+        "name": "乘除綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "division",
+          "monomial",
+          "polynomial"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-pythagorean",
+    "semester": "八上",
+    "title": "畢氏定理大挑戰｜數學遊戲樂園",
+    "path": "games/grade8-1/pythagorean.html",
+    "source": "tug-war/adapters/sources/grade8-1/pythagorean.html",
+    "modes": [
+      {
+        "id": "basic",
+        "name": "畢氏定理基礎",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "application",
+        "name": "生活應用與斜邊上的高",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "distance",
+        "name": "平面上兩點的距離",
+        "status": "needs-special-input",
+        "types": [
+          "unknown"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-quadratic-applications",
+    "semester": "八上",
+    "title": "4-3 一元二次方程式應用問題大挑戰",
+    "path": "games/grade8-1/quadratic-applications.html",
+    "source": "tug-war/adapters/sources/grade8-1/quadratic-applications.html",
+    "modes": [
+      {
+        "id": "equationModel",
+        "name": "📝 由題意列方程式",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "integerAge",
+        "name": "🔢 整數與年齡問題",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "geometry",
+        "name": "📐 面積與路寬問題",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "priceRevenue",
+        "name": "💰 售價、數量與收入",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "validityApprox",
+        "name": "✅ 合理根與近似值",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 4-3 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-quadratic-completing-formula",
+    "semester": "八上",
+    "title": "4-2 配方法與公式解大挑戰",
+    "path": "games/grade8-1/quadratic-completing-formula.html",
+    "source": "tug-war/adapters/sources/grade8-1/quadratic-completing-formula.html",
+    "modes": [
+      {
+        "id": "squareRoot",
+        "name": "√ 平方根解法",
+        "status": "needs-special-input",
+        "types": [
+          "roots"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "completeSquareForm",
+        "name": "🧩 配成完全平方式",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "completeSquareSolve",
+        "name": "📐 配方法解方程式",
+        "status": "needs-special-input",
+        "types": [
+          "roots"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "formulaSolve",
+        "name": "🧮 一元二次方程式公式解",
+        "status": "needs-special-input",
+        "types": [
+          "abc",
+          "roots",
+          "standardAbc"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "discriminant",
+        "name": "🔎 判別式與根的情形",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 4-2 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "abc",
+          "choice",
+          "number",
+          "pair",
+          "roots"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-quadratic-equation",
+    "semester": "八上",
+    "title": "4-3 一元二次方程式應用問題大挑戰",
+    "path": "games/grade8-1/quadratic-equation.html",
+    "source": "tug-war/adapters/sources/grade8-1/quadratic-equation.html",
+    "modes": [
+      {
+        "id": "equationModel",
+        "name": "📝 由題意列方程式",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "integerAge",
+        "name": "🔢 整數與年齡問題",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "geometry",
+        "name": "📐 面積與路寬問題",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "priceRevenue",
+        "name": "💰 售價、數量與收入",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "validityApprox",
+        "name": "✅ 合理根與近似值",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 4-3 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pair"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-quadratic-factorization",
+    "semester": "八上",
+    "title": "4-1 因式分解法解一元二次方程式大挑戰",
+    "path": "games/grade8-1/quadratic-factorization.html",
+    "source": "tug-war/adapters/sources/grade8-1/quadratic-factorization.html",
+    "modes": [
+      {
+        "id": "equationRoot",
+        "name": "🔍 標準式與根",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "roots",
+          "standardAbc"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "zeroProduct",
+        "name": "⭕ 零乘積與已分解方程式",
+        "status": "needs-special-input",
+        "types": [
+          "roots"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "commonFactor",
+        "name": "🧩 提公因式求解",
+        "status": "needs-special-input",
+        "types": [
+          "roots"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "identityFactor",
+        "name": "📐 乘法公式因式分解",
+        "status": "needs-special-input",
+        "types": [
+          "roots"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "crossFactor",
+        "name": "✖️ 十字交乘求解",
+        "status": "needs-special-input",
+        "types": [
+          "roots"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 4-1 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "roots",
+          "standardAbc"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-radical-operation",
+    "semester": "八上",
+    "title": "根式運算大挑戰｜數學遊戲樂園",
+    "path": "games/grade8-1/radical-operation.html",
+    "source": "tug-war/adapters/sources/grade8-1/radical-operation.html",
+    "modes": [
+      {
+        "id": "multiply",
+        "name": "根式乘法",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "radical",
+          "radicalFraction"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "divide",
+        "name": "除法與有理化",
+        "status": "needs-special-input",
+        "types": [
+          "expression",
+          "radical",
+          "radicalFraction"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "addSubtract",
+        "name": "根式加減",
+        "status": "needs-special-input",
+        "types": [
+          "expression",
+          "number",
+          "radical"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "formula",
+        "name": "根式乘法公式",
+        "status": "needs-special-input",
+        "types": [
+          "expression",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "mixed",
+        "name": "根式四則運算",
+        "status": "needs-special-input",
+        "types": [
+          "expression",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "六模式綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "expression",
+          "number",
+          "radical",
+          "radicalFraction"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-square-root",
+    "semester": "八上",
+    "title": "平方根大挑戰｜數學遊戲樂園",
+    "path": "games/grade8-1/square-root.html",
+    "source": "tug-war/adapters/sources/grade8-1/square-root.html",
+    "modes": [
+      {
+        "id": "squarePractice",
+        "name": "平方數熟練場",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "simplify",
+        "name": "根式化簡訓練",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "radical"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "approximation",
+        "name": "根號值與十分逼近",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "decimal"
+        ],
+        "why": ""
+      },
+      {
+        "id": "meaning",
+        "name": "平方根觀念應用",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "全單元綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "decimal",
+          "number",
+          "radical"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade8-1-statistics-data-processing",
+    "semester": "八上",
+    "title": "5 統計資料處理大挑戰",
+    "path": "games/grade8-1/statistics-data-processing.html",
+    "source": "tug-war/adapters/sources/grade8-1/statistics-data-processing.html",
+    "modes": [
+      {
+        "id": "relativeFrequency",
+        "name": "📋 相對次數分配表",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "relativeGraph",
+        "name": "📈 相對次數折線圖",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "cumulativeFrequency",
+        "name": "➕ 累積次數分配",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "cumulativeRelative",
+        "name": "📉 累積相對次數分配",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "graphInterpretation",
+        "name": "🔎 統計圖表判讀與比較",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 第 5 章綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade9-1-central-inscribed-angle",
+    "semester": "九上",
+    "title": "九上 2-2 圓心角與圓周角大挑戰",
+    "path": "games/grade9-1/central-inscribed-angle.html",
+    "source": "tug-war/adapters/sources/grade9-1/central-inscribed-angle.html",
+    "modes": [
+      {
+        "id": "centralArc",
+        "name": "🎯 圓心角、弧與弦",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "arcRadius",
+        "name": "🟣 半徑、弧長與弦",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pi",
+          "ratio",
+          "rational"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "inscribedAngle",
+        "name": "📐 圓周角與弧",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number",
+          "rational"
+        ],
+        "why": ""
+      },
+      {
+        "id": "diameterParallel",
+        "name": "⭕ 直徑與平行線截弧",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "cyclicQuadrilateral",
+        "name": "◇ 圓內接四邊形",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number",
+          "rational"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 2-2 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "pi",
+          "rational"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade9-1-continued-ratio",
+    "semester": "九上",
+    "title": "九上 1-1 連比大挑戰",
+    "path": "games/grade9-1/continued-ratio.html",
+    "source": "tug-war/adapters/sources/grade9-1/continued-ratio.html",
+    "modes": [
+      {
+        "id": "merge",
+        "name": "🔗 連比合併",
+        "status": "needs-special-input",
+        "types": [
+          "ratio"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "parts",
+        "name": "🧃 按比例分配",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "inverse",
+        "name": "📐 反比例與幾何",
+        "status": "needs-special-input",
+        "types": [
+          "ratio"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "mixed",
+        "name": "🏆 1-1 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "ratio"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade9-1-geometric-proof",
+    "semester": "九上",
+    "title": "九上 3-1 推理證明大挑戰",
+    "path": "games/grade9-1/geometric-proof.html",
+    "source": "tug-war/adapters/sources/grade9-1/geometric-proof.html",
+    "modes": [
+      {
+        "id": "proofStructure",
+        "name": "🧩 證明結構與理由",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "geometryProof",
+        "name": "📐 幾何推理證明",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "auxiliaryLine",
+        "name": "✏️ 輔助線與思路分析",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "parityProof",
+        "name": "🔢 奇偶數證明",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "algebraProof",
+        "name": "🧮 代數推理與因數倍數",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 3-1 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade9-1-point-line-circle",
+    "semester": "九上",
+    "title": "九上 2-1 點、線、圓大挑戰",
+    "path": "games/grade9-1/point-line-circle.html",
+    "source": "tug-war/adapters/sources/grade9-1/point-line-circle.html",
+    "modes": [
+      {
+        "id": "sectorArc",
+        "name": "🟠 圓弧長與扇形",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pi"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "pointCircle",
+        "name": "🎯 點與圓的位置",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "lineCircle",
+        "name": "📏 直線與圓的位置",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "tangent",
+        "name": "📐 切線與切線段",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number",
+          "rational"
+        ],
+        "why": ""
+      },
+      {
+        "id": "chordDistance",
+        "name": "🪢 弦與弦心距",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 2-1 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade9-1-proportional-segments",
+    "semester": "九上",
+    "title": "九上 1-2 比例線段大挑戰",
+    "path": "games/grade9-1/proportional-segments.html",
+    "source": "tug-war/adapters/sources/grade9-1/proportional-segments.html",
+    "modes": [
+      {
+        "id": "areaRatio",
+        "name": "📐 等高三角形面積比",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "ratio",
+          "rational"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "parallelSegments",
+        "name": "🛤️ 平行線截比例線段",
+        "status": "source-backed-preview",
+        "types": [
+          "number",
+          "rational"
+        ],
+        "why": ""
+      },
+      {
+        "id": "parallelJudge",
+        "name": "✅ 比例線段判別平行",
+        "status": "source-backed-preview",
+        "types": [
+          "choice"
+        ],
+        "why": ""
+      },
+      {
+        "id": "midpoint",
+        "name": "✂️ 中點連線段",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number",
+          "rational"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 1-2 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "ratio",
+          "rational"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade9-1-similar-polygons",
+    "semester": "九上",
+    "title": "九上 1-3 相似多邊形大挑戰",
+    "path": "games/grade9-1/similar-polygons.html",
+    "source": "tug-war/adapters/sources/grade9-1/similar-polygons.html",
+    "modes": [
+      {
+        "id": "scaling",
+        "name": "🔍 圖形縮放",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "polygonSimilarity",
+        "name": "⬡ 相似多邊形",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "aaSimilarity",
+        "name": "∠ AA 相似",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "sasSimilarity",
+        "name": "📏 SAS 相似",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "sssSimilarity",
+        "name": "△ SSS 相似",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 1-3 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade9-1-similar-triangle-trig",
+    "semester": "九上",
+    "title": "九上 1-4 相似三角形應用與三角比大挑戰",
+    "path": "games/grade9-1/similar-triangle-trig.html",
+    "source": "tug-war/adapters/sources/grade9-1/similar-triangle-trig.html",
+    "modes": [
+      {
+        "id": "similarityRelations",
+        "name": "📐 相似三角形比例關係",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "ratio"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "measurement",
+        "name": "🌳 簡易測量",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "specialRight",
+        "name": "📏 特殊直角三角形",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "trigRatio",
+        "name": "sin 三角比",
+        "status": "source-backed-preview",
+        "types": [
+          "choice",
+          "rational"
+        ],
+        "why": ""
+      },
+      {
+        "id": "trigApplication",
+        "name": "🚲 三角比應用",
+        "status": "source-backed-preview",
+        "types": [
+          "number"
+        ],
+        "why": ""
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 1-4 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "number",
+          "ratio",
+          "rational"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  },
+  {
+    "id": "source:grade9-1-triangle-centers",
+    "semester": "九上",
+    "title": "九上 3-2 三角形的外心、內心與重心大挑戰",
+    "path": "games/grade9-1/triangle-centers.html",
+    "source": "tug-war/adapters/sources/grade9-1/triangle-centers.html",
+    "modes": [
+      {
+        "id": "circumcenter",
+        "name": "🎯 外心與外接圓",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pi",
+          "rational"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "incenter",
+        "name": "❤️ 內心與角度",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "ratio",
+          "rational"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "incircle",
+        "name": "⭕ 內切圓半徑與面積",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pi",
+          "rational"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "centroidRatio",
+        "name": "⚖️ 重心比例",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "ratio",
+          "rational"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "centroidArea",
+        "name": "📐 重心與面積",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "ratio"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      },
+      {
+        "id": "comprehensive",
+        "name": "🏆 3-2 綜合挑戰",
+        "status": "needs-special-input",
+        "types": [
+          "choice",
+          "number",
+          "pi",
+          "ratio",
+          "rational"
+        ],
+        "why": "需專用答案輸入或圖形題驗證"
+      }
+    ]
+  }
+]
