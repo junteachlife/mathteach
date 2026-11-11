@@ -559,8 +559,31 @@ function refreshCatalog(){
  const semesters=[...new Set(all.map(a=>a.semester))];
  sem.replaceChildren(...semesters.map(x=>new Option(x,x)));
  sem.value=semesters.includes(prevSem)?prevSem:semesters[0];
- const filtered=all.filter(a=>a.semester===sem.value);
- game.replaceChildren(...filtered.map(a=>new Option(a.title,a.id)));
+ // V4.1：依單元編號自然排序；選定學期後不重複顯示學期名稱。
+ // 只補上能確認的八上單元編號，不猜測其他舊遊戲缺少的編號。
+ const knownUnitNames={
+  'source:grade8-1-multiplication-formula':'1-1 乘法公式',
+  'source:grade8-1-polynomial-add-subtract':'1-2 多項式加減',
+  'source:grade8-1-polynomial-multiply-divide':'1-3 多項式乘除'
+ };
+ function displayGameTitle(a){
+  let title=knownUnitNames[a.id]||a.title;
+  title=title.replace(/^(?:七上|七下|八上|八下|九上|九下)\s*[｜|：:]?\s*/u,'')
+    .replace(/\s*[｜|]\s*數學遊戲樂園\s*$/u,'')
+    .replace(/\s*大挑戰\s*$/u,'')
+    .replace(/\s*（示範題庫）\s*$/u,'');
+  return title.trim();
+ }
+ function unitOrder(a){
+  const title=displayGameTitle(a);
+  const m=title.match(/^(\d+)(?:\s*[-－–—.]\s*(\d+))?(?=\s|[^0-9]|$)/u);
+  return m ? [Number(m[1]),m[2]===undefined?-1:Number(m[2])] : [999,999];
+ }
+ const filtered=all.filter(a=>a.semester===sem.value).sort((a,b)=>{
+  const ax=unitOrder(a),bx=unitOrder(b);
+  return ax[0]-bx[0]||ax[1]-bx[1]||displayGameTitle(a).localeCompare(displayGameTitle(b),'zh-Hant')||a.id.localeCompare(b.id);
+ });
+ game.replaceChildren(...filtered.map(a=>new Option(displayGameTitle(a),a.id)));
  game.value=filtered.some(a=>a.id===prevGame)?prevGame:filtered[0]?.id||'';
  const selected=adapters.get(game.value);
  mode.replaceChildren(...(selected?.modes||[]).map(m=>new Option(m.name,m.id)));
