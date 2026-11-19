@@ -37,7 +37,7 @@ const lcm=(a,b)=>a/gcd(a,b)*b;
 const simp=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d)||1;return {n:n/g,d:d/g}};
 const fmt=(n,d=1)=>{const v=simp(n,d);return v.d===1?String(v.n):`${v.n}/${v.d}`};
 const fractionStr=(n,d)=>`<span style="display:inline-block;vertical-align:middle;text-align:center;font-size:.83em;line-height:1.1"><span style="display:block;border-bottom:2px solid;padding:1px 5px">${n}</span><span style="display:block;padding:1px 5px">${d}</span></span>`;
-const q=(skill,subtype,html,answer,steps,opts={})=>({skill,subtype,html,answer,steps,tip:opts.tip||'',kind:opts.kind||'number',token:html.replace(/<[^>]+>/g,'').replace(/\s/g,''),concept:opts.concept||''});
+const q=(skill,subtype,html,answer,steps,opts={})=>({skill,subtype,html,answer,steps,tip:opts.tip||'',kind:opts.kind||'number',token:html.replace(/<[^>]+>/g,'').replace(/\s/g,''),concept:opts.concept||'',operands:opts.operands||[]});
 const f=(n,d)=>fractionStr(n,d);
 const mul=(a,b)=>a*b;
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){let j=rand(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -56,40 +56,66 @@ function randomSimplestFraction(maxDen,allowImproper=false){
 }
 
 function makeLCM(type,level){
- let m=range(level,12,20,36),a=rand(3,m),b=rand(4,m);if(a===b)b+=2;
- if(type===0){let v=lcm(a,b);return q('lcm',0,`求 ${a} 與 ${b} 的<strong>最小公倍數</strong>`,String(v),[`分別列出 ${a} 和 ${b} 的倍數。`,`兩數最大公因數為 ${gcd(a,b)}。`,`最小公倍數＝${a}×${b}÷${gcd(a,b)}＝${v}。`])}
- if(type===1){let v=lcm(a,b),x=rand(1,a-1),y=rand(1,b-1);while(gcd(x,a)!==1)x=rand(1,a-1);while(gcd(y,b)!==1)y=rand(1,b-1);return q('lcm',1,`${f(x,a)} 與 ${f(y,b)} 的<strong>最小公分母</strong>為何？`,String(v),[`最小公分母就是分母 ${a}、${b} 的最小公倍數。`,`最小公倍數＝${v}。`])}
- if(type===2){let {n:x,d}=randomSimplestFraction(range(level,8,12,16)),k=rand(2,range(level,4,6,8));return q('lcm',2,`將 ${f(x,d)} 擴分為分母 ${d*k} 的分數，<strong>分子是多少？</strong>`,String(x*k),[`原分數 ${x}/${d} 已是最簡分數。`,`新分母是 ${d}×${k}＝${d*k}。`,`分子也要乘 ${k}：${x}×${k}＝${x*k}。`,`擴分後是 ${f(x*k,d*k)}（擴分結果不需再約分）。`])}
- let p1=randomSimplestFraction(range(level,8,12,16)),p2=randomSimplestFraction(range(level,9,14,18));let {n:x,d:d1}=p1,{n:y,d:d2}=p2;for(let i=0;i<20&&d1===d2;i++){p2=randomSimplestFraction(range(level,9,14,18));y=p2.n;d2=p2.d;}let den=lcm(d1,d2),n1=x*den/d1,n2=y*den/d2;return q('lcm',3,`將 ${f(x,d1)} 和 ${f(y,d2)} 通分到<strong>最小公分母 ${den}</strong>。兩個新分子各是多少？`,[String(n1),String(n2)],[`題目中的兩個分數都已是最簡分數。`,`最小公分母為 ${den}。`,`第一個分子：${x}×(${den}÷${d1})＝${n1}。`,`第二個分子：${y}×(${den}÷${d2})＝${n2}。`,`因此變成 ${f(n1,den)} 和 ${f(n2,den)}。`],{kind:'pair',tip:'兩格依序輸入通分後的兩個分子'});
+ const limit=range(level,12,20,36);
+ let a=rand(3,limit),b=rand(4,limit);
+ // 最小公倍數與分母題，兩數必須不同；分數本身也須為最簡分數。
+ for(let t=0;t<60&&a===b;t++)b=rand(4,limit);
+ if(type===0){const v=lcm(a,b);return q('lcm',0,`求 ${a} 與 ${b} 的<strong>最小公倍數</strong>`,String(v),[`分別列出 ${a} 和 ${b} 的倍數。`,`兩數最大公因數為 ${gcd(a,b)}。`,`最小公倍數＝${a}×${b}÷${gcd(a,b)}＝${v}。`],{operands:[a,b]})}
+ if(type===1){const v=lcm(a,b);let x=rand(1,a-1),y=rand(1,b-1);while(gcd(x,a)!==1)x=rand(1,a-1);while(gcd(y,b)!==1)y=rand(1,b-1);return q('lcm',1,`${f(x,a)} 與 ${f(y,b)} 的<strong>最小公分母</strong>為何？`,String(v),[`最小公分母就是分母 ${a}、${b} 的最小公倍數。`,`最小公倍數＝${v}。`],{operands:[a,b]})}
+ if(type===2){const {n:x,d}=randomSimplestFraction(range(level,8,12,16)),k=rand(2,range(level,4,6,8));return q('lcm',2,`將 ${f(x,d)} 擴分為分母 ${d*k} 的分數，<strong>分子是多少？</strong>`,String(x*k),[`原分數 ${x}/${d} 已是最簡分數。`,`新分母是 ${d}×${k}＝${d*k}。`,`分子也要乘 ${k}：${x}×${k}＝${x*k}。`,`擴分後是 ${f(x*k,d*k)}（擴分結果不需再約分）。`])}
+ let p1=randomSimplestFraction(range(level,8,12,16)),p2=randomSimplestFraction(range(level,9,14,18));
+ for(let t=0;t<80&&(p1.d===p2.d||p1.n===p2.n&&p1.d===p2.d);t++)p2=randomSimplestFraction(range(level,9,14,18));
+ const {n:x,d:d1}=p1,{n:y,d:d2}=p2,den=lcm(d1,d2),n1=x*den/d1,n2=y*den/d2;
+ return q('lcm',3,`將 ${f(x,d1)} 和 ${f(y,d2)} 通分到<strong>最小公分母 ${den}</strong>。兩個新分子各是多少？`,[String(n1),String(n2)],[`題目中的兩個分數都已是最簡分數。`,`最小公分母為 ${den}。`,`第一個分子：${x}×(${den}÷${d1})＝${n1}。`,`第二個分子：${y}×(${den}÷${d2})＝${n2}。`,`因此變成 ${f(n1,den)} 和 ${f(n2,den)}。`],{kind:'pair',tip:'兩格依序輸入通分後的兩個分子',operands:[`${x}/${d1}`,`${y}/${d2}`]});
 }
 function makeGCD(type,level){
- let common=rand(2,range(level,6,10,15)),a=common*rand(2,range(level,7,11,15)),b=common*rand(2,range(level,8,12,17)),g=gcd(a,b);
- if(type===0)return q('gcd',0,`求 ${a} 與 ${b} 的<strong>最大公因數</strong>`,String(g),[`用短除法或列出因數的方法找共同因數。`,`最大公因數為 ${g}。`]);
- if(type===1){const arr=[[8,15],[9,16],[7,20],[11,18],[14,25],[13,24],[6,35]];let [x,y]=pick(arr);if(level==='master'){x=rand(9,30);y=rand(9,31)}let yes=gcd(x,y)===1;return q('gcd',1,`${x} 與 ${y} <strong>互質嗎？</strong>（是請填 1，否請填 0）`,yes?'1':'0',[`兩數的最大公因數為 ${gcd(x,y)}。`,`最大公因數等於 1 才互質。`,`所以答案是 ${yes?'1（互質）':'0（不互質）'}。`]);}
- if(type===2){let v=simp(a,b);return q('gcd',2,`將 ${f(a,b)} 約成<strong>最簡分數</strong>`,fmt(a,b),[`最大公因數是 ${g}。`,`分子與分母同除以 ${g}：${a/g}/${b/g}。`,`最簡答案是 ${fmt(a,b)}。`]);}
- let factor=rand(2,range(level,5,7,10)),x=rand(2,range(level,9,15,24)),y=rand(2,range(level,9,15,24));let n=x*factor,d=y*factor;return q('gcd',3,`${f(n,d)} 的分子、分母可以<strong>同除以 ${factor}</strong>，約分後新分子為何？`,String(x),[`分子 ${n} ÷ ${factor}＝${x}。`,`分母也除以 ${factor}，得到 ${f(x,y)}。`,`本題問第一次約分後的分子，不要求最簡分數。`]);
+ const cap=range(level,6,10,15),common=rand(2,cap);
+ let r1=rand(2,range(level,7,11,15)),r2=rand(2,range(level,8,12,17));
+ for(let t=0;t<80&&(r1===r2||r1%r2===0||r2%r1===0);t++)r2=rand(2,range(level,8,12,17));
+ const a=common*r1,b=common*r2,g=gcd(a,b);
+ if(type===0)return q('gcd',0,`求 ${a} 與 ${b} 的<strong>最大公因數</strong>`,String(g),[`用短除法或列出因數的方法找共同因數。`,`最大公因數為 ${g}。`],{operands:[a,b]});
+ if(type===1){let x=rand(6,range(level,30,42,65)),y=rand(6,range(level,31,44,70));for(let t=0;t<60&&x===y;t++)y=rand(6,range(level,31,44,70));const yes=gcd(x,y)===1;return q('gcd',1,`${x} 與 ${y} <strong>互質嗎？</strong>（是請填 1，否請填 0）`,yes?'1':'0',[`兩數的最大公因數為 ${gcd(x,y)}。`,`最大公因數等於 1 才互質。`,`所以答案是 ${yes?'1（互質）':'0（不互質）'}。`],{operands:[x,y]});}
+ if(type===2){const v=simp(a,b);return q('gcd',2,`將 ${f(a,b)} 約成<strong>最簡分數</strong>`,fmt(a,b),[`最大公因數是 ${g}。`,`分子與分母同除以 ${g}：${a/g}/${b/g}。`,`最簡答案是 ${fmt(a,b)}。`],{operands:[a,b]});}
+ const factor=rand(2,range(level,5,7,10));let x=rand(2,range(level,9,15,24)),y=rand(2,range(level,9,15,24));
+ for(let t=0;t<60&&x===y;t++)y=rand(2,range(level,9,15,24));
+ const n=x*factor,d=y*factor;
+ return q('gcd',3,`${f(n,d)} 的分子、分母可以<strong>同除以 ${factor}</strong>，約分後新分子為何？`,String(x),[`分子 ${n} ÷ ${factor}＝${x}。`,`分母也除以 ${factor}，得到 ${f(x,y)}。`,`本題問第一次約分後的分子，不要求最簡分數。`],{operands:[n,d]});
 }
 function makeFraction(type,level){
- let max=range(level,8,12,16),allowImproper=level!=='basic';let first=randomSimplestFraction(max,allowImproper),second=randomSimplestFraction(max,allowImproper);let {n:n1,d:d1}=first,{n:n2,d:d2}=second;let op=['+','−','×','÷'][type],n,d,steps=[];
- if(type===0||type===1){let l=lcm(d1,d2),a=n1*l/d1,b=n2*l/d2;if(type===1&&level==='basic'&&a<b){[n1,n2]=[n2,n1];[d1,d2]=[d2,d1];l=lcm(d1,d2);a=n1*l/d1;b=n2*l/d2;}n=a+(type===0?b:-b);d=l;steps=[`先找分母 ${d1}、${d2} 的最小公倍數：${l}。`,`通分後變成 ${a}/${l} ${op} ${b}/${l}。`,`分子運算得到 ${n}/${l}，最後約成 ${fmt(n,d)}。`];}
- else if(type===2){n=n1*n2;d=d1*d2;steps=[`分子乘分子：${n1}×${n2}＝${n}。`,`分母乘分母：${d1}×${d2}＝${d}。`,`約分得到 ${fmt(n,d)}。`];}
- else{n=n1*d2;d=d1*n2;steps=[`除以一個分數，等於乘上它的倒數。`,`原式＝${n1}/${d1}×${d2}/${n2}。`,`分子與分母相乘，再約成 ${fmt(n,d)}。`];}
- return q('fraction',type,`${f(n1,d1)} ${op} ${f(n2,d2)} = ?`,fmt(n,d),steps,{concept:op==='−'?'通分後分子相減，注意先後順序':''});
+ const max=range(level,8,12,16),allowImproper=level!=='basic';
+ let first=randomSimplestFraction(max,allowImproper),second=randomSimplestFraction(max,allowImproper);
+ // 不做相同分數的加減乘除；減法也避免相同分數相減得到 0。
+ for(let t=0;t<100&&first.n*second.d===second.n*first.d;t++)second=randomSimplestFraction(max,allowImproper);
+ let {n:n1,d:d1}=first,{n:n2,d:d2}=second;
+ const op=['+','−','×','÷'][type];let n,d,steps=[];
+ if(type===0||type===1){let l=lcm(d1,d2),a=n1*l/d1,b=n2*l/d2;
+  if(type===1&&level==='basic'&&a<b){[n1,n2]=[n2,n1];[d1,d2]=[d2,d1];l=lcm(d1,d2);a=n1*l/d1;b=n2*l/d2;}
+  n=a+(type===0?b:-b);d=l;
+  steps=[`先找分母 ${d1}、${d2} 的最小公倍數：${l}。`,`通分後變成 ${a}/${l} ${op} ${b}/${l}。`,`分子運算得到 ${n}/${l}，最後約成 ${fmt(n,d)}。`];
+ }else if(type===2){n=n1*n2;d=d1*d2;steps=[`分子乘分子：${n1}×${n2}＝${n}。`,`分母乘分母：${d1}×${d2}＝${d}。`,`約分得到 ${fmt(n,d)}。`];
+ }else{n=n1*d2;d=d1*n2;steps=[`除以一個分數，等於乘上它的倒數。`,`原式＝${n1}/${d1}×${d2}/${n2}。`,`分子與分母相乘，再約成 ${fmt(n,d)}。`];}
+ return q('fraction',type,`${f(n1,d1)} ${op} ${f(n2,d2)} = ?`,fmt(n,d),steps,{concept:op==='−'?'通分後分子相減，注意先後順序':'',operands:[`${n1}/${d1}`,`${n2}/${d2}`]});
 }
 function makeInteger(type,level){
- let m=range(level,25,90,180),a,b,n,op=['+','−','×','÷'][type];
- if(type===0){a=rand(6,m);b=rand(5,m);n=a+b;}
- if(type===1){a=rand(14,m*2);b=rand(5,a);n=a-b;}
- if(type===2){a=rand(2,range(level,9,16,27));b=rand(2,range(level,9,18,32));n=a*b;}
- if(type===3){b=rand(2,range(level,10,18,29));n=rand(2,range(level,12,18,32));a=b*n;}
- let steps=type===0?[`將個位與十位對齊相加，留意進位。`,`${a}＋${b}＝${n}。`]:type===1?[`從 ${a} 扣除 ${b}，留意借位。`,`${a}－${b}＝${n}。`]:type===2?[`將 ${b} 拆成十位與個位，可用分配律計算。`,`${a}×${b}＝${n}。`]:[`除法是乘法的逆運算。`,`因為 ${b}×${n}＝${a}，所以 ${a}÷${b}＝${n}。`];return q('integer',type,`${a} ${op} ${b} = ?`,String(n),steps);
+ const m=range(level,25,90,180),op=['+','−','×','÷'][type];let a,b,n;
+ if(type===0){a=rand(6,m);b=rand(5,m);for(let t=0;t<60&&a===b;t++)b=rand(5,m);n=a+b;}
+ if(type===1){a=rand(14,m*2);b=rand(5,a-1);n=a-b;}
+ if(type===2){a=rand(2,range(level,9,16,27));b=rand(2,range(level,9,18,32));for(let t=0;t<60&&a===b;t++)b=rand(2,range(level,9,18,32));n=a*b;}
+ if(type===3){b=rand(2,range(level,10,18,29));n=rand(2,range(level,12,18,32));for(let t=0;t<60&&b===n;t++)n=rand(2,range(level,12,18,32));a=b*n;}
+ const steps=type===0?[`將個位與十位對齊相加，留意進位。`,`${a}＋${b}＝${n}。`]:type===1?[`從 ${a} 扣除 ${b}，留意借位。`,`${a}－${b}＝${n}。`]:type===2?[`將 ${b} 拆成十位與個位，可用分配律計算。`,`${a}×${b}＝${n}。`]:[`除法是乘法的逆運算。`,`因為 ${b}×${n}＝${a}，所以 ${a}÷${b}＝${n}。`];
+ return q('integer',type,`${a} ${op} ${b} = ?`,String(n),steps,{operands:[a,b]});
 }
-function makeOrder(type,level){let a=rand(3,range(level,12,20,40)),b=rand(2,range(level,8,12,20)),c=rand(2,range(level,9,12,20)),ans,text,steps;
+function makeOrder(type,level){
+ const top=range(level,12,20,40),bt=range(level,8,12,20),ct=range(level,9,12,20);
+ let a=rand(3,top),b=rand(2,bt),c=rand(2,ct);
+ // 限制實際式子中三個相鄰運算數彼此不同，避免重複數字堆疊。
+ for(let t=0;t<100&&(a===b||a===c||b===c||a===b*c||(type===1&&a+b===c));t++){a=rand(3,top);b=rand(2,bt);c=rand(2,ct);}
+ let ans,text,steps,operands=[a,b,c];
  if(type===0){ans=a+b*c;text=`${a}＋${b}×${c} = ?`;steps=[`先乘除，再加減。`,`先算 ${b}×${c}＝${b*c}。`,`再算 ${a}＋${b*c}＝${ans}。`];}
  if(type===1){ans=(a+b)*c;text=`(${a}＋${b})×${c} = ?`;steps=[`先計算括號內：${a}＋${b}＝${a+b}。`,`再乘 ${c}：${a+b}×${c}＝${ans}。`];}
- if(type===2){let k=rand(2,range(level,6,9,15)),total=b*k;ans=k*c;text=`${total}÷${b}×${c} = ?`;steps=[`乘法和除法同級，應從左到右。`,`先算 ${total}÷${b}＝${k}。`,`再算 ${k}×${c}＝${ans}。`];}
- if(type===3){let k=rand(2,range(level,8,12,18)),base=a+b;ans=base*k-c;text=`(${a}＋${b})×${k}－${c} = ?`;steps=[`先算括號：${a}＋${b}＝${base}。`,`再算乘法：${base}×${k}＝${base*k}。`,`最後減去 ${c}，得到 ${ans}。`];}
- return q('order',type,text,String(ans),steps);
+ if(type===2){let k=rand(2,range(level,6,9,15));for(let t=0;t<80&&(k===b||k===c||k*b===c);t++)k=rand(2,range(level,6,9,15));const total=b*k;ans=k*c;text=`${total}÷${b}×${c} = ?`;steps=[`乘法和除法同級，應從左到右。`,`先算 ${total}÷${b}＝${k}。`,`再算 ${k}×${c}＝${ans}。`];operands=[total,b,c];}
+ if(type===3){let k=rand(2,range(level,8,12,18));for(let t=0;t<80&&(k===a||k===b||k===c||a+b===k||(a+b)*k===c);t++)k=rand(2,range(level,8,12,18));const base=a+b;ans=base*k-c;text=`(${a}＋${b})×${k}－${c} = ?`;steps=[`先算括號：${a}＋${b}＝${base}。`,`再算乘法：${base}×${k}＝${base*k}。`,`最後減去 ${c}，得到 ${ans}。`];operands=[a,b,k,c];}
+ return q('order',type,text,String(ans),steps,{operands});
 }
 function primeFactors(n){let parts=[],v=n;for(let i=2;i*i<=v;i++)while(v%i===0){parts.push(i);v/=i}if(v>1)parts.push(v);return parts}
 function primeCount(n,p){let k=0;while(n%p===0){n/=p;k++}return k}
@@ -97,7 +123,7 @@ function makeFactor(type,level){
  if(type===0){let n=rand(12,range(level,60,120,240)),div=rand(2,11),yes=n%div===0;return q('factor',0,`${n} 是 ${div} 的<strong>倍數</strong>嗎？（是填 1，否填 0）`,yes?'1':'0',[`用 ${n} 除以 ${div}。`,`餘數為 ${n%div}，所以${yes?'能整除':'不能整除'}。`,`答案：${yes?'1':'0'}。`]);}
  if(type===1){let n=rand(2,range(level,60,100,160));let arr=[];for(let x=1;x<=n;x++)if(n%x===0)arr.push(x);return q('factor',1,`${n} 有幾個<strong>正因數</strong>？`,String(arr.length),[`列出所有能整除 ${n} 的正整數。`,`正因數為：${arr.join('、')}。`,`共 ${arr.length} 個。`]);}
  if(type===2){let n=rand(2,range(level,50,100,180)),parts=primeFactors(n),yes=parts.length===1;return q('factor',2,`${n} 是<strong>質數</strong>嗎？（是填 1，否填 0）`,yes?'1':'0',[`質數是大於 1、只有 1 和自己兩個正因數的整數。`,`${n} 的質因數分解：${parts.join('×')}。`,`所以 ${n}${yes?'是質數':'不是質數'}，答案為 ${yes?'1':'0'}。`]);}
- let e2=rand(1,range(level,3,4,5)),e3=rand(1,range(level,2,3,4)),value=2**e2*3**e3;return q('factor',3,`將 ${value} 完整分解為 <strong>2<sup>□</sup> × 3<sup>△</sup></strong>。求 □ 與 △。`,[String(e2),String(e3)],[`先用 2 連續除，直到不能被 2 整除，共除 ${e2} 次。`,`再用 3 連續除，共除 ${e3} 次。`,`因此 ${value}＝2<sup>${e2}</sup>×3<sup>${e3}</sup>。`],{kind:'pair',concept:'質因數分解與指數記法'});
+ let e2=rand(1,range(level,4,5,6)),e3=rand(1,range(level,4,4,4)),value=2**e2*3**e3;return q('factor',3,`將 ${value} 完整分解為 <strong>2<sup>□</sup> × 3<sup>△</sup></strong>。求 □ 與 △。`,[String(e2),String(e3)],[`先用 2 連續除，直到不能被 2 整除，共除 ${e2} 次。`,`再用 3 連續除，共除 ${e3} 次。`,`因此 ${value}＝2<sup>${e2}</sup>×3<sup>${e3}</sup>。`],{kind:'pair',concept:'質因數分解與指數記法'});
 }
 const MAKE={lcm:makeLCM,gcd:makeGCD,fraction:makeFraction,integer:makeInteger,order:makeOrder,factor:makeFactor};
 const SUBTYPE_NAMES={lcm:['最小公倍數','最小公分母','指定分母擴分','雙分數通分'],gcd:['最大公因數','互質判斷','最簡分數約分','共同因數約分'],fraction:['分數加法','分數減法','分數乘法','分數除法'],integer:['整數加法','整數減法','整數乘法','整數除法'],order:['先乘除後加減','括號優先','同級由左至右','多步驟括號'],factor:['倍數判斷','因數個數','質數判斷','完整質因數分解']};
@@ -119,7 +145,24 @@ const answerString=a=>Array.isArray(a)?a.join('、'):String(a);
 function show(id){['menu','play','results'].forEach(k=>$(k).classList.toggle('hidden',k!==id))}
 function renderSkills(){$('skills').innerHTML=SKILLS.map((s,i)=>`<button type="button" class="skill ${chosen===s.id?'selected':''}" data-skill="${s.id}"><span class="number">核心能力 ${String(i+1).padStart(2,'0')}</span><b>${s.name}</b><small>${s.why}</small></button>`).join('');document.querySelectorAll('[data-skill]').forEach(b=>b.onclick=()=>{chosen=b.dataset.skill;renderSkills()})}
 function makeQuestion(skill,type,level){return MAKE[skill](type,level)}
-function build(mode,override=null){let specs=[];if(override){specs=Array.from({length:override.length},(_,i)=>({skill:override[i].skill,subtype:override[i].subtype,level:difficulty}));}else if(mode==='diagnostic'){specs=shuffle(SKILLS.flatMap(s=>shuffle([0,1,2,3]).map((subtype,i)=>({skill:s.id,subtype,level:i%2?'advanced':'basic'}))));}else{const n=mode==='60'?120:Number(mode);specs=Array.from({length:n},(_,i)=>({skill:chosen,subtype:i%4,level:difficulty}));specs=shuffle(specs)}let seen=new Set();return specs.map(spec=>{let item;for(let i=0;i<50;i++){item=makeQuestion(spec.skill,spec.subtype,spec.level);if(!seen.has(item.token))break}seen.add(item.token);return item})}
+function build(mode,override=null){
+ let specs=[];
+ if(override){specs=Array.from({length:override.length},(_,i)=>({skill:override[i].skill,subtype:override[i].subtype,level:difficulty}));}
+ else if(mode==='diagnostic'){specs=shuffle(SKILLS.flatMap(s=>shuffle([0,1,2,3]).map((subtype,i)=>({skill:s.id,subtype,level:i%2?'advanced':'basic'}))));}
+ else{const n=mode==='60'?60:Number(mode);specs=Array.from({length:n},(_,i)=>({skill:chosen,subtype:i%4,level:difficulty}));specs=shuffle(specs)}
+ const seen=new Set();
+ return specs.map(spec=>{
+  let item;
+  for(let i=0;i<150;i++){
+   item=makeQuestion(spec.skill,spec.subtype,spec.level);
+   const operands=item.operands||[];
+   const repeated=operands.length>=2&&new Set(operands.map(String)).size!==operands.length;
+   if(!seen.has(item.token)&&!repeated)break;
+  }
+  seen.add(item.token);
+  return item;
+ });
+}
 function timeUpdate(){if(!run||run.ended)return;const ms=Date.now()-run.started;run.seconds=Math.max(0,Math.floor(ms/1000));if(run.mode==='60'){run.left=Math.max(0,Math.ceil((run.deadline-Date.now())/1000));$('clock').textContent=`剩餘 ${run.left} 秒`;if(run.left<=0)finish();}else $('clock').textContent=`已用 ${run.seconds} 秒`}
 function start(mode,override=null){stopTimer();run={mode,items:build(mode,override),index:0,correct:0,answers:[],started:Date.now(),deadline:Date.now()+60000,seconds:0,locked:false,ended:false,combo:0,maxCombo:0,retry:!!override};$('modeTitle').textContent=override?'錯題觀念再練｜10 題':mode==='diagnostic'?'六大能力混合診斷':`${skillName(chosen)}｜${mode==='60'?'60 秒快答':mode+' 題練習'}｜${{basic:'基礎',advanced:'進階',master:'精熟'}[difficulty]}`;show('play');renderQuestion();timer=setInterval(timeUpdate,200);timeUpdate()}
 function renderQuestion(){if(!run||run.ended)return;run.locked=false;let item=run.items[run.index];$('skillLabel').textContent=`${skillName(item.skill)}｜${SUBTYPE_NAMES[item.skill][item.subtype]}`;$('questionText').innerHTML=item.html;setupAnswer(item);$('feedback').classList.add('hidden');$('submit').classList.remove('hidden');$('next').classList.add('hidden');$('submit').disabled=false;$('progress').textContent=run.mode==='60'?`已作答 ${run.index} 題`:`第 ${run.index+1} / ${run.items.length} 題`;$('correct').textContent=`答對 ${run.correct}`;const paper=document.getElementById('scratchpadOpenButton');if(paper)$('paperMount').appendChild(paper);window.setGameScratchpadButtonVisible?.(true);window.resetGameScratchpad?.();}
