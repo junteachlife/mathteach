@@ -1032,6 +1032,16 @@
       font-weight: 900;
     }
 
+    .factor-preview-hint {
+      display: block;
+      flex-basis: 100%;
+      margin-top: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: #b45309;
+    }
+
     .preview-value {
 
       display:
@@ -5638,26 +5648,45 @@ function updateFactorPreview() {
     return;
   }
 
-  const result =
-    factorExpressionInput
-      ?.parse();
+  // 先讀取目前輸入的原始文字，避免沿用上一個預覽結果。
+  const raw = factorExpressionInput?.getRawValue?.() || "";
 
-  if (
-    !result?.display
-  ) {
-
-    preview.innerHTML =
-      "目前尚未完成答案。";
-
+  if (!raw.trim()) {
+    preview.textContent = "目前尚未完成答案。";
     return;
   }
 
+  // parse() 可在答案尚未完成時提供部分數學排版；
+  // validate() 則確認是否已符合因式分解的輸入格式。
+  let parsed;
+  let checked;
+  try {
+    parsed = factorExpressionInput?.parse?.();
+    checked = factorExpressionInput?.validate?.();
+  } catch (error) {
+    preview.textContent = "目前答案格式尚未完成，請繼續輸入。";
+    return;
+  }
+
+  const display = checked?.display || parsed?.display;
+  if (!display) {
+    preview.textContent = checked?.message || parsed?.message || "目前答案尚未輸入完整。";
+    return;
+  }
+
+  // 數學排版由共用元件產生；只將結果放入本頁的預覽框。
   preview.innerHTML = `
     目前答案：
-    <span class="preview-value">
-      ${result.display}
-    </span>
+    <span class="preview-value">${display}</span>
   `;
+
+  // 當數學式未完整時，仍顯示已輸入部分，並說明下一步。
+  if (!checked?.valid && (checked?.message || parsed?.message)) {
+    const hint = document.createElement("span");
+    hint.className = "factor-preview-hint";
+    hint.textContent = checked?.message || parsed?.message;
+    preview.appendChild(hint);
+  }
 }
 
 
@@ -5768,6 +5797,19 @@ function renderFactorAnswer(
           "#80cbc4"
       }
     });
+
+  // 共用元件的 onChange 會接到工具按鈕產生的變化，
+  // 但「直接鍵盤輸入」只會觸發內部 input 事件，
+  // 因此本頁另外監聽原生 input/change 才能同步預覽。
+  const liveInput = factorExpressionInput?.input ||
+    document.querySelector("#factor-expression-mount input.mei-input") ||
+    document.querySelector("#factor-expression-mount input[type=text]");
+
+  if (liveInput) {
+    liveInput.addEventListener("input", updateFactorPreview);
+    liveInput.addEventListener("change", updateFactorPreview);
+    liveInput.addEventListener("compositionend", updateFactorPreview);
+  }
 
   setTimeout(
     () => {
