@@ -43,12 +43,24 @@ const mul=(a,b)=>a*b;
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){let j=rand(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
 const range=(level,a,b,c)=>level==='basic'?a:level==='advanced'?b:c;
 const fractionText=(a,b)=>f(a,b);
+// 任何非「約分教學」的題目，出題前即確保分子分母互質。
+// 不直接在 f() 中強制約分，以保留通分結果、擴分步驟與約分練習的原貌。
+function randomSimplestFraction(maxDen,allowImproper=false){
+ let d=rand(2,maxDen),n=1;
+ const upper=allowImproper?d*2:d-1;
+ for(let tries=0;tries<60;tries++){
+  const candidate=rand(1,upper);
+  if(gcd(candidate,d)===1){n=candidate;return {n,d};}
+ }
+ return {n:1,d};
+}
+
 function makeLCM(type,level){
  let m=range(level,12,20,36),a=rand(3,m),b=rand(4,m);if(a===b)b+=2;
  if(type===0){let v=lcm(a,b);return q('lcm',0,`求 ${a} 與 ${b} 的<strong>最小公倍數</strong>`,String(v),[`分別列出 ${a} 和 ${b} 的倍數。`,`兩數最大公因數為 ${gcd(a,b)}。`,`最小公倍數＝${a}×${b}÷${gcd(a,b)}＝${v}。`])}
  if(type===1){let v=lcm(a,b),x=rand(1,a-1),y=rand(1,b-1);while(gcd(x,a)!==1)x=rand(1,a-1);while(gcd(y,b)!==1)y=rand(1,b-1);return q('lcm',1,`${f(x,a)} 與 ${f(y,b)} 的<strong>最小公分母</strong>為何？`,String(v),[`最小公分母就是分母 ${a}、${b} 的最小公倍數。`,`最小公倍數＝${v}。`])}
- if(type===2){let d=rand(3,range(level,8,12,16)),x=rand(1,d-1),k=rand(2,range(level,4,6,8));return q('lcm',2,`將 ${f(x,d)} 擴分為分母 ${d*k} 的分數，<strong>分子是多少？</strong>`,String(x*k),[`新分母是 ${d}×${k}＝${d*k}。`,`分子也要乘 ${k}：${x}×${k}＝${x*k}。`,`擴分後是 ${f(x*k,d*k)}。`])}
- let d1=rand(3,range(level,8,12,16)),d2=rand(4,range(level,9,14,18));if(d1===d2)d2++;let x=rand(1,d1-1),y=rand(1,d2-1),den=lcm(d1,d2),n1=x*den/d1,n2=y*den/d2;return q('lcm',3,`將 ${f(x,d1)} 和 ${f(y,d2)} 通分到<strong>最小公分母 ${den}</strong>。兩個新分子各是多少？`,[String(n1),String(n2)],[`最小公分母為 ${den}。`,`第一個分子：${x}×(${den}÷${d1})＝${n1}。`,`第二個分子：${y}×(${den}÷${d2})＝${n2}。`,`因此變成 ${f(n1,den)} 和 ${f(n2,den)}。`],{kind:'pair',tip:'兩格依序輸入通分後的兩個分子'});
+ if(type===2){let {n:x,d}=randomSimplestFraction(range(level,8,12,16)),k=rand(2,range(level,4,6,8));return q('lcm',2,`將 ${f(x,d)} 擴分為分母 ${d*k} 的分數，<strong>分子是多少？</strong>`,String(x*k),[`原分數 ${x}/${d} 已是最簡分數。`,`新分母是 ${d}×${k}＝${d*k}。`,`分子也要乘 ${k}：${x}×${k}＝${x*k}。`,`擴分後是 ${f(x*k,d*k)}（擴分結果不需再約分）。`])}
+ let p1=randomSimplestFraction(range(level,8,12,16)),p2=randomSimplestFraction(range(level,9,14,18));let {n:x,d:d1}=p1,{n:y,d:d2}=p2;for(let i=0;i<20&&d1===d2;i++){p2=randomSimplestFraction(range(level,9,14,18));y=p2.n;d2=p2.d;}let den=lcm(d1,d2),n1=x*den/d1,n2=y*den/d2;return q('lcm',3,`將 ${f(x,d1)} 和 ${f(y,d2)} 通分到<strong>最小公分母 ${den}</strong>。兩個新分子各是多少？`,[String(n1),String(n2)],[`題目中的兩個分數都已是最簡分數。`,`最小公分母為 ${den}。`,`第一個分子：${x}×(${den}÷${d1})＝${n1}。`,`第二個分子：${y}×(${den}÷${d2})＝${n2}。`,`因此變成 ${f(n1,den)} 和 ${f(n2,den)}。`],{kind:'pair',tip:'兩格依序輸入通分後的兩個分子'});
 }
 function makeGCD(type,level){
  let common=rand(2,range(level,6,10,15)),a=common*rand(2,range(level,7,11,15)),b=common*rand(2,range(level,8,12,17)),g=gcd(a,b);
@@ -58,7 +70,7 @@ function makeGCD(type,level){
  let factor=rand(2,range(level,5,7,10)),x=rand(2,range(level,9,15,24)),y=rand(2,range(level,9,15,24));let n=x*factor,d=y*factor;return q('gcd',3,`${f(n,d)} 的分子、分母可以<strong>同除以 ${factor}</strong>，約分後新分子為何？`,String(x),[`分子 ${n} ÷ ${factor}＝${x}。`,`分母也除以 ${factor}，得到 ${f(x,y)}。`,`本題問第一次約分後的分子，不要求最簡分數。`]);
 }
 function makeFraction(type,level){
- let max=range(level,8,12,16),d1=rand(2,max),d2=rand(2,max);let n1=rand(1,level==='basic'?d1-1:d1*2),n2=rand(1,level==='basic'?d2-1:d2*2);let op=['+','−','×','÷'][type],n,d,steps=[];
+ let max=range(level,8,12,16),allowImproper=level!=='basic';let first=randomSimplestFraction(max,allowImproper),second=randomSimplestFraction(max,allowImproper);let {n:n1,d:d1}=first,{n:n2,d:d2}=second;let op=['+','−','×','÷'][type],n,d,steps=[];
  if(type===0||type===1){let l=lcm(d1,d2),a=n1*l/d1,b=n2*l/d2;if(type===1&&level==='basic'&&a<b){[n1,n2]=[n2,n1];[d1,d2]=[d2,d1];l=lcm(d1,d2);a=n1*l/d1;b=n2*l/d2;}n=a+(type===0?b:-b);d=l;steps=[`先找分母 ${d1}、${d2} 的最小公倍數：${l}。`,`通分後變成 ${a}/${l} ${op} ${b}/${l}。`,`分子運算得到 ${n}/${l}，最後約成 ${fmt(n,d)}。`];}
  else if(type===2){n=n1*n2;d=d1*d2;steps=[`分子乘分子：${n1}×${n2}＝${n}。`,`分母乘分母：${d1}×${d2}＝${d}。`,`約分得到 ${fmt(n,d)}。`];}
  else{n=n1*d2;d=d1*n2;steps=[`除以一個分數，等於乘上它的倒數。`,`原式＝${n1}/${d1}×${d2}/${n2}。`,`分子與分母相乘，再約成 ${fmt(n,d)}。`];}
