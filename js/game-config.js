@@ -37,40 +37,6 @@ modes 的 key
 
 
 export const GAME_CONFIG = {
-  // 小六升國一銜接專區：獨立遊戲，不影響既有七上遊戲 ID。
-  grade6Bridge: {
-    id: "grade6Bridge", section: "銜接", name: "小六升國一｜數學銜接特訓",
-    shortName: "國小銜接特訓", semester: "grade7-first", grade: 7,
-    order: 0.5, icon: "🎒",
-    file: "games/grade7-1/elementary-bridge.html",
-    description: "六大核心計算能力，每項 10 題／20 題／60 秒，另有 24 題綜合診斷、詳解與錯題回顧。",
-    finished: true, difficulty: 1, recommended: true, isNew: true,
-    ranking: {type: "score"},
-    modes: {
-      lcm_10q: '最小公倍數與通分｜10 題',
-      lcm_20q: '最小公倍數與通分｜20 題',
-      lcm_speed: '最小公倍數與通分｜60 秒',
-      gcd_10q: '最大公因數與約分｜10 題',
-      gcd_20q: '最大公因數與約分｜20 題',
-      gcd_speed: '最大公因數與約分｜60 秒',
-      fraction_10q: '分數四則運算｜10 題',
-      fraction_20q: '分數四則運算｜20 題',
-      fraction_speed: '分數四則運算｜60 秒',
-      integer_10q: '整數四則運算｜10 題',
-      integer_20q: '整數四則運算｜20 題',
-      integer_speed: '整數四則運算｜60 秒',
-      order_10q: '運算順序與括號｜10 題',
-      order_20q: '運算順序與括號｜20 題',
-      order_speed: '運算順序與括號｜60 秒',
-      factor_10q: '因數與質因數分解｜10 題',
-      factor_20q: '因數與質因數分解｜20 題',
-      factor_speed: '因數與質因數分解｜60 秒',
-      diagnostic: '六大能力｜24 題綜合診斷'
-    },
-    theme: {primary:"#0f766e",dark:"#115e59",light:"#ecfdf5",border:"#99f6e4"}
-  },
-
-
   "continued-ratio": {id:"continued-ratio",section:"1-1",name:"1-1 連比",shortName:"連比",semester:"grade9-first",grade:9,order:1,icon:"🔗",file:"games/grade9-1/continued-ratio.html",description:"九上第1章：連比",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{merge:"連比合併",parts:"按比例分配",inverse:"反比例與幾何",mixed:"綜合挑戰"},theme:{primary:"#205d9b",dark:"#163f70",light:"#e8f2ff",border:"#91b8e1"}},
   "proportional-segments": {id:"proportional-segments",section:"1-2",name:"1-2 比例線段",shortName:"比例線段",semester:"grade9-first",grade:9,order:2,icon:"📐",file:"games/grade9-1/proportional-segments.html",description:"九上 1-2：等高三角形面積比、平行線截比例線段、平行判別與中點連線段。",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{areaRatio:"等高三角形面積比",parallelSegments:"平行線截比例線段",parallelJudge:"比例線段判別平行",midpoint:"中點連線段",comprehensive:"1-2 綜合挑戰"},theme:{primary:"#0f766e",dark:"#115e59",light:"#ecfdf5",border:"#5eead4"}},
   "similar-polygons": {id:"similar-polygons",section:"1-3",name:"1-3 相似多邊形",shortName:"相似多邊形",semester:"grade9-first",grade:9,order:3,icon:"🔷",file:"games/grade9-1/similar-polygons.html",description:"九上 1-3：圖形縮放、相似多邊形，以及 AA／SAS／SSS 三角形相似性質。",finished:true,difficulty:2,recommended:false,isNew:true,ranking:{type:"speed"},modes:{scaling:"圖形縮放",polygonSimilarity:"相似多邊形",aaSimilarity:"AA 相似",sasSimilarity:"SAS 相似",sssSimilarity:"SSS 相似",comprehensive:"1-3 綜合挑戰"},theme:{primary:"#7c3aed",dark:"#5b21b6",light:"#f5f3ff",border:"#c4b5fd"}},
@@ -1682,10 +1648,10 @@ export const GAME_CONFIG = {
     id:"sequence-arithmetic", section:"1-1",
     name:"1-1 認識數列與等差數列", shortName:"數列與等差數列",
     semester:"grade8-second", grade:8, order:1, icon:"🔢",
-    file:"games/sequence-arithmetic.html",
+    file:"games/grade8-2/sequence-arithmetic.html",
     description:"練習數列與一般項、等差數列、公差、第 n 項、等差中項與規律生活應用。",
     finished:true, difficulty:2, recommended:true, isNew:true, ranking:{type:"speed"},
-    modes:{sequenceBasics:"數列與一般項",arithmeticJudge:"等差數列與公差",arithmeticNth:"第 n 項與反推",arithmeticMean:"等差中項",arithmeticApplication:"規律與生活應用",comprehensive:"1-1 綜合挑戰"},
+    modes:{sequenceBasics:"數列與一般項",arithmeticJudge:"等差數列與公差",arithmeticNth:"缺項與第 n 項",arithmeticReverse:"反推首項、公差與項數",arithmeticMean:"等差中項",arithmeticApplication:"規律與生活應用",comprehensive:"1-1 綜合挑戰"},
     theme:{primary:"#1565C0",dark:"#0D47A1",light:"#E3F2FD",border:"#90CAF9"}
   },
 
