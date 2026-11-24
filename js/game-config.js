@@ -1725,18 +1725,28 @@ export const GAME_CONFIG = {
   /* 八下及九下：由首頁搬移至單一設定檔；保留既有遊戲識別碼與檔名 */
   "linear-function": {
     id: "linear-function",
-    name: "線型函數與圖形",
-    shortName: "線型函數與圖形",
+    section: "2",
+    name: "第2章 線型函數與其圖形",
+    shortName: "線型函數與其圖形",
     semester: "grade8-second",
     grade: 8,
     order: 4,
     icon: "📈",
-    file: "games/linear-function.html",
-    description: "練習線型函數、座標代入與圖形判讀。",
-    finished: false,
+    file: "games/grade8-2/linear-function.html",
+    description: "八下第2章：函數關係、函數值、一次與常數函數、坐標圖形、兩點求函數及生活應用。",
+    finished: true,
     difficulty: 2,
-    ranking: {"type":"speed"},
-    modes: {},
+    ranking: { type: "speed" },
+    modes: {
+      functionRelation: "函數關係的判別",
+      functionValue: "求函數值",
+      functionEqual: "函數值相等與未知係數",
+      functionType: "一次函數與常數函數",
+      functionGraph: "函數圖形與坐標判讀",
+      functionTwoPoints: "已知兩點求線型函數",
+      functionApplication: "函數生活應用與分段圖形",
+      comprehensive: "第2章綜合挑戰"
+    },
     theme: {"primary":"#F57C00","dark":"#E65100","light":"#FFF3E0","border":"#FFCC80"}
   },
   "triangle-angles": {
